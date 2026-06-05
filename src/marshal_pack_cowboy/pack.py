@@ -195,6 +195,34 @@ _STATE_INVARIANTS = [
 ]
 
 
+# PVM strict-determinism invariant family — grown via the Marshal ratchet
+# (escape esc-20260605-pvm-ci-gap) while reviewing node PR #609 (COW-366 local
+# `--strict` determinism). The escape: the `--strict` happy path was broken
+# (valid actor code rejected with InvalidInput — a continuation SyntaxError
+# raised while full enforcement loaded the preamble's stdlib), yet CI was green
+# twice because `pvm/` is a workspace-excluded SEPARATE Cargo workspace that
+# `cargo test --workspace` from node/ never runs. The complementary product fix
+# is to wire the pvm/ workspace into node CI; this invariant makes the Marshal
+# gate run the happy-path test on every pvm change regardless.
+# NOTE: run_command uses `--manifest-path pvm/Cargo.toml` because pvm/ is a
+# separate workspace; substring filter (not `-- --exact`) hits the integration
+# test in tests/regression/simulate.rs via the `lib` test target.
+_PVM_PREFIXES = ("pvm/crates/pvm-runtime/src/simulate",
+                 "pvm/crates/pvm-runtime/src/determinism",
+                 "pvm/crates/pvm-runtime/src/lib")
+
+_PVM_INVARIANTS = [
+    InvariantDef(id="pvm.strict_simulation_allows_valid_code", domain="determinism",
+                 spec_ref="COW-366", executor_kind="test", location_repo="node",
+                 location_path="pvm/crates/pvm-runtime/tests/regression/simulate.rs",
+                 location_test="regression::simulate::run_simulation_strict_allows_deterministic_code",
+                 severity="high",
+                 run_command=["cargo", "test", "--manifest-path", "pvm/Cargo.toml",
+                              "-p", "pvm-runtime", "--test", "lib",
+                              "run_simulation_strict_allows_deterministic_code"]),
+]
+
+
 # CBSS IBE crypto invariant family — harvested from the knowledge core into the
 # version-controlled pack (架构 §4.6(4) DB⇄包晋升回路). Grown via the Marshal
 # ratchet (escape cbss-crypto-no-invariant) while reviewing the cowboy-crypto SDK
@@ -349,6 +377,8 @@ class CowboyPack:
                 out.extend(_STATE_INVARIANTS)
             if any(p.startswith(_CRYPTO_PREFIXES) for p in paths):
                 out.extend(_CRYPTO_INVARIANTS)
+            if any(p.startswith(_PVM_PREFIXES) for p in paths):
+                out.extend(_PVM_INVARIANTS)
         elif scope.get("repo") == "cbfs":
             if any(p.startswith(_CBFS_PREFIXES) for p in paths):
                 out.extend(_CBFS_INVARIANTS)
