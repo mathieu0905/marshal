@@ -143,15 +143,14 @@ _CONTRACT_INVARIANTS = {
     # `impl Read for Instruction` (compile-time, zero-maintenance); this runtime
     # test (`sys_opcode_uniqueness`) is the surfaced double-check, run whenever a
     # PR touches the instruction encoding (tx-encoding contract, `types/src/execution`).
-    # pending=True until node PR #633 (which adds the deny attr + test) merges to
-    # devnet — flip to False then; the test only exists on the #633 branch today,
-    # so an active reference would `running 0 tests` on devnet checkouts.
+    # Activated when node PR #633 (deny attr + test) merged to devnet (tip
+    # 6867b722) — verified `1 passed` on devnet before flipping pending=False.
     "contract.sys_opcode_uniqueness": InvariantDef(
         id="contract.sys_opcode_uniqueness", domain="cross-repo", spec_ref="WP",
         executor_kind="test", location_repo="node",
         location_path="types/src/execution.rs",
         location_test="execution::tests::sys_opcode_uniqueness",
-        severity="high", pending=True,
+        severity="high",
         run_command=["cargo", "test", "-p", "cowboy-types",
                      "execution::tests::sys_opcode_uniqueness", "--", "--exact"]),
     "contract.runner_types_serde": InvariantDef(
