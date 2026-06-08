@@ -192,6 +192,41 @@ _STATE_INVARIANTS = [
                  location_test="prop_root_reflects_committed_set", severity="high",
                  run_command=["cargo", "test", "-p", "cowboy-storage",
                               "prop_root_reflects_committed_set"]),
+    # Ratchet esc-20260605-timer-wallclock (PR #583 / COW-1272): committed timer
+    # set + state root must be independent of wall-clock execution speed (the
+    # inline dispatch loop skips timers on an Instant::now() budget → speed-
+    # dependent root → consensus split). Registered as an #[ignore]d skeleton in
+    # node; pending=True until the injectable-budget seam lands with the COW-1272
+    # fix and the two-run root-equality body replaces the panic. Flip pending to
+    # False then. Kept out of gate dispatch + conformance while pending.
+    InvariantDef(id="state.timer_dispatch_wall_clock_independent", domain="state-consensus",
+                 spec_ref="CIP-4", executor_kind="test", location_repo="node",
+                 location_path="storage/src/state_invariants.rs",
+                 location_test="state_invariants::tests::prop_timer_dispatch_wall_clock_independent",
+                 severity="high", pending=True,
+                 run_command=["cargo", "test", "-p", "cowboy-storage",
+                              "prop_timer_dispatch_wall_clock_independent"]),
+]
+
+
+# CIP-7 stream invariant family. Grown via the Marshal ratchet (escape
+# esc-20260608-cip7-stream-decrypt) reviewing node PR #623: an actor-level
+# stream_decrypt gated *ciphertext retrieval* behind a local sender-keyed
+# entitlement cache, contradicting CIP-7 — ciphertext retrieval MUST NOT be
+# entitlement-gated; only the decryption key is, on the SKM (§542-543/§772-773).
+# The guard pins that ciphertext stays retrievable (get_since/get_latest) for an
+# un-entitled reader. Real, merged, verified-passing test in node devnet.
+# Surfaced when a change touches the CIP-7 stream surface (_CIP7_PREFIXES).
+_CIP7_PREFIXES = ("cli/actors/stream_actor.py", "cli/actors/test_stream_actor.py",
+                  "pvm/Lib/cowboy_sdk/stream.py")
+_CIP7_INVARIANTS = [
+    InvariantDef(id="cip7.ciphertext_access_not_entitlement_gated", domain="cip7",
+                 spec_ref="CIP-7", executor_kind="test", location_repo="node",
+                 location_path="cli/actors/test_stream_actor.py",
+                 location_test="test_cip7_ciphertext_access_not_entitlement_gated",
+                 severity="medium",
+                 run_command=["python3", "-m", "pytest", "cli/actors/test_stream_actor.py",
+                              "-k", "ciphertext_access_not_entitlement_gated"]),
 ]
 
 
@@ -379,6 +414,8 @@ class CowboyPack:
                 out.extend(_CRYPTO_INVARIANTS)
             if any(p.startswith(_PVM_PREFIXES) for p in paths):
                 out.extend(_PVM_INVARIANTS)
+            if any(p.startswith(_CIP7_PREFIXES) for p in paths):
+                out.extend(_CIP7_INVARIANTS)
         elif scope.get("repo") == "cbfs":
             if any(p.startswith(_CBFS_PREFIXES) for p in paths):
                 out.extend(_CBFS_INVARIANTS)
@@ -392,7 +429,11 @@ class CowboyPack:
                 if inv and inv.id not in seen:
                     out.append(inv)
                     seen.add(inv.id)
-        return out
+        # pending invariants are registered/tracked but not yet enforcing
+        # (#[ignore]d skeletons); never hand them to the gate runner — a 0-passed
+        # ignored test would read as a false `degraded`. They activate when their
+        # body lands and `pending` is flipped to False.
+        return [i for i in out if not i.pending]
 
     def classify(self, scope: dict) -> str:
         return self.classify_detailed(scope)["tier"]
@@ -494,9 +535,11 @@ class CowboyPack:
         out: dict = {}
         all_defs = (list(_ECON_INVARIANTS) + list(_CONTRACT_INVARIANTS.values())
                     + list(_STATE_INVARIANTS) + list(_CRYPTO_INVARIANTS)
-                    + list(_CBFS_INVARIANTS) + list(_CBSS_INVARIANTS))
+                    + list(_CBFS_INVARIANTS) + list(_CBSS_INVARIANTS)
+                    + list(_CIP7_INVARIANTS))
         for inv in all_defs:
-            if self.resolve_spec_ref(inv.spec_ref) is None:
+            # pending (not-yet-enforcing) invariants must not inflate coverage.
+            if inv.pending or self.resolve_spec_ref(inv.spec_ref) is None:
                 continue
             out.setdefault(inv.spec_ref, []).append(inv.id)
         return out
