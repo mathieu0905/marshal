@@ -97,7 +97,8 @@ CONTRACTS = [
     Contract(id="tx-encoding", repos=["wallet", "node"],
              trigger_paths={"wallet": ["src/lib/cbor", "src/lib/codec"],
                             "node": ["types/src/execution"]},
-             verify_invariants=["contract.tx_encoding_roundtrip"]),
+             verify_invariants=["contract.tx_encoding_roundtrip",
+                                "contract.sys_opcode_uniqueness"]),
     Contract(id="runner-types", repos=["runner", "node"],
              trigger_paths={"runner": ["crates/runner-common/src/types"],
                             "node": ["runner/src/types"]},
@@ -133,6 +134,26 @@ _CONTRACT_INVARIANTS = {
         severity="high",
         run_command=["cargo", "test", "-p", "cowboy-types",
                      "execution::tests::test_transaction_codec_roundtrip", "--", "--exact"]),
+    # Opcode-uniqueness guard — grown via the Marshal ratchet (escape
+    # esc-20260608-cip12-cip16-opcode-collision, the 3rd opcode collision after
+    # COW-1293 101<->SYS_RAS and CIP-12<->CIP-16 103-107). Two-CIP collisions
+    # encode to the same byte and shadow each other's `Read for Instruction`
+    # decode arm, making the older CIP's instructions undecodable on-chain =
+    # consensus break. The permanent fix is `#[deny(unreachable_patterns)]` on
+    # `impl Read for Instruction` (compile-time, zero-maintenance); this runtime
+    # test (`sys_opcode_uniqueness`) is the surfaced double-check, run whenever a
+    # PR touches the instruction encoding (tx-encoding contract, `types/src/execution`).
+    # pending=True until node PR #633 (which adds the deny attr + test) merges to
+    # devnet — flip to False then; the test only exists on the #633 branch today,
+    # so an active reference would `running 0 tests` on devnet checkouts.
+    "contract.sys_opcode_uniqueness": InvariantDef(
+        id="contract.sys_opcode_uniqueness", domain="cross-repo", spec_ref="WP",
+        executor_kind="test", location_repo="node",
+        location_path="types/src/execution.rs",
+        location_test="execution::tests::sys_opcode_uniqueness",
+        severity="high", pending=True,
+        run_command=["cargo", "test", "-p", "cowboy-types",
+                     "execution::tests::sys_opcode_uniqueness", "--", "--exact"]),
     "contract.runner_types_serde": InvariantDef(
         id="contract.runner_types_serde", domain="cross-repo", spec_ref="CIP-2",
         executor_kind="conformance-vector", location_repo="node",
