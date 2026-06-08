@@ -4,10 +4,14 @@ run_command (registered in the invariant pack):
     /home/ubuntu/workspace/marshal/.venv/bin/python -m pytest \
         marshal_core/checks/test_system_actor_addrmap.py -q
 
-This test currently encodes the FAILING corpus state as the regression target.
-Once the cowboy spec corpus + node code agree on the `0x0D` owner and the false
-`system_actors.rs:40` citations are purged, remove the `xfail` markers and the
-two consistency asserts become a hard, permanent gate.
+Status — node #585 moved CIP-7 STREAM_KEY_MANAGER 0x12 -> 0x0D:
+- The false `0x0D` code-deployed citations are purged (0x0D now exists in code),
+  so `test_no_false_code_deployed_citations` is promoted to a hard, permanent
+  gate (xfail dropped).
+- The deployed code band is now 0x01..0x0D; the contiguity anchor tracks that.
+- The spec corpus still double-claims `0x0D` (STREAM_KEY_MANAGER vs ROUTE_REGISTRY
+  across WP/CIP-7/CIP-28), so `test_system_actor_addrmap_consistent` stays `xfail`
+  until CIP-28 / route-manifest reconciles ROUTE_REGISTRY off 0x0D.
 """
 
 import pytest
@@ -37,12 +41,9 @@ def test_system_actor_addrmap_consistent(rows):
     assert not collisions, f"system-actor address collisions: {collisions}"
 
 
-@pytest.mark.xfail(
-    reason="esc-20260605-wp-0x0d-addrmap: CIP-10/14/15/16/18 cite system_actors.rs:40 "
-    "for a 0x0D actor that does not exist (code ends at 0x0C).",
-    strict=True,
-)
 def test_no_false_code_deployed_citations(rows):
+    # Hard gate since node #585 (STREAM_KEY_MANAGER -> 0x0D): no spec row may
+    # cite a code-deployed system actor at an address the code does not deploy.
     deployed = deployed_addresses_in_code()
     false_cites = find_false_code_citations(rows, deployed)
     assert not false_cites, "false 'code-deployed' citations:\n" + "\n".join(
@@ -50,8 +51,9 @@ def test_no_false_code_deployed_citations(rows):
     )
 
 
-def test_code_band_is_contiguous_0x01_to_0x0c():
-    """Sanity anchor (passes today): code defines exactly 0x01..0x0C, no 0x0D."""
+def test_code_band_is_contiguous_0x01_to_0x0d():
+    """Sanity anchor: code defines exactly 0x01..0x0D (node #585 added 0x0D
+    STREAM_KEY_MANAGER), no 0x0E yet. Bump this band when the next actor lands."""
     deployed = deployed_addresses_in_code()
-    assert deployed == set(range(0x01, 0x0D)), sorted(hex(a) for a in deployed)
-    assert 0x0D not in deployed
+    assert deployed == set(range(0x01, 0x0E)), sorted(hex(a) for a in deployed)
+    assert 0x0E not in deployed
