@@ -230,6 +230,26 @@ _CIP7_INVARIANTS = [
 ]
 
 
+# CIP-14 HTTP-ingress invariant family — backfilled from the Marshal conformance
+# gap (CIP-14 was 0-of-39-MUST covered). CIP-14 is otherwise spec-ahead-of-code:
+# the Gateway / query path / `http.request` handler / `target_pool` enum are not
+# implemented yet, so the only req with real, pure, round-trippable code is
+# §8.6 (req-26) — the reserved `/_cowboy/` namespace MUST NOT be overridable by a
+# route manifest, enforced in `ras/src/route_manifest.rs::check_path_prefix`.
+# Surfaced when a change touches the route-manifest surface (_RAS_ROUTE_PREFIXES).
+_RAS_ROUTE_PREFIXES = ("ras/src/route_manifest",)
+
+_RAS_ROUTE_INVARIANTS = [
+    InvariantDef(id="contract.cip14_reserved_path_prefix", domain="cross-repo",
+                 spec_ref="CIP-14", executor_kind="proptest", location_repo="node",
+                 location_path="ras/src/route_manifest.rs",
+                 location_test="route_manifest::tests::prop_reserved_path_prefix_always_rejected",
+                 severity="mid",
+                 run_command=["cargo", "test", "-p", "cowboy-ras",
+                              "prop_reserved_path_prefix_always_rejected"]),
+]
+
+
 # PVM strict-determinism invariant family — grown via the Marshal ratchet
 # (escape esc-20260605-pvm-ci-gap) while reviewing node PR #609 (COW-366 local
 # `--strict` determinism). The escape: the `--strict` happy path was broken
@@ -416,6 +436,8 @@ class CowboyPack:
                 out.extend(_PVM_INVARIANTS)
             if any(p.startswith(_CIP7_PREFIXES) for p in paths):
                 out.extend(_CIP7_INVARIANTS)
+            if any(p.startswith(_RAS_ROUTE_PREFIXES) for p in paths):
+                out.extend(_RAS_ROUTE_INVARIANTS)
         elif scope.get("repo") == "cbfs":
             if any(p.startswith(_CBFS_PREFIXES) for p in paths):
                 out.extend(_CBFS_INVARIANTS)
@@ -536,7 +558,7 @@ class CowboyPack:
         all_defs = (list(_ECON_INVARIANTS) + list(_CONTRACT_INVARIANTS.values())
                     + list(_STATE_INVARIANTS) + list(_CRYPTO_INVARIANTS)
                     + list(_CBFS_INVARIANTS) + list(_CBSS_INVARIANTS)
-                    + list(_CIP7_INVARIANTS))
+                    + list(_CIP7_INVARIANTS) + list(_RAS_ROUTE_INVARIANTS))
         for inv in all_defs:
             # pending (not-yet-enforcing) invariants must not inflate coverage.
             if inv.pending or self.resolve_spec_ref(inv.spec_ref) is None:
