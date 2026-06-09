@@ -11,7 +11,7 @@ def parse_pull_request_event(payload: dict) -> NormalizedEvent:
         repo=payload["repository"]["name"],
         change_ref=pr["head"]["sha"],
         diff_paths=payload.get("_diff_paths", []),
-        labels=[l["name"] for l in pr.get("labels", [])],
+        labels=[lbl["name"] for lbl in pr.get("labels", [])],
         actor=pr.get("user", {}).get("login", ""),
     )
 
