@@ -1,3 +1,4 @@
+import json as _json
 import os
 import sys
 
@@ -53,3 +54,18 @@ def test_sync_packages_copies_core_and_pack(tmp_path):
     # 重跑应幂等(先清旧目录),不报错
     build_plugin.sync_packages(os.path.join(ROOT, "src"), str(plugin_dir))
     assert (plugin_dir / "marshal_core" / "cli.py").exists()
+
+
+def test_manifests_are_valid_and_consistent():
+    mp = _json.load(open(os.path.join(ROOT, ".claude-plugin", "marketplace.json")))
+    assert mp["name"] and isinstance(mp["plugins"], list)
+    names = [p["name"] for p in mp["plugins"]]
+    assert "marshal" in names
+
+    pj = _json.load(open(os.path.join(
+        ROOT, "plugins", "marshal", ".claude-plugin", "plugin.json")))
+    assert pj["name"] == "marshal" and pj["version"]
+
+    pp = open(os.path.join(ROOT, "plugins", "marshal", "pyproject.toml")).read()
+    assert "sqlalchemy" in pp and "pydantic" in pp
+    assert "fastapi" not in pp and "uvicorn" not in pp  # 服务端依赖不进消费侧
