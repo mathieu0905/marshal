@@ -74,15 +74,16 @@ def cmd_ci_scan(a) -> int:
     Runs `zizmor --format json` over the given workflow files and normalizes findings.
     If zizmor is absent/errors, emits a degraded record (non-zero) so the gate records
     degraded → needs_human rather than a false pass (降级不谎报)."""
-    import shutil
     import subprocess
 
-    binary = a.zizmor_bin or "zizmor"
-    if shutil.which(binary) is None and not Path(binary).exists():
+    binary = _resolve_zizmor(a.zizmor_bin)
+    if binary is None:
         print(json.dumps({"error": "zizmor not installed", "degraded": True,
-                          "tool": binary,
-                          "hint": "install zizmor (pipx install zizmor) to enable the "
-                                  "deterministic CI-security gate"}, ensure_ascii=False))
+                          "tool": a.zizmor_bin or "zizmor",
+                          "hint": "install zizmor into the marshal venv: "
+                                  "`<venv>/bin/pip install zizmor` (or pipx/uv/cargo); "
+                                  "then ci-scan finds it automatically"},
+                         ensure_ascii=False))
         return 1
     if not a.paths:
         return _fail("ci-scan needs --paths <workflow files>")
@@ -99,37 +100,62 @@ def cmd_ci_scan(a) -> int:
                           "raw_stderr": proc.stderr[:2000]}, ensure_ascii=False))
         return 1
     sev_rank = {"high": 3, "medium": 2, "low": 1, "informational": 0, "unknown": 0}
+    by_sev = {}
+    for f in findings:
+        by_sev[f["severity"]] = by_sev.get(f["severity"], 0) + 1
     worst = max((sev_rank.get(f["severity"], 0) for f in findings), default=0)
-    return _emit({"tool": "zizmor", "scanned": a.paths, "findings": findings,
-                  "count": len(findings),
+    return _emit({"tool": "zizmor", "scanned": a.paths, "count": len(findings),
+                  "by_severity": by_sev,
                   "worst_severity": next((s for s, r in sev_rank.items() if r == worst),
-                                         "none") if findings else "none"})
+                                         "none") if findings else "none",
+                  "findings": findings})
+
+
+def _resolve_zizmor(explicit):
+    """Find the zizmor binary. Explicit path wins; otherwise prefer the one installed
+    next to the running interpreter (the marshal venv's bin, where `pip install zizmor`
+    puts it) so the gate works without PATH fiddling, then fall back to PATH."""
+    import shutil
+
+    if explicit:
+        return explicit if (Path(explicit).exists() or shutil.which(explicit)) else None
+    venv_bin = Path(sys.executable).parent / "zizmor"
+    if venv_bin.exists():
+        return str(venv_bin)
+    return shutil.which("zizmor")
 
 
 def _normalize_zizmor(stdout: str):
-    """zizmor JSON → [{id, severity, path, location, message}]. Returns None on parse
-    failure. Tolerant of zizmor's array-of-findings schema (severity under .determinations
-    or top-level); unknown shapes degrade to a best-effort message string."""
+    """zizmor JSON (array of findings) → [{id, severity, path, location, message}].
+    Returns None on parse failure. Matches the zizmor 1.x schema: severity under
+    `.determinations.severity`; path under `.locations[0].symbolic.key.{Local|Remote}`;
+    line under `.locations[0].concrete.location.start_point.row`. Falls back gracefully."""
     try:
         data = json.loads(stdout or "[]")
     except json.JSONDecodeError:
         return None
     if isinstance(data, dict):
         data = data.get("findings") or data.get("results") or []
+    if not isinstance(data, list):
+        return None
     out = []
-    for item in data if isinstance(data, list) else []:
+    for item in data:
         if not isinstance(item, dict):
             continue
-        sev = (item.get("determinations", {}) or {}).get("severity") \
+        sev = (item.get("determinations") or {}).get("severity") \
             or item.get("severity") or item.get("level") or "unknown"
+        path, location = "", ""
         locs = item.get("locations") or []
-        path = ""
-        location = ""
         if locs and isinstance(locs[0], dict):
             sym = locs[0].get("symbolic") or {}
-            path = sym.get("key", {}).get("filename") if isinstance(sym.get("key"), dict) \
-                else locs[0].get("path", "")
-            location = str(sym.get("location") or locs[0].get("concrete", ""))
+            key = sym.get("key") or {}
+            if isinstance(key, dict):
+                loc = key.get("Local") or key.get("Remote") or {}
+                path = loc.get("given_path") or loc.get("path") or ""
+            conc = (locs[0].get("concrete") or {}).get("location") or {}
+            row = (conc.get("start_point") or {}).get("row")
+            if row is not None:
+                location = f"line {row}"
         out.append({"id": item.get("ident") or item.get("rule") or item.get("id") or "?",
                     "severity": str(sev).lower(),
                     "path": path or item.get("path", ""),
@@ -318,9 +344,16 @@ def cmd_setup(a) -> int:
     except Exception:
         import_ok = False
 
+    zizmor = _resolve_zizmor(None)
+    hints = []
+    if not import_ok:
+        hints.append("run: pip install -e . in marshal venv")
+    if zizmor is None:
+        hints.append("CI gate degraded: install zizmor — `pip install -e .[ci]` "
+                     "(or pip install zizmor) in the marshal venv")
     return _emit({"ok": True, "symlink": str(link), "target": str(skill_src),
-                  "import_ok": import_ok,
-                  "hint": None if import_ok else "run: pip install -e . in marshal venv"})
+                  "import_ok": import_ok, "zizmor": zizmor or "MISSING",
+                  "hint": "; ".join(hints) or None})
 
 
 def build_parser() -> argparse.ArgumentParser:
