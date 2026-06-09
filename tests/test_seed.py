@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from marshal_core.knowledge.models import Base, Meta
-from marshal_core.knowledge.store import Store  # noqa: F401  # used by later tasks
+from marshal_core.knowledge.store import Store
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
 
@@ -21,3 +21,47 @@ def test_meta_model_roundtrips(tmp_path):
     s.commit()
     got = s.get(Meta, "snapshot_version")
     assert got.value == "1.2.3"
+
+
+def _seed_source(path):
+    """A snapshot-shaped db with 1 invariant + 1 escape + 1 gate_run."""
+    s = _session(path)
+    st = Store(s)
+    st.register_invariant(
+        id="econ.fee_conservation", domain_pack="cowboy", domain="econ",
+        spec_ref="CIP-3", executor_kind="proptest", location_repo="node",
+        location_path="execution/src/x.rs", location_test="prop_fee", severity="high")
+    st.open_escape(id="esc-1", description="d", root_cause_class="c", change_ref=None)
+    st.record_gate_run(change_ref="src-ref", job_id="src-ref", verdict="pass", evidence={})
+    return s
+
+
+def test_seed_replaces_authoritative_preserves_local(tmp_path):
+    src = _seed_source(tmp_path / "snap.db")
+
+    tgt = _session(tmp_path / "user.db")
+    tgt_store = Store(tgt)
+    # 本地已有一条 gate_run(队友自己跑过的门禁),seed 必须保留它。
+    tgt_store.record_gate_run(change_ref="local-ref", job_id="local-ref",
+                              verdict="block", evidence={})
+    tgt.commit()
+
+    n_inv, n_esc = tgt_store.seed_authoritative_tables(src)
+    tgt.commit()
+    assert (n_inv, n_esc) == (1, 1)
+
+    from marshal_core.knowledge.models import InvariantRegistry, EscapeRegistry, GateRun
+    assert tgt.get(InvariantRegistry, "econ.fee_conservation") is not None
+    assert tgt.get(EscapeRegistry, "esc-1") is not None
+    # 本地 gate_run 原样保留,且没把 source 的 gate_run 带进来。
+    refs = {g.change_ref for g in tgt.query(GateRun).all()}
+    assert refs == {"local-ref"}
+
+
+def test_meta_get_set(tmp_path):
+    s = _session(tmp_path / "v.db")
+    st = Store(s)
+    assert st.get_meta("snapshot_version") is None
+    st.set_meta("snapshot_version", "0.0.1")
+    s.commit()
+    assert st.get_meta("snapshot_version") == "0.0.1"
