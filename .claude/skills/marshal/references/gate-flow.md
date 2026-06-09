@@ -12,6 +12,20 @@
 - `"$PY" -m marshal_core.cli classify --repo <r> --paths <p1> <p2> --diff-text "<截断的diff>" --labels <l1>`
 - `"$PY" -m marshal_core.cli invariants --repo <r> --paths <p1> <p2>`
 
+## CI/CD 安全(diff 命中 `.github/workflows/**` 时**必做**)
+
+CI 改动是供应链攻击面。分级器只看 diff 窗口会漏掉危险**组合**(不可信触发 × {自定义/self-hosted runner | secret | 跨仓特权 dispatch}),因为关键构造常在 diff 3 行窗口外(node #649 即栽于此:Almanax 抓到 coverage.yml 的 self-hosted-runner-on-`pull_request` HIGH,Marshal 漏报)。所以:
+
+1. **传整文件给威胁模型(P2)**:对每个改动的 workflow,在 PR head 取整文件喂 classify:
+   - `gh api repos/cowboyinc/<repo>/contents/<wf-path>?ref=<headSHA> -q .content | base64 -d > /tmp/<wf>`
+   - `classify … --workflow-file "<wf-path>=/tmp/<wf>"`(可重复多次,每个改动 workflow 一条)。
+   - classify 会按 **job 粒度**做可达性推理(push/delete/main-devnet 钉死的 job 不算 PR 可达;`github.actor` 白名单在该 job `if:` 内则清除 open-dispatch),命中即在 `security_hazards` 返回 `ci.*` 危险点并升 tier=high。
+2. **确定性后盾 zizmor(P0)**:`cli ci-scan --paths /tmp/<wf> …`。
+   - 装了 zizmor → 把其 findings 折进 GateDecision(与 `ci.*` hazard 互证)。
+   - 没装(返回 `degraded:true`)→ 该 CI 门禁记 degraded,verdict 至少 needs_human,并提示 `pipx install zizmor`。**绝不**因 zizmor 缺失就当 CI 安全审过。
+3. **把 `ci.*` hazard 的 `prompt` 注入步骤 4 的对抗 review**(security lens):这些是否定性属性,不变量门禁抓不到,只能 review 裁定。
+4. CI 安全发现是 review-lens 结论:确认的 HIGH(如 self-hosted-runner-on-PR)→ needs_human(高危终审归人)。
+
 ## 跑不变量(默认在被审 checkout 的干净 worktree 跑)
 
 > **绝不在主工作树 `cd <workspace>/<repo>` 直接跑不变量。** 主树的 checkout 常落后于 PR head / `origin/devnet`(可能缺整个 `*_invariants.rs` 模块),`cargo test … -- --exact` 会命中不到测试而 `running 0 tests`,naive 读成 degraded —— **假阳性**(2026-06-05 PR #604 即栽在此)。必须在**被审代码本身的 checkout** 上跑。

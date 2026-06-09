@@ -52,7 +52,90 @@ def _fail(msg: str) -> int:
 def cmd_classify(a) -> int:
     scope = {"repo": a.repo, "diff_paths": a.paths, "diff_text": a.diff_text or "",
              "labels": a.labels or []}
+    # Whole-file content for .github/workflows/** so the CI threat model can reason over
+    # constructs outside the 3-line diff window (P2). --workflow-file path=FILE repeated.
+    wf = {}
+    for spec in (a.workflow_files or []):
+        if "=" not in spec:
+            return _fail(f"--workflow-file expects path=localfile, got: {spec}")
+        rel, local = spec.split("=", 1)
+        try:
+            wf[rel] = Path(local).read_text(encoding="utf-8")
+        except OSError as e:
+            return _fail(f"cannot read workflow file {local}: {e}")
+    if wf:
+        scope["workflow_files"] = wf
     return _emit(_PACK.classify_detailed(scope))
+
+
+def cmd_ci_scan(a) -> int:
+    """P0: deterministic CI-security backstop via zizmor (GitHub Actions auditor).
+
+    Runs `zizmor --format json` over the given workflow files and normalizes findings.
+    If zizmor is absent/errors, emits a degraded record (non-zero) so the gate records
+    degraded → needs_human rather than a false pass (降级不谎报)."""
+    import shutil
+    import subprocess
+
+    binary = a.zizmor_bin or "zizmor"
+    if shutil.which(binary) is None and not Path(binary).exists():
+        print(json.dumps({"error": "zizmor not installed", "degraded": True,
+                          "tool": binary,
+                          "hint": "install zizmor (pipx install zizmor) to enable the "
+                                  "deterministic CI-security gate"}, ensure_ascii=False))
+        return 1
+    if not a.paths:
+        return _fail("ci-scan needs --paths <workflow files>")
+    try:
+        proc = subprocess.run([binary, "--format", "json", *a.paths],
+                              capture_output=True, text=True, timeout=a.timeout)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        print(json.dumps({"error": f"zizmor invocation failed: {e}", "degraded": True},
+                         ensure_ascii=False))
+        return 1
+    findings = _normalize_zizmor(proc.stdout)
+    if findings is None:
+        print(json.dumps({"error": "could not parse zizmor output", "degraded": True,
+                          "raw_stderr": proc.stderr[:2000]}, ensure_ascii=False))
+        return 1
+    sev_rank = {"high": 3, "medium": 2, "low": 1, "informational": 0, "unknown": 0}
+    worst = max((sev_rank.get(f["severity"], 0) for f in findings), default=0)
+    return _emit({"tool": "zizmor", "scanned": a.paths, "findings": findings,
+                  "count": len(findings),
+                  "worst_severity": next((s for s, r in sev_rank.items() if r == worst),
+                                         "none") if findings else "none"})
+
+
+def _normalize_zizmor(stdout: str):
+    """zizmor JSON → [{id, severity, path, location, message}]. Returns None on parse
+    failure. Tolerant of zizmor's array-of-findings schema (severity under .determinations
+    or top-level); unknown shapes degrade to a best-effort message string."""
+    try:
+        data = json.loads(stdout or "[]")
+    except json.JSONDecodeError:
+        return None
+    if isinstance(data, dict):
+        data = data.get("findings") or data.get("results") or []
+    out = []
+    for item in data if isinstance(data, list) else []:
+        if not isinstance(item, dict):
+            continue
+        sev = (item.get("determinations", {}) or {}).get("severity") \
+            or item.get("severity") or item.get("level") or "unknown"
+        locs = item.get("locations") or []
+        path = ""
+        location = ""
+        if locs and isinstance(locs[0], dict):
+            sym = locs[0].get("symbolic") or {}
+            path = sym.get("key", {}).get("filename") if isinstance(sym.get("key"), dict) \
+                else locs[0].get("path", "")
+            location = str(sym.get("location") or locs[0].get("concrete", ""))
+        out.append({"id": item.get("ident") or item.get("rule") or item.get("id") or "?",
+                    "severity": str(sev).lower(),
+                    "path": path or item.get("path", ""),
+                    "location": location,
+                    "message": item.get("desc") or item.get("message") or item.get("title", "")})
+    return out
 
 
 def cmd_review_quorum(a) -> int:
@@ -249,7 +332,18 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--paths", nargs="*", default=[])
     c.add_argument("--diff-text", dest="diff_text", default="")
     c.add_argument("--labels", nargs="*", default=[])
+    c.add_argument("--workflow-file", dest="workflow_files", action="append", default=[],
+                   help="repeatable repo_path=localfile; whole .github/workflows content "
+                        "for the CI threat model (P2 — sees constructs outside the diff)")
     c.set_defaults(func=cmd_classify)
+
+    cs = sub.add_parser("ci-scan")
+    cs.add_argument("--paths", nargs="*", default=[],
+                    help="workflow files to audit with zizmor")
+    cs.add_argument("--zizmor-bin", dest="zizmor_bin", default=None,
+                    help="zizmor binary (default: zizmor on PATH)")
+    cs.add_argument("--timeout", type=int, default=120)
+    cs.set_defaults(func=cmd_ci_scan)
 
     iv = sub.add_parser("invariants")
     iv.add_argument("--repo", required=True)

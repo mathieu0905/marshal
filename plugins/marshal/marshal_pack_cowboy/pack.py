@@ -2,6 +2,7 @@
 import re
 from dataclasses import dataclass
 from marshal_core.domain_pack import InvariantDef
+from marshal_pack_cowboy import ci_security
 
 _HIGH_PREFIXES = (
     "execution/src/execution/engine",
@@ -37,6 +38,14 @@ _REPO_HIGH_PREFIXES = {
 
 _LOW_SUFFIXES = (".md",)
 _LOW_SUBSTR = ("/tests/", "test_", "/scripts/", "tests.rs")
+
+# CI / infra-as-code. A benign workflow edit (runner label, comment) is operational
+# (low). The dangerous cases — untrusted trigger × {privileged runner | secret | write
+# perm | open cross-repo dispatch} — are detected by combination over whole-file content
+# in `ci_security` (drives escalation via security_hazards), NOT by a flat token scan
+# (which mis-escalated #649 off an incidental `secrets.SLACK` context line, yet still
+# missed the coverage.yml runner risk whose secret sat outside the diff window).
+_CI_PREFIX = ".github/"
 _SYS_ADDR_TOKENS = ("0x06", "0x09", "0x91", "0x92", "0x93", "0x94", "0x95")
 
 REVIEW_DIMENSIONS = [
@@ -504,11 +513,15 @@ class CowboyPack:
                for lbl in scope.get("labels", [])):
             reasons.append("CIP new / interface change")
 
+        ci_paths = [p for p in paths if p.startswith(_CI_PREFIX)]
+
         if contracts or reasons:
             tier = "high"
         elif paths and all(p.endswith(_LOW_SUFFIXES) or any(s in p for s in _LOW_SUBSTR)
-                           for p in paths):
+                           or p.startswith(_CI_PREFIX) for p in paths):
             tier = "low"
+            if ci_paths:
+                reasons.append("CI/infra workflow (operational, non-privileged)")
         else:
             tier = "mid"
             reasons.append("default mid (ordinary actor / RPC handler)")
@@ -530,6 +543,15 @@ class CowboyPack:
             if any(p.startswith(hz.when_paths) for p in paths):
                 out.append({"id": hz.id, "title": hz.title, "prompt": hz.prompt,
                             "invariant_able": hz.invariant_able})
+        # CI/CD threat model: combination over whole workflow-file content (P1+P2).
+        # Negative properties (invariant_able=False) — they escalate tier + inject a
+        # review lens, exactly like the path-based hazards above.
+        ci_hazards, _ = ci_security.scan_scope(scope)
+        for hz in ci_hazards:
+            out.append({"id": hz["id"], "title": hz["title"], "prompt": hz["prompt"],
+                        "invariant_able": hz["invariant_able"],
+                        "severity": hz["severity"], "path": hz["path"],
+                        "evidence": hz["evidence"]})
         return out
 
     def ratchet_guidance(self, root_cause_class: str) -> dict:
