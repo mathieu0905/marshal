@@ -46,3 +46,29 @@ def test_doctor_auto_installs_uv_via_stub(tmp_path):
     out = json.loads(p.stdout)
     assert out["ok"] is True, p.stdout + p.stderr
     assert "uv" in out["fixed"]
+
+
+def test_doctor_runs_seed_step(tmp_path):
+    # 用 stub uv:`uv run --project <root> -m marshal_core.cli seed ...` 必须被调到。
+    # stub uv 把它收到的参数写进 marker 文件,doctor 据 seed 退出码标记 ok。
+    fakebin = tmp_path / "fakebin"
+    fakebin.mkdir()
+    marker = tmp_path / "uv_args.txt"
+    (fakebin / "uv").write_text(
+        "#!/usr/bin/env bash\n"
+        f'echo "$@" >> {marker}\n'
+        'exit 0\n')
+    (fakebin / "uv").chmod(0o755)
+
+    root = tmp_path / "proot"
+    (root / "data").mkdir(parents=True)
+    (root / "data" / "marshal.snapshot.db").write_text("")  # 仅需存在
+    (root / ".claude-plugin").mkdir()
+    (root / ".claude-plugin" / "plugin.json").write_text('{"version":"0.0.1"}')
+
+    env = {"PATH": f"{fakebin}:/usr/bin:/bin", "MARSHAL_DOCTOR_SKIP_ENV": "1"}
+    p = _run(env, plugin_root=str(root))
+    out = json.loads(p.stdout)
+    assert out["ok"] is True, p.stdout + p.stderr
+    args = marker.read_text()
+    assert "seed" in args and "0.0.1" in args  # 用 plugin.json 的 version 调 seed

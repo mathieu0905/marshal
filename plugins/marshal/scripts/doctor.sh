@@ -46,5 +46,28 @@ if ! command -v uv >/dev/null 2>&1; then
   fi
 fi
 
+# 4) 消费侧环境就绪?(uv 懒构建;测试可 MARSHAL_DOCTOR_SKIP_ENV=1 跳过)
+if [ "${MARSHAL_DOCTOR_SKIP_ENV:-0}" != "1" ]; then
+  if ! uv run --project "$ROOT" python -c "import marshal_core" >/dev/null 2>&1; then
+    uv sync --project "$ROOT" >/dev/null 2>&1 || { BLOCKED+=("uv-sync-failed"); emit false; exit 0; }
+    FIXED+=("env")
+  fi
+fi
+
+# 5) seed 快照进用户可写 db(测试可 MARSHAL_DOCTOR_SKIP_SEED=1 跳过)
+if [ "${MARSHAL_DOCTOR_SKIP_SEED:-0}" != "1" ]; then
+  VER=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['version'])" \
+        "$ROOT/.claude-plugin/plugin.json" 2>/dev/null || echo "0")
+  DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/marshal"
+  mkdir -p "$DATA_DIR"
+  export MARSHAL_DB="sqlite:///$DATA_DIR/marshal.db"
+  if uv run --project "$ROOT" -m marshal_core.cli seed \
+        --snapshot "$ROOT/data/marshal.snapshot.db" --version "$VER" >/dev/null 2>&1; then
+    FIXED+=("seed")
+  else
+    BLOCKED+=("seed-failed"); emit false; exit 0
+  fi
+fi
+
 emit true
 exit 0
