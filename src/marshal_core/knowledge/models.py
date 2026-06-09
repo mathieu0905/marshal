@@ -60,3 +60,9 @@ class EscapeRegistry(Base):
     postmortem_ref: Mapped[str | None] = mapped_column(String, nullable=True)
     spawned_check: Mapped[str | None] = mapped_column(String, nullable=True)
     status: Mapped[str] = mapped_column(String, default="open")
+
+
+class Meta(Base):
+    __tablename__ = "meta"
+    key: Mapped[str] = mapped_column(String, primary_key=True)
+    value: Mapped[str] = mapped_column(String, default="")
