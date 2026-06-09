@@ -128,3 +128,21 @@ def test_validate_bundle_raises_on_bad_cli(tmp_path, monkeypatch):
     import pytest
     with pytest.raises(RuntimeError):
         build_plugin.validate_bundle(str(plugin_dir))
+
+
+def test_export_snapshot_refuses_empty(tmp_path):
+    import pytest
+    empty = _session(tmp_path / "empty.db")  # schema only, no invariants
+    empty.close()
+    out = tmp_path / "snap.db"
+    with pytest.raises(ValueError):
+        build_plugin.export_snapshot(str(tmp_path / "empty.db"), str(out), version="0.0.1")
+
+
+def test_export_snapshot_allow_empty_override(tmp_path):
+    empty = _session(tmp_path / "empty2.db")
+    empty.close()
+    out = tmp_path / "snap2.db"
+    n_inv, n_esc = build_plugin.export_snapshot(
+        str(tmp_path / "empty2.db"), str(out), version="0.0.1", allow_empty=True)
+    assert (n_inv, n_esc) == (0, 0)

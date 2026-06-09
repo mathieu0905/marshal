@@ -21,9 +21,11 @@ def _session(path):
     return sessionmaker(bind=engine)()
 
 
-def export_snapshot(source_db: str, out_path: str, version: str) -> tuple[int, int]:
+def export_snapshot(source_db: str, out_path: str, version: str,
+                    allow_empty: bool = False) -> tuple[int, int]:
     """把 source_db 的 invariant_registry + escape_registry 复制进全新 out_path,
-    写入 meta snapshot_version=version;不带 gate_run/audit_log。返回 (n_inv, n_esc)。"""
+    写入 meta snapshot_version=version;不带 gate_run/audit_log。返回 (n_inv, n_esc)。
+    若 invariant 数为 0 且未设 allow_empty=True,则 raise ValueError(防止空快照发布)。"""
     if os.path.exists(out_path):
         os.remove(out_path)
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
@@ -33,6 +35,10 @@ def export_snapshot(source_db: str, out_path: str, version: str) -> tuple[int, i
         store = Store(out)
         n_inv = store._replace_table(src, InvariantRegistry)
         n_esc = store._replace_table(src, EscapeRegistry)
+        if n_inv == 0 and not allow_empty:
+            raise ValueError(
+                f"refusing to write empty snapshot (0 invariants) from {source_db}; "
+                f"source db may be corrupt/wrong. Pass allow_empty=True to override.")
         store.set_meta("snapshot_version", version)
         out.commit()
         return n_inv, n_esc
@@ -103,9 +109,11 @@ def main(argv=None) -> int:
                                         "marshal.snapshot.db"))
     p.add_argument("--no-validate", action="store_true",
                    help="skip the uv smoke test of the bundled consumer CLI")
+    p.add_argument("--allow-empty", action="store_true",
+                   help="permit a 0-invariant snapshot (use only intentionally)")
     a = p.parse_args(argv)
     version = a.version or _manifest_version(repo)
-    n_inv, n_esc = export_snapshot(a.source_db, a.out, version)
+    n_inv, n_esc = export_snapshot(a.source_db, a.out, version, allow_empty=a.allow_empty)
     print(f"snapshot v{version}: {n_inv} invariants, {n_esc} escapes -> {a.out}")
     pkgs = sync_packages(os.path.join(repo, "src"),
                          os.path.join(repo, "plugins", "marshal"))
