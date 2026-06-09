@@ -82,8 +82,49 @@ def test_build_plugin_default_version_from_manifest(tmp_path):
     src.close()
     out = tmp_path / "snap.db"
     rc = build_plugin.main([
-        "--source-db", str(tmp_path / "root.db"), "--out", str(out)])
+        "--source-db", str(tmp_path / "root.db"), "--out", str(out),
+        "--no-validate"])
     assert rc == 0
     pj = _json.load(open(os.path.join(
         ROOT, "plugins", "marshal", ".claude-plugin", "plugin.json")))
     assert Store(_session(out)).get_meta("snapshot_version") == pj["version"]
+
+
+def test_validate_bundle_skips_when_uv_absent(tmp_path, monkeypatch):
+    # No uv on PATH → returns "skipped", does not raise.
+    plugin_dir = tmp_path / "plugins" / "marshal"
+    plugin_dir.mkdir(parents=True)
+    monkeypatch.setenv("PATH", str(tmp_path / "empty_bin"))  # nothing here
+    assert build_plugin.validate_bundle(str(plugin_dir)) == "skipped"
+
+
+def test_validate_bundle_ok_with_stub_uv(tmp_path, monkeypatch):
+    # Stub `uv` on PATH that emits classify-shaped JSON with a tier → returns "ok".
+    fakebin = tmp_path / "bin"
+    fakebin.mkdir()
+    (fakebin / "uv").write_text(
+        "#!/usr/bin/env bash\n"
+        'echo \'{"tier":"high","review_dimensions":[]}\'\n'
+        "exit 0\n")
+    (fakebin / "uv").chmod(0o755)
+    monkeypatch.setenv("PATH", f"{fakebin}:/usr/bin:/bin")
+    plugin_dir = tmp_path / "plugins" / "marshal"
+    plugin_dir.mkdir(parents=True)
+    assert build_plugin.validate_bundle(str(plugin_dir)) == "ok"
+
+
+def test_validate_bundle_raises_on_bad_cli(tmp_path, monkeypatch):
+    # Stub `uv` that exits nonzero → must raise (real drift/regression).
+    fakebin = tmp_path / "bin2"
+    fakebin.mkdir()
+    (fakebin / "uv").write_text(
+        "#!/usr/bin/env bash\n"
+        'echo \'{"error":"ModuleNotFoundError: pydantic"}\'\n'
+        "exit 1\n")
+    (fakebin / "uv").chmod(0o755)
+    monkeypatch.setenv("PATH", f"{fakebin}:/usr/bin:/bin")
+    plugin_dir = tmp_path / "plugins" / "marshal"
+    plugin_dir.mkdir(parents=True)
+    import pytest
+    with pytest.raises(RuntimeError):
+        build_plugin.validate_bundle(str(plugin_dir))

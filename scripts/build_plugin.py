@@ -3,6 +3,7 @@
 import argparse
 import os
 import shutil
+import subprocess
 import sys
 
 from sqlalchemy import create_engine
@@ -72,6 +73,26 @@ def sync_references(repo: str) -> None:
         shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__"))
 
 
+def validate_bundle(plugin_dir: str) -> str:
+    """冒烟:用 uv 跑一次 bundled CLI 的 classify,确认精简依赖足够。
+    uv 不在 PATH → 跳过(返回 'skipped',告警但不失败);
+    跑通且输出含 tier → 'ok';退出非零或缺 tier → raise(真漂移)。"""
+    if shutil.which("uv") is None:
+        print("validate: skipped (uv not found on PATH; bundle not smoke-tested)")
+        return "skipped"
+    proc = subprocess.run(
+        ["uv", "run", "--project", plugin_dir, "-m", "marshal_core.cli",
+         "classify", "--repo", "node", "--paths", "README.md"],
+        capture_output=True, text=True)
+    if proc.returncode != 0 or '"tier"' not in proc.stdout:
+        raise RuntimeError(
+            f"bundle smoke test FAILED (consumer deps may be incomplete):\n"
+            f"  exit={proc.returncode}\n  stdout={proc.stdout.strip()}\n"
+            f"  stderr={proc.stderr.strip()}")
+    print("validate: ok (bundled CLI ran under trimmed deps)")
+    return "ok"
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="build_plugin")
     repo = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -80,6 +101,8 @@ def main(argv=None) -> int:
     p.add_argument("--out",
                    default=os.path.join(repo, "plugins", "marshal", "data",
                                         "marshal.snapshot.db"))
+    p.add_argument("--no-validate", action="store_true",
+                   help="skip the uv smoke test of the bundled consumer CLI")
     a = p.parse_args(argv)
     version = a.version or _manifest_version(repo)
     n_inv, n_esc = export_snapshot(a.source_db, a.out, version)
@@ -89,6 +112,8 @@ def main(argv=None) -> int:
     print(f"synced packages: {', '.join(pkgs)}")
     sync_references(repo)
     print("synced references")
+    if not a.no_validate:
+        validate_bundle(os.path.join(repo, "plugins", "marshal"))
     return 0
 
 
