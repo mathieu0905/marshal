@@ -20,7 +20,8 @@
 |---|---|---|---|
 | D1 | 部署拓扑 | **异机** | 队友各自独立机器,无本仓库 / venv / db,bootstrap 与状态同步必须正面解决。 |
 | D2 | 使用模型 | **A · 只读消费,单向分发** | 队友只跑门禁(读不变量、对抗 review、出 GateDecision);不变量/棘轮真相源唯一(维护侧),plugin 捎带**快照**,`/plugin update` 才更新。 |
-| D3 | CLI bootstrap | **A · uv 托管临时环境** | plugin 捎带消费侧包 + `pyproject.toml`;skill 经 `uv run` 让 uv 按 pyproject 懒解析 sqlalchemy+pydantic 并缓存。**核心代码零改动**,队友一次性装 `uv`。 |
+| D3 | CLI bootstrap | **A · uv 托管临时环境** | plugin 捎带消费侧包 + `pyproject.toml`;skill 经 `uv run` 让 uv 按 pyproject 懒解析 sqlalchemy+pydantic 并缓存。**核心代码零改动**。 |
+| D4 | 环境就绪 | **自动检测 + 缺失自动安装(doctor --fix)** | 安装/首次运行**自动体检**(python 版本、uv、包可导入、快照已 seed、可写 db),缺失项**自动修复**(装 uv、建环境、seed),全程打印做了什么;不靠队友手动补依赖。 |
 
 **明确不做(诚实边界):**
 - **棘轮不回流。** 队友本地 `ratchet-open/close` 只落其本地 db,不回团队真相源;新不变量仍由维护侧统一发版。要双向同步 → 回到平台方案 ③(中央大脑),不在本设计内。
@@ -70,6 +71,7 @@ marshal/
 │   ├── pyproject.toml            # 供 uv run 解析依赖(只列消费侧需要的 sqlalchemy + pydantic)
 │   ├── marshal_core/             # 捎带的消费侧包(由打包脚本从 src/ 同步)
 │   ├── marshal_pack_cowboy/      # 领域包(同步自 src/)
+│   ├── scripts/doctor.sh         # 自体检+自修复(uv/环境/seed 缺失自动补齐)
 │   └── data/marshal.snapshot.db  # 不变量/逃逸只读快照(发版时从根 marshal.db 导出)
 └── scripts/build_plugin.py       # 打包脚本:同步包 + 导出快照 + 校验 uv run 跑通
 ```
@@ -84,18 +86,29 @@ marshal/
 
 ## 3. CLI bootstrap + 数据流 + db 落地
 
-### 3.1 Bootstrap(uv 托管,零手动 venv)
+### 3.1 Bootstrap(自动检测 + 缺失自动安装)
 
-SKILL.md 预检改为绝对路径、与 cwd 无关:
+SKILL.md 预检不再「缺依赖就报错让人手动装」,而是先跑一个**自体检+自修复**脚本 `plugins/marshal/scripts/doctor.sh`(`${CLAUDE_PLUGIN_ROOT}` 定位,与 cwd 无关),全程打印每步动作,幂等可重入:
 
 ```bash
 ROOT="${CLAUDE_PLUGIN_ROOT}"          # Claude Code 为 plugin 注入,指向已装 plugin 目录
-uv run --project "$ROOT" -m marshal_core.cli classify --repo node --paths README.md
+bash "$ROOT/scripts/doctor.sh" --fix   # 体检 + 自动修复;输出 JSON 摘要 {ok, fixed[], blocked?}
 ```
 
-- uv 首次按 `$ROOT/pyproject.toml` 解析并缓存环境,之后秒起。
-- 失败(无 uv)→ 提示 `curl -LsSf https://astral.sh/uv/install.sh | sh` 后停止。
+`doctor.sh --fix` 逐项**检测→缺失即自动修复**:
+
+| 检查项 | 检测 | 缺失时自动修复 |
+|---|---|---|
+| `${CLAUDE_PLUGIN_ROOT}` 已注入 | 变量非空、目录存在 | 无法自修复 → `blocked`,提示最低 Claude Code 版本(唯一硬阻断项) |
+| python3 ≥ 3.11 | `python3 --version` | 无法静默装系统 python → `blocked`,给平台相应安装指引 |
+| uv 已装 | `command -v uv` | 自动跑官方安装脚本 `curl -LsSf https://astral.sh/uv/install.sh \| sh`,并把 `~/.local/bin` 注入 PATH |
+| 消费侧环境就绪 | `uv run --project "$ROOT" python -c "import marshal_core"` | `uv sync --project "$ROOT"` 按 pyproject 建/缓存环境 |
+| 快照已 seed 且版本匹配 | 读可写 db 版本标记 | 调 `cli seed`(见 §3.2) |
+
+- 仅 `${CLAUDE_PLUGIN_ROOT}` 缺失、python 缺失两项为**无法自修复的硬阻断**(给清晰指引);uv / 环境 / seed 三项全部**自动补齐**,无需队友手动。
+- 体检通过后,所有 `cli` 调用走 `uv run --project "$ROOT" -m marshal_core.cli …`;uv 首次解析并缓存环境,之后秒起。
 - **核心代码零改动**:`cli.py` 仍以 `marshal_core.cli` 模块入口被调用;只是解释器从写死的 `$MARSHAL_HOME/.venv/bin/python` 换成 `uv run`。
+- **安全姿态**:`--fix` 只做开发者本地、用户已授权的安装(uv 单用户、无需 root);默认每会话只在体检发现缺口时动手,不缺则纯 no-op。SKILL.md 在首次自动装 uv 时明示「正在为你安装 uv …」。
 
 ### 3.2 只读快照 vs 本地自写(db seed)
 
@@ -118,7 +131,7 @@ uv run --project "$ROOT" -m marshal_core.cli classify --repo node --paths README
 - 读可写 db 里的版本标记;若 == `<v>` 则直接返回(no-op)。
 - 若 != `<v>`:**仅替换** `invariant_registry` + `escape_registry` 两表内容,写入新版本标记,**不动** `gate_run` / `audit_log`。
 
-SKILL.md 预检每会话调一次 `seed`(廉价幂等)。`MARSHAL_DB` 由预检导出后,所有后续 `cli` 调用复用同一可写 db。
+`seed` 由 §3.1 的 `doctor --fix` 作为最后一项检查每会话调用一次(廉价幂等)。`MARSHAL_DB` 由 doctor 导出后,所有后续 `cli` 调用复用同一可写 db。
 
 ### 3.3 版本标记
 
@@ -133,10 +146,10 @@ SKILL.md 预检每会话调一次 `seed`(廉价幂等)。`MARSHAL_DB` 由预检�
 ```
 /plugin marketplace add shawhanken/marshal
 /plugin install marshal            # 装 skill + 消费侧包 + 快照
-# 一次性装 uv(若未装):curl -LsSf https://astral.sh/uv/install.sh | sh
+/marshal                           # 首次运行:doctor --fix 自动补齐 uv/环境/seed
 ```
 
-之后 `/marshal`、`/marshal <repo> <PR#>` 等照常用。
+队友**无需任何手动装依赖**:首次 `/marshal` 的预检 `doctor --fix` 会自动检测并补齐 uv、构建环境、seed 快照(仅 python3<3.11 或 Claude Code 过旧两种硬阻断会要求人工处理,并给出指引)。之后 `/marshal`、`/marshal <repo> <PR#>` 等照常用。
 
 ### 4.2 更新
 
@@ -155,8 +168,9 @@ SKILL.md 预检每会话调一次 `seed`(廉价幂等)。`MARSHAL_DB` 由预检�
 
 1. **打包脚本测试**:`build_plugin.py` 同步产物可被 `uv run --project plugins/marshal -m marshal_core.cli classify ...` 跑通;快照只含权威两表、不含服务端表多余数据。
 2. **seed 幂等性测试**:同版本重复 `seed` 为 no-op;版本 bump 后只换权威两表、`gate_run` 行数不变。
-3. **干净房间验收**:在一个**不含 `/home/ubuntu/workspace`、仅有 git + uv** 的临时 HOME 中 `/plugin install` → 跑一次 `/marshal <PR#>` 全流程绿(证明异机零依赖可起)。
-4. **回归**:现有 48 测试 + 新增 `cli seed` 测试全绿;Python 侧跑 `ruff`(无 Rust,不涉 `cargo fmt`)。
+3. **doctor 自修复测试**:(a) 各检查项缺失时 `--fix` 正确触发对应修复且幂等(已就绪→纯 no-op);(b) 硬阻断项(`${CLAUDE_PLUGIN_ROOT}` 缺、python<3.11)正确返回 `blocked` 而非尝试乱装;(c) uv 自动安装一步在沙箱里用 stub installer 验证 PATH 注入逻辑(不在 CI 真连网装)。
+4. **干净房间验收**:在一个**不含 `/home/ubuntu/workspace`、且未预装 uv** 的临时 HOME 中 `/plugin install` → 跑一次 `/marshal <PR#>`,首跑由 `doctor --fix` 自动补齐 uv/环境/seed 后全流程绿(证明异机「装完即用、零手动依赖」)。
+5. **回归**:现有 48 测试 + 新增 `cli seed` / doctor 测试全绿;Python 侧跑 `ruff`(无 Rust,不涉 `cargo fmt`)。
 
 ---
 
@@ -164,8 +178,10 @@ SKILL.md 预检每会话调一次 `seed`(廉价幂等)。`MARSHAL_DB` 由预检�
 
 | 风险 | 缓解 |
 |---|---|
-| 队友机器无 uv | 预检明确报错 + 一行安装指引;uv 安装无需 root,跨平台。 |
-| `${CLAUDE_PLUGIN_ROOT}` 在某些 Claude Code 版本未注入 | 预检先校验该变量非空,缺失即报错并指明最低 Claude Code 版本要求。 |
+| 队友机器无 uv | `doctor --fix` 自动跑官方安装脚本并注入 PATH(无需 root、跨平台);首次安装时 SKILL.md 明示「正在为你安装 uv」。 |
+| 自动 `curl\|sh` 装 uv 的信任面 | 仅装官方 astral.sh uv(单用户、可审计);`--fix` 是用户已授权的本地开发安装,不动系统级/不需 sudo,且只在体检发现缺口时执行。 |
+| python3<3.11 无法静默修复 | `doctor` 归类为 `blocked`(不乱装系统 python),返回平台对应的 python 安装指引,流程停在此处。 |
+| `${CLAUDE_PLUGIN_ROOT}` 在某些 Claude Code 版本未注入 | `doctor` 先校验该变量非空,缺失即 `blocked` 并指明最低 Claude Code 版本要求(唯一无法自修复的环境硬阻断)。 |
 | 快照与维护侧 db 漂移(忘记重新导出) | `build_plugin.py` 为发版唯一入口,把「同步包 + 导出快照 + bump version」绑成一步,杜绝手动遗漏。 |
 | 队友误以为棘轮会共享 | SKILL.md 消费侧版在 `ratchet` 路由处显式提示「本地 only,不回流团队」。 |
 | 消费侧 `pyproject` 依赖与 `src/` 漂移 | 打包脚本校验消费侧命令在精简依赖下确实可跑(CI 可挂同一校验)。 |
