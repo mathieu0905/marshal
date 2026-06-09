@@ -31,5 +31,20 @@ if ! python3 -c 'import sys; raise SystemExit(0 if sys.version_info>=(3,11) else
   exit 0
 fi
 
+# 3) uv 已装?缺则自动安装(可被 MARSHAL_UV_INSTALLER 覆盖以便测试)
+if ! command -v uv >/dev/null 2>&1; then
+  INSTALLER="${MARSHAL_UV_INSTALLER:-curl -LsSf https://astral.sh/uv/install.sh | sh}"
+  if eval "$INSTALLER" >/dev/null 2>&1; then
+    export PATH="$HOME/.local/bin:$PATH"
+    if command -v uv >/dev/null 2>&1; then
+      FIXED+=("uv")
+    else
+      BLOCKED+=("uv-install-failed"); emit false; exit 0
+    fi
+  else
+    BLOCKED+=("uv-install-failed"); emit false; exit 0
+  fi
+fi
+
 emit true
 exit 0
