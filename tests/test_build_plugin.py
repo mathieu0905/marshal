@@ -69,3 +69,21 @@ def test_manifests_are_valid_and_consistent():
     pp = open(os.path.join(ROOT, "plugins", "marshal", "pyproject.toml")).read()
     assert "sqlalchemy" in pp and "pydantic" in pp
     assert "fastapi" not in pp and "uvicorn" not in pp  # 服务端依赖不进消费侧
+
+
+def test_build_plugin_default_version_from_manifest(tmp_path):
+    # main() 不传 --version 时,应从 plugins/marshal/.claude-plugin/plugin.json 取。
+    src = _session(tmp_path / "root.db")
+    Store(src).register_invariant(
+        id="econ.fee_conservation", domain_pack="cowboy", domain="econ",
+        spec_ref="CIP-3", executor_kind="proptest", location_repo="node",
+        location_path="x.rs", location_test="prop_fee", severity="high")
+    src.commit()
+    src.close()
+    out = tmp_path / "snap.db"
+    rc = build_plugin.main([
+        "--source-db", str(tmp_path / "root.db"), "--out", str(out)])
+    assert rc == 0
+    pj = _json.load(open(os.path.join(
+        ROOT, "plugins", "marshal", ".claude-plugin", "plugin.json")))
+    assert Store(_session(out)).get_meta("snapshot_version") == pj["version"]

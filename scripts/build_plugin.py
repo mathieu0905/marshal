@@ -56,20 +56,39 @@ def sync_packages(src_dir: str, plugin_dir: str) -> list[str]:
     return done
 
 
+def _manifest_version(repo: str) -> str:
+    import json
+    pj = os.path.join(repo, "plugins", "marshal", ".claude-plugin", "plugin.json")
+    with open(pj) as fh:
+        return json.load(fh)["version"]
+
+
+def sync_references(repo: str) -> None:
+    src = os.path.join(repo, ".claude", "skills", "marshal", "references")
+    dst = os.path.join(repo, "plugins", "marshal", "skills", "marshal", "references")
+    if os.path.exists(dst):
+        shutil.rmtree(dst)
+    if os.path.isdir(src):
+        shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__"))
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="build_plugin")
     repo = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     p.add_argument("--source-db", default=os.path.join(repo, "marshal.db"))
-    p.add_argument("--version", required=True)
+    p.add_argument("--version", default=None)
     p.add_argument("--out",
                    default=os.path.join(repo, "plugins", "marshal", "data",
                                         "marshal.snapshot.db"))
     a = p.parse_args(argv)
-    n_inv, n_esc = export_snapshot(a.source_db, a.out, a.version)
-    print(f"snapshot: {n_inv} invariants, {n_esc} escapes -> {a.out}")
+    version = a.version or _manifest_version(repo)
+    n_inv, n_esc = export_snapshot(a.source_db, a.out, version)
+    print(f"snapshot v{version}: {n_inv} invariants, {n_esc} escapes -> {a.out}")
     pkgs = sync_packages(os.path.join(repo, "src"),
                          os.path.join(repo, "plugins", "marshal"))
     print(f"synced packages: {', '.join(pkgs)}")
+    sync_references(repo)
+    print("synced references")
     return 0
 
 
