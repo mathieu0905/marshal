@@ -42,3 +42,14 @@ def test_export_snapshot_only_authoritative_tables(tmp_path):
     assert chk.query(GateRun).count() == 0
     # 版本标记写入快照
     assert Store(chk).get_meta("snapshot_version") == "0.0.1"
+
+
+def test_sync_packages_copies_core_and_pack(tmp_path):
+    plugin_dir = tmp_path / "plugins" / "marshal"
+    plugin_dir.mkdir(parents=True)
+    build_plugin.sync_packages(os.path.join(ROOT, "src"), str(plugin_dir))
+    assert (plugin_dir / "marshal_core" / "cli.py").exists()
+    assert (plugin_dir / "marshal_pack_cowboy" / "pack.py").exists()
+    # 重跑应幂等(先清旧目录),不报错
+    build_plugin.sync_packages(os.path.join(ROOT, "src"), str(plugin_dir))
+    assert (plugin_dir / "marshal_core" / "cli.py").exists()
