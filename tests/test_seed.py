@@ -1,4 +1,7 @@
+import json
 import os
+import subprocess
+import sys
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -65,3 +68,31 @@ def test_meta_get_set(tmp_path):
     st.set_meta("snapshot_version", "0.0.1")
     s.commit()
     assert st.get_meta("snapshot_version") == "0.0.1"
+
+
+def _cli(args, env):
+    e = dict(os.environ)
+    e.update(env)
+    return subprocess.run([sys.executable, "-m", "marshal_core.cli", *args],
+                          capture_output=True, text=True, env=e, cwd=ROOT)
+
+
+def test_cli_seed_idempotent_and_version_gated(tmp_path):
+    snap = tmp_path / "snap.db"
+    _seed_source(snap).close()
+    user = tmp_path / "user.db"
+    env = {"MARSHAL_DB": f"sqlite:///{user}"}
+
+    p1 = _cli(["seed", "--snapshot", str(snap), "--version", "0.0.1"], env)
+    assert p1.returncode == 0, p1.stderr
+    out1 = json.loads(p1.stdout)
+    assert out1["seeded"] is True and out1["invariants"] == 1 and out1["escapes"] == 1
+
+    # 同版本再 seed → no-op
+    p2 = _cli(["seed", "--snapshot", str(snap), "--version", "0.0.1"], env)
+    out2 = json.loads(p2.stdout)
+    assert out2["seeded"] is False
+
+    # 版本 bump → 重新 seed
+    p3 = _cli(["seed", "--snapshot", str(snap), "--version", "0.0.2"], env)
+    assert json.loads(p3.stdout)["seeded"] is True

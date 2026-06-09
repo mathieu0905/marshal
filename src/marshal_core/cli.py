@@ -190,6 +190,32 @@ def cmd_metrics(a) -> int:
         s.close()
 
 
+def cmd_seed(a) -> int:
+    # doctor 末步:把快照两张权威表 seed 进用户可写 db(MARSHAL_DB),保留本地 gate_run。
+    # 版本未变 → no-op。
+    snap_path = Path(a.snapshot).resolve()
+    if not snap_path.exists():
+        return _fail(f"snapshot not found: {snap_path}")
+    s = _session()
+    try:
+        store = Store(s)
+        if store.get_meta("snapshot_version") == a.version:
+            return _emit({"ok": True, "seeded": False, "version": a.version})
+        src_engine = create_engine(f"sqlite:///{snap_path}")
+        Base.metadata.create_all(src_engine)
+        src = sessionmaker(bind=src_engine)()
+        try:
+            n_inv, n_esc = store.seed_authoritative_tables(src)
+        finally:
+            src.close()
+        store.set_meta("snapshot_version", a.version)
+        s.commit()
+        return _emit({"ok": True, "seeded": True, "version": a.version,
+                      "invariants": n_inv, "escapes": n_esc})
+    finally:
+        s.close()
+
+
 def cmd_setup(a) -> int:
     home = _marshal_home()
     skill_src = home / ".claude" / "skills" / "marshal"
@@ -276,6 +302,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     mt = sub.add_parser("metrics")
     mt.set_defaults(func=cmd_metrics)
+
+    sd = sub.add_parser("seed")
+    sd.add_argument("--snapshot", required=True, help="path to marshal.snapshot.db")
+    sd.add_argument("--version", required=True, help="snapshot version (= plugin version)")
+    sd.set_defaults(func=cmd_seed)
 
     st = sub.add_parser("setup")
     st.set_defaults(func=cmd_setup)
