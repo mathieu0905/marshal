@@ -1,6 +1,5 @@
 """ci-scan zizmor wrapper (Marshal P0 — deterministic CI-security backstop)."""
 import json
-import os
 import stat
 
 from marshal_core.cli import _normalize_zizmor, main
