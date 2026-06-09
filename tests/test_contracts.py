@@ -1,6 +1,6 @@
 import json
 from marshal_core.contracts import (
-    NormalizedEvent, DispatchJob, StructuredResult, GateDecision,
+    NormalizedEvent, StructuredResult, GateDecision,
 )
 
 
