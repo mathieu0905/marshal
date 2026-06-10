@@ -297,6 +297,9 @@ _PVM_PREFIXES = ("pvm/crates/pvm-runtime/src/simulate",
                  # reflection guard surfaces on the runtime builtins/scope path and
                  # on the node-side deploy validator that owns validate_actor_code.
                  "pvm/crates/vm/src/scope",
+                 # the cold-stdlib mis-rejection lives in the FSM continuation
+                 # codegen pass, which compiles every module on the determinism path.
+                 "pvm/crates/codegen/src/pvm_fsm",
                  "execution/src/pvm_executor")
 
 _PVM_INVARIANTS = [
@@ -330,6 +333,31 @@ _PVM_INVARIANTS = [
                  run_command=["cargo", "test", "--manifest-path", "pvm/Cargo.toml",
                               "-p", "pvm-runtime", "--test", "lib",
                               "indirect_eval_bypass_is_neutralized"]),
+    # (escape esc-20260610-pvm-fsm-stdlib-cold-misreject) found re-reviewing node
+    # PR #665: pvm_fsm.rs::continuation_meta rejects ANY decorated (async) function
+    # whose decorator is not @runner/actor.continuation, and stdlib
+    # _collections_abc.py has `@abstractmethod async def __anext__/asend/athrow` —
+    # so a COLD interpreter compiling the whitelisted stdlib chain under the
+    # determinism path (preamble `import re` → enum → functools → collections →
+    # _collections_abc) dies with SyntaxError. Warm-pool sys.modules caching masks
+    # it: the full pvm-runtime suite is green while filtered/standalone runs of the
+    # same tests FAIL (order-dependent false-green); pre-existing on devnet
+    # (decimal_default_context_is_deterministic fails standalone at base 2a286711),
+    # and CI never sees it because pvm/ is workspace-excluded (COW-366 family).
+    # The run_command is a single-test filtered invocation ON PURPOSE: a fresh
+    # process = cold interpreter pool, which is exactly the property under test —
+    # do NOT "fix" it to run inside the full suite. pending=True: the codegen fix
+    # (skip/ignore non-continuation decorators on non-actor compiles) and this
+    # regression test are not yet written; flip to active once they land.
+    InvariantDef(id="pvm.cold_determinism_stdlib_import_allowed", domain="determinism",
+                 spec_ref="WP-§3", executor_kind="test", location_repo="node",
+                 location_path="pvm/crates/pvm-runtime/tests/regression/determinism_hardening.rs",
+                 location_test="regression::determinism_hardening::cold_interpreter_compiles_whitelisted_stdlib_under_determinism",
+                 severity="high", pending=True,
+                 run_command=["cargo", "test", "--manifest-path", "pvm/Cargo.toml",
+                              "-p", "pvm-runtime", "--test", "lib",
+                              "regression::determinism_hardening::cold_interpreter_compiles_whitelisted_stdlib_under_determinism",
+                              "--", "--exact"]),
 ]
 
 
