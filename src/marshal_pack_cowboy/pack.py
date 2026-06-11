@@ -433,10 +433,14 @@ class SecurityHazard:
 SECURITY_HAZARDS = [
     SecurityHazard(
         id="cbss-mpk-rpc-exposure",
-        # node 仓打包的 crate (cbss-crypto/, cowboy-py/) + cbss 仓真实路径:
-        # crates/cbss-crypto/ 全体, 以及 cbssd 中真正做密钥派生/封缄/份额的文件
-        # (不含 config/transport 等普通守护代码, 否则误报)。
-        when_paths=("cbss-crypto/", "cowboy-py/", "crates/cbss-crypto/",
+        # node 仓打包的 crate (cbss-crypto/, cowboy-py/, cowboy-crypto/) + cbss 仓
+        # 真实路径: crates/cbss-crypto/ 全体, 以及 cbssd 中真正做密钥派生/封缄/份额的
+        # 文件 (不含 config/transport 等普通守护代码, 否则误报)。
+        # cowboy-crypto/ 是 PR #672 新增的 PyO3 镜像 kernel — 当时不在此列表导致
+        # lens 没注入 (esc-20260611-cbss-ibe-no-ephemeral): kernel 复制到新路径时
+        # hazard 触发器必须跟着走。
+        when_paths=("cbss-crypto/", "cowboy-py/", "cowboy-crypto/",
+                    "crates/cbss-crypto/",
                     "crates/cbssd/src/cip7_content_key_seal",
                     "crates/cbssd/src/cip9_volume_seal",
                     "crates/cbssd/src/hpke_identity",
