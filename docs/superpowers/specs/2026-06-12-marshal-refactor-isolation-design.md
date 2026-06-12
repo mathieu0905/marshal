@@ -18,7 +18,7 @@
 3. **`marshal.db` 进版本库(TRACKED)**
    代码与状态共用同一 repo/分支;近期 commit 多为 `chore: update marshal.db binary`,分支切换会让 db 二进制冲突、串味。
 
-利好现状:`MARSHAL_HOME` / `MARSHAL_DB` 两个 env 是天然总开关(`cli.py:23-33`),且"权威快照 vs 可变 db"已半成形——`cli seed` 从 `plugins/marshal/data/marshal.snapshot.db` 把 invariants/escapes 两张权威表 seed 进可写 db(`snapshot_version` 控幂等),本地 `gate_run` 另存。本设计顺势补全,不另起炉灶。
+利好现状:`MARSHAL_HOME` / `MARSHAL_DB` 两个 env 是天然总开关(`cli.py:23-33`);知识核是**单文件 sqlite**(`marshal.db`),dev 库只需 `cp` 一份即可,无需任何分发/seed 机制(plugin 分发与 `cli seed`/`Meta`/快照已于 2026-06-12 整体移除)。
 
 ## 2. 目标 / 非目标
 
@@ -88,13 +88,13 @@
 
 把"代码"和"可变状态"彻底分家,顺手填老坑:
 
-1. **停止提交活的 `marshal.db`**:`git rm --cached marshal.db`,加入 `.gitignore`。版本库只保留**权威快照** `plugins/marshal/data/marshal.snapshot.db`(已存在),由显式步骤(`scripts/` 加一个 `make snapshot` / `snapshot.sh`)从权威 db 导出 invariants/escapes 两表后才更新——杜绝"binary db diff 噪音 commit"。
-2. **dev 用独立 db**:`MARSHAL_DB=sqlite:///.../marshal-dev.db`,gitignored,可随时 `seed` 重建,绝不污染 prod ratchet 历史。
-3. **格式变更走迁移**:若重构改 db schema/快照格式——
-   - 写一次性迁移脚本(沿用现有 `snapshot_version` 机制 bump 版本);
-   - 稳定版 db 保留**只读副本**;
-   - 切换时把权威表(invariants/escapes 全量历史)**迁移前推**,确保 ratchet/escape 不丢条目(回归之一:迁移后 `cli metrics` 的 invariant 数 / escape 数 ≥ 迁移前)。
-4. **`MARSHAL_DB` 写仓库根的老坑**:`adapters/api.py:15` 默认 `sqlite:///marshal.db`(相对 cwd)。本次把默认也走 `_db_url()`(绝对 `$MARSHAL_HOME/marshal.db`),消除 cwd 依赖。
+1. **停止提交活的 `marshal.db`**:`git rm --cached marshal.db`,加入 `.gitignore`。`marshal.db` 自此是纯本地状态,不再进版本库——杜绝"binary db diff 噪音 commit"(近期 commit 多为此类)。权威不变量/逃逸现在只有一处真相源:prod 的 `marshal.db`。
+2. **dev 用独立 db**:`MARSHAL_DB=sqlite:///.../marshal-dev.db`,gitignored。建 dev 库 = 直接 `cp prod 的 marshal.db marshal-dev.db`(单文件 sqlite,无需任何 seed 机制),改 dev 不污染 prod ratchet 历史;要重置就重新 cp。
+3. **格式变更走迁移**:若重构改 db schema——
+   - 写一次性迁移脚本(在 dev 库上验证);
+   - 切换前对 prod `marshal.db` 留**只读副本**;
+   - 迁移须保留权威表(invariants/escapes)全量历史,确保 ratchet/escape 不丢条目(回归之一:迁移后 `cli metrics` 的 invariant 数 / escape 数 ≥ 迁移前)。
+4. **`MARSHAL_DB` 写仓库根的老坑**:`adapters/api.py:15` 默认 `sqlite:///marshal.db`(相对 cwd)。本次把默认也走 `_db_url()`(绝对 `$MARSHAL_HOME/marshal.db`),消除 cwd 依赖。(注:`adapters/api.py` 属 brain-server 那条另路,若一并下线则随之删除——见 §12。)
 
 ## 7. 日常工作流(重构期间)
 
@@ -149,4 +149,4 @@
 
 - 实际 core / DomainPack 解耦重构(阶段 4 载荷)。
 - 把 golden 语料接入某种 CI(本机无 CI 则保持本地 `pytest` 门禁)。
-- 移除 plugin 分发遗留的 seed/Meta 死代码(memory 已记)。
+- brain-server 那条分发路径(`action.yml` + `docker-compose.yml` + `adapters/api.py` FastAPI)去留:与 plugin 是两套独立分发,本次未动;若也确认不再需要,可单独清理。

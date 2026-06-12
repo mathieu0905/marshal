@@ -1,7 +1,7 @@
 """知识核读写薄封装。"""
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta
+from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry
 
 
 class Store:
@@ -88,32 +88,6 @@ class Store:
                 "cip_conformance_pct": "use `conformance --spec-root <cowboy>`",
             },
         }
-
-    def get_meta(self, key: str, default: str | None = None) -> str | None:
-        row = self.s.get(Meta, key)
-        return row.value if row else default
-
-    def set_meta(self, key: str, value: str) -> None:
-        row = self.s.get(Meta, key)
-        if row:
-            row.value = value
-        else:
-            self.s.add(Meta(key=key, value=value))
-
-    def seed_authoritative_tables(self, src_session) -> tuple[int, int]:
-        """用 src_session(快照)里的两张权威表替换本会话的同名表;
-        gate_run / audit_log 不动。返回 (写入不变量数, 写入逃逸数)。"""
-        n_inv = self._replace_table(src_session, InvariantRegistry)
-        n_esc = self._replace_table(src_session, EscapeRegistry)
-        return n_inv, n_esc
-
-    def _replace_table(self, src_session, Model) -> int:
-        self.s.query(Model).delete()
-        rows = src_session.query(Model).all()
-        for obj in rows:
-            data = {c.name: getattr(obj, c.name) for c in Model.__table__.columns}
-            self.s.add(Model(**data))
-        return len(rows)
 
     def close_escape(self, escape_id: str, spawned_check: str) -> EscapeRegistry:
         if not spawned_check:
