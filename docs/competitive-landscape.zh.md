@@ -1,6 +1,6 @@
 # Marshal 全球竞品与定位分析
 
-> 日期:2026-06-12  
+> 日期:2026-06-13  
 > 范围:AI 代码审查、应用安全平台、代码质量门禁、形式化/不变量验证工具。  
 > 结论:全球已有许多单项能力强于 Marshal 的成熟产品,但尚未看到一个公开产品完整覆盖 Marshal 的组合式闭环:领域包 + 风险分级 + 不变量门禁 + 对抗式 review + 逃逸棘轮 + 规格 conformance。
 
@@ -184,7 +184,150 @@ Marshal 不应试图自己重做 Semgrep、Snyk、CodeQL、Certora、Echidna 或
 
 ---
 
-## 6. 详细名词解释表
+## 6. 外部工具成本与计费模型
+
+> 价格高度易变。本节记录的是 2026-06-13 查到的公开价格/公开计费口径;Enterprise/custom quote 只能作为采购时重新询价的输入,不能当作合同价格。
+
+### 6.1 成本总览
+
+| 工具 | 公开价格 / 计费方式 | 主要成本驱动 | 对 Marshal 的含义 |
+|---|---:|---|---|
+| Greptile | Pro 公开口径约 **$30/seat/month**,含一定 PR review allowance;Enterprise/custom/self-hosted 需 sales | seat 数、PR review 次数、代码库索引规模、是否自托管 | 适合作为高危 PR 的外部 AI review worker;不适合所有低危 PR 全量调用 |
+| Qodo | Teams 公开价 **$30/user/month 年付** 或 **$38/user/month 月付**,含 **20 PRs/user/month**;Enterprise custom | user 数、PR review 额度、组织治理能力 | 可作为企业 AI review/governance worker;PR allowance 约束要求 Marshal 做按 tier 调度 |
+| CodeRabbit | Pro **$24/user/month 年付**,Pro Plus **$48/user/month 年付**;月付更高;Enterprise custom | contributing developers、是否需要 Pro Plus 高级功能 | 在 AI review 类里性价比较好;适合中危 PR 默认 worker 或低成本 baseline review |
+| Graphite | Starter/Team/Enterprise 分层,公开文档以 seat plan 为主;具体价格以 Graphite 当前 pricing page 为准 | seat 数、stacked PR/merge queue 工作流采用程度 | 如果团队采用 Graphite 工作流则价值高;单纯为了 AI review 替代性不强 |
+| GitHub Copilot Code Review | Copilot Pro/Business/Enterprise seat + AI Credits/usage;Business 公开口径 **$19/user/month**,Enterprise **$39/user/month** 并含对应 credits | seat、AI Credits、模型选择、Actions minutes | GitHub 原生低摩擦;但 usage-based 后成本波动上升,Marshal 应避免无脑全量触发 |
+| Claude Code Review / Ultrareview | 无稳定“每 PR 固定价”;公开口径主要是订阅/API/usage/token 驱动 | PR 大小、上下文规模、agent fan-out、模型档位 | 能力强但成本最不可预测;只应给 high/critical PR 或 escape 复盘使用 |
+| Semgrep | Free:小团队/有限 repo;Teams:Code **$30/contributor/month**,Supply Chain **$30/contributor/month**,Secrets **$15/contributor/month**;Enterprise custom | contributor 数、启用模块数、repo 数、AI credits | SAST/SCA/Secrets 不应自研替代;Marshal 应接入 findings 并做风险路由 |
+| Snyk | 官方写 “from **$25/month**”;实际按产品模块、developer 数、test limits、Enterprise quote 组合 | developer 数、SCA/SAST/IaC/Container 模块、test 次数 | 安全平台能力强但合同复杂;适合作为企业客户已有工具的 ingest source |
+| SonarQube Cloud | Free 私有项目 up to **50k LOC**;Team up to **1.9M LOC**;Enterprise LOC-based/custom | 私有 LOC、组织数量、Enterprise 功能 | 质量门/代码质量治理强;Marshal 可读取 quality gate,不建议重做通用 code smell 引擎 |
+| GitHub Code Security / Secret Protection | Code Security **$30/active committer/month**;Secret Protection **$19/active committer/month** | active committer 数、启用 repo 范围 | GitHub 原生安全能力采购摩擦低;Marshal 可作为 policy/gate 汇聚层 |
+| Certora Prover | Basic 免费,**2,000 runtime minutes/month**;Premium/Enterprise contact sales | Prover runtime minutes、规则复杂度、团队服务/规格 review | 形式化验证单项很强;Marshal 应负责触发和解释,不应重写 Prover |
+| Echidna | 开源免费 | CI 时间、工程集成、property 编写、false positive/false negative 分析 | 是 Marshal 可直接调度的低现金成本 invariant executor |
+| Foundry Invariant Testing | 开源免费 | CI 时间、Solidity 测试 harness 编写、状态空间调参 | 是 EVM 领域包的首选执行器之一 |
+| Slither | 开源免费 | CI 时间、自定义 detector 编写、triage | 可作为低成本 baseline detector;Marshal 可把 detector 结果纳入 gate |
+
+### 6.2 10 人团队月成本粗算
+
+| 组合 | 粗略月成本 | 备注 |
+|---|---:|---|
+| CodeRabbit Pro | 约 **$240/月** | 年付价;AI review baseline 中较便宜 |
+| CodeRabbit Pro Plus | 约 **$480/月** | 高级 pre/post-merge actions、unit test generation 等 |
+| Qodo Teams | 约 **$300/月年付价** 或 **$380/月月付价** | 约 20 PR/user/month 的公开 allowance |
+| Greptile Pro | 约 **$300/月 + overage** | 公开口径按 seat 与 review allowance;高 PR 频率会放大成本 |
+| GitHub Copilot Business | 约 **$190/月 + 超出 credits** | Code review/agentic usage 可能消耗 AI Credits 与 Actions minutes |
+| GitHub Copilot Enterprise | 约 **$390/月 + 超出 credits** | 适合 GitHub Enterprise 深集成客户 |
+| Semgrep Code only | 10 contributors 内可能 free;超过后约 **$30/contributor/month** | 同时开 SCA/Secrets 成本叠加 |
+| GitHub Code Security | 约 **$300/月** | 按 active committer 计费 |
+| GitHub Code Security + Secret Protection | 约 **$490/月** | 两个 SKU 叠加 |
+| Certora Basic | **$0**,但限 **2,000 runtime minutes/month** | 专业团队/无限 Prover/规格 review 需 quote |
+| Echidna/Foundry/Slither | 现金成本 **$0** | 主要成本是 CI 与工程时间 |
+
+### 6.3 对 Marshal 的成本策略要求
+
+外部工具不是“免费能力池”,而是昂贵执行器。Marshal 要包容它们,必须从第一天就有 cost-aware orchestration:
+
+| 风险等级 | 默认策略 | 目标成本口径 |
+|---|---|---|
+| low | 本地静态规则、已有单测、轻量 review;不开 expensive AI/fv worker | 尽量接近 **$0/PR** |
+| mid | 加 CodeRabbit/Greptile/Qodo 中的一路轻量 AI review,或 Semgrep/CodeQL baseline | 控制在 **<$1-3/PR** |
+| high | 多 lens AI review + AppSec + 关键 invariants + human sign-off | 可接受 **$10-50/PR**,前提是 blast radius 足够大 |
+| critical | 形式化验证 / deep multi-agent / 外部安全平台 / 手工 owner review 全开 | 按事故代价 justify,不按均摊低价优化 |
+
+Marshal 的产品价值之一,就是回答:
+
+> 这次 PR 值不值得花 $20 跑深度 AI review?值不值得花 Certora runtime?值不值得阻塞 owner?
+
+这也是它和单一竞品的差异:单一工具希望多跑自己,Marshal 应该根据风险和预算决定何时调用谁。
+
+---
+
+## 7. 自研替代可行性评估
+
+### 7.1 总体原则
+
+Marshal 面对竞品有三种策略:
+
+1. **自研替代**:该能力是 Marshal 差异化核心,必须自己掌握。
+2. **包容集成**:该能力成熟、昂贵、通用,重做不划算,应作为 checker adapter 接入。
+3. **混合策略**:自研 80% 的领域化/编排能力,把最贵或最专业的执行交给外部工具。
+
+最关键的判断:
+
+> Marshal 应自研“质量闭环与领域知识资产”,不应自研所有底层扫描器、证明器和 AI reviewer。
+
+### 7.2 单品替代可行性
+
+| 竞品 | 自研替代可行性 | 建议策略 | 原因 |
+|---|---|---|---|
+| Greptile | **中** | 混合:自研领域化 review orchestration;短期接入 Greptile findings | Repo graph、代码库索引、PR 评论体验可逐步自研,但 Greptile 的产品化和代码图体验已有先发优势。Marshal 更适合超越其“通用 review”部分,在 domain pack、invariant、ratchet 上形成差异。 |
+| Qodo | **中低** | 包容优先,局部替代 | Qodo 的组织治理、IDE/PR 集成、multi-repo context、团队标准执行较成熟。Marshal 短期不应重做完整企业 review suite,应把 Qodo 当外部 review/governance source;自研 conformance/ratchet 形成互补。 |
+| CodeRabbit | **中高** | 可替代其 review 子集,但不急于复制完整体验 | PR bot、review comments、配置规则、报告等可自研;但 CodeRabbit 的安装/UX/集成广度需要时间。Marshal 若只服务高危工程团队,无需先追平其大众化体验。 |
+| Graphite Diamond | **低** | 不替代,只集成 | Graphite 的核心是 stacked PR、review workflow、merge queue。Marshal 不该变成代码协作平台;最多读取 Graphite/GitHub PR 状态。 |
+| GitHub Copilot Code Review | **中** | 可在质量上替代部分,不替代分发 | GitHub 原生入口和用户习惯很难替代。Marshal 可以在高危领域审得更深,但应通过 GitHub App/Checks 与 Copilot 共存。 |
+| Claude Code Review / Ultrareview | **低到中** | 短期包容,长期自研编排层 | Claude 的模型能力和 multi-agent execution 不应重做。Marshal 应自研 lens selection、prompt injection、quorum/skeptic、cost routing,把 Claude 当高成本 worker。 |
+| Semgrep | **低** | 包容集成 | Semgrep 的规则生态、跨语言 SAST、Pro rules、AppSec workflow 重做成本高。Marshal 可自研少量领域规则,但不应自研通用 SAST 平台。 |
+| Snyk | **低** | 包容集成 | Snyk 覆盖 SCA/SAST/IaC/Container、漏洞数据库、优先级、fix flow。Marshal 不应重做漏洞情报和依赖安全库。 |
+| SonarQube | **低** | 包容集成 | 通用 bug/code smell/quality gate/coverage 治理不是 Marshal 的差异化。Marshal 可读取 Sonar quality gate,再与领域风险合并。 |
+| GitHub CodeQL / GHAS | **低到中** | CodeQL query 可自研;平台不替代 | 自定义 CodeQL query 是 Marshal ratchet 的好落点,但 CodeQL 引擎和 GitHub code scanning 不应重写。 |
+| Certora Prover | **很低** | 包容集成 | 形式化验证器、SMT 编码、反例生成是高度专业系统。Marshal 应调度 Certora,维护 spec↔rule 映射,解释结果,不应自研 Prover。 |
+| Echidna | **中** | 不重写,但可替代其“调度/报告/策略” | Echidna 是开源执行器。Marshal 可自研 wrapper、budget、seed corpus、result normalization,但没必要重写 fuzz engine。 |
+| Foundry Invariant Testing | **中** | 不重写,作为领域包默认执行器 | Foundry 本身是开源且生态标准。Marshal 应生成/管理 invariant harness,不重写 Forge。 |
+| Slither | **中** | detector 可自研,engine 不重写 | Marshal 可沉淀自定义 detector,但 Slither 静态分析框架成熟且免费,应作为执行器。 |
+
+### 7.3 能力级替代路线
+
+| 能力 | Marshal 应否自研 | 理由 | 推荐优先级 |
+|---|---|---|---|
+| 风险分级 | **必须自研** | 这是领域包价值入口;外部工具不了解团队 blast radius | P0 |
+| Domain Pack manifest / SDK | **必须自研** | Marshal 平台化核心资产 | P0 |
+| Escape Ratchet | **必须自研** | 最大差异化;竞品少见作为强约束核心 | P0 |
+| Invariant Registry / Runner | **必须自研编排层** | 决定哪些检查在何时运行;执行可外包 | P0 |
+| Worktree runner / 0-test detection | **必须自研** | 这是 Marshal 当前可靠性短板,也是竞品不一定关注的质量门细节 | P0 |
+| AI review model 本身 | **不自研** | 模型训练成本不可接受;使用 Claude/OpenAI/外部 reviewer | P0 不做 |
+| Multi-lens review orchestration | **必须自研** | 这是把模型变成质量门的关键逻辑 | P1 |
+| SAST engine | **不自研通用引擎** | Semgrep/CodeQL/Sonar/Snyk 已成熟 | P1 集成 |
+| 自定义安全规则 | **选择性自研** | 领域 hazard 和 ratchet rules 是 Marshal 资产 | P1 |
+| Formal prover | **不自研** | 专业门槛极高,应接 Certora/Kani/CBMC 等 | P2 集成 |
+| Requirement extraction | **自研 + LLM 辅助** | 和 spec conformance 强绑定,是差异点 | P1 |
+| Effective spec / drift engine | **自研** | 普通竞品弱项,高价值 | P2 |
+| Dashboard / policy / audit | **自研** | 企业化必需,也是平台控制面 | P1 |
+
+### 7.4 自研 vs 采购的实用判断
+
+当能力满足以下条件时,Marshal 应自研:
+
+- 它会沉淀项目专属知识。
+- 它能从 escape 中持续生长。
+- 它决定 gate verdict 或 human routing。
+- 它能把一次性发现变成永久资产。
+- 它不是通用底层算法/漏洞数据库/模型能力。
+
+当能力满足以下条件时,Marshal 应集成:
+
+- 底层算法复杂且已有成熟工具。
+- 需要大型漏洞库、模型能力或生态数据。
+- 成本可按风险分级选择性触发。
+- 输出可以结构化为 finding、proof result 或 test result。
+
+### 7.5 对 Marshal 产品路线的直接影响
+
+为了“在任何竞品面前都有竞争力”,Marshal 的实现路线应从“替代所有工具”改为“统一所有工具”:
+
+1. 新增 `CheckerAdapter` 抽象:Semgrep、CodeQL、zizmor、Certora、Foundry、Echidna、Slither、Claude/Greptile/Qodo 都走同一个 result schema。
+2. 新增 `BudgetPolicy`:按 tier、repo、domain、spec_ref、escape history 决定是否调用昂贵 worker。
+3. 新增 `FindingLedger`:所有外部 findings 入账,可被 confirm/refute/ratchet。
+4. 新增 `PermanentCheck` 类型:不只 invariant,还包括 semgrep rule、codeql query、certora rule、review hazard、runtime alert。
+5. 新增 `ToolSubstitutionScore`:每个客户环境可配置“优先自研/优先外部/混合”策略。
+
+这样 Marshal 可以同时做到两件事:
+
+- 面对轻量 AI reviewer:用领域不变量、规格治理和 ratchet 超越它。
+- 面对强 AppSec/formal 工具:不硬碰,把它们变成 Marshal 控制平面里的执行器。
+
+---
+
+## 8. 详细名词解释表
 
 | 名词 | 详细解释 |
 |---|---|
@@ -278,23 +421,45 @@ Marshal 不应试图自己重做 Semgrep、Snyk、CodeQL、Certora、Echidna 或
 | Correlated Blind Spot / 相关性盲区 | 多个 AI agent 或工具因为模型、prompt、上下文相似,在同类问题上一起漏掉。多 agent 只有在视角真正多样时才降低这种风险。 |
 | Human Sign-off / 人工签字 | 高危改动即使机器 review 通过,也要求领域负责人最终确认。Marshal 的原则是高危终审归人。 |
 | Audit Log / 审计日志 | 记录谁、何时、基于什么证据做了什么决定。质量门禁平台需要审计日志来支持复盘、合规和责任追踪。 |
+| Cost-aware Orchestration / 成本感知编排 | Marshal 根据风险等级、改动范围、历史逃逸、预算和工具单价决定是否调用外部工具。它避免每个 PR 都跑昂贵 deep review / formal verification,把成本集中花在高 blast radius 改动上。 |
+| Budget Policy / 预算策略 | 一组规则,定义不同 tier、repo、domain、spec_ref 下允许消耗多少外部工具成本。例如 low PR 只跑本地检查,high PR 可调用多 agent review 与形式化验证。 |
+| CheckerAdapter | Marshal 拟新增的外部工具适配接口。它把 Semgrep、CodeQL、zizmor、Certora、Foundry、Echidna、Slither、Claude/Greptile/Qodo 等工具统一抽象成 plan/run/normalize 三步,让外部结果进入同一个 GateDecision。 |
+| FindingLedger | Marshal 拟新增的发现账本。所有外部工具、AI review、人工 review 的 findings 都入账,并可被 confirm、refute、waive 或 ratchet。它用于解决“多个工具各说各话、发现无法沉淀”的问题。 |
+| PermanentCheck | 永久检查的泛化概念。不只是一条测试或 invariant,也可以是一条 Semgrep rule、CodeQL query、Certora rule、review hazard、runtime alert 或 conformance check。Escape ratchet 的目标是产出 PermanentCheck。 |
+| ToolSubstitutionScore | 对某个竞品或工具能力“自研替代是否划算”的评估维度,通常考虑底层算法复杂度、生态/数据库壁垒、领域专属性、是否能沉淀知识资产、是否是 Marshal 核心差异化。 |
+| Build vs Buy / 自研与采购 | 产品战略决策:某项能力应该自己做、买外部工具,还是混合。Marshal 的原则是自研领域知识闭环和 gate 编排,采购或集成底层扫描器、证明器和模型能力。 |
+| Active Committer | GitHub 等平台常用的计费单位,通常指某段时间内向仓库贡献代码的活跃提交者。GitHub Code Security 等按 active committer 计费。 |
+| Contributor-based Pricing | 按贡献者数量计费。Semgrep 等 AppSec 平台常用这种模型。它的成本随团队规模增长,不一定随 PR 次数增长。 |
+| Seat-based Pricing | 按用户席位计费。Greptile、Qodo、CodeRabbit、Graphite、Copilot 等常见。它的成本随使用人数增长,有时还叠加 PR allowance 或 usage overage。 |
+| LOC-based Pricing | 按 Lines of Code 计费。SonarQube Cloud 等质量平台常见。它适合稳定大代码库,但代码量膨胀会直接影响成本。 |
+| Usage-based Pricing | 按实际使用量计费,例如 review 次数、AI credits、token、runtime minutes、agent minutes。AI review 和形式化验证工具常见。Marshal 需要预算策略来控制这类波动成本。 |
+| Runtime Minutes | 工具运行分钟数。Certora Basic 等按每月 prover runtime minutes 给额度。形式化验证和 fuzzing 都可能消耗大量 runtime。 |
 
 ---
 
-## 7. 资料来源
+## 9. 资料来源
 
 - Greptile 官方网站与文档: https://www.greptile.com/ , https://www.greptile.com/docs/introduction
+- Greptile Pricing: https://www.greptile.com/pricing
 - Qodo 官方文档: https://docs.qodo.ai/ , https://docs.qodo.ai/code-review
+- Qodo Pricing: https://www.qodo.ai/pricing/
 - CodeRabbit 官方文档: https://docs.coderabbit.ai/
+- CodeRabbit Pricing: https://www.coderabbit.ai/pricing
+- Graphite Billing Plans: https://graphite.com/docs/billing-plans
 - Claude Code Review 官方文档: https://code.claude.com/docs/en/code-review
 - Claude Code Ultrareview 官方文档: https://code.claude.com/docs/en/ultrareview
 - Semgrep 官方网站与文档: https://semgrep.dev/
+- Semgrep Pricing: https://semgrep.dev/pricing/
 - Snyk DeepCode AI 官方资料: https://snyk.io/platform/deepcode-ai/
+- Snyk Plans: https://snyk.io/plans/
 - SonarQube AI Code Assurance 文档: https://docs.sonarsource.com/agent-centric-development-cycle/features/ai-code-assurance
+- SonarQube Cloud subscription plans: https://docs.sonarsource.com/sonarqube-cloud/administering-sonarcloud/managing-subscription/subscription-plans
 - GitHub CodeQL 文档: https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql
 - CodeQL custom queries 文档: https://docs.github.com/en/code-security/concepts/code-scanning/codeql/custom-queries
+- GitHub Security plans: https://github.com/security/plans
+- GitHub Copilot plans: https://github.com/features/copilot/plans
 - Certora Prover 文档: https://docs.certora.com/en/latest/docs/user-guide/index.html
+- Certora Pricing: https://www.certora.com/pricing
 - Echidna 项目: https://github.com/crytic/echidna
 - Foundry invariant testing 文档: https://www.getfoundry.sh/guides/invariant-testing
 - Slither 项目: https://github.com/crytic/slither
-
