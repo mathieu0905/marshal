@@ -161,11 +161,22 @@ def _pr_reachable(jif: str, triggers: list) -> bool:
     return True
 
 
+def _strip_line_comments(text: str) -> str:
+    """Drop `#...`-to-EOL on each line (YAML comments). Trigger keys are bare tokens
+    never inside quoted strings, so this is safe for trigger detection — and prevents
+    a `pull_request` mentioned in a comment (e.g. "deliberately NOT on pull_request")
+    from being counted as an actual trigger (cowboy #178 false positive)."""
+    return "\n".join(re.sub(r"#.*$", "", ln) for ln in text.splitlines())
+
+
 def hazards_for_workflow(path: str, content: str) -> list[dict]:
     """Apply the CI threat model to one whole workflow file at job granularity."""
     header, jobs = _header_and_jobs(content)
-    triggers = [t for t in _UNTRUSTED_TRIGGERS if re.search(rf"\b{t}\b", header)] \
-        or [t for t in _UNTRUSTED_TRIGGERS if re.search(rf"\b{t}\b", content[:400])]
+    # Trigger detection ignores comments (see _strip_line_comments).
+    header_nc = _strip_line_comments(header)
+    content_nc = _strip_line_comments(content)
+    triggers = [t for t in _UNTRUSTED_TRIGGERS if re.search(rf"\b{t}\b", header_nc)] \
+        or [t for t in _UNTRUSTED_TRIGGERS if re.search(rf"\b{t}\b", content_nc[:400])]
     privileged_trig = [t for t in _PRIVILEGED_TRIGGERS if t in triggers]
 
     out = []

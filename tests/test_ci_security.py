@@ -144,6 +144,35 @@ def test_scan_scope_flags_degraded_without_whole_file():
     assert meta["degraded_no_whole_file"] is True
 
 
+# --- trigger keywords mentioned only in COMMENTS must not count (cowboy #178 FP) ---
+# A workflow that runs on schedule + workflow_dispatch only, but whose comment block
+# explains why a `pull_request` trigger was deliberately dropped, must NOT be treated
+# as pull_request-reachable.
+COMMENT_ONLY_TRIGGER = """\
+name: SDK Drift
+# Runs on a schedule, NOT on pull_request. A pull_request trigger was
+# deliberately dropped: on a `pull_request` a same-repo branch PR could
+# exfiltrate the token.
+on:
+  schedule:
+    - cron: '23 4 * * *'
+  workflow_dispatch:
+jobs:
+  drift:
+    runs-on: ubuntu-latest-lx
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          token: ${{ secrets.CROSS_REPO_TOKEN }}
+"""
+
+
+def test_trigger_keyword_in_comment_does_not_count_as_trigger():
+    got = ids(COMMENT_ONLY_TRIGGER)
+    assert "ci.secret-exposed-to-untrusted-trigger" not in got, got
+    assert "ci.custom-runner-on-untrusted-event" not in got, got
+
+
 # --- unpinned third-party action on a PR-reachable, secret-bearing job (node PR #712) ---
 # An action referenced by a floating tag/branch (not a 40-hex SHA) in a job that a
 # pull_request can reach AND that exposes a token: a repointed/compromised upstream tag
