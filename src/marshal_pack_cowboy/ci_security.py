@@ -55,6 +55,11 @@ _PR_EVENTS = ("pull_request", "pull_request_target")
 # and commonly echoed, so excluding them avoids firing on every workflow.
 _INJECTION = re.compile(
     r"\$\{\{[^}]*github\.event[^}]*\.(title|body|message|email)[^}]*\}\}", re.I)
+# `uses:` references; the captured spec stops at whitespace so a trailing `# comment` is
+# excluded. A remote action is pinned only when its ref is a full 40-hex commit SHA;
+# floating tags/branches (@v4, @nextest, @main) are repointable by a compromised upstream.
+_USES = re.compile(r"uses:\s*(\S+)", re.I)
+_SHA_REF = re.compile(r"^[0-9a-fA-F]{40}$")
 
 
 def _runner_labels(text: str) -> list[str]:
@@ -72,6 +77,21 @@ def _is_custom_runner(label: str) -> bool:
     if lab.startswith("[") or "self-hosted" in lab.lower():
         return True
     return _DEFAULT_RUNNER.match(lab) is None
+
+
+def _unpinned_actions(job_text: str) -> list[str]:
+    """Remote `uses:` references in a job that are NOT pinned to a 40-hex commit SHA.
+    Local (`./...`) and docker (`docker://`) references aren't tag-repointable and are
+    skipped; a remote `org/repo@ref` is unpinned unless `ref` is a full SHA."""
+    out = []
+    for raw in _USES.findall(job_text):
+        spec = raw.strip().strip("\"'")
+        if spec.startswith("./") or spec.startswith("docker://"):
+            continue
+        ref = spec.rsplit("@", 1)[1] if "@" in spec else ""
+        if not _SHA_REF.match(ref):
+            out.append(spec)
+    return out
 
 
 def _header_and_jobs(content: str):
@@ -209,6 +229,19 @@ def hazards_for_workflow(path: str, content: str) -> list[dict]:
                  "较低信任的同仓贡献者 PR 代码即可外泄 CROSS_REPO_TOKEN/CODECOV_TOKEN 等。核查是否"
                  "应把该 job 限到 push/trusted 事件或加 environment 审批。"),
                 {"job": name, "triggers": triggers})
+        has_secret = bool(_SECRET_REF.search(jt) or _TOKEN_ENV.search(jt))
+        if has_secret and not _ENV_PROTECTION.search(jt):
+            unpinned = _unpinned_actions(jt)
+            if unpinned:
+                add("ci.unpinned-action-on-secret-pr-job", "high",
+                    "third-party action not SHA-pinned in an untrusted-reachable, secret-bearing job",
+                    (f"job `{name}` 由不可信触发 ({','.join(triggers)}) 可达且暴露 secrets/*_TOKEN,"
+                     "却用浮动 tag/分支引用了未 SHA 钉死的 action: " + ", ".join(unpinned) + "。"
+                     "被重指/被攻破的上游 tag 会在持有该 token 的上下文里执行任意代码 → 供应链外泄。"
+                     "应把这些 action 钉到 40 位 commit SHA(参照仓库内已钉死的同名引用)。"
+                     "(node #712 coverage.yml: taiki-e/install-action@nextest 未钉,而 pipeline.yml "
+                     "已 SHA 钉死同一 action)"),
+                    {"job": name, "triggers": triggers, "unpinned_actions": unpinned})
         if _WRITE_PERM.search(jt) and privileged_trig:
             add("ci.permission-escalation", "medium",
                 "write permissions granted on a privileged untrusted trigger",

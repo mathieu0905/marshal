@@ -142,3 +142,58 @@ def test_scan_scope_flags_degraded_without_whole_file():
     _, meta = ci_security.scan_scope({
         "diff_paths": [".github/workflows/coverage.yml"], "diff_text": "runs-on: x"})
     assert meta["degraded_no_whole_file"] is True
+
+
+# --- unpinned third-party action on a PR-reachable, secret-bearing job (node PR #712) ---
+# An action referenced by a floating tag/branch (not a 40-hex SHA) in a job that a
+# pull_request can reach AND that exposes a token: a repointed/compromised upstream tag
+# executes in a context holding CROSS_REPO_TOKEN/CODECOV_TOKEN. zizmor catches unpinned-uses
+# generically (advisory); this is the gate-escalating *combination*.
+UNPINNED_SECRET = """\
+name: Coverage
+on:
+  pull_request:
+  push:
+    branches: [main, devnet]
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: taiki-e/install-action@nextest
+      - run: echo cover
+"""
+
+
+def test_unpinned_action_on_secret_pr_job_is_flagged():
+    got = ids(UNPINNED_SECRET)
+    assert "ci.unpinned-action-on-secret-pr-job" in got
+
+
+def test_all_pinned_actions_clears_unpinned_hazard():
+    pinned = UNPINNED_SECRET.replace(
+        "taiki-e/install-action@nextest",
+        "taiki-e/install-action@ad7375e0bba1919d6e57488597dede2841199079 # nextest")
+    assert "ci.unpinned-action-on-secret-pr-job" not in ids(pinned)
+
+
+def test_unpinned_action_without_secret_not_flagged():
+    no_secret = UNPINNED_SECRET.replace(
+        "    env:\n      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}\n", "")
+    assert "ci.unpinned-action-on-secret-pr-job" not in ids(no_secret)
+
+
+def test_unpinned_action_on_push_only_job_not_flagged():
+    push_only = UNPINNED_SECRET.replace(
+        "  coverage:\n    runs-on: ubuntu-latest\n",
+        "  coverage:\n    if: github.ref == 'refs/heads/main'\n    runs-on: ubuntu-latest\n")
+    assert "ci.unpinned-action-on-secret-pr-job" not in ids(push_only)
+
+
+def test_local_action_reference_not_treated_as_unpinned():
+    local = UNPINNED_SECRET.replace(
+        "      - uses: taiki-e/install-action@nextest\n",
+        "      - uses: ./.github/actions/setup\n")
+    assert "ci.unpinned-action-on-secret-pr-job" not in ids(local)
