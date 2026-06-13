@@ -8,7 +8,8 @@ Status — node #585 moved CIP-7 STREAM_KEY_MANAGER 0x12 -> 0x0D:
 - The false `0x0D` code-deployed citations are purged (0x0D now exists in code),
   so `test_no_false_code_deployed_citations` is promoted to a hard, permanent
   gate (xfail dropped).
-- The deployed code band is now 0x01..0x0D; the contiguity anchor tracks that.
+- The deployed code band is now 0x01..0x10 (node added 0x0E ROUTE_REGISTRY,
+  0x0F GATEWAY_REGISTRY, 0x10 RECEIPT_REGISTRY); the contiguity anchor tracks that.
 - The spec corpus still double-claims `0x0D` (STREAM_KEY_MANAGER vs ROUTE_REGISTRY
   across WP/CIP-7/CIP-28), so `test_system_actor_addrmap_consistent` stays `xfail`
   until CIP-28 / route-manifest reconciles ROUTE_REGISTRY off 0x0D.
@@ -51,9 +52,10 @@ def test_no_false_code_deployed_citations(rows):
     )
 
 
-def test_code_band_is_contiguous_0x01_to_0x0d():
-    """Sanity anchor: code defines exactly 0x01..0x0D (node #585 added 0x0D
-    STREAM_KEY_MANAGER), no 0x0E yet. Bump this band when the next actor lands."""
+def test_code_band_is_contiguous_0x01_to_0x10():
+    """Sanity anchor: code defines exactly 0x01..0x10 — node added 0x0E
+    ROUTE_REGISTRY, 0x0F GATEWAY_REGISTRY, 0x10 RECEIPT_REGISTRY on top of the
+    0x0D STREAM_KEY_MANAGER band (#585), no 0x11 yet. Bump when the next lands."""
     deployed = deployed_addresses_in_code()
-    assert deployed == set(range(0x01, 0x0E)), sorted(hex(a) for a in deployed)
-    assert 0x0E not in deployed
+    assert deployed == set(range(0x01, 0x11)), sorted(hex(a) for a in deployed)
+    assert 0x11 not in deployed
