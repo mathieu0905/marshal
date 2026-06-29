@@ -56,9 +56,11 @@ worktree 根即该 repo 根,`run_command` 里的 `-p <crate>` / 路径都相对 
 
 ## 核对 Almanax 已贴 findings(PR 模式出判决前**必做**)
 
-Almanax 是独立的第三方扫描器,常在 Marshal 跑之前就把 finding 贴上了 PR。**绝不凭印象写「Almanax: 0 findings」** —— 必须实拉再断言(node #660 即栽于此:Almanax 的 HIGH 早 4 分钟已 live,Marshal 却报「skipping / 0 findings」并判干净 PASS,违反「降级不谎报」)。Marshal 自己的对抗 review 发现了同一 bug ≠ 可以无视 Almanax 的判决态;两者是互相印证,不是替代。
+Almanax 是独立的第三方扫描器,常在 Marshal 跑之前就把 finding 贴上了 PR。**绝不凭印象写「Almanax: 0 findings」** —— 必须实拉再断言(node #660 即栽于此:Almanax 的 HIGH 早 4 分钟已 live,Marshal 却报「skipping / 0 findings」并判干净 PASS,违反「降级不谎报」;node #845 复发:Almanax CRITICAL 早 18 小时 live,Marshal run 366 仍写「no Almanax scan / no HIGH-MEDIUM」)。Marshal 自己的对抗 review 发现了同一 bug ≠ 可以无视 Almanax 的判决态;两者是互相印证,不是替代。
 
-1. **实拉**(两个端点都要,finding 可能在 review-comment 或 review body 里):
+**⚠ CI 的 `Almanax Security Scan` check 状态(`skipping`/`pass`/绿勾)不是「无 finding」的证据。** Almanax bot 经由 **review threads**(`pulls/<PR>/comments`)独立贴 finding,与那个 check-run 的状态解耦——#845 即栽于此:check 显示 `skipping`,但 bot 已贴 CRITICAL+MEDIUM。**永远实拉下面两个端点,不许拿 check 状态当代理。**
+
+1. **实拉**(两个端点都要,finding 可能在 review-comment 或 review body 里;**inline 行级 finding 在 `/pulls/<PR>/comments`,不在 issue-comments `/issues/<PR>/comments`——别拉错端点**):
    - `gh api repos/cowboyinc/<repo>/pulls/<PR>/comments --jq '.[] | select(.user.login=="almanax-ai[bot]")'`
    - `gh api repos/cowboyinc/<repo>/pulls/<PR>/reviews  --jq '.[] | select(.user.login=="almanax-ai[bot]")'`
    - severity 从 body 解析(`alt="High Severity"` / `Critical` / `Medium` / `Low`);看是否已被 `/almanax dismiss|resolve`(查后续回复或 `almanax_finding_id` 状态)。
