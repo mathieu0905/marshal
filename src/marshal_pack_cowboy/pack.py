@@ -130,6 +130,19 @@ CONTRACTS = [
                                      "crates/cbssd/src/chain_authorizer"],
                             "node": ["types/src/cbss"]},
              verify_invariants=["contract.cbss_wire_round_trip"]),
+    # System-actor address allocation: the WP §9.1 address space is allocated by
+    # spec (whitepaper/CIP) and pinned in code (node runner/src/system_actors.rs +
+    # types/src/constants.rs). Address collisions are a recurring class (WP 0x0D
+    # addrmap, CIP-16 0x14, CIP-34 0x14). Grown via escape
+    # esc-20260629-sys-addr-alloc-unverified: the opcode side already had
+    # contract.sys_opcode_uniqueness, but the address side's real uniqueness test
+    # (cowboy-runner addresses_are_unique) was UNREGISTERED — cowboy#211's 0x14
+    # allocation was verified entirely by hand. Any PR touching the address
+    # constants OR the spec address table re-runs the uniqueness backstop.
+    Contract(id="sys-actor-addr", repos=["node", "cowboy"],
+             trigger_paths={"node": ["runner/src/system_actors", "types/src/constants"],
+                            "cowboy": ["docs/whitepaper", "docs/cips"]},
+             verify_invariants=["contract.sys_actor_address_uniqueness"]),
 ]
 
 _CONTRACT_BY_ID = {c.id: c for c in CONTRACTS}
@@ -162,6 +175,26 @@ _CONTRACT_INVARIANTS = {
         severity="high",
         run_command=["cargo", "test", "-p", "cowboy-types",
                      "execution::tests::sys_opcode_uniqueness", "--", "--exact"]),
+    # Address-uniqueness guard — grown via escape esc-20260629-sys-addr-alloc-unverified.
+    # The address-space mirror of sys_opcode_uniqueness for WP §9.1. The test already
+    # existed (cowboy-runner system_actors::tests::addresses_are_unique) but was
+    # unregistered; cowboy#211's 0x14 INTENT_SETTLEMENT allocation + opcode 146-151
+    # reservation were verified entirely by hand (fetched cowboy-protocol-codec,
+    # enumerated 130 SYS_* constants). KNOWN LIMITATION (hardening follow-up): the
+    # test asserts uniqueness over a HARDCODED address array — an implementer adding a
+    # new actor (e.g. INTENT_SETTLEMENT=0x14) MUST add it to that array for the guard
+    # to bite. Follow-ups tracked in COW-2399: make the array exhaustive (reflect over
+    # all *_SYSTEM_ACTOR consts), harden system_actor_addrmap.py (spec<->code
+    # reconciliation) from xfail skeleton to a hard gate, and add an opcode spec<->codec
+    # reconciliation analog. Verified `1 passed` on node main before registering.
+    "contract.sys_actor_address_uniqueness": InvariantDef(
+        id="contract.sys_actor_address_uniqueness", domain="cross-repo",
+        spec_ref="WP §9.1", executor_kind="test", location_repo="node",
+        location_path="runner/src/system_actors.rs",
+        location_test="system_actors::tests::addresses_are_unique",
+        severity="high",
+        run_command=["cargo", "test", "-p", "cowboy-runner", "--lib",
+                     "system_actors::tests::addresses_are_unique", "--", "--exact"]),
     "contract.runner_types_serde": InvariantDef(
         id="contract.runner_types_serde", domain="cross-repo", spec_ref="CIP-2",
         executor_kind="conformance-vector", location_repo="node",
