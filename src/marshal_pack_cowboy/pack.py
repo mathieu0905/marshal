@@ -189,7 +189,7 @@ _CONTRACT_INVARIANTS = {
     # reconciliation analog. Verified `1 passed` on node main before registering.
     "contract.sys_actor_address_uniqueness": InvariantDef(
         id="contract.sys_actor_address_uniqueness", domain="cross-repo",
-        spec_ref="WP §9.1", executor_kind="test", location_repo="node",
+        spec_ref="WP", executor_kind="test", location_repo="node",
         location_path="runner/src/system_actors.rs",
         location_test="system_actors::tests::addresses_are_unique",
         severity="high",

@@ -20,6 +20,7 @@ import pytest
 from marshal_core.checks.system_actor_addrmap import (
     deployed_addresses_in_code,
     find_collisions,
+    find_deployed_missing_from_wp_table,
     find_false_code_citations,
     parse_spec_rows,
 )
@@ -52,10 +53,24 @@ def test_no_false_code_deployed_citations(rows):
     )
 
 
-def test_code_band_is_contiguous_0x01_to_0x10():
-    """Sanity anchor: code defines exactly 0x01..0x10 — node added 0x0E
-    ROUTE_REGISTRY, 0x0F GATEWAY_REGISTRY, 0x10 RECEIPT_REGISTRY on top of the
-    0x0D STREAM_KEY_MANAGER band (#585), no 0x11 yet. Bump when the next lands."""
+def test_deployed_band_matches_devnet():
+    """Sanity anchor on the deployed set, read from `origin/devnet` (the active
+    branch, which leads main). Currently 0x01..0x10 (the dense band) plus the
+    non-dense 0x1E TRADING_POST (CIP-33). Bump when the next system actor lands."""
     deployed = deployed_addresses_in_code()
-    assert deployed == set(range(0x01, 0x11)), sorted(hex(a) for a in deployed)
-    assert 0x11 not in deployed
+    assert deployed == set(range(0x01, 0x11)) | {0x1E}, sorted(hex(a) for a in deployed)
+
+
+@pytest.mark.xfail(
+    reason="COW-2399 item 2: the WP §9.1 table omits TRADING_POST 0x1E even though "
+    "node devnet defines TRADING_POST_SYSTEM_ACTOR = 0x1E (a code-deployed actor the "
+    "table MUST track, WP §9.1 note 1). Drop xfail / promote to a hard gate once the "
+    "WP §9.1 table adds the 0x1E row.",
+    strict=False,
+)
+def test_no_code_deployed_actor_missing_from_wp_table():
+    missing = find_deployed_missing_from_wp_table()
+    assert not missing, (
+        "code-deployed system-actor addresses absent from the WP §9.1 table: "
+        + ", ".join(f"0x{a:02X}" for a in sorted(missing))
+    )
