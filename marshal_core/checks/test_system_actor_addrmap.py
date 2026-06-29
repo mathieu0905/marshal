@@ -65,7 +65,7 @@ def test_deployed_band_matches_devnet():
     reason="COW-2399 item 2: the WP §9.1 table (on origin/main) omits TRADING_POST "
     "0x1E even though node devnet defines TRADING_POST_SYSTEM_ACTOR = 0x1E (a "
     "code-deployed actor the table MUST track, WP §9.1 note 1). The 0x1E row is "
-    "staged in cowboy#211 — this xfails until that lands on main, then xpasses; "
+    "staged in cowboy#214 — this xfails until that lands on main, then xpasses; "
     "promote to a hard gate (drop xfail) at that point.",
     strict=False,
 )
