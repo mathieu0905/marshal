@@ -57,8 +57,46 @@ _ROW = re.compile(r"\|\s*`?(0x[0-9A-Fa-f]{1,2})`?\s*\|\s*([^|]+?)\s*\|")
 _WP_ROW = re.compile(
     r"\|\s*(?:\*\*|`)?\s*(0x[0-9A-Fa-f]{1,2})\s*(?:\*\*|`)?\s*\|\s*(?:\*\*)?\s*([^|*]+?)\s*(?:\*\*)?\s*\|"
 )
+# Legacy per-const literal form: `pub const NAME: Address = Address::from_low_u64(0xNN)`.
+# (The macro *definition*'s `from_low_u64($low)` placeholder does not match — `$low`
+# is not a hex literal — so it never contributes a spurious entry.)
 _RS_CONST = re.compile(r"Address::from_low_u64\((0x[0-9A-Fa-f]+)\)")
+# Macro-list form (node#852, COW-2399 item 1): entries `NAME = 0xNN,` inside a
+# `system_actor_addresses! { ... }` invocation. Scoped to that block (below) so
+# unrelated `IDENT = 0x..` consts elsewhere in the file are not swept in.
+_MACRO_INVOCATION = re.compile(r"system_actor_addresses!\s*\{")
+_MACRO_ENTRY = re.compile(r"^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(0x[0-9A-Fa-f]+)\s*,", re.MULTILINE)
 _CODE_DEPLOYED = re.compile(r"code-deployed|system_actors\.rs:\d+", re.IGNORECASE)
+
+
+def _macro_block_bodies(text: str) -> list[str]:
+    """Bodies (text between the outermost `{` `}`) of every
+    `system_actor_addresses! { ... }` invocation in `text`, by brace matching."""
+    bodies: list[str] = []
+    for m in _MACRO_INVOCATION.finditer(text):
+        i = m.end() - 1  # index of the opening `{`
+        depth = 0
+        for j in range(i, len(text)):
+            if text[j] == "{":
+                depth += 1
+            elif text[j] == "}":
+                depth -= 1
+                if depth == 0:
+                    bodies.append(text[i + 1 : j])
+                    break
+    return bodies
+
+
+def parse_deployed_addresses(text: str) -> set[int]:
+    """Deployed system-actor addresses declared in `system_actors.rs` source.
+
+    Reads both the legacy per-const `Address::from_low_u64(0xNN)` literal form and
+    the `system_actor_addresses! { NAME = 0xNN, ... }` macro-list form introduced
+    by node#852, so the spec↔code reconciliation survives that refactor."""
+    addrs = {int(m.group(1), 16) for m in _RS_CONST.finditer(text)}
+    for body in _macro_block_bodies(text):
+        addrs |= {int(m.group(2), 16) for m in _MACRO_ENTRY.finditer(body)}
+    return addrs
 
 
 def _read_at_ref(repo: Path, ref_path: str, fallback: Path) -> str:
@@ -91,7 +129,7 @@ def deployed_addresses_in_code() -> set[int]:
     """Real `0x..` constants defined in node `runner/src/system_actors.rs`,
     read from the canonical `origin/devnet` ref (not the working tree)."""
     text = _read_at_ref(NODE_REPO, NODE_REF, SYSTEM_ACTORS_RS)
-    return {int(m.group(1), 16) for m in _RS_CONST.finditer(text)}
+    return parse_deployed_addresses(text)
 
 
 def wp_table_addresses() -> set[int]:
