@@ -1,11 +1,15 @@
-"""Guard for the SYS_ opcode spec<->codec reconciliation (COW-2399 item 3).
+"""Additional spawned check for escape esc-20260608-cip12-cip16-opcode-collision
+(COW-2399 item 3). Sits alongside the escape's compile-time guard
+`contract.sys_opcode_uniqueness` (node `#[deny(unreachable_patterns)]` + test) as
+the marshal-side spec<->codec reconciliation; the escape registry's single
+`spawned_check` slot stays pointed at the node guard.
 
 The opcode analog of `system_actor_addrmap`. The address side reconciles the WP
 §9.1 address table against `system_actors.rs`; this reconciles explicit
 `opcode <N>` citations in the cowboy spec corpus against the deployed
 `pub const SYS_<NAME>: u8 = <N>` constants in `cowboy-protocol-codec`.
 
-run_command (to register as a spawned check):
+run_command:
     /home/ubuntu/workspace/marshal/.venv/bin/python -m pytest \
         marshal_core/checks/test_sys_opcode_specmap.py -q
 
