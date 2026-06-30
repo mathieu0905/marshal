@@ -22,8 +22,73 @@ from marshal_core.checks.system_actor_addrmap import (
     find_collisions,
     find_deployed_missing_from_wp_table,
     find_false_code_citations,
+    parse_deployed_addresses,
     parse_spec_rows,
 )
+
+
+# --- Parser robustness (COW-2399 item 2) ---------------------------------------
+# node#852 moved the canonical address constants from per-const
+# `Address::from_low_u64(0xNN)` literals to a single
+# `system_actor_addresses! { NAME = 0xNN, ... }` macro list. The original regex
+# matched only the literal-call form, so against the macro source it parsed ZERO
+# deployed addresses — silently blinding `find_deployed_missing_from_wp_table`
+# (false negative) and reddening `find_false_code_citations` (false positive).
+# `parse_deployed_addresses` must read both forms; these pin that.
+
+_MACRO_FORM = """\
+macro_rules! system_actor_addresses {
+    ($( $(#[$meta:meta])* $name:ident = $low:literal ),+ $(,)?) => {
+        impl SystemActorAddresses {
+            $( $(#[$meta])* pub const $name: Address = Address::from_low_u64($low); )+
+            pub const ALL: &'static [(&'static str, Address)] = &[
+                $( (stringify!($name), Address::from_low_u64($low)), )+
+            ];
+        }
+    };
+}
+
+system_actor_addresses! {
+    /// Runner Registry: `0x0000…0001`
+    RUNNER_REGISTRY = 0x01,
+    JOB_DISPATCHER = 0x02,
+    DUAL_BASEFEE = 0x06,
+    RECEIPT_REGISTRY = 0x10,
+    /// CIP-33 Trading Post.
+    TRADING_POST = 0x1E,
+}
+"""
+
+_LITERAL_FORM = """\
+impl SystemActorAddresses {
+    pub const RUNNER_REGISTRY: Address = Address::from_low_u64(0x01);
+    pub const JOB_DISPATCHER: Address = Address::from_low_u64(0x02);
+    pub const DUAL_BASEFEE: Address = Address::from_low_u64(0x06);
+    pub const RECEIPT_REGISTRY: Address = Address::from_low_u64(0x10);
+    pub const TRADING_POST: Address = Address::from_low_u64(0x1E);
+}
+"""
+
+
+def test_parse_deployed_addresses_macro_list_form():
+    assert parse_deployed_addresses(_MACRO_FORM) == {0x01, 0x02, 0x06, 0x10, 0x1E}
+
+
+def test_parse_deployed_addresses_legacy_literal_form():
+    assert parse_deployed_addresses(_LITERAL_FORM) == {0x01, 0x02, 0x06, 0x10, 0x1E}
+
+
+def test_parse_deployed_addresses_ignores_macro_placeholder():
+    # The `$low` placeholder inside the macro *definition* must not parse as 0x..
+    # (and must not crash); 0x00 must never appear.
+    assert 0 not in parse_deployed_addresses(_MACRO_FORM)
+
+
+def test_parse_deployed_addresses_does_not_sweep_unrelated_hex():
+    # An `IDENT = 0xNN` const outside the macro-invocation block is not a
+    # system-actor address and must not be swept in.
+    text = _MACRO_FORM + "\nconst SOME_LIMIT: u64 = 0xFF;\nlet mask = 0x20;\n"
+    assert parse_deployed_addresses(text) == {0x01, 0x02, 0x06, 0x10, 0x1E}
 
 
 @pytest.fixture(scope="module")
