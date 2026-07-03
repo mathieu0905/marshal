@@ -619,7 +619,8 @@ class CowboyPack:
 
         return {"tier": tier, "reasons": reasons, "contracts_hit": contracts,
                 "security_hazards": self.security_hazards(scope),
-                "review_dimensions": [d["name"] for d in self.review_plan(tier)]}
+                "review_dimensions": [d["name"]
+                                      for d in self.review_plan({**scope, "tier": tier})]}
 
     def security_hazards(self, scope: dict) -> list[dict]:
         """否定性/对抗性安全危险点 (信任边)。命中即附一条 review lens 提示。
@@ -699,7 +700,15 @@ class CowboyPack:
             out.setdefault(inv.spec_ref, []).append(inv.id)
         return out
 
-    def review_plan(self, tier: str) -> list[dict]:
+    def review_plan(self, scope: dict) -> list[dict]:
+        """按 scope 选对抗 review 视角 (机制: tier×路径; 数据: 本包)。
+
+        core 只收 [{name, prompt}]。scope 带 `tier` 则直接用 (classify_detailed
+        已算过, 省一次重复 classify); 缺则由 classify(scope) 推。签名吃整个 scope
+        (含 diff_paths) 是为将来让视角按路径条件触发 (对齐 list_invariants /
+        security_hazards); 当前实现仍按 tier 定视角数。
+        """
+        tier = scope.get("tier") or self.classify(scope)
         n = {"high": 6, "mid": 3, "low": 1}.get(tier, 3)
         return REVIEW_DIMENSIONS[:n]
 

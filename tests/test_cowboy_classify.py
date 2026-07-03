@@ -88,6 +88,24 @@ def test_ci_plus_product_code_not_dragged_to_low():
 
 def test_review_plan_scales_with_tier():
     pack = CowboyPack()
-    assert len(pack.review_plan("high")) == 6
-    assert len(pack.review_plan("mid")) == 3
-    assert len(pack.review_plan("low")) == 1
+    assert len(pack.review_plan({"tier": "high"})) == 6
+    assert len(pack.review_plan({"tier": "mid"})) == 3
+    assert len(pack.review_plan({"tier": "low"})) == 1
+
+
+def test_review_plan_derives_tier_from_scope_when_absent():
+    # 无显式 tier: review_plan 应自行 classify(scope) 推档 —— 这是 scope 化签名的
+    # 关键 (让视角选择能吃 diff_paths, 为将来按路径触发铺路)。
+    pack = CowboyPack()
+    high = pack.review_plan({"repo": "node", "diff_paths": ["chain/src/engine.rs"]})
+    assert len(high) == 6                       # chain/ = 高危路径
+    low = pack.review_plan({"repo": "node", "diff_paths": ["README.md"]})
+    assert len(low) == 1                        # 纯 .md = 低危
+
+
+def test_review_plan_prefers_explicit_tier_over_reclassify():
+    # scope 已带 tier 时直接用, 不再 classify (省重复; classify_detailed 走此路)。
+    pack = CowboyPack()
+    # 路径本会判 high, 但显式 tier=low 优先 → 只 1 个视角。
+    plan = pack.review_plan({"tier": "low", "diff_paths": ["chain/src/engine.rs"]})
+    assert len(plan) == 1
