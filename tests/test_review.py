@@ -1,4 +1,9 @@
-from marshal_core.review import aggregate_review, verify_findings
+from marshal_core.review import (
+    REFUTE_LENSES,
+    aggregate_review,
+    assign_refute_lenses,
+    verify_findings,
+)
 
 
 def _f(file, line, dim, sev, source, title="x"):
@@ -89,3 +94,31 @@ def test_verify_surviving_high_needs_human():
     items = [{"key": "k5", "severity": "high", "votes": _v(False, False, False)}]
     out = verify_findings(items)
     assert out["survived"] and out["verdict"] == "needs_human"
+
+
+def test_refute_lenses_are_distinct_and_domain_agnostic():
+    names = [x["name"] for x in REFUTE_LENSES]
+    assert len(names) == len(set(names)) >= 5      # 互异, 至少 5 类
+    assert all(x["prompt"] for x in REFUTE_LENSES)
+    # 普世红线: refute lens prompt 不得含项目专属名词 (换 pack 复用)。
+    blob = " ".join(x["prompt"] for x in REFUTE_LENSES).lower()
+    for token in ("cip", "pvm", "gas", "receipt", "escrow", "cowboy"):
+        assert token not in blob
+
+
+def test_assign_refute_lenses_prefers_distinct_then_round_robins():
+    k = len(REFUTE_LENSES)
+    # n<=目录: 全互异
+    got = assign_refute_lenses(3)
+    assert [x["name"] for x in got] == [x["name"] for x in REFUTE_LENSES[:3]]
+    assert len({x["name"] for x in got}) == 3
+    # n>目录: 铺满后轮转复用
+    got = assign_refute_lenses(k + 2)
+    assert len(got) == k + 2
+    assert {x["name"] for x in got} == {x["name"] for x in REFUTE_LENSES}  # 全铺到
+    assert got[k]["name"] == REFUTE_LENSES[0]["name"]                      # 轮转
+
+
+def test_assign_refute_lenses_nonpositive_is_empty():
+    assert assign_refute_lenses(0) == []
+    assert assign_refute_lenses(-1) == []
