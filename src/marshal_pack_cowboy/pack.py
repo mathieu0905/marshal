@@ -52,9 +52,33 @@ REVIEW_DIMENSIONS = [
     {"name": "correctness", "prompt": "找出这个改动会怎样产生错误结果或破坏现有行为。"},
     {"name": "spec", "prompt": "实现是否偏离它所引用 CIP 的真实意图?指出语义漂移。"},
     {"name": "cross-repo", "prompt": "这个改动是否破坏跨 repo 契约(编码/类型序列化字节兼容)?"},
-    {"name": "security", "prompt": "默认怀疑:有无越权、未校验输入、可被滥用的路径?"},
+    {"name": "security", "prompt": ("默认怀疑:越权、未校验输入、可滥用路径;安全判定"
+                                    "**勿信攻击者可控的 tx 字段**(chain_id/nonce/calldata);"
+                                    "有无重放/新鲜度缺失(nonce/domain-separation),或资源"
+                                    "无界(单笔可放大到停机/爆内存)?")},
     {"name": "econ", "prompt": "gas/费用/escrow 守恒是否被破坏?burn+tip==fee?escrow 非负?"},
     {"name": "determinism", "prompt": "PVM 确定性:有无非确定来源、绕过 int guard、黑名单 import?"},
+]
+
+# 路径条件触发的视角:命中 `when_paths`(子串匹配任一 diff 路径)即**并入** review_plan,
+# 不看 tier —— 补 tier-only 基集会漏的横切面(如 mid 档改到 receipt 组装却拿不到共识面)。
+# 纯附加、去重,绝不删基集视角(只增覆盖、不减)。当前 pack 只放两条真空白;availability
+# 暂折进 security prompt(缺乏干净的路径触发器),待触发器成熟再拆独立视角。
+PATH_REVIEW_DIMENSIONS = [
+    # 共识面(领域视角,Cowboy 专属):改动是否变更进入某共识哈希的字节 →
+    # state_root / receipt_root / logs_root / block digest?若是=可能静默分叉,需 flag-day。
+    # 触发子串刻意比分级器的 `_root` 更宽,兜住 receipt/digest/event 组装这类 mid 档改动。
+    {"name": "consensus-surface",
+     "prompt": ("这个改动是否变更进入**共识哈希**的字节(state_root/receipt_root/"
+                "logs_root/block digest)?含事件/结构化错误/extra_data 进 root。若是,"
+                "是否构成 flag-day、需协调上线?"),
+     "when_paths": ("receipt", "_root", "digest", "event", "logs", "extra_data")},
+    # 证据对抗(元视角,universal-candidate:第二个 pack 出现时可上提 core):PR 自带
+    # 测试是否 false-green?触发于改动碰测试文件时 —— 对新增/改动测试做心智 mutation。
+    {"name": "test-validity",
+     "prompt": ("假设本 PR 新增/改动的测试是 false-green:对被测代码做一次心智 mutation,"
+                "测试还会过吗?它是否只覆盖了漏洞的部分形态(留下未测的绕过向量)?"),
+     "when_paths": ("/tests/", "test_", "tests.rs", "_test.")},
 ]
 
 _ECON_INVARIANTS = [
@@ -710,7 +734,16 @@ class CowboyPack:
         """
         tier = scope.get("tier") or self.classify(scope)
         n = {"high": 6, "mid": 3, "low": 1}.get(tier, 3)
-        return REVIEW_DIMENSIONS[:n]
+        plan = [dict(d) for d in REVIEW_DIMENSIONS[:n]]     # tier 基集(有序前缀)
+        seen = {d["name"] for d in plan}
+        paths = scope.get("diff_paths", [])
+        for dim in PATH_REVIEW_DIMENSIONS:                  # 路径触发, 并入去重
+            if dim["name"] in seen:
+                continue
+            if any(sub in p for p in paths for sub in dim["when_paths"]):
+                plan.append({"name": dim["name"], "prompt": dim["prompt"]})
+                seen.add(dim["name"])
+        return plan
 
     def contracts_hit(self, scope: dict) -> list[str]:
         repo = scope.get("repo", "")

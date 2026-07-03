@@ -109,3 +109,50 @@ def test_review_plan_prefers_explicit_tier_over_reclassify():
     # 路径本会判 high, 但显式 tier=low 优先 → 只 1 个视角。
     plan = pack.review_plan({"tier": "low", "diff_paths": ["chain/src/engine.rs"]})
     assert len(plan) == 1
+
+
+def _names(plan):
+    return {d["name"] for d in plan}
+
+
+def test_consensus_surface_lens_fires_on_mid_tier_receipt_change():
+    # 补覆盖网洞: 改到 receipt 组装但未命中分级器高危信号 → mid 档基集无共识面,
+    # 路径触发把 consensus-surface 并进来 (否则静默分叉类改动没人问)。
+    pack = CowboyPack()
+    plan = pack.review_plan({"repo": "node",
+                             "diff_paths": ["storage/src/receipt_store.rs"]})
+    assert "consensus-surface" in _names(plan)
+
+
+def test_test_validity_lens_fires_when_tests_touched():
+    pack = CowboyPack()
+    plan = pack.review_plan({"repo": "node",
+                             "diff_paths": ["execution/src/foo.rs",
+                                            "execution/src/foo_test.rs"]})
+    assert "test-validity" in _names(plan)
+
+
+def test_path_lens_not_added_when_no_path_signal():
+    # 纯附加不误伤: 无触发子串时基集不变。
+    pack = CowboyPack()
+    plan = pack.review_plan({"repo": "node", "diff_paths": ["execution/src/gas.rs"]})
+    names = _names(plan)
+    assert "consensus-surface" not in names
+    assert "test-validity" not in names
+
+
+def test_path_lens_deduped_against_base_and_appended_once():
+    # `_root` 命中 → 分级 high (基集 6) + 路径 consensus-surface = 7, 不重复。
+    pack = CowboyPack()
+    plan = pack.review_plan({"repo": "node",
+                             "diff_paths": ["storage/src/state_root.rs"]})
+    names = [d["name"] for d in plan]
+    assert names.count("consensus-surface") == 1
+    assert len(plan) == 7                       # 6 基集 + 1 路径视角
+
+
+def test_base_tier_behavior_unchanged_without_path_signal():
+    # 回归: 无路径信号时, 高危路径仍恰好 6 视角 (PR1 行为保持)。
+    pack = CowboyPack()
+    plan = pack.review_plan({"repo": "node", "diff_paths": ["chain/src/engine.rs"]})
+    assert len(plan) == 6
