@@ -1,9 +1,16 @@
 # ③ 对抗式 review 编排
 
-## 视角数由 tier 决定(classify 已给 review_dimensions)
+## 视角 = tier 基集 ∪ 路径触发(classify 已给 review_dimensions,直接照单派)
+tier 定**基集**(有序前缀):
 - high: correctness, spec, cross-repo, security, econ, determinism(全 6)
 - mid: correctness, spec, cross-repo(前 3)
 - low: correctness(1)
+
+**路径触发视角**(命中 diff 路径子串即并入,不看 tier;补基集会漏的横切面):
+- `consensus-surface`:碰 receipt/`_root`/digest/event/logs/extra_data → 问"是否变更进入共识哈希的字节(state/receipt/logs_root、block digest)、是否 flag-day"。**专治 mid 档改到 receipt/事件组装却拿不到共识面**(否则静默分叉类改动没人问)。
+- `test-validity`:碰测试文件(`/tests/`、`test_`、`_test.`、`tests.rs`)→ 对 PR 自带测试做心智 mutation,查 false-green / 只覆盖部分形态。
+
+纯附加、去重,绝不删基集视角(只增覆盖不减)。availability/DoS 暂折进 `security` prompt(资源无界→单笔放大停机),待有干净路径触发器再拆独立视角。这些都是 pack 数据(`REVIEW_DIMENSIONS` + `PATH_REVIEW_DIMENSIONS`),core 只收 `review_dimensions` 名单——换 pack 即换视角集。
 
 ## 原则
 1. **对抗式而非背书式**:prompt 是"找出这个改动会怎样出错/违反哪条 CIP 不变量",默认怀疑。
