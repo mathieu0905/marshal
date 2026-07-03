@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
-from marshal_core.review import aggregate_review, verify_findings
+from marshal_core.review import aggregate_review, assign_refute_lenses, verify_findings
 from marshal_pack_cowboy.pack import CowboyPack
 
 _PACK = CowboyPack()
@@ -172,6 +172,11 @@ def cmd_review_quorum(a) -> int:
 def cmd_review_verify(a) -> int:
     # ③ 对抗式验证二段: 按 skeptic 投票裁决每条发现 (default-to-refute)。
     return _emit(verify_findings(json.loads(a.votes_json)))
+
+
+def cmd_refute_lenses(a) -> int:
+    # ③ 二段 skeptic 视角多样化: 给 N 个 skeptic 轮转分配互异 refute lens (领域无关)。
+    return _emit({"count": a.count, "lenses": assign_refute_lenses(a.count)})
 
 
 def cmd_spec_source(a) -> int:
@@ -365,6 +370,10 @@ def build_parser() -> argparse.ArgumentParser:
     rv = sub.add_parser("review-verify")
     rv.add_argument("--votes-json", dest="votes_json", required=True)
     rv.set_defaults(func=cmd_review_verify)
+
+    rl = sub.add_parser("refute-lenses")
+    rl.add_argument("--count", type=int, required=True)
+    rl.set_defaults(func=cmd_refute_lenses)
 
     ss = sub.add_parser("spec-source")
     ss.add_argument("--ref", required=True)

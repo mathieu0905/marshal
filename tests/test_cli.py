@@ -60,6 +60,19 @@ def test_review_quorum_escalates_high_and_drops_lone_low():
     assert len(out["dropped"]) == 1
 
 
+def test_refute_lenses_cmd_returns_distinct_lenses():
+    # PYTHONPATH 指向本 checkout 的 src, 使子进程优先 worktree 而非 editable-install
+    # 的主仓 (本地才需要; CI 从分支装包时该路径指向同一代码, 无害)。
+    src = os.path.join(os.path.dirname(os.path.dirname(__file__)), "src")
+    proc = _run(["refute-lenses", "--count", "3"], env={"PYTHONPATH": src})
+    assert proc.returncode == 0, proc.stderr
+    out = json.loads(proc.stdout)
+    assert out["count"] == 3
+    names = [x["name"] for x in out["lenses"]]
+    assert len(names) == 3 and len(set(names)) == 3
+    assert all(x["prompt"] for x in out["lenses"])
+
+
 def test_spec_source_resolves_cip():
     proc = _run(["spec-source", "--ref", "CIP-3"])
     assert proc.returncode == 0, proc.stderr

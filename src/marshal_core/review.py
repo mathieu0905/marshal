@@ -6,6 +6,41 @@ needs_human**(终审归人,即便只有单视角提出)。不含任何领域语�
 """
 _SEVERITY_RANK = {"low": 0, "mid": 1, "high": 2}
 
+# ③ 对抗式验证二段的 refute 视角目录 (机制, 领域无关)。
+# 一段用互异视角找碴; 二段的 skeptic 若都是同质 "default-refute", 会有共同盲区 ——
+# 给每个 skeptic 绑**不同的反驳 lens**, 用视角多样性抓冗余 skeptic 抓不到的误报,
+# 与一段的视角互异对称。经验上合法的 refute 九成落在这五类。prompt 刻意零领域名词
+# (普世, 任何 pack 复用) —— 别往这里塞项目专属措辞。
+REFUTE_LENSES = [
+    {"name": "reachability",
+     "prompt": ("默认 refute, 除非能构造出真正走到该路径的输入: 上游守卫/前置校验是否"
+                "已挡掉? 触发前提是否根本不成立?")},
+    {"name": "stale-basis",
+     "prompt": ("默认 refute: 该发现是否读了陈旧 checkout / 错的树 / 落后引用? 回被审"
+                "改动本体的版本一手核对, 所述符号/行为是否真如描述。")},
+    {"name": "intended-design",
+     "prompt": ("默认 refute: 这是否是有意的设计裁定 / 既定语义而非缺陷? 回权威规格或"
+                "设计记录核对, 别把有意取舍当漏洞。")},
+    {"name": "severity",
+     "prompt": ("默认 refute 其 severity: 即便路径成立, 影响是否被高估 (优雅失败 vs "
+                "halt、单条请求 vs 全局)? 给不出对应影响的证据就降级或 refute。")},
+    {"name": "already-guarded",
+     "prompt": ("默认 refute: 框架或别处机制是否已隐含保证 (生命周期重置、既有计数器、"
+                "原子性/回滚)? 回代码确认该不变量是否已成立。")},
+]
+
+
+def assign_refute_lenses(n: int) -> list[dict]:
+    """给 n 个 skeptic 轮转分配 refute 视角 (视角多样化 > n 个同质 skeptic)。
+
+    n<=目录长度: 取前 n 个互异 lens; 更大: 轮转复用 (仍尽量铺满目录再重复)。
+    返回 [{name, prompt}]; n<=0 → []。
+    """
+    if n <= 0:
+        return []
+    k = len(REFUTE_LENSES)
+    return [dict(REFUTE_LENSES[i % k]) for i in range(n)]
+
 
 def _key(f: dict) -> str:
     if f.get("key"):

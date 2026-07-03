@@ -31,11 +31,15 @@ tier 定**基集**(有序前缀):
    "$PY" -m marshal_core.cli review-quorum --findings-json '<findings>' [--quorum 2]
    ```
    → `{groups, needs_human, confirmed, dropped, review_verdict}`。规则:同 key(file:line:dimension)按**不同视角数**计票;达 quorum→confirmed;**任一高危→needs_human(终审归人,哪怕单视角)**;孤立低危→当噪声丢弃。
-3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `needs_human`),再派 N 个 skeptic subagent,prompt 为「**默认 refute,除非有确凿证据证明该发现为真**」,各返回 `{key, refuted:bool, reason}`。汇成投票过:
+3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `needs_human`),再派 N 个 skeptic subagent。**别派 N 个同质 skeptic**——同质=共同盲区;先取互异 refute 视角再逐个绑:
    ```
-   "$PY" -m marshal_core.cli review-verify --votes-json '[{"key":...,"severity":...,"votes":[{"refuted":true},...]}]'
+   "$PY" -m marshal_core.cli refute-lenses --count <N>
    ```
-   → `{survived, killed, unverified, verdict}`。规则:**仅严格多数 uphold 才存活**;平票/多数 refute → 杀(似是而非的误报被砍);无投票 → unverified(degraded,保留待人看)。
+   → `{count, lenses:[{name, prompt}]}`(reachability / stale-basis / intended-design / severity / already-guarded;N>5 轮转复用)。每个 skeptic 用**分到的那条 lens 的 prompt**,统一保持「**默认 refute,除非有确凿证据证明该发现为真**」的立场,各返回 `{key, refuted:bool, reason, lens}`(带 `lens` 便于回流归因)。汇成投票过:
+   ```
+   "$PY" -m marshal_core.cli review-verify --votes-json '[{"key":...,"severity":...,"votes":[{"refuted":true,"lens":"reachability"},...]}]'
+   ```
+   → `{survived, killed, unverified, verdict}`。规则:**仅严格多数 uphold 才存活**;平票/多数 refute → 杀(似是而非的误报被砍);无投票 → unverified(degraded,保留待人看)。计票不看 lens(`review-verify` 仍纯数 refuted/uphold);lens 只为多样化提问 + 回流归因。
 4. 最终汇入流 A 第 5 步:用 `review-verify` 的 `verdict` 与 `survived`(`killed` 不再上报,但**误报回流改进对应视角 prompt**,误报≠逃逸不进棘轮)。
 5. 也可叠加 `/code-review ultra`(云端多 agent)作为额外一路视角喂进 quorum;它需人触发/计费,**skill 自己拉不起**——拉不到就少一路并**显式标 degraded**,绝不假装跑过。
 - 如存活的高 severity 发现落在**已合并代码**,提议转流 C(棘轮)。
