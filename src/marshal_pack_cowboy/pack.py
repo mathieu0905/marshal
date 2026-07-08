@@ -137,11 +137,13 @@ CONTRACTS = [
                             "node": ["runner/src/types"]},
              verify_invariants=["contract.runner_types_serde"]),
     # CIP-9 RAS: 共享 crate cowboy-ras 的元数据/存储键线格式. 权威源住 node/ras/
-    # (package cowboy-ras, 由 node/runner/cbfs 共依); cbfs 自带一份 cowboy-ras/.
+    # (package cowboy-ras, node 内 workspace 成员, 由 node/runner/cbfs 共依). 独立
+    # cowboy-ras/ repo 已下架 (2026-07); cbfs 不再 vendored RAS 类型, 改依赖 node crate,
+    # 故 cbfs 触发只留 manifest/src (原 "cowboy-ras/src" 已无对应路径, 移除).
     # 任一侧动 RAS 类型/存储键 → 必须重跑 node 侧锁定金标准哈希向量, 否则跨 repo
     # 元数据线格式漂移 (CIP-9 §存储布局).
     Contract(id="cip9-ras", repos=["cbfs", "node"],
-             trigger_paths={"cbfs": ["cowboy-ras/src", "manifest/src"],
+             trigger_paths={"cbfs": ["manifest/src"],
                             "node": ["ras/src/types", "ras/src/storage_keys",
                                      "ras/src/test_vectors"]},
              verify_invariants=["contract.ras_canonical_vectors"]),
