@@ -164,3 +164,72 @@ def test_ratchet_lenses_empty_and_unclassified():
     assert ratchet_lenses([]) == []
     got = ratchet_lenses([_e("", "d")])
     assert got[0]["klass"] == "unclassified"
+
+
+# ---- ④ recall-leak fix: proximity merge + single-source MID survives as advisory ----
+
+def test_same_bug_different_lines_and_dimensions_merges_to_quorum():
+    # two lenses flag the SAME conservation bug at nearby lines under different
+    # dimensions — must merge (support=2 -> confirmed), not split into 2 weak singletons.
+    findings = [
+        _f("transaction.rs", 552, "correctness", "mid", "lens-correctness"),
+        _f("transaction.rs", 555, "econ", "mid", "lens-econ"),
+    ]
+    out = aggregate_review(findings, quorum=2, proximity=20)
+    assert len(out["groups"]) == 1, "nearby findings must cluster into one group"
+    g = out["groups"][0]
+    assert g["support"] == 2 and g["status"] == "confirmed"
+    assert set(g["dimensions"]) == {"correctness", "econ"}
+
+
+def test_single_source_mid_survives_as_advisory_not_dropped():
+    # the recall-leak core: a lone MID finding must be SURFACED (advisory), not
+    # discarded as noise the way a lone LOW is.
+    findings = [_f("x.rs", 10, "correctness", "mid", "lens-correctness")]
+    out = aggregate_review(findings, quorum=2)
+    g = out["groups"][0]
+    assert g["status"] == "advisory"
+    assert out["advisory"] and not out["dropped"]
+    assert out["review_verdict"] == "pass"  # advisory does not block
+
+
+def test_single_source_low_still_dropped_as_noise():
+    findings = [_f("y.rs", 3, "style", "low", "lens-a")]
+    out = aggregate_review(findings, quorum=2)
+    assert out["groups"][0]["status"] == "weak"
+    assert out["dropped"] and not out["advisory"]
+
+
+def test_findings_beyond_proximity_stay_separate():
+    findings = [
+        _f("z.rs", 10, "correctness", "mid", "lens-a"),
+        _f("z.rs", 200, "correctness", "mid", "lens-b"),  # far apart -> distinct bugs
+    ]
+    out = aggregate_review(findings, quorum=2, proximity=20)
+    assert len(out["groups"]) == 2
+    assert all(g["status"] == "advisory" for g in out["groups"])  # each lone MID surfaced
+
+
+def test_chained_cluster_reaches_quorum_across_a_code_block():
+    # the real COW-2287 shape: lenses flag the deferred-fee block at 510/522/540/552;
+    # consecutive gaps (12/18/12) all <= proximity -> transitive chain into one group.
+    findings = [
+        _f("transaction.rs", 510, "determinism", "high", "lens-det"),
+        _f("transaction.rs", 522, "security", "high", "lens-sec"),
+        _f("transaction.rs", 540, "spec", "high", "lens-spec"),
+        _f("transaction.rs", 552, "correctness", "high", "lens-corr"),
+    ]
+    out = aggregate_review(findings, quorum=2, proximity=20)
+    assert len(out["groups"]) == 1
+    assert out["groups"][0]["support"] == 4
+    assert out["groups"][0]["status"] == "needs_human"  # high
+
+
+def test_proximity_gap_larger_than_window_does_not_chain():
+    # a 30-line gap with no bridging finding stays split (guards over-merge)
+    findings = [
+        _f("t.rs", 510, "determinism", "mid", "lens-det"),
+        _f("t.rs", 540, "spec", "mid", "lens-spec"),
+    ]
+    out = aggregate_review(findings, quorum=2, proximity=20)
+    assert len(out["groups"]) == 2  # 30 > 20, distinct

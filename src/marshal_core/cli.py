@@ -168,7 +168,8 @@ def _normalize_zizmor(stdout: str):
 
 def cmd_review_quorum(a) -> int:
     # ③ 把多视角 review 发现聚合成 quorum 结论 (去重/计票/高危升 needs_human)。
-    return _emit(aggregate_review(json.loads(a.findings_json), quorum=a.quorum))
+    return _emit(aggregate_review(json.loads(a.findings_json), quorum=a.quorum,
+                                  proximity=a.proximity))
 
 
 def cmd_review_verify(a) -> int:
@@ -381,6 +382,8 @@ def build_parser() -> argparse.ArgumentParser:
     rq = sub.add_parser("review-quorum")
     rq.add_argument("--findings-json", dest="findings_json", required=True)
     rq.add_argument("--quorum", type=int, default=2)
+    rq.add_argument("--proximity", type=int, default=10,
+                    help="merge same-file findings within N lines (0 = exact-line only)")
     rq.set_defaults(func=cmd_review_quorum)
 
     rv = sub.add_parser("review-verify")

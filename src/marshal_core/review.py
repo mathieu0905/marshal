@@ -98,30 +98,79 @@ def assign_refute_lenses(n: int) -> list[dict]:
     return [dict(REFUTE_LENSES[i % k]) for i in range(n)]
 
 
-def _key(f: dict) -> str:
-    if f.get("key"):
-        return f["key"]
-    return f"{f.get('file', '?')}:{f.get('line', '?')}:{f.get('dimension', '?')}"
+def _line_of(f: dict) -> int:
+    try:
+        return int(f.get("line") or 0)
+    except (TypeError, ValueError):
+        return 0
 
 
-def aggregate_review(findings: list[dict], quorum: int = 2) -> dict:
+def _cluster_keys(findings: list[dict], proximity: int) -> list[str]:
+    """给每条 finding 分配一个组键 (与 findings 等长, 位置对应)。
+
+    显式 `key` 优先; 否则按 **file + 行邻近** 聚类: 同文件内按行排序, 相邻发现的行距
+    ≤ proximity 就链进同一组。这样"同一 bug 被不同视角报在略不同行/不同 dimension"会
+    **合并** (support 累加 → 能达 quorum), 而不是裂成一堆各自不达标的孤儿 —— 这正是旧
+    `file:line:dimension` 精确键漏检的根因 (confirmed 恒 0)。dimension **不进键** (它是
+    组的属性, 不是身份): 同一处的 correctness 与 econ 视角视为对同一位置的两票。
+    """
+    from collections import defaultdict
+    keys: list = [None] * len(findings)
+    byfile: dict[str, list[int]] = defaultdict(list)
+    for i, f in enumerate(findings):
+        if f.get("key"):
+            keys[i] = f["key"]
+        else:
+            byfile[f.get("file", "?")].append(i)
+    for file, idxs in byfile.items():
+        idxs.sort(key=lambda i: _line_of(findings[i]))
+        cluster: list[int] = []
+        lo = anchor = 0
+        for i in idxs:
+            ln = _line_of(findings[i])
+            if cluster and ln - anchor > proximity:
+                k = f"{file}:{lo}~{_line_of(findings[cluster[-1]])}"
+                for j in cluster:
+                    keys[j] = k
+                cluster = []
+            if not cluster:
+                lo = ln
+            cluster.append(i)
+            anchor = ln
+        if cluster:
+            k = f"{file}:{lo}~{_line_of(findings[cluster[-1]])}"
+            for j in cluster:
+                keys[j] = k
+    return keys
+
+
+def aggregate_review(findings: list[dict], quorum: int = 2,
+                     proximity: int = 10) -> dict:
     """把多视角发现聚合成 review 结论。
 
     每条 finding: {key? | file,line,dimension, severity(low|mid|high), source, title}.
-    同 key 的归一组;support = 不同 `source` 数(同视角重复不加分)。
-    组状态: 含高危 → needs_human;否则 support>=quorum → confirmed;否则 weak(丢弃)。
-    review_verdict: 有任一高危组 → needs_human;否则 pass(confirmed 的中/低危为建议态)。
+    按 **file+行邻近** 聚类 (见 `_cluster_keys`; 显式 `key` 优先);support = 不同
+    `source` 数 (同视角重复不加分)。组状态:
+      - 含高危 → needs_human
+      - support>=quorum → confirmed
+      - 单源 **中危** → **advisory** (浮出为建议, **不丢**; 修复旧行为把微妙真阳性当噪声杀)
+      - 单源 **低危** → weak (噪声地板, 丢弃)
+    review_verdict: 有任一高危组 → needs_human;否则 pass (confirmed/advisory 为建议态,
+    不阻断)。advisory 是给人看的单视角观察, 不进对抗验证 gauntlet (那会再把它杀掉)。
     """
+    key_for = _cluster_keys(findings, proximity)
     groups: dict[str, dict] = {}
-    for f in findings:
-        k = _key(f)
+    for i, f in enumerate(findings):
+        k = key_for[i]
         sev = f.get("severity", "low")
         g = groups.setdefault(k, {"key": k, "severity": "low", "sources": set(),
-                                  "titles": [], "count": 0})
+                                  "dimensions": set(), "titles": [], "count": 0})
         if _SEVERITY_RANK.get(sev, 0) > _SEVERITY_RANK[g["severity"]]:
             g["severity"] = sev
         if f.get("source"):
             g["sources"].add(f["source"])
+        if f.get("dimension"):
+            g["dimensions"].add(f["dimension"])
         g["count"] += 1
         if f.get("title"):
             g["titles"].append(f["title"])
@@ -133,20 +182,25 @@ def aggregate_review(findings: list[dict], quorum: int = 2) -> dict:
             status = "needs_human"
         elif support >= quorum:
             status = "confirmed"
+        elif g["severity"] == "mid":
+            status = "advisory"
         else:
             status = "weak"
         out_groups.append({"key": g["key"], "severity": g["severity"],
                            "support": support, "sources": sorted(g["sources"]),
+                           "dimensions": sorted(g["dimensions"]),
                            "titles": g["titles"], "status": status})
 
     # 稳定排序: 高危在前, 再按 support 降序
     out_groups.sort(key=lambda x: (-_SEVERITY_RANK[x["severity"]], -x["support"]))
     needs_human = [g for g in out_groups if g["status"] == "needs_human"]
     confirmed = [g for g in out_groups if g["status"] == "confirmed"]
+    advisory = [g for g in out_groups if g["status"] == "advisory"]
     dropped = [g for g in out_groups if g["status"] == "weak"]
     verdict = "needs_human" if needs_human else "pass"
     return {"groups": out_groups, "needs_human": needs_human,
-            "confirmed": confirmed, "dropped": dropped, "review_verdict": verdict}
+            "confirmed": confirmed, "advisory": advisory, "dropped": dropped,
+            "review_verdict": verdict}
 
 
 def verify_findings(items: list[dict]) -> dict:

@@ -90,3 +90,23 @@ regular 6-lens 单发 diff-only 抓到 mint **9 次**,其中 **8 次纯正推理
 1. **P0(便宜,~50 行 review.py):修 ④**。语义去重(按文件邻近+claim 重叠合并,非行号精确)+ 单源 MID 带具体 reason 的不丢弃(降级到「建议」层而非 /dev/null)。**大概率零 token 成本就找回用户丢失的大部分发现。**
 2. **P1:deep scout→prove 只给高危 PR**(聚焦 lens,~1M)——买**严谨度**(触发/自我-refute),非原始召回。
 3. **P2:若仍要测 ① 的召回增量**,需 leak-proof 合成接缝靶(两个真实靶都 diff-可推理 + 活树污染)。
+
+---
+
+# P0 落地:修 ④(review.py `aggregate_review`)
+
+**改动**(surgical,~60 行,ruff clean,23 review 测全绿,全套件零回归):
+1. **proximity 聚类替代 `file:line:dimension` 精确键**:同文件内相邻发现(行距 ≤ proximity,默认 10)链进一组,dimension 不进键 → 同一 bug 被不同视角报在略不同行/不同 dimension 时**能合并、能达 quorum**(旧行为 confirmed 恒 0)。
+2. **单源中危 → advisory**(浮出为建议,不丢);单源低危仍当噪声丢。
+3. 输出加 `advisory` 桶 + 组 `dimensions` 集;CLI `review-quorum --proximity`;orchestration 文档要求报告列出 advisory 且不送 advisory 进对抗验证 gauntlet。
+
+**实证(真实 COW-2287 的 26 条 regular 发现)**:
+
+| ④ | needs_human | confirmed | advisory | **dropped** |
+|---|---|---|---|---|
+| 原始(精确键+无 advisory) | 12 | **0** | — | **14**(含真实 MID bug) |
+| 新(proximity=10 + advisory) | 7 | **1** | 2 | **2**(纯 low 噪声) |
+
+→ **12 条被丢的发现(含真实守恒/错误处理 MID bug)现在浮出**;多视角一致首次测得(confirmed 0→1)。over-merge 比 under-merge 更糟,默认 10 偏保守 + 组内保留全 titles 故不丢信息。
+
+**结论**:用户抱怨的「漏很多」在这批数据上主要由 ④ 造成,已用零 token 成本的 core 改动堵上。deep scout→prove(①)保留给高危 PR 买严谨度。
