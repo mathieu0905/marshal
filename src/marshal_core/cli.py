@@ -182,6 +182,29 @@ def cmd_refute_lenses(a) -> int:
     return _emit({"count": a.count, "lenses": assign_refute_lenses(a.count)})
 
 
+def cmd_review_lenses(a) -> int:
+    # ③ 发出聚焦 review 视角集 (name+prompt): pack review_plan (tier 基集 + 路径触发) +
+    # security-hazard 视角 + 可选 ratchet 探针 (--ratchet-top N>0 = deep 模式)。让 review
+    # 步确定性拿到 prompt, 不靠 skill 脑补;deep 据此 scout→prove。
+    scope = {"repo": a.repo, "diff_paths": a.paths, "labels": a.labels or []}
+    base = _PACK.review_plan(scope)
+    hazards = [{"name": f"security-hazard:{h['id']}", "prompt": h["prompt"]}
+               for h in _PACK.security_hazards(scope)]
+    ratchet = []
+    if a.ratchet_top and a.ratchet_top > 0:
+        s = _session()
+        try:
+            rows = [{"root_cause_class": e.root_cause_class,
+                     "description": e.description, "change_ref": e.change_ref}
+                    for e in Store(s).list_escapes(domain_pack=a.ratchet_domain_pack)]
+        finally:
+            s.close()
+        ratchet = [{"name": lp["name"], "prompt": lp["prompt"]}
+                   for lp in ratchet_lenses(rows, max_lenses=a.ratchet_top)]
+    return _emit({"base": base, "hazards": hazards, "ratchet": ratchet,
+                  "all": base + hazards + ratchet})
+
+
 def cmd_ratchet_lenses(a) -> int:
     # ③ (deep) 把逃逸历史投成定向 review 视角: 每个复发根因类 = 一条"是否重新引入"探针。
     s = _session()
@@ -393,6 +416,15 @@ def build_parser() -> argparse.ArgumentParser:
     rl = sub.add_parser("refute-lenses")
     rl.add_argument("--count", type=int, required=True)
     rl.set_defaults(func=cmd_refute_lenses)
+
+    rvl = sub.add_parser("review-lenses")
+    rvl.add_argument("--repo", required=True)
+    rvl.add_argument("--paths", nargs="*", default=[])
+    rvl.add_argument("--labels", nargs="*", default=[])
+    rvl.add_argument("--ratchet-top", dest="ratchet_top", type=int, default=0,
+                     help="append N ratchet probes (deep mode); 0 = regular (base only)")
+    rvl.add_argument("--ratchet-domain-pack", dest="ratchet_domain_pack", default=None)
+    rvl.set_defaults(func=cmd_review_lenses)
 
     rtl = sub.add_parser("ratchet-lenses")
     rtl.add_argument("--domain-pack", dest="domain_pack", default=None,
