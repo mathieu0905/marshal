@@ -55,7 +55,7 @@ class Store:
     def list_escapes(self, domain_pack: str | None = None) -> list[EscapeRegistry]:
         """全部逃逸 (③ ratchet-lenses 的彈藥源); 可按 domain_pack 过滤。"""
         stmt = select(EscapeRegistry)
-        if domain_pack:
+        if domain_pack is not None:   # '' 是"筛空名 pack", 非"不筛" (后者传 None)
             stmt = stmt.where(EscapeRegistry.domain_pack == domain_pack)
         return list(self.s.scalars(stmt))
 

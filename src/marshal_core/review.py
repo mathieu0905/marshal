@@ -87,6 +87,14 @@ def ratchet_lenses(escapes: list[dict], max_lenses: int = 8,
             f"边界/授权/确定性破口)。命中就产出具体触发路径; 明确不适用就说明为何。")
         lenses.append({"name": f"ratchet:{_slug(b['klass'])}", "prompt": prompt,
                        "klass": b["klass"], "weight": b["count"]})
+    # 不同类可 slug 成同名 (如 'state/consensus' 与 'state-consensus') → 唯一化,
+    # 否则按 name 键的下游会撞/覆盖。
+    seen: dict[str, int] = {}
+    for lp in lenses:
+        n = lp["name"]
+        seen[n] = seen.get(n, 0) + 1
+        if seen[n] > 1:
+            lp["name"] = f"{n}-{seen[n]}"
     return lenses
 
 
@@ -103,10 +111,16 @@ def assign_refute_lenses(n: int) -> list[dict]:
 
 
 def _line_of(f: dict) -> int:
-    try:
-        return int(f.get("line") or 0)
-    except (TypeError, ValueError):
+    v = f.get("line")
+    if v is None:
         return 0
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        try:                       # '5.9' 和 5.9 一致 → 5 (别一个截断一个归 0)
+            return int(float(v))
+        except (TypeError, ValueError):
+            return 0
 
 
 def _has_loc(f: dict) -> bool:

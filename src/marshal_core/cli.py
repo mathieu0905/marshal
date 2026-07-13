@@ -201,8 +201,17 @@ def cmd_review_lenses(a) -> int:
             s.close()
         ratchet = [{"name": lp["name"], "prompt": lp["prompt"]}
                    for lp in ratchet_lenses(rows, max_lenses=a.ratchet_top)]
-    return _emit({"base": base, "hazards": hazards, "ratchet": ratchet,
-                  "all": base + hazards + ratchet})
+    out = {"base": base, "hazards": hazards, "ratchet": ratchet,
+           "all": base + hazards + ratchet}
+    # 降级不谎报: deep 请求了 ratchet 但拿到 0 探针 (空 escape DB / 错 domain_pack) →
+    # 显式标 degraded, 别让调用者以为 ratchet 覆盖跑过。
+    if a.ratchet_top and a.ratchet_top > 0 and not ratchet:
+        out["degraded"] = ("ratchet requested (--ratchet-top %d) but 0 probes produced "
+                           "(empty escape DB / domain_pack) — ratchet coverage DEGRADED"
+                           % a.ratchet_top)
+    if not a.paths:
+        out["paths_note"] = "no --paths: only tier base lenses (no path-triggered views)"
+    return _emit(out)
 
 
 def cmd_ratchet_lenses(a) -> int:

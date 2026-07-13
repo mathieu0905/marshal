@@ -298,3 +298,22 @@ def test_negative_proximity_and_max_lenses_are_clamped():
     assert isinstance(out["groups"], list)  # no crash; behaves like proximity=0
     assert ratchet_lenses([_e("x"), _e("y")], max_lenses=-1) == []
     assert ratchet_lenses([_e("x")], samples_per_class=-1)[0]  # no crash
+
+
+# ---- self-audit LOW fixes (a/b/c/d) ----
+
+def test_line_of_handles_float_and_numeric_string_consistently():
+    from marshal_core.review import _line_of
+    assert _line_of({"line": 5.9}) == 5
+    assert _line_of({"line": "5.9"}) == 5      # was ValueError->0 (inconsistent)
+    assert _line_of({"line": "12"}) == 12
+    assert _line_of({"line": "abc"}) == 0
+    assert _line_of({}) == 0
+
+
+def test_ratchet_lens_names_are_unique_under_slug_collision():
+    # two distinct classes that slug to the same string must get distinct names
+    escs = [_e("state/consensus", "a"), _e("state-consensus", "b")]
+    got = ratchet_lenses(escs, max_lenses=8)
+    names = [lp["name"] for lp in got]
+    assert len(names) == len(set(names)), f"duplicate lens names: {names}"
