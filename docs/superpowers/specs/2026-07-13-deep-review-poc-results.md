@@ -58,3 +58,35 @@ regular 产 **12 条 raw**(含重叠、一条 `_=>None` 误升 HIGH、无自我 
 1. **换硬靶证召回**:选一个 bug 藏在 diff×未改码接缝、且历史上 regular/单发漏过的 PR(候选:COW-2497 委员会 sizing 那类逻辑洞,或 pay-then-fail 守恒洞),回放证 deep>regular 的召回。← 推荐
 2. **全量 deep 跑 #936**(~4.1M):只会确认"更多 lens=更多发现",不证召回论题,性价比低。
 3. **产品化 deep 默认聚焦集**:`/marshal deep` 默认 = 棘轮 top-N + 风险相关 lens(~0.8–1.5M),非全扇出。
+
+---
+
+# 硬靶实验(COW-2287)+ 诊断颠覆
+
+## 靶:node 38dbc550(引入 COW-2287 deferred-fee 守恒 mint 的真实 feature PR)
+
+Ground truth = deferred 路径 `block_burn += deferred_fees.burn`(全额)vs 上方 capped 扣款 `from_actor=min(fee,balance)` → underfund 时凭空 mint。棘轮 DB 里 COW-2287 那条 escape **已排除**(spoiler-filter),让 deep 不能靠剧透取胜。
+
+## 结果:regular 单发轻松抓到(又一次)
+
+regular 6-lens 单发 diff-only 抓到 mint **9 次**,其中 **8 次纯正推理**(仅 1 条 spec 泄漏——grep 到活树里的修复 `deferred_debit_split`)。共 26 条发现(12 HIGH)。
+
+**靶又选错了**:COW-2287 的 capped 扣款与全额烧**同在一个 diff hunk**(相距 28 行),不是真「diff×未改码」接缝 → 强模型单发可直接推理出。**方法论坑**:历史 bug 的修复在活树里,agent 有工具权可 grep 到 = 召回测试被污染。→ 未跑 deep(省 ~1M;污染靶跑了也无意义)。
+
+## 诊断颠覆:漏检根因在 ④(现有二段),不是单发弱
+
+把 regular 的 26 条发现喂真 marshal `aggregate_review(quorum=2)`:
+
+| 状态 | 数 | 说明 |
+|---|---|---|
+| needs_human(HIGH) | 12 | 靠 `high→needs_human` 逃生口 |
+| **confirmed(≥2 lens)** | **0** | **脆弱的 `file:line:dimension` 精确键:同一 bug 报在 552/555/540 不同行 → 永不合并 → 无一达 quorum** |
+| **weak → 丢弃** | **14** | 单源非高危,当噪声丢,**含真实 MID bug**(pay-then-fail 吞错 / entitlement 超额扣 / 供应膨胀另一角度) |
+
+**结论**:用户经历的「漏很多」大概率不是单发弱(regular 几乎不漏),而是**现有 quorum/refute 二段把微妙真阳性杀了**:(1) 行号精确键让 confirmed 恒 0;(2) 单源非高危一律丢。这是零 token 成本、~50 行 review.py 就能修的高杠杆点,优先级高于昂贵的 deep scout→prove。
+
+## 重新定向的优先级
+
+1. **P0(便宜,~50 行 review.py):修 ④**。语义去重(按文件邻近+claim 重叠合并,非行号精确)+ 单源 MID 带具体 reason 的不丢弃(降级到「建议」层而非 /dev/null)。**大概率零 token 成本就找回用户丢失的大部分发现。**
+2. **P1:deep scout→prove 只给高危 PR**(聚焦 lens,~1M)——买**严谨度**(触发/自我-refute),非原始召回。
+3. **P2:若仍要测 ① 的召回增量**,需 leak-proof 合成接缝靶(两个真实靶都 diff-可推理 + 活树污染)。
