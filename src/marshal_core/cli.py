@@ -13,7 +13,9 @@ from sqlalchemy.orm import sessionmaker
 
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
-from marshal_core.review import aggregate_review, assign_refute_lenses, verify_findings
+from marshal_core.review import (
+    aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
+)
 from marshal_pack_cowboy.pack import CowboyPack
 
 _PACK = CowboyPack()
@@ -177,6 +179,20 @@ def cmd_review_verify(a) -> int:
 def cmd_refute_lenses(a) -> int:
     # ③ 二段 skeptic 视角多样化: 给 N 个 skeptic 轮转分配互异 refute lens (领域无关)。
     return _emit({"count": a.count, "lenses": assign_refute_lenses(a.count)})
+
+
+def cmd_ratchet_lenses(a) -> int:
+    # ③ (deep) 把逃逸历史投成定向 review 视角: 每个复发根因类 = 一条"是否重新引入"探针。
+    s = _session()
+    try:
+        escs = Store(s).list_escapes(domain_pack=a.domain_pack)
+        rows = [{"root_cause_class": e.root_cause_class, "description": e.description,
+                 "change_ref": e.change_ref} for e in escs]
+        lenses = ratchet_lenses(rows, max_lenses=a.max_lenses,
+                                samples_per_class=a.samples)
+        return _emit({"count": len(lenses), "escapes": len(rows), "lenses": lenses})
+    finally:
+        s.close()
 
 
 def cmd_spec_source(a) -> int:
@@ -374,6 +390,14 @@ def build_parser() -> argparse.ArgumentParser:
     rl = sub.add_parser("refute-lenses")
     rl.add_argument("--count", type=int, required=True)
     rl.set_defaults(func=cmd_refute_lenses)
+
+    rtl = sub.add_parser("ratchet-lenses")
+    rtl.add_argument("--domain-pack", dest="domain_pack", default=None,
+                     help="filter escapes by domain_pack (default: all)")
+    rtl.add_argument("--max-lenses", dest="max_lenses", type=int, default=8)
+    rtl.add_argument("--samples", type=int, default=3,
+                     help="precedent descriptions embedded per lens")
+    rtl.set_defaults(func=cmd_ratchet_lenses)
 
     ss = sub.add_parser("spec-source")
     ss.add_argument("--ref", required=True)

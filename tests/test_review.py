@@ -2,6 +2,7 @@ from marshal_core.review import (
     REFUTE_LENSES,
     aggregate_review,
     assign_refute_lenses,
+    ratchet_lenses,
     verify_findings,
 )
 
@@ -122,3 +123,44 @@ def test_assign_refute_lenses_prefers_distinct_then_round_robins():
 def test_assign_refute_lenses_nonpositive_is_empty():
     assert assign_refute_lenses(0) == []
     assert assign_refute_lenses(-1) == []
+
+
+def _e(klass, desc="", ref=None):
+    return {"root_cause_class": klass, "description": desc, "change_ref": ref}
+
+
+def test_ratchet_lenses_rank_by_frequency_and_cap():
+    escs = ([_e("state-consensus", f"d{i}") for i in range(5)]
+            + [_e("econ-conservation", f"e{i}") for i in range(2)]
+            + [_e("determinism-gap", "z")])
+    got = ratchet_lenses(escs, max_lenses=2)
+    assert len(got) == 2  # capped
+    # most frequent first
+    assert got[0]["klass"] == "state-consensus" and got[0]["weight"] == 5
+    assert got[1]["klass"] == "econ-conservation" and got[1]["weight"] == 2
+    assert got[0]["name"] == "ratchet:state-consensus"
+
+
+def test_ratchet_lenses_normalizes_descriptive_class_to_bucket():
+    # long descriptive one-offs collapse on the ':' prefix
+    escs = [_e("confidentiality-break: negative property ..."),
+            _e("confidentiality-break: another variant ...")]
+    got = ratchet_lenses(escs, max_lenses=8)
+    assert len(got) == 1
+    assert got[0]["klass"] == "confidentiality-break"
+    assert got[0]["weight"] == 2
+
+
+def test_ratchet_lenses_embeds_precedent_samples_capped():
+    escs = [_e("econ-conservation", f"root-cause-{i}") for i in range(5)]
+    got = ratchet_lenses(escs, max_lenses=8, samples_per_class=2)
+    prompt = got[0]["prompt"]
+    assert "root-cause-0" in prompt and "root-cause-1" in prompt
+    assert "root-cause-2" not in prompt  # capped at samples_per_class
+    assert "重新引入" in prompt  # adversarial "reintroduce?" framing
+
+
+def test_ratchet_lenses_empty_and_unclassified():
+    assert ratchet_lenses([]) == []
+    got = ratchet_lenses([_e("", "d")])
+    assert got[0]["klass"] == "unclassified"

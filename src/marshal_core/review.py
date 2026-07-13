@@ -30,6 +30,62 @@ REFUTE_LENSES = [
 ]
 
 
+def _class_key(root_cause_class: str) -> str:
+    """把 root_cause_class 归一成桶键: 取首个 ':' 前的标签 (长描述型 one-off 折进类)。
+
+    'confidentiality-break: negative...' -> 'confidentiality-break'
+    'state-consensus' -> 'state-consensus'
+    空串 -> 'unclassified'。
+    """
+    head = (root_cause_class or "").split(":", 1)[0].strip()
+    return head or "unclassified"
+
+
+def _slug(s: str) -> str:
+    out = []
+    for ch in s.lower():
+        out.append(ch if ch.isalnum() else "-")
+    return "-".join(x for x in "".join(out).split("-") if x) or "x"
+
+
+def ratchet_lenses(escapes: list[dict], max_lenses: int = 8,
+                   samples_per_class: int = 3) -> list[dict]:
+    """③ 把逃逸历史 (escape_registry) 投成定向 review 视角 (机制, 领域无关)。
+
+    每个 escape: {root_cause_class, description?, change_ref?}. 按归一类聚类, 按频次
+    (该类咬过几次) 降序取 top max_lenses —— 复发多的类优先当探针。每条视角的 prompt
+    是"本次改动是否**重新引入**该类逃逸", 并夹带至多 samples_per_class 条历史根因描述
+    当**先例证据**(prove agent 据此逐条核对)。prompt 骨架零领域名词 (普世, 任何 pack
+    复用) —— 具体性来自 DB 行, 不往骨架塞项目专属措辞。与 REFUTE_LENSES 对称。
+
+    返回 [{name, prompt, klass, weight}]; 空输入 -> []。
+    """
+    if not escapes:
+        return []
+    buckets: dict[str, dict] = {}
+    for e in escapes:
+        k = _class_key(e.get("root_cause_class", ""))
+        b = buckets.setdefault(k, {"klass": k, "count": 0, "samples": []})
+        b["count"] += 1
+        desc = (e.get("description") or "").strip()
+        if desc and desc not in b["samples"]:
+            b["samples"].append(desc)
+    ranked = sorted(buckets.values(), key=lambda b: (-b["count"], b["klass"]))
+    lenses = []
+    for b in ranked[:max_lenses]:
+        samples = b["samples"][:samples_per_class]
+        evidence = ("\n".join(f"  - {s}" for s in samples)
+                    if samples else "  (无成文描述, 仅类别)")
+        prompt = (
+            f"默认怀疑: 本次改动是否**重新引入** `{b['klass']}` 类逃逸? "
+            f"该类历史上咬过 {b['count']} 次, 先例根因:\n{evidence}\n"
+            f"回被审改动的代码, 逐条核对上述根因模式是否在此复现 (相同的守恒/归属/"
+            f"边界/授权/确定性破口)。命中就产出具体触发路径; 明确不适用就说明为何。")
+        lenses.append({"name": f"ratchet:{_slug(b['klass'])}", "prompt": prompt,
+                       "klass": b["klass"], "weight": b["count"]})
+    return lenses
+
+
 def assign_refute_lenses(n: int) -> list[dict]:
     """给 n 个 skeptic 轮转分配 refute 视角 (视角多样化 > n 个同质 skeptic)。
 
