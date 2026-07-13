@@ -62,6 +62,10 @@ def ratchet_lenses(escapes: list[dict], max_lenses: int = 8,
     """
     if not escapes:
         return []
+    max_lenses = max(0, max_lenses)          # 负值不做反向切片
+    samples_per_class = max(0, samples_per_class)
+    if max_lenses == 0:
+        return []
     buckets: dict[str, dict] = {}
     for e in escapes:
         k = _class_key(e.get("root_cause_class", ""))
@@ -105,40 +109,50 @@ def _line_of(f: dict) -> int:
         return 0
 
 
+def _has_loc(f: dict) -> bool:
+    """finding 是否带真实位置 (file + line)。无位置的不参与邻近聚类 (否则一堆
+    location-unknown 会挤进同一 `?`/0 桶假造 quorum)。"""
+    return (f.get("file") not in (None, "", "?")
+            and f.get("line") not in (None, ""))
+
+
 def _cluster_keys(findings: list[dict], proximity: int) -> list[str]:
     """给每条 finding 分配一个组键 (与 findings 等长, 位置对应)。
 
-    显式 `key` 优先; 否则按 **file + 行邻近** 聚类: 同文件内按行排序, 相邻发现的行距
-    ≤ proximity 就链进同一组。这样"同一 bug 被不同视角报在略不同行/不同 dimension"会
-    **合并** (support 累加 → 能达 quorum), 而不是裂成一堆各自不达标的孤儿 —— 这正是旧
-    `file:line:dimension` 精确键漏检的根因 (confirmed 恒 0)。dimension **不进键** (它是
-    组的属性, 不是身份): 同一处的 correctness 与 econ 视角视为对同一位置的两票。
+    显式 `key` 优先; 有真实位置的按 **file + 行邻近** 聚类 (同文件内按行排序, 距**簇首**
+    ≤ proximity 就并入 —— 跨度**有界** ≤ proximity, 防止密集行把整文件链成一坨假 confirmed);
+    无位置的各自独立键 (不合并)。这样"同一 bug 被不同视角报在略不同行/不同 dimension"会
+    **合并** (support 累加 → 能达 quorum), 而旧 `file:line:dimension` 精确键则 confirmed 恒 0。
+    dimension **不进键** (它是组的属性, 不是身份): 同一处的 correctness 与 econ 视角算两票。
+    生成键带 `~prox:` 前缀, 与调用方语义化 `key` 隔离, 避免撞键误并。
     """
     from collections import defaultdict
+    proximity = max(0, proximity)
     keys: list = [None] * len(findings)
     byfile: dict[str, list[int]] = defaultdict(list)
     for i, f in enumerate(findings):
         if f.get("key"):
             keys[i] = f["key"]
+        elif _has_loc(f):
+            byfile[f["file"]].append(i)
         else:
-            byfile[f.get("file", "?")].append(i)
+            keys[i] = f"~loc?:{i}"          # 无位置: 唯一键, 绝不与他人合并
     for file, idxs in byfile.items():
         idxs.sort(key=lambda i: _line_of(findings[i]))
         cluster: list[int] = []
-        lo = anchor = 0
+        lo = 0
         for i in idxs:
             ln = _line_of(findings[i])
-            if cluster and ln - anchor > proximity:
-                k = f"{file}:{lo}~{_line_of(findings[cluster[-1]])}"
+            if cluster and ln - lo > proximity:      # 距簇首 (非前一行) → 跨度有界
+                k = f"~prox:{file}:{lo}~{_line_of(findings[cluster[-1]])}"
                 for j in cluster:
                     keys[j] = k
                 cluster = []
             if not cluster:
                 lo = ln
             cluster.append(i)
-            anchor = ln
         if cluster:
-            k = f"{file}:{lo}~{_line_of(findings[cluster[-1]])}"
+            k = f"~prox:{file}:{lo}~{_line_of(findings[cluster[-1]])}"
             for j in cluster:
                 keys[j] = k
     return keys
@@ -162,10 +176,14 @@ def aggregate_review(findings: list[dict], quorum: int = 2,
     groups: dict[str, dict] = {}
     for i, f in enumerate(findings):
         k = key_for[i]
-        sev = f.get("severity", "low")
+        # 归一化 severity: 大小写不敏感 ('High'→'high'); 未知非空取值不静默降 low 丢弃,
+        # 保守当 'mid' 浮为 advisory (漏报真阳性比多一条建议更糟)。
+        sev = str(f.get("severity") or "low").strip().lower()
+        if sev not in _SEVERITY_RANK:
+            sev = "mid"
         g = groups.setdefault(k, {"key": k, "severity": "low", "sources": set(),
                                   "dimensions": set(), "titles": [], "count": 0})
-        if _SEVERITY_RANK.get(sev, 0) > _SEVERITY_RANK[g["severity"]]:
+        if _SEVERITY_RANK[sev] > _SEVERITY_RANK[g["severity"]]:
             g["severity"] = sev
         if f.get("source"):
             g["sources"].add(f["source"])
@@ -177,7 +195,9 @@ def aggregate_review(findings: list[dict], quorum: int = 2,
 
     out_groups = []
     for g in groups.values():
-        support = len(g["sources"]) or g["count"]
+        # support = 不同视角数。无 source 信息时**不**回退到原始 count (否则同一视角的
+        # 多条邻近发现会假造 quorum) —— 记 1 (无法证明多视角一致)。
+        support = len(g["sources"]) or 1
         if g["severity"] == "high":
             status = "needs_human"
         elif support >= quorum:

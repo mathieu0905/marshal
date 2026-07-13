@@ -210,17 +210,17 @@ def test_findings_beyond_proximity_stay_separate():
     assert all(g["status"] == "advisory" for g in out["groups"])  # each lone MID surfaced
 
 
-def test_chained_cluster_reaches_quorum_across_a_code_block():
-    # the real COW-2287 shape: lenses flag the deferred-fee block at 510/522/540/552;
-    # consecutive gaps (12/18/12) all <= proximity -> transitive chain into one group.
+def test_cluster_reaches_quorum_within_bounded_window():
+    # multiple lenses flagging the same bug within a bounded window (span <= proximity)
+    # merge to quorum; span is anchored to the cluster START (not chained unboundedly).
     findings = [
-        _f("transaction.rs", 510, "determinism", "high", "lens-det"),
-        _f("transaction.rs", 522, "security", "high", "lens-sec"),
-        _f("transaction.rs", 540, "spec", "high", "lens-spec"),
-        _f("transaction.rs", 552, "correctness", "high", "lens-corr"),
+        _f("transaction.rs", 979, "determinism", "high", "lens-det"),
+        _f("transaction.rs", 981, "security", "high", "lens-sec"),
+        _f("transaction.rs", 983, "spec", "high", "lens-spec"),
+        _f("transaction.rs", 985, "correctness", "high", "lens-corr"),
     ]
     out = aggregate_review(findings, quorum=2, proximity=20)
-    assert len(out["groups"]) == 1
+    assert len(out["groups"]) == 1  # span 6 <= 20
     assert out["groups"][0]["support"] == 4
     assert out["groups"][0]["status"] == "needs_human"  # high
 
@@ -233,3 +233,68 @@ def test_proximity_gap_larger_than_window_does_not_chain():
     ]
     out = aggregate_review(findings, quorum=2, proximity=20)
     assert len(out["groups"]) == 2  # 30 > 20, distinct
+
+
+# ---- deep self-audit (2026-07-13): robustness fixes found by dogfooding /marshal deep ----
+
+def test_severity_is_case_insensitive():
+    # 'High'/'HIGH' must escalate like 'high', not silently downgrade to low+drop
+    for sev in ("High", "HIGH", "high"):
+        out = aggregate_review([_f("a.rs", 10, "c", sev, "lens-a")])
+        assert out["groups"][0]["severity"] == "high"
+        assert out["groups"][0]["status"] == "needs_human"
+
+
+def test_unknown_severity_surfaces_not_dropped():
+    # an out-of-scale severity (e.g. 'critical') must NOT be silently treated as low/weak
+    out = aggregate_review([_f("a.rs", 10, "c", "critical", "lens-a")])
+    assert out["groups"][0]["status"] != "weak"
+    assert not out["dropped"]
+
+
+def test_degenerate_location_findings_do_not_over_merge():
+    # findings with no file/line must NOT funnel into one bucket and fake a quorum
+    out = aggregate_review([
+        {"dimension": "a", "severity": "mid", "source": "x", "title": "bug1"},
+        {"dimension": "b", "severity": "mid", "source": "y", "title": "bug2"},
+    ])
+    assert len(out["groups"]) == 2  # each unique, not merged
+    assert not out["confirmed"]
+
+
+def test_cluster_span_is_bounded_no_unbounded_chaining():
+    # 1,11,21,31 @ proximity=10 must NOT all chain into one 30-span group
+    fs = [_f("c.rs", ln, "d", "mid", f"lens{ln}") for ln in (1, 11, 21, 31)]
+    out = aggregate_review(fs, proximity=10)
+    assert len(out["groups"]) > 1, "span must be bounded to ~proximity, not chained"
+    for g in out["groups"]:
+        lo, hi = g["key"].rsplit(":", 1)[-1].split("~")
+        assert int(hi) - int(lo) <= 10
+
+
+def test_explicit_key_does_not_collide_with_generated_proximity_key():
+    fs = [
+        {"key": "z.rs:10~20", "severity": "mid", "source": "explicit", "title": "explicit"},
+        _f("z.rs", 10, "d", "mid", "proxA"),
+        _f("z.rs", 20, "d", "mid", "proxB"),
+    ]
+    out = aggregate_review(fs, proximity=10)
+    # the explicit-key finding must stay in its own group, not absorb the proximity cluster
+    explicit = [g for g in out["groups"] if g["key"] == "z.rs:10~20"]
+    assert len(explicit) == 1 and explicit[0]["titles"] == ["explicit"]
+
+
+def test_support_without_sources_does_not_fake_quorum():
+    out = aggregate_review([
+        {"file": "b.rs", "line": 10, "dimension": "c", "severity": "mid", "title": "t1"},
+        {"file": "b.rs", "line": 11, "dimension": "c", "severity": "mid", "title": "t2"},
+    ])
+    assert all(g["status"] != "confirmed" for g in out["groups"])  # no source -> no quorum
+
+
+def test_negative_proximity_and_max_lenses_are_clamped():
+    out = aggregate_review([_f("n.rs", 5, "d", "mid", "a"), _f("n.rs", 6, "d", "mid", "b")],
+                           proximity=-1)
+    assert isinstance(out["groups"], list)  # no crash; behaves like proximity=0
+    assert ratchet_lenses([_e("x"), _e("y")], max_lenses=-1) == []
+    assert ratchet_lenses([_e("x")], samples_per_class=-1)[0]  # no crash
