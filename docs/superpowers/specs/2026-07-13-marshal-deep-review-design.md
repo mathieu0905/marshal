@@ -75,15 +75,22 @@
 
 综合 L1–L4:目标把大型 high-tier PR 的 deep 倍率从 ~7–8× 压到 **~4–5×**。
 
-## 6. Token 预测(待 PoC 实测校准)
+## 6. Token 预测(已由 #936 PoC 实测校准 → 见 `2026-07-13-deep-review-poc-results.md`)
 
-| | 常规 | deep(PoC ①+③,含 L1–L4,**无** dry-loop) | 倍率 |
+**实测(校准,总 tokens):**
+
+| | agents | 总 tokens | /agent |
 |---|---|---|---|
-| 大型 high-tier PR(如 #936) | ~0.4M | ~2–3M | ~5–7×(caching 命中后可近 4–5×) |
-| 中型 mid-tier PR | ~0.15M | ~0.9M | ~5–6× |
-| 主成本驱动 | lens 单发数 | **prove 扇出 × high-effort** | — |
+| deep 校准(2 scout + 6 prove) | 8 | **796,666** | ~99.6k |
+| regular 全量(6 lens 单发) | 6 | **498,079** | ~83.0k |
 
-数量级估算,误差带宽。PoC 的 `budget.spent()` 给真实数,回填本表。若日後加 ⑤ dry-loop:再 ×K(K=轮数 2–3)。
+**全量外推**(总 tokens):full deep(11 scout + 30 prove cap)≈ **4.1M**;full regular(6 lens)≈ 0.5M(真 skill +quorum/refute ~0.3–0.5M)→ **~8× 倍率**。per-agent 上 deep prove(~105k)仅比 regular lens(~83k)贵 ~25%;主倍率来自 **agent 数**。
+
+**校准的关键修正**:原估 deep 大头是"输入膨胀",实测大头是 **prove agent 的多跳读码(high-effort)** —— prove agent 有工具权、会主动追进闭包外的文件(merkle_utils/application/accounts…),这才是深度来源也是成本来源。L1 缓存省了共享前缀的输入,但 prove 的自主读码盖过它。
+
+**效率洞见**:deep 2-lens 校准(0.8M)已匹配 regular 的 ground-truth 召回。=> deep 的性价比在**聚焦 2–4 lens(~0.8–1.5M)**,非全 11-lens 扇出(4.1M)。产品化时 `/marshal deep` 默认取棘轮 top-N + 风险相关 lens。
+
+若日後加 ⑤ dry-loop:再 ×K(K=轮数 2–3)。
 
 ## 7. Phase 2(PoC 证明有效後,不在本轮)
 
