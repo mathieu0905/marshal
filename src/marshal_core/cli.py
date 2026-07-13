@@ -13,7 +13,9 @@ from sqlalchemy.orm import sessionmaker
 
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
-from marshal_core.review import aggregate_review, assign_refute_lenses, verify_findings
+from marshal_core.review import (
+    aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
+)
 from marshal_pack_cowboy.pack import CowboyPack
 
 _PACK = CowboyPack()
@@ -166,7 +168,8 @@ def _normalize_zizmor(stdout: str):
 
 def cmd_review_quorum(a) -> int:
     # ③ 把多视角 review 发现聚合成 quorum 结论 (去重/计票/高危升 needs_human)。
-    return _emit(aggregate_review(json.loads(a.findings_json), quorum=a.quorum))
+    return _emit(aggregate_review(json.loads(a.findings_json), quorum=a.quorum,
+                                  proximity=a.proximity))
 
 
 def cmd_review_verify(a) -> int:
@@ -177,6 +180,52 @@ def cmd_review_verify(a) -> int:
 def cmd_refute_lenses(a) -> int:
     # ③ 二段 skeptic 视角多样化: 给 N 个 skeptic 轮转分配互异 refute lens (领域无关)。
     return _emit({"count": a.count, "lenses": assign_refute_lenses(a.count)})
+
+
+def cmd_review_lenses(a) -> int:
+    # ③ 发出聚焦 review 视角集 (name+prompt): pack review_plan (tier 基集 + 路径触发) +
+    # security-hazard 视角 + 可选 ratchet 探针 (--ratchet-top N>0 = deep 模式)。让 review
+    # 步确定性拿到 prompt, 不靠 skill 脑补;deep 据此 scout→prove。
+    scope = {"repo": a.repo, "diff_paths": a.paths, "labels": a.labels or []}
+    base = _PACK.review_plan(scope)
+    hazards = [{"name": f"security-hazard:{h['id']}", "prompt": h["prompt"]}
+               for h in _PACK.security_hazards(scope)]
+    ratchet = []
+    if a.ratchet_top and a.ratchet_top > 0:
+        s = _session()
+        try:
+            rows = [{"root_cause_class": e.root_cause_class,
+                     "description": e.description, "change_ref": e.change_ref}
+                    for e in Store(s).list_escapes(domain_pack=a.ratchet_domain_pack)]
+        finally:
+            s.close()
+        ratchet = [{"name": lp["name"], "prompt": lp["prompt"]}
+                   for lp in ratchet_lenses(rows, max_lenses=a.ratchet_top)]
+    out = {"base": base, "hazards": hazards, "ratchet": ratchet,
+           "all": base + hazards + ratchet}
+    # 降级不谎报: deep 请求了 ratchet 但拿到 0 探针 (空 escape DB / 错 domain_pack) →
+    # 显式标 degraded, 别让调用者以为 ratchet 覆盖跑过。
+    if a.ratchet_top and a.ratchet_top > 0 and not ratchet:
+        out["degraded"] = ("ratchet requested (--ratchet-top %d) but 0 probes produced "
+                           "(empty escape DB / domain_pack) — ratchet coverage DEGRADED"
+                           % a.ratchet_top)
+    if not a.paths:
+        out["paths_note"] = "no --paths: only tier base lenses (no path-triggered views)"
+    return _emit(out)
+
+
+def cmd_ratchet_lenses(a) -> int:
+    # ③ (deep) 把逃逸历史投成定向 review 视角: 每个复发根因类 = 一条"是否重新引入"探针。
+    s = _session()
+    try:
+        escs = Store(s).list_escapes(domain_pack=a.domain_pack)
+        rows = [{"root_cause_class": e.root_cause_class, "description": e.description,
+                 "change_ref": e.change_ref} for e in escs]
+        lenses = ratchet_lenses(rows, max_lenses=a.max_lenses,
+                                samples_per_class=a.samples)
+        return _emit({"count": len(lenses), "escapes": len(rows), "lenses": lenses})
+    finally:
+        s.close()
 
 
 def cmd_spec_source(a) -> int:
@@ -365,6 +414,8 @@ def build_parser() -> argparse.ArgumentParser:
     rq = sub.add_parser("review-quorum")
     rq.add_argument("--findings-json", dest="findings_json", required=True)
     rq.add_argument("--quorum", type=int, default=2)
+    rq.add_argument("--proximity", type=int, default=10,
+                    help="merge same-file findings within N lines (0 = exact-line only)")
     rq.set_defaults(func=cmd_review_quorum)
 
     rv = sub.add_parser("review-verify")
@@ -374,6 +425,23 @@ def build_parser() -> argparse.ArgumentParser:
     rl = sub.add_parser("refute-lenses")
     rl.add_argument("--count", type=int, required=True)
     rl.set_defaults(func=cmd_refute_lenses)
+
+    rvl = sub.add_parser("review-lenses")
+    rvl.add_argument("--repo", required=True)
+    rvl.add_argument("--paths", nargs="*", default=[])
+    rvl.add_argument("--labels", nargs="*", default=[])
+    rvl.add_argument("--ratchet-top", dest="ratchet_top", type=int, default=0,
+                     help="append N ratchet probes (deep mode); 0 = regular (base only)")
+    rvl.add_argument("--ratchet-domain-pack", dest="ratchet_domain_pack", default=None)
+    rvl.set_defaults(func=cmd_review_lenses)
+
+    rtl = sub.add_parser("ratchet-lenses")
+    rtl.add_argument("--domain-pack", dest="domain_pack", default=None,
+                     help="filter escapes by domain_pack (default: all)")
+    rtl.add_argument("--max-lenses", dest="max_lenses", type=int, default=8)
+    rtl.add_argument("--samples", type=int, default=3,
+                     help="precedent descriptions embedded per lens")
+    rtl.set_defaults(func=cmd_ratchet_lenses)
 
     ss = sub.add_parser("spec-source")
     ss.add_argument("--ref", required=True)

@@ -52,6 +52,13 @@ class Store:
         stmt = select(EscapeRegistry).where(EscapeRegistry.status == "open")
         return list(self.s.scalars(stmt))
 
+    def list_escapes(self, domain_pack: str | None = None) -> list[EscapeRegistry]:
+        """全部逃逸 (③ ratchet-lenses 的彈藥源); 可按 domain_pack 过滤。"""
+        stmt = select(EscapeRegistry)
+        if domain_pack is not None:   # '' 是"筛空名 pack", 非"不筛" (后者传 None)
+            stmt = stmt.where(EscapeRegistry.domain_pack == domain_pack)
+        return list(self.s.scalars(stmt))
+
     def metrics(self) -> dict:
         """⑦ 度量: 从知识核聚合方法论指标。诚实标注当前数据模型不支持的指标
         (escape_rate 缺总-bug 分母;time_to_detection 缺 introduced_at 时间戳;

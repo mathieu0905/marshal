@@ -25,6 +25,7 @@ description: Use when reviewing a change before merge — runs the Marshal quali
   - `<repo>` 取 `runner|cbss|cbfs|wallet|cowboy-ras|node` 等;解析成 `cowboyinc/<repo>`(URL 直接含 owner/repo)。
   - 所有 `gh` 调用都带 `-R cowboyinc/<repo>`(`gh pr diff <PR#> -R …`、`gh pr view <PR#> -R … --json headRefOid`),且 `cli classify/invariants --repo <repo>` 用同一个 `<repo>`。
   - 例:`/marshal runner 42`、`/marshal runner#42`、`/marshal https://github.com/cowboyinc/runner/pull/42` 三者等价。
+- `/marshal deep [<repo>] <PR#>` → 流 A-deep(**深审**:闭包→scout→prove,买严谨度不买召回;opt-in,~5–8× token)。详见 `references/deep-review-flow.md`。常规 `/marshal <PR#>` 路径不变。
 - `/marshal ratchet "<bug>"` → 流 C
 - `/marshal conformance` → ⑤ 规格符合度报告(见 `references/conformance-flow.md`)
 - `/marshal metrics` → ⑦ 度量报告:`cli metrics`(不变量数/棘轮增量/逃逸开关/门禁判决分布);conformance% 另跑 `/marshal conformance`。诚实呈现 `unavailable` 指标,不补造数
