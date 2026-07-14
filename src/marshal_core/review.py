@@ -2,7 +2,7 @@
 
 多视角对抗 review 的去重 + 计票 + 收敛。靠视角间的"分歧/一致"标问题,防 AI 审 AI
 的相关性盲区:孤立的低危发现当噪声丢;达到 quorum 的发现确认;**任何高危一律升
-needs_human**(终审归人,即便只有单视角提出)。不含任何领域语义。
+escalate**(终审归人,即便只有单视角提出)。不含任何领域语义。
 """
 _SEVERITY_RANK = {"low": 0, "mid": 1, "high": 2}
 
@@ -179,11 +179,11 @@ def aggregate_review(findings: list[dict], quorum: int = 2,
     每条 finding: {key? | file,line,dimension, severity(low|mid|high), source, title}.
     按 **file+行邻近** 聚类 (见 `_cluster_keys`; 显式 `key` 优先);support = 不同
     `source` 数 (同视角重复不加分)。组状态:
-      - 含高危 → needs_human
+      - 含高危 → escalate
       - support>=quorum → confirmed
       - 单源 **中危** → **advisory** (浮出为建议, **不丢**; 修复旧行为把微妙真阳性当噪声杀)
       - 单源 **低危** → weak (噪声地板, 丢弃)
-    review_verdict: 有任一高危组 → needs_human;否则 pass (confirmed/advisory 为建议态,
+    review_verdict: 有任一高危组 → escalate;否则 pass (confirmed/advisory 为建议态,
     不阻断)。advisory 是给人看的单视角观察, 不进对抗验证 gauntlet (那会再把它杀掉)。
     """
     key_for = _cluster_keys(findings, proximity)
@@ -213,7 +213,7 @@ def aggregate_review(findings: list[dict], quorum: int = 2,
         # 多条邻近发现会假造 quorum) —— 记 1 (无法证明多视角一致)。
         support = len(g["sources"]) or 1
         if g["severity"] == "high":
-            status = "needs_human"
+            status = "escalate"
         elif support >= quorum:
             status = "confirmed"
         elif g["severity"] == "mid":
@@ -227,12 +227,12 @@ def aggregate_review(findings: list[dict], quorum: int = 2,
 
     # 稳定排序: 高危在前, 再按 support 降序
     out_groups.sort(key=lambda x: (-_SEVERITY_RANK[x["severity"]], -x["support"]))
-    needs_human = [g for g in out_groups if g["status"] == "needs_human"]
+    escalate = [g for g in out_groups if g["status"] == "escalate"]
     confirmed = [g for g in out_groups if g["status"] == "confirmed"]
     advisory = [g for g in out_groups if g["status"] == "advisory"]
     dropped = [g for g in out_groups if g["status"] == "weak"]
-    verdict = "needs_human" if needs_human else "pass"
-    return {"groups": out_groups, "needs_human": needs_human,
+    verdict = "escalate" if escalate else "pass"
+    return {"groups": out_groups, "escalate": escalate,
             "confirmed": confirmed, "advisory": advisory, "dropped": dropped,
             "review_verdict": verdict}
 
@@ -243,7 +243,7 @@ def verify_findings(items: list[dict]) -> dict:
     每条 item: {key, severity, votes:[{refuted: bool, reason?}]}. skeptic 默认 refute,
     只有确凿证明发现为真才 uphold。**仅当严格多数 uphold 才存活**(平票/多数 refute →
     杀,把似是而非的误报砍掉);无投票 → unverified(degraded,保留待人看)。
-    verdict: 有存活的高危 → needs_human;否则 pass。
+    verdict: 有存活的高危 → escalate;否则 pass。
     """
     survived, killed, unverified = [], [], []
     for it in items:
@@ -259,6 +259,6 @@ def verify_findings(items: list[dict]) -> dict:
             survived.append(row)
         else:                              # 平票或多数 refute → 杀
             killed.append(row)
-    verdict = "needs_human" if any(r["severity"] == "high" for r in survived) else "pass"
+    verdict = "escalate" if any(r["severity"] == "high" for r in survived) else "pass"
     return {"survived": survived, "killed": killed, "unverified": unverified,
             "verdict": verdict}

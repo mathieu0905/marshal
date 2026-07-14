@@ -14,7 +14,7 @@ tier 定**基集**(有序前缀):
 
 ## 原则
 1. **对抗式而非背书式**:prompt 是"找出这个改动会怎样出错/违反哪条 CIP 不变量",默认怀疑。
-2. **防相关性盲区**:视角互异;靠分歧和 quorum 标问题。高危发现即便 review 全绿也保留 needs_human。
+2. **防相关性盲区**:视角互异;靠分歧和 quorum 标问题。高危发现即便 review 全绿也保留 escalate。
 3. **结构化输出**:每条发现带 {dimension, severity(low/mid/high), confidence, location}。
 
 ## spec 视角:JIT 读取被引用的规格正文
@@ -30,9 +30,9 @@ tier 定**基集**(有序前缀):
    ```
    "$PY" -m marshal_core.cli review-quorum --findings-json '<findings>' [--quorum 2] [--proximity 10]
    ```
-   → `{groups, needs_human, confirmed, advisory, dropped, review_verdict}`。计票**按 file+行邻近聚类**(同文件内相邻发现行距 ≤`proximity` 即并入一组,dimension 不进键)——**修复旧 `file:line:dimension` 精确键的漏检**:同一 bug 被不同视角报在略不同行/不同 dimension 时旧键永不合并、confirmed 恒 0,真阳性全靠「高危→needs_human」逃生、单源中危被当噪声杀。规则:**任一高危→needs_human(终审归人,哪怕单视角)**;不同视角数达 quorum→confirmed;**单源中危→advisory(浮出为建议,不丢)**;单源低危→当噪声丢弃。
+   → `{groups, escalate, confirmed, advisory, dropped, review_verdict}`。计票**按 file+行邻近聚类**(同文件内相邻发现行距 ≤`proximity` 即并入一组,dimension 不进键)——**修复旧 `file:line:dimension` 精确键的漏检**:同一 bug 被不同视角报在略不同行/不同 dimension 时旧键永不合并、confirmed 恒 0,真阳性全靠「高危→escalate」逃生、单源中危被当噪声杀。规则:**任一高危→escalate(终审归人,哪怕单视角)**;不同视角数达 quorum→confirmed;**单源中危→advisory(浮出为建议,不丢)**;单源低危→当噪声丢弃。
    - **advisory 必须在报告里列出**(单视角未达 quorum 的中危观察),它是给人看的线索,不阻断、**不进下面第 3 步的对抗验证 gauntlet**(skeptic 会再把它杀掉,违背「不丢真阳性」初衷)。over-merge(proximity 太大把不同 bug 并一坨)比 under-merge 更糟;默认 10 偏保守,组内保留全部 titles 故不丢信息。
-3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `needs_human`),再派 N 个 skeptic subagent。**别派 N 个同质 skeptic**——同质=共同盲区;先取互异 refute 视角再逐个绑:
+3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `escalate`),再派 N 个 skeptic subagent。**别派 N 个同质 skeptic**——同质=共同盲区;先取互异 refute 视角再逐个绑:
    ```
    "$PY" -m marshal_core.cli refute-lenses --count <N>
    ```

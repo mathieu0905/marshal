@@ -37,11 +37,11 @@ def test_ingest_any_fail_is_block():
     assert decision.verdict == "block"
 
 
-def test_degraded_result_high_tier_needs_human():
+def test_degraded_result_high_tier_escalate():
     gate = InvariantGate(pack=CowboyPack())
     ev = _event()
     job = gate.build_dispatch(ev)
     res = StructuredResult(job_id=job.job_id, kind="invariant", status="degraded",
                            payload={"results": []})
     decision = gate.evaluate(ev, job, res)
-    assert decision.verdict == "needs_human"
+    assert decision.verdict == "escalate"

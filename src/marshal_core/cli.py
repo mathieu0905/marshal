@@ -75,7 +75,7 @@ def cmd_ci_scan(a) -> int:
 
     Runs `zizmor --format json` over the given workflow files and normalizes findings.
     If zizmor is absent/errors, emits a degraded record (non-zero) so the gate records
-    degraded → needs_human rather than a false pass (降级不谎报)."""
+    degraded → escalate rather than a false pass (降级不谎报)."""
     import subprocess
 
     binary = _resolve_zizmor(a.zizmor_bin)
@@ -167,7 +167,7 @@ def _normalize_zizmor(stdout: str):
 
 
 def cmd_review_quorum(a) -> int:
-    # ③ 把多视角 review 发现聚合成 quorum 结论 (去重/计票/高危升 needs_human)。
+    # ③ 把多视角 review 发现聚合成 quorum 结论 (去重/计票/高危升 escalate)。
     return _emit(aggregate_review(json.loads(a.findings_json), quorum=a.quorum,
                                   proximity=a.proximity))
 
@@ -474,7 +474,7 @@ def build_parser() -> argparse.ArgumentParser:
     gr = sub.add_parser("gate-record")
     gr.add_argument("--change-ref", dest="change_ref", required=True)
     gr.add_argument("--verdict", required=True,
-                    choices=["pass", "block", "needs_human"])
+                    choices=["pass", "block", "escalate"])
     gr.add_argument("--evidence-json", dest="evidence_json", default="[]")
     gr.set_defaults(func=cmd_gate_record)
 

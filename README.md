@@ -41,7 +41,7 @@ python -m marshal_core.cli <command> [options]
 | 命令 | 用途 |
 |---|---|
 | `classify --repo node --paths ...` | 对变更做风险分级,输出 `high` / `mid` / `low` 和 review 维度 |
-| `ci-scan --paths .github/workflows/ci.yml` | 用 `zizmor` 审计 GitHub Actions 工作流;缺少工具时降级为 `needs_human` 信号 |
+| `ci-scan --paths .github/workflows/ci.yml` | 用 `zizmor` 审计 GitHub Actions 工作流;缺少工具时降级为 `escalate` 信号 |
 | `invariants --repo node --paths ...` | 列出本次变更适用的不变量和可执行命令 |
 | `review-quorum --findings-json ...` | 聚合多视角 review 发现,低置信噪声会被丢弃,高危结论会升级 |
 | `review-verify --votes-json ...` | 对每条发现做 skeptic 投票裁决 |

@@ -14,7 +14,7 @@
 - 终端摘要:打印 conformance% + top 欠覆盖 CIP。**诚实声明**:这是 CIP 级覆盖压力,不是逐条 requirement 已验证;MUST 计数为启发式抽取(代码块/示例会高估)。
 
 ## diff 命中规格层 → 叠加在流 A 上
-1. 判定层:路径在 `docs/whitepaper/**` = **宪法改动 → 最高 tier、最广签字、`needs_human`**;在 `docs/cips/cip-N-*.md` = 修正案 → 高 tier。
+1. 判定层:路径在 `docs/whitepaper/**` = **宪法改动 → 最高 tier、最广签字、`escalate`**;在 `docs/cips/cip-N-*.md` = 修正案 → 高 tier。
 2. 对改动的 CIP 抽 requirement:
    ```
    "$PY" -m marshal_core.cli spec-requirements --ref CIP-N --spec-root <workspace>/cowboy
@@ -24,5 +24,5 @@
 4. 生成结构化影响分析草稿供人审(动了哪些 requirement / 影响哪些 repo / 兼容性 / 安全),**人只审这张影响地图**,别逐行审所有相关代码(§5)。
 
 ## 治理红线(只标记,不替人裁)
-- 某 CIP 实质抵触白皮书却未声明修订、或两 CIP 互相矛盾 → 高 severity `needs_human`,**不自动 block**(治理 a 档:合法演进还是越权,留人定;Marshal 只负责让它无法被忽略)。
+- 某 CIP 实质抵触白皮书却未声明修订、或两 CIP 互相矛盾 → 高 severity `escalate`,**不自动 block**(治理 a 档:合法演进还是越权,留人定;Marshal 只负责让它无法被忽略)。
 - 源自宪法的 requirement 所派生的不变量标 **constitutional 级、最不可豁免**。

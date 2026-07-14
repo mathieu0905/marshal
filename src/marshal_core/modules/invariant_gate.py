@@ -23,7 +23,7 @@ class InvariantGate:
         tier = self.pack.classify({"repo": event.repo, "diff_paths": event.diff_paths})
 
         if result.status != "ok":
-            verdict = "needs_human" if tier == "high" else "pass"
+            verdict = "escalate" if tier == "high" else "pass"
             return GateDecision(change_ref=event.change_ref, tier=tier,
                 gates=[{"name": "invariants", "outcome": "degraded",
                         "evidence_ref": job.job_id}], verdict=verdict)

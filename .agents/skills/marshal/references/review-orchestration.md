@@ -7,7 +7,7 @@
 
 ## 原则
 1. **对抗式而非背书式**:prompt 是"找出这个改动会怎样出错/违反哪条 CIP 不变量",默认怀疑。
-2. **防相关性盲区**:视角互异;靠分歧和 quorum 标问题。高危发现即便 review 全绿也保留 needs_human。
+2. **防相关性盲区**:视角互异;靠分歧和 quorum 标问题。高危发现即便 review 全绿也保留 escalate。
 3. **结构化输出**:每条发现带 {dimension, severity(low/mid/high), confidence, location}。
 
 ## spec 视角:JIT 读取被引用的规格正文
@@ -23,8 +23,8 @@
    ```
    "$PY" -m marshal_core.cli review-quorum --findings-json '<findings>' [--quorum 2]
    ```
-   → `{groups, needs_human, confirmed, dropped, review_verdict}`。规则:同 key(file:line:dimension)按**不同视角数**计票;达 quorum→confirmed;**任一高危→needs_human(终审归人,哪怕单视角)**;孤立低危→当噪声丢弃。
-3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `needs_human`),再派 N 个 skeptic subagent,prompt 为「**默认 refute,除非有确凿证据证明该发现为真**」,各返回 `{key, refuted:bool, reason}`。汇成投票过:
+   → `{groups, escalate, confirmed, dropped, review_verdict}`。规则:同 key(file:line:dimension)按**不同视角数**计票;达 quorum→confirmed;**任一高危→escalate(终审归人,哪怕单视角)**;孤立低危→当噪声丢弃。
+3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `escalate`),再派 N 个 skeptic subagent,prompt 为「**默认 refute,除非有确凿证据证明该发现为真**」,各返回 `{key, refuted:bool, reason}`。汇成投票过:
    ```
    "$PY" -m marshal_core.cli review-verify --votes-json '[{"key":...,"severity":...,"votes":[{"refuted":true},...]}]'
    ```
