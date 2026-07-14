@@ -78,7 +78,7 @@ class Store:
         gate_total = _count(GateRun)
         gate_by_verdict = {
             v: _count(GateRun, GateRun.verdict == v)
-            for v in ("pass", "block", "needs_human")
+            for v in ("pass", "block", "escalate")
         }
         return {
             "invariant_gate_count": inv_active,

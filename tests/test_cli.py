@@ -55,8 +55,8 @@ def test_review_quorum_escalates_high_and_drops_lone_low():
     proc = _run(["review-quorum", "--findings-json", findings])
     assert proc.returncode == 0, proc.stderr
     out = json.loads(proc.stdout)
-    assert out["review_verdict"] == "needs_human"
-    assert len(out["needs_human"]) == 1
+    assert out["review_verdict"] == "escalate"
+    assert len(out["escalate"]) == 1
     assert len(out["dropped"]) == 1
 
 

@@ -38,7 +38,7 @@ lens 花 428s 才回,而它抓的「未声明的白皮书宪法抵触」是整�
 出终审判决,会系统性漏掉最严重的问题)。规则:
 - 显式记录**期望的 lens 集**(§1 裁定的那批),逐个核对是否都回了。
 - 未齐就**等**;真等不到(某 lens 崩/超时)→ 该次 review **标 degraded(lens-incomplete)**,
-  GateDecision verdict 至少 needs_human,并**明说哪条 lens 缺席**——绝不把「少一路」当「审全了」。
+  GateDecision verdict 至少 escalate,并**明说哪条 lens 缺席**——绝不把「少一路」当「审全了」。
 - 这与流 A 的 `/code-review ultra` 拉不起就少一路显式标 degraded 是同一条纪律(barrier 而非
   first-N)。
 
@@ -56,15 +56,15 @@ lens 花 428s 才回,而它抓的「未声明的白皮书宪法抵触」是整�
 
 ### 6. 聚合(复用已修的 ④)
 把 prove 的 confirmed/uncertain 汇成 findings(带 file/line/dimension/severity/source),
-过 `cli review-quorum --findings-json … [--proximity 10]` → `{needs_human, confirmed,
+过 `cli review-quorum --findings-json … [--proximity 10]` → `{escalate, confirmed,
 advisory, dropped}`(proximity 聚类合并同一 bug 的多视角报点、单源中危浮为 advisory;
 见 `review-orchestration.md`)。prove 已内建收敛,故此处主要做去重 + 分层。
-- deep 的 confirmed/needs_human **可跳过**二段对抗验证 gauntlet(prove 的触发已是证据);
+- deep 的 confirmed/escalate **可跳过**二段对抗验证 gauntlet(prove 的触发已是证据);
   仍照 `review-orchestration.md` 把 advisory 列进报告、不送 gauntlet。
 
 ### 7. GateDecision(同流 A 第 5–7 步)
-不变量 fail→block;高危 + 确认高 severity(**带触发**)→ needs_human;跑不起来/超预算/
-闭包建不成 → needs_human+degraded;否则 pass。deep 的发现附**触发路径**,报告里带上。
+不变量 fail→block;高危 + 确认高 severity(**带触发**)→ escalate;跑不起来/超预算/
+闭包建不成 → escalate+degraded;否则 pass。deep 的发现附**触发路径**,报告里带上。
 
 ## 杠杆(内建)
 - **L1** 共享 closure 当缓存前缀;**L2** 假说去重 + 上限;**L3** 只对 high-tier/共识 PR 跑;
@@ -72,7 +72,7 @@ advisory, dropped}`(proximity 聚类合并同一 bug 的多视角报点、单源
 
 ## 降级不谎报
 闭包建不成 / 任一步跑不起 / **任一 scout lens 未返回(§3b 完整性闸)** → 显式标 degraded
-(注明缺哪步/哪条 lens),verdict 至少 needs_human;闭包/scout 整体起不来则**回退常规流 A**。
+(注明缺哪步/哪条 lens),verdict 至少 escalate;闭包/scout 整体起不来则**回退常规流 A**。
 **绝不假装跑过 deep,绝不在 lens 未齐时出终审判决。**
 
 ## 可选:测量化 harness

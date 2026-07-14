@@ -26,9 +26,9 @@ def test_two_lenses_agree_reaches_quorum():
 def test_high_severity_escalates_even_with_single_support():
     findings = [_f("b.rs", 5, "security", "high", "lens-security")]
     out = aggregate_review(findings, quorum=2)
-    assert out["groups"][0]["status"] == "needs_human"
-    assert out["review_verdict"] == "needs_human"
-    assert len(out["needs_human"]) == 1
+    assert out["groups"][0]["status"] == "escalate"
+    assert out["review_verdict"] == "escalate"
+    assert len(out["escalate"]) == 1
 
 
 def test_lone_low_severity_is_dropped_as_noise():
@@ -49,7 +49,7 @@ def test_group_takes_max_severity_and_distinct_sources():
     g = out["groups"][0]
     assert g["severity"] == "high"
     assert g["support"] == 2  # distinct sources only
-    assert g["status"] == "needs_human"
+    assert g["status"] == "escalate"
 
 
 def test_explicit_key_overrides_file_line_dimension():
@@ -91,10 +91,10 @@ def test_verify_no_votes_is_unverified():
     assert [g["key"] for g in out["unverified"]] == ["k4"]
 
 
-def test_verify_surviving_high_needs_human():
+def test_verify_surviving_high_escalate():
     items = [{"key": "k5", "severity": "high", "votes": _v(False, False, False)}]
     out = verify_findings(items)
-    assert out["survived"] and out["verdict"] == "needs_human"
+    assert out["survived"] and out["verdict"] == "escalate"
 
 
 def test_refute_lenses_are_distinct_and_domain_agnostic():
@@ -222,7 +222,7 @@ def test_cluster_reaches_quorum_within_bounded_window():
     out = aggregate_review(findings, quorum=2, proximity=20)
     assert len(out["groups"]) == 1  # span 6 <= 20
     assert out["groups"][0]["support"] == 4
-    assert out["groups"][0]["status"] == "needs_human"  # high
+    assert out["groups"][0]["status"] == "escalate"  # high
 
 
 def test_proximity_gap_larger_than_window_does_not_chain():
@@ -242,7 +242,7 @@ def test_severity_is_case_insensitive():
     for sev in ("High", "HIGH", "high"):
         out = aggregate_review([_f("a.rs", 10, "c", sev, "lens-a")])
         assert out["groups"][0]["severity"] == "high"
-        assert out["groups"][0]["status"] == "needs_human"
+        assert out["groups"][0]["status"] == "escalate"
 
 
 def test_unknown_severity_surfaces_not_dropped():

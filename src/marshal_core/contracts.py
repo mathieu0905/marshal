@@ -34,7 +34,7 @@ class GateDecision(BaseModel):
     change_ref: str
     tier: Literal["high", "mid", "low"]
     gates: list[dict] = []      # [{name, outcome, evidence_ref}]
-    verdict: Literal["pass", "block", "needs_human"]
+    verdict: Literal["pass", "block", "escalate"]
 
 
 class PlanResponse(BaseModel):

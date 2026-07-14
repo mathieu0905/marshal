@@ -22,9 +22,9 @@ CI 改动是供应链攻击面。分级器只看 diff 窗口会漏掉危险**组
    - classify 会按 **job 粒度**做可达性推理(push/delete/main-devnet 钉死的 job 不算 PR 可达;`github.actor` 白名单在该 job `if:` 内则清除 open-dispatch),命中即在 `security_hazards` 返回 `ci.*` 危险点并升 tier=high。
 2. **确定性后盾 zizmor(P0)**:`cli ci-scan --paths /tmp/<wf> …`。
    - 装了 zizmor → 把其 findings 折进 GateDecision(与 `ci.*` hazard 互证)。
-   - 没装(返回 `degraded:true`)→ 该 CI 门禁记 degraded,verdict 至少 needs_human,并提示 `pipx install zizmor`。**绝不**因 zizmor 缺失就当 CI 安全审过。
+   - 没装(返回 `degraded:true`)→ 该 CI 门禁记 degraded,verdict 至少 escalate,并提示 `pipx install zizmor`。**绝不**因 zizmor 缺失就当 CI 安全审过。
 3. **把 `ci.*` hazard 的 `prompt` 注入步骤 4 的对抗 review**(security lens):这些是否定性属性,不变量门禁抓不到,只能 review 裁定。
-4. CI 安全发现是 review-lens 结论:确认的 HIGH(如 self-hosted-runner-on-PR)→ needs_human(高危终审归人)。
+4. CI 安全发现是 review-lens 结论:确认的 HIGH(如 self-hosted-runner-on-PR)→ escalate(高危终审归人)。
 
 ## 跑不变量(默认在被审 checkout 的干净 worktree 跑)
 
@@ -65,15 +65,15 @@ Almanax 是独立的第三方扫描器,常在 Marshal 跑之前就把 finding �
    - `gh api repos/cowboyinc/<repo>/pulls/<PR>/reviews  --jq '.[] | select(.user.login=="almanax-ai[bot]")'`
    - severity 从 body 解析(`alt="High Severity"` / `Critical` / `Medium` / `Low`);看是否已被 `/almanax dismiss|resolve`(查后续回复或 `almanax_finding_id` 状态)。
 2. **核对**:对每条**未 dismiss/resolve** 的 Almanax finding,Marshal 必须在评论里**逐条 confirm 或 refute**(回代码一手核;refute 要给证据,别空口反驳)。
-3. **判决约束(确定性,不靠模型裁量)**:存在任一未 dismiss 的 **HIGH/CRITICAL** Almanax finding → 判决**不得是干净 PASS**,至少 needs_human(高危终审归人)。只有 Marshal 拿出一手证据 refute 掉(证明是假阳性),才能降到 pass,且评论里写明 refute 依据。
+3. **判决约束(确定性,不靠模型裁量)**:存在任一未 dismiss 的 **HIGH/CRITICAL** Almanax finding → 判决**不得是干净 PASS**,至少 escalate(高危终审归人)。只有 Marshal 拿出一手证据 refute 掉(证明是假阳性),才能降到 pass,且评论里写明 refute 依据。
 4. 评论里「Almanax: N findings」**必须等于实拉计数**,并逐条列出 severity + 你的处置(confirmed / refuted-with-evidence / dismissed-upstream)。
 
-## 汇总 GateDecision(verdict 优先级 block > needs_human > pass)
+## 汇总 GateDecision(verdict 优先级 block > escalate > pass)
 - 任一 active 不变量 fail → block
-- 高危 tier + 确认的高 severity review 发现 → needs_human
-- **存在未 dismiss/refute 的 HIGH/CRITICAL Almanax finding → 至少 needs_human**(见上节;refute 须附一手证据才可降级)
-- **change 自评/升为 consensus-relevant tier,且 review 确认其声称的安全不变量仍可被绕过 → needs_human**,不得用「defense-in-depth / correctly scoped」措辞发干净 PASS(PR 可作增量合入,但判决要标注「<不变量> 仍开放」)
-- 任一步骤 degraded(CLI 错/测试缺/review 超预算)→ 至少 needs_human + 标 degraded
+- 高危 tier + 确认的高 severity review 发现 → escalate
+- **存在未 dismiss/refute 的 HIGH/CRITICAL Almanax finding → 至少 escalate**(见上节;refute 须附一手证据才可降级)
+- **change 自评/升为 consensus-relevant tier,且 review 确认其声称的安全不变量仍可被绕过 → escalate**,不得用「defense-in-depth / correctly scoped」措辞发干净 PASS(PR 可作增量合入,但判决要标注「<不变量> 仍开放」)
+- 任一步骤 degraded(CLI 错/测试缺/review 超预算)→ 至少 escalate + 标 degraded
 - 否则 → pass
 
 ## 落库与回写

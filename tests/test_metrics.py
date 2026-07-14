@@ -12,7 +12,7 @@ def _seed(s):
     s.open_escape(id="e2", description="d", root_cause_class="c")
     s.close_escape("e2", spawned_check="i.ratchet")
     s.record_gate_run(change_ref="r1", job_id="r1", verdict="pass", evidence={})
-    s.record_gate_run(change_ref="r2", job_id="r2", verdict="needs_human", evidence={})
+    s.record_gate_run(change_ref="r2", job_id="r2", verdict="escalate", evidence={})
 
 
 def test_metrics_counts(db_session):
@@ -25,7 +25,7 @@ def test_metrics_counts(db_session):
     assert m["escapes_closed"] == 1
     assert m["ratchet_increment"] == 1
     assert m["gate_runs_total"] == 2
-    assert m["gate_runs_by_verdict"] == {"pass": 1, "block": 0, "needs_human": 1}
+    assert m["gate_runs_by_verdict"] == {"pass": 1, "block": 0, "escalate": 1}
 
 
 def test_metrics_marks_unavailable_honestly(db_session):
