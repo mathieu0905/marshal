@@ -17,6 +17,7 @@ from marshal_core.concept.sync import derive_db
 from marshal_core.onboard.estimate import estimate_cost
 from marshal_core.onboard.detect import detect_repo
 from marshal_core.onboard.report import tech_debt_signals
+from marshal_core.plangate.budget import concept_budget
 from marshal_core.review import (
     aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
 )
@@ -429,6 +430,28 @@ def cmd_onboard_report(a) -> int:
         s.close()
 
 
+def cmd_plan_cost(a) -> int:
+    if not Path(a.touches).is_file():
+        return _fail(f"--touches not a file: {a.touches}")
+    with open(a.touches, encoding="utf-8") as f:
+        touches = json.load(f)
+    roots = _require_derive_paths(a)             # 校验 concepts-dir + repo-root (S1 加固)
+    # 深审 S2-A: plan-cost 是**只读成本查询**, 绝不 mutate 共享缓存。derive 进一个隔离的
+    # 内存 DB(而非 _session() 的共享 marshal.db)—— 彻底消除 clobber 风险 + 无谓写副作用。
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+    from .knowledge.models import Base
+    eng = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(eng)
+    s = sessionmaker(bind=eng)()
+    try:
+        store = Store(s)
+        derive_db(a.concepts_dir, a.domain_pack, store, roots)
+        return _emit(concept_budget(store, a.domain_pack, touches))
+    finally:
+        s.close()
+
+
 def cmd_setup(a) -> int:
     home = _marshal_home()
     skill_src = home / ".claude" / "skills" / "marshal"
@@ -574,6 +597,13 @@ def build_parser() -> argparse.ArgumentParser:
     orp.add_argument("--concepts-dir", required=True)
     orp.add_argument("--repo-root", action="append", default=[])
     orp.set_defaults(func=cmd_onboard_report)
+
+    pc = sub.add_parser("plan-cost")
+    pc.add_argument("--domain-pack", default="cowboy")
+    pc.add_argument("--concepts-dir", required=True)
+    pc.add_argument("--repo-root", action="append", default=[])
+    pc.add_argument("--touches", required=True, help="JSON file: [{concept_id, op, importance?, est_scope?}]")
+    pc.set_defaults(func=cmd_plan_cost)
 
     for name, fn in (("concept-tree", cmd_concept_tree), ("concept-list", cmd_concept_list)):
         cp = sub.add_parser(name)
