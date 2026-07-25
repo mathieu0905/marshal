@@ -70,3 +70,26 @@ def test_cowboy_pack_implements_both_tiers():
     pack = CowboyPack()
     assert isinstance(pack, DomainPack)
     assert isinstance(pack, ReviewPack)
+
+
+def test_concept_derive_is_domain_agnostic(db_session, tmp_path):
+    """通用性护栏: 概念派生对任意 domain_pack 都跑通, 不含 cowboy 语义。"""
+    from marshal_core.concept.sync import derive_db
+
+    concepts = tmp_path / "concepts"
+    concepts.mkdir()
+    (concepts / "widget.md").write_text(
+        "---\ntype: concept\nconcept_id: widget\nimportance: high\n"
+        "status: draft\nlast_updated: 2026-07-25\n---\na widget.\n"
+    )
+    (concepts / "gadget.md").write_text(
+        "---\ntype: concept\nconcept_id: gadget\nparent: widget\nimportance: low\n"
+        "status: draft\nlast_updated: 2026-07-25\n---\na gadget.\n"
+    )
+    store = Store(db_session)
+    n = derive_db(concepts, "fake", store, {})
+    assert n == 2
+    tree = store.concept_tree("fake")
+    assert tree[0]["id"] == "widget"
+    assert tree[0]["children"][0]["id"] == "gadget"
+    assert tree[0]["children"][0]["doc_only"] is True    # 无 anchor → doc_only (H1)

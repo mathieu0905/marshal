@@ -39,7 +39,7 @@ def test_derive_creates_concept_edge_anchor(db_session, tmp_path):
     assert "dual-gas-model" in concepts
     assert concepts["dual-gas-model"].doc_only is False        # anchor 校验通过 (H1)
     assert concepts["dual-gas-model"].confidence >= 0.8
-    tree = store.concept_tree("cowboy")
+    store.concept_tree("cowboy")
     # depends_on 边入库
     from marshal_core.knowledge.models import ConceptEdge
     edges = list(db_session.query(ConceptEdge).all())
