@@ -55,3 +55,24 @@ def test_concept_list_cli(tmp_path, capsys):
     assert rc == 0
     out = json.loads(capsys.readouterr().out)
     assert {c["id"] for c in out} == {"execution", "dual-gas-model"}
+
+
+def test_concept_tree_bad_repo_root_fails(tmp_path, capsys):
+    # typo 的 repo-root → anchor 全灭 → 假 doc_only;必须 fail-fast, 不静默出错误信号 (N1)
+    concepts, _ = _setup(tmp_path)
+    rc = main(["concept-tree", "--domain-pack", "cowboy", "--concepts-dir", str(concepts),
+               "--repo-root", "node=/does/not/exist"])
+    assert rc != 0
+    assert "doc_only" not in capsys.readouterr().out
+
+
+def test_concept_tree_bad_concepts_dir_fails(tmp_path, capsys):
+    rc = main(["concept-tree", "--domain-pack", "cowboy",
+               "--concepts-dir", str(tmp_path / "nope"), "--repo-root", f"node={tmp_path}"])
+    assert rc != 0
+
+
+def test_concept_list_bad_concepts_dir_fails(tmp_path, capsys):
+    rc = main(["concept-list", "--domain-pack", "cowboy",
+               "--concepts-dir", str(tmp_path / "nope"), "--repo-root", f"node={tmp_path}"])
+    assert rc != 0
