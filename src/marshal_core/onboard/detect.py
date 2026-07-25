@@ -4,12 +4,10 @@
 from collections import Counter
 from pathlib import Path
 
+from ._walk import _IGNORE_DIRS, _DOC_EXT   # 与 estimate 共用(vendored/build/deps 排除)
+
 _LANG_BY_EXT = {".rs": "rust", ".py": "python", ".js": "js", ".ts": "ts",
                 ".go": "go", ".java": "java", ".c": "c", ".cpp": "cpp"}
-_DOC_EXT = {".md", ".rst", ".txt", ".mdx"}
-# 与 estimate 共用同一套排除(vendored/build/deps), 否则真 repo 画像被依赖淹没
-_IGNORE_DIRS = {".git", "target", "node_modules", ".venv", "__pycache__",
-                "dist", "build", "vendor", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
 
 
 def detect_repo(repo_root: str) -> dict:

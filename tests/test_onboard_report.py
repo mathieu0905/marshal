@@ -56,6 +56,19 @@ def test_over_fragmented_threshold(db_session):
     assert "root" in sig["over_fragmented"]
 
 
+def test_over_fragmented_ignores_phantom_parent(db_session):
+    """>阈值个子共享一个不存在的父 id → 该幻影 id 不能进 over_fragmented
+    (它已由 dangling_parent 覆盖)。"""
+    store = Store(db_session)
+    for i in range(13):                                    # 13 > 阈值 12, 父 "ghost" 不存在
+        store.upsert_concept(id=f"k{i}", domain_pack="c", parent_id="ghost",
+                             importance="low", status="a", confidence=0.5,
+                             doc_only=True, definition="")
+    sig = tech_debt_signals(store, "c")
+    assert sig["over_fragmented"] == []                    # 幻影父不算 over-split
+    assert "k0" in sig["dangling_parent"]                  # 子仍报悬空父
+
+
 def test_dangling_ref_caught_and_not_false_orphan(db_session):
     """深审 run(HIGH): gas depends_on basefee 但 basefee 没建页(onboard 常见)——
     ① basefee 必须进 dangling_refs;② gas 有出边, 不能被误报成 orphan。"""

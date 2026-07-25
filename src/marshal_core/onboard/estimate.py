@@ -5,6 +5,8 @@
 """
 from pathlib import Path
 
+from ._walk import _IGNORE_DIRS, _DOC_EXT
+
 _CHARS_PER_TOKEN = 4              # 粗略英文/代码 char→token 比
 _CODE_SAMPLE_FRACTION = 0.3       # 抽取只采样部分代码, 非全读
 _CONCEPTS_PER_MODULE = 3          # 每模块估产出的概念数
@@ -14,12 +16,9 @@ _FANOUT_MODULES_PER_CALL = 4      # 每次 agent 调用覆盖的模块数
 _USD_PER_1K_LOW = 0.003
 _USD_PER_1K_HIGH = 0.015
 
-_DOC_EXT = {".md", ".rst", ".txt", ".mdx"}
 _CODE_EXT = {".rs", ".py", ".js", ".ts", ".go", ".java", ".c", ".cpp", ".h"}
-# 排除 vendored/build/deps —— 否则真 repo 上估价虚高一个数量级(node/ 冒烟实测:
-# 不排除时 17.4M input tok / $55-275, 排除后 4.5M / $13-67)。
-_IGNORE_DIRS = {".git", "target", "node_modules", ".venv", "__pycache__",
-                "dist", "build", "vendor", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
+# _IGNORE_DIRS / _DOC_EXT 见 _walk.py(与 detect 共用): 排除 vendored/build/deps, 否则真
+# repo 估价虚高一个数量级(node/ 冒烟实测: 不排除 17.4M input tok/$55-275, 排除后 4.5M/$13-67)。
 
 
 def _scan(repo_root: str) -> dict:

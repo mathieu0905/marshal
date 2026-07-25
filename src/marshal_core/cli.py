@@ -393,10 +393,14 @@ def cmd_concept_list(a) -> int:
 
 
 def cmd_onboard_estimate(a) -> int:
+    if not Path(a.repo).is_dir():                # typo → $0 是误导性的成本门, 先挡住
+        return _fail(f"--repo not a directory: {a.repo}")
     return _emit(estimate_cost(a.repo))
 
 
 def cmd_onboard_detect(a) -> int:
+    if not Path(a.repo).is_dir():
+        return _fail(f"--repo not a directory: {a.repo}")
     return _emit(detect_repo(a.repo))
 
 
@@ -551,7 +555,8 @@ def build_parser() -> argparse.ArgumentParser:
     od.set_defaults(func=cmd_onboard_detect)
 
     orp = sub.add_parser("onboard-report")
-    orp.add_argument("--domain-pack", default="cowboy")
+    # 必填, 无默认: derive_db 是 overwrite-style, 默认 "cowboy" 会清零已策展的 pack(见 conftest 事故记录)
+    orp.add_argument("--domain-pack", required=True)
     orp.add_argument("--concepts-dir", required=True)
     orp.add_argument("--repo-root", action="append", default=[])
     orp.set_defaults(func=cmd_onboard_report)

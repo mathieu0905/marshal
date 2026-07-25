@@ -32,7 +32,8 @@ def tech_debt_signals(store: Store, domain_pack: str,
         if c.parent_id and c.parent_id not in ids:
             dangling_parent.append(c.id)
     for parent_id, n in child_count.items():
-        if n > over_fragment_threshold:
+        # parent_id in ids: 悬空(不存在的)父不算 over-split, 它已由 dangling_parent 覆盖
+        if n > over_fragment_threshold and parent_id in ids:
             over_fragmented.append(parent_id)
 
     return {

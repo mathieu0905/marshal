@@ -26,7 +26,11 @@ description: Use to onboard a repo's HEAD into a Marshal concept registry (Phase
    - 树要浅、节点数目标 20–40(§8 S1 验收)。
 
 4. **派生 + 报告:** `CLI onboard-report --domain-pack <p> --concepts-dir <out> --repo-root <repo>=<path>`
-   → 得技术债信号(unanchored_high / orphans / over_fragmented / dangling_parent)。
+   - **`<p>` 必须是本次 onboarding 的全新 pack 名, 与任何已策展 pack 明确不同(绝不用 `cowboy`)。**
+     `derive_db` 是 **overwrite-style**(重建前先删掉该 pack 的 concepts/edges/anchors)——
+     复用已策展的 pack 名会清零真实概念缓存。`--domain-pack` 现为必填、无默认, 正是为堵此坑。
+   - 得技术债信号:`unanchored_high` / `orphans` / `over_fragmented` / `dangling_parent` /
+     **`dangling_refs`(边指向尚未建页的概念 —— onboard 最常见的真债, 优先看)**。
 
 5. **人审接受门(硬门, §8 S1 + 深审 Q②):**
    - 概念树交**第二人或盲抽样**评:概念/父子/重要性正确率 **≥70%** 才算通过;记抽样比例 + 不接受项。

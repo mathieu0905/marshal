@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from marshal_core.cli import main
 
 PAGE = """---
@@ -45,3 +47,21 @@ def test_onboard_report_cli(tmp_path, capsys):
     assert rc == 0
     out = json.loads(capsys.readouterr().out)
     assert "gas" in out["unanchored_high"]          # 高重要性无锚定被拎出
+
+
+def test_onboard_report_requires_domain_pack(tmp_path):
+    # 无 --domain-pack: 必须硬失败, 不能默认 "cowboy" 清零已策展 pack
+    d = tmp_path / "concepts"
+    d.mkdir()
+    with pytest.raises(SystemExit):
+        main(["onboard-report", "--concepts-dir", str(d), "--repo-root", f"node={tmp_path}"])
+
+
+def test_onboard_estimate_bad_repo_fails(tmp_path, capsys):
+    rc = main(["onboard-estimate", "--repo", str(tmp_path / "nope")])
+    assert rc != 0                                  # typo 路径 → 非零, 不是 $0
+
+
+def test_onboard_detect_bad_repo_fails(tmp_path, capsys):
+    rc = main(["onboard-detect", "--repo", str(tmp_path / "nope")])
+    assert rc != 0
