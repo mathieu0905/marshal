@@ -1,0 +1,38 @@
+---
+name: plan-cost
+description: Use to get a NEUTRAL concept-budget cost picture for a plan before implementing it — maps the plan to concept touches, computes deterministic weighted cost + blast radius, and adds agent day-estimates. Never recommends do/don't. Triggers — "/plan-cost <plan-file>", "过一下这个 plan 的成本", "concept budget".
+---
+
+# Plan-Cost Skill — 概念预算(中性成本门)
+
+你是 plan-cost 的编排器。确定性成本外包给 `marshal_core.cli plan-cost`;plan→touches 的映射与工期估算是你(agent)的判断。
+
+## 前置
+    PY="${MARSHAL_HOME:-/home/ubuntu/workspace/marshal}/.venv/bin/python"
+    CLI() { "$PY" -m marshal_core.cli "$@"; }
+
+## 流程
+
+1. **读 plan + 当前概念树:** `CLI concept-tree --domain-pack <p> --concepts-dir <pack/concepts> --repo-root <r>=<path>`。
+
+2. **映射 plan → touches(你的判断):** 判断这份 plan 会**新增**哪些概念(op=add,给 importance +
+   est_scope small/medium/large 的**规模提示**)、**重定义**哪些既有概念(op=redefine)。写成
+   `touches.json`:`[{concept_id, op, importance?, est_scope?}]`。**宁少勿多**;拿不准的概念别硬塞。
+
+3. **算确定性成本:** `CLI plan-cost --domain-pack <p> --concepts-dir <...> --repo-root <...> --touches touches.json`
+   → 得 weighted_concept_cost / blast_radius / impacted_repos / highest_tier_touched / unknown_redefines。
+
+4. **补工期估算(你的判断,诚实标注):** 给 est_impl_days / est_debt_weeks,**必带 confidence + "这是估算"**,
+   不谎报精度(§6.3)。相对排序比绝对数值重要(深审 M-estimate)。
+
+5. **组装中性报告并呈给用户:** 摆出成本画像 + 你的工期估算。**绝不说"该做/不该做"**
+   (说话人2:Marshal 不知道你的预算,不替你决定)。只呈"这些改动触及最高 X 级、加权成本 N、
+   会波及 [blast_radius]、你可能要 D 天 + 未来 W 周还债——你自己判断值不值"。
+
+## 铁律
+- **中性**:verdict 恒 cost-only;不含 go/no-go。
+- **诚实分离**:确定的成本(CLI)与 agent 的工期猜测(你)分开标注,别混成一个"精确数字"。
+- **hinted_cost 是你标的、可被玩弄**:交叉核对——若某 `add` 的名字/描述明显对应一个大子系统
+  (如 payments/banking),别标 small;`grounded_cost`(redefine)才是不可 gaming 的锚。呈报时
+  **显式区分 grounded vs hinted**,别把 hinted 当既成事实。
+- **unknown_redefines 非空** → 提示用户:这些概念名在树里不存在(笔误?还是其实是 add?)。
