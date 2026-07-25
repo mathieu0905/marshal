@@ -14,6 +14,9 @@ from sqlalchemy.orm import sessionmaker
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
 from marshal_core.concept.sync import derive_db
+from marshal_core.onboard.estimate import estimate_cost
+from marshal_core.onboard.detect import detect_repo
+from marshal_core.onboard.report import tech_debt_signals
 from marshal_core.review import (
     aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
 )
@@ -389,6 +392,25 @@ def cmd_concept_list(a) -> int:
         s.close()
 
 
+def cmd_onboard_estimate(a) -> int:
+    return _emit(estimate_cost(a.repo))
+
+
+def cmd_onboard_detect(a) -> int:
+    return _emit(detect_repo(a.repo))
+
+
+def cmd_onboard_report(a) -> int:
+    roots = _parse_repo_roots(a.repo_root)     # S0 已有的 helper
+    s = _session()
+    try:
+        store = Store(s)
+        derive_db(a.concepts_dir, a.domain_pack, store, roots)   # 复用 S0 单向派生
+        return _emit(tech_debt_signals(store, a.domain_pack))
+    finally:
+        s.close()
+
+
 def cmd_setup(a) -> int:
     home = _marshal_home()
     skill_src = home / ".claude" / "skills" / "marshal"
@@ -519,6 +541,20 @@ def build_parser() -> argparse.ArgumentParser:
 
     st = sub.add_parser("setup")
     st.set_defaults(func=cmd_setup)
+
+    oe = sub.add_parser("onboard-estimate")
+    oe.add_argument("--repo", required=True)
+    oe.set_defaults(func=cmd_onboard_estimate)
+
+    od = sub.add_parser("onboard-detect")
+    od.add_argument("--repo", required=True)
+    od.set_defaults(func=cmd_onboard_detect)
+
+    orp = sub.add_parser("onboard-report")
+    orp.add_argument("--domain-pack", default="cowboy")
+    orp.add_argument("--concepts-dir", required=True)
+    orp.add_argument("--repo-root", action="append", default=[])
+    orp.set_defaults(func=cmd_onboard_report)
 
     for name, fn in (("concept-tree", cmd_concept_tree), ("concept-list", cmd_concept_list)):
         cp = sub.add_parser(name)
