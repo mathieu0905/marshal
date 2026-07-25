@@ -1,7 +1,7 @@
 """知识核读写薄封装。"""
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry
+from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Concept
 
 
 class Store:
@@ -106,3 +106,28 @@ class Store:
         esc.status = "closed"
         self.s.commit()
         return esc
+
+    def upsert_concept(self, **kw) -> Concept:
+        """派生写入 (单向 markdown→DB): 幂等 upsert 一个概念缓存行。"""
+        c = Concept(**kw)
+        self.s.merge(c)
+        self.s.commit()
+        return c
+
+    def list_concepts(self, domain_pack: str) -> list[Concept]:
+        stmt = select(Concept).where(Concept.domain_pack == domain_pack)
+        return list(self.s.scalars(stmt))
+
+    def concept_tree(self, domain_pack: str) -> list[dict]:
+        """按 parent_id 组装 primary-parent 树 (可 review 骨架)。返回根列表, 每节点
+        含 id/importance/confidence/doc_only/children。孤儿 (parent 不存在) 挂到根。"""
+        nodes = {c.id: {"id": c.id, "importance": c.importance,
+                        "confidence": c.confidence, "doc_only": c.doc_only,
+                        "children": []}
+                 for c in self.list_concepts(domain_pack)}
+        roots = []
+        for c in self.list_concepts(domain_pack):
+            node = nodes[c.id]
+            parent = nodes.get(c.parent_id) if c.parent_id else None
+            (parent["children"] if parent else roots).append(node)
+        return roots
