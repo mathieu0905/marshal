@@ -13,6 +13,7 @@ from sqlalchemy.orm import sessionmaker
 
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
+from marshal_core.concept.sync import derive_db
 from marshal_core.review import (
     aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
 )
@@ -353,6 +354,26 @@ def cmd_metrics(a) -> int:
         s.close()
 
 
+def _derive_into_session(a):
+    """CLI helper: 解析 --repo-root k=v 列表, 把 concepts-dir 派生进一个 session。"""
+    roots = dict(kv.split("=", 1) for kv in (a.repo_root or []))
+    s = _session()
+    store = Store(s)
+    derive_db(a.concepts_dir, a.domain_pack, store, roots)
+    return store
+
+
+def cmd_concept_tree(a) -> int:
+    return _emit(_derive_into_session(a).concept_tree(a.domain_pack))
+
+
+def cmd_concept_list(a) -> int:
+    store = _derive_into_session(a)
+    return _emit([{"id": c.id, "importance": c.importance, "confidence": c.confidence,
+                   "doc_only": c.doc_only, "parent_id": c.parent_id}
+                  for c in store.list_concepts(a.domain_pack)])
+
+
 def cmd_setup(a) -> int:
     home = _marshal_home()
     skill_src = home / ".claude" / "skills" / "marshal"
@@ -483,6 +504,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     st = sub.add_parser("setup")
     st.set_defaults(func=cmd_setup)
+
+    for name, fn in (("concept-tree", cmd_concept_tree), ("concept-list", cmd_concept_list)):
+        cp = sub.add_parser(name)
+        cp.add_argument("--domain-pack", default="cowboy")
+        cp.add_argument("--concepts-dir", required=True)
+        cp.add_argument("--repo-root", action="append", default=[],
+                        help="repo=abs_path (可多次); anchor 校验用")
+        cp.set_defaults(func=fn)
 
     return p
 
