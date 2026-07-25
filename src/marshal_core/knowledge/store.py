@@ -1,7 +1,7 @@
 """知识核读写薄封装。"""
-from sqlalchemy import select, func
+from sqlalchemy import select, func, or_
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Concept
+from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Concept, ConceptEdge
 
 
 class Store:
@@ -151,3 +151,12 @@ class Store:
             else:
                 roots.append(node)
         return roots
+
+    def list_edges(self, concept_ids: set[str]) -> list[ConceptEdge]:
+        """返回**任一端**落在 concept_ids 内的边。深审 run 结论:必须包含悬空引用
+        (src 在但 dst 是未建概念)—— 否则 report 既漏"悬空引用"信号, 又把"只依赖了尚未
+        建立的概念"的节点误报成 orphan(它的唯一边被过滤掉了)。"""
+        stmt = select(ConceptEdge).where(
+            or_(ConceptEdge.src_id.in_(concept_ids), ConceptEdge.dst_id.in_(concept_ids))
+        )
+        return list(self.s.scalars(stmt))
