@@ -1,6 +1,6 @@
 """知识核持久模型 — schema 领域无关 (domain/severity 取值由领域包定义)。"""
 from datetime import datetime, timezone
-from sqlalchemy import String, Integer, JSON, DateTime
+from sqlalchemy import String, Integer, JSON, DateTime, Boolean, Float
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -60,3 +60,51 @@ class EscapeRegistry(Base):
     postmortem_ref: Mapped[str | None] = mapped_column(String, nullable=True)
     spawned_check: Mapped[str | None] = mapped_column(String, nullable=True)
     status: Mapped[str] = mapped_column(String, default="open")
+
+
+class Concept(Base):
+    """概念节点缓存 (真相源是 marshal_pack_*/concepts/*.md; 此表单向派生, 只读)。"""
+    __tablename__ = "concept"
+    id: Mapped[str] = mapped_column(String, primary_key=True)          # = concept_id
+    domain_pack: Mapped[str] = mapped_column(String, index=True)
+    parent_id: Mapped[str] = mapped_column(String, default="")         # primary_parent; 根为 ""
+    importance: Mapped[str] = mapped_column(String, default="low")
+    status: Mapped[str] = mapped_column(String, default="draft")
+    confidence: Mapped[float] = mapped_column(Float, default=0.0)
+    doc_only: Mapped[bool] = mapped_column(Boolean, default=True)      # H1: 无代码锚定
+    definition: Mapped[str] = mapped_column(String, default="")
+
+
+class ConceptEdge(Base):
+    """非树关系 (part_of 多归属 / depends_on 依赖 / conflicts_with)。"""
+    __tablename__ = "concept_edge"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    src_id: Mapped[str] = mapped_column(String, index=True)
+    dst_id: Mapped[str] = mapped_column(String, index=True)
+    kind: Mapped[str] = mapped_column(String)
+
+
+class ConceptAnchorRow(Base):
+    """代码锚点 (H1): 概念声称由某符号实现; verified 由 verify_anchors 回查代码得出。"""
+    __tablename__ = "concept_anchor"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    concept_id: Mapped[str] = mapped_column(String, index=True)
+    repo: Mapped[str] = mapped_column(String)
+    path: Mapped[str] = mapped_column(String)
+    symbol: Mapped[str] = mapped_column(String)
+    kind: Mapped[str] = mapped_column(String, default="implements")
+    verified: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class ConceptChange(Base):
+    """概念树每次变更的 provenance (P3 的宝贵数据)。S0 只记 op=add。"""
+    __tablename__ = "concept_change"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    change_ref: Mapped[str] = mapped_column(String, index=True)
+    op: Mapped[str] = mapped_column(String)     # add|redefine|move|merge|split|rename|deprecate
+    concept_id: Mapped[str] = mapped_column(String, index=True)
+    before: Mapped[dict] = mapped_column(JSON, default=dict)
+    after: Mapped[dict] = mapped_column(JSON, default=dict)
+    rationale: Mapped[str] = mapped_column(String, default="")
+    actor: Mapped[str] = mapped_column(String, default="system")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
