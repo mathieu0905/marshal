@@ -14,6 +14,9 @@ from sqlalchemy.orm import sessionmaker
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
 from marshal_core.concept.sync import derive_db
+from marshal_core.onboard.estimate import estimate_cost
+from marshal_core.onboard.detect import detect_repo
+from marshal_core.onboard.report import tech_debt_signals
 from marshal_core.review import (
     aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
 )
@@ -365,8 +368,20 @@ def _parse_repo_roots(specs):
     return roots
 
 
-def cmd_concept_tree(a) -> int:
+def _require_derive_paths(a):
+    """Validate derive-command path inputs (concepts-dir + user-provided repo-root
+    paths). Typo → hard fail, never a silently-wrong signal (Marshal N1). Returns roots."""
+    if not Path(a.concepts_dir).is_dir():
+        raise ValueError(f"--concepts-dir not a directory: {a.concepts_dir}")
     roots = _parse_repo_roots(a.repo_root)
+    for repo, path in roots.items():
+        if not Path(path).is_dir():
+            raise ValueError(f"--repo-root path not a directory: {repo}={path}")
+    return roots
+
+
+def cmd_concept_tree(a) -> int:
+    roots = _require_derive_paths(a)           # fail-fast on typo'd paths (Marshal N1)
     s = _session()
     try:
         store = Store(s)
@@ -377,7 +392,7 @@ def cmd_concept_tree(a) -> int:
 
 
 def cmd_concept_list(a) -> int:
-    roots = _parse_repo_roots(a.repo_root)
+    roots = _require_derive_paths(a)           # fail-fast on typo'd paths (Marshal N1)
     s = _session()
     try:
         store = Store(s)
@@ -385,6 +400,31 @@ def cmd_concept_list(a) -> int:
         return _emit([{"id": c.id, "importance": c.importance, "confidence": c.confidence,
                        "doc_only": c.doc_only, "parent_id": c.parent_id}
                       for c in store.list_concepts(a.domain_pack)])
+    finally:
+        s.close()
+
+
+def cmd_onboard_estimate(a) -> int:
+    if not Path(a.repo).is_dir():                # typo → $0 是误导性的成本门, 先挡住
+        return _fail(f"--repo not a directory: {a.repo}")
+    return _emit(estimate_cost(a.repo))
+
+
+def cmd_onboard_detect(a) -> int:
+    if not Path(a.repo).is_dir():
+        return _fail(f"--repo not a directory: {a.repo}")
+    return _emit(detect_repo(a.repo))
+
+
+def cmd_onboard_report(a) -> int:
+    # fail-fast on typo'd paths (Marshal N1): typo 的 concepts-dir/repo-root 会让 verify_anchors
+    # 全数失败 → 每个高重要性概念被误报成 unanchored_high(报告的头号债信号被静默反转)。
+    roots = _require_derive_paths(a)
+    s = _session()
+    try:
+        store = Store(s)
+        derive_db(a.concepts_dir, a.domain_pack, store, roots)   # 复用 S0 单向派生
+        return _emit(tech_debt_signals(store, a.domain_pack))
     finally:
         s.close()
 
@@ -519,6 +559,21 @@ def build_parser() -> argparse.ArgumentParser:
 
     st = sub.add_parser("setup")
     st.set_defaults(func=cmd_setup)
+
+    oe = sub.add_parser("onboard-estimate")
+    oe.add_argument("--repo", required=True)
+    oe.set_defaults(func=cmd_onboard_estimate)
+
+    od = sub.add_parser("onboard-detect")
+    od.add_argument("--repo", required=True)
+    od.set_defaults(func=cmd_onboard_detect)
+
+    orp = sub.add_parser("onboard-report")
+    # 必填, 无默认: derive_db 是 overwrite-style, 默认 "cowboy" 会清零已策展的 pack(见 conftest 事故记录)
+    orp.add_argument("--domain-pack", required=True)
+    orp.add_argument("--concepts-dir", required=True)
+    orp.add_argument("--repo-root", action="append", default=[])
+    orp.set_defaults(func=cmd_onboard_report)
 
     for name, fn in (("concept-tree", cmd_concept_tree), ("concept-list", cmd_concept_list)):
         cp = sub.add_parser(name)
