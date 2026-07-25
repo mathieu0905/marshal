@@ -1,7 +1,7 @@
 """知识核读写薄封装。"""
 from sqlalchemy import select, func, or_
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Concept, ConceptEdge
+from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Concept, ConceptEdge, ConceptAnchorRow
 
 
 class Store:
@@ -159,4 +159,8 @@ class Store:
         stmt = select(ConceptEdge).where(
             or_(ConceptEdge.src_id.in_(concept_ids), ConceptEdge.dst_id.in_(concept_ids))
         )
+        return list(self.s.scalars(stmt))
+
+    def list_anchors(self, concept_ids: set[str]) -> list[ConceptAnchorRow]:
+        stmt = select(ConceptAnchorRow).where(ConceptAnchorRow.concept_id.in_(concept_ids))
         return list(self.s.scalars(stmt))
