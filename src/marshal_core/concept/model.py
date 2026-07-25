@@ -39,7 +39,10 @@ def parse_concept_page(text: str) -> ConceptPage:
     概念页格式错抛 ValueError(是 typo, 不可静默吞)。"""
     if not text.startswith("---"):
         raise NotAConceptPage("not a concept page: missing YAML frontmatter (---)")
-    _, fm_raw, body = text.split("---", 2)
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        raise ValueError("malformed concept page: unterminated frontmatter (no closing ---)")
+    _, fm_raw, body = parts
     fm = yaml.safe_load(fm_raw) or {}
 
     concept_id = fm.get("concept_id")

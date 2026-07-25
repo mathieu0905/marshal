@@ -354,24 +354,39 @@ def cmd_metrics(a) -> int:
         s.close()
 
 
-def _derive_into_session(a):
-    """CLI helper: 解析 --repo-root k=v 列表, 把 concepts-dir 派生进一个 session。"""
-    roots = dict(kv.split("=", 1) for kv in (a.repo_root or []))
-    s = _session()
-    store = Store(s)
-    derive_db(a.concepts_dir, a.domain_pack, store, roots)
-    return store
+def _parse_repo_roots(specs):
+    """--repo-root repo=path 列表 → dict;缺 '=' 给清晰报错 (与其它命令风格一致)。"""
+    roots = {}
+    for kv in (specs or []):
+        if "=" not in kv:
+            raise ValueError(f"--repo-root expects repo=path, got: {kv}")
+        repo, path = kv.split("=", 1)
+        roots[repo] = path
+    return roots
 
 
 def cmd_concept_tree(a) -> int:
-    return _emit(_derive_into_session(a).concept_tree(a.domain_pack))
+    roots = _parse_repo_roots(a.repo_root)
+    s = _session()
+    try:
+        store = Store(s)
+        derive_db(a.concepts_dir, a.domain_pack, store, roots)
+        return _emit(store.concept_tree(a.domain_pack))
+    finally:
+        s.close()
 
 
 def cmd_concept_list(a) -> int:
-    store = _derive_into_session(a)
-    return _emit([{"id": c.id, "importance": c.importance, "confidence": c.confidence,
-                   "doc_only": c.doc_only, "parent_id": c.parent_id}
-                  for c in store.list_concepts(a.domain_pack)])
+    roots = _parse_repo_roots(a.repo_root)
+    s = _session()
+    try:
+        store = Store(s)
+        derive_db(a.concepts_dir, a.domain_pack, store, roots)
+        return _emit([{"id": c.id, "importance": c.importance, "confidence": c.confidence,
+                       "doc_only": c.doc_only, "parent_id": c.parent_id}
+                      for c in store.list_concepts(a.domain_pack)])
+    finally:
+        s.close()
 
 
 def cmd_setup(a) -> int:

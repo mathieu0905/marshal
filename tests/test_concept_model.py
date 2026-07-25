@@ -44,6 +44,20 @@ def test_parse_rejects_missing_concept_id():
         assert "concept_id" in str(e)
 
 
+def test_unterminated_frontmatter_raises_plain_valueerror():
+    """无闭合 --- 的页给清晰 ValueError (被 derive 当 malformed 收集), 而非 NotAConceptPage
+    (会被静默跳过) 或 cryptic unpack 错。"""
+    from marshal_core.concept.model import NotAConceptPage
+    bad = "---\ntype: concept\nconcept_id: x\nimportance: low\nno closing fence\n"
+    try:
+        parse_concept_page(bad)
+        assert False, "should have raised"
+    except NotAConceptPage:
+        assert False, "unterminated frontmatter must be malformed (ValueError), not skippable"
+    except ValueError as e:
+        assert "unterminated frontmatter" in str(e)
+
+
 def test_malformed_anchor_raises_valueerror_not_keyerror():
     """深审 run 750 bug C: anchor 缺字段必须抛 ValueError (可被 derive 收集), 不是
     KeyError (会冒泡令整批 derive 崩)。"""

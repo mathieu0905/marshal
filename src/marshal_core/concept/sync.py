@@ -23,12 +23,11 @@ def derive_db(concepts_dir, domain_pack: str, store: Store,
     if known:
         s.execute(delete(ConceptEdge).where(ConceptEdge.src_id.in_(known)))
         s.execute(delete(ConceptAnchorRow).where(ConceptAnchorRow.concept_id.in_(known)))
-    s.commit()
 
     count = 0
     malformed: list[str] = []
     for path in sorted(Path(concepts_dir).glob("*.md")):
-        text = path.read_text(encoding="utf-8")
+        text = path.read_text(encoding="utf-8", errors="ignore")
         try:
             page = parse_concept_page(text)
         except NotAConceptPage:
