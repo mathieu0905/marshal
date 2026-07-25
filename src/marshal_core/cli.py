@@ -13,6 +13,7 @@ from sqlalchemy.orm import sessionmaker
 
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
+from marshal_core.concept.sync import derive_db
 from marshal_core.review import (
     aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
 )
@@ -353,6 +354,41 @@ def cmd_metrics(a) -> int:
         s.close()
 
 
+def _parse_repo_roots(specs):
+    """--repo-root repo=path 列表 → dict;缺 '=' 给清晰报错 (与其它命令风格一致)。"""
+    roots = {}
+    for kv in (specs or []):
+        if "=" not in kv:
+            raise ValueError(f"--repo-root expects repo=path, got: {kv}")
+        repo, path = kv.split("=", 1)
+        roots[repo] = path
+    return roots
+
+
+def cmd_concept_tree(a) -> int:
+    roots = _parse_repo_roots(a.repo_root)
+    s = _session()
+    try:
+        store = Store(s)
+        derive_db(a.concepts_dir, a.domain_pack, store, roots)
+        return _emit(store.concept_tree(a.domain_pack))
+    finally:
+        s.close()
+
+
+def cmd_concept_list(a) -> int:
+    roots = _parse_repo_roots(a.repo_root)
+    s = _session()
+    try:
+        store = Store(s)
+        derive_db(a.concepts_dir, a.domain_pack, store, roots)
+        return _emit([{"id": c.id, "importance": c.importance, "confidence": c.confidence,
+                       "doc_only": c.doc_only, "parent_id": c.parent_id}
+                      for c in store.list_concepts(a.domain_pack)])
+    finally:
+        s.close()
+
+
 def cmd_setup(a) -> int:
     home = _marshal_home()
     skill_src = home / ".claude" / "skills" / "marshal"
@@ -483,6 +519,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     st = sub.add_parser("setup")
     st.set_defaults(func=cmd_setup)
+
+    for name, fn in (("concept-tree", cmd_concept_tree), ("concept-list", cmd_concept_list)):
+        cp = sub.add_parser(name)
+        cp.add_argument("--domain-pack", default="cowboy")
+        cp.add_argument("--concepts-dir", required=True)
+        cp.add_argument("--repo-root", action="append", default=[],
+                        help="repo=abs_path (可多次); anchor 校验用")
+        cp.set_defaults(func=fn)
 
     return p
 

@@ -1,7 +1,7 @@
 """知识核读写薄封装。"""
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry
+from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Concept
 
 
 class Store:
@@ -106,3 +106,48 @@ class Store:
         esc.status = "closed"
         self.s.commit()
         return esc
+
+    def upsert_concept(self, **kw) -> Concept:
+        """派生写入 (单向 markdown→DB): 幂等 upsert 一个概念缓存行。"""
+        c = Concept(**kw)
+        self.s.merge(c)
+        self.s.commit()
+        return c
+
+    def list_concepts(self, domain_pack: str) -> list[Concept]:
+        stmt = select(Concept).where(Concept.domain_pack == domain_pack)
+        return list(self.s.scalars(stmt))
+
+    def concept_tree(self, domain_pack: str) -> list[dict]:
+        """按 parent_id 组装 primary-parent 树 (可 review 骨架)。返回根列表, 每节点
+        含 id/importance/confidence/doc_only/children。孤儿 (parent 不存在) 挂到根;
+        parent 环成员 (self-parent / 互指) 亦挂到根暴露, 绝不静默丢弃 (人审 typo 常见),
+        且不构造循环子引用 (否则 flatten / json.dumps 会无限循环)。"""
+        concepts = self.list_concepts(domain_pack)
+        nodes = {c.id: {"id": c.id, "importance": c.importance,
+                        "confidence": c.confidence, "doc_only": c.doc_only,
+                        "children": []}
+                 for c in concepts}
+        parent_of = {c.id: c.parent_id for c in concepts}
+
+        def _reaches_cycle(start: str) -> bool:
+            # 顺 parent 链上溯; 重访即环 (含 self-parent 与祖先环)。缺失的 parent 视为终点。
+            seen: set[str] = set()
+            cur = start
+            while cur and cur in nodes:
+                if cur in seen:
+                    return True
+                seen.add(cur)
+                cur = parent_of.get(cur, "")
+            return False
+
+        roots = []
+        for c in concepts:
+            node = nodes[c.id]
+            # 只在 parent 存在且此链无环时嵌套; 否则 (孤儿 / 环成员 / 环下后代) 挂到根暴露。
+            parent = nodes.get(c.parent_id) if c.parent_id else None
+            if parent is not None and not _reaches_cycle(c.id):
+                parent["children"].append(node)
+            else:
+                roots.append(node)
+        return roots
