@@ -65,3 +65,20 @@ def test_onboard_estimate_bad_repo_fails(tmp_path, capsys):
 def test_onboard_detect_bad_repo_fails(tmp_path, capsys):
     rc = main(["onboard-detect", "--repo", str(tmp_path / "nope")])
     assert rc != 0
+
+
+def test_onboard_report_bad_repo_root_fails(tmp_path, capsys):
+    # typo 的 repo-root → verify_anchors 全灭 → 假 unanchored_high;必须 fail-fast, 不出报告
+    concepts = tmp_path / "concepts"
+    concepts.mkdir()
+    (concepts / "gas.md").write_text(PAGE)
+    rc = main(["onboard-report", "--domain-pack", "probe", "--concepts-dir", str(concepts),
+               "--repo-root", "node=/does/not/exist"])
+    assert rc != 0
+    assert "unanchored_high" not in capsys.readouterr().out   # 没有静默吐出假报告
+
+
+def test_onboard_report_bad_concepts_dir_fails(tmp_path, capsys):
+    rc = main(["onboard-report", "--domain-pack", "probe",
+               "--concepts-dir", str(tmp_path / "nope"), "--repo-root", f"node={tmp_path}"])
+    assert rc != 0

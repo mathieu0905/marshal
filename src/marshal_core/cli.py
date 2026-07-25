@@ -405,7 +405,14 @@ def cmd_onboard_detect(a) -> int:
 
 
 def cmd_onboard_report(a) -> int:
+    # 先验证路径(在开 DB 前 fail-fast): typo 的 concepts-dir/repo-root 会让 verify_anchors
+    # 全数失败 → 每个高重要性概念被误报成 unanchored_high(报告的头号债信号被静默反转)。
+    if not Path(a.concepts_dir).is_dir():
+        return _fail(f"--concepts-dir not a directory: {a.concepts_dir}")
     roots = _parse_repo_roots(a.repo_root)     # S0 已有的 helper
+    for repo, path in roots.items():           # 只校验用户实际传入的 repo-root
+        if not Path(path).is_dir():
+            return _fail(f"--repo-root path not a directory: {repo}={path}")
     s = _session()
     try:
         store = Store(s)
