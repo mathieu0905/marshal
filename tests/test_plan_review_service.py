@@ -51,6 +51,15 @@ def test_plan_review_bad_concepts_dir_raises(tmp_path):
         assert "concepts-dir" in str(e)
 
 
+def test_plan_review_malformed_touch_raises(tmp_path):
+    concepts, _ = _setup(tmp_path)
+    try:
+        plan_review(str(concepts), {}, "probe", [{"concept_id": "x"}])
+        assert False, "should raise"
+    except ValueError as e:
+        assert "op" in str(e)
+
+
 def test_plan_review_does_not_mutate_shared_db(tmp_path, monkeypatch):
     """F1/S2-A: 只读查询绝不碰共享 DB。"""
     from sqlalchemy import create_engine
