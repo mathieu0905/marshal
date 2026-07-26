@@ -4,13 +4,13 @@ concept_id: dual-gas-model
 parent: execution
 importance: constitutional
 part_of: [economics]
-depends_on: [basefee]
+depends_on: [gas, basefee]
 anchors:
   - {repo: node, path: execution/src/gas.rs, symbol: GasReport, kind: implements}
-  - {repo: node, path: execution/src/basefee.rs, symbol: BLOCK_CYCLES_TARGET, kind: implements}
+  - {repo: node, path: execution/src/basefee.rs, symbol: DualBasefee, kind: implements}
 spec_refs: [CIP-3]
 status: authoritative
-last_updated: 2026-07-25
+last_updated: 2026-07-26
 ---
 
 # 双计量 Gas 模型(Dual-Metered Gas）
