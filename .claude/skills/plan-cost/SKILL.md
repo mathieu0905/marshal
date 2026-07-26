@@ -7,6 +7,10 @@ description: Use to get a NEUTRAL concept-budget cost picture for a plan before 
 
 你是 plan-cost 的编排器。确定性成本外包给 `marshal_core.cli plan-cost`;plan→touches 的映射与工期估算是你(agent)的判断。
 
+> **MCP 形态(S3):** 同一确定性预算也暴露为 MCP tool `marshal_plan_review`
+> (`python -m marshal_core.mcp_server`),供 Codex / Opencode 等**非 Claude-Code** agent
+> 直接调用。Claude Code 里用本 skill(CLI)或 MCP tool 均可, 二者走同一 `plan_review` 核心。
+
 ## 前置
     PY="${MARSHAL_HOME:-/home/ubuntu/workspace/marshal}/.venv/bin/python"
     CLI() { "$PY" -m marshal_core.cli "$@"; }

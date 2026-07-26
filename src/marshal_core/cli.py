@@ -13,11 +13,10 @@ from sqlalchemy.orm import sessionmaker
 
 from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
-from marshal_core.concept.sync import derive_db
 from marshal_core.onboard.estimate import estimate_cost
 from marshal_core.onboard.detect import detect_repo
 from marshal_core.onboard.report import tech_debt_signals
-from marshal_core.plangate.budget import concept_budget
+from marshal_core.plangate.service import plan_review, isolated_store
 from marshal_core.review import (
     aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
 )
@@ -381,37 +380,18 @@ def _require_derive_paths(a):
     return roots
 
 
-def _readonly_derive_store(a):
-    """只读 derive: 校验路径后派生进**隔离内存 DB**, 绝不 mutate 共享 marshal.db。
-    concept-tree/list/onboard-report/plan-cost 都是只读查询(印树/信号/预算), 不需持久化 ——
-    统一隔离, 彻底根除 clobber class(default cowboy + 覆盖式 derive 会清空 curated 缓存;
-    深审 F1: concept-tree/list 曾残留此洞, onboard-report 靠 --domain-pack required 缓解,
-    plan-cost 已隔离 —— 现全部走同一隔离路径)。返回 (session, store); 调用方负责 close。"""
-    roots = _require_derive_paths(a)           # fail-fast on typo'd paths (Marshal N1)
-    eng = create_engine("sqlite:///:memory:")
-    Base.metadata.create_all(eng)
-    s = sessionmaker(bind=eng)()
-    store = Store(s)
-    derive_db(a.concepts_dir, a.domain_pack, store, roots)
-    return s, store
-
-
 def cmd_concept_tree(a) -> int:
-    s, store = _readonly_derive_store(a)
-    try:
+    roots = _require_derive_paths(a)           # fail-fast on typo'd paths (Marshal N1)
+    with isolated_store(a.concepts_dir, a.domain_pack, roots) as store:
         return _emit(store.concept_tree(a.domain_pack))
-    finally:
-        s.close()
 
 
 def cmd_concept_list(a) -> int:
-    s, store = _readonly_derive_store(a)
-    try:
+    roots = _require_derive_paths(a)
+    with isolated_store(a.concepts_dir, a.domain_pack, roots) as store:
         return _emit([{"id": c.id, "importance": c.importance, "confidence": c.confidence,
                        "doc_only": c.doc_only, "parent_id": c.parent_id}
                       for c in store.list_concepts(a.domain_pack)])
-    finally:
-        s.close()
 
 
 def cmd_onboard_estimate(a) -> int:
@@ -429,12 +409,10 @@ def cmd_onboard_detect(a) -> int:
 def cmd_onboard_report(a) -> int:
     # 只读信号报告 → 隔离内存 DB(深审 F1: 不 mutate 共享缓存)。路径 typo 仍 fail-fast:
     # typo 的 concepts-dir/repo-root 会让 verify_anchors 全失败 → 每个高重要性概念被误报成
-    # unanchored_high(报告头号债信号被静默反转)—— _readonly_derive_store 已含该校验。
-    s, store = _readonly_derive_store(a)
-    try:
+    # unanchored_high(报告头号债信号被静默反转)—— _require_derive_paths 已含该校验。
+    roots = _require_derive_paths(a)
+    with isolated_store(a.concepts_dir, a.domain_pack, roots) as store:
         return _emit(tech_debt_signals(store, a.domain_pack))
-    finally:
-        s.close()
 
 
 def cmd_plan_cost(a) -> int:
@@ -442,12 +420,8 @@ def cmd_plan_cost(a) -> int:
         return _fail(f"--touches not a file: {a.touches}")
     with open(a.touches, encoding="utf-8") as f:
         touches = json.load(f)
-    # 只读成本查询 → 隔离内存 DB(深审 S2-A/F1),绝不 mutate 共享缓存。
-    s, store = _readonly_derive_store(a)
-    try:
-        return _emit(concept_budget(store, a.domain_pack, touches))
-    finally:
-        s.close()
+    return _emit(plan_review(a.concepts_dir, _parse_repo_roots(a.repo_root),
+                             a.domain_pack, touches))
 
 
 def cmd_setup(a) -> int:
