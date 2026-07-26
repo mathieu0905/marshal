@@ -17,7 +17,7 @@ from marshal_core.concept.sync import derive_db
 from marshal_core.onboard.estimate import estimate_cost
 from marshal_core.onboard.detect import detect_repo
 from marshal_core.onboard.report import tech_debt_signals
-from marshal_core.plangate.budget import concept_budget
+from marshal_core.plangate.service import plan_review
 from marshal_core.review import (
     aggregate_review, assign_refute_lenses, ratchet_lenses, verify_findings,
 )
@@ -442,12 +442,8 @@ def cmd_plan_cost(a) -> int:
         return _fail(f"--touches not a file: {a.touches}")
     with open(a.touches, encoding="utf-8") as f:
         touches = json.load(f)
-    # 只读成本查询 → 隔离内存 DB(深审 S2-A/F1),绝不 mutate 共享缓存。
-    s, store = _readonly_derive_store(a)
-    try:
-        return _emit(concept_budget(store, a.domain_pack, touches))
-    finally:
-        s.close()
+    return _emit(plan_review(a.concepts_dir, _parse_repo_roots(a.repo_root),
+                             a.domain_pack, touches))
 
 
 def cmd_setup(a) -> int:
