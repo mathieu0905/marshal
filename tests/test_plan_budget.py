@@ -1,3 +1,5 @@
+import signal
+
 from marshal_core.knowledge.store import Store
 from marshal_core.knowledge.models import ConceptAnchorRow
 from marshal_core.plangate.budget import concept_budget
@@ -73,6 +75,53 @@ def test_blast_radius_is_transitive(db_session):
     db_session.commit()
     b = concept_budget(store, "c", [{"concept_id": "gas", "op": "redefine"}])
     assert b["blast_radius"] == ["A", "B"]     # 传递闭包, 不只一跳
+
+
+def test_subtree_size_cycle_safe(db_session):
+    """C1: parent_id 成环 (X↔Y) 时 subtree_size 不能无限循环挂死。用 SIGALRM 兜底,
+    环若未防护会 hang → alarm 触发 → 测试失败而非拖死整套。"""
+    store = Store(db_session)
+    store.upsert_concept(id="X", domain_pack="c", parent_id="Y", importance="high",
+                         status="a", confidence=0.5, doc_only=True, definition="")
+    store.upsert_concept(id="Y", domain_pack="c", parent_id="X", importance="high",
+                         status="a", confidence=0.5, doc_only=True, definition="")
+
+    def _timeout(signum, frame):
+        raise AssertionError("subtree_size hung on a parent cycle (C1 regression)")
+
+    old = signal.signal(signal.SIGALRM, _timeout)
+    signal.alarm(5)
+    try:
+        b = concept_budget(store, "c", [{"concept_id": "X", "op": "redefine"}])
+    finally:
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, old)
+    # 返回即证明未 hang;子树计数被去重, 不会因环重复累加。
+    row = next(r for r in b["redefined_concepts"] if r["concept_id"] == "X")
+    assert row["subtree_size"] == 1
+
+
+def test_unknown_add_importance_does_not_crash(db_session):
+    """I1: add 带一个不在 tier 表里的 importance 不能让 _higher_tier 抛 ValueError。"""
+    store = Store(db_session)
+    _seed(store, db_session)
+    b = concept_budget(store, "c", [
+        {"concept_id": "weird", "op": "add", "importance": "bogus", "est_scope": "small"},
+    ])
+    names = {n["concept_id"] for n in b["new_concepts"]}
+    assert "weird" in names
+    # 未知 tier 不参与抬高, highest 维持基线 low, 且不崩。
+    assert b["highest_tier_touched"] == "low"
+
+
+def test_unknown_op_goes_to_unknown_ops(db_session):
+    """M1: 未知 op 归入 unknown_ops (与 unknown_redefines 分开), 且出现在返回 dict。"""
+    store = Store(db_session)
+    _seed(store, db_session)
+    b = concept_budget(store, "c", [{"concept_id": "gas", "op": "frobnicate"}])
+    assert b["unknown_ops"] == ["gas"]
+    assert b["unknown_redefines"] == []          # 未知 op ≠ 未知 redefine
+    assert b["redefined_concepts"] == []
 
 
 def test_list_anchors_filters_by_concept_ids(db_session):

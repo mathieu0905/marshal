@@ -16,10 +16,11 @@ description: Use to get a NEUTRAL concept-budget cost picture for a plan before 
 1. **读 plan + 当前概念树:** `CLI concept-tree --domain-pack <p> --concepts-dir <pack/concepts> --repo-root <r>=<path>`。
 
 2. **映射 plan → touches(你的判断):** 判断这份 plan 会**新增**哪些概念(op=add,给 importance +
-   est_scope small/medium/large 的**规模提示**)、**重定义**哪些既有概念(op=redefine)。写成
-   `touches.json`:`[{concept_id, op, importance?, est_scope?}]`。**宁少勿多**;拿不准的概念别硬塞。
+   est_scope small/medium/large 的**规模提示**)、**重定义**哪些既有概念(op=redefine)。写到一个
+   **临时/scratch 路径**(别污染 repo):`TOUCHES="${TMPDIR:-/tmp}/plan-cost-touches.$$.json"`,
+   内容 `[{concept_id, op, importance?, est_scope?}]`。**宁少勿多**;拿不准的概念别硬塞。
 
-3. **算确定性成本:** `CLI plan-cost --domain-pack <p> --concepts-dir <...> --repo-root <...> --touches touches.json`
+3. **算确定性成本:** `CLI plan-cost --domain-pack <p> --concepts-dir <...> --repo-root <...> --touches "$TOUCHES"`
    → 得 weighted_concept_cost / blast_radius / impacted_repos / highest_tier_touched / unknown_redefines。
 
 4. **补工期估算(你的判断,诚实标注):** 给 est_impl_days / est_debt_weeks,**必带 confidence + "这是估算"**,

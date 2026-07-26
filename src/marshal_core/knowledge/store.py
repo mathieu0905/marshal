@@ -162,5 +162,7 @@ class Store:
         return list(self.s.scalars(stmt))
 
     def list_anchors(self, concept_ids: set[str]) -> list[ConceptAnchorRow]:
+        """返回 concept_id 落在 concept_ids 内的全部锚点行 (verified 与否都含);
+        空集合返回空列表。用于把概念映射回其代码/文档落点 (repo/path/symbol)。"""
         stmt = select(ConceptAnchorRow).where(ConceptAnchorRow.concept_id.in_(concept_ids))
         return list(self.s.scalars(stmt))
