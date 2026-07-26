@@ -76,3 +76,31 @@ def test_concept_list_bad_concepts_dir_fails(tmp_path, capsys):
     rc = main(["concept-list", "--domain-pack", "cowboy",
                "--concepts-dir", str(tmp_path / "nope"), "--repo-root", f"node={tmp_path}"])
     assert rc != 0
+
+
+def test_concept_tree_does_not_mutate_shared_db(tmp_path):
+    """深审 F1: concept-tree 是只读查询, 绝不能碰共享 DB。即使 --domain-pack cowboy +
+    一个不同的 concepts-dir, 共享 DB 里已 curated 的 cowboy 概念也必须存活(修前会被 clobber)。"""
+    import os
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+    from marshal_core.knowledge.models import Base
+    from marshal_core.knowledge.store import Store
+    url = os.environ["MARSHAL_DB"]               # autouse fixture 指向 per-test tmp db
+    eng = create_engine(url)
+    Base.metadata.create_all(eng)
+    s = sessionmaker(bind=eng)()
+    Store(s).upsert_concept(id="curated_marker", domain_pack="cowboy", parent_id="",
+                            importance="high", status="a", confidence=0.5,
+                            doc_only=True, definition="curated")
+    s.close()
+
+    concepts, repo = _setup(tmp_path)            # concepts-dir 无 curated_marker
+    rc = main(["concept-tree", "--domain-pack", "cowboy", "--concepts-dir", str(concepts),
+               "--repo-root", f"node={repo}"])
+    assert rc == 0
+
+    s2 = sessionmaker(bind=create_engine(url))()
+    ids = {c.id for c in Store(s2).list_concepts("cowboy")}
+    s2.close()
+    assert "curated_marker" in ids               # 共享 DB 未被 concept-tree 覆盖
