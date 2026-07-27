@@ -102,6 +102,19 @@ _ECON_INVARIANTS = [
                  location_path="execution/src/econ_invariants.rs",
                  location_test="econ_invariants::econ_tx_fee_conservation", severity="high",
                  run_command=["cargo", "test", "-p", "cowboy-execution", "econ_invariants::econ_tx_fee_conservation", "--", "--exact"]),
+    # Ratchet esc-20260727-gas-waterfall-alias-mint (escaped bugs H2/H-2, surfaced+fixed
+    # by node #1142): execute_transaction snapshots the sender/actor BEFORE the fee
+    # waterfall and writes it back after; a tier (card->actor->owner) that writes an
+    # account ALIASING that snapshot has its debit erased while burn+tip carry it (CBY
+    # mint). Confirmed: actor==0x16 (token-card) and UseOwnerBalance owner==tx.from.
+    # Property: a full execute_transaction gas cascade conserves Σ CBY == burn+tip whether
+    # the sponsor aliases the sender or is a third party. proptest! macro → `-- --exact`
+    # on the full module path.
+    InvariantDef(id="econ.fee_waterfall_alias_conservation", domain="econ", spec_ref="CIP-28",
+                 executor_kind="proptest", location_repo="node",
+                 location_path="execution/src/execution/tests.rs",
+                 location_test="execution::tests::econ_waterfall_alias_conservation::econ_fee_waterfall_alias_conservation", severity="high",
+                 run_command=["cargo", "test", "-p", "cowboy-execution", "execution::tests::econ_waterfall_alias_conservation::econ_fee_waterfall_alias_conservation", "--", "--exact"]),
     # Ratchet esc-20260605-timer-burn (escaped bug surfaced+fixed by node #580):
     # a duplicate refund block double-credited the timer fee-payer (silent mint)
     # and the burn was accumulated after take_block_fees() drained it, so it never
