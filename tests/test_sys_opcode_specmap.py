@@ -21,6 +21,9 @@ without always pairing the SYS_ name, so name-level reconciliation needs the sam
 hardening the addrmap parser went through before flipping to a hard gate.
 """
 
+import os
+from pathlib import Path
+
 import pytest
 
 from marshal_core.checks.sys_opcode_specmap import (
@@ -29,6 +32,15 @@ from marshal_core.checks.sys_opcode_specmap import (
     find_spec_opcodes_not_in_code,
     parse_deployed_opcodes,
     spec_cited_opcodes,
+)
+
+# Spec-vs-code drift check: reads the sibling cowboy-protocol codec + node repos
+# from the dev workspace, and is a drift *detector* (it fails when real drift
+# exists). It has no place in marshal's own CI — skip when CI=true or the sibling
+# repos are absent, so it runs locally but never gates a marshal merge.
+pytestmark = pytest.mark.skipif(
+    os.environ.get("CI") == "true" or not Path("/home/ubuntu/workspace/node").exists(),
+    reason="needs sibling node/ + cowboy-protocol repos; local-only, skipped in CI",
 )
 
 # Deployed codec const form: `pub const SYS_<NAME>: u8 = <N>;`.
