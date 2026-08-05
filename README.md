@@ -308,3 +308,11 @@ ruff check src tests
 
 The `docs/` directory holds fuller methodology, architecture, and
 implementation notes; it is kept local (gitignored) rather than published.
+
+## License
+
+Marshal is source-available under the [PolyForm Noncommercial License 1.0.0](LICENSE).
+Noncommercial use — personal, research, educational, and nonprofit — is free.
+
+**Any commercial use requires a separate commercial license.** To obtain
+commercial authorization, contact <qy13816282216@gmail.com>.
