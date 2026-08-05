@@ -315,4 +315,4 @@ Marshal is source-available under the [PolyForm Noncommercial License 1.0.0](LIC
 Noncommercial use — personal, research, educational, and nonprofit — is free.
 
 **Any commercial use requires a separate commercial license.** To obtain
-commercial authorization, contact <qy13816282216@gmail.com>.
+commercial authorization, contact <shawhanken@gmail.com>.
