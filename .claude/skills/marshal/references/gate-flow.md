@@ -1,7 +1,7 @@
 # 流 A — 门禁评估细节
 
 ## 取 diff
-- 无参:`base=$(git merge-base HEAD origin/main 2>/dev/null || git merge-base HEAD origin/devnet)`;`git diff --name-only $base...HEAD` 取改动路径;`git diff $base...HEAD` 取 diff_text。
+- 无参（包括 `/marshal deep`）:调用 `"$PY" -m marshal_core.cli worktree-diff --repo-root <repo>`，直接使用其 `paths`、`diff_text`、`change_ref`、`dirty` 和 `invariant_checkout`。它一次覆盖 base 后的已提交、暂存、未暂存和 untracked 内容；默认基线取 remote HEAD 或常见默认分支，无法可靠推导时命令会失败，必须显式重跑 `--base <ref>`，不得用 `HEAD` 冒充 base、自行退回 `$base...HEAD`，或只记录 untracked 路径而不读正文。
 - `<PR#>`:**先定 repo**。`/marshal <PR#>` 默认 `R=cowboyinc/node`;`/marshal <repo> <PR#>` / `<repo>#<PR#>` / PR-URL 则 `R=cowboyinc/<repo>`(URL 自带 owner/repo)。
   - `gh pr diff <PR#> -R $R --name-only` 取路径;`gh pr diff <PR#> -R $R` 取 diff_text;`gh pr view <PR#> -R $R --json headRefOid -q .headRefOid` 取 change_ref。
   - `cli classify/invariants --repo <repo>` 的 `<repo>` 必须与 `$R` 一致(用裸名 runner/cbss/cbfs/node…,不带 owner)。
@@ -35,9 +35,7 @@ CI 改动是供应链攻击面。分级器只看 diff 窗口会漏掉危险**组
 - **`location_repo` == 本次被审 repo**(普通不变量):
   - PR 模式:ref = 上面取到的 `headRefOid`。
     `cd <workspace>/<location_repo> && git fetch -q origin <headSHA> 2>/dev/null; git worktree add --detach /tmp/marshal-<location_repo>-<pr> <headSHA>`
-  - 本地分支模式(`/marshal` 无参):ref = `HEAD`(当前分支)。
-    `cd <workspace>/<repo> && git worktree add --detach /tmp/marshal-<repo>-head HEAD`
-    (worktree 隔离未提交改动;若刻意要审工作区脏改动,才回退到主树并在摘要里注明。)
+  - 本地模式以 `worktree-diff.invariant_checkout` 为准：值为 `worktree`（dirty=true）时，必须在刚刚被收进 diff 的当前工作树执行并明确标注 `dirty-worktree`；不得 detach HEAD 后测试旧代码。值为 `head`（工作树干净）时才可 `git worktree add --detach /tmp/marshal-<repo>-head HEAD`。
 - **`location_repo` != 被审 repo**(契约/跨 repo 不变量):PR head 不存在于该 repo,用该 repo 的 tip:
   `cd <workspace>/<location_repo> && git worktree add --detach /tmp/marshal-<location_repo>-tip $(git rev-parse origin/devnet 2>/dev/null || git rev-parse origin/main)`
 

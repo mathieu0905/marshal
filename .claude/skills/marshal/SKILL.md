@@ -9,10 +9,30 @@ description: Use when reviewing a change before merge — runs the Marshal quali
 
 ## 前置自检(每次先做)
 
-用绝对路径调 CLI(不依赖 cwd 的 Python):
+从已安装 skill symlink（或当前 Marshal checkout）解析绝对路径，不依赖 cwd:
 
-    MARSHAL_HOME=${MARSHAL_HOME:-/home/ubuntu/workspace/marshal}
-    PY="$MARSHAL_HOME/.venv/bin/python"
+    # marshal-bootstrap:start
+    HOST_SKILL="$HOME/.claude/skills/marshal"
+    REPO_SKILL=".claude/skills/marshal"
+    if [ -n "${MARSHAL_PYTHON:-}" ]; then
+      PY="$MARSHAL_PYTHON"
+    else
+      if [ -n "${MARSHAL_HOME:-}" ]; then
+        :
+      elif REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" &&
+           [ -f "$REPO_ROOT/$REPO_SKILL/SKILL.md" ] &&
+           [ -f "$REPO_ROOT/src/marshal_core/cli.py" ] &&
+           SKILL_DIR="$(cd -P "$REPO_ROOT/$REPO_SKILL" && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      elif [ -L "$HOST_SKILL" ] && SKILL_DIR="$(cd -P "$HOST_SKILL" 2>/dev/null && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      else
+        echo "Marshal checkout not found; run setup or set MARSHAL_HOME/MARSHAL_PYTHON." >&2
+        return 1 2>/dev/null || exit 1
+      fi
+      PY="$MARSHAL_HOME/.venv/bin/python"
+    fi
+    # marshal-bootstrap:end
 
 跑一次 `"$PY" -m marshal_core.cli classify --repo node --paths README.md`。
 若失败(no module / venv 缺失)→ 提示用户先在 marshal 仓库跑 `"$PY" -m marshal_core.cli setup` 并 `pip install -e .`,然后停止。
@@ -25,7 +45,8 @@ description: Use when reviewing a change before merge — runs the Marshal quali
   - `<repo>` 取 `runner|cbss|cbfs|wallet|cowboy-ras|node` 等;解析成 `cowboyinc/<repo>`(URL 直接含 owner/repo)。
   - 所有 `gh` 调用都带 `-R cowboyinc/<repo>`(`gh pr diff <PR#> -R …`、`gh pr view <PR#> -R … --json headRefOid`),且 `cli classify/invariants --repo <repo>` 用同一个 `<repo>`。
   - 例:`/marshal runner 42`、`/marshal runner#42`、`/marshal https://github.com/cowboyinc/runner/pull/42` 三者等价。
-- `/marshal deep [<repo>] <PR#>` → 流 A-deep(**深审**:闭包→scout→prove,买严谨度不买召回;opt-in,~5–8× token)。详见 `references/deep-review-flow.md`。常规 `/marshal <PR#>` 路径不变。
+- `/marshal deep` → 流 A-deep，审当前本地工作区（含已提交、暂存、未暂存和 untracked 改动）。
+- `/marshal deep [<repo>] <PR#>` → 流 A-deep，审指定 PR(**深审**:闭包→scout→prove,买严谨度不买召回;opt-in,~5–8× token)。详见 `references/deep-review-flow.md`。常规 `/marshal <PR#>` 路径不变。
 - `/marshal ratchet "<bug>"` → 流 C
 - `/marshal conformance` → ⑤ 规格符合度报告(见 `references/conformance-flow.md`)
 - `/marshal metrics` → ⑦ 度量报告:`cli metrics`(不变量数/棘轮增量/逃逸开关/门禁判决分布);conformance% 另跑 `/marshal conformance`。诚实呈现 `unavailable` 指标,不补造数

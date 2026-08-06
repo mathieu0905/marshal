@@ -8,7 +8,28 @@ description: Use to onboard a repo's HEAD into a Marshal concept registry (Phase
 你是 onboard 的编排器。确定性工作外包给 `marshal_core.cli`;概念抽取是你(agent)的判断工作。
 
 ## 前置
-    PY="${MARSHAL_HOME:-/home/ubuntu/workspace/marshal}/.venv/bin/python"
+    # marshal-bootstrap:start
+    HOST_SKILL="$HOME/.claude/skills/onboard"
+    REPO_SKILL=".claude/skills/onboard"
+    if [ -n "${MARSHAL_PYTHON:-}" ]; then
+      PY="$MARSHAL_PYTHON"
+    else
+      if [ -n "${MARSHAL_HOME:-}" ]; then
+        :
+      elif REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" &&
+           [ -f "$REPO_ROOT/$REPO_SKILL/SKILL.md" ] &&
+           [ -f "$REPO_ROOT/src/marshal_core/cli.py" ] &&
+           SKILL_DIR="$(cd -P "$REPO_ROOT/$REPO_SKILL" && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      elif [ -L "$HOST_SKILL" ] && SKILL_DIR="$(cd -P "$HOST_SKILL" 2>/dev/null && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      else
+        echo "Marshal checkout not found; run setup or set MARSHAL_HOME/MARSHAL_PYTHON." >&2
+        return 1 2>/dev/null || exit 1
+      fi
+      PY="$MARSHAL_HOME/.venv/bin/python"
+    fi
+    # marshal-bootstrap:end
     CLI() { "$PY" -m marshal_core.cli "$@"; }
 
 ## 流程(严格按序,估价门不过不动手)

@@ -12,7 +12,28 @@ description: Use to get a NEUTRAL concept-budget cost picture for a plan before 
 > 直接调用。Claude Code 里用本 skill(CLI)或 MCP tool 均可, 二者走同一 `plan_review` 核心。
 
 ## 前置
-    PY="${MARSHAL_HOME:-/home/ubuntu/workspace/marshal}/.venv/bin/python"
+    # marshal-bootstrap:start
+    HOST_SKILL="$HOME/.claude/skills/plan-cost"
+    REPO_SKILL=".claude/skills/plan-cost"
+    if [ -n "${MARSHAL_PYTHON:-}" ]; then
+      PY="$MARSHAL_PYTHON"
+    else
+      if [ -n "${MARSHAL_HOME:-}" ]; then
+        :
+      elif REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" &&
+           [ -f "$REPO_ROOT/$REPO_SKILL/SKILL.md" ] &&
+           [ -f "$REPO_ROOT/src/marshal_core/cli.py" ] &&
+           SKILL_DIR="$(cd -P "$REPO_ROOT/$REPO_SKILL" && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      elif [ -L "$HOST_SKILL" ] && SKILL_DIR="$(cd -P "$HOST_SKILL" 2>/dev/null && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      else
+        echo "Marshal checkout not found; run setup or set MARSHAL_HOME/MARSHAL_PYTHON." >&2
+        return 1 2>/dev/null || exit 1
+      fi
+      PY="$MARSHAL_HOME/.venv/bin/python"
+    fi
+    # marshal-bootstrap:end
     CLI() { "$PY" -m marshal_core.cli "$@"; }
 
 ## 流程

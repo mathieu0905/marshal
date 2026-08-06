@@ -1,4 +1,4 @@
-# 流 A-deep — 深审(`/marshal deep [<repo>] <PR#>`)
+# 流 A-deep — 深审（`/marshal deep` 本地工作区，或 `/marshal deep [<repo>] <PR#>`）
 
 常规 `/marshal` 的对抗审是**单发/视角**(一个 lens 一个 agent 一 shot)。deep 把它换成
 **闭包 → 假说枚举 → 逐假说证真/证伪**,买的是**严谨度**(触发优先、自我 refute、棘轮
@@ -17,11 +17,13 @@
 - `cli review-lenses --repo <r> --paths … --ratchet-top <N>` → `{base, hazards, ratchet, all}`
   (name+prompt)。`base` = tier 基集 + 路径触发(含 consensus-surface);`ratchet` = 从
   逃逸史投的 top-N 定向探针(见 `ratchet-flow.md` 背景)。**deep 取 `all`,但裁到 3–4 条
-  风险最相关的**(base 里对症的 + 1–2 条 ratchet);别把全部 lens 都派。
+  风险最相关的**(base 里对症的 + 1–2 条 ratchet);若 `all` 少于 3 条，就用
+  `review-orchestration.md` 的通用 correctness/spec/test-validity prompt 补到 3 条并标
+  fallback。空逃逸史本身不算 degraded;别把全部 lens 都派。
 
 ### 2. 变更闭包(L1 共享前缀)
-派一个 context-builder subagent:对每个改动 hunk 抽**其外层函式的完整函式体**(读 PR head
-的真文件,非 diff 片段)+ 1 跳呼叫方/被呼叫方 + 命中的 contract/不变量正文,组成一份
+派一个 context-builder subagent:对每个改动 hunk 抽**其外层函式的完整函式体**(PR 读 head，
+本地读当前工作树；Markdown/配置读完整所属章节,非 diff 片段)+ 1 跳呼叫方/被呼叫方 + 命中的 contract/不变量正文,组成一份
 **中立**(不评判 bug)的 closure bundle,上限 ~1500 行(超了按 execution/storage 优先并
 **显式记 truncation**,不静默截断)。这份 closure 是下面所有 scout/prove agent 的**共享
 前缀**——同一份逐字复用命中 prompt cache(L1),把输入成本压回 prove 自身。

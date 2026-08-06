@@ -1,70 +1,92 @@
 ---
 name: marshal
-description: Use when reviewing a change before merge — runs the Marshal quality-gate cognitive loop (risk classification + invariant gate + adversarial review) on the current branch diff or a GitHub PR, and runs the escape→permanent-check ratchet. Triggers — "/marshal", "marshal gate", "跑一下 marshal", "marshal ratchet <bug>", "把这个漏过的 bug 上棘轮".
+description: Use when reviewing a change before merge in Codex — runs the Marshal quality gate (risk classification, invariant gate, adversarial multi-agent review, and escape ratchet) on a local diff or GitHub PR. Triggers include "$marshal", "marshal gate", "跑一下 marshal", "marshal deep", and "marshal ratchet <bug>".
 ---
 
-# Marshal Skill — 平台未建成前的本地质量大脑
+# Marshal Skill — Codex 质量门禁编排器
 
-你是 Marshal 的"大脑/编排器"(领域无关)。确定性工作外包给 marshal CLI;你只做判断性工作并汇总 `GateDecision`。
+你是 Marshal 的“大脑/编排器”（领域无关）。确定性工作交给 Marshal CLI；你负责判断性工作、多视角审查和汇总 GateDecision。
 
-## 前置自检(每次先做)
+## 前置自检（每次先做）
 
-用绝对路径调 CLI(不依赖 cwd 的 Python):
+先从当前技能目录解析 Marshal checkout，不依赖固定开发机路径：
 
-    MARSHAL_HOME=${MARSHAL_HOME:-/home/ubuntu/workspace/marshal}
-    PY="$MARSHAL_HOME/.venv/bin/python"
+    # marshal-bootstrap:start
+    HOST_SKILL="$HOME/.agents/skills/marshal"
+    REPO_SKILL=".agents/skills/marshal"
+    if [ -n "${MARSHAL_PYTHON:-}" ]; then
+      PY="$MARSHAL_PYTHON"
+    else
+      if [ -n "${MARSHAL_HOME:-}" ]; then
+        :
+      elif REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" &&
+           [ -f "$REPO_ROOT/$REPO_SKILL/SKILL.md" ] &&
+           [ -f "$REPO_ROOT/src/marshal_core/cli.py" ] &&
+           SKILL_DIR="$(cd -P "$REPO_ROOT/$REPO_SKILL" && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      elif [ -L "$HOST_SKILL" ] && SKILL_DIR="$(cd -P "$HOST_SKILL" 2>/dev/null && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      else
+        echo "Marshal checkout not found; run setup or set MARSHAL_HOME/MARSHAL_PYTHON." >&2
+        return 1 2>/dev/null || exit 1
+      fi
+      PY="$MARSHAL_HOME/.venv/bin/python"
+    fi
+    # marshal-bootstrap:end
 
-跑一次 `"$PY" -m marshal_core.cli classify --repo node --paths README.md`。
-若失败(no module / venv 缺失)→ 提示用户先在 marshal 仓库跑 `"$PY" -m marshal_core.cli setup` 并 `pip install -e .`,然后停止。
+运行一次 "$PY" -m marshal_core.cli classify --repo node --paths README.md。
+若失败（no module / venv 缺失），提示用户先在 Marshal 仓库运行 "$PY" -m marshal_core.cli setup 并 pip install -e .，然后停止。
 
 ## 路由
 
-- `/marshal`            → 流 A,diff = 当前分支 vs base
-- `/marshal <PR#>`      → 流 A,**默认 repo = node**,diff = `gh pr diff <PR#> -R cowboyinc/node`
-- `/marshal <repo> <PR#>` / `/marshal <repo>#<PR#>` / `/marshal <PR-URL>` → 流 A,审**指定 repo** 的 PR。
-  - `<repo>` 取 `runner|cbss|cbfs|wallet|cowboy-ras|node` 等;解析成 `cowboyinc/<repo>`(URL 直接含 owner/repo)。
-  - 所有 `gh` 调用都带 `-R cowboyinc/<repo>`(`gh pr diff <PR#> -R …`、`gh pr view <PR#> -R … --json headRefOid`),且 `cli classify/invariants --repo <repo>` 用同一个 `<repo>`。
-  - 例:`/marshal runner 42`、`/marshal runner#42`、`/marshal https://github.com/cowboyinc/runner/pull/42` 三者等价。
-- `/marshal ratchet "<bug>"` → 流 C
-- `/marshal conformance` → ⑤ 规格符合度报告(见 `references/conformance-flow.md`)
-- `/marshal metrics` → ⑦ 度量报告:`cli metrics`(不变量数/棘轮增量/逃逸开关/门禁判决分布);conformance% 另跑 `/marshal conformance`。诚实呈现 `unavailable` 指标,不补造数
-- 若流 A 的 diff 命中规格层文件(cowboy `docs/cips/**` 或 `docs/whitepaper/**`)→ 叠加流 B(见下)
+- $marshal → 流 A，diff = 当前分支 vs base。
+- $marshal <PR#> → 流 A，默认 repo = node，diff = gh pr diff <PR#> -R cowboyinc/node。
+- $marshal <repo> <PR#> / $marshal <repo>#<PR#> / $marshal <PR-URL> → 流 A，审指定 repo 的 PR。
+  - <repo> 可取 runner|cbss|cbfs|wallet|cowboy-ras|node 等，解析成 cowboyinc/<repo>（URL 直接使用其中的 owner/repo）。
+  - 所有 gh 调用都显式带 -R cowboyinc/<repo>，且 cli classify/invariants --repo <repo> 使用同一个 repo。
+- $marshal deep → 流 A-deep，审当前本地工作区（含已提交、暂存、未暂存和 untracked 改动）。
+- $marshal deep [<repo>] <PR#> → 流 A-deep，审指定 PR（闭包 → scout → prove，opt-in，约 5–8× token），见 references/deep-review-flow.md。
+- $marshal ratchet "<bug>" → 流 C。
+- $marshal conformance → 规格符合度报告，见 references/conformance-flow.md。
+- $marshal metrics → cli metrics；conformance% 另跑 $marshal conformance。
+- 流 A 的 diff 命中 docs/cips/** 或 docs/whitepaper/** 时叠加流 B。
 
 ## 流 A — 门禁评估
 
-详见 `references/gate-flow.md`。步骤摘要:
-1. 取 diff,用 `git rev-parse --show-toplevel` 判定所在 repo(可能多个)。
-2. 对每个 repo 调 `cli classify` → tier/reasons/contracts_hit/review_dimensions。
-3. 调 `cli invariants` → **在被审 checkout 的干净 worktree 跑每条 `run_command`**(PR 模式 = PR head SHA;无参 = 当前 HEAD;契约不变量去其 `location_repo` 的 tip)。**绝不在落后的主工作树跑** —— 会 `running 0 tests` 假阳性 degraded(详见 gate-flow.md「跑不变量」)。
-4. 按 `review_dimensions` 调 `/code-review ultra`(高危全视角)做对抗式 review,默认怀疑。
-   若 classify 返回 `security_hazards`(否定性属性,如机密性),把每条 `prompt` 注入
-   security lens —— 这类洞**不变量门禁抓不到**(往返测试在脆弱构造上为绿),只能靠 review。
-5. 汇总 `GateDecision`:任一不变量 fail→block;高危+确认高severity发现→escalate;跑不起来/超预算→escalate+degraded;否则 pass。
-6. `cli gate-record` 落库;有 PR# 且用户要 → 贴 PR 评论;终端打印摘要。
-7. 若在已合并代码上确认高severity发现 → 提议转流 C。
+完整细节见 references/gate-flow.md：
 
-## 流 B — 规格层改动 / conformance(⑤)
+1. 获取 diff，用 git rev-parse --show-toplevel 判定 repo。
+2. 对每个 repo 调 cli classify，得到 tier、reasons、contracts_hit、review_dimensions。
+3. 调 cli invariants，在被审代码的干净 worktree 运行每条 run_command。PR 模式使用 PR head SHA；本地模式使用当前 HEAD；跨 repo 契约使用目标 repo tip。绝不在落后的主工作树把 running 0 tests 当成功。
+4. 加载 references/review-orchestration.md，按 review_dimensions 调用 Codex 当前会话可用的 subagent 能力，每个 lens 一个独立 agent，并行完成后过 quorum。若 subagent 能力不可用，可顺序执行同样的 lenses；不得省略 lens 后声称审全。命中 security_hazards 时把每条 prompt 注入 security lens。
+5. 汇总 GateDecision：任一不变量 fail → block；高危且有确认的 high finding → escalate；任何步骤跑不起来或超预算 → escalate + degraded；否则 pass。
+6. 调 cli gate-record 落库；只有用户明确要求时才贴 PR 评论；终端输出摘要。
+7. 若在已合并代码上确认 high finding，提议转流 C。
 
-详见 `references/conformance-flow.md`。要点:
-- `/marshal conformance`:`cli conformance --spec-root <workspace>/cowboy` → 打印 CIP conformance% + 最欠覆盖网洞(MUST 数 vs 不变量数排序)。
-- diff 命中 `cowboy docs/cips/**`(修正案)或 `docs/whitepaper/**`(宪法)→ 升 tier(**动白皮书=最高**),对改动的 CIP 跑 `cli spec-requirements --ref CIP-N --spec-root <workspace>/cowboy` 抽 requirement,并查它当前被哪些不变量覆盖;新增/接口变更 CIP 而无对应不变量 → 提示补(可转流 C)。
-- **不替人裁治理冲突**:宪法↔修正案静默抵触只标 `escalate`,不自动 block(治理 a 档)。
+## 流 B — 规格层改动 / conformance
+
+见 references/conformance-flow.md。白皮书改动升到最高 tier；CIP 新增或接口变更却没有相应不变量时显式报告 gap。治理冲突只标 escalate，不替人自动裁决。
 
 ## 流 C — 逃逸棘轮
 
-详见 `references/ratchet-flow.md`。步骤摘要:
-1. `cli ratchet-open --escape-id <新id> --desc "<bug>" --root-cause <你的分类> [--change-ref <sha>]`。
-2. **先定形状**:否定性属性(机密性/越权/泄露)不可往返化 —— spawned_check 记 `hazard:<id>`
-   走 review-lens,不要 spawn 功能 roundtrip proptest(会"绿着却漏",见 ratchet-flow.md 步骤 2)。
-   否则起草候选永久检查(指向某 repo 的 proptest 名 + 路径 + run_command)。
-3. 把草稿摆给用户,等其确认根因 + 选定检查。
-4. `cli ratchet-close --escape-id <id> --spawned-check <inv-id> --inv-json '<InvariantDef字段>'`。
-   (spawned_check 为空 CLI 会拒绝 — 这是棘轮纪律,不要绕过。)
-5. 提示去 `<repo>` 把这条 proptest 真正实现;可顺手起草测试骨架。
+见 references/ratchet-flow.md：
+
+1. cli ratchet-open 登记逃逸。
+2. 先判断它是可固化的功能/安全性属性，还是只能成为 review hazard 的否定性属性。
+3. 把根因和永久检查草案交给用户确认。
+4. cli ratchet-close 关闭逃逸；spawned_check 为空时不得绕过。
+5. 在目标 repo 起草永久检查的测试骨架。
+
+## Codex 编排纪律
+
+- 并行 subagent 必须等待全部预定 lens 返回后才能聚合；缺席 lens 要标 degraded(lens-incomplete)。
+- 调用 subagent 时给出独立、具体、可收敛的 lens 任务；不要让多个 agent 修改同一文件。
+- MCP 只承担确定性的 plan-cost 工具调用；Marshal review 的判断和 GitHub 写操作仍遵守本技能的授权边界。
 
 ## 铁律
 
-- **降级不谎报**:任何 CLI 错误(stdout 含 `"error"` 或非零退出)→ 对应门禁记 degraded,verdict 至少 escalate,显式告诉用户哪步没跑成。绝不把"没审成"说成"审过了"。
-- **高危发现终审归人**:你只产出"发现+severity+confidence",高危一律 escalate。
-- **不硬阻断**:你给 verdict 和评论,挡不住 merge — 如实说明这是建议态。
-- **GitHub 评论**:一律英文,且结尾逐字加 `Generated by Marshal (risk-tiering + invariant gate + adversarial review). Advisory only.`(详见 gate-flow.md)。
+- **降级不谎报**：任何 CLI 错误（stdout 含 "error" 或非零退出）都使对应门禁 degraded，verdict 至少 escalate。
+- **高危发现终审归人**：只产出 finding + severity + confidence，高危一律 escalate。
+- **不硬阻断**：Marshal 给 verdict 和评论，不能直接挡 merge，必须如实说明是建议态。
+- **GitHub 写操作需用户授权**；所有评论用英文，结尾逐字添加：
+  Generated by Marshal (risk-tiering + invariant gate + adversarial review). Advisory only.

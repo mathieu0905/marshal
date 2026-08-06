@@ -3,11 +3,16 @@
 db 路径解析为绝对 $MARSHAL_HOME/marshal.db,与 cwd 无关。
 """
 import argparse
+from contextlib import contextmanager
+import difflib
 import json
 import os
 import sys
+import tomllib
+import uuid
 from pathlib import Path
 
+import yaml
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -23,6 +28,105 @@ from marshal_core.review import (
 from marshal_pack_cowboy.pack import CowboyPack
 
 _PACK = CowboyPack()
+
+_SKILL_HOSTS = {
+    "claude": (Path(".claude/skills"), Path(".claude/skills")),
+    "codex": (Path(".agents/skills"), Path(".agents/skills")),
+}
+_SKILLS_BY_HOST = {
+    "claude": ("marshal", "onboard", "plan-cost"),
+    "codex": ("marshal", "onboard", "plan-cost", "marshal-pr-sweep"),
+}
+
+
+def _symlink_points_to(link: Path, target: Path) -> bool:
+    """Whether link is a symlink already managed by this Marshal checkout."""
+    if not link.is_symlink():
+        return False
+    try:
+        return link.resolve(strict=False) == target.resolve(strict=False)
+    except (OSError, RuntimeError):
+        return False
+
+
+def _marshal_checkout_for_skill_link(link: Path, host: str, name: str) -> Path | None:
+    """Return the checkout root for a live link to the same bundled Marshal skill."""
+    if not link.is_symlink():
+        return None
+    try:
+        target = link.resolve(strict=True)
+        checkout = target.parents[2]
+    except (IndexError, OSError, RuntimeError):
+        return None
+    source_root, _ = _SKILL_HOSTS[host]
+    if target != (checkout / source_root / name).resolve(strict=False):
+        return None
+    pyproject = checkout / "pyproject.toml"
+    skill_file = target / "SKILL.md"
+    if not pyproject.is_file() or not skill_file.is_file():
+        return None
+    if not (checkout / "src" / "marshal_core" / "cli.py").is_file():
+        return None
+    try:
+        with pyproject.open("rb") as f:
+            project = tomllib.load(f)
+        skill_text = skill_file.read_text(encoding="utf-8")
+        _, frontmatter, _ = skill_text.split("---", 2)
+        metadata = yaml.safe_load(frontmatter)
+    except (OSError, ValueError, yaml.YAMLError):
+        return None
+    project_metadata = project.get("project")
+    if not isinstance(project_metadata, dict) or project_metadata.get("name") != "marshal":
+        return None
+    if not isinstance(metadata, dict) or metadata.get("name") != name:
+        return None
+    return checkout
+
+
+@contextmanager
+def _setup_lock(user_home: Path):
+    """Serialize setup runs on POSIX and Windows."""
+    user_home.mkdir(parents=True, exist_ok=True)
+    lock_path = user_home / ".marshal-setup.lock"
+    with lock_path.open("a+", encoding="utf-8") as lock_file:
+        if os.name == "nt":
+            import msvcrt
+            import time
+
+            lock_file.seek(0, os.SEEK_END)
+            if lock_file.tell() == 0:
+                lock_file.write("\0")
+                lock_file.flush()
+            while True:
+                try:
+                    lock_file.seek(0)
+                    msvcrt.locking(lock_file.fileno(), msvcrt.LK_NBLCK, 1)
+                    break
+                except OSError:
+                    time.sleep(0.05)
+            try:
+                yield
+            finally:
+                lock_file.seek(0)
+                msvcrt.locking(lock_file.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+
+
+def _replace_skill_link(link: Path, source: Path) -> None:
+    """Atomically replace a recognized old Marshal link with the current source."""
+    temp = link.with_name(f".{link.name}.marshal-{uuid.uuid4().hex}")
+    try:
+        temp.symlink_to(source, target_is_directory=True)
+        os.replace(temp, link)
+    finally:
+        temp.unlink(missing_ok=True)
 
 
 def _marshal_home() -> Path:
@@ -207,12 +311,13 @@ def cmd_review_lenses(a) -> int:
                    for lp in ratchet_lenses(rows, max_lenses=a.ratchet_top)]
     out = {"base": base, "hazards": hazards, "ratchet": ratchet,
            "all": base + hazards + ratchet}
-    # 降级不谎报: deep 请求了 ratchet 但拿到 0 探针 (空 escape DB / 错 domain_pack) →
-    # 显式标 degraded, 别让调用者以为 ratchet 覆盖跑过。
+    # 空逃逸史是完整的“没有历史探针”结果，不是工具失败。deep 可用通用 fallback
+    # lenses 补足 scout 多样性，同时如实呈现没有 ratchet 样本。
     if a.ratchet_top and a.ratchet_top > 0 and not ratchet:
-        out["degraded"] = ("ratchet requested (--ratchet-top %d) but 0 probes produced "
-                           "(empty escape DB / domain_pack) — ratchet coverage DEGRADED"
-                           % a.ratchet_top)
+        out["ratchet_note"] = (
+            "ratchet requested but 0 historical probes were available "
+            "(empty escape DB / domain_pack)"
+        )
     if not a.paths:
         out["paths_note"] = "no --paths: only tier base lenses (no path-triggered views)"
     return _emit(out)
@@ -424,18 +529,189 @@ def cmd_plan_cost(a) -> int:
                              a.domain_pack, touches))
 
 
-def cmd_setup(a) -> int:
-    home = _marshal_home()
-    skill_src = home / ".claude" / "skills" / "marshal"
-    link_dir = Path(os.path.expanduser("~")) / ".claude" / "skills"
-    link_dir.mkdir(parents=True, exist_ok=True)
-    link = link_dir / "marshal"
-    if link.is_symlink() or link.exists():
-        if link.is_symlink():
-            link.unlink()
+def _git_output(repo_root: Path, *args: str) -> str:
+    import subprocess
+
+    proc = subprocess.run(
+        ["git", *args],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise ValueError(f"git {' '.join(args)} failed: {proc.stderr.strip()}")
+    return proc.stdout
+
+
+def _untracked_patch(repo_root: Path, rel_path: str) -> str:
+    path = repo_root / rel_path
+    if path.is_symlink():
+        data = os.readlink(path).encode()
+    else:
+        data = path.read_bytes()
+    if b"\0" in data:
+        return f"diff --git a/{rel_path} b/{rel_path}\nBinary file b/{rel_path} added\n"
+    lines = data.decode("utf-8", errors="replace").splitlines(keepends=True)
+    return "".join(
+        difflib.unified_diff(
+            [],
+            lines,
+            fromfile="/dev/null",
+            tofile=f"b/{rel_path}",
+        )
+    )
+
+
+def _default_worktree_base(repo_root: Path) -> tuple[str, str]:
+    """Find an auditable comparison base without silently falling back to HEAD."""
+    remote_refs = _git_output(
+        repo_root,
+        "for-each-ref",
+        "--format=%(refname:short)",
+        "refs/remotes",
+    ).splitlines()
+    local_refs = _git_output(
+        repo_root,
+        "for-each-ref",
+        "--format=%(refname:short)",
+        "refs/heads",
+    ).splitlines()
+    try:
+        current_branch = _git_output(repo_root, "symbolic-ref", "--short", "HEAD").strip()
+    except ValueError:
+        current_branch = ""
+
+    candidates = [ref for ref in remote_refs if ref.endswith("/HEAD")]
+    for branch_name in ("main", "devnet", "master", "trunk"):
+        candidates.extend(ref for ref in remote_refs if ref.endswith(f"/{branch_name}"))
+        candidates.extend(
+            ref for ref in local_refs
+            if ref == branch_name and ref != current_branch
+        )
+
+    for ref in dict.fromkeys(candidates):
+        try:
+            base = _git_output(repo_root, "merge-base", "HEAD", ref).strip()
+        except ValueError:
+            continue
+        if base:
+            return base, ref
+    raise ValueError(
+        "cannot determine review base; pass --base or configure a remote default "
+        "branch (remote HEAD, main, devnet, master, or trunk)"
+    )
+
+
+def cmd_worktree_diff(a) -> int:
+    """Collect one coherent local diff including committed, dirty, and untracked files."""
+    repo_root = Path(a.repo_root).resolve()
+    if not (repo_root / ".git").exists():
+        return _fail(f"--repo-root is not a git checkout: {repo_root}")
+    try:
+        head = _git_output(repo_root, "rev-parse", "HEAD").strip()
+        base = a.base
+        if base:
+            base = _git_output(repo_root, "rev-parse", f"{base}^{{commit}}").strip()
+            base_source = "explicit"
         else:
-            return _fail(f"{link} exists and is not a symlink; remove it manually")
-    link.symlink_to(skill_src, target_is_directory=True)
+            base, base_source = _default_worktree_base(repo_root)
+
+        tracked_raw = _git_output(repo_root, "diff", "--name-only", "-z", base, "--")
+        untracked_raw = _git_output(
+            repo_root, "ls-files", "--others", "--exclude-standard", "-z"
+        )
+        tracked_paths = [p for p in tracked_raw.split("\0") if p]
+        untracked_paths = [p for p in untracked_raw.split("\0") if p]
+        paths = list(dict.fromkeys([*tracked_paths, *untracked_paths]))
+        tracked_diff = _git_output(repo_root, "diff", "--binary", base, "--")
+        untracked_diff = "".join(_untracked_patch(repo_root, p) for p in untracked_paths)
+        dirty = bool(
+            _git_output(repo_root, "status", "--porcelain", "--untracked-files=normal")
+        )
+    except (OSError, ValueError) as e:
+        return _fail(str(e))
+
+    return _emit({
+        "repo_root": str(repo_root),
+        "base": base,
+        "base_source": base_source,
+        "head": head,
+        "change_ref": f"{head}+worktree" if dirty else head,
+        "dirty": dirty,
+        "invariant_checkout": "worktree" if dirty else "head",
+        "tracked_paths": tracked_paths,
+        "untracked_paths": untracked_paths,
+        "paths": paths,
+        "diff_text": tracked_diff + untracked_diff,
+    })
+
+
+def cmd_setup(a) -> int:
+    marshal_home = _marshal_home().resolve()
+    user_home = Path(os.path.expanduser("~"))
+    hosts = tuple(dict.fromkeys(a.host or _SKILL_HOSTS))
+
+    install_plan = []
+    missing = []
+    for host in hosts:
+        source_root, install_root = _SKILL_HOSTS[host]
+        for name in _SKILLS_BY_HOST[host]:
+            source = marshal_home / source_root / name
+            link = user_home / install_root / name
+            if not (source / "SKILL.md").is_file():
+                missing.append(str(source / "SKILL.md"))
+            install_plan.append((host, name, source, link))
+    if missing:
+        return _fail("missing bundled skill(s): " + ", ".join(missing))
+
+    # Each destination is independent: a Codex conflict must not regress the legacy
+    # Claude install path. The lock keeps concurrent setup processes from observing
+    # and then rolling back each other's links.
+    installed = []
+    conflicts = []
+    errors = []
+    try:
+        with _setup_lock(user_home):
+            for host, name, source, link in install_plan:
+                parent = link.parent
+                bad_parent = None
+                while parent != user_home:
+                    if ((parent.exists() or parent.is_symlink()) and not parent.is_dir()):
+                        bad_parent = parent
+                        break
+                    parent = parent.parent
+                if bad_parent is not None:
+                    conflicts.append({"host": host, "name": name, "path": str(link),
+                                      "reason": f"parent is not a directory: {bad_parent}"})
+                    continue
+
+                if _symlink_points_to(link, source):
+                    status = "unchanged"
+                elif _marshal_checkout_for_skill_link(link, host, name) is not None:
+                    try:
+                        _replace_skill_link(link, source)
+                    except OSError as e:
+                        errors.append({"host": host, "name": name, "path": str(link),
+                                       "reason": str(e)})
+                        continue
+                    status = "migrated"
+                elif link.is_symlink() or link.exists():
+                    conflicts.append({"host": host, "name": name, "path": str(link),
+                                      "reason": "destination is not managed by Marshal"})
+                    continue
+                else:
+                    try:
+                        link.parent.mkdir(parents=True, exist_ok=True)
+                        link.symlink_to(source, target_is_directory=True)
+                    except OSError as e:
+                        errors.append({"host": host, "name": name, "path": str(link),
+                                       "reason": str(e)})
+                        continue
+                    status = "linked"
+                installed.append({"host": host, "name": name, "symlink": str(link),
+                                  "target": str(source), "status": status})
+    except OSError as e:
+        return _fail(f"could not install skill links: {e}")
 
     try:
         import marshal_pack_cowboy.pack  # noqa: F401
@@ -450,9 +726,26 @@ def cmd_setup(a) -> int:
     if zizmor is None:
         hints.append("CI gate degraded: install zizmor — `pip install -e .[ci]` "
                      "(or pip install zizmor) in the marshal venv")
-    return _emit({"ok": True, "symlink": str(link), "target": str(skill_src),
-                  "import_ok": import_ok, "zizmor": zizmor or "MISSING",
-                  "hint": "; ".join(hints) or None})
+    # Preserve the original fields for callers that consumed the Claude-only response.
+    legacy = next((item for item in installed
+                   if item["host"] == "claude" and item["name"] == "marshal"), None)
+    ok = not conflicts and not errors
+    payload = {"ok": ok,
+               "symlink": legacy["symlink"] if legacy else None,
+               "target": legacy["target"] if legacy else None,
+               "installed": installed,
+               "conflicts": conflicts,
+               "errors": errors,
+               "import_ok": import_ok, "zizmor": zizmor or "MISSING",
+               "hint": "; ".join(hints) or None}
+    if not ok:
+        payload["error"] = (
+            "some skill destinations could not be installed; "
+            "safe destinations were preserved"
+        )
+        print(json.dumps(payload, ensure_ascii=False))
+        return 1
+    return _emit(payload)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -552,7 +845,14 @@ def build_parser() -> argparse.ArgumentParser:
     mt = sub.add_parser("metrics")
     mt.set_defaults(func=cmd_metrics)
 
+    wd = sub.add_parser("worktree-diff")
+    wd.add_argument("--repo-root", default=".")
+    wd.add_argument("--base")
+    wd.set_defaults(func=cmd_worktree_diff)
+
     st = sub.add_parser("setup")
+    st.add_argument("--host", action="append", choices=tuple(_SKILL_HOSTS),
+                    help="install only this host (repeatable); default: claude and codex")
     st.set_defaults(func=cmd_setup)
 
     oe = sub.add_parser("onboard-estimate")

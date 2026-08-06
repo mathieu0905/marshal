@@ -1,9 +1,16 @@
 # ③ 对抗式 review 编排
 
-## 视角数由 tier 决定(classify 已给 review_dimensions)
+## 视角 = tier 基集 ∪ 路径触发(classify 已给 review_dimensions,直接照单派)
+tier 定**基集**(有序前缀):
 - high: correctness, spec, cross-repo, security, econ, determinism(全 6)
 - mid: correctness, spec, cross-repo(前 3)
 - low: correctness(1)
+
+**路径触发视角**(命中 diff 路径子串即并入,不看 tier;补基集会漏的横切面):
+- `consensus-surface`:碰 receipt/`_root`/digest/event/logs/extra_data → 问"是否变更进入共识哈希的字节(state/receipt/logs_root、block digest)、是否 flag-day"。
+- `test-validity`:碰测试文件(`/tests/`、`test_`、`_test.`、`tests.rs`)→ 对 PR 自带测试做心智 mutation,查 false-green / 只覆盖部分形态。
+
+纯附加、去重,绝不删基集视角。这些都是 pack 数据(`REVIEW_DIMENSIONS` + `PATH_REVIEW_DIMENSIONS`),core 只收 `review_dimensions` 名单。
 
 ## 原则
 1. **对抗式而非背书式**:prompt 是"找出这个改动会怎样出错/违反哪条 CIP 不变量",默认怀疑。
@@ -18,17 +25,21 @@
 4. 读不到(本地无 cowboy clone / glob 未命中)→ spec 视角**标 degraded**,别假装比对过。
 
 ## 执行(多视角 fan-out → quorum 收敛)
-1. 按 `review_dimensions` **并行派出每视角一个 subagent**(各自默认怀疑、独立、视角互异;可用不同模型增大多样性)。每个 agent 返回结构化发现:`{file, line, dimension, severity(low|mid|high), source:<lens名>, title}`。
+1. 按 `review_dimensions` 使用 Codex subagent 能力**并行派出每视角一个 subagent**(各自默认怀疑、独立、视角互异)。若当前会话没有 subagent 能力,顺序执行同一组 lens；不允许静默省略。每个 agent 返回结构化发现:`{file, line, dimension, severity(low|mid|high), source:<lens名>, title}`。
 2. 把所有发现汇成 JSON,过 quorum 聚合器:
    ```
-   "$PY" -m marshal_core.cli review-quorum --findings-json '<findings>' [--quorum 2]
+   "$PY" -m marshal_core.cli review-quorum --findings-json '<findings>' [--quorum 2] [--proximity 10]
    ```
-   → `{groups, escalate, confirmed, dropped, review_verdict}`。规则:同 key(file:line:dimension)按**不同视角数**计票;达 quorum→confirmed;**任一高危→escalate(终审归人,哪怕单视角)**;孤立低危→当噪声丢弃。
-3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `escalate`),再派 N 个 skeptic subagent,prompt 为「**默认 refute,除非有确凿证据证明该发现为真**」,各返回 `{key, refuted:bool, reason}`。汇成投票过:
+   → `{groups, escalate, confirmed, advisory, dropped, review_verdict}`。按 file+行邻近聚类,dimension 不进键。任一高危→escalate;不同视角数达 quorum→confirmed;单源中危→advisory;单源低危→丢弃。**advisory 必须列入报告,但不进入 skeptic gauntlet。**
+3. **对抗式验证二段(抬高误报地板)**:对 quorum 后存活的每条发现(`confirmed` + `escalate`),先取互异 refute 视角:
    ```
-   "$PY" -m marshal_core.cli review-verify --votes-json '[{"key":...,"severity":...,"votes":[{"refuted":true},...]}]'
+   "$PY" -m marshal_core.cli refute-lenses --count <N>
+   ```
+   每个 skeptic 绑定一条 lens prompt,默认 refute,各返回 `{key, refuted:bool, reason, lens}`。汇成投票过:
+   ```
+   "$PY" -m marshal_core.cli review-verify --votes-json '[{"key":...,"severity":...,"votes":[{"refuted":true,"lens":"reachability"},...]}]'
    ```
    → `{survived, killed, unverified, verdict}`。规则:**仅严格多数 uphold 才存活**;平票/多数 refute → 杀(似是而非的误报被砍);无投票 → unverified(degraded,保留待人看)。
 4. 最终汇入流 A 第 5 步:用 `review-verify` 的 `verdict` 与 `survived`(`killed` 不再上报,但**误报回流改进对应视角 prompt**,误报≠逃逸不进棘轮)。
-5. 也可叠加 `/code-review ultra`(云端多 agent)作为额外一路视角喂进 quorum;它需人触发/计费,**skill 自己拉不起**——拉不到就少一路并**显式标 degraded**,绝不假装跑过。
+5. 必须等待全部预定 lens 返回再聚合。任何 lens 崩溃或超时都标 `degraded(lens-incomplete)`,verdict 至少 escalate。
 - 如存活的高 severity 发现落在**已合并代码**,提议转流 C(棘轮)。

@@ -1,8 +1,8 @@
 # 流 A — 门禁评估细节
 
 ## 取 diff
-- 无参:`base=$(git merge-base HEAD origin/main 2>/dev/null || git merge-base HEAD origin/devnet)`;`git diff --name-only $base...HEAD` 取改动路径;`git diff $base...HEAD` 取 diff_text。
-- `<PR#>`:**先定 repo**。`/marshal <PR#>` 默认 `R=cowboyinc/node`;`/marshal <repo> <PR#>` / `<repo>#<PR#>` / PR-URL 则 `R=cowboyinc/<repo>`(URL 自带 owner/repo)。
+- 无参（包括 `$marshal deep`）:调用 `"$PY" -m marshal_core.cli worktree-diff --repo-root <repo>`，直接使用其 `paths`、`diff_text`、`change_ref`、`dirty` 和 `invariant_checkout`。它一次覆盖 base 后的已提交、暂存、未暂存和 untracked 内容；默认基线取 remote HEAD 或常见默认分支，无法可靠推导时命令会失败，必须显式重跑 `--base <ref>`，不得用 `HEAD` 冒充 base、自行退回 `$base...HEAD`，或只记录 untracked 路径而不读正文。
+- `<PR#>`:**先定 repo**。`$marshal <PR#>` 默认 `R=cowboyinc/node`;`$marshal <repo> <PR#>` / `<repo>#<PR#>` / PR-URL 则 `R=cowboyinc/<repo>`(URL 自带 owner/repo)。
   - `gh pr diff <PR#> -R $R --name-only` 取路径;`gh pr diff <PR#> -R $R` 取 diff_text;`gh pr view <PR#> -R $R --json headRefOid -q .headRefOid` 取 change_ref。
   - `cli classify/invariants --repo <repo>` 的 `<repo>` 必须与 `$R` 一致(用裸名 runner/cbss/cbfs/node…,不带 owner)。
   - **不能靠 cwd**:`gh` 无 `-R` 时按当前目录 remote 解析,会误落到 node。务必显式 `-R`。
@@ -35,9 +35,7 @@ CI 改动是供应链攻击面。分级器只看 diff 窗口会漏掉危险**组
 - **`location_repo` == 本次被审 repo**(普通不变量):
   - PR 模式:ref = 上面取到的 `headRefOid`。
     `cd <workspace>/<location_repo> && git fetch -q origin <headSHA> 2>/dev/null; git worktree add --detach /tmp/marshal-<location_repo>-<pr> <headSHA>`
-  - 本地分支模式(`/marshal` 无参):ref = `HEAD`(当前分支)。
-    `cd <workspace>/<repo> && git worktree add --detach /tmp/marshal-<repo>-head HEAD`
-    (worktree 隔离未提交改动;若刻意要审工作区脏改动,才回退到主树并在摘要里注明。)
+  - 本地模式以 `worktree-diff.invariant_checkout` 为准：值为 `worktree`（dirty=true）时，必须在刚刚被收进 diff 的当前工作树执行并明确标注 `dirty-worktree`；不得 detach HEAD 后测试旧代码。值为 `head`（工作树干净）时才可 `git worktree add --detach /tmp/marshal-<repo>-head HEAD`。
 - **`location_repo` != 被审 repo**(契约/跨 repo 不变量):PR head 不存在于该 repo,用该 repo 的 tip:
   `cd <workspace>/<location_repo> && git worktree add --detach /tmp/marshal-<location_repo>-tip $(git rev-parse origin/devnet 2>/dev/null || git rev-parse origin/main)`
 
@@ -47,7 +45,7 @@ worktree 根即该 repo 根,`run_command` 里的 `-p <crate>` / 路径都相对 
 
 ### 3) 判读(标准不变)
 - **退出 0 ≠ pass**。先看实际跑了几个测试:cargo 输出含 `running 0 tests` 或 `0 passed; …; N filtered out`(N>0)→ **该不变量记 degraded,绝不算 pass**。这是 `--exact` + 错误测试名/模块路径的静默假报陷阱:名字不匹配时 `cargo test … -- --exact` 退出 0 且"running 0 tests",naive 读 exit code 会把"没跑"当"审过"。必须确认 `test result: ok. ≥1 passed` 才算真 pass。
-- **`running 0 tests` 的归因顺序**:① 先怀疑 checkout —— 确认你确实在上面的 worktree(而非主树)跑;若在主树跑出 0 tests,**先换 worktree 重跑**,别急着记 degraded。② 在正确 worktree 上仍 `running 0 tests` / 包名或模块路径不符(契约不变量本体可能未实现)→ 才记 degraded,提示"检查缺失或引用过时,建议用 /marshal ratchet 补或修正 pack 引用",**不当作 pass**。
+- **`running 0 tests` 的归因顺序**:① 先怀疑 checkout —— 确认你确实在上面的 worktree(而非主树)跑;若在主树跑出 0 tests,**先换 worktree 重跑**,别急着记 degraded。② 在正确 worktree 上仍 `running 0 tests` / 包名或模块路径不符(契约不变量本体可能未实现)→ 才记 degraded,提示"检查缺失或引用过时,建议用 $marshal ratchet 补或修正 pack 引用",**不当作 pass**。
 - 真正跑了且失败(`test result: FAILED`)→ 该门禁 outcome=fail。
 - 教训:pack 注册的 run_command 必须指向**真实存在、已验证能命中**的测试(正确包名 + 全模块路径);注册前先在目标 repo 实跑确认 `≥1 passed`。
 
@@ -56,9 +54,11 @@ worktree 根即该 repo 根,`run_command` 里的 `-p <crate>` / 路径都相对 
 
 ## 核对 Almanax 已贴 findings(PR 模式出判决前**必做**)
 
-Almanax 是独立的第三方扫描器,常在 Marshal 跑之前就把 finding 贴上了 PR。**绝不凭印象写「Almanax: 0 findings」** —— 必须实拉再断言(node #660 即栽于此:Almanax 的 HIGH 早 4 分钟已 live,Marshal 却报「skipping / 0 findings」并判干净 PASS,违反「降级不谎报」)。Marshal 自己的对抗 review 发现了同一 bug ≠ 可以无视 Almanax 的判决态;两者是互相印证,不是替代。
+Almanax 是独立的第三方扫描器,常在 Marshal 跑之前就把 finding 贴上了 PR。**绝不凭印象写「Almanax: 0 findings」** —— 必须实拉再断言(node #660 即栽于此:Almanax 的 HIGH 早 4 分钟已 live,Marshal 却报「skipping / 0 findings」并判干净 PASS,违反「降级不谎报」;node #845 复发:Almanax CRITICAL 早 18 小时 live,Marshal run 366 仍写「no Almanax scan / no HIGH-MEDIUM」)。Marshal 自己的对抗 review 发现了同一 bug ≠ 可以无视 Almanax 的判决态;两者是互相印证,不是替代。
 
-1. **实拉**(两个端点都要,finding 可能在 review-comment 或 review body 里):
+**⚠ CI 的 `Almanax Security Scan` check 状态(`skipping`/`pass`/绿勾)不是「无 finding」的证据。** Almanax bot 经由 **review threads**(`pulls/<PR>/comments`)独立贴 finding,与那个 check-run 的状态解耦——#845 即栽于此:check 显示 `skipping`,但 bot 已贴 CRITICAL+MEDIUM。**永远实拉下面两个端点,不许拿 check 状态当代理。**
+
+1. **实拉**(两个端点都要,finding 可能在 review-comment 或 review body 里;**inline 行级 finding 在 `/pulls/<PR>/comments`,不在 issue-comments `/issues/<PR>/comments`——别拉错端点**):
    - `gh api repos/cowboyinc/<repo>/pulls/<PR>/comments --jq '.[] | select(.user.login=="almanax-ai[bot]")'`
    - `gh api repos/cowboyinc/<repo>/pulls/<PR>/reviews  --jq '.[] | select(.user.login=="almanax-ai[bot]")'`
    - severity 从 body 解析(`alt="High Severity"` / `Critical` / `Medium` / `Low`);看是否已被 `/almanax dismiss|resolve`(查后续回复或 `almanax_finding_id` 状态)。
@@ -76,7 +76,7 @@ Almanax 是独立的第三方扫描器,常在 Marshal 跑之前就把 finding �
 
 ## 落库与回写
 - `"$PY" -m marshal_core.cli gate-record --change-ref <ref> --verdict <v> --evidence-json '<gates JSON>'`
-- 有 PR# 且用户要:把发现贴成 PR 评论(可借 `/code-review ultra` 的 --comment)。
+- 有 PR# 且用户明确要求:把发现贴成 PR 评论。Codex 不得把本地 review 自动升级成外部写操作。
   **所有 GitHub 评论一律用英文**(PR comment / review / 描述);终端给用户的摘要仍按对话语言(中文)。
   **每条 GitHub 评论结尾必须逐字加这一行声明**(建议用 `<sub>...</sub>` 小字):
   `Generated by Marshal (risk-tiering + invariant gate + adversarial review). Advisory only.`

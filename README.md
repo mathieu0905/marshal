@@ -20,7 +20,7 @@ skill, and the plan-gate MCP server).
 - [Deployment](#deployment)
   - [1. The brain service](#1-the-brain-service)
   - [2. The GitHub Action (managed repos)](#2-the-github-action-managed-repos)
-  - [3. The `/marshal` reviewer skill](#3-the-marshal-reviewer-skill)
+  - [3. Reviewer skills (Claude Code + Codex CLI)](#3-reviewer-skills-claude-code--codex-cli)
   - [4. The plan-gate MCP server](#4-the-plan-gate-mcp-server)
 - [Configuration](#configuration)
 - [Repository layout](#repository-layout)
@@ -96,7 +96,8 @@ python -m marshal_core.cli <command> [options]
 | `ratchet-close --escape-id ... --spawned-check ... --inv-json ...` | Close an escape and register its permanent check |
 | `gate-record --change-ref ... --verdict pass` | Persist a gate result |
 | `metrics` | Summarize the quality metrics in the knowledge core |
-| `setup` | Install the local skill link and run basic health checks |
+| `worktree-diff [--repo-root ...] [--base ...]` | Collect one local diff including committed, staged, unstaged, and untracked content; auto-detect the remote default branch or require `--base` rather than silently omit commits |
+| `setup [--host claude|codex]` | Install all reviewer skills for Claude Code and/or Codex, then run health checks |
 | `concept-tree --concepts-dir ...` | Render the Domain Pack's concept hierarchy (importance, code-anchored vs spec-only) as a tree |
 | `concept-list --concepts-dir ...` | List concepts with their metadata (importance, parent, anchors, spec refs) |
 | `plan-cost --concepts-dir ... --touches ...` | Compute a neutral, deterministic concept-budget for a plan — weighted cost, blast radius, highest tier touched; never recommends do/don't |
@@ -162,7 +163,7 @@ directory is kept local and is not published to the remote — see
 
 Marshal has four deployable pieces. A minimal setup for a team is: run **one
 brain service**, wire the **GitHub Action** into each managed repo, and have
-reviewers install the **`/marshal` skill** and register the **MCP server**
+reviewers install the **reviewer skills for their agent host** and register the **MCP server**
 locally. Everything runs in shadow-safe mode — it records and reports, it never
 blocks a merge directly.
 
@@ -219,18 +220,77 @@ jobs:
   to `brain-url`** — nothing to install.
 - It is shadow-safe: the returned check-run is informational and never blocks.
 
-### 3. The `/marshal` reviewer skill
+### 3. Reviewer skills (Claude Code + Codex CLI)
 
-For a reviewer running Claude Code (or a Codex/agents setup) locally:
+Marshal ships three shared reviewer workflows plus a Codex-native PR sweep:
+
+| Workflow | Claude Code | Codex CLI |
+|---|---|---|
+| Merge gate / ratchet | `/marshal` | `$marshal` |
+| Repository onboarding | `/onboard` | `$onboard` |
+| Neutral plan cost | `/plan-cost` | `$plan-cost` |
+| Cross-repo PR deep-review sweep | Existing user-managed skill remains unchanged | `$marshal-pr-sweep` |
+
+Install every bundled workflow for each host (three Claude workflows and four
+Codex workflows):
 
 ```bash
 python -m marshal_core.cli setup
 ```
 
-`setup` links the in-repo `.claude/skills/marshal` to `~/.claude/skills/marshal`
-(and mirrors `.agents/skills/marshal` for Codex/agents), then checks that the
-Python imports and `zizmor` are available. After it runs, `/marshal` is available
-as a slash command.
+Run `setup` from a Marshal source checkout installed with the editable-install
+command in [Install](#install). The repository intentionally does not publish a
+wheel/plugin containing these top-level skill assets.
+
+`setup` links the Claude-specific sources under `.claude/skills/` into
+`~/.claude/skills/` and the Codex-specific sources under `.agents/skills/` into
+`~/.agents/skills/`. Concurrent setup processes are serialized. Each skill
+destination is handled independently: a Codex conflict does not block safe Claude
+links (or vice versa), and the command returns non-zero with per-destination
+`conflicts` while preserving every safe installation. It also checks that the
+Python imports and `zizmor` are available.
+
+Existing symlinks to this checkout are reused. Live links to the same bundled skill
+in an older recognizable Marshal checkout are migrated atomically. Real
+directories/files, broken links, and links owned by another installation are
+reported as conflicts and are never overwritten.
+
+To install only one host:
+
+```bash
+python -m marshal_core.cli setup --host claude
+python -m marshal_core.cli setup --host codex
+```
+
+Claude Code continues to use slash-form skill commands. In Codex, type `$` to
+mention a skill explicitly, or use `/skills` to browse the installed skills.
+When Codex runs a multi-lens review, it uses Codex subagents when that capability
+is available; the Claude workflow remains unchanged.
+
+The Codex-only `$marshal-pr-sweep` discovers open Cowboy PRs whose current head
+has not received a Marshal deep review, applies CI/draft/CIP-10 filters, and runs
+a bounded sequential batch. Its SHA markers are scoped to the authenticated
+GitHub user, so an existing Claude sweep using the same account shares progress
+without sharing files or logs. The existing `~/.claude/skills/marshal-pr-sweep`
+installation is never read, replaced, or migrated by `setup`.
+
+For an interactive run, invoke `$marshal-pr-sweep`. For cron, use the installed
+Codex launcher:
+
+```bash
+MAX_PER_RUN=auto ~/.agents/skills/marshal-pr-sweep/scripts/run_sweep.sh
+```
+
+The launcher uses `codex exec`, `workspace-write`, explicit network access, and
+`approval_policy=never`; it never enables `--yolo`. Its default writable workspace
+is the dedicated `~/.local/state/marshal-pr-sweep/workspace/`, not the parent that
+may contain sibling repositories. PR content is treated as untrusted data, and
+Marshal itself remains read-only reference material. Logs go to
+`~/.local/state/marshal-pr-sweep/`. If invariant checkouts require writes blocked
+by protected Git metadata, the run degrades safely. Only on an isolated trusted
+runner, opt in explicitly with `SANDBOX_MODE=danger-full-access`. Codex App
+scheduled tasks can instead use: `Use $marshal-pr-sweep to run one scheduled
+sweep cycle.`
 
 ### 4. The plan-gate MCP server
 
@@ -258,13 +318,23 @@ Verify with `claude mcp list` (`marshal-plan-gate … ✔ Connected`).
 > launched from that directory and needs a first-run approval — `claude mcp add
 > -s user` avoids both.
 
-**Codex / Opencode** use a different config file (`~/.codex/config.toml`,
-`opencode.json`'s `mcp` section), but the same command and args:
+**Codex CLI** (user scope, works from any directory):
 
+```bash
+codex mcp add marshal-plan-gate -- \
+  /path/to/marshal/.venv/bin/python -m marshal_core.mcp_server
 ```
-command: /path/to/marshal/.venv/bin/python
-args:    ["-m", "marshal_core.mcp_server"]
+
+Verify with `codex mcp list`; inside the Codex TUI, use `/mcp`. The equivalent
+manual entry in `~/.codex/config.toml` is:
+
+```toml
+[mcp_servers.marshal-plan-gate]
+command = "/path/to/marshal/.venv/bin/python"
+args = ["-m", "marshal_core.mcp_server"]
 ```
+
+Opencode can use the same command and args in its `opencode.json` MCP section.
 
 The calling agent maps a plan to concept `touches`; the tool runs the
 deterministic `plan-cost` computation and returns the same neutral cost picture
@@ -274,7 +344,7 @@ described above (verdict always `cost-only`).
 
 | Environment variable | Default | Description |
 |---|---|---|
-| `MARSHAL_HOME` | The current source-repo root | Where `.claude/skills/marshal` and the default database are located |
+| `MARSHAL_HOME` | The current source-repo root | Where `.claude/skills`, `.agents/skills`, and the default database are located |
 | `MARSHAL_DB` | `sqlite:///$MARSHAL_HOME/marshal.db` | The SQLAlchemy database URL — used by both the CLI and the brain service |
 
 `ci-scan` requires `zizmor`. Installing `.[ci]` is recommended; when it is
@@ -291,8 +361,8 @@ gate above it into manual judgment so nothing passes falsely.
 | `src/marshal_core/mcp_server.py` | The plan-gate MCP server exposing the `marshal_plan_review` tool |
 | `src/marshal_pack_cowboy/` | The Cowboy Domain Pack: risk-classification rules, invariant catalog, spec resolution, CI-security checks |
 | `src/marshal_pack_cowboy/concepts/` | The Cowboy concept registry: 32 concept pages (constitutional/high anchored to code) plus a spec-vs-code drift board |
-| `.claude/skills/marshal/` | The Claude Code `/marshal` skill and its gate / review / conformance / ratchet flow docs |
-| `.agents/skills/marshal/` | The Codex/agents-side copy of the same skill |
+| `.claude/skills/` | Claude Code workflows: `/marshal`, `/onboard`, and `/plan-cost` |
+| `.agents/skills/` | Codex-native workflows: `$marshal`, `$onboard`, and `$plan-cost` |
 | `marshal.db` | The default SQLite knowledge core |
 | `action.yml` | The GitHub composite action used by managed repos |
 | `docs/` | Local-only working docs (methodology, architecture, plans, and the concept-tree browser) — **gitignored, not published to the remote** |

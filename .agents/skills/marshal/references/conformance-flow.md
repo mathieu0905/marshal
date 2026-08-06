@@ -4,7 +4,7 @@
 
 规格源(`reference_cowboy_spec_sources`):cowboy 仓库 `docs/cips/cip-N-*.md`(CIP=修正案)、`docs/whitepaper/*.md`(白皮书=宪法)。本地 `<workspace>/cowboy`(默认 `/home/ubuntu/workspace/cowboy`)。
 
-## `/marshal conformance` — 符合度报告
+## `$marshal conformance` — 符合度报告
 ```
 "$PY" -m marshal_core.cli conformance --spec-root <workspace>/cowboy
 ```
