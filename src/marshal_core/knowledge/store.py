@@ -1,6 +1,11 @@
 """知识核读写薄封装。"""
-from sqlalchemy import select, func, or_
+from sqlalchemy import select, func, or_, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from .evidence import (
+    REQUIRED_STEPS, REVIEW_RUN_STATUSES, evidence_has_unresolved,
+    validate_review_evidence,
+)
 from .models import (
     InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Concept, ConceptEdge,
     ConceptAnchorRow, PlannedEvent, ReviewRun, ReviewFinding,
@@ -155,16 +160,144 @@ class Store:
         return esc
 
     def open_review_run(self, **kw) -> ReviewRun:
-        run = ReviewRun(**kw)
+        # New runs start open; evidence is closed out explicitly after all
+        # lenses and external checks have reported their availability.
+        status = kw.pop("status", "open")
+        if status != "open" or status not in REVIEW_RUN_STATUSES:
+            raise ValueError("new review runs must have status open")
+        evidence = dict(kw.pop("evidence", {}) or {})
+        plan_fields = {
+            "lenses": kw.pop("expected_lenses", None),
+            "commands": kw.pop("expected_commands", None),
+            "external_scans": kw.pop("expected_external_scans", None),
+        }
+        if any(value is not None for value in plan_fields.values()):
+            if any(not isinstance(value, list) or not value for value in plan_fields.values()):
+                raise ValueError(
+                    "review plan lenses, commands, and external_scans must be non-empty lists"
+                )
+            plan = {name: list(value) for name, value in plan_fields.items()}
+            evidence["review_plan"] = plan
+        run = ReviewRun(**kw, status=status, evidence=validate_review_evidence(evidence))
         self.s.add(run)
         self.s.commit()
+        return run
+
+
+    def close_review_run(self, run_id: int, status: str, evidence: dict) -> ReviewRun:
+        if status not in {"complete", "degraded"}:
+            raise ValueError("review run close status must be complete or degraded")
+        run = self.s.get(ReviewRun, run_id)
+        if run is None:
+            raise ValueError(f"review run not found: {run_id}")
+        if (run.status or "open") != "open":
+            raise ValueError(f"review run {run_id} is already closed")
+        if not isinstance(evidence, dict):
+            raise ValueError("review evidence must be a JSON object")
+        required = ("head_sha", "base_sha", "tree_sha", "steps", "lenses",
+                    "commands", "external_scans")
+        missing = [field for field in required if field not in evidence]
+        if missing:
+            raise ValueError("review evidence is missing required sections: " + ", ".join(missing))
+        manifest = validate_review_evidence(evidence, complete=status == "complete")
+        if not isinstance(manifest["steps"], dict) or set(manifest["steps"]) != REQUIRED_STEPS:
+            raise ValueError(
+                "review evidence steps must contain exactly "
+                + ", ".join(sorted(REQUIRED_STEPS))
+            )
+        for field in ("head_sha", "base_sha", "tree_sha"):
+            if not isinstance(manifest[field], str) or not manifest[field].strip():
+                raise ValueError(f"review evidence {field} must be a non-empty string")
+        if not isinstance(manifest["lenses"], dict):
+            raise ValueError("review evidence lenses must be an object")
+        if not all(
+            field in manifest["lenses"] for field in ("expected", "returned", "missing")
+        ):
+            raise ValueError(
+                "review evidence lenses must include expected, returned, and missing"
+            )
+        if not manifest["commands"]:
+            raise ValueError("review evidence commands must not be empty")
+        if manifest["head_sha"] != run.change_ref:
+            raise ValueError(
+                "review evidence head_sha must match the review run change_ref"
+            )
+        plan = (run.evidence or {}).get("review_plan")
+        if not isinstance(plan, dict):
+            raise ValueError("review runs require a review plan recorded at open")
+        if plan is not None:
+            supplied_plan = manifest.get("review_plan", plan)
+            if supplied_plan != plan:
+                raise ValueError("review evidence review_plan does not match the open plan")
+            actual_names = {
+                "lenses": manifest["lenses"]["expected"],
+                "commands": [item["name"] for item in manifest["commands"]],
+                "external_scans": [item["name"] for item in manifest["external_scans"]],
+            }
+            for field in ("lenses", "commands", "external_scans"):
+                if set(actual_names[field]) != set(plan[field]):
+                    raise ValueError(f"review evidence {field} does not match the open plan")
+            manifest["review_plan"] = plan
+        if status == "complete" and evidence_has_unresolved(manifest):
+            raise ValueError(
+                "cannot mark review run complete while evidence contains unresolved "
+                "steps, commands, lenses, or external scans"
+            )
+        result = self.s.execute(
+            update(ReviewRun)
+            .where(
+                ReviewRun.id == run_id,
+                or_(ReviewRun.status == "open", ReviewRun.status.is_(None)),
+            )
+            .values(status=status, evidence=manifest)
+        )
+        if result.rowcount != 1:
+            self.s.rollback()
+            current = self.s.get(ReviewRun, run_id)
+            if current is None:
+                raise ValueError(f"review run not found: {run_id}")
+            raise ValueError(f"review run {run_id} is already closed")
+        self.s.commit()
+        return self.s.get(ReviewRun, run_id)
+
+    def review_run_snapshot(self, run_id: int) -> dict:
+        run = self.s.get(ReviewRun, run_id)
+        if run is None:
+            raise ValueError(f"review run not found: {run_id}")
+        findings = []
+        for finding in self.list_findings(run_id):
+            findings.append({
+                "id": finding.id, "key": finding.key, "title": finding.title,
+                "claim": finding.claim, "location": finding.location,
+                "severity": finding.severity, "lens": finding.lens,
+                "votes": finding.votes or [],
+                "quorum_verdict": finding.quorum_verdict,
+                "human_verdict": finding.human_verdict,
+                "human_note": finding.human_note,
+            })
+        return {
+            "run_id": run.id, "change_ref": run.change_ref, "repo": run.repo,
+            "mode": run.mode, "host": run.host, "model": run.model,
+            "skill_rev": run.skill_rev, "context_ref": run.context_ref,
+            "status": run.status or "open", "evidence": run.evidence or {},
+            "created_at": run.created_at.isoformat() if run.created_at else None,
+            "findings": findings,
+        }
+
+    def _require_open_review_run(self, run_id: int) -> ReviewRun:
+        run = self.s.get(ReviewRun, run_id)
+        if run is None:
+            raise ValueError(f"review run not found: {run_id!r}")
+        if (run.status or "open") != "open":
+            raise ValueError(f"review run {run_id} is already closed")
         return run
 
     def record_finding(self, **kw) -> ReviewFinding:
         run_id = kw.get("run_id")
         key = kw.get("key")
-        if not isinstance(run_id, int) or self.s.get(ReviewRun, run_id) is None:
+        if not isinstance(run_id, int):
             raise ValueError(f"review run not found: {run_id!r}")
+        self._require_open_review_run(run_id)
         if not isinstance(key, str) or not key:
             raise ValueError("review finding key must be non-empty")
         existing = self.s.scalar(select(ReviewFinding).where(
@@ -177,7 +310,19 @@ class Store:
             return existing
         f = ReviewFinding(**kw)
         self.s.add(f)
-        self.s.commit()
+        try:
+            self.s.commit()
+        except IntegrityError:
+            self.s.rollback()
+            existing = self.s.scalar(select(ReviewFinding).where(
+                ReviewFinding.run_id == run_id, ReviewFinding.key == key))
+            if existing is None:
+                raise
+            for name, value in kw.items():
+                if name != "run_id" and hasattr(existing, name):
+                    setattr(existing, name, value)
+            self.s.commit()
+            return existing
         return f
 
     def record_findings(self, findings: list[dict]) -> list[ReviewFinding]:
@@ -188,8 +333,9 @@ class Store:
         if len(run_ids) != 1:
             raise ValueError("all findings in a batch must use one review run")
         run_id = next(iter(run_ids))
-        if not isinstance(run_id, int) or self.s.get(ReviewRun, run_id) is None:
+        if not isinstance(run_id, int):
             raise ValueError(f"review run not found: {run_id!r}")
+        self._require_open_review_run(run_id)
         keys = [item.get("key") for item in findings]
         if any(not isinstance(key, str) or not key for key in keys):
             raise ValueError("review finding keys must be non-empty")
@@ -211,7 +357,7 @@ class Store:
         return saved
 
     def list_findings(self, run_id: int) -> list[ReviewFinding]:
-        stmt = select(ReviewFinding).where(ReviewFinding.run_id == run_id)
+        stmt = select(ReviewFinding).where(ReviewFinding.run_id == run_id).order_by(ReviewFinding.id)
         return list(self.s.scalars(stmt))
 
     def set_human_verdict(self, finding_id: int, verdict: str,
@@ -222,6 +368,7 @@ class Store:
         f = self.s.get(ReviewFinding, finding_id)
         if f is None:
             raise ValueError(f"finding not found: {finding_id}")
+        self._require_open_review_run(f.run_id)
         if f.human_verdict:
             raise ValueError(f"finding {finding_id} already has a human verdict")
         f.human_verdict = verdict
