@@ -73,3 +73,12 @@ def test_spa_has_rereview_button_wiring(client):
     assert "re-review" in html
     assert "startJob" in html
     assert "/api/jobs" in html
+
+
+def test_rereview_button_has_no_inline_onclick_handler(client):
+    # Security regression guard: the button must NOT be wired via an inline
+    # onclick that interpolates change_ref/repo (esc() is the wrong encoding for
+    # the inline-handler JS sink and is bypassable). It must use addEventListener.
+    html = client.get("/").text
+    assert 'onclick="startJob' not in html
+    assert "addEventListener" in html

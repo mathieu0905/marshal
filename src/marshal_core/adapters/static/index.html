@@ -86,11 +86,13 @@ async function renderInbox(){
       </div>
       <details><summary>evidence</summary><pre>${esc(JSON.stringify(e,null,2))}</pre></details>
       <div class="jobrow">
-        <button class="btn" onclick="startJob(this, '${esc(r.change_ref)}', '${esc(e.repo||'node')}')">re-review</button>
+        <button class="btn">re-review</button>
         <span class="jobstatus"></span>
       </div>
     </div>`);
     app.appendChild(card);
+    const jobBtn = card.querySelector('.btn');
+    jobBtn.addEventListener('click', () => startJob(jobBtn, r.change_ref, (e.repo || 'node')));
   }
 }
 
