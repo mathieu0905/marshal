@@ -49,3 +49,19 @@ def test_token_guard_blocks_when_configured(tmp_path, monkeypatch):
     ok = c.post("/api/jobs", json={"change_ref": "x"},
                 headers={"X-Marshal-Token": "secret"})
     assert ok.status_code == 200
+
+
+def test_get_job_token_guard(tmp_path, monkeypatch):
+    monkeypatch.setenv("MARSHAL_DB", f"sqlite:///{tmp_path}/g.db")
+    monkeypatch.setenv("MARSHAL_JOB_TOKEN", "secret")
+    import marshal_core.adapters.api as api
+    importlib.reload(api)
+    c = TestClient(api.app)
+    created = c.post("/api/jobs", json={"change_ref": "x"},
+                     headers={"X-Marshal-Token": "secret"})
+    assert created.status_code == 200
+    jid = created.json()["id"]
+    # GET without token -> 403
+    assert c.get(f"/api/jobs/{jid}").status_code == 403
+    # GET with token -> 200
+    assert c.get(f"/api/jobs/{jid}", headers={"X-Marshal-Token": "secret"}).status_code == 200

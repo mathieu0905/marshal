@@ -94,11 +94,15 @@ def spa():
     return FileResponse(_STATIC_DIR / "index.html")
 
 
-@app.post("/api/jobs")
-def api_create_job(body: dict, x_marshal_token: str | None = Header(default=None)):
+def _check_job_token(x_marshal_token: str | None) -> None:
     expected = os.environ.get("MARSHAL_JOB_TOKEN")
     if expected and x_marshal_token != expected:
         raise HTTPException(status_code=403, detail="invalid or missing token")
+
+
+@app.post("/api/jobs")
+def api_create_job(body: dict, x_marshal_token: str | None = Header(default=None)):
+    _check_job_token(x_marshal_token)
     change_ref = body.get("change_ref")
     if not change_ref:
         raise HTTPException(status_code=422, detail="change_ref required")
@@ -111,7 +115,8 @@ def api_create_job(body: dict, x_marshal_token: str | None = Header(default=None
 
 
 @app.get("/api/jobs/{job_id}")
-def api_get_job(job_id: int):
+def api_get_job(job_id: int, x_marshal_token: str | None = Header(default=None)):
+    _check_job_token(x_marshal_token)
     with _Session() as s:
         job = Store(s).get_job(job_id)
         if job is None:
