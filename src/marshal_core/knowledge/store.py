@@ -22,6 +22,24 @@ class Store:
         )
         return list(self.s.scalars(stmt))
 
+    def invariant_breakdown(self) -> dict:
+        by_status: dict[str, int] = {}
+        for status, n in self.s.execute(
+                select(InvariantRegistry.status, func.count())
+                .group_by(InvariantRegistry.status)):
+            by_status[status] = n
+        by_severity: dict[str, int] = {}
+        for sev, n in self.s.execute(
+                select(InvariantRegistry.severity, func.count())
+                .group_by(InvariantRegistry.severity)):
+            by_severity[sev] = n
+        candidate_red_ids = list(self.s.scalars(
+            select(InvariantRegistry.id)
+            .where(InvariantRegistry.status == "candidate-red")
+            .order_by(InvariantRegistry.id)))
+        return {"by_status": by_status, "by_severity": by_severity,
+                "candidate_red_ids": candidate_red_ids}
+
     def record_gate_run(self, change_ref: str, job_id: str, verdict: str,
                         evidence: dict) -> GateRun:
         run = GateRun(change_ref=change_ref, job_id=job_id, verdict=verdict,

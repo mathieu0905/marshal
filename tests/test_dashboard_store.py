@@ -43,3 +43,19 @@ def test_escape_breakdown_groups_by_root_cause_all_statuses(db_session):
     assert by_class["state-consensus"]["count"] == 1
     # sorted by count desc so the worst-offending class is first
     assert rows[0]["count"] >= rows[-1]["count"]
+
+
+def test_invariant_breakdown_counts_status_severity_and_lists_candidate_red(db_session):
+    s = Store(db_session)
+    common = dict(domain_pack="cowboy", domain="econ", executor_kind="test",
+                  location_repo="node", location_path="p", location_test="t")
+    s.register_invariant(id="i.a", severity="high", status="active", **common)
+    s.register_invariant(id="i.b", severity="high", status="active", **common)
+    s.register_invariant(id="i.c", severity="medium", status="active", **common)
+    s.register_invariant(id="i.red", severity="high", status="candidate-red", **common)
+    b = s.invariant_breakdown()
+    assert b["by_status"]["active"] == 3
+    assert b["by_status"]["candidate-red"] == 1
+    assert b["by_severity"]["high"] == 3
+    assert b["by_severity"]["medium"] == 1
+    assert b["candidate_red_ids"] == ["i.red"]
