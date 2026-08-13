@@ -133,6 +133,18 @@ class Store:
             },
         }
 
+    def verdict_timeseries(self) -> list[dict]:
+        # Bucket gate runs by calendar day (UTC) and verdict. Done in Python so it
+        # stays engine-agnostic (SQLite date() vs Postgres date_trunc differ).
+        buckets: dict[str, dict] = {}
+        for r in self.s.scalars(select(GateRun).order_by(GateRun.created_at)):
+            day = r.created_at.date().isoformat()
+            slot = buckets.setdefault(
+                day, {"date": day, "pass": 0, "needs_human": 0, "block": 0})
+            if r.verdict in slot:
+                slot[r.verdict] += 1
+        return [buckets[d] for d in sorted(buckets)]
+
     def get_meta(self, key: str, default: str | None = None) -> str | None:
         row = self.s.get(Meta, key)
         return row.value if row else default

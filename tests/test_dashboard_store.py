@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+from marshal_core.knowledge.models import GateRun
 from marshal_core.knowledge.store import Store
 
 
@@ -59,3 +61,20 @@ def test_invariant_breakdown_counts_status_severity_and_lists_candidate_red(db_s
     assert b["by_severity"]["high"] == 3
     assert b["by_severity"]["medium"] == 1
     assert b["candidate_red_ids"] == ["i.red"]
+
+
+def test_verdict_timeseries_buckets_by_day(db_session):
+    s = Store(db_session)
+    # insert runs on two distinct days with explicit created_at
+    db_session.add(GateRun(change_ref="a", job_id="a", verdict="pass", evidence={},
+                           created_at=datetime(2026, 6, 1, 10, tzinfo=timezone.utc)))
+    db_session.add(GateRun(change_ref="b", job_id="b", verdict="needs_human", evidence={},
+                           created_at=datetime(2026, 6, 1, 12, tzinfo=timezone.utc)))
+    db_session.add(GateRun(change_ref="c", job_id="c", verdict="pass", evidence={},
+                           created_at=datetime(2026, 6, 2, 9, tzinfo=timezone.utc)))
+    db_session.commit()
+    ts = s.verdict_timeseries()
+    assert ts == [
+        {"date": "2026-06-01", "pass": 1, "needs_human": 1, "block": 0},
+        {"date": "2026-06-02", "pass": 1, "needs_human": 0, "block": 0},
+    ]
