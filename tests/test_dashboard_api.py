@@ -90,3 +90,11 @@ def test_spa_has_deep_review_button(client):
     assert "'deep'" in html                # startJob(..., 'deep') wiring
     assert "re-review" in html             # mechanical button still present
     assert 'onclick="startJob' not in html # still no inline handler
+
+
+def test_spa_locks_both_buttons_during_job(client):
+    # UX race guard: a running job disables BOTH buttons in the row (collective
+    # querySelectorAll('.btn')), so a user can't start a second concurrent job on
+    # the same card and clobber the shared status span.
+    html = client.get("/").text
+    assert "querySelectorAll('.btn')" in html

@@ -148,19 +148,21 @@ async function renderHealth(){
 }
 
 async function startJob(btn, changeRef, repo, kind){
-  btn.disabled = true;
-  const statusEl = btn.parentElement.querySelector('.jobstatus');
+  const row = btn.parentElement;
+  const btns = row.querySelectorAll('.btn');
+  btns.forEach(b => b.disabled = true);      // lock BOTH buttons while either job runs
+  const statusEl = row.querySelector('.jobstatus');
   statusEl.innerHTML = '<span class="dot pending"></span> queued…';
   try {
     const r = await fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({change_ref: changeRef, repo: repo, kind: kind || 'mechanical'})});
     if(!r.ok) throw new Error('enqueue '+r.status);
     const job = await r.json();
-    pollJob(job.id, statusEl, btn);
-  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btn.disabled=false; }
+    pollJob(job.id, statusEl, btns);
+  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled=false); }
 }
 
-async function pollJob(id, statusEl, btn){
+async function pollJob(id, statusEl, btns){
   try {
     const j = await getJSON('/api/jobs/'+id);
     if(j.status==='done'){
@@ -172,15 +174,15 @@ async function pollJob(id, statusEl, btn){
         msg = 're-planned: ' + esc(res.count!=null ? res.count : '?') + ' invariants';
       }
       statusEl.innerHTML = '<span class="dot done"></span> ' + msg;
-      btn.disabled = false; return;
+      btns.forEach(b => b.disabled = false); return;
     }
     if(j.status==='failed'){
       statusEl.innerHTML = '<span class="dot failed"></span> '+esc(j.error||'failed');
-      btn.disabled = false; return;
+      btns.forEach(b => b.disabled = false); return;
     }
     statusEl.innerHTML = `<span class="dot ${esc(j.status)}"></span> ${esc(j.status)}…`;
-    setTimeout(() => pollJob(id, statusEl, btn), 1500);
-  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btn.disabled=false; }
+    setTimeout(() => pollJob(id, statusEl, btns), 1500);
+  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled = false); }
 }
 
 async function show(tab){
