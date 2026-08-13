@@ -1,7 +1,7 @@
 """知识核读写薄封装。"""
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta
+from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta, ReviewJob
 
 
 class Store:
@@ -181,3 +181,24 @@ class Store:
         esc.status = "closed"
         self.s.commit()
         return esc
+
+    @staticmethod
+    def _job_dict(j: ReviewJob) -> dict:
+        return {"id": j.id, "change_ref": j.change_ref, "repo": j.repo,
+                "kind": j.kind, "status": j.status, "requested_by": j.requested_by,
+                "created_at": j.created_at.isoformat() if j.created_at else None,
+                "started_at": j.started_at.isoformat() if j.started_at else None,
+                "finished_at": j.finished_at.isoformat() if j.finished_at else None,
+                "result": j.result, "error": j.error}
+
+    def enqueue_job(self, change_ref: str, repo: str = "node",
+                    kind: str = "mechanical", requested_by: str = "dashboard") -> dict:
+        job = ReviewJob(change_ref=change_ref, repo=repo, kind=kind,
+                        requested_by=requested_by)
+        self.s.add(job)
+        self.s.commit()
+        return self._job_dict(job)
+
+    def get_job(self, job_id: int) -> dict | None:
+        j = self.s.get(ReviewJob, job_id)
+        return self._job_dict(j) if j else None
