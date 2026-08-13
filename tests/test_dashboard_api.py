@@ -37,3 +37,24 @@ def test_runs_endpoint_returns_evidence(client):
 def test_runs_endpoint_404_on_missing(client):
     r = client.get("/api/runs/99999")
     assert r.status_code == 404
+
+
+def test_health_composes_metrics_and_breakdowns(client):
+    r = client.get("/api/health")
+    assert r.status_code == 200
+    body = r.json()
+    # verdict distribution comes straight from metrics()
+    assert body["gate_runs_by_verdict"]["needs_human"] == 1
+    assert body["gate_runs_by_verdict"]["pass"] == 1
+    # new aggregate blocks are present
+    assert "escape_breakdown" in body
+    assert "invariant_breakdown" in body
+    assert "verdict_timeseries" in body
+    # honest gaps carried through, including MTTD still pending in Phase 1
+    assert "mean_time_to_detection" in body["unavailable"]
+
+
+def test_escapes_endpoint_returns_breakdown(client):
+    with_escape = client.get("/api/escapes")
+    assert with_escape.status_code == 200
+    assert isinstance(with_escape.json(), list)

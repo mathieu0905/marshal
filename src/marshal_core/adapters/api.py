@@ -66,3 +66,20 @@ def api_run(run_id: int):
         return {"id": run.id, "change_ref": run.change_ref, "job_id": run.job_id,
                 "verdict": run.verdict, "evidence": run.evidence,
                 "created_at": run.created_at.isoformat()}
+
+
+@app.get("/api/escapes")
+def api_escapes():
+    with _Session() as s:
+        return Store(s).escape_breakdown()
+
+
+@app.get("/api/health")
+def api_health():
+    with _Session() as s:
+        st = Store(s)
+        payload = st.metrics()
+        payload["escape_breakdown"] = st.escape_breakdown()
+        payload["invariant_breakdown"] = st.invariant_breakdown()
+        payload["verdict_timeseries"] = st.verdict_timeseries()
+        return payload
