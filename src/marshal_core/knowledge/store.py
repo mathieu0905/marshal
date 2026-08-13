@@ -224,3 +224,23 @@ class Store:
                 return self._job_dict(job)
             # lost the race; expire the stale row and try the next pending one
             self.s.expire(job)
+
+    def finish_job(self, job_id: int, result: dict) -> dict:
+        j = self.s.get(ReviewJob, job_id)
+        if j is None:
+            raise ValueError(f"job not found: {job_id}")
+        j.status = "done"
+        j.result = result
+        j.finished_at = _now()
+        self.s.commit()
+        return self._job_dict(j)
+
+    def fail_job(self, job_id: int, error: str) -> dict:
+        j = self.s.get(ReviewJob, job_id)
+        if j is None:
+            raise ValueError(f"job not found: {job_id}")
+        j.status = "failed"
+        j.error = error
+        j.finished_at = _now()
+        self.s.commit()
+        return self._job_dict(j)

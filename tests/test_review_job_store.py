@@ -91,3 +91,24 @@ def test_claim_retries_past_lost_race(db_session, monkeypatch):
     assert claimed is not None
     assert claimed["id"] == b["id"]      # lost A, retried, claimed B
     assert claimed["status"] == "running"
+
+
+def test_finish_job_sets_done_with_result(db_session):
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref="node#1")
+    s.claim_next_job()
+    done = s.finish_job(job["id"], result={"invariant_ids": ["econ.fee_conservation"],
+                                           "count": 1})
+    assert done["status"] == "done"
+    assert done["finished_at"] is not None
+    assert done["result"]["count"] == 1
+
+
+def test_fail_job_sets_failed_with_error(db_session):
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref="node#1")
+    s.claim_next_job()
+    failed = s.fail_job(job["id"], error="boom")
+    assert failed["status"] == "failed"
+    assert failed["finished_at"] is not None
+    assert failed["error"] == "boom"
