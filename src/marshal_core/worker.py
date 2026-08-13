@@ -9,6 +9,7 @@ import json
 import os
 import subprocess
 import time
+from contextlib import contextmanager
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -38,6 +39,33 @@ def _parse_verdict(path: str) -> dict:
     if data.get("verdict") not in ("pass", "needs_human", "block"):
         raise DeepReviewError(f"invalid verdict: {data.get('verdict')!r}")
     return data
+
+
+def _worktree_base() -> str:
+    return os.environ.get("MARSHAL_WORKTREE_BASE",
+                          os.path.expanduser("~/.marshal/worktrees"))
+
+
+@contextmanager
+def _deep_worktree(repo: str, change_ref: str):
+    # Isolated git worktree of the target repo at change_ref, on a STABLE path
+    # (never /tmp — /tmp worktrees get reaped mid-run). Torn down unconditionally.
+    workspace = os.environ.get("MARSHAL_WORKSPACE", "/home/ubuntu/workspace")
+    repo_root = os.path.join(workspace, repo)
+    base = _worktree_base()
+    os.makedirs(base, exist_ok=True)
+    safe = "".join(c if c.isalnum() or c in "-._" else "_" for c in f"{repo}-{change_ref}")
+    wt = os.path.join(base, safe[:120])
+    try:
+        subprocess.run(["git", "-C", repo_root, "worktree", "add", "--detach", wt, change_ref],
+                       check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as exc:
+        raise DeepReviewError(f"worktree add failed: {exc.stderr[:300]}")
+    try:
+        yield wt
+    finally:
+        subprocess.run(["git", "-C", repo_root, "worktree", "remove", "--force", wt],
+                       capture_output=True, text=True)
 
 
 def _run_mechanical(store: Store, pack, job: dict) -> dict:
