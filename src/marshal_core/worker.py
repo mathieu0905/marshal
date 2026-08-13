@@ -3,7 +3,8 @@
 Phase 2 handles only the 'mechanical' kind — it rebuilds a NormalizedEvent and
 calls Orchestrator.plan(), which re-selects/registers the applicable invariants.
 A mechanical re-plan does NOT produce a gate_run verdict; that is the Phase 3
-deep worker's job. 'deep' jobs are failed here with a clear message until then.
+deep worker's job. 'deep' jobs run a full /marshal review via `claude -p` in an
+isolated worktree (see _run_deep) and write the verdict back to a local gate_run.
 """
 import json
 import os
@@ -37,6 +38,8 @@ def _parse_verdict(path: str) -> dict:
             data = json.loads(fh.read())
     except (ValueError, OSError) as exc:
         raise DeepReviewError(f"verdict file unparseable: {exc}")
+    if not isinstance(data, dict):
+        raise DeepReviewError(f"verdict file is not a JSON object: {type(data).__name__}")
     if data.get("verdict") not in ("pass", "needs_human", "block"):
         raise DeepReviewError(f"invalid verdict: {data.get('verdict')!r}")
     return data
@@ -57,7 +60,13 @@ def _deep_worktree(repo: str, change_ref: str):
     # Isolated git worktree of the target repo at change_ref, on a STABLE path
     # (never /tmp — /tmp worktrees get reaped mid-run). Torn down unconditionally.
     workspace = os.environ.get("MARSHAL_WORKSPACE", "/home/ubuntu/workspace")
-    repo_root = os.path.join(workspace, repo)
+    workspace_real = os.path.realpath(workspace)
+    repo_root = os.path.realpath(os.path.join(workspace, repo))
+    # Containment guard: `repo` must resolve to a direct child of the workspace,
+    # never escape it (e.g. repo="../evil"). Deep jobs run `claude -p` with full
+    # tool access inside repo_root, so an out-of-workspace path is real attack surface.
+    if repo_root == workspace_real or os.path.commonpath([repo_root, workspace_real]) != workspace_real:
+        raise DeepReviewError(f"repo path escapes workspace: {repo!r}")
     os.makedirs(_worktree_base(), exist_ok=True)
     wt = _worktree_path(repo, change_ref)
     # Self-heal a worktree left behind by a hard-crashed prior run: the path is a

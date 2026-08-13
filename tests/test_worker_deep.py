@@ -197,3 +197,20 @@ def test_run_once_deep_timeout_marks_failed(db_session, tmp_path, monkeypatch):
     failed = s.get_job(job["id"])
     assert failed["status"] == "failed"          # never left 'running'
     assert "Timeout" in failed["error"] or "timed out" in failed["error"].lower()
+
+
+def test_deep_worktree_rejects_repo_path_traversal(tmp_path, monkeypatch):
+    ws = tmp_path / "ws"; ws.mkdir()
+    _make_repo(ws / "node")
+    monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
+    monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
+    with pytest.raises(DeepReviewError, match="escapes workspace"):
+        with _deep_worktree("../evil", "HEAD"):
+            pass
+
+
+def test_parse_verdict_non_object_json_raises(tmp_path):
+    p = tmp_path / VERDICT_FILE
+    p.write_text('["not","an","object"]')
+    with pytest.raises(DeepReviewError, match="not a JSON object"):
+        _parse_verdict(str(p))
