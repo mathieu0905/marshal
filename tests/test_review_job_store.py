@@ -61,3 +61,33 @@ def test_claim_skips_rows_already_running(db_session):
     row.status = "running"
     db_session.commit()
     assert s.claim_next_job() is None
+
+
+def test_claim_retries_past_lost_race(db_session, monkeypatch):
+    # Deterministically drive the CAS retry branch: intercept the first UPDATE so it
+    # matches 0 rows (as if a competing worker grabbed job A between our SELECT and
+    # UPDATE), then confirm claim_next_job retries and claims the next pending job B.
+    s = Store(db_session)
+    a = s.enqueue_job(change_ref="A")
+    b = s.enqueue_job(change_ref="B")
+    real_execute = s.s.execute
+    state = {"first": True}
+
+    class _Zero:
+        rowcount = 0
+
+    def fake_execute(stmt, *args, **kw):
+        if state["first"]:
+            state["first"] = False
+            # simulate the competitor: flip A to running (flush so the retry SELECT
+            # skips it) and report our UPDATE as having matched nothing
+            db_session.get(_RJ, a["id"]).status = "running"
+            db_session.flush()
+            return _Zero()
+        return real_execute(stmt, *args, **kw)
+
+    monkeypatch.setattr(s.s, "execute", fake_execute)
+    claimed = s.claim_next_job()
+    assert claimed is not None
+    assert claimed["id"] == b["id"]      # lost A, retried, claimed B
+    assert claimed["status"] == "running"

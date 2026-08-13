@@ -211,7 +211,7 @@ class Store:
         while True:
             job = self.s.scalars(
                 select(ReviewJob).where(ReviewJob.status == "pending")
-                .order_by(ReviewJob.created_at).limit(1)).first()
+                .order_by(ReviewJob.created_at, ReviewJob.id).limit(1)).first()
             if job is None:
                 return None
             res = self.s.execute(
