@@ -32,6 +32,12 @@
   .barlabel { display:flex; justify-content:space-between; font-size:12px; margin:6px 0 2px; }
   .gap { color:var(--muted); font-size:12px; border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
   .muted { color:var(--muted); }
+  .jobrow { margin-top:10px; font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:center; }
+  .btn { background:var(--line); color:var(--fg); border:none; border-radius:6px; padding:4px 10px; font:inherit; font-size:12px; cursor:pointer; }
+  .btn:disabled { opacity:.5; cursor:default; }
+  .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .dot.pending { background:var(--muted); } .dot.running { background:var(--needs); }
+  .dot.done { background:var(--pass); } .dot.failed { background:var(--block); }
 </style>
 </head>
 <body>
@@ -79,6 +85,10 @@ async function renderInbox(){
         ${(e.advisory_findings||[]).length?`<span>▸ ${e.advisory_findings.length} advisory</span>`:''}
       </div>
       <details><summary>evidence</summary><pre>${esc(JSON.stringify(e,null,2))}</pre></details>
+      <div class="jobrow">
+        <button class="btn" onclick="startJob(this, '${esc(r.change_ref)}', '${esc(e.repo||'node')}')">re-review</button>
+        <span class="jobstatus"></span>
+      </div>
     </div>`);
     app.appendChild(card);
   }
@@ -130,6 +140,36 @@ async function renderHealth(){
       <div class="gap">MTTD — pending Phase 4 (needs introduced_at timestamp)</div>
       ${Object.entries(gaps).map(([k,why])=>`<div class="gap">${esc(k)} — ${esc(why)}</div>`).join('')}
     </div>`;
+}
+
+async function startJob(btn, changeRef, repo){
+  btn.disabled = true;
+  const statusEl = btn.parentElement.querySelector('.jobstatus');
+  statusEl.innerHTML = '<span class="dot pending"></span> queued…';
+  try {
+    const r = await fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({change_ref: changeRef, repo: repo, kind: 'mechanical'})});
+    if(!r.ok) throw new Error('enqueue '+r.status);
+    const job = await r.json();
+    pollJob(job.id, statusEl, btn);
+  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btn.disabled=false; }
+}
+
+async function pollJob(id, statusEl, btn){
+  try {
+    const j = await getJSON('/api/jobs/'+id);
+    if(j.status==='done'){
+      const n = j.result && j.result.count!=null ? j.result.count : '?';
+      statusEl.innerHTML = `<span class="dot done"></span> re-planned: ${esc(n)} invariants`;
+      btn.disabled = false; return;
+    }
+    if(j.status==='failed'){
+      statusEl.innerHTML = '<span class="dot failed"></span> '+esc(j.error||'failed');
+      btn.disabled = false; return;
+    }
+    statusEl.innerHTML = `<span class="dot ${esc(j.status)}"></span> ${esc(j.status)}…`;
+    setTimeout(() => pollJob(id, statusEl, btn), 1500);
+  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btn.disabled=false; }
 }
 
 async function show(tab){

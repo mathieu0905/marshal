@@ -66,3 +66,10 @@ def test_root_serves_spa(client):
     assert "text/html" in r.headers["content-type"]
     assert "Marshal" in r.text
     assert 'id="app"' in r.text
+
+
+def test_spa_has_rereview_button_wiring(client):
+    html = client.get("/").text
+    assert "re-review" in html
+    assert "startJob" in html
+    assert "/api/jobs" in html
