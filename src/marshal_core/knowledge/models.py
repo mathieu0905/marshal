@@ -66,3 +66,18 @@ class Meta(Base):
     __tablename__ = "meta"
     key: Mapped[str] = mapped_column(String, primary_key=True)
     value: Mapped[str] = mapped_column(String, default="")
+
+
+class ReviewJob(Base):
+    __tablename__ = "review_job"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    change_ref: Mapped[str] = mapped_column(String, index=True)
+    repo: Mapped[str] = mapped_column(String, default="node")
+    kind: Mapped[str] = mapped_column(String, default="mechanical")   # 'mechanical' | 'deep'
+    status: Mapped[str] = mapped_column(String, default="pending")    # pending|running|done|failed
+    requested_by: Mapped[str] = mapped_column(String, default="dashboard")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
+    started_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    result: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
