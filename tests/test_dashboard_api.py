@@ -82,3 +82,11 @@ def test_rereview_button_has_no_inline_onclick_handler(client):
     html = client.get("/").text
     assert 'onclick="startJob' not in html
     assert "addEventListener" in html
+
+
+def test_spa_has_deep_review_button(client):
+    html = client.get("/").text
+    assert "deep review" in html          # the new deep button label
+    assert "'deep'" in html                # startJob(..., 'deep') wiring
+    assert "re-review" in html             # mechanical button still present
+    assert 'onclick="startJob' not in html # still no inline handler

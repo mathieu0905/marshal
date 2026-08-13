@@ -86,13 +86,16 @@ async function renderInbox(){
       </div>
       <details><summary>evidence</summary><pre>${esc(JSON.stringify(e,null,2))}</pre></details>
       <div class="jobrow">
-        <button class="btn">re-review</button>
+        <button class="btn re-plan">re-review</button>
+        <button class="btn deep">deep review</button>
         <span class="jobstatus"></span>
       </div>
     </div>`);
     app.appendChild(card);
-    const jobBtn = card.querySelector('.btn');
-    jobBtn.addEventListener('click', () => startJob(jobBtn, r.change_ref, (e.repo || 'node')));
+    const rePlanBtn = card.querySelector('.re-plan');
+    rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, r.change_ref, (e.repo || 'node'), 'mechanical'));
+    const deepBtn = card.querySelector('.deep');
+    deepBtn.addEventListener('click', () => startJob(deepBtn, r.change_ref, (e.repo || 'node'), 'deep'));
   }
 }
 
@@ -144,13 +147,13 @@ async function renderHealth(){
     </div>`;
 }
 
-async function startJob(btn, changeRef, repo){
+async function startJob(btn, changeRef, repo, kind){
   btn.disabled = true;
   const statusEl = btn.parentElement.querySelector('.jobstatus');
   statusEl.innerHTML = '<span class="dot pending"></span> queued…';
   try {
     const r = await fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({change_ref: changeRef, repo: repo, kind: 'mechanical'})});
+      body: JSON.stringify({change_ref: changeRef, repo: repo, kind: kind || 'mechanical'})});
     if(!r.ok) throw new Error('enqueue '+r.status);
     const job = await r.json();
     pollJob(job.id, statusEl, btn);
@@ -161,8 +164,14 @@ async function pollJob(id, statusEl, btn){
   try {
     const j = await getJSON('/api/jobs/'+id);
     if(j.status==='done'){
-      const n = j.result && j.result.count!=null ? j.result.count : '?';
-      statusEl.innerHTML = `<span class="dot done"></span> re-planned: ${esc(n)} invariants`;
+      const res = j.result || {};
+      let msg;
+      if(res.verdict!=null){
+        msg = 'deep: ' + esc(res.verdict) + (res.gate_run_id!=null ? ' → run #'+esc(res.gate_run_id) : '');
+      } else {
+        msg = 're-planned: ' + esc(res.count!=null ? res.count : '?') + ' invariants';
+      }
+      statusEl.innerHTML = '<span class="dot done"></span> ' + msg;
       btn.disabled = false; return;
     }
     if(j.status==='failed'){
