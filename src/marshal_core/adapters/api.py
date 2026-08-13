@@ -1,7 +1,7 @@
 """FastAPI 接入端点。POST /webhook (PR 事件), POST /results (CI 回传)。"""
 import os
 from pathlib import Path
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -92,3 +92,28 @@ def api_health():
 @app.get("/")
 def spa():
     return FileResponse(_STATIC_DIR / "index.html")
+
+
+@app.post("/api/jobs")
+def api_create_job(body: dict, x_marshal_token: str | None = Header(default=None)):
+    expected = os.environ.get("MARSHAL_JOB_TOKEN")
+    if expected and x_marshal_token != expected:
+        raise HTTPException(status_code=403, detail="invalid or missing token")
+    change_ref = body.get("change_ref")
+    if not change_ref:
+        raise HTTPException(status_code=422, detail="change_ref required")
+    kind = body.get("kind", "mechanical")
+    if kind not in ("mechanical", "deep"):
+        raise HTTPException(status_code=422, detail="kind must be mechanical or deep")
+    with _Session() as s:
+        return Store(s).enqueue_job(change_ref=change_ref,
+                                    repo=body.get("repo", "node"), kind=kind)
+
+
+@app.get("/api/jobs/{job_id}")
+def api_get_job(job_id: int):
+    with _Session() as s:
+        job = Store(s).get_job(job_id)
+        if job is None:
+            raise HTTPException(status_code=404, detail="job not found")
+        return job
