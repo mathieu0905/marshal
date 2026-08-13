@@ -64,6 +64,20 @@ class Store:
         stmt = select(EscapeRegistry).where(EscapeRegistry.status == "open")
         return list(self.s.scalars(stmt))
 
+    def escape_breakdown(self) -> list[dict]:
+        stmt = (select(EscapeRegistry.root_cause_class, EscapeRegistry.status,
+                       func.count())
+                .group_by(EscapeRegistry.root_cause_class, EscapeRegistry.status))
+        agg: dict[str, dict] = {}
+        for root_cause, status, n in self.s.execute(stmt):
+            slot = agg.setdefault(
+                root_cause, {"root_cause_class": root_cause, "count": 0,
+                             "open": 0, "closed": 0})
+            slot["count"] += n
+            if status in ("open", "closed"):
+                slot[status] += n
+        return sorted(agg.values(), key=lambda r: r["count"], reverse=True)
+
     def metrics(self) -> dict:
         """⑦ 度量: 从知识核聚合方法论指标。诚实标注当前数据模型不支持的指标
         (escape_rate 缺总-bug 分母;time_to_detection 缺 introduced_at 时间戳;

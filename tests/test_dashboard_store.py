@@ -27,3 +27,19 @@ def test_list_needs_human_respects_limit(db_session):
     s = Store(db_session)
     _seed_runs(s)
     assert len(s.list_needs_human(limit=1)) == 1
+
+
+def test_escape_breakdown_groups_by_root_cause_all_statuses(db_session):
+    s = Store(db_session)
+    s.open_escape(id="e1", description="d", root_cause_class="econ-conservation")
+    s.open_escape(id="e2", description="d", root_cause_class="econ-conservation")
+    s.open_escape(id="e3", description="d", root_cause_class="state-consensus")
+    s.close_escape("e2", spawned_check="i.x")
+    rows = s.escape_breakdown()
+    by_class = {r["root_cause_class"]: r for r in rows}
+    assert by_class["econ-conservation"]["count"] == 2
+    assert by_class["econ-conservation"]["open"] == 1
+    assert by_class["econ-conservation"]["closed"] == 1
+    assert by_class["state-consensus"]["count"] == 1
+    # sorted by count desc so the worst-offending class is first
+    assert rows[0]["count"] >= rows[-1]["count"]
