@@ -33,6 +33,18 @@ class Store:
     def get_gate_run(self, run_id: int) -> GateRun | None:
         return self.s.get(GateRun, run_id)
 
+    def list_needs_human(self, limit: int = 50) -> list[dict]:
+        stmt = (select(GateRun)
+                .where(GateRun.verdict == "needs_human")
+                .order_by(GateRun.id.desc())
+                .limit(limit))
+        return [
+            {"id": r.id, "change_ref": r.change_ref, "job_id": r.job_id,
+             "verdict": r.verdict, "evidence": r.evidence,
+             "created_at": r.created_at.isoformat()}
+            for r in self.s.scalars(stmt)
+        ]
+
     def audit(self, event: str, actor: str = "system", decision: str = "",
               refs: dict | None = None) -> None:
         self.s.add(AuditLog(event=event, actor=actor, decision=decision,
