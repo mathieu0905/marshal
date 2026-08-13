@@ -70,3 +70,22 @@ def test_deep_worktree_creates_and_tears_down(tmp_path, monkeypatch):
         assert os.path.exists(os.path.join(wt, "f.txt"))  # checked out at the ref
         assert str(wt_base) in wt                          # uses the configured base
     assert not os.path.isdir(seen["wt"])
+
+
+def test_deep_worktree_self_heals_stale_path(tmp_path, monkeypatch):
+    from marshal_core.worker import _worktree_path
+    ws = tmp_path / "ws"; ws.mkdir()
+    sha = _make_repo(ws / "node")
+    monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
+    monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
+    # simulate a stale worktree left by a hard-crashed prior run at the deterministic path
+    stale = _worktree_path("node", sha)
+    os.makedirs(os.path.dirname(stale), exist_ok=True)
+    subprocess.run(["git", "-C", str(ws / "node"), "worktree", "add", "--detach", stale, sha],
+                   check=True, capture_output=True, text=True)
+    assert os.path.isdir(stale)
+    # a new deep_worktree on the SAME ref must self-heal and succeed (not fail on 'exists')
+    with _deep_worktree("node", sha) as wt:
+        assert wt == stale
+        assert os.path.exists(os.path.join(wt, "f.txt"))
+    assert not os.path.isdir(stale)   # still torn down cleanly at the end

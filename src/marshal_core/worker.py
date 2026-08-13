@@ -7,6 +7,7 @@ deep worker's job. 'deep' jobs are failed here with a clear message until then.
 """
 import json
 import os
+import shutil
 import subprocess
 import time
 from contextlib import contextmanager
@@ -46,16 +47,29 @@ def _worktree_base() -> str:
                           os.path.expanduser("~/.marshal/worktrees"))
 
 
+def _worktree_path(repo: str, change_ref: str) -> str:
+    safe = "".join(c if c.isalnum() or c in "-._" else "_" for c in f"{repo}-{change_ref}")
+    return os.path.join(_worktree_base(), safe[:120])
+
+
 @contextmanager
 def _deep_worktree(repo: str, change_ref: str):
     # Isolated git worktree of the target repo at change_ref, on a STABLE path
     # (never /tmp — /tmp worktrees get reaped mid-run). Torn down unconditionally.
     workspace = os.environ.get("MARSHAL_WORKSPACE", "/home/ubuntu/workspace")
     repo_root = os.path.join(workspace, repo)
-    base = _worktree_base()
-    os.makedirs(base, exist_ok=True)
-    safe = "".join(c if c.isalnum() or c in "-._" else "_" for c in f"{repo}-{change_ref}")
-    wt = os.path.join(base, safe[:120])
+    os.makedirs(_worktree_base(), exist_ok=True)
+    wt = _worktree_path(repo, change_ref)
+    # Self-heal a worktree left behind by a hard-crashed prior run: the path is a
+    # deterministic function of (repo, change_ref), so a stale dir/registration would
+    # otherwise make `worktree add` fail forever for this ref. prune reclaims dropped
+    # registrations; force-remove + rmtree clear a lingering directory.
+    subprocess.run(["git", "-C", repo_root, "worktree", "prune"],
+                   capture_output=True, text=True)
+    subprocess.run(["git", "-C", repo_root, "worktree", "remove", "--force", wt],
+                   capture_output=True, text=True)
+    if os.path.exists(wt):
+        shutil.rmtree(wt, ignore_errors=True)
     try:
         subprocess.run(["git", "-C", repo_root, "worktree", "add", "--detach", wt, change_ref],
                        check=True, capture_output=True, text=True)
