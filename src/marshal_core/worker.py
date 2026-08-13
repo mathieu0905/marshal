@@ -82,6 +82,22 @@ def _deep_worktree(repo: str, change_ref: str):
                        capture_output=True, text=True)
 
 
+def _deep_timeout() -> float:
+    return float(os.environ.get("MARSHAL_DEEP_TIMEOUT_S", "1800"))  # 30 min default
+
+
+def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
+    # The ONLY un-CI'd seam: shells out to the real `claude -p`. Subprocess mechanics
+    # (timeout kill, non-zero exit) are still CI-tested via a fake MARSHAL_CLAUDE_BIN;
+    # only the real-Claude semantics are exercised by the manual smoke.
+    binary = os.environ.get("MARSHAL_CLAUDE_BIN", "claude")
+    proc = subprocess.run([binary, "-p", prompt], cwd=cwd,
+                          capture_output=True, text=True, timeout=timeout_s)
+    if proc.returncode != 0:
+        raise DeepReviewError(f"claude exited {proc.returncode}: {proc.stderr[:500]}")
+    return proc.stdout
+
+
 def _run_mechanical(store: Store, pack, job: dict) -> dict:
     event = NormalizedEvent(kind="pr", repo=job["repo"],
                             change_ref=job["change_ref"], diff_paths=[])

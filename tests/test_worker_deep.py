@@ -89,3 +89,34 @@ def test_deep_worktree_self_heals_stale_path(tmp_path, monkeypatch):
         assert wt == stale
         assert os.path.exists(os.path.join(wt, "f.txt"))
     assert not os.path.isdir(stale)   # still torn down cleanly at the end
+
+
+from marshal_core.worker import _invoke_claude
+
+
+def _fake_bin(tmp_path, name, body):
+    p = tmp_path / name
+    p.write_text("#!/bin/sh\n" + body + "\n")
+    p.chmod(0o755)
+    return str(p)
+
+
+def test_invoke_claude_success_returns_stdout(tmp_path, monkeypatch):
+    fake = _fake_bin(tmp_path, "claude_ok.sh", 'echo "did review"; exit 0')
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    out = _invoke_claude("prompt", cwd=str(tmp_path), timeout_s=10)
+    assert "did review" in out
+
+
+def test_invoke_claude_nonzero_exit_raises(tmp_path, monkeypatch):
+    fake = _fake_bin(tmp_path, "claude_fail.sh", 'echo "boom" 1>&2; exit 3')
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    with pytest.raises(DeepReviewError, match="exited 3"):
+        _invoke_claude("prompt", cwd=str(tmp_path), timeout_s=10)
+
+
+def test_invoke_claude_timeout_raises(tmp_path, monkeypatch):
+    fake = _fake_bin(tmp_path, "claude_hang.sh", 'sleep 5; exit 0')
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    with pytest.raises(subprocess.TimeoutExpired):
+        _invoke_claude("prompt", cwd=str(tmp_path), timeout_s=1)
