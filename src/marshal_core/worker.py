@@ -5,7 +5,9 @@ calls Orchestrator.plan(), which re-selects/registers the applicable invariants.
 A mechanical re-plan does NOT produce a gate_run verdict; that is the Phase 3
 deep worker's job. 'deep' jobs are failed here with a clear message until then.
 """
+import json
 import os
+import subprocess
 import time
 
 from sqlalchemy import create_engine
@@ -16,6 +18,26 @@ from marshal_core.knowledge.models import Base
 from marshal_core.knowledge.store import Store
 from marshal_core.modules.orchestrator import Orchestrator
 from marshal_pack_cowboy.pack import CowboyPack
+
+
+VERDICT_FILE = "MARSHAL_VERDICT.json"
+
+
+class DeepReviewError(Exception):
+    """Raised when a deep review cannot produce a usable verdict."""
+
+
+def _parse_verdict(path: str) -> dict:
+    if not os.path.exists(path):
+        raise DeepReviewError(f"verdict file not written: {path}")
+    try:
+        with open(path) as fh:
+            data = json.loads(fh.read())
+    except (ValueError, OSError) as exc:
+        raise DeepReviewError(f"verdict file unparseable: {exc}")
+    if data.get("verdict") not in ("pass", "needs_human", "block"):
+        raise DeepReviewError(f"invalid verdict: {data.get('verdict')!r}")
+    return data
 
 
 def _run_mechanical(store: Store, pack, job: dict) -> dict:
