@@ -36,7 +36,7 @@ class Store:
     def list_needs_human(self, limit: int = 50) -> list[dict]:
         stmt = (select(GateRun)
                 .where(GateRun.verdict == "needs_human")
-                .order_by(GateRun.id.desc())
+                .order_by(GateRun.created_at.desc(), GateRun.id.desc())
                 .limit(limit))
         return [
             {"id": r.id, "change_ref": r.change_ref, "job_id": r.job_id,
