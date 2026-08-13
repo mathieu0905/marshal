@@ -1,6 +1,6 @@
 """FastAPI 接入端点。POST /webhook (PR 事件), POST /results (CI 回传)。"""
 import os
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -49,3 +49,20 @@ async def results(result: StructuredResult):
         decision = Orchestrator(_PACK, Store(s)).handle_result(ev, result)
     check_run = build_check_run(decision, shadow=True)
     return {"verdict": decision.verdict, "check_run": check_run}
+
+
+@app.get("/api/inbox")
+def api_inbox(limit: int = 50):
+    with _Session() as s:
+        return Store(s).list_needs_human(limit=limit)
+
+
+@app.get("/api/runs/{run_id}")
+def api_run(run_id: int):
+    with _Session() as s:
+        run = Store(s).get_gate_run(run_id)
+        if run is None:
+            raise HTTPException(status_code=404, detail="gate_run not found")
+        return {"id": run.id, "change_ref": run.change_ref, "job_id": run.job_id,
+                "verdict": run.verdict, "evidence": run.evidence,
+                "created_at": run.created_at.isoformat()}

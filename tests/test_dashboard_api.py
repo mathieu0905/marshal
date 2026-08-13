@@ -1,0 +1,39 @@
+import importlib
+import pytest
+from fastapi.testclient import TestClient
+
+
+@pytest.fixture
+def client(tmp_path, monkeypatch):
+    db_file = tmp_path / "dash.db"
+    monkeypatch.setenv("MARSHAL_DB", f"sqlite:///{db_file}")
+    import marshal_core.adapters.api as api
+    importlib.reload(api)
+    # seed via the same engine the app now uses
+    from marshal_core.knowledge.store import Store
+    with api._Session() as s:
+        st = Store(s)
+        st.record_gate_run(change_ref="node#2", job_id="j2", verdict="needs_human",
+                           evidence={"pr": 2, "repo": "node", "tier": "high"})
+        st.record_gate_run(change_ref="node#9", job_id="j9", verdict="pass", evidence={})
+    return TestClient(api.app)
+
+
+def test_inbox_returns_only_needs_human(client):
+    r = client.get("/api/inbox")
+    assert r.status_code == 200
+    body = r.json()
+    assert [row["change_ref"] for row in body] == ["node#2"]
+    assert body[0]["evidence"]["tier"] == "high"
+
+
+def test_runs_endpoint_returns_evidence(client):
+    run_id = client.get("/api/inbox").json()[0]["id"]
+    r = client.get(f"/api/runs/{run_id}")
+    assert r.status_code == 200
+    assert r.json()["change_ref"] == "node#2"
+
+
+def test_runs_endpoint_404_on_missing(client):
+    r = client.get("/api/runs/99999")
+    assert r.status_code == 404
