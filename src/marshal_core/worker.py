@@ -39,6 +39,9 @@ def run_once(store: Store, pack) -> bool:
             store.fail_job(job["id"],
                            error="deep review not available until Phase 3")
     except Exception as exc:  # never leave a job stuck 'running'
+        # If the handler failed mid-commit the session is in a pending-rollback
+        # state; clear it so fail_job can persist the failure on the same session.
+        store.s.rollback()
         store.fail_job(job["id"], error=f"{type(exc).__name__}: {exc}")
     return True
 

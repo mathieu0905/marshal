@@ -37,3 +37,19 @@ def test_run_once_records_failure_on_handler_exception(db_session, monkeypatch):
     failed = s.get_job(job["id"])
     assert failed["status"] == "failed"
     assert "kaboom" in failed["error"]
+
+
+def test_run_once_marks_failed_even_if_finish_job_raises(db_session, monkeypatch):
+    # Core invariant: a claimed job is never left 'running'. If finish_job blows up
+    # after a successful handler, run_once must still land the job in 'failed'.
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref="abc123", repo="node", kind="mechanical")
+
+    def boom_finish(*a, **k):
+        raise RuntimeError("finish exploded")
+    monkeypatch.setattr(s, "finish_job", boom_finish)
+
+    assert run_once(s, CowboyPack()) is True
+    row = s.get_job(job["id"])
+    assert row["status"] == "failed"           # NOT left 'running'
+    assert "finish exploded" in row["error"]
