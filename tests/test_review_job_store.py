@@ -32,3 +32,32 @@ def test_enqueue_and_get_job_roundtrip(db_session):
 def test_get_job_missing_returns_none(db_session):
     s = Store(db_session)
     assert s.get_job(99999) is None
+
+
+from marshal_core.knowledge.models import ReviewJob as _RJ  # for CAS-guard test
+
+
+def test_claim_next_job_returns_oldest_pending_and_marks_running(db_session):
+    s = Store(db_session)
+    a = s.enqueue_job(change_ref="node#1")
+    b = s.enqueue_job(change_ref="node#2")
+    claimed = s.claim_next_job()
+    assert claimed["id"] == a["id"]          # oldest first
+    assert claimed["status"] == "running"
+    assert claimed["started_at"] is not None
+    # second claim gets the next pending
+    claimed2 = s.claim_next_job()
+    assert claimed2["id"] == b["id"]
+    # nothing left
+    assert s.claim_next_job() is None
+
+
+def test_claim_skips_rows_already_running(db_session):
+    # CAS guard: a row flipped to running behind the store's back must be skipped,
+    # proving two workers can't both claim the same job.
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref="node#9")
+    row = db_session.get(_RJ, job["id"])
+    row.status = "running"
+    db_session.commit()
+    assert s.claim_next_job() is None

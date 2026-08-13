@@ -1,7 +1,7 @@
 """知识核读写薄封装。"""
-from sqlalchemy import select, func
+from sqlalchemy import select, func, update
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta, ReviewJob
+from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta, ReviewJob, _now
 
 
 class Store:
@@ -202,3 +202,25 @@ class Store:
     def get_job(self, job_id: int) -> dict | None:
         j = self.s.get(ReviewJob, job_id)
         return self._job_dict(j) if j else None
+
+    def claim_next_job(self) -> dict | None:
+        # Compare-and-swap claim: read the oldest pending job, then atomically flip
+        # it to running guarded by status=='pending'. If another worker won the race
+        # (rowcount 0), retry with the next pending row. This is safe on SQLite and
+        # guarantees no two workers claim the same job.
+        while True:
+            job = self.s.scalars(
+                select(ReviewJob).where(ReviewJob.status == "pending")
+                .order_by(ReviewJob.created_at).limit(1)).first()
+            if job is None:
+                return None
+            res = self.s.execute(
+                update(ReviewJob)
+                .where(ReviewJob.id == job.id, ReviewJob.status == "pending")
+                .values(status="running", started_at=_now()))
+            self.s.commit()
+            if res.rowcount == 1:
+                self.s.refresh(job)
+                return self._job_dict(job)
+            # lost the race; expire the stale row and try the next pending one
+            self.s.expire(job)
