@@ -120,3 +120,47 @@ def test_invoke_claude_timeout_raises(tmp_path, monkeypatch):
     monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
     with pytest.raises(subprocess.TimeoutExpired):
         _invoke_claude("prompt", cwd=str(tmp_path), timeout_s=1)
+
+
+from marshal_core.knowledge.store import Store
+from marshal_core.worker import _run_deep
+
+
+def _deep_env(tmp_path, monkeypatch, verdict_json):
+    """A fake claude that writes a verdict file into its cwd (the worktree)."""
+    ws = tmp_path / "ws"; ws.mkdir()
+    sha = _make_repo(ws / "node")
+    monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
+    monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
+    fake = _fake_bin(tmp_path, "claude_review.sh",
+                     f"cat > {VERDICT_FILE} <<'EOF'\n{verdict_json}\nEOF\nexit 0")
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    return sha
+
+
+def test_run_deep_writes_gate_run_and_finishes(db_session, tmp_path, monkeypatch):
+    sha = _deep_env(tmp_path, monkeypatch,
+                    '{"verdict":"needs_human","summary":"looks risky",'
+                    '"findings":["f1","f2"],"invariants_run":3,"invariants_pass":3}')
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref=sha, repo="node", kind="deep")
+    s.claim_next_job()
+    _run_deep(s, job)
+    done = s.get_job(job["id"])
+    assert done["status"] == "done"
+    assert done["result"]["verdict"] == "needs_human"
+    gid = done["result"]["gate_run_id"]
+    gr = s.get_gate_run(gid)
+    assert gr.verdict == "needs_human"
+    assert gr.evidence["source"] == "dashboard-worker"
+    assert gr.evidence["job_id"] == job["id"]
+    assert gr.evidence["findings"] == ["f1", "f2"]
+
+
+def test_run_deep_propagates_on_bad_verdict(db_session, tmp_path, monkeypatch):
+    sha = _deep_env(tmp_path, monkeypatch, '{"verdict":"lgtm"}')
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref=sha, repo="node", kind="deep")
+    s.claim_next_job()
+    with pytest.raises(DeepReviewError):
+        _run_deep(s, job)

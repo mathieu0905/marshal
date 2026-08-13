@@ -98,6 +98,34 @@ def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
     return proc.stdout
 
 
+def _deep_prompt(job: dict) -> str:
+    return (
+        f"Run the full /marshal deep review gate on the current git worktree, which is "
+        f"checked out at commit {job['change_ref']} of the {job['repo']} repo. "
+        f"This is a LOCAL-ONLY dashboard-triggered review: do NOT post anything to GitHub, "
+        f"Linear, or any external service. When the review is complete, write your final "
+        f"verdict to a file named {VERDICT_FILE} in the current working directory, as JSON "
+        f'with keys: "verdict" (one of "pass", "needs_human", "block"; map an escalate to '
+        f'"needs_human"), "summary" (string), "findings" (array of strings), '
+        f'"invariants_run" (int), "invariants_pass" (int).'
+    )
+
+
+def _run_deep(store: Store, job: dict) -> None:
+    with _deep_worktree(job["repo"], job["change_ref"]) as wt:
+        _invoke_claude(_deep_prompt(job), cwd=wt, timeout_s=_deep_timeout())
+        verdict = _parse_verdict(os.path.join(wt, VERDICT_FILE))
+    gr = store.record_gate_run(
+        change_ref=job["change_ref"], job_id=f"deep-{job['id']}",
+        verdict=verdict["verdict"],
+        evidence={"source": "dashboard-worker", "job_id": job["id"],
+                  "summary": verdict.get("summary", ""),
+                  "findings": verdict.get("findings", []),
+                  "invariants_run": verdict.get("invariants_run"),
+                  "invariants_pass": verdict.get("invariants_pass")})
+    store.finish_job(job["id"], result={"verdict": verdict["verdict"], "gate_run_id": gr.id})
+
+
 def _run_mechanical(store: Store, pack, job: dict) -> dict:
     event = NormalizedEvent(kind="pr", repo=job["repo"],
                             change_ref=job["change_ref"], diff_paths=[])
