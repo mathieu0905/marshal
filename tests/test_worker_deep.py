@@ -164,3 +164,36 @@ def test_run_deep_propagates_on_bad_verdict(db_session, tmp_path, monkeypatch):
     s.claim_next_job()
     with pytest.raises(DeepReviewError):
         _run_deep(s, job)
+
+
+from marshal_pack_cowboy.pack import CowboyPack
+from marshal_core.worker import run_once
+
+
+def test_run_once_deep_success_end_to_end(db_session, tmp_path, monkeypatch):
+    sha = _deep_env(tmp_path, monkeypatch,
+                    '{"verdict":"pass","summary":"ok","findings":[],'
+                    '"invariants_run":2,"invariants_pass":2}')
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref=sha, repo="node", kind="deep")
+    assert run_once(s, CowboyPack()) is True
+    done = s.get_job(job["id"])
+    assert done["status"] == "done"
+    assert done["result"]["verdict"] == "pass"
+    assert done["result"]["gate_run_id"] is not None
+
+
+def test_run_once_deep_timeout_marks_failed(db_session, tmp_path, monkeypatch):
+    ws = tmp_path / "ws"; ws.mkdir()
+    sha = _make_repo(ws / "node")
+    monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
+    monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
+    hang = _fake_bin(tmp_path, "claude_hang.sh", "sleep 5; exit 0")
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", hang)
+    monkeypatch.setenv("MARSHAL_DEEP_TIMEOUT_S", "1")
+    s = Store(db_session)
+    job = s.enqueue_job(change_ref=sha, repo="node", kind="deep")
+    assert run_once(s, CowboyPack()) is True
+    failed = s.get_job(job["id"])
+    assert failed["status"] == "failed"          # never left 'running'
+    assert "Timeout" in failed["error"] or "timed out" in failed["error"].lower()

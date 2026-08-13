@@ -143,9 +143,8 @@ def run_once(store: Store, pack) -> bool:
         if job["kind"] == "mechanical":
             result = _run_mechanical(store, pack, job)
             store.finish_job(job["id"], result=result)
-        else:
-            store.fail_job(job["id"],
-                           error="deep review not available until Phase 3")
+        else:  # deep
+            _run_deep(store, job)
     except Exception as exc:  # never leave a job stuck 'running'
         # If the handler failed mid-commit the session is in a pending-rollback
         # state; clear it so fail_job can persist the failure on the same session.
