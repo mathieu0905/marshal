@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marshal Dashboard</title>
+<style>
+  :root { --bg:#0f1115; --card:#1a1d24; --fg:#e6e6e6; --muted:#9aa4b2;
+          --pass:#3fb950; --needs:#d29922; --block:#f85149; --red:#f85149;
+          --line:#2d323c; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f6f7f9; --card:#fff; --fg:#1a1d24; --muted:#5a6472; --line:#e2e5ea; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.5 system-ui,sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:16px 20px; border-bottom:1px solid var(--line); display:flex; gap:16px; align-items:center; }
+  header h1 { font-size:16px; margin:0; }
+  nav button { background:none; border:none; color:var(--muted); font:inherit; cursor:pointer; padding:6px 10px; border-radius:6px; }
+  nav button.active { background:var(--card); color:var(--fg); }
+  main { padding:20px; max-width:960px; margin:0 auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:12px; }
+  .card h3 { margin:0 0 8px; font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .row { display:flex; flex-wrap:wrap; gap:10px 18px; color:var(--muted); font-size:13px; }
+  .tag { display:inline-block; padding:1px 7px; border-radius:6px; background:var(--line); color:var(--fg); font-size:12px; }
+  .tier-high { color:var(--block); font-weight:600; }
+  .verdict-needs_human { border-left:3px solid var(--needs); }
+  details summary { cursor:pointer; color:var(--muted); }
+  pre { overflow:auto; background:var(--bg); padding:10px; border-radius:6px; font-size:12px; }
+  .bar { height:16px; border-radius:4px; background:var(--needs); }
+  .barlabel { display:flex; justify-content:space-between; font-size:12px; margin:6px 0 2px; }
+  .gap { color:var(--muted); font-size:12px; border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
+  .muted { color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🤠 Marshal</h1>
+  <nav>
+    <button id="tab-inbox" class="active" onclick="show('inbox')">Inbox</button>
+    <button id="tab-health" onclick="show('health')">Health</button>
+  </nav>
+  <span id="status" class="muted" style="margin-left:auto"></span>
+</header>
+<main id="app"><p class="muted">Loading…</p></main>
+<script>
+const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
+const esc = (s) => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let current = 'inbox';
+
+async function getJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error(u+' '+r.status); return r.json(); }
+
+function bar(label, value, max){
+  const pct = max ? Math.round(100*value/max) : 0;
+  return `<div class="barlabel"><span>${esc(label)}</span><span>${value}</span></div>
+          <div class="bar" style="width:${pct}%"></div>`;
+}
+
+async function renderInbox(){
+  const rows = await getJSON('/api/inbox');
+  const app = document.getElementById('app');
+  if(!rows.length){ app.innerHTML='<p class="muted">Inbox clear — nothing awaiting human review.</p>'; return; }
+  app.innerHTML = '';
+  for(const r of rows){
+    const e = r.evidence || {};
+    const tierClass = e.tier==='high' ? 'tier-high' : '';
+    const card = $(`<div class="card verdict-${esc(r.verdict)}">
+      <div class="row">
+        <b>${esc(r.change_ref)}</b>
+        ${e.cip?`<span class="tag">${esc(e.cip)}</span>`:''}
+        <span class="${tierClass}">tier: ${esc(e.tier||'?')}</span>
+        <span class="muted">${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
+      </div>
+      <div class="row">
+        ${e.dimensions?`<span>dimensions: ${esc((e.dimensions||[]).join(' '))}</span>`:''}
+        ${e.invariants_run!=null?`<span>invariants: ${e.invariants_pass}/${e.invariants_run}</span>`:''}
+        ${e.high_sev_findings!=null?`<span>high-sev: ${e.high_sev_findings}</span>`:''}
+        ${(e.advisory_findings||[]).length?`<span>▸ ${e.advisory_findings.length} advisory</span>`:''}
+      </div>
+      <details><summary>evidence</summary><pre>${esc(JSON.stringify(e,null,2))}</pre></details>
+    </div>`);
+    app.appendChild(card);
+  }
+}
+
+async function renderHealth(){
+  const h = await getJSON('/api/health');
+  const app = document.getElementById('app');
+  const v = h.gate_runs_by_verdict || {};
+  const vmax = Math.max(1, ...Object.values(v));
+  const eb = h.escape_breakdown || [];
+  const ebmax = Math.max(1, ...eb.map(x=>x.count));
+  const ib = h.invariant_breakdown || {by_status:{},by_severity:{},candidate_red_ids:[]};
+  const gaps = h.unavailable || {};
+  app.innerHTML = `
+    <div class="card"><h3>Gate output</h3>
+      ${bar('pass', v.pass||0, vmax)}${bar('needs_human', v.needs_human||0, vmax)}${bar('block', v.block||0, vmax)}
+      <div class="row" style="margin-top:8px"><span class="muted">total runs: ${h.gate_runs_total||0}</span></div>
+    </div>
+    <div class="card"><h3>Ratchet — escapes by root cause</h3>
+      ${eb.map(x=>bar(x.root_cause_class+`  (${x.open} open / ${x.closed} closed)`, x.count, ebmax)).join('') || '<span class="muted">no escapes recorded</span>'}
+    </div>
+    <div class="card"><h3>Invariant coverage</h3>
+      <div class="row">${Object.entries(ib.by_status).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
+      <div class="row" style="margin-top:6px">${Object.entries(ib.by_severity).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
+      ${ib.candidate_red_ids.length?`<div class="row" style="margin-top:8px"><span class="tier-high">candidate-red (gap): ${ib.candidate_red_ids.map(esc).join(', ')}</span></div>`:''}
+    </div>
+    <div class="card"><h3>Honest gaps</h3>
+      <div class="gap">MTTD — pending Phase 4 (needs introduced_at timestamp)</div>
+      ${Object.entries(gaps).map(([k,why])=>`<div class="gap">${esc(k)} — ${esc(why)}</div>`).join('')}
+    </div>`;
+}
+
+async function show(tab){
+  current = tab;
+  document.getElementById('tab-inbox').classList.toggle('active', tab==='inbox');
+  document.getElementById('tab-health').classList.toggle('active', tab==='health');
+  const st = document.getElementById('status');
+  try { st.textContent='refreshing…'; await (tab==='inbox'?renderInbox():renderHealth()); st.textContent=''; }
+  catch(e){ document.getElementById('app').innerHTML='<p class="muted">Error: '+esc(e.message)+'</p>'; st.textContent=''; }
+}
+
+show('inbox');
+setInterval(() => show(current), 15000);  // live: poll every 15s
+</script>
+</body>
+</html>

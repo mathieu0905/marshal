@@ -1,6 +1,8 @@
 """FastAPI 接入端点。POST /webhook (PR 事件), POST /results (CI 回传)。"""
 import os
+from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -10,6 +12,8 @@ from marshal_core.knowledge.store import Store
 from marshal_core.modules.orchestrator import Orchestrator
 from marshal_core.adapters.github import parse_pull_request_event, build_check_run
 from marshal_pack_cowboy.pack import CowboyPack
+
+_STATIC_DIR = Path(__file__).parent / "static"
 
 app = FastAPI(title="Marshal")
 _engine = create_engine(os.environ.get("MARSHAL_DB", "sqlite:///marshal.db"))
@@ -83,3 +87,8 @@ def api_health():
         payload["invariant_breakdown"] = st.invariant_breakdown()
         payload["verdict_timeseries"] = st.verdict_timeseries()
         return payload
+
+
+@app.get("/")
+def spa():
+    return FileResponse(_STATIC_DIR / "index.html")

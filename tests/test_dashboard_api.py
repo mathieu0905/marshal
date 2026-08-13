@@ -58,3 +58,11 @@ def test_escapes_endpoint_returns_breakdown(client):
     with_escape = client.get("/api/escapes")
     assert with_escape.status_code == 200
     assert isinstance(with_escape.json(), list)
+
+
+def test_root_serves_spa(client):
+    r = client.get("/")
+    assert r.status_code == 200
+    assert "text/html" in r.headers["content-type"]
+    assert "Marshal" in r.text
+    assert 'id="app"' in r.text
