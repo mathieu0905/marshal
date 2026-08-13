@@ -27,6 +27,8 @@
   details summary { cursor:pointer; color:var(--muted); }
   pre { overflow:auto; background:var(--bg); padding:10px; border-radius:6px; font-size:12px; }
   .bar { height:16px; border-radius:4px; background:var(--needs); }
+  .stack { display:flex; height:14px; border-radius:4px; overflow:hidden; background:var(--line); }
+  .stack span { display:block; height:100%; }
   .barlabel { display:flex; justify-content:space-between; font-size:12px; margin:6px 0 2px; }
   .gap { color:var(--muted); font-size:12px; border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
   .muted { color:var(--muted); }
@@ -91,10 +93,30 @@ async function renderHealth(){
   const ebmax = Math.max(1, ...eb.map(x=>x.count));
   const ib = h.invariant_breakdown || {by_status:{},by_severity:{},candidate_red_ids:[]};
   const gaps = h.unavailable || {};
+  const ts = h.verdict_timeseries || [];
+  const tsmax = Math.max(1, ...ts.map(d => (d.pass||0)+(d.needs_human||0)+(d.block||0)));
+  const tsW = (n) => (100*(n||0)/tsmax).toFixed(1);
+  const stackRow = (d) => {
+    const total = (d.pass||0)+(d.needs_human||0)+(d.block||0);
+    return `<div class="barlabel"><span>${esc(d.date)}</span><span>${total}</span></div>
+      <div class="stack">
+        <span style="width:${tsW(d.pass)}%;background:var(--pass)"></span>
+        <span style="width:${tsW(d.needs_human)}%;background:var(--needs)"></span>
+        <span style="width:${tsW(d.block)}%;background:var(--block)"></span>
+      </div>`;
+  };
   app.innerHTML = `
     <div class="card"><h3>Gate output</h3>
       ${bar('pass', v.pass||0, vmax)}${bar('needs_human', v.needs_human||0, vmax)}${bar('block', v.block||0, vmax)}
       <div class="row" style="margin-top:8px"><span class="muted">total runs: ${h.gate_runs_total||0}</span></div>
+    </div>
+    <div class="card"><h3>Gate output over time</h3>
+      ${ts.map(stackRow).join('') || '<span class="muted">no runs yet</span>'}
+      <div class="row" style="margin-top:8px">
+        <span class="tag" style="background:var(--pass)">pass</span>
+        <span class="tag" style="background:var(--needs)">needs_human</span>
+        <span class="tag" style="background:var(--block)">block</span>
+      </div>
     </div>
     <div class="card"><h3>Ratchet — escapes by root cause</h3>
       ${eb.map(x=>bar(x.root_cause_class+`  (${x.open} open / ${x.closed} closed)`, x.count, ebmax)).join('') || '<span class="muted">no escapes recorded</span>'}
