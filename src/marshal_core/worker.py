@@ -107,8 +107,14 @@ def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
     # (timeout kill, non-zero exit) are still CI-tested via a fake MARSHAL_CLAUDE_BIN;
     # only the real-Claude semantics are exercised by the manual smoke.
     binary = os.environ.get("MARSHAL_CLAUDE_BIN", "claude")
-    proc = subprocess.run([binary, "-p", prompt], cwd=cwd,
-                          capture_output=True, text=True, timeout=timeout_s)
+    args = [binary, "-p", prompt]
+    # Operator-chosen permission mode (e.g. so the headless review can run the skill's
+    # tools and write the verdict file). Left unset by default; the operator opts in via
+    # $MARSHAL_CLAUDE_PERMISSION_MODE when launching the worker — nothing baked in.
+    mode = os.environ.get("MARSHAL_CLAUDE_PERMISSION_MODE")
+    if mode:
+        args += ["--permission-mode", mode]
+    proc = subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=timeout_s)
     if proc.returncode != 0:
         raise DeepReviewError(f"claude exited {proc.returncode}: {proc.stderr[:500]}")
     return proc.stdout
