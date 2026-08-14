@@ -34,9 +34,6 @@ def test_get_job_missing_returns_none(db_session):
     assert s.get_job(99999) is None
 
 
-from marshal_core.knowledge.models import ReviewJob as _RJ  # for CAS-guard test
-
-
 def test_claim_next_job_returns_oldest_pending_and_marks_running(db_session):
     s = Store(db_session)
     a = s.enqueue_job(change_ref="node#1")
@@ -57,7 +54,7 @@ def test_claim_skips_rows_already_running(db_session):
     # proving two workers can't both claim the same job.
     s = Store(db_session)
     job = s.enqueue_job(change_ref="node#9")
-    row = db_session.get(_RJ, job["id"])
+    row = db_session.get(ReviewJob, job["id"])
     row.status = "running"
     db_session.commit()
     assert s.claim_next_job() is None
@@ -81,7 +78,7 @@ def test_claim_retries_past_lost_race(db_session, monkeypatch):
             state["first"] = False
             # simulate the competitor: flip A to running (flush so the retry SELECT
             # skips it) and report our UPDATE as having matched nothing
-            db_session.get(_RJ, a["id"]).status = "running"
+            db_session.get(ReviewJob, a["id"]).status = "running"
             db_session.flush()
             return _Zero()
         return real_execute(stmt, *args, **kw)
@@ -119,7 +116,7 @@ def test_reclaim_stale_running_jobs(db_session):
     s = Store(db_session)
     j = s.enqueue_job(change_ref="x")
     s.claim_next_job()                       # -> running, started_at ~now
-    row = db_session.get(_RJ, j["id"])       # backdate to 2h ago (orphaned)
+    row = db_session.get(ReviewJob, j["id"])       # backdate to 2h ago (orphaned)
     row.started_at = datetime.now(timezone.utc) - timedelta(hours=2)
     db_session.commit()
     assert s.reclaim_stale_jobs(older_than_s=1800) == 1

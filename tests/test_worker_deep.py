@@ -1,6 +1,20 @@
 import json
+import os
+import subprocess
+
 import pytest
-from marshal_core.worker import _parse_verdict, DeepReviewError, VERDICT_FILE
+
+from marshal_core.knowledge.store import Store
+from marshal_core.worker import (
+    DeepReviewError,
+    VERDICT_FILE,
+    _deep_worktree,
+    _invoke_claude,
+    _parse_verdict,
+    _run_deep,
+    run_once,
+)
+from marshal_pack_cowboy.pack import CowboyPack
 
 
 def _write(tmp_path, obj):
@@ -33,11 +47,6 @@ def test_parse_verdict_invalid_verdict_value_raises(tmp_path):
     path = _write(tmp_path, {"verdict": "lgtm"})
     with pytest.raises(DeepReviewError, match="invalid verdict"):
         _parse_verdict(path)
-
-
-import os
-import subprocess
-from marshal_core.worker import _deep_worktree
 
 
 def _make_repo(path):
@@ -74,7 +83,8 @@ def test_deep_worktree_creates_and_tears_down(tmp_path, monkeypatch):
 
 def test_deep_worktree_self_heals_stale_path(tmp_path, monkeypatch):
     from marshal_core.worker import _worktree_path
-    ws = tmp_path / "ws"; ws.mkdir()
+    ws = tmp_path / "ws"
+    ws.mkdir()
     sha = _make_repo(ws / "node")
     monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
     monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
@@ -89,9 +99,6 @@ def test_deep_worktree_self_heals_stale_path(tmp_path, monkeypatch):
         assert wt == stale
         assert os.path.exists(os.path.join(wt, "f.txt"))
     assert not os.path.isdir(stale)   # still torn down cleanly at the end
-
-
-from marshal_core.worker import _invoke_claude
 
 
 def _fake_bin(tmp_path, name, body):
@@ -122,13 +129,10 @@ def test_invoke_claude_timeout_raises(tmp_path, monkeypatch):
         _invoke_claude("prompt", cwd=str(tmp_path), timeout_s=1)
 
 
-from marshal_core.knowledge.store import Store
-from marshal_core.worker import _run_deep
-
-
 def _deep_env(tmp_path, monkeypatch, verdict_json):
     """A fake claude that writes a verdict file into its cwd (the worktree)."""
-    ws = tmp_path / "ws"; ws.mkdir()
+    ws = tmp_path / "ws"
+    ws.mkdir()
     sha = _make_repo(ws / "node")
     monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
     monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
@@ -166,10 +170,6 @@ def test_run_deep_propagates_on_bad_verdict(db_session, tmp_path, monkeypatch):
         _run_deep(s, job)
 
 
-from marshal_pack_cowboy.pack import CowboyPack
-from marshal_core.worker import run_once
-
-
 def test_run_once_deep_success_end_to_end(db_session, tmp_path, monkeypatch):
     sha = _deep_env(tmp_path, monkeypatch,
                     '{"verdict":"pass","summary":"ok","findings":[],'
@@ -184,7 +184,8 @@ def test_run_once_deep_success_end_to_end(db_session, tmp_path, monkeypatch):
 
 
 def test_run_once_deep_timeout_marks_failed(db_session, tmp_path, monkeypatch):
-    ws = tmp_path / "ws"; ws.mkdir()
+    ws = tmp_path / "ws"
+    ws.mkdir()
     sha = _make_repo(ws / "node")
     monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
     monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
@@ -200,7 +201,8 @@ def test_run_once_deep_timeout_marks_failed(db_session, tmp_path, monkeypatch):
 
 
 def test_deep_worktree_rejects_repo_path_traversal(tmp_path, monkeypatch):
-    ws = tmp_path / "ws"; ws.mkdir()
+    ws = tmp_path / "ws"
+    ws.mkdir()
     _make_repo(ws / "node")
     monkeypatch.setenv("MARSHAL_WORKSPACE", str(ws))
     monkeypatch.setenv("MARSHAL_WORKTREE_BASE", str(tmp_path / "wts"))
