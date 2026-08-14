@@ -18,3 +18,36 @@ def test_eligibility_conflict_and_ci():
     assert pr_inbox.eligibility("clean", "success") == (True, None)
     assert pr_inbox.eligibility(None, None) == (True, None)
     assert pr_inbox.eligibility("blocked", "pending") == (True, None)
+
+
+from marshal_core.knowledge.store import Store
+
+
+def test_build_inbox_joins_prs_eligibility_and_last_review(db_session, monkeypatch):
+    # a prior local review of node#7 at an OLD head -> should show as stale
+    s = Store(db_session)
+    s.record_gate_run(change_ref="oldhead", job_id="j", verdict="escalate",
+                      evidence={"gates": {"repo": "node", "pr": 7}})
+
+    def fake_list(org, repo, per_page=30):
+        if repo != "node":
+            return []
+        return [
+            {"number": 7, "title": "fix A", "html_url": "u7", "updated_at": "2026-08-14T02:00:00Z",
+             "draft": False, "head": {"sha": "newhead"}},
+            {"number": 9, "title": "fix B", "html_url": "u9", "updated_at": "2026-08-14T05:00:00Z",
+             "draft": True, "head": {"sha": "h9"}},
+        ]
+    monkeypatch.setattr(pr_inbox, "list_open_prs", fake_list)
+    monkeypatch.setattr(pr_inbox, "pr_detail",
+                        lambda o, r, n: {"mergeable_state": "dirty"} if n == 7 else {"mergeable_state": "clean"})
+    monkeypatch.setattr(pr_inbox, "commit_status", lambda o, r, sha: "success")
+
+    inbox = pr_inbox.build_inbox(db_session, repos=[("cowboyinc", "node")])
+    assert [p["number"] for p in inbox] == [9, 7]          # sorted by updated_at desc
+    p9, p7 = inbox[0], inbox[1]
+    assert p9["draft"] is True and p9["eligible"] is True   # drafts are eligible
+    assert p7["eligible"] is False and p7["blocked_reason"] == "merge conflict"
+    assert p7["last_review"] == {"verdict": "escalate", "reviewed_head": "oldhead", "stale": True}
+    assert p9["last_review"] is None                        # never reviewed
+    assert p7["title"] == "fix A" and p7["url"] == "u7"

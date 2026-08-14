@@ -63,3 +63,41 @@ def eligibility(mergeable_state, ci_state):
     if ci_state == "failure":
         return False, "CI failing"
     return True, None
+
+
+def _review_index(session) -> dict:
+    """{(repo, str(pr)): {verdict, head_sha}} for the newest gate_run of each PR."""
+    idx = {}
+    for gr in session.scalars(select(GateRun).order_by(GateRun.id)):
+        s = Store.inbox_summary(gr.evidence)
+        if s["repo"] and s["pr"] is not None:
+            idx[(s["repo"], str(s["pr"]))] = {"verdict": gr.verdict, "head_sha": gr.change_ref}
+    return idx  # later (higher-id) rows overwrite earlier ones -> newest wins
+
+
+def build_inbox(session, repos=None) -> list[dict]:
+    repos = repos if repos is not None else bound_repos()
+    review_idx = _review_index(session)
+    prs = []
+    for org, repo in repos:
+        for pr in list_open_prs(org, repo):
+            num = pr.get("number")
+            head_sha = (pr.get("head") or {}).get("sha", "")
+            detail = pr_detail(org, repo, num)
+            ci = commit_status(org, repo, head_sha)
+            eligible, reason = eligibility(detail.get("mergeable_state"), ci)
+            last = review_idx.get((repo, str(num)))
+            last_review = None
+            if last:
+                last_review = {"verdict": last["verdict"], "reviewed_head": last["head_sha"],
+                               "stale": last["head_sha"] != head_sha}
+            prs.append({
+                "org": org, "repo": repo, "number": num,
+                "title": pr.get("title", ""), "url": pr.get("html_url", ""),
+                "head_sha": head_sha, "updated_at": pr.get("updated_at", ""),
+                "draft": bool(pr.get("draft")),
+                "eligible": eligible, "blocked_reason": reason,
+                "last_review": last_review,
+            })
+    prs.sort(key=lambda p: p["updated_at"], reverse=True)
+    return prs
