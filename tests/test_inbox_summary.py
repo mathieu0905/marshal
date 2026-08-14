@@ -85,6 +85,21 @@ def test_summary_confirmed_findings_fallback_counts():
     assert s["top_findings"][0]["title"] == "almanax-leak"
 
 
+def test_summary_parses_gates_stored_as_json_string():
+    import json as _json
+    ev = {"gates": _json.dumps({"repo": "node", "pr": 42, "tier": "mid"})}
+    s = Store.inbox_summary(ev)
+    assert s["title"] == "node #42" and s["tier"] == "mid"
+
+
+def test_summary_pr_as_object_and_marker_url():
+    ev = {"gates": {"repo": "cbfs", "pr": {"number": 134, "title": "x"}}}
+    assert Store.inbox_summary(ev)["title"] == "cbfs #134"
+    ev2 = {"gates": {"marker_url": "https://github.com/o/cbss/pull/9#issuecomment-1"}}
+    s2 = Store.inbox_summary(ev2)
+    assert s2["title"] == "cbss #9" and s2["comment_url"].endswith("issuecomment-1")
+
+
 def test_list_needs_human_includes_summary(db_session):
     s = Store(db_session)
     s.record_gate_run(change_ref="node#2", job_id="j2", verdict="needs_human",

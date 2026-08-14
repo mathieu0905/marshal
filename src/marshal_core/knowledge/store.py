@@ -1,4 +1,5 @@
 """知识核读写薄封装。"""
+import json
 import re
 
 from sqlalchemy import select, func, update
@@ -70,7 +71,13 @@ class Store:
         fields the source doesn't carry come back null, not fabricated.
         """
         ev = evidence or {}
-        g = ev.get("gates") if isinstance(ev.get("gates"), dict) else ev
+        gates = ev.get("gates")
+        if isinstance(gates, str):          # some rows store gates as a JSON string
+            try:
+                gates = json.loads(gates)
+            except (ValueError, TypeError):
+                gates = None
+        g = gates if isinstance(gates, dict) else ev
         if not isinstance(g, dict):
             g = {}
         # some evidence nests tier/lenses/findings one level deeper, under gates.review
@@ -149,7 +156,7 @@ class Store:
                 changed_files = cf
 
         # comment / PR permalink (only trust http(s))
-        comment_url = _str("comment_url")
+        comment_url = _str("comment_url", "marker_url")
         if comment_url is None:
             cm = g.get("comment")
             if isinstance(cm, str) and cm.startswith("http"):
@@ -161,6 +168,8 @@ class Store:
 
         repo = _str("repo")
         pr = g.get("pr")
+        if isinstance(pr, dict):            # some rows store pr as {number: N, ...}
+            pr = pr.get("number") or pr.get("pr") or pr.get("id")
         if isinstance(pr, bool) or not isinstance(pr, (int, str)):
             pr = None
         # fall back to the repo/PR embedded in a github comment/PR permalink
