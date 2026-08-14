@@ -3,6 +3,12 @@ from sqlalchemy import select, func, update
 from sqlalchemy.orm import Session
 from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta, ReviewJob, _now
 
+# The "awaiting human review" queue. `escalate` is the renamed-forward verdict for
+# what older gate_runs recorded as `needs_human`; the two are the same bucket, so every
+# inbox/metrics/timeseries read must treat them together (older DBs have only
+# needs_human, newer DBs have both).
+NEEDS_HUMAN_VERDICTS = ("needs_human", "escalate")
+
 
 class Store:
     def __init__(self, session: Session):
@@ -106,7 +112,7 @@ class Store:
 
     def list_needs_human(self, limit: int = 50) -> list[dict]:
         stmt = (select(GateRun)
-                .where(GateRun.verdict == "needs_human")
+                .where(GateRun.verdict.in_(NEEDS_HUMAN_VERDICTS))
                 .order_by(GateRun.created_at.desc(), GateRun.id.desc())
                 .limit(limit))
         return [
@@ -168,8 +174,10 @@ class Store:
         esc_closed = _count(EscapeRegistry, EscapeRegistry.status == "closed")
         gate_total = _count(GateRun)
         gate_by_verdict = {
-            v: _count(GateRun, GateRun.verdict == v)
-            for v in ("pass", "block", "needs_human")
+            "pass": _count(GateRun, GateRun.verdict == "pass"),
+            "block": _count(GateRun, GateRun.verdict == "block"),
+            # fold the renamed `escalate` into the needs_human bucket
+            "needs_human": _count(GateRun, GateRun.verdict.in_(NEEDS_HUMAN_VERDICTS)),
         }
         return {
             "invariant_gate_count": inv_active,
@@ -212,8 +220,9 @@ class Store:
             day = r.created_at.date().isoformat()
             slot = buckets.setdefault(
                 day, {"date": day, "pass": 0, "needs_human": 0, "block": 0})
-            if r.verdict in slot:
-                slot[r.verdict] += 1
+            v = "needs_human" if r.verdict in NEEDS_HUMAN_VERDICTS else r.verdict
+            if v in slot:
+                slot[v] += 1
         return [buckets[d] for d in sorted(buckets)]
 
     def get_meta(self, key: str, default: str | None = None) -> str | None:
