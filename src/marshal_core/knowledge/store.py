@@ -72,24 +72,95 @@ class Store:
         if not isinstance(g, dict):
             g = {}
 
-        def _first_str(*keys):
+        def _str(*keys):
             for k in keys:
                 v = g.get(k)
                 if isinstance(v, str) and v.strip():
                     return v
             return None
 
-        def _count(*keys):
+        def _int(*keys):
             for k in keys:
                 v = g.get(k)
-                if isinstance(v, bool):
-                    continue
-                if isinstance(v, int):
+                if isinstance(v, int) and not isinstance(v, bool):
                     return v
-                if isinstance(v, (list, dict)):
-                    return len(v)
             return None
 
+        # review dimensions: a list, or {completed:[...], scout_lenses:[...]}
+        dims = []
+        for k in ("dimensions", "lenses"):
+            v = g.get(k)
+            if isinstance(v, list):
+                dims = [str(x) for x in v]
+                break
+            if isinstance(v, dict):
+                cand = v.get("completed") or v.get("scout_lenses")
+                if isinstance(cand, list):
+                    dims = [str(x) for x in cand]
+                    break
+
+        # findings list -> total, top titles, severity counts
+        findings = g.get("findings")
+        findings_total = len(findings) if isinstance(findings, list) else _int("high_sev_findings")
+        top, sev_counts = [], {}
+        if isinstance(findings, list):
+            for f in findings:
+                if not isinstance(f, dict):
+                    continue
+                sev = str(f.get("severity", "")).lower()
+                if sev:
+                    sev_counts[sev] = sev_counts.get(sev, 0) + 1
+                ttl = f.get("title") or f.get("location")
+                if ttl and len(top) < 3:
+                    top.append({"severity": f.get("severity"), "title": str(ttl)})
+
+        # severity summary: prefer curated review_quorum, else counts from findings
+        severity = None
+        rq = g.get("review_quorum")
+        if isinstance(rq, dict):
+            bits = []
+            if isinstance(rq.get("confirmed_high"), int) and rq["confirmed_high"]:
+                bits.append(f"{rq['confirmed_high']} high")
+            if isinstance(rq.get("advisory"), int) and rq["advisory"]:
+                bits.append(f"{rq['advisory']} advisory")
+            severity = " · ".join(bits) or None
+        if severity is None and sev_counts:
+            order = ["high", "medium", "mid", "low", "advisory"]
+            bits = [f"{sev_counts[s]} {s}" for s in order if s in sev_counts]
+            bits += [f"{n} {s}" for s, n in sev_counts.items() if s not in order]
+            severity = " · ".join(bits) or None
+
+        changed_files = _int("changed_files")
+        if changed_files is None and isinstance(g.get("closure"), dict):
+            cf = g["closure"].get("changed_files")
+            if isinstance(cf, int) and not isinstance(cf, bool):
+                changed_files = cf
+
+        # comment / PR permalink (only trust http(s))
+        comment_url = _str("comment_url")
+        if comment_url is None:
+            cm = g.get("comment")
+            if isinstance(cm, str) and cm.startswith("http"):
+                comment_url = cm
+            elif isinstance(cm, dict) and isinstance(cm.get("url"), str):
+                comment_url = cm["url"]
+        if comment_url and not comment_url.startswith(("http://", "https://")):
+            comment_url = None
+
+        repo = _str("repo")
+        pr = g.get("pr")
+        if isinstance(pr, bool) or not isinstance(pr, (int, str)):
+            pr = None
+
+        # human identity: "repo #pr", else the top finding's title
+        if repo and pr is not None:
+            title = f"{repo} #{pr}"
+        elif top:
+            title = top[0]["title"]
+        else:
+            title = None
+
+        # invariants: flat ints (fixtures) or a {name: status} map
         inv_pass = inv_total = None
         if isinstance(g.get("invariants_run"), int) and not isinstance(g.get("invariants_run"), bool):
             inv_total = g["invariants_run"]
@@ -100,14 +171,20 @@ class Store:
             inv_pass = sum(1 for x in vals if str(x).lower() == "pass")
 
         return {
-            "tier": _first_str("tier"),
-            "cip": _first_str("cip"),
-            "repo": _first_str("repo"),
+            "title": title,
+            "repo": repo,
+            "pr": pr,
+            "tier": _str("tier"),
+            "cip": _str("cip"),
+            "dimensions": dims,
+            "severity": severity,
+            "findings_total": findings_total,
+            "top_findings": top,
             "invariants_pass": inv_pass,
             "invariants_total": inv_total,
-            "findings": _count("high_sev_findings", "findings"),
-            "advisory": _count("advisory_findings", "advisory"),
-            "headline": _first_str("summary", "headline", "change", "reason", "remedy"),
+            "changed_files": changed_files,
+            "comment_url": comment_url,
+            "headline": _str("summary", "headline", "change", "reason", "remedy"),
         }
 
     def list_needs_human(self, limit: int = 50) -> list[dict]:
