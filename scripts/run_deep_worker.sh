@@ -19,7 +19,7 @@ cd "$(dirname "$0")/.."
 
 export MARSHAL_DB="${MARSHAL_DB:-sqlite:////home/ubuntu/workspace/marshal/marshal.db}"
 export MARSHAL_CLAUDE_ALLOWED_TOOLS="${MARSHAL_CLAUDE_ALLOWED_TOOLS:-Bash Read Write Edit Grep Glob Task TodoWrite WebFetch WebSearch Skill}"
-export MARSHAL_DEEP_TIMEOUT_S="${MARSHAL_DEEP_TIMEOUT_S:-1800}"
+export MARSHAL_DEEP_TIMEOUT_S="${MARSHAL_DEEP_TIMEOUT_S:-3600}"
 : "${GITHUB_TOKEN:=$(gh auth token 2>/dev/null || true)}"; export GITHUB_TOKEN
 
 echo "Starting deep-capable Marshal worker"
