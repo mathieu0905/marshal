@@ -112,9 +112,13 @@ def build_inbox(session, repos=None) -> list[dict]:
                 stale = last["head_sha"] != head_sha
                 last_review = {"verdict": last["verdict"], "reviewed_head": last["head_sha"],
                                "stale": stale}
-                # already reviewed at the current head, no new commits -> nothing to re-review
-                if eligible and not stale:
-                    eligible, reason = False, f"reviewed {last['verdict']} · no new commits"
+                if eligible:
+                    if last["verdict"] == "pass":
+                        # already passed -> approved, nothing to re-review (even if head moved)
+                        eligible, reason = False, "reviewed pass"
+                    elif not stale:
+                        # reviewed at the current head, no new commits -> nothing to re-review
+                        eligible, reason = False, f"reviewed {last['verdict']} · no new commits"
             prs.append({
                 "org": org, "repo": repo, "number": num,
                 "title": pr.get("title", ""), "url": pr.get("html_url", ""),

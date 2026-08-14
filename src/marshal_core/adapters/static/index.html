@@ -50,6 +50,7 @@
   .card.blocked { opacity:.75; }
   b.title { font-size:14.5px; font-weight:600; }
   .sev-badge { font-size:11px; font-weight:600; color:var(--block); }
+  .stale-badge { font-size:11px; font-weight:600; color:var(--needs); border:1px solid var(--needs); border-radius:4px; padding:1px 6px; }
   .finding { font-size:12.5px; margin:3px 0; color:var(--fg); }
   .finding .sev { font-weight:700; text-transform:uppercase; font-size:10px; margin-right:6px; }
   .sev.sev-high { color:var(--block); } .sev.sev-medium, .sev.sev-mid { color:var(--needs); }
@@ -113,7 +114,9 @@ async function renderInbox(){
   for(const p of prs){
     const lr = p.last_review;
     const reviewBadge = lr
-      ? '<span class="tag">last: '+esc(lr.verdict)+(lr.stale?' · head moved':'')+'</span>'
+      ? (lr.stale
+          ? '<span class="stale-badge">🔄 stale · last '+esc(lr.verdict)+'</span>'
+          : '<span class="tag">last: '+esc(lr.verdict)+'</span>')
       : '<span class="muted">not reviewed</span>';
     const meta = [
       (p.head_sha||'').slice(0,8),

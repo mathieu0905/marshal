@@ -133,3 +133,8 @@ def test_inbox_survives_build_failure(client, monkeypatch):
     r = client.get("/api/inbox")
     assert r.status_code == 200          # no 500
     assert r.json()["prs"] == []
+
+
+def test_spa_has_stale_badge(client):
+    html = client.get("/").text
+    assert "stale-badge" in html and "🔄" in html
