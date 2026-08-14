@@ -76,6 +76,19 @@
   .dot.pending { background:var(--muted); } .dot.running { background:var(--needs); }
   .dot.done { background:var(--pass); } .dot.failed { background:var(--block); }
 
+  /* first-load / slow-fetch state (so a slow Review Queue never looks frozen) */
+  .loading { text-align:center; padding:40px 16px 10px; }
+  .spinner { width:34px; height:34px; margin:0 auto 16px; border:3px solid var(--line);
+             border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .loading .lt { font-size:15px; font-weight:600; color:var(--fg); font-family:var(--serif); }
+  .loading .ls { font-size:13px; color:var(--muted); margin:9px auto 0; line-height:1.6; max-width:440px; }
+  .loading .elapsed { font-family:var(--mono); color:var(--accent); font-weight:600; }
+  .skeleton { height:60px; border-radius:12px; margin-top:12px; border:1px solid var(--line);
+              background:linear-gradient(100deg,var(--surface2) 28%,var(--line) 50%,var(--surface2) 72%);
+              background-size:200% 100%; animation:shimmer 1.3s linear infinite; }
+  @keyframes shimmer { from { background-position:200% 0; } to { background-position:-200% 0; } }
+
   /* ---------- Health dashboard ---------- */
   .kpigrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin-bottom:14px; }
   .kpi { position:relative; background:linear-gradient(155deg,var(--card),var(--surface2)); border:1px solid var(--line);
@@ -173,17 +186,47 @@ function bar(label, value, max){
           <div class="bar" style="width:${pct}%"></div>`;
 }
 
+function inboxLoading(){
+  return `<div class="loading">
+    <div class="spinner"></div>
+    <div class="lt">Loading open pull requests…</div>
+    <div class="ls">The first load checks GitHub across every bound repo — open PRs, CI status and review
+      markers — so it can take up to ~20 seconds. This is normal, the page has <b>not</b> frozen.
+      Elapsed: <span class="elapsed">0s</span></div>
+  </div>
+  <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>`;
+}
+
 async function renderInbox(){
-  const data = await getJSON('/api/inbox');
-  const prs = data.prs || [];
   const app = document.getElementById('app');
-  if(!prs.length){
-    app.innerHTML = data.github_token
-      ? '<p class="muted">No open PRs across the bound repos.</p>'
-      : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
-    return;
+  const fresh = app.dataset.view !== 'inbox';   // first visit or switched back from Health
+  let timer;
+  if(fresh){
+    app.dataset.view = 'inbox';                 // claim now so a 15s refresh mid-load won't re-flash
+    app.innerHTML = inboxLoading();
+    const t0 = performance.now(), el = app.querySelector('.elapsed');
+    timer = setInterval(() => { if(el) el.textContent = Math.round((performance.now()-t0)/1000)+'s'; }, 250);
   }
-  app.innerHTML = '';
+  try {
+    const data = await getJSON('/api/inbox');
+    const prs = data.prs || [];
+    if(!prs.length){
+      app.innerHTML = data.github_token
+        ? '<p class="muted">No open PRs across the bound repos.</p>'
+        : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
+      return;
+    }
+    app.innerHTML = '';
+    renderInboxCards(app, prs);
+  } catch(e){
+    app.dataset.view = '';                       // let the next attempt show the loading state again
+    throw e;                                      // surfaced by show()'s catch
+  } finally {
+    if(timer) clearInterval(timer);
+  }
+}
+
+function renderInboxCards(app, prs){
   for(const p of prs){
     const lr = p.last_review;
     const reviewBadge = lr
@@ -402,6 +445,7 @@ async function renderHealth(){
       ${escapeBars(h.escape_breakdown||[])}
     </div>`;
 
+  app.dataset.view = 'health';
   wireChart(app);
   countUp(app);
 }
