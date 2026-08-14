@@ -126,7 +126,7 @@ async function renderInbox(){
     const card = $(`<div class="card${p.eligible?'':' blocked'}">
       <div class="row" style="align-items:baseline">
         <b class="title">${esc(p.repo)} #${esc(p.number)} — ${esc(p.title)}</b>
-        ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 待处理'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
+        ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 On hold'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
       </div>
       <div class="row">${meta.map(b=>`<span>${esc(b)}</span>`).join('')}</div>
       <div class="jobrow">
