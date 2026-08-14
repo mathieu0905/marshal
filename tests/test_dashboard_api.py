@@ -115,3 +115,10 @@ def test_inbox_returns_pr_queue(client, monkeypatch):
     body = r.json()
     assert body["prs"] == [{"repo": "node", "number": 7, "eligible": True}]
     assert "github_token" in body and "repos" in body
+
+
+def test_spa_renders_pr_queue(client):
+    html = client.get("/").text
+    assert "renderInbox" in html
+    assert "待处理" in html            # blocked badge label
+    assert "github_token" in html      # SPA reads the token flag for the empty-state hint

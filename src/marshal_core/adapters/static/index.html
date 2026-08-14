@@ -47,6 +47,7 @@
   .tag[style] { color:var(--on-color); border-color:transparent; }   /* colored legend chips get light text */
   .tier-high { color:var(--block); font-weight:600; }
   .verdict-needs_human, .verdict-escalate { border-left:3px solid var(--needs); }
+  .card.blocked { opacity:.75; }
   b.title { font-size:14.5px; font-weight:600; }
   .sev-badge { font-size:11px; font-weight:600; color:var(--block); }
   .finding { font-size:12.5px; margin:3px 0; color:var(--fg); }
@@ -99,55 +100,45 @@ function bar(label, value, max){
 }
 
 async function renderInbox(){
-  const rows = await getJSON('/api/inbox');
+  const data = await getJSON('/api/inbox');
+  const prs = data.prs || [];
   const app = document.getElementById('app');
-  if(!rows.length){ app.innerHTML='<p class="muted">Inbox clear — nothing awaiting human review.</p>'; return; }
+  if(!prs.length){
+    app.innerHTML = data.github_token
+      ? '<p class="muted">No open PRs across the bound repos.</p>'
+      : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
+    return;
+  }
   app.innerHTML = '';
-  for(const r of rows){
-    const s = r.summary || {};              // stable inbox schema projected server-side
-    const repo = s.repo || 'node';
-    const sha = (r.change_ref||'').slice(0,8);
-    const title = s.title || sha;           // human identity: repo#pr / top finding / short sha
-    const tierClass = s.tier==='high' ? 'tier-high' : '';
-    const invText = (s.invariants_total!=null)
-      ? 'invariants '+(s.invariants_pass!=null?s.invariants_pass:'?')+'/'+s.invariants_total : '';
+  for(const p of prs){
+    const lr = p.last_review;
+    const reviewBadge = lr
+      ? '<span class="tag">last: '+esc(lr.verdict)+(lr.stale?' · head moved':'')+'</span>'
+      : '<span class="muted">not reviewed</span>';
     const meta = [
-      sha,
-      (r.created_at||'').slice(0,16).replace('T',' '),
-      s.findings_total!=null ? s.findings_total+' findings' : (invText||null),
-      s.changed_files!=null ? s.changed_files+' files' : null,
-      (s.dimensions&&s.dimensions.length) ? s.dimensions.join(', ') : null,
+      (p.head_sha||'').slice(0,8),
+      (p.updated_at||'').slice(0,16).replace('T',' '),
+      p.draft ? 'draft' : null,
     ].filter(Boolean);
-    const tf = s.top_findings || [];
-    const findingsHtml = tf.map(f =>
-      `<div class="finding"><span class="sev sev-${esc((f.severity||'').toLowerCase())}">${esc(f.severity||'?')}</span>${esc(f.title||'')}</div>`).join('');
-    const more = (s.findings_total!=null && s.findings_total>tf.length) ? (s.findings_total-tf.length) : 0;
-    const url = (s.comment_url && /^https?:\/\//.test(s.comment_url)) ? s.comment_url : null;
-    const card = $(`<div class="card verdict-${esc(r.verdict)}">
+    const card = $(`<div class="card${p.eligible?'':' blocked'}">
       <div class="row" style="align-items:baseline">
-        <b class="title">${esc(title)}</b>
-        <span class="${tierClass}">tier: ${esc(s.tier||'?')}</span>
-        ${s.cip?`<span class="tag">${esc(s.cip)}</span>`:''}
-        ${s.severity?`<span class="sev-badge">${esc(s.severity)}</span>`:''}
-        <span class="tag" style="margin-left:auto">${esc(r.verdict)}</span>
+        <b class="title">${esc(p.repo)} #${esc(p.number)} — ${esc(p.title)}</b>
+        ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 待处理'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
       </div>
       <div class="row">${meta.map(b=>`<span>${esc(b)}</span>`).join('')}</div>
-      ${findingsHtml}
-      ${more?`<div class="muted" style="font-size:12px">+${more} more finding${more>1?'s':''}</div>`:''}
-      ${(!tf.length && s.headline)?`<div class="row"><span class="muted">${esc(s.headline)}</span></div>`:''}
-      <details><summary>evidence</summary><pre>${esc(JSON.stringify(r.evidence,null,2))}</pre></details>
       <div class="jobrow">
-        ${url?`<a class="viewlink" href="${esc(url)}" target="_blank" rel="noopener">view ↗</a>`:''}
-        <button class="btn re-plan">re-review</button>
-        <button class="btn deep">deep review</button>
+        <a class="viewlink" href="${esc(p.url)}" target="_blank" rel="noopener">view ↗</a>
+        ${p.eligible?'<button class="btn re-plan">re-review</button><button class="btn deep">deep review</button>':''}
         <span class="jobstatus"></span>
       </div>
     </div>`);
     app.appendChild(card);
-    const rePlanBtn = card.querySelector('.re-plan');
-    rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, r.change_ref, repo, 'mechanical'));
-    const deepBtn = card.querySelector('.deep');
-    deepBtn.addEventListener('click', () => startJob(deepBtn, r.change_ref, repo, 'deep'));
+    if(p.eligible){
+      const rePlanBtn = card.querySelector('.re-plan');
+      rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, p.head_sha, p.repo, 'mechanical'));
+      const deepBtn = card.querySelector('.deep');
+      deepBtn.addEventListener('click', () => startJob(deepBtn, p.head_sha, p.repo, 'deep'));
+    }
   }
 }
 
