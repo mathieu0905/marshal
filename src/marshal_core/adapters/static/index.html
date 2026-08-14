@@ -115,8 +115,8 @@ async function renderInbox(){
     const lr = p.last_review;
     const reviewBadge = lr
       ? (lr.stale
-          ? '<span class="stale-badge">🔄 stale · last '+esc(lr.verdict)+'</span>'
-          : '<span class="tag">last: '+esc(lr.verdict)+'</span>')
+          ? '<span class="stale-badge">🔄 stale · last '+esc(lr.verdict||'deep')+'</span>'
+          : '<span class="tag">last: '+esc(lr.verdict||'deep')+'</span>')
       : '<span class="muted">not reviewed</span>';
     const meta = [
       (p.head_sha||'').slice(0,8),
