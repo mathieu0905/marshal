@@ -2,10 +2,11 @@
 
 Precedence:
   1. $MARSHAL_DB — explicit override, always wins.
-  2. The live workspace checkout's db (~/workspace/marshal/marshal.db) if it exists —
-     the database the marshal skill actually writes to.
-  3. $MARSHAL_HOME/marshal.db (MARSHAL_HOME defaults to this checkout's root) —
-     the local fallback (e.g. the plugin copy's demo db).
+  2. $MARSHAL_HOME/marshal.db — MARSHAL_HOME defaults to this checkout's root, so the
+     path is absolute and cwd-independent.
+
+Point the dashboard/worker/CLI at a specific database via $MARSHAL_DB (or $MARSHAL_HOME);
+no path is hardcoded.
 """
 import os
 from pathlib import Path
@@ -22,7 +23,4 @@ def marshal_home() -> Path:
 def db_url() -> str:
     if os.environ.get("MARSHAL_DB"):
         return os.environ["MARSHAL_DB"]
-    live = Path.home() / "workspace" / "marshal" / "marshal.db"
-    if live.exists():
-        return f"sqlite:///{live}"
     return f"sqlite:///{marshal_home() / 'marshal.db'}"
