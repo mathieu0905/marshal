@@ -6,8 +6,11 @@
 <title>Marshal Dashboard</title>
 <style>
   /* Cowboy design system — western palette (hay / bison / nugget / cactus / canyon),
-     matching examples/cip34_chat_demo. Self-contained: font-family names degrade to
-     system fonts when the webfonts aren't installed (no external @import / CDN). */
+     matching examples/cip34_chat_demo, including its Google Fonts webfonts.
+     NOTE: this @import fetches from fonts.googleapis.com (an external request) — the
+     SPA is no longer fully self-contained; the font-family stacks still fall back to
+     system fonts if the fetch is blocked or offline. */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap');
   :root {
     --bg:#f9f7f5;          /* hay-100 — warm parchment */
     --card:#ffffff;        /* cards */
