@@ -75,6 +75,61 @@
   .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
   .dot.pending { background:var(--muted); } .dot.running { background:var(--needs); }
   .dot.done { background:var(--pass); } .dot.failed { background:var(--block); }
+
+  /* ---------- Health dashboard ---------- */
+  .kpigrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin-bottom:14px; }
+  .kpi { position:relative; background:linear-gradient(155deg,var(--card),var(--surface2)); border:1px solid var(--line);
+         border-radius:14px; padding:16px 16px 14px; box-shadow:var(--shadow-card); overflow:hidden;
+         animation:rise .5s cubic-bezier(.2,.7,.2,1) both; }
+  .kpi::before { content:''; position:absolute; top:0; left:0; right:0; height:3px;
+                 background:linear-gradient(90deg,var(--accent),transparent 70%); }
+  .kpi .n { font-family:var(--mono); font-size:31px; font-weight:600; letter-spacing:-.02em; line-height:1; color:var(--fg); }
+  .kpi .l { font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-top:9px; }
+  .kpi .s { font-size:12px; color:var(--muted); margin-top:3px; font-family:var(--mono); }
+  .kpi.good .n { color:var(--pass); } .kpi.warn .n { color:var(--needs); } .kpi.bad .n { color:var(--block); }
+  @keyframes rise { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  .grid2 { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px; margin-bottom:14px; }
+  @media (max-width:680px){ .grid2 { grid-template-columns:1fr; } }
+  .donutwrap { display:flex; align-items:center; gap:20px; }
+  svg.donut { width:138px; height:138px; flex:0 0 auto; }
+  svg.donut circle.arc { transition:stroke-dasharray 1.1s cubic-bezier(.3,.8,.3,1); }
+  .legend { display:flex; flex-direction:column; gap:8px; font-size:13px; min-width:0; flex:1; }
+  .legend .li { display:flex; align-items:center; gap:8px; }
+  .legend .sw { width:11px; height:11px; border-radius:3px; flex:0 0 auto; }
+  .legend .lc { margin-left:auto; font-family:var(--mono); color:var(--muted); }
+  .chartcard svg { display:block; width:100%; height:auto; }
+  .chartcard .hot { cursor:crosshair; }
+  .hbar { margin:10px 0; }
+  .hbar .hh { display:flex; justify-content:space-between; gap:10px; font-size:12px; margin-bottom:4px; }
+  .hbar .hh .nm { color:var(--fg); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .hbar .hh .ct { font-family:var(--mono); color:var(--muted); flex:0 0 auto; }
+  .hbar .track { height:9px; border-radius:5px; background:var(--surface2); display:flex; overflow:hidden; min-width:2px; }
+  .hbar .track i { display:block; height:100%; transition:width .8s cubic-bezier(.3,.8,.3,1); }
+  .chip-red { display:inline-block; font-family:var(--mono); font-size:11px; color:var(--block); border:1px solid var(--block);
+              border-radius:6px; padding:2px 8px; margin:4px 5px 0 0; }
+  .seg { display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--surface2); margin:4px 0 12px; }
+  .seg i { height:100%; transition:width .8s cubic-bezier(.3,.8,.3,1); }
+  .charttip { position:fixed; pointer-events:none; z-index:30; background:var(--fg); color:var(--bg);
+              font-family:var(--mono); font-size:11px; line-height:1.5; padding:6px 9px; border-radius:7px; opacity:0;
+              transition:opacity .12s; white-space:nowrap; box-shadow:0 6px 18px rgba(0,0,0,.28); }
+  .gaprow { display:flex; gap:8px; align-items:flex-start; font-size:12.5px; color:var(--muted);
+            border-top:1px dashed var(--line); padding-top:9px; margin-top:9px; }
+  .gaprow:first-child { border-top:none; padding-top:0; margin-top:0; }
+  .gaprow .gk { color:var(--fg); font-weight:600; flex:0 0 auto; }
+
+  /* ---------- dark theme (palette re-map; all components read the vars) ---------- */
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#131110; --card:#1d1a17; --surface2:#26221d; --line:#332e28; --fg:#f2ece4; --muted:#a79a8e;
+    --accent:#ffa52b; --accent-ink:#241200; --link:#ffbf5e; --on-color:#1a1206;
+    --pass:#40b06e; --needs:#f5a02e; --block:#e8542d; --red:#e8542d;
+    --shadow-card:0 6px 16px -8px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.35);
+  } }
+  :root[data-theme="dark"]{
+    --bg:#131110; --card:#1d1a17; --surface2:#26221d; --line:#332e28; --fg:#f2ece4; --muted:#a79a8e;
+    --accent:#ffa52b; --accent-ink:#241200; --link:#ffbf5e; --on-color:#1a1206;
+    --pass:#40b06e; --needs:#f5a02e; --block:#e8542d; --red:#e8542d;
+    --shadow-card:0 6px 16px -8px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.35);
+  }
 </style>
 </head>
 <body>
@@ -145,53 +200,204 @@ async function renderInbox(){
   }
 }
 
+const fmt = (n) => (typeof n==='number' ? n.toLocaleString('en-US') : n);
+
+function kpiTile(to, label, sub, cls){
+  const isInt = Number.isInteger(to);
+  return `<div class="kpi ${cls||''}">
+    <div class="n" data-to="${to}" data-int="${isInt?1:0}">${isInt?fmt(to):to.toFixed(1)}</div>
+    <div class="l">${esc(label)}</div>${sub?`<div class="s">${esc(sub)}</div>`:''}</div>`;
+}
+
+function donutSVG(segments, centerN, centerL){
+  const total = segments.reduce((a,s)=>a+s.value,0) || 1;
+  const R=48, C=2*Math.PI*R;
+  let acc=0;
+  const arcs = segments.filter(s=>s.value>0).map(s=>{
+    const len=(s.value/total)*C;
+    const el=`<circle class="arc" cx="60" cy="60" r="${R}" style="fill:none;stroke:${s.color}" stroke-width="15"
+      stroke-dasharray="${len.toFixed(2)} ${(C-len).toFixed(2)}" stroke-dashoffset="${(-acc).toFixed(2)}"
+      transform="rotate(-90 60 60)"/>`;
+    acc+=len; return el;
+  }).join('');
+  return `<svg class="donut" viewBox="0 0 120 120" role="img" aria-label="verdict split">
+    <circle cx="60" cy="60" r="48" style="fill:none;stroke:var(--surface2)" stroke-width="15"/>
+    ${arcs}
+    <text x="60" y="58" text-anchor="middle" style="fill:var(--fg);font-family:var(--mono);font-weight:600" font-size="19">${esc(fmt(centerN))}</text>
+    <text x="60" y="74" text-anchor="middle" style="fill:var(--muted)" font-size="8.5" letter-spacing=".6">${esc(centerL)}</text>
+  </svg>`;
+}
+
+function areaChartSVG(ts){
+  if(!ts.length) return '<p class="muted">no runs yet</p>';
+  const W=720,H=224, padL=34,padR=12,padT=14,padB=24, iw=W-padL-padR, ih=H-padT-padB, n=ts.length;
+  const tot = ts.map(d=>(d.pass||0)+(d.needs_human||0)+(d.block||0));
+  const max = Math.max(1, ...tot);
+  const X = i => padL + (n===1 ? iw/2 : iw*i/(n-1));
+  const Y = val => padT + ih*(1 - val/max);
+  let grid='';
+  for(let t=0;t<=4;t++){ const val=max*t/4, y=Y(val);
+    grid+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" style="stroke:var(--line)"/>`+
+          `<text x="${padL-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="9" style="fill:var(--muted)">${Math.round(val)}</text>`;
+  }
+  let base = ts.map(()=>0), areas='';
+  for(const [key,color] of [['pass','var(--pass)'],['needs_human','var(--needs)'],['block','var(--block)']]){
+    const upper = ts.map((d,i)=> base[i]+(d[key]||0));
+    const top = upper.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+    const bot = base.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).reverse().join(' ');
+    areas += `<polygon points="${top} ${bot}" style="fill:${color};fill-opacity:.72"/>`+
+             `<polyline points="${top}" style="fill:none;stroke:${color}" stroke-width="1.5"/>`;
+    base = upper;
+  }
+  const xi = [...new Set([0, Math.floor((n-1)/2), n-1])];
+  const xlab = xi.map(i=>`<text x="${X(i).toFixed(1)}" y="${H-7}" text-anchor="middle" font-size="9" style="fill:var(--muted)">${esc(ts[i].date.slice(5))}</text>`).join('');
+  const hot = ts.map((d,i)=>{
+    const x0 = i===0?padL:(X(i-1)+X(i))/2, x1 = i===n-1?(W-padR):(X(i)+X(i+1))/2;
+    return `<rect class="hot" x="${x0.toFixed(1)}" y="${padT}" width="${Math.max(0.5,x1-x0).toFixed(1)}" height="${ih}" fill="transparent"
+      data-d="${esc(d.date)}" data-p="${d.pass||0}" data-nh="${d.needs_human||0}" data-b="${d.block||0}" data-cx="${X(i).toFixed(1)}"/>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="verdicts over time">
+    ${grid}${areas}${xlab}
+    <line class="crosshair" x1="0" y1="${padT}" x2="0" y2="${padT+ih}" style="stroke:var(--accent)" stroke-width="1" opacity="0"/>
+    ${hot}</svg>`;
+}
+
+function escapeBars(eb){
+  if(!eb.length) return '<p class="muted">no escapes recorded</p>';
+  const sorted = [...eb].sort((a,b)=>b.count-a.count);
+  const top = sorted.slice(0,8), rest = sorted.slice(8);
+  const max = Math.max(1, ...top.map(x=>x.count));
+  let html = top.map(x=>{
+    const nm = x.root_cause_class.length>48 ? x.root_cause_class.slice(0,46)+'…' : x.root_cause_class;
+    const w = 100*x.count/max, closedW = x.count? 100*x.closed/x.count : 0;
+    return `<div class="hbar"><div class="hh">
+        <span class="nm" title="${esc(x.root_cause_class)}">${esc(nm)}</span>
+        <span class="ct">${x.count}${x.open?` · <span style="color:var(--needs)">${x.open} open</span>`:''}</span></div>
+      <div class="track" style="width:${w.toFixed(1)}%">
+        <i style="width:${closedW.toFixed(1)}%;background:var(--pass)"></i>
+        <i style="width:${(100-closedW).toFixed(1)}%;background:var(--needs)"></i></div></div>`;
+  }).join('');
+  if(rest.length){ const rc=rest.reduce((a,x)=>a+x.count,0);
+    html += `<div class="muted" style="font-size:12px;margin-top:8px">+ ${rest.length} more root-cause classes · ${rc} escapes</div>`; }
+  return html;
+}
+
 async function renderHealth(){
   const h = await getJSON('/api/health');
   const app = document.getElementById('app');
   const v = h.gate_runs_by_verdict || {};
-  const vmax = Math.max(1, ...Object.values(v));
-  const eb = h.escape_breakdown || [];
-  const ebmax = Math.max(1, ...eb.map(x=>x.count));
+  const total = h.gate_runs_total || 0;
+  const human = v.needs_human != null ? v.needs_human : ((v.escalate||0));
+  const passN = v.pass||0, blockN = v.block||0;
+  const outcomes = passN+human+blockN;
+  const passRate = outcomes ? 100*passN/outcomes : 0;
   const ib = h.invariant_breakdown || {by_status:{},by_severity:{},candidate_red_ids:[]};
+  const st = ib.by_status||{}, sv = ib.by_severity||{};
+  const stTot = Object.values(st).reduce((a,b)=>a+b,0)||1;
+  const svMax = Math.max(1, ...Object.values(sv));
+  const stColor = {active:'var(--pass)','candidate-red':'var(--block)',pending:'var(--needs)'};
+  const svColor = {high:'var(--block)',medium:'var(--needs)',mid:'var(--needs)',low:'var(--muted)'};
   const gaps = h.unavailable || {};
   const mttd = h.mean_time_to_detection || {};
-  const ts = h.verdict_timeseries || [];
-  const tsmax = Math.max(1, ...ts.map(d => (d.pass||0)+(d.needs_human||0)+(d.block||0)));
-  const tsW = (n) => (100*(n||0)/tsmax).toFixed(1);
-  const stackRow = (d) => {
-    const total = (d.pass||0)+(d.needs_human||0)+(d.block||0);
-    return `<div class="barlabel"><span>${esc(d.date)}</span><span>${total}</span></div>
-      <div class="stack">
-        <span style="width:${tsW(d.pass)}%;background:var(--pass)"></span>
-        <span style="width:${tsW(d.needs_human)}%;background:var(--needs)"></span>
-        <span style="width:${tsW(d.block)}%;background:var(--block)"></span>
-      </div>`;
-  };
+
+  const legend = [
+    ['pass', passN, 'var(--pass)'], ['human review', human, 'var(--needs)'], ['block', blockN, 'var(--block)'],
+  ].map(([k,val,c])=>`<span class="li"><span class="sw" style="background:${c}"></span>${k}
+     <span class="lc">${fmt(val)} · ${outcomes?(100*val/outcomes).toFixed(1):0}%</span></span>`).join('');
+
+  const stSeg = Object.entries(st).map(([k,nn])=>`<i style="width:${(100*nn/stTot).toFixed(1)}%;background:${stColor[k]||'var(--muted)'}" title="${esc(k)}: ${nn}"></i>`).join('');
+  const stLeg = Object.entries(st).map(([k,nn])=>`<span class="li"><span class="sw" style="background:${stColor[k]||'var(--muted)'}"></span>${esc(k)}<span class="lc">${nn}</span></span>`).join('');
+  const svBars = Object.entries(sv).map(([k,nn])=>`<div class="hbar"><div class="hh"><span class="nm">${esc(k)}</span><span class="ct">${nn}</span></div>
+     <div class="track" style="width:${(100*nn/svMax).toFixed(1)}%"><i style="width:100%;background:${svColor[k]||'var(--muted)'}"></i></div></div>`).join('');
+  const red = (ib.candidate_red_ids||[]).map(id=>`<span class="chip-red" title="${esc(id)}">${esc(id)}</span>`).join('');
+
+  const mttdTxt = mttd.mean_days!=null
+    ? `<b>${esc(mttd.mean_days)}</b> days mean over ${esc(mttd.count)} escapes`
+    : `not yet measurable — 0 timestamped escapes`;
+
   app.innerHTML = `
-    <div class="card"><h3>Gate output</h3>
-      ${bar('pass', v.pass||0, vmax)}${bar('needs_human', v.needs_human||0, vmax)}${bar('block', v.block||0, vmax)}
-      <div class="row" style="margin-top:8px"><span class="muted">total runs: ${h.gate_runs_total||0}</span></div>
+    <div class="kpigrid">
+      ${kpiTile(total, 'gate runs', `${fmt(passN)} pass · ${fmt(human)} human`, '')}
+      ${kpiTile(Number(passRate.toFixed(1)), 'pass rate', `${fmt(blockN)} blocked`, passRate>=50?'good':'warn')}
+      ${kpiTile(h.invariant_gate_count||0, 'invariants gated', `${h.ratchet_invariants||0} ratcheted`, '')}
+      ${kpiTile(h.escapes_open||0, 'open escapes', `${h.escapes_closed||0} closed`, (h.escapes_open||0)>0?'warn':'good')}
     </div>
-    <div class="card"><h3>Gate output over time</h3>
-      ${ts.map(stackRow).join('') || '<span class="muted">no runs yet</span>'}
-      <div class="row" style="margin-top:8px">
+
+    <div class="card chartcard"><h3>Verdicts over time · ${h.verdict_timeseries?h.verdict_timeseries.length:0} active days</h3>
+      ${areaChartSVG(h.verdict_timeseries||[])}
+      <div class="row" style="margin-top:10px">
         <span class="tag" style="background:var(--pass)">pass</span>
-        <span class="tag" style="background:var(--needs)">needs_human</span>
+        <span class="tag" style="background:var(--needs)">human review</span>
         <span class="tag" style="background:var(--block)">block</span>
+        <span class="muted" style="margin-left:auto">hover for a day's split</span>
       </div>
     </div>
-    <div class="card"><h3>Ratchet — escapes by root cause</h3>
-      ${eb.map(x=>bar(x.root_cause_class+`  (${x.open} open / ${x.closed} closed)`, x.count, ebmax)).join('') || '<span class="muted">no escapes recorded</span>'}
+
+    <div class="grid2">
+      <div class="card"><h3>Gate outcomes</h3>
+        <div class="donutwrap">${donutSVG(
+            [{value:passN,color:'var(--pass)'},{value:human,color:'var(--needs)'},{value:blockN,color:'var(--block)'}],
+            total, 'GATE RUNS')}
+          <div class="legend">${legend}
+            ${v.escalate!=null?`<span class="li muted" style="font-size:11.5px">human = ${fmt(v.escalate)} escalate + ${fmt(human-(v.escalate||0))} needs-human</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="card"><h3>Invariant coverage · ${stTot} total</h3>
+        <div class="seg">${stSeg}</div>
+        <div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:10px 16px">${stLeg}</div>
+        <h3 style="margin-top:14px">By severity</h3>${svBars}
+        ${red?`<div style="margin-top:8px"><span class="muted" style="font-size:12px">candidate-red gaps</span><br>${red}</div>`:''}
+      </div>
     </div>
-    <div class="card"><h3>Invariant coverage</h3>
-      <div class="row">${Object.entries(ib.by_status).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
-      <div class="row" style="margin-top:6px">${Object.entries(ib.by_severity).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
-      ${ib.candidate_red_ids.length?`<div class="row" style="margin-top:8px"><span class="tier-high">candidate-red (gap): ${ib.candidate_red_ids.map(esc).join(', ')}</span></div>`:''}
+
+    <div class="card"><h3>Ratchet — escapes by root cause <span class="muted" style="text-transform:none;letter-spacing:0">(closed ▬ / open ▬)</span></h3>
+      ${escapeBars(h.escape_breakdown||[])}
     </div>
-    <div class="card"><h3>Honest gaps</h3>
-      <div class="gap">MTTD — ${mttd.mean_days!=null ? esc(mttd.mean_days)+' days (mean over '+esc(mttd.count)+' escapes)' : 'no timestamped escapes yet'}${mttd.excluded ? ' · '+esc(mttd.excluded)+' excluded (no introduced_at timestamp)' : ''}</div>
-      ${Object.entries(gaps).map(([k,why])=>`<div class="gap">${esc(k)} — ${esc(why)}</div>`).join('')}
+
+    <div class="card"><h3>Honest gaps — what we don't (yet) measure</h3>
+      <div class="gaprow"><span class="gk">MTTD</span><span>${mttdTxt}${mttd.excluded?` · ${esc(mttd.excluded)} excluded (no introduced_at timestamp)`:''}</span></div>
+      ${Object.entries(gaps).map(([k,why])=>`<div class="gaprow"><span class="gk">${esc(k)}</span><span>${esc(why)}</span></div>`).join('')}
     </div>`;
+
+  wireChart(app);
+  countUp(app);
+}
+
+let _healthKey = null;
+function countUp(app){
+  const key = [...app.querySelectorAll('.kpi .n')].map(e=>e.getAttribute('data-to')).join('|');
+  const animate = key !== _healthKey;   // only animate on real change / first paint, not each 15s refresh
+  _healthKey = key;
+  app.querySelectorAll('.kpi .n').forEach(el=>{
+    const to = parseFloat(el.getAttribute('data-to')), isInt = el.getAttribute('data-int')==='1';
+    const set = (val)=>{ el.textContent = isInt ? fmt(Math.round(val)) : val.toFixed(1); };
+    if(!animate){ set(to); return; }
+    const dur=750, t0=performance.now();
+    (function step(t){ const p=Math.min(1,(t-t0)/dur); set(to*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step); })(t0);
+  });
+}
+
+function wireChart(app){
+  const svg = app.querySelector('.chartcard svg'); if(!svg) return;
+  let tip = document.getElementById('charttip');
+  if(!tip){ tip=document.createElement('div'); tip.id='charttip'; tip.className='charttip'; document.body.appendChild(tip); }
+  const cross = svg.querySelector('.crosshair');
+  svg.querySelectorAll('.hot').forEach(r=>{
+    r.addEventListener('mousemove', ev=>{
+      const cx = r.getAttribute('data-cx');
+      cross.setAttribute('x1',cx); cross.setAttribute('x2',cx); cross.setAttribute('opacity','1');
+      tip.style.opacity='1';
+      tip.innerHTML = `${esc(r.getAttribute('data-d'))}<br>`+
+        `<span style="color:var(--pass)">■</span> pass ${esc(r.getAttribute('data-p'))}&nbsp; `+
+        `<span style="color:var(--needs)">■</span> human ${esc(r.getAttribute('data-nh'))}&nbsp; `+
+        `<span style="color:var(--block)">■</span> block ${esc(r.getAttribute('data-b'))}`;
+      const w = tip.offsetWidth||140;
+      tip.style.left = Math.min(ev.clientX+14, window.innerWidth-w-8)+'px';
+      tip.style.top = (ev.clientY+16)+'px';
+    });
+  });
+  svg.addEventListener('mouseleave', ()=>{ if(cross) cross.setAttribute('opacity','0'); tip.style.opacity='0'; });
 }
 
 async function startJob(btn, changeRef, repo, kind){
