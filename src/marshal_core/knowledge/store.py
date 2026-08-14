@@ -1,4 +1,6 @@
 """知识核读写薄封装。"""
+import re
+
 from sqlalchemy import select, func, update
 from sqlalchemy.orm import Session
 from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta, ReviewJob, _now
@@ -71,36 +73,46 @@ class Store:
         g = ev.get("gates") if isinstance(ev.get("gates"), dict) else ev
         if not isinstance(g, dict):
             g = {}
+        # some evidence nests tier/lenses/findings one level deeper, under gates.review
+        review = g.get("review") if isinstance(g.get("review"), dict) else {}
+        sources = (g, review)
 
         def _str(*keys):
-            for k in keys:
-                v = g.get(k)
-                if isinstance(v, str) and v.strip():
-                    return v
+            for src in sources:
+                for k in keys:
+                    v = src.get(k)
+                    if isinstance(v, str) and v.strip():
+                        return v
             return None
 
         def _int(*keys):
-            for k in keys:
-                v = g.get(k)
-                if isinstance(v, int) and not isinstance(v, bool):
-                    return v
+            for src in sources:
+                for k in keys:
+                    v = src.get(k)
+                    if isinstance(v, int) and not isinstance(v, bool):
+                        return v
             return None
 
         # review dimensions: a list, or {completed:[...], scout_lenses:[...]}
         dims = []
-        for k in ("dimensions", "lenses"):
-            v = g.get(k)
-            if isinstance(v, list):
-                dims = [str(x) for x in v]
-                break
-            if isinstance(v, dict):
-                cand = v.get("completed") or v.get("scout_lenses")
-                if isinstance(cand, list):
-                    dims = [str(x) for x in cand]
+        for src in sources:
+            for k in ("dimensions", "lenses"):
+                v = src.get(k)
+                if isinstance(v, list):
+                    dims = [str(x) for x in v]
                     break
+                if isinstance(v, dict):
+                    cand = v.get("completed") or v.get("scout_lenses")
+                    if isinstance(cand, list):
+                        dims = [str(x) for x in cand]
+                        break
+            if dims:
+                break
 
-        # findings list -> total, top titles, severity counts
+        # findings: a list of {severity,title,...} (rich rows) or review.confirmed_findings
         findings = g.get("findings")
+        if not isinstance(findings, list) and isinstance(review.get("confirmed_findings"), list):
+            findings = [{"title": str(x)} for x in review["confirmed_findings"]]
         findings_total = len(findings) if isinstance(findings, list) else _int("high_sev_findings")
         top, sev_counts = [], {}
         if isinstance(findings, list):
@@ -151,6 +163,12 @@ class Store:
         pr = g.get("pr")
         if isinstance(pr, bool) or not isinstance(pr, (int, str)):
             pr = None
+        # fall back to the repo/PR embedded in a github comment/PR permalink
+        if (repo is None or pr is None) and comment_url:
+            m = re.search(r"github\.com/[^/]+/([^/\s#]+)/pull/(\d+)", comment_url)
+            if m:
+                repo = repo or m.group(1)
+                pr = pr if pr is not None else int(m.group(2))
 
         # human identity: "repo #pr", else the top finding's title
         if repo and pr is not None:

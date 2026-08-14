@@ -66,6 +66,25 @@ def test_summary_invariants_map_ratio():
     assert s["invariants_pass"] == 1 and s["invariants_total"] == 2
 
 
+def test_summary_reads_nested_review_and_parses_pr_from_comment_url():
+    ev = {"gates": {
+        "review": {"tier": "high", "lenses": ["correctness", "spec", "cross-repo"]},
+        "comment_url": "https://github.com/cowboyinc/node/pull/1307#issuecomment-5257380871",
+    }}
+    s = Store.inbox_summary(ev)
+    assert s["tier"] == "high"                          # from gates.review.tier
+    assert s["dimensions"] == ["correctness", "spec", "cross-repo"]
+    assert s["repo"] == "node" and s["pr"] == 1307      # parsed from comment_url
+    assert s["title"] == "node #1307"
+
+
+def test_summary_confirmed_findings_fallback_counts():
+    ev = {"gates": {"review": {"confirmed_findings": ["almanax-leak", "state-fork"]}}}
+    s = Store.inbox_summary(ev)
+    assert s["findings_total"] == 2
+    assert s["top_findings"][0]["title"] == "almanax-leak"
+
+
 def test_list_needs_human_includes_summary(db_session):
     s = Store(db_session)
     s.record_gate_run(change_ref="node#2", job_id="j2", verdict="needs_human",
