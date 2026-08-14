@@ -216,3 +216,61 @@ def test_parse_verdict_non_object_json_raises(tmp_path):
     p.write_text('["not","an","object"]')
     with pytest.raises(DeepReviewError, match="not a JSON object"):
         _parse_verdict(str(p))
+
+
+def test_invoke_claude_passes_permission_mode_and_allowed_tools(tmp_path, monkeypatch):
+    fake = _fake_bin(tmp_path, "claude_args.sh", 'echo "$@"')
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    monkeypatch.setenv("MARSHAL_CLAUDE_PERMISSION_MODE", "acceptEdits")
+    monkeypatch.setenv("MARSHAL_CLAUDE_ALLOWED_TOOLS", "Bash Read Write")
+    out = _invoke_claude("do the review", cwd=str(tmp_path), timeout_s=10)
+    assert "--permission-mode acceptEdits" in out
+    assert "--allowedTools Bash Read Write" in out
+
+
+def test_invoke_claude_omits_perm_flags_when_unset(tmp_path, monkeypatch):
+    fake = _fake_bin(tmp_path, "claude_args2.sh", 'echo "$@"')
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    monkeypatch.delenv("MARSHAL_CLAUDE_PERMISSION_MODE", raising=False)
+    monkeypatch.delenv("MARSHAL_CLAUDE_ALLOWED_TOOLS", raising=False)
+    out = _invoke_claude("x", cwd=str(tmp_path), timeout_s=10)
+    assert "--permission-mode" not in out
+    assert "--allowedTools" not in out
+
+
+def test_deep_prompt_is_scoped_and_budgeted(monkeypatch):
+    from marshal_core.worker import _deep_prompt
+    monkeypatch.setenv("MARSHAL_DEEP_BUDGET_MIN", "40")
+    monkeypatch.setenv("MARSHAL_DEEP_MAX_FINDINGS", "8")
+    p = _deep_prompt({"change_ref": "abc123", "repo": "node"})
+    assert "abc123" in p and "node" in p
+    assert "DIFF of this commit" in p and "NOT the whole repository" in p   # scoped
+    assert "40 minutes" in p and "cap proven findings at 8" in p            # budgeted
+    assert "NEVER run unbounded" in p                                        # converge, don't hang
+    assert "do NOT post" in p and "MARSHAL_VERDICT.json" in p               # local-only + contract
+
+
+def test_deep_prompt_pr_mode_reviews_full_pr(monkeypatch):
+    from marshal_core.worker import _deep_prompt
+    p = _deep_prompt({"change_ref": "abc123", "repo": "node"}, pr_number=1200)
+    assert "/marshal deep node 1200" in p        # native PR-mode invocation
+    assert "FULL PR diff" in p                    # full PR, not a single commit
+    assert "do NOT post" in p and "MARSHAL_VERDICT.json" in p
+    assert "NEVER run unbounded" in p             # budget still applies
+
+
+def test_resolve_pr_number_prefers_head_match(monkeypatch):
+    import marshal_core.github_backfill as gb
+    from marshal_core.worker import _resolve_pr_number
+    monkeypatch.setattr(gb, "fetch_pulls", lambda org, repo, sha: [
+        {"number": 1257, "head": {"sha": "other"}},
+        {"number": 1200, "head": {"sha": "abc123"}},   # commit is the HEAD of 1200
+    ])
+    assert _resolve_pr_number("node", "abc123") == 1200
+
+
+def test_resolve_pr_number_none_when_not_a_pr_head(monkeypatch):
+    import marshal_core.github_backfill as gb
+    from marshal_core.worker import _resolve_pr_number
+    monkeypatch.setattr(gb, "fetch_pulls", lambda org, repo, sha: [])
+    assert _resolve_pr_number("node", "abc123") is None

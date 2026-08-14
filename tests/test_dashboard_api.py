@@ -99,9 +99,11 @@ def test_spa_locks_both_buttons_during_job(client):
     assert "querySelectorAll('.btn')" in html
 
 
-def test_spa_renders_real_mttd_not_placeholder(client):
+def test_spa_renders_real_health_metrics(client):
     html = client.get("/").text
-    assert "mean_time_to_detection" in html      # SPA reads the real metric
+    # the Health page renders real computed metrics from /api/health, not placeholders
+    assert "gate_runs_by_verdict" in html
+    assert "verdict_timeseries" in html
     assert "pending Phase 4" not in html          # placeholder is gone
 
 
@@ -120,7 +122,7 @@ def test_inbox_returns_pr_queue(client, monkeypatch):
 def test_spa_renders_pr_queue(client):
     html = client.get("/").text
     assert "renderInbox" in html
-    assert "待处理" in html            # blocked badge label
+    assert "On hold" in html           # blocked badge label
     assert "github_token" in html      # SPA reads the token flag for the empty-state hint
 
 
@@ -138,3 +140,59 @@ def test_inbox_survives_build_failure(client, monkeypatch):
 def test_spa_has_stale_badge(client):
     html = client.get("/").text
     assert "stale-badge" in html and "🔄" in html
+
+
+def test_worker_endpoint_down_without_heartbeat(client):
+    # no worker has written a heartbeat -> the dashboard must show it as down
+    j = client.get("/api/worker").json()
+    assert j["state"] == "down"
+    assert j["alive"] is False
+    assert j["current"] is None
+    assert j["queue"] == {"pending": 0, "running": 0, "done": 0, "failed": 0}
+
+
+def test_worker_endpoint_idle_with_fresh_heartbeat(client):
+    from datetime import datetime, timezone
+    import marshal_core.adapters.api as api
+    from marshal_core.knowledge.store import Store
+    with api._Session() as s:
+        Store(s).set_meta("worker:heartbeat", datetime.now(timezone.utc).isoformat())
+    j = client.get("/api/worker").json()
+    assert j["state"] == "idle"
+    assert j["alive"] is True
+    assert j["seconds_ago"] is not None and j["seconds_ago"] < 15
+
+
+def test_worker_endpoint_busy_when_job_running(client):
+    from datetime import datetime, timezone
+    import marshal_core.adapters.api as api
+    from marshal_core.knowledge.store import Store
+    with api._Session() as s:
+        st = Store(s)
+        st.set_meta("worker:heartbeat", datetime.now(timezone.utc).isoformat())
+        st.enqueue_job(change_ref="deadbeef", repo="node", kind="deep")
+        claimed = st.claim_next_job()          # -> running
+        assert claimed["status"] == "running"
+    j = client.get("/api/worker").json()
+    assert j["state"] == "busy"
+    assert j["current"]["kind"] == "deep"
+    assert j["current"]["repo"] == "node"
+    assert j["queue"]["running"] == 1
+    # elapsed is computed server-side (tz-proof), non-negative, and freshly small
+    assert j["current"]["elapsed_s"] >= 0
+    assert j["current"]["elapsed_s"] < 60
+
+
+def test_worker_busy_even_if_heartbeat_stale(client):
+    # a long deep job blocks the loop so the heartbeat goes stale, but a running
+    # job means the worker is alive and busy — must NOT read as down
+    import marshal_core.adapters.api as api
+    from marshal_core.knowledge.store import Store
+    with api._Session() as s:
+        st = Store(s)
+        st.set_meta("worker:heartbeat", "2000-01-01T00:00:00+00:00")   # ancient
+        st.enqueue_job(change_ref="deadbeef", repo="node", kind="deep")
+        st.claim_next_job()
+    j = client.get("/api/worker").json()
+    assert j["state"] == "busy"
+    assert j["alive"] is False

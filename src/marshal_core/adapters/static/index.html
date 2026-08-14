@@ -39,6 +39,17 @@
   nav button:hover { color:var(--fg); }
   nav button.active { background:var(--surface2); color:var(--fg); box-shadow:inset 0 -2px 0 var(--accent); }
   #status { font-family:var(--mono); font-size:12px; }
+  .wpill { font-family:var(--mono); font-size:11.5px; display:inline-flex; align-items:center; gap:7px;
+           padding:4px 11px; border-radius:20px; border:1px solid var(--line); background:var(--surface2);
+           color:var(--muted); white-space:nowrap; cursor:default; }
+  .wpill .wd { width:8px; height:8px; border-radius:50%; background:var(--muted); flex:0 0 auto; }
+  .wpill.idle .wd { background:var(--pass); }
+  .wpill.idle { color:var(--fg); }
+  .wpill.busy .wd { background:var(--needs); animation:wpulse 1.1s ease-in-out infinite; }
+  .wpill.busy { color:var(--needs); border-color:var(--needs); }
+  .wpill.down .wd { background:var(--block); animation:wpulse 1.1s ease-in-out infinite; }
+  .wpill.down { color:var(--block); border-color:var(--block); }
+  @keyframes wpulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
   main { padding:22px; max-width:960px; margin:0 auto; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-card); }
   .card h3 { margin:0 0 10px; font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
@@ -49,6 +60,9 @@
   .verdict-needs_human, .verdict-escalate { border-left:3px solid var(--needs); }
   .card.blocked { opacity:.75; }
   b.title { font-size:14.5px; font-weight:600; }
+  .repotag { font-family:var(--mono); font-size:11px; font-weight:600; color:var(--link); background:var(--surface2);
+             border:1px solid var(--line); border-radius:5px; padding:1px 7px; margin-right:3px; white-space:nowrap; }
+  .prnum { font-family:var(--mono); font-weight:500; color:var(--muted); margin-right:2px; }
   .sev-badge { font-size:11px; font-weight:600; color:var(--block); }
   .stale-badge { font-size:11px; font-weight:600; color:var(--needs); border:1px solid var(--needs); border-radius:4px; padding:1px 6px; }
   .finding { font-size:12.5px; margin:3px 0; color:var(--fg); }
@@ -75,22 +89,149 @@
   .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
   .dot.pending { background:var(--muted); } .dot.running { background:var(--needs); }
   .dot.done { background:var(--pass); } .dot.failed { background:var(--block); }
+
+  /* first-load / slow-fetch state (so a slow Review Queue never looks frozen) */
+  .loading { text-align:center; padding:40px 16px 10px; }
+  .spinner { width:34px; height:34px; margin:0 auto 16px; border:3px solid var(--line);
+             border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .loading .lt { font-size:15px; font-weight:600; color:var(--fg); font-family:var(--serif); }
+  .loading .ls { font-size:13px; color:var(--muted); margin:9px auto 0; line-height:1.6; max-width:440px; }
+  .loading .elapsed { font-family:var(--mono); color:var(--accent); font-weight:600; }
+  .skeleton { height:60px; border-radius:12px; margin-top:12px; border:1px solid var(--line);
+              background:linear-gradient(100deg,var(--surface2) 28%,var(--line) 50%,var(--surface2) 72%);
+              background-size:200% 100%; animation:shimmer 1.3s linear infinite; }
+  @keyframes shimmer { from { background-position:200% 0; } to { background-position:-200% 0; } }
+
+  /* Review Queue summary */
+  .summary { padding:15px 18px; }
+  .sumrow { display:flex; gap:14px 30px; align-items:baseline; flex-wrap:wrap; }
+  .sumstat { display:flex; flex-direction:column; }
+  .sumstat .n { font-family:var(--mono); font-size:27px; font-weight:600; line-height:1; color:var(--fg); }
+  .sumstat.go .n { color:var(--accent); }
+  .sumstat.hold .n { color:var(--muted); }
+  .sumstat .l { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-top:7px; }
+  .sumbreak { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:13px; padding-top:12px;
+              border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+  .pill { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--line); border-radius:20px;
+          padding:3px 11px; background:var(--surface2); color:var(--muted); }
+  .pill b { color:var(--fg); font-family:var(--mono); }
+  .sumstat.click { cursor:pointer; padding:5px 10px; margin:-5px -4px; border-radius:9px; }
+  .sumstat.click:hover { background:var(--surface2); }
+  .sumstat.active { background:var(--surface2); box-shadow:inset 0 -2px 0 var(--accent); }
+  .pill.click { cursor:pointer; }
+  .pill.click:hover { border-color:var(--accent); }
+  .pill.active { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  .pill.active b { color:var(--accent-ink); }
+  .clearf { cursor:pointer; color:var(--link); margin-left:2px; }
+  .clearf:hover { text-decoration:underline; }
+  .grouptoggle { display:flex; gap:2px; align-self:center; margin-left:auto; background:var(--surface2);
+                 border:1px solid var(--line); border-radius:8px; padding:2px; }
+  .grouptoggle button { background:none; border:none; font:inherit; font-size:11.5px; font-weight:500;
+                        color:var(--muted); cursor:pointer; padding:3px 11px; border-radius:6px; }
+  .grouptoggle button:hover { color:var(--fg); }
+  .grouptoggle button.active { background:var(--card); color:var(--fg); box-shadow:var(--shadow-card); }
+  /* repo grouping */
+  .repohdr { display:flex; align-items:center; gap:9px; margin:18px 2px 9px; padding-bottom:7px;
+             border-bottom:1px solid var(--line); cursor:pointer; user-select:none; }
+  .repohdr .chev { color:var(--muted); font-size:10px; width:10px; text-align:center; }
+  .repohdr .rn { font-family:var(--mono); font-weight:600; font-size:13px; color:var(--fg); }
+  .repohdr .cnt { font-family:var(--mono); font-size:11px; color:var(--muted); background:var(--surface2);
+                  border:1px solid var(--line); border-radius:20px; padding:1px 9px; }
+  .repohdr .rmeta { margin-left:auto; font-size:11.5px; color:var(--muted); }
+  .repohdr:hover .rn { text-decoration:underline; }
+
+  /* ---------- Health dashboard ---------- */
+  .kpigrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin-bottom:14px; }
+  .kpi { position:relative; background:linear-gradient(155deg,var(--card),var(--surface2)); border:1px solid var(--line);
+         border-radius:14px; padding:16px 16px 14px; box-shadow:var(--shadow-card); overflow:hidden;
+         animation:rise .5s cubic-bezier(.2,.7,.2,1) both; }
+  .kpi::before { content:''; position:absolute; top:0; left:0; right:0; height:3px;
+                 background:linear-gradient(90deg,var(--accent),transparent 70%); }
+  .kpi .n { font-family:var(--mono); font-size:31px; font-weight:600; letter-spacing:-.02em; line-height:1; color:var(--fg); }
+  .kpi .l { font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-top:9px; }
+  .kpi .s { font-size:12px; color:var(--muted); margin-top:3px; font-family:var(--mono); }
+  .kpi.good .n { color:var(--pass); } .kpi.warn .n { color:var(--needs); } .kpi.bad .n { color:var(--block); }
+  @keyframes rise { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  .grid2 { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px; margin-bottom:14px; }
+  @media (max-width:680px){ .grid2 { grid-template-columns:1fr; } }
+  .donutwrap { display:flex; align-items:center; gap:20px; }
+  svg.donut { width:138px; height:138px; flex:0 0 auto; }
+  svg.donut circle.arc { transition:stroke-dasharray 1.1s cubic-bezier(.3,.8,.3,1); }
+  .legend { display:flex; flex-direction:column; gap:8px; font-size:13px; min-width:0; flex:1; }
+  .legend .li { display:flex; align-items:center; gap:8px; }
+  .legend .sw { width:11px; height:11px; border-radius:3px; flex:0 0 auto; }
+  .legend .lc { margin-left:auto; font-family:var(--mono); color:var(--muted); }
+  .chartcard svg { display:block; width:100%; height:auto; }
+  .chartcard .hot { cursor:crosshair; }
+  .hbar { margin:10px 0; }
+  .hbar .hh { display:flex; justify-content:space-between; gap:10px; font-size:12px; margin-bottom:4px; }
+  .hbar .hh .nm { color:var(--fg); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .hbar .hh .ct { font-family:var(--mono); color:var(--muted); flex:0 0 auto; }
+  .hbar .track { height:9px; border-radius:5px; background:var(--surface2); display:flex; overflow:hidden; min-width:2px; }
+  .hbar .track i { display:block; height:100%; transition:width .8s cubic-bezier(.3,.8,.3,1); }
+  .chip-red { display:inline-block; font-family:var(--mono); font-size:11px; color:var(--block); border:1px solid var(--block);
+              border-radius:6px; padding:2px 8px; margin:4px 5px 0 0; }
+  .seg { display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--surface2); margin:4px 0 12px; }
+  .seg i { height:100%; transition:width .8s cubic-bezier(.3,.8,.3,1); }
+  .charttip { position:fixed; pointer-events:none; z-index:30; background:var(--fg); color:var(--bg);
+              font-family:var(--mono); font-size:11px; line-height:1.5; padding:6px 9px; border-radius:7px; opacity:0;
+              transition:opacity .12s; white-space:nowrap; box-shadow:0 6px 18px rgba(0,0,0,.28); }
+  .gaprow { display:flex; gap:8px; align-items:flex-start; font-size:12.5px; color:var(--muted);
+            border-top:1px dashed var(--line); padding-top:9px; margin-top:9px; }
+  .gaprow:first-child { border-top:none; padding-top:0; margin-top:0; }
+  .gaprow .gk { color:var(--fg); font-weight:600; flex:0 0 auto; }
+
+  /* plain-language help */
+  .help { font-size:12.5px; color:var(--muted); line-height:1.55; margin:-2px 0 13px; }
+  .help b { color:var(--fg); font-weight:600; }
+  .g { color:var(--pass); font-weight:600; } .a { color:var(--needs); font-weight:600; } .r { color:var(--block); font-weight:600; }
+  .kpi .help { font-size:11px; margin:7px 0 0; }
+  .intro { background:linear-gradient(150deg,var(--surface2),var(--card)); border:1px solid var(--line);
+           border-left:3px solid var(--accent); border-radius:12px; padding:15px 17px; margin-bottom:14px; box-shadow:var(--shadow-card); }
+  .intro h2 { margin:0 0 6px; font-family:var(--serif); font-size:16px; font-weight:600; }
+  .intro p { margin:0; font-size:13px; color:var(--muted); line-height:1.6; }
+  .legend-key { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:11px; font-size:12.5px; }
+  .legend-key span { display:flex; align-items:center; gap:6px; color:var(--fg); }
+  .legend-key i { width:12px; height:12px; border-radius:3px; flex:0 0 auto; }
+  .glossary { margin-bottom:14px; }
+  .glossary summary { font-weight:600; color:var(--link); font-size:13px; }
+  .glossary dl { margin:12px 0 0; }
+  .glossary dt { font-family:var(--mono); font-size:12px; font-weight:600; color:var(--fg); margin-top:11px; }
+  .glossary dd { margin:3px 0 0; font-size:12.5px; color:var(--muted); line-height:1.55; }
+
+  /* ---------- dark theme (palette re-map; all components read the vars) ---------- */
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#131110; --card:#1d1a17; --surface2:#26221d; --line:#332e28; --fg:#f2ece4; --muted:#a79a8e;
+    --accent:#ffa52b; --accent-ink:#241200; --link:#ffbf5e; --on-color:#1a1206;
+    --pass:#40b06e; --needs:#f5a02e; --block:#e8542d; --red:#e8542d;
+    --shadow-card:0 6px 16px -8px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.35);
+  } }
+  :root[data-theme="dark"]{
+    --bg:#131110; --card:#1d1a17; --surface2:#26221d; --line:#332e28; --fg:#f2ece4; --muted:#a79a8e;
+    --accent:#ffa52b; --accent-ink:#241200; --link:#ffbf5e; --on-color:#1a1206;
+    --pass:#40b06e; --needs:#f5a02e; --block:#e8542d; --red:#e8542d;
+    --shadow-card:0 6px 16px -8px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.35);
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1>🤠 Marshal</h1>
+  <h1>🤠 Marshal Dashboard</h1>
   <nav>
-    <button id="tab-inbox" class="active" onclick="show('inbox')">Inbox</button>
+    <button id="tab-inbox" class="active" onclick="show('inbox')">Review Queue</button>
     <button id="tab-health" onclick="show('health')">Health</button>
   </nav>
-  <span id="status" class="muted" style="margin-left:auto"></span>
+  <span id="worker" class="wpill" style="margin-left:auto"><span class="wd"></span> worker …</span>
+  <span id="status" class="muted" style="margin-left:14px"></span>
 </header>
 <main id="app"><p class="muted">Loading…</p></main>
 <script>
 const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let current = 'inbox';
+let _inboxPrs = [], _inboxFilter = 'all', _collapsed = new Set(), _group = false;
+let _jobs = {}, _polling = new Set();   // change_ref(head_sha) -> {id,kind,status,result,error}; live poll loops
 
 async function getJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error(u+' '+r.status); return r.json(); }
 
@@ -100,17 +241,136 @@ function bar(label, value, max){
           <div class="bar" style="width:${pct}%"></div>`;
 }
 
-async function renderInbox(){
-  const data = await getJSON('/api/inbox');
-  const prs = data.prs || [];
+function holdCategory(r){
+  r = r || '';
+  if(r==='merge conflict') return 'conflict';
+  if(/^CI /.test(r)) return 'ci';
+  if(/no new commits/.test(r)) return 'reviewed';
+  if(/CIP-10/.test(r)) return 'cip';
+  return 'other';
+}
+
+function matchFilter(p, f){
+  if(f==='all') return true;
+  if(f==='ready') return p.eligible;
+  if(f==='hold') return !p.eligible;
+  return !p.eligible && holdCategory(p.blocked_reason)===f;   // a specific on-hold category
+}
+
+function inboxSummary(prs, filter){
+  const total = prs.length, eligible = prs.filter(p=>p.eligible).length, onhold = total - eligible;
+  const cats = {conflict:0, ci:0, reviewed:0, cip:0, other:0};
+  prs.filter(p=>!p.eligible).forEach(p=>cats[holdCategory(p.blocked_reason)]++);
+  const act = f => filter===f ? ' active' : '';
+  const stat = (f,val,label,cls)=>`<div class="sumstat click${cls||''}${act(f)}" data-f="${f}"><span class="n">${val}</span><span class="l">${label}</span></div>`;
+  const pill = (f,emoji,label,c)=> c ? `<span class="pill click${act(f)}" data-f="${f}">${emoji} ${label} <b>${c}</b></span>` : '';
+  return `<div class="card summary">
+    <div class="sumrow">
+      ${stat('ready', eligible, 'ready to review', ' go')}
+      ${stat('hold', onhold, 'on hold', ' hold')}
+      ${stat('all', total, 'open PRs')}
+      <div class="grouptoggle">
+        <button data-group="0" class="${_group?'':'active'}">Flat</button>
+        <button data-group="1" class="${_group?'active':''}">By repo</button>
+      </div>
+    </div>
+    ${onhold ? `<div class="sumbreak"><span>on hold:</span>
+      ${pill('conflict','🔀','conflict',cats.conflict)}
+      ${pill('ci','🧪','CI',cats.ci)}
+      ${pill('reviewed','✅','reviewed',cats.reviewed)}
+      ${pill('cip','🚫','CIP-10',cats.cip)}
+      ${pill('other','•','other',cats.other)}
+      ${filter!=='all' ? `<span class="clearf" data-f="all">show all ✕</span>` : ''}</div>` : ''}
+  </div>`;
+}
+
+function paintInbox(){
   const app = document.getElementById('app');
-  if(!prs.length){
-    app.innerHTML = data.github_token
-      ? '<p class="muted">No open PRs across the bound repos.</p>'
-      : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
-    return;
+  app.innerHTML = inboxSummary(_inboxPrs, _inboxFilter);
+  const shown = _inboxPrs.filter(p=>matchFilter(p, _inboxFilter));
+  if(!shown.length){
+    const m = document.createElement('p');
+    m.className = 'muted'; m.style.padding = '4px 2px';
+    m.textContent = 'No PRs match this filter.';
+    app.appendChild(m);
+  } else if(!_group){
+    renderInboxCards(app, shown);                 // flat list (default)
+  } else {
+    // group by repo, preserving the newest-first order (first-seen repo = most recent activity)
+    const groups = new Map();
+    for(const p of shown){ const k = `${p.org}/${p.repo}`; (groups.get(k) || groups.set(k,[]).get(k)).push(p); }
+    for(const [repo, list] of groups){
+      const collapsed = _collapsed.has(repo);
+      const ready = list.filter(p=>p.eligible).length;
+      const hdr = $(`<div class="repohdr" data-repo="${esc(repo)}">
+        <span class="chev">${collapsed?'▸':'▾'}</span>
+        <span class="rn">${esc(repo)}</span>
+        <span class="cnt">${list.length}</span>
+        ${ready?`<span class="rmeta">${ready} ready</span>`:''}</div>`);
+      app.appendChild(hdr);
+      if(!collapsed) renderInboxCards(app, list);
+    }
   }
-  app.innerHTML = '';
+  app.querySelectorAll('[data-f]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const f = el.getAttribute('data-f');
+      _inboxFilter = (_inboxFilter===f && f!=='all') ? 'all' : f;   // click active filter again -> clear
+      paintInbox();
+    });
+  });
+  app.querySelectorAll('[data-group]').forEach(el=>{
+    el.addEventListener('click', ()=>{ _group = el.getAttribute('data-group')==='1'; paintInbox(); });
+  });
+  app.querySelectorAll('[data-repo]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const r = el.getAttribute('data-repo');
+      if(_collapsed.has(r)) _collapsed.delete(r); else _collapsed.add(r);
+      paintInbox();
+    });
+  });
+}
+
+function inboxLoading(){
+  return `<div class="loading">
+    <div class="spinner"></div>
+    <div class="lt">Loading open pull requests…</div>
+    <div class="ls">The first load checks GitHub across every bound repo — open PRs, CI status and review
+      markers — so it can take up to ~20 seconds. This is normal, the page has <b>not</b> frozen.
+      Elapsed: <span class="elapsed">0s</span></div>
+  </div>
+  <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>`;
+}
+
+async function renderInbox(){
+  const app = document.getElementById('app');
+  const fresh = app.dataset.view !== 'inbox';   // first visit or switched back from Health
+  let timer;
+  if(fresh){
+    app.dataset.view = 'inbox';                 // claim now so a 15s refresh mid-load won't re-flash
+    app.innerHTML = inboxLoading();
+    const t0 = performance.now(), el = app.querySelector('.elapsed');
+    timer = setInterval(() => { if(el) el.textContent = Math.round((performance.now()-t0)/1000)+'s'; }, 250);
+  }
+  try {
+    const data = await getJSON('/api/inbox');
+    const prs = data.prs || [];
+    _inboxPrs = prs;
+    if(!prs.length){
+      app.innerHTML = data.github_token
+        ? '<p class="muted">No open PRs across the bound repos.</p>'
+        : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
+      return;
+    }
+    paintInbox();
+  } catch(e){
+    app.dataset.view = '';                       // let the next attempt show the loading state again
+    throw e;                                      // surfaced by show()'s catch
+  } finally {
+    if(timer) clearInterval(timer);
+  }
+}
+
+function renderInboxCards(app, prs){
   for(const p of prs){
     const lr = p.last_review;
     const reviewBadge = lr
@@ -123,10 +383,10 @@ async function renderInbox(){
       (p.updated_at||'').slice(0,16).replace('T',' '),
       p.draft ? 'draft' : null,
     ].filter(Boolean);
-    const card = $(`<div class="card${p.eligible?'':' blocked'}">
+    const card = $(`<div class="card${p.eligible?'':' blocked'}" data-sha="${esc(p.head_sha)}">
       <div class="row" style="align-items:baseline">
-        <b class="title">${esc(p.repo)} #${esc(p.number)} — ${esc(p.title)}</b>
-        ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 待处理'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
+        <b class="title"><span class="repotag">${esc(p.repo)}</span> <span class="prnum">#${esc(p.number)}</span> ${esc(p.title)}</b>
+        ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 On hold'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
       </div>
       <div class="row">${meta.map(b=>`<span>${esc(b)}</span>`).join('')}</div>
       <div class="jobrow">
@@ -137,99 +397,303 @@ async function renderInbox(){
     </div>`);
     app.appendChild(card);
     if(p.eligible){
-      const rePlanBtn = card.querySelector('.re-plan');
-      rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, p.head_sha, p.repo, 'mechanical'));
-      const deepBtn = card.querySelector('.deep');
-      deepBtn.addEventListener('click', () => startJob(deepBtn, p.head_sha, p.repo, 'deep'));
+      card.querySelector('.re-plan').addEventListener('click', () => startJob(p.head_sha, p.repo, 'mechanical'));
+      card.querySelector('.deep').addEventListener('click', () => startJob(p.head_sha, p.repo, 'deep'));
+    }
+    // restore state for a job already in flight on this PR (survives the 15s refresh)
+    const j = _jobs[p.head_sha];
+    if(j){
+      applyJobToCard(p.head_sha);
+      if((j.status==='pending' || j.status==='running') && j.id!=null) pollLoop(j.id, p.head_sha, j.kind);
     }
   }
+}
+
+const fmt = (n) => (typeof n==='number' ? n.toLocaleString('en-US') : n);
+
+function kpiTile(to, label, sub, cls, help){
+  const isInt = Number.isInteger(to);
+  return `<div class="kpi ${cls||''}">
+    <div class="n" data-to="${to}" data-int="${isInt?1:0}">${isInt?fmt(to):to.toFixed(1)}</div>
+    <div class="l">${esc(label)}</div>${sub?`<div class="s">${esc(sub)}</div>`:''}${help?`<div class="help">${esc(help)}</div>`:''}</div>`;
+}
+
+function donutSVG(segments, centerN, centerL){
+  const total = segments.reduce((a,s)=>a+s.value,0) || 1;
+  const R=48, C=2*Math.PI*R;
+  let acc=0;
+  const arcs = segments.filter(s=>s.value>0).map(s=>{
+    const len=(s.value/total)*C;
+    const el=`<circle class="arc" cx="60" cy="60" r="${R}" style="fill:none;stroke:${s.color}" stroke-width="15"
+      stroke-dasharray="${len.toFixed(2)} ${(C-len).toFixed(2)}" stroke-dashoffset="${(-acc).toFixed(2)}"
+      transform="rotate(-90 60 60)"/>`;
+    acc+=len; return el;
+  }).join('');
+  return `<svg class="donut" viewBox="0 0 120 120" role="img" aria-label="verdict split">
+    <circle cx="60" cy="60" r="48" style="fill:none;stroke:var(--surface2)" stroke-width="15"/>
+    ${arcs}
+    <text x="60" y="58" text-anchor="middle" style="fill:var(--fg);font-family:var(--mono);font-weight:600" font-size="19">${esc(fmt(centerN))}</text>
+    <text x="60" y="74" text-anchor="middle" style="fill:var(--muted)" font-size="8.5" letter-spacing=".6">${esc(centerL)}</text>
+  </svg>`;
+}
+
+function areaChartSVG(ts){
+  if(!ts.length) return '<p class="muted">no runs yet</p>';
+  const W=720,H=224, padL=34,padR=12,padT=14,padB=24, iw=W-padL-padR, ih=H-padT-padB, n=ts.length;
+  const tot = ts.map(d=>(d.pass||0)+(d.needs_human||0)+(d.block||0));
+  const max = Math.max(1, ...tot);
+  const X = i => padL + (n===1 ? iw/2 : iw*i/(n-1));
+  const Y = val => padT + ih*(1 - val/max);
+  let grid='';
+  for(let t=0;t<=4;t++){ const val=max*t/4, y=Y(val);
+    grid+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" style="stroke:var(--line)"/>`+
+          `<text x="${padL-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="9" style="fill:var(--muted)">${Math.round(val)}</text>`;
+  }
+  let base = ts.map(()=>0), areas='';
+  for(const [key,color] of [['pass','var(--pass)'],['needs_human','var(--needs)'],['block','var(--block)']]){
+    const upper = ts.map((d,i)=> base[i]+(d[key]||0));
+    const top = upper.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+    const bot = base.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).reverse().join(' ');
+    areas += `<polygon points="${top} ${bot}" style="fill:${color};fill-opacity:.72"/>`+
+             `<polyline points="${top}" style="fill:none;stroke:${color}" stroke-width="1.5"/>`;
+    base = upper;
+  }
+  const xi = [...new Set([0, Math.floor((n-1)/2), n-1])];
+  const xlab = xi.map(i=>`<text x="${X(i).toFixed(1)}" y="${H-7}" text-anchor="middle" font-size="9" style="fill:var(--muted)">${esc(ts[i].date.slice(5))}</text>`).join('');
+  const hot = ts.map((d,i)=>{
+    const x0 = i===0?padL:(X(i-1)+X(i))/2, x1 = i===n-1?(W-padR):(X(i)+X(i+1))/2;
+    return `<rect class="hot" x="${x0.toFixed(1)}" y="${padT}" width="${Math.max(0.5,x1-x0).toFixed(1)}" height="${ih}" fill="transparent"
+      data-d="${esc(d.date)}" data-p="${d.pass||0}" data-nh="${d.needs_human||0}" data-b="${d.block||0}" data-cx="${X(i).toFixed(1)}"/>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="verdicts over time">
+    ${grid}${areas}${xlab}
+    <line class="crosshair" x1="0" y1="${padT}" x2="0" y2="${padT+ih}" style="stroke:var(--accent)" stroke-width="1" opacity="0"/>
+    ${hot}</svg>`;
+}
+
+function escapeBars(eb){
+  if(!eb.length) return '<p class="muted">no escapes recorded</p>';
+  const sorted = [...eb].sort((a,b)=>b.count-a.count);
+  const top = sorted.slice(0,8), rest = sorted.slice(8);
+  const max = Math.max(1, ...top.map(x=>x.count));
+  let html = top.map(x=>{
+    const nm = x.root_cause_class.length>48 ? x.root_cause_class.slice(0,46)+'…' : x.root_cause_class;
+    const w = 100*x.count/max, closedW = x.count? 100*x.closed/x.count : 0;
+    return `<div class="hbar"><div class="hh">
+        <span class="nm" title="${esc(x.root_cause_class)}">${esc(nm)}</span>
+        <span class="ct">${x.count}${x.open?` · <span style="color:var(--needs)">${x.open} open</span>`:''}</span></div>
+      <div class="track" style="width:${w.toFixed(1)}%">
+        <i style="width:${closedW.toFixed(1)}%;background:var(--pass)"></i>
+        <i style="width:${(100-closedW).toFixed(1)}%;background:var(--needs)"></i></div></div>`;
+  }).join('');
+  if(rest.length){ const rc=rest.reduce((a,x)=>a+x.count,0);
+    html += `<div class="muted" style="font-size:12px;margin-top:8px">+ ${rest.length} more root-cause classes · ${rc} escapes</div>`; }
+  return html;
 }
 
 async function renderHealth(){
   const h = await getJSON('/api/health');
   const app = document.getElementById('app');
   const v = h.gate_runs_by_verdict || {};
-  const vmax = Math.max(1, ...Object.values(v));
-  const eb = h.escape_breakdown || [];
-  const ebmax = Math.max(1, ...eb.map(x=>x.count));
+  const total = h.gate_runs_total || 0;
+  const human = v.needs_human != null ? v.needs_human : ((v.escalate||0));
+  const passN = v.pass||0, blockN = v.block||0;
+  const outcomes = passN+human+blockN;
+  const passRate = outcomes ? 100*passN/outcomes : 0;
   const ib = h.invariant_breakdown || {by_status:{},by_severity:{},candidate_red_ids:[]};
-  const gaps = h.unavailable || {};
-  const mttd = h.mean_time_to_detection || {};
-  const ts = h.verdict_timeseries || [];
-  const tsmax = Math.max(1, ...ts.map(d => (d.pass||0)+(d.needs_human||0)+(d.block||0)));
-  const tsW = (n) => (100*(n||0)/tsmax).toFixed(1);
-  const stackRow = (d) => {
-    const total = (d.pass||0)+(d.needs_human||0)+(d.block||0);
-    return `<div class="barlabel"><span>${esc(d.date)}</span><span>${total}</span></div>
-      <div class="stack">
-        <span style="width:${tsW(d.pass)}%;background:var(--pass)"></span>
-        <span style="width:${tsW(d.needs_human)}%;background:var(--needs)"></span>
-        <span style="width:${tsW(d.block)}%;background:var(--block)"></span>
-      </div>`;
-  };
+  const st = ib.by_status||{}, sv = ib.by_severity||{};
+  const stTot = Object.values(st).reduce((a,b)=>a+b,0)||1;
+  const svMax = Math.max(1, ...Object.values(sv));
+  const stColor = {active:'var(--pass)','candidate-red':'var(--block)',pending:'var(--needs)'};
+  const svColor = {high:'var(--block)',medium:'var(--needs)',mid:'var(--needs)',low:'var(--muted)'};
+
+  const legend = [
+    ['pass', passN, 'var(--pass)'], ['human review', human, 'var(--needs)'], ['block', blockN, 'var(--block)'],
+  ].map(([k,val,c])=>`<span class="li"><span class="sw" style="background:${c}"></span>${k}
+     <span class="lc">${fmt(val)} · ${outcomes?(100*val/outcomes).toFixed(1):0}%</span></span>`).join('');
+
+  const stSeg = Object.entries(st).map(([k,nn])=>`<i style="width:${(100*nn/stTot).toFixed(1)}%;background:${stColor[k]||'var(--muted)'}" title="${esc(k)}: ${nn}"></i>`).join('');
+  const stLeg = Object.entries(st).map(([k,nn])=>`<span class="li"><span class="sw" style="background:${stColor[k]||'var(--muted)'}"></span>${esc(k)}<span class="lc">${nn}</span></span>`).join('');
+  const svBars = Object.entries(sv).map(([k,nn])=>`<div class="hbar"><div class="hh"><span class="nm">${esc(k)}</span><span class="ct">${nn}</span></div>
+     <div class="track" style="width:${(100*nn/svMax).toFixed(1)}%"><i style="width:100%;background:${svColor[k]||'var(--muted)'}"></i></div></div>`).join('');
+  const red = (ib.candidate_red_ids||[]).map(id=>`<span class="chip-red" title="${esc(id)}">${esc(id)}</span>`).join('');
+
   app.innerHTML = `
-    <div class="card"><h3>Gate output</h3>
-      ${bar('pass', v.pass||0, vmax)}${bar('needs_human', v.needs_human||0, vmax)}${bar('block', v.block||0, vmax)}
-      <div class="row" style="margin-top:8px"><span class="muted">total runs: ${h.gate_runs_total||0}</span></div>
-    </div>
-    <div class="card"><h3>Gate output over time</h3>
-      ${ts.map(stackRow).join('') || '<span class="muted">no runs yet</span>'}
-      <div class="row" style="margin-top:8px">
-        <span class="tag" style="background:var(--pass)">pass</span>
-        <span class="tag" style="background:var(--needs)">needs_human</span>
-        <span class="tag" style="background:var(--block)">block</span>
+    <div class="intro">
+      <h2>🤠 How healthy is our review process?</h2>
+      <p><b>Marshal is a robot code reviewer.</b> Every time someone proposes a code change (a
+      “pull request”), Marshal reviews it and reaches a decision. This page is the scoreboard for all
+      those reviews. One colour code is used everywhere:</p>
+      <div class="legend-key">
+        <span><i style="background:var(--pass)"></i><b class="g">green = pass</b> — looks safe</span>
+        <span><i style="background:var(--needs)"></i><b class="a">amber = human review</b> — a person should look</span>
+        <span><i style="background:var(--block)"></i><b class="r">red = block</b> — a problem was found</span>
       </div>
     </div>
+
+    <div class="kpigrid">
+      ${kpiTile(total, 'gate runs', `${fmt(passN)} pass · ${fmt(human)} human`, '', 'Total reviews Marshal has ever run.')}
+      ${kpiTile(Number(passRate.toFixed(1)), 'pass rate', `${fmt(blockN)} blocked`, passRate>=50?'good':'warn', 'Share that came back clean. Higher = better.')}
+      ${kpiTile(h.invariant_gate_count||0, 'invariants gated', `${h.ratchet_invariants||0} ratcheted`, '', 'Auto safety-rules checked on every change.')}
+      ${kpiTile(h.escapes_open||0, 'open escapes', `${h.escapes_closed||0} closed`, (h.escapes_open||0)>0?'warn':'good', 'Known bugs not fully fixed yet. Lower = better.')}
+    </div>
+
+    <details class="card glossary"><summary>📖 Plain-English glossary — tap to expand</summary>
+      <dl>
+        <dt>Pull request (PR)</dt><dd>A proposed change to the code, waiting to be merged in.</dd>
+        <dt>Gate run</dt><dd>One Marshal review of one PR. Every gate run ends in a verdict.</dd>
+        <dt>Verdict</dt><dd>The result of a review: <span class="g">pass</span> (safe), <span class="a">human review</span> (a person should decide), or <span class="r">block</span> (a real problem).</dd>
+        <dt>Escape</dt><dd>A real bug that got <em>past</em> a review and was caught later. The thing we most want to avoid.</dd>
+        <dt>Ratchet</dt><dd>Each escape is turned into a permanent test so that exact bug can never come back. The count only goes up — it “ratchets”.</dd>
+        <dt>Invariant</dt><dd>A fixed rule Marshal checks on every change, e.g. “money is never created or destroyed”.</dd>
+      </dl>
+    </details>
+
+    <div class="card chartcard"><h3>Verdicts over time · ${h.verdict_timeseries?h.verdict_timeseries.length:0} active days</h3>
+      <div class="help">Each vertical slice is <b>one day</b>. Taller = more reviews that day. The colours stack:
+        <span class="g">green (pass)</span> at the bottom, <span class="a">amber (human)</span> in the middle,
+        <span class="r">red (block)</span> on top. <b>Hover any day</b> to see its exact numbers.</div>
+      ${areaChartSVG(h.verdict_timeseries||[])}
+      <div class="row" style="margin-top:10px">
+        <span class="tag" style="background:var(--pass)">pass</span>
+        <span class="tag" style="background:var(--needs)">human review</span>
+        <span class="tag" style="background:var(--block)">block</span>
+        <span class="muted" style="margin-left:auto">hover for a day's split</span>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><h3>Gate outcomes</h3>
+        <div class="help">Every review ends in exactly one of three outcomes. A bigger slice = more reviews
+          ended that way. You want a <b class="g">fat green</b> slice and a <b class="r">thin red</b> one.</div>
+        <div class="donutwrap">${donutSVG(
+            [{value:passN,color:'var(--pass)'},{value:human,color:'var(--needs)'},{value:blockN,color:'var(--block)'}],
+            total, 'GATE RUNS')}
+          <div class="legend">${legend}
+            ${v.escalate!=null?`<span class="li muted" style="font-size:11.5px">human = ${fmt(v.escalate)} escalate + ${fmt(human-(v.escalate||0))} needs-human</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="card"><h3>Invariant coverage · ${stTot} total</h3>
+        <div class="help">The auto safety-rules Marshal enforces. <b>active</b> = enforced right now;
+          <b class="r">candidate-red</b> = a known gap not enforced yet; <b>pending</b> = being added.
+          “Severity” = how bad it is if that rule ever breaks.</div>
+        <div class="seg">${stSeg}</div>
+        <div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:10px 16px">${stLeg}</div>
+        <h3 style="margin-top:14px">By severity</h3>${svBars}
+        ${red?`<div style="margin-top:8px"><span class="muted" style="font-size:12px">candidate-red gaps (rules we still need to enforce)</span><br>${red}</div>`:''}
+      </div>
+    </div>
+
     <div class="card"><h3>Ratchet — escapes by root cause</h3>
-      ${eb.map(x=>bar(x.root_cause_class+`  (${x.open} open / ${x.closed} closed)`, x.count, ebmax)).join('') || '<span class="muted">no escapes recorded</span>'}
-    </div>
-    <div class="card"><h3>Invariant coverage</h3>
-      <div class="row">${Object.entries(ib.by_status).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
-      <div class="row" style="margin-top:6px">${Object.entries(ib.by_severity).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
-      ${ib.candidate_red_ids.length?`<div class="row" style="margin-top:8px"><span class="tier-high">candidate-red (gap): ${ib.candidate_red_ids.map(esc).join(', ')}</span></div>`:''}
-    </div>
-    <div class="card"><h3>Honest gaps</h3>
-      <div class="gap">MTTD — ${mttd.mean_days!=null ? esc(mttd.mean_days)+' days (mean over '+esc(mttd.count)+' escapes)' : 'no timestamped escapes yet'}${mttd.excluded ? ' · '+esc(mttd.excluded)+' excluded (no introduced_at timestamp)' : ''}</div>
-      ${Object.entries(gaps).map(([k,why])=>`<div class="gap">${esc(k)} — ${esc(why)}</div>`).join('')}
+      <div class="help">An <b>escape</b> is a real bug that slipped past review and was caught later. Marshal turns
+        each one into a permanent test (a <b>ratchet</b>) so it can’t recur. Each bar is a type of bug;
+        longer = more escapes of that type. <b class="g">Green = fixed &amp; guarded</b>,
+        <b class="a">amber = still open</b>.</div>
+      ${escapeBars(h.escape_breakdown||[])}
     </div>`;
+
+  app.dataset.view = 'health';
+  wireChart(app);
+  countUp(app);
 }
 
-async function startJob(btn, changeRef, repo, kind){
-  const row = btn.parentElement;
-  const btns = row.querySelectorAll('.btn');
-  btns.forEach(b => b.disabled = true);      // lock BOTH buttons while either job runs
-  const statusEl = row.querySelector('.jobstatus');
-  statusEl.innerHTML = '<span class="dot pending"></span> queued…';
+let _healthKey = null;
+function countUp(app){
+  const key = [...app.querySelectorAll('.kpi .n')].map(e=>e.getAttribute('data-to')).join('|');
+  const animate = key !== _healthKey;   // only animate on real change / first paint, not each 15s refresh
+  _healthKey = key;
+  app.querySelectorAll('.kpi .n').forEach(el=>{
+    const to = parseFloat(el.getAttribute('data-to')), isInt = el.getAttribute('data-int')==='1';
+    const set = (val)=>{ el.textContent = isInt ? fmt(Math.round(val)) : val.toFixed(1); };
+    if(!animate){ set(to); return; }
+    const dur=750, t0=performance.now();
+    (function step(t){ const p=Math.min(1,(t-t0)/dur); set(to*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step); })(t0);
+  });
+}
+
+function wireChart(app){
+  const svg = app.querySelector('.chartcard svg'); if(!svg) return;
+  let tip = document.getElementById('charttip');
+  if(!tip){ tip=document.createElement('div'); tip.id='charttip'; tip.className='charttip'; document.body.appendChild(tip); }
+  const cross = svg.querySelector('.crosshair');
+  svg.querySelectorAll('.hot').forEach(r=>{
+    r.addEventListener('mousemove', ev=>{
+      const cx = r.getAttribute('data-cx');
+      cross.setAttribute('x1',cx); cross.setAttribute('x2',cx); cross.setAttribute('opacity','1');
+      tip.style.opacity='1';
+      tip.innerHTML = `${esc(r.getAttribute('data-d'))}<br>`+
+        `<span style="color:var(--pass)">■</span> pass ${esc(r.getAttribute('data-p'))}&nbsp; `+
+        `<span style="color:var(--needs)">■</span> human ${esc(r.getAttribute('data-nh'))}&nbsp; `+
+        `<span style="color:var(--block)">■</span> block ${esc(r.getAttribute('data-b'))}`;
+      const w = tip.offsetWidth||140;
+      tip.style.left = Math.min(ev.clientX+14, window.innerWidth-w-8)+'px';
+      tip.style.top = (ev.clientY+16)+'px';
+    });
+  });
+  svg.addEventListener('mouseleave', ()=>{ if(cross) cross.setAttribute('opacity','0'); tip.style.opacity='0'; });
+}
+
+function jobDoneMsg(j){
+  const res = j.result || {};
+  return res.verdict != null
+    ? 'deep: ' + esc(res.verdict) + (res.gate_run_id != null ? ' → run #' + esc(res.gate_run_id) : '')
+    : 're-planned: ' + esc(res.count != null ? res.count : '?') + ' invariants';
+}
+
+// Paint the current card for `sha` from _jobs — the single source of truth, so the
+// state is correct no matter how many times the list re-renders (15s refresh).
+function applyJobToCard(sha){
+  const card = document.querySelector('.card[data-sha="' + sha + '"]');
+  if(!card) return;
+  const st = card.querySelector('.jobstatus');
+  const btns = card.querySelectorAll('.btn');
+  const j = _jobs[sha];
+  if(!st || !j) return;
+  if(j.status==='pending' || j.status==='running'){
+    btns.forEach(b => b.disabled = true);                 // no double-submit while active
+    st.innerHTML = '<span class="dot '+j.status+'"></span> ' + (j.status==='pending' ? 'queued…' : 'running…');
+  } else if(j.status==='done'){
+    btns.forEach(b => b.disabled = false);
+    st.innerHTML = '<span class="dot done"></span> ' + jobDoneMsg(j);
+  } else {  // failed
+    btns.forEach(b => b.disabled = false);
+    st.innerHTML = '<span class="dot failed"></span> ' + esc(j.error || 'failed');
+  }
+}
+
+async function startJob(sha, repo, kind){
+  if(_jobs[sha] && (_jobs[sha].status==='pending' || _jobs[sha].status==='running')) return;  // already active
+  _jobs[sha] = {kind, status:'pending'};
+  applyJobToCard(sha);
   try {
     const r = await fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({change_ref: changeRef, repo: repo, kind: kind || 'mechanical'})});
+      body: JSON.stringify({change_ref: sha, repo: repo, kind: kind || 'mechanical'})});
     if(!r.ok) throw new Error('enqueue '+r.status);
     const job = await r.json();
-    pollJob(job.id, statusEl, btns);
-  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled=false); }
+    _jobs[sha].id = job.id;
+    pollLoop(job.id, sha, kind);
+  } catch(e){ _jobs[sha] = {kind, status:'failed', error:e.message}; applyJobToCard(sha); }
 }
 
-async function pollJob(id, statusEl, btns){
-  try {
-    const j = await getJSON('/api/jobs/'+id);
-    if(j.status==='done'){
-      const res = j.result || {};
-      let msg;
-      if(res.verdict!=null){
-        msg = 'deep: ' + esc(res.verdict) + (res.gate_run_id!=null ? ' → run #'+esc(res.gate_run_id) : '');
-      } else {
-        msg = 're-planned: ' + esc(res.count!=null ? res.count : '?') + ' invariants';
-      }
-      statusEl.innerHTML = '<span class="dot done"></span> ' + msg;
-      btns.forEach(b => b.disabled = false); return;
+// One poll loop per job id (deduped via _polling), so a card re-render doesn't spawn
+// duplicate loops. Updates _jobs then repaints whichever card currently shows this sha.
+async function pollLoop(id, sha, kind){
+  if(_polling.has(id)) return;
+  _polling.add(id);
+  const tick = async () => {
+    try {
+      const j = await getJSON('/api/jobs/'+id);
+      _jobs[sha] = {id, kind, status:j.status, result:j.result, error:j.error};
+      applyJobToCard(sha);
+      if(j.status==='done' || j.status==='failed'){ _polling.delete(id); return; }
+    } catch(e){
+      _jobs[sha] = {id, kind, status:'failed', error:e.message};
+      applyJobToCard(sha); _polling.delete(id); return;
     }
-    if(j.status==='failed'){
-      statusEl.innerHTML = '<span class="dot failed"></span> '+esc(j.error||'failed');
-      btns.forEach(b => b.disabled = false); return;
-    }
-    statusEl.innerHTML = `<span class="dot ${esc(j.status)}"></span> ${esc(j.status)}…`;
-    setTimeout(() => pollJob(id, statusEl, btns), 1500);
-  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled = false); }
+    setTimeout(tick, 1500);
+  };
+  tick();
 }
 
 async function show(tab){
@@ -241,8 +705,40 @@ async function show(tab){
   catch(e){ document.getElementById('app').innerHTML='<p class="muted">Error: '+esc(e.message)+'</p>'; st.textContent=''; }
 }
 
+function fmtDur(s){ s=Math.round(s); if(s<60) return s+'s'; const m=Math.floor(s/60); if(m<60) return m+'m'; return Math.floor(m/60)+'h'+(m%60)+'m'; }
+
+async function refreshWorker(){
+  const el = document.getElementById('worker');
+  try {
+    const w = await getJSON('/api/worker');
+    const q = w.queue || {};
+    let label;
+    if(w.state==='busy' && w.current){
+      const c = w.current;
+      const dur = (c.elapsed_s!=null) ? ' · '+fmtDur(c.elapsed_s) : '';   // server-computed (tz-proof)
+      label = 'busy · '+esc(c.kind)+' #'+esc(c.id)+dur;
+    } else {
+      label = w.state;   // idle | down
+    }
+    const extra = [];
+    if(q.pending) extra.push(q.pending+' queued');
+    if(q.failed)  extra.push(q.failed+' failed');
+    el.className = 'wpill '+w.state;
+    el.innerHTML = '<span class="wd"></span> worker '+label+(extra.length?' · '+extra.join(' · '):'');
+    el.title = w.state==='down'
+      ? 'No worker is processing jobs — re-review / deep review stay queued until a worker is running.'
+      : (w.seconds_ago!=null ? 'last heartbeat '+Math.round(w.seconds_ago)+'s ago' : '');
+  } catch(e){
+    el.className = 'wpill down';
+    el.innerHTML = '<span class="wd"></span> worker ?';
+    el.title = 'cannot reach /api/worker: '+esc(e.message);
+  }
+}
+
 show('inbox');
-setInterval(() => show(current), 15000);  // live: poll every 15s
+refreshWorker();
+setInterval(() => show(current), 15000);   // live: poll list/health every 15s
+setInterval(refreshWorker, 5000);          // worker liveness every 5s
 </script>
 </body>
 </html>
