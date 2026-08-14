@@ -1,5 +1,6 @@
 """FastAPI 接入端点。POST /webhook (PR 事件), POST /results (CI 回传)。"""
 import os
+import time
 from pathlib import Path
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse
@@ -12,6 +13,7 @@ from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
 from marshal_core.modules.orchestrator import Orchestrator
 from marshal_core.adapters.github import parse_pull_request_event, build_check_run
+from marshal_core import pr_inbox
 from marshal_pack_cowboy.pack import CowboyPack
 
 _STATIC_DIR = Path(__file__).parent / "static"
@@ -21,6 +23,7 @@ _engine = create_engine(db_url())
 ensure_schema(_engine)
 _Session = sessionmaker(bind=_engine)
 _PACK = CowboyPack()
+_pr_cache = {"at": 0.0, "data": None}
 
 _EVENTS: dict[str, NormalizedEvent] = {}
 
@@ -57,9 +60,16 @@ async def results(result: StructuredResult):
 
 
 @app.get("/api/inbox")
-def api_inbox(limit: int = 50):
-    with _Session() as s:
-        return Store(s).list_needs_human(limit=limit)
+def api_inbox():
+    ttl = float(os.environ.get("MARSHAL_INBOX_TTL_S", "90"))
+    now = time.monotonic()
+    if _pr_cache["data"] is None or now - _pr_cache["at"] > ttl:
+        with _Session() as s:
+            _pr_cache["data"] = pr_inbox.build_inbox(s)
+        _pr_cache["at"] = now
+    return {"prs": _pr_cache["data"],
+            "github_token": bool(os.environ.get("GITHUB_TOKEN")),
+            "repos": [f"{o}/{r}" for o, r in pr_inbox.bound_repos()]}
 
 
 @app.get("/api/runs/{run_id}")

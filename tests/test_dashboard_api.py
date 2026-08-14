@@ -19,16 +19,13 @@ def client(tmp_path, monkeypatch):
     return TestClient(api.app)
 
 
-def test_inbox_returns_only_needs_human(client):
-    r = client.get("/api/inbox")
-    assert r.status_code == 200
-    body = r.json()
-    assert [row["change_ref"] for row in body] == ["node#2"]
-    assert body[0]["evidence"]["tier"] == "high"
-
-
 def test_runs_endpoint_returns_evidence(client):
-    run_id = client.get("/api/inbox").json()[0]["id"]
+    import marshal_core.adapters.api as api
+    from marshal_core.knowledge.store import Store
+    with api._Session() as s:
+        run_id = Store(s).record_gate_run(
+            change_ref="node#2", job_id="j2x", verdict="needs_human",
+            evidence={"pr": 2, "repo": "node", "tier": "high"}).id
     r = client.get(f"/api/runs/{run_id}")
     assert r.status_code == 200
     assert r.json()["change_ref"] == "node#2"
@@ -106,3 +103,15 @@ def test_spa_renders_real_mttd_not_placeholder(client):
     html = client.get("/").text
     assert "mean_time_to_detection" in html      # SPA reads the real metric
     assert "pending Phase 4" not in html          # placeholder is gone
+
+
+def test_inbox_returns_pr_queue(client, monkeypatch):
+    import marshal_core.pr_inbox as pri
+    monkeypatch.setenv("MARSHAL_INBOX_TTL_S", "0")
+    monkeypatch.setattr(pri, "build_inbox",
+                        lambda s, repos=None: [{"repo": "node", "number": 7, "eligible": True}])
+    r = client.get("/api/inbox")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["prs"] == [{"repo": "node", "number": 7, "eligible": True}]
+    assert "github_token" in body and "repos" in body
