@@ -84,3 +84,36 @@ def test_ci_from_check_runs():
     assert pr_inbox._ci_from_check_runs(
         [{"status": "completed", "conclusion": "success"},
          {"status": "completed", "conclusion": "timed_out"}]) == "failure"
+
+
+def test_build_inbox_already_reviewed_current_head_is_pending(db_session, monkeypatch):
+    # reviewed at the PR's CURRENT head, no new commits -> 待处理 (skip; pr-sweep principle)
+    s = Store(db_session)
+    s.record_gate_run(change_ref="curhead", job_id="j", verdict="needs_human",
+                      evidence={"gates": {"repo": "node", "pr": 5}})
+    monkeypatch.setattr(pr_inbox, "list_open_prs",
+                        lambda o, r, per_page=30: [{"number": 5, "title": "t", "html_url": "u",
+                                                    "updated_at": "2026-08-14T00:00:00Z",
+                                                    "draft": False, "head": {"sha": "curhead"}}])
+    monkeypatch.setattr(pr_inbox, "pr_detail", lambda o, r, n: {"mergeable_state": "clean"})
+    monkeypatch.setattr(pr_inbox, "commit_status", lambda o, r, sha: "success")
+    p = pr_inbox.build_inbox(db_session, repos=[("cowboyinc", "node")])[0]
+    assert p["eligible"] is False
+    assert "no new commits" in p["blocked_reason"]
+    assert p["last_review"]["stale"] is False
+
+
+def test_build_inbox_stale_review_stays_eligible(db_session, monkeypatch):
+    # reviewed at an OLD head -> code changed -> still eligible (re-review the new head)
+    s = Store(db_session)
+    s.record_gate_run(change_ref="oldhead", job_id="j", verdict="escalate",
+                      evidence={"gates": {"repo": "node", "pr": 5}})
+    monkeypatch.setattr(pr_inbox, "list_open_prs",
+                        lambda o, r, per_page=30: [{"number": 5, "title": "t", "html_url": "u",
+                                                    "updated_at": "2026-08-14T00:00:00Z",
+                                                    "draft": False, "head": {"sha": "newhead"}}])
+    monkeypatch.setattr(pr_inbox, "pr_detail", lambda o, r, n: {"mergeable_state": "clean"})
+    monkeypatch.setattr(pr_inbox, "commit_status", lambda o, r, sha: "success")
+    p = pr_inbox.build_inbox(db_session, repos=[("cowboyinc", "node")])[0]
+    assert p["eligible"] is True
+    assert p["last_review"]["stale"] is True
