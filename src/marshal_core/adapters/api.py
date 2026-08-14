@@ -6,6 +6,7 @@ from fastapi.responses import FileResponse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from marshal_core.config import db_url
 from marshal_core.contracts import StructuredResult, NormalizedEvent
 from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
@@ -16,7 +17,7 @@ from marshal_pack_cowboy.pack import CowboyPack
 _STATIC_DIR = Path(__file__).parent / "static"
 
 app = FastAPI(title="Marshal")
-_engine = create_engine(os.environ.get("MARSHAL_DB", "sqlite:///marshal.db"))
+_engine = create_engine(db_url())
 ensure_schema(_engine)
 _Session = sessionmaker(bind=_engine)
 _PACK = CowboyPack()

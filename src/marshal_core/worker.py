@@ -16,6 +16,7 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from marshal_core.config import db_url
 from marshal_core.contracts import NormalizedEvent
 from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
@@ -163,7 +164,7 @@ def run_once(store: Store, pack) -> bool:
 
 
 def main() -> None:  # pragma: no cover - thin process loop
-    engine = create_engine(os.environ.get("MARSHAL_DB", "sqlite:///marshal.db"))
+    engine = create_engine(db_url())
     ensure_schema(engine)
     Session = sessionmaker(bind=engine)
     pack = CowboyPack()

@@ -11,26 +11,13 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from marshal_core.config import db_url as _db_url, marshal_home as _marshal_home
 from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
 from marshal_core.review import aggregate_review, verify_findings
 from marshal_pack_cowboy.pack import CowboyPack
 
 _PACK = CowboyPack()
-
-
-def _marshal_home() -> Path:
-    env = os.environ.get("MARSHAL_HOME")
-    if env:
-        return Path(env)
-    # cli.py 在 <home>/src/marshal_core/cli.py
-    return Path(__file__).resolve().parents[2]
-
-
-def _db_url() -> str:
-    if os.environ.get("MARSHAL_DB"):
-        return os.environ["MARSHAL_DB"]
-    return f"sqlite:///{_marshal_home() / 'marshal.db'}"
 
 
 def _session():
