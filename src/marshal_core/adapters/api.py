@@ -116,6 +116,30 @@ def api_health():
         return payload
 
 
+@app.get("/api/worker")
+def api_worker():
+    """Worker liveness + queue depth for the dashboard's status strip. `state` is
+    down (no fresh heartbeat), idle (alive, nothing running), or busy (a job is
+    running). A running job with a stale heartbeat still reads busy, not down."""
+    from datetime import datetime, timezone
+    with _Session() as s:
+        st = Store(s)
+        hb = st.get_meta("worker:heartbeat")
+        stats = st.job_stats()
+    seconds_ago = None
+    alive = False
+    if hb:
+        try:
+            seconds_ago = (datetime.now(timezone.utc) - datetime.fromisoformat(hb)).total_seconds()
+            alive = seconds_ago < 15
+        except ValueError:
+            pass
+    current = stats["current"]
+    state = "busy" if current is not None else ("idle" if alive else "down")
+    return {"heartbeat": hb, "seconds_ago": seconds_ago, "alive": alive,
+            "state": state, "queue": stats["counts"], "current": current}
+
+
 @app.get("/")
 def spa():
     return FileResponse(_STATIC_DIR / "index.html")

@@ -39,6 +39,17 @@
   nav button:hover { color:var(--fg); }
   nav button.active { background:var(--surface2); color:var(--fg); box-shadow:inset 0 -2px 0 var(--accent); }
   #status { font-family:var(--mono); font-size:12px; }
+  .wpill { font-family:var(--mono); font-size:11.5px; display:inline-flex; align-items:center; gap:7px;
+           padding:4px 11px; border-radius:20px; border:1px solid var(--line); background:var(--surface2);
+           color:var(--muted); white-space:nowrap; cursor:default; }
+  .wpill .wd { width:8px; height:8px; border-radius:50%; background:var(--muted); flex:0 0 auto; }
+  .wpill.idle .wd { background:var(--pass); }
+  .wpill.idle { color:var(--fg); }
+  .wpill.busy .wd { background:var(--needs); animation:wpulse 1.1s ease-in-out infinite; }
+  .wpill.busy { color:var(--needs); border-color:var(--needs); }
+  .wpill.down .wd { background:var(--block); animation:wpulse 1.1s ease-in-out infinite; }
+  .wpill.down { color:var(--block); border-color:var(--block); }
+  @keyframes wpulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
   main { padding:22px; max-width:960px; margin:0 auto; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-card); }
   .card h3 { margin:0 0 10px; font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
@@ -211,7 +222,8 @@
     <button id="tab-inbox" class="active" onclick="show('inbox')">Review Queue</button>
     <button id="tab-health" onclick="show('health')">Health</button>
   </nav>
-  <span id="status" class="muted" style="margin-left:auto"></span>
+  <span id="worker" class="wpill" style="margin-left:auto"><span class="wd"></span> worker …</span>
+  <span id="status" class="muted" style="margin-left:14px"></span>
 </header>
 <main id="app"><p class="muted">Loading…</p></main>
 <script>
@@ -664,8 +676,40 @@ async function show(tab){
   catch(e){ document.getElementById('app').innerHTML='<p class="muted">Error: '+esc(e.message)+'</p>'; st.textContent=''; }
 }
 
+function fmtDur(s){ s=Math.round(s); if(s<60) return s+'s'; const m=Math.floor(s/60); if(m<60) return m+'m'; return Math.floor(m/60)+'h'+(m%60)+'m'; }
+
+async function refreshWorker(){
+  const el = document.getElementById('worker');
+  try {
+    const w = await getJSON('/api/worker');
+    const q = w.queue || {};
+    let label;
+    if(w.state==='busy' && w.current){
+      const c = w.current;
+      const dur = c.started_at ? ' · '+fmtDur((Date.now()-Date.parse(c.started_at))/1000) : '';
+      label = 'busy · '+esc(c.kind)+' #'+esc(c.id)+dur;
+    } else {
+      label = w.state;   // idle | down
+    }
+    const extra = [];
+    if(q.pending) extra.push(q.pending+' queued');
+    if(q.failed)  extra.push(q.failed+' failed');
+    el.className = 'wpill '+w.state;
+    el.innerHTML = '<span class="wd"></span> worker '+label+(extra.length?' · '+extra.join(' · '):'');
+    el.title = w.state==='down'
+      ? 'No worker is processing jobs — re-review / deep review stay queued until a worker is running.'
+      : (w.seconds_ago!=null ? 'last heartbeat '+Math.round(w.seconds_ago)+'s ago' : '');
+  } catch(e){
+    el.className = 'wpill down';
+    el.innerHTML = '<span class="wd"></span> worker ?';
+    el.title = 'cannot reach /api/worker: '+esc(e.message);
+  }
+}
+
 show('inbox');
-setInterval(() => show(current), 15000);  // live: poll every 15s
+refreshWorker();
+setInterval(() => show(current), 15000);   // live: poll list/health every 15s
+setInterval(refreshWorker, 5000);          // worker liveness every 5s
 </script>
 </body>
 </html>

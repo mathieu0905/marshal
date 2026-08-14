@@ -10,8 +10,10 @@ import json
 import os
 import shutil
 import subprocess
+import threading
 import time
 from contextlib import contextmanager
+from datetime import datetime, timezone
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -196,6 +198,19 @@ def maybe_backfill(session) -> int:
         return 0
 
 
+def _heartbeat_loop(Session, stop, every: float = 5.0) -> None:  # pragma: no cover - thread
+    """Write a liveness timestamp every few seconds, on its own connection, so the
+    dashboard can tell a running worker from a dead one even while a long deep job
+    blocks the main loop. 'busy vs idle' is derived from the running-job row, not this."""
+    while not stop.is_set():
+        try:
+            with Session() as s:
+                Store(s).set_meta("worker:heartbeat", datetime.now(timezone.utc).isoformat())
+        except Exception:
+            pass
+        stop.wait(every)
+
+
 def main() -> None:  # pragma: no cover - thin process loop
     engine = create_engine(db_url())
     ensure_schema(engine)
@@ -205,6 +220,8 @@ def main() -> None:  # pragma: no cover - thin process loop
     backfill_every = float(os.environ.get("MARSHAL_BACKFILL_INTERVAL_S", "300"))
     with Session() as s:
         Store(s).reclaim_stale_jobs()   # clear orphans left by a previously-killed worker
+    stop = threading.Event()
+    threading.Thread(target=_heartbeat_loop, args=(Session, stop), daemon=True).start()
     last_backfill = 0.0
     while True:
         with Session() as s:

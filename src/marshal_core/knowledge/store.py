@@ -371,6 +371,7 @@ class Store:
             row.value = value
         else:
             self.s.add(Meta(key=key, value=value))
+        self.s.commit()
 
     def seed_authoritative_tables(self, src_session) -> tuple[int, int]:
         """用 src_session(快照)里的两张权威表替换本会话的同名表;
@@ -421,6 +422,18 @@ class Store:
     def get_job(self, job_id: int) -> dict | None:
         j = self.s.get(ReviewJob, job_id)
         return self._job_dict(j) if j else None
+
+    def job_stats(self) -> dict:
+        """Queue depth by status + the job currently being processed (if any) — powers
+        the dashboard's worker/liveness panel."""
+        counts = {"pending": 0, "running": 0, "done": 0, "failed": 0}
+        for status, c in self.s.execute(
+                select(ReviewJob.status, func.count()).group_by(ReviewJob.status)).all():
+            counts[status] = c
+        running = self.s.scalars(
+            select(ReviewJob).where(ReviewJob.status == "running")
+            .order_by(ReviewJob.started_at)).first()
+        return {"counts": counts, "current": self._job_dict(running) if running else None}
 
     def claim_next_job(self) -> dict | None:
         # Compare-and-swap claim: read the oldest pending job, then atomically flip
