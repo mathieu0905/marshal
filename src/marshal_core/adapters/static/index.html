@@ -49,6 +49,9 @@
   .verdict-needs_human, .verdict-escalate { border-left:3px solid var(--needs); }
   .card.blocked { opacity:.75; }
   b.title { font-size:14.5px; font-weight:600; }
+  .repotag { font-family:var(--mono); font-size:11px; font-weight:600; color:var(--link); background:var(--surface2);
+             border:1px solid var(--line); border-radius:5px; padding:1px 7px; margin-right:3px; white-space:nowrap; }
+  .prnum { font-family:var(--mono); font-weight:500; color:var(--muted); margin-right:2px; }
   .sev-badge { font-size:11px; font-weight:600; color:var(--block); }
   .stale-badge { font-size:11px; font-weight:600; color:var(--needs); border:1px solid var(--needs); border-radius:4px; padding:1px 6px; }
   .finding { font-size:12.5px; margin:3px 0; color:var(--fg); }
@@ -111,6 +114,15 @@
   .pill.active b { color:var(--accent-ink); }
   .clearf { cursor:pointer; color:var(--link); margin-left:2px; }
   .clearf:hover { text-decoration:underline; }
+  /* repo grouping */
+  .repohdr { display:flex; align-items:center; gap:9px; margin:18px 2px 9px; padding-bottom:7px;
+             border-bottom:1px solid var(--line); cursor:pointer; user-select:none; }
+  .repohdr .chev { color:var(--muted); font-size:10px; width:10px; text-align:center; }
+  .repohdr .rn { font-family:var(--mono); font-weight:600; font-size:13px; color:var(--fg); }
+  .repohdr .cnt { font-family:var(--mono); font-size:11px; color:var(--muted); background:var(--surface2);
+                  border:1px solid var(--line); border-radius:20px; padding:1px 9px; }
+  .repohdr .rmeta { margin-left:auto; font-size:11.5px; color:var(--muted); }
+  .repohdr:hover .rn { text-decoration:underline; }
 
   /* ---------- Health dashboard ---------- */
   .kpigrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin-bottom:14px; }
@@ -200,7 +212,7 @@
 const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let current = 'inbox';
-let _inboxPrs = [], _inboxFilter = 'all';
+let _inboxPrs = [], _inboxFilter = 'all', _collapsed = new Set();
 
 async function getJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error(u+' '+r.status); return r.json(); }
 
@@ -259,12 +271,32 @@ function paintInbox(){
     m.textContent = 'No PRs match this filter.';
     app.appendChild(m);
   } else {
-    renderInboxCards(app, shown);
+    // group by repo, preserving the newest-first order (first-seen repo = most recent activity)
+    const groups = new Map();
+    for(const p of shown){ const k = `${p.org}/${p.repo}`; (groups.get(k) || groups.set(k,[]).get(k)).push(p); }
+    for(const [repo, list] of groups){
+      const collapsed = _collapsed.has(repo);
+      const ready = list.filter(p=>p.eligible).length;
+      const hdr = $(`<div class="repohdr" data-repo="${esc(repo)}">
+        <span class="chev">${collapsed?'▸':'▾'}</span>
+        <span class="rn">${esc(repo)}</span>
+        <span class="cnt">${list.length}</span>
+        ${ready?`<span class="rmeta">${ready} ready</span>`:''}</div>`);
+      app.appendChild(hdr);
+      if(!collapsed) renderInboxCards(app, list);
+    }
   }
   app.querySelectorAll('[data-f]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const f = el.getAttribute('data-f');
       _inboxFilter = (_inboxFilter===f && f!=='all') ? 'all' : f;   // click active filter again -> clear
+      paintInbox();
+    });
+  });
+  app.querySelectorAll('[data-repo]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const r = el.getAttribute('data-repo');
+      if(_collapsed.has(r)) _collapsed.delete(r); else _collapsed.add(r);
       paintInbox();
     });
   });
@@ -325,7 +357,7 @@ function renderInboxCards(app, prs){
     ].filter(Boolean);
     const card = $(`<div class="card${p.eligible?'':' blocked'}">
       <div class="row" style="align-items:baseline">
-        <b class="title">${esc(p.repo)} #${esc(p.number)} — ${esc(p.title)}</b>
+        <b class="title"><span class="repotag">${esc(p.repo)}</span> <span class="prnum">#${esc(p.number)}</span> ${esc(p.title)}</b>
         ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 On hold'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
       </div>
       <div class="row">${meta.map(b=>`<span>${esc(b)}</span>`).join('')}</div>
