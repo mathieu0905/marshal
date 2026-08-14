@@ -96,8 +96,17 @@ async function renderInbox(){
   if(!rows.length){ app.innerHTML='<p class="muted">Inbox clear — nothing awaiting human review.</p>'; return; }
   app.innerHTML = '';
   for(const r of rows){
-    const e = r.evidence || {};
+    const ev = r.evidence || {};
+    const e = ev.gates || ev;   // real gate_runs nest fields under evidence.gates; flat fixtures use the top level
+    const repo = ev.repo || e.repo || 'node';
     const tierClass = e.tier==='high' ? 'tier-high' : '';
+    // invariants may be flat ints (fixtures) or a {name: status} map (real data)
+    let invText = '';
+    if (e.invariants_run != null) invText = e.invariants_pass + '/' + e.invariants_run;
+    else if (e.invariants && typeof e.invariants === 'object') {
+      const vals = Object.values(e.invariants);
+      invText = vals.filter(x => String(x).toLowerCase() === 'pass').length + '/' + vals.length;
+    }
     const card = $(`<div class="card verdict-${esc(r.verdict)}">
       <div class="row">
         <b>${esc(r.change_ref)}</b>
@@ -107,11 +116,11 @@ async function renderInbox(){
       </div>
       <div class="row">
         ${e.dimensions?`<span>dimensions: ${esc((e.dimensions||[]).join(' '))}</span>`:''}
-        ${e.invariants_run!=null?`<span>invariants: ${e.invariants_pass}/${e.invariants_run}</span>`:''}
+        ${invText?`<span>invariants: ${esc(invText)}</span>`:''}
         ${e.high_sev_findings!=null?`<span>high-sev: ${e.high_sev_findings}</span>`:''}
         ${(e.advisory_findings||[]).length?`<span>▸ ${e.advisory_findings.length} advisory</span>`:''}
       </div>
-      <details><summary>evidence</summary><pre>${esc(JSON.stringify(e,null,2))}</pre></details>
+      <details><summary>evidence</summary><pre>${esc(JSON.stringify(ev,null,2))}</pre></details>
       <div class="jobrow">
         <button class="btn re-plan">re-review</button>
         <button class="btn deep">deep review</button>
@@ -120,9 +129,9 @@ async function renderInbox(){
     </div>`);
     app.appendChild(card);
     const rePlanBtn = card.querySelector('.re-plan');
-    rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, r.change_ref, (e.repo || 'node'), 'mechanical'));
+    rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, r.change_ref, repo, 'mechanical'));
     const deepBtn = card.querySelector('.deep');
-    deepBtn.addEventListener('click', () => startJob(deepBtn, r.change_ref, (e.repo || 'node'), 'deep'));
+    deepBtn.addEventListener('click', () => startJob(deepBtn, r.change_ref, repo, 'deep'));
   }
 }
 
