@@ -5,35 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marshal Dashboard</title>
 <style>
-  :root { --bg:#0f1115; --card:#1a1d24; --fg:#e6e6e6; --muted:#9aa4b2;
-          --pass:#3fb950; --needs:#d29922; --block:#f85149; --red:#f85149;
-          --line:#2d323c; }
-  @media (prefers-color-scheme: light) {
-    :root { --bg:#f6f7f9; --card:#fff; --fg:#1a1d24; --muted:#5a6472; --line:#e2e5ea; }
+  /* Cowboy design system — western palette (hay / bison / nugget / cactus / canyon),
+     matching examples/cip34_chat_demo. Self-contained: font-family names degrade to
+     system fonts when the webfonts aren't installed (no external @import / CDN). */
+  :root {
+    --bg:#f9f7f5;          /* hay-100 — warm parchment */
+    --card:#ffffff;        /* cards */
+    --surface2:#f4f0eb;    /* hay-200 */
+    --line:#ebe5df;        /* hay-400 — border */
+    --fg:#1d1916;          /* bison-900 */
+    --muted:#72675f;       /* bison-300 */
+    --accent:#ff9d14;      /* nugget-500 — gold */
+    --accent-ink:#291400;  /* text on the gold accent */
+    --link:#a85700;        /* nugget-700 */
+    --on-color:#fff7eb;    /* light text on saturated chips */
+    --pass:#29754a;        /* cactus-600 */
+    --needs:#e58200;       /* nugget-600 — amber */
+    --block:#b22d10;       /* canyon-600 — red */
+    --red:#b22d10;
+    --shadow-card:0 4px 4px -4px #dfd6cd, 0 0 1px 0 #988e86;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --serif:'Fraunces',ui-serif,Georgia,serif;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   }
   * { box-sizing: border-box; }
-  body { margin:0; font:14px/1.5 system-ui,sans-serif; background:var(--bg); color:var(--fg); }
-  header { padding:16px 20px; border-bottom:1px solid var(--line); display:flex; gap:16px; align-items:center; }
-  header h1 { font-size:16px; margin:0; }
-  nav button { background:none; border:none; color:var(--muted); font:inherit; cursor:pointer; padding:6px 10px; border-radius:6px; }
-  nav button.active { background:var(--card); color:var(--fg); }
-  main { padding:20px; max-width:960px; margin:0 auto; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:12px; }
-  .card h3 { margin:0 0 8px; font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  body { margin:0; font-family:var(--sans); font-size:14px; line-height:1.5; background:var(--bg); color:var(--fg); }
+  header { padding:14px 22px; border-bottom:1px solid var(--line); background:var(--card); box-shadow:var(--shadow-card); display:flex; gap:14px; align-items:center; }
+  header h1 { font-size:18px; margin:0; font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; }
+  nav button { background:none; border:none; color:var(--muted); font:inherit; font-weight:500; cursor:pointer; padding:6px 12px; border-radius:8px; }
+  nav button:hover { color:var(--fg); }
+  nav button.active { background:var(--surface2); color:var(--fg); box-shadow:inset 0 -2px 0 var(--accent); }
+  #status { font-family:var(--mono); font-size:12px; }
+  main { padding:22px; max-width:960px; margin:0 auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-card); }
+  .card h3 { margin:0 0 10px; font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
   .row { display:flex; flex-wrap:wrap; gap:10px 18px; color:var(--muted); font-size:13px; }
-  .tag { display:inline-block; padding:1px 7px; border-radius:6px; background:var(--line); color:var(--fg); font-size:12px; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; background:transparent; border:1px solid var(--line); color:var(--muted); font-family:var(--mono); font-size:11px; }
+  .tag[style] { color:var(--on-color); border-color:transparent; }   /* colored legend chips get light text */
   .tier-high { color:var(--block); font-weight:600; }
   .verdict-needs_human { border-left:3px solid var(--needs); }
-  details summary { cursor:pointer; color:var(--muted); }
-  pre { overflow:auto; background:var(--bg); padding:10px; border-radius:6px; font-size:12px; }
-  .bar { height:16px; border-radius:4px; background:var(--needs); }
-  .stack { display:flex; height:14px; border-radius:4px; overflow:hidden; background:var(--line); }
+  details summary { cursor:pointer; color:var(--link); font-size:13px; }
+  details summary:hover { text-decoration:underline; }
+  pre { overflow:auto; background:var(--surface2); border:1px solid var(--line); padding:10px 12px; border-radius:8px; font-family:var(--mono); font-size:12px; }
+  .bar { height:16px; border-radius:4px; background:var(--accent); }
+  .stack { display:flex; height:14px; border-radius:4px; overflow:hidden; background:var(--surface2); }
   .stack span { display:block; height:100%; }
-  .barlabel { display:flex; justify-content:space-between; font-size:12px; margin:6px 0 2px; }
+  .barlabel { display:flex; justify-content:space-between; font-size:12px; margin:7px 0 2px; }
   .gap { color:var(--muted); font-size:12px; border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
   .muted { color:var(--muted); }
-  .jobrow { margin-top:10px; font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:center; }
-  .btn { background:var(--line); color:var(--fg); border:none; border-radius:6px; padding:4px 10px; font:inherit; font-size:12px; cursor:pointer; }
+  .jobrow { margin-top:12px; font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:center; }
+  .btn { background:transparent; color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:5px 12px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
+  .btn:hover { border-color:var(--accent); }
+  .btn.deep { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:600; }
+  .btn.deep:hover { filter:brightness(1.05); }
   .btn:disabled { opacity:.5; cursor:default; }
   .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
   .dot.pending { background:var(--muted); } .dot.running { background:var(--needs); }
