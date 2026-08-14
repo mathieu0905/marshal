@@ -216,3 +216,23 @@ def test_parse_verdict_non_object_json_raises(tmp_path):
     p.write_text('["not","an","object"]')
     with pytest.raises(DeepReviewError, match="not a JSON object"):
         _parse_verdict(str(p))
+
+
+def test_invoke_claude_passes_permission_mode_and_allowed_tools(tmp_path, monkeypatch):
+    fake = _fake_bin(tmp_path, "claude_args.sh", 'echo "$@"')
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    monkeypatch.setenv("MARSHAL_CLAUDE_PERMISSION_MODE", "acceptEdits")
+    monkeypatch.setenv("MARSHAL_CLAUDE_ALLOWED_TOOLS", "Bash Read Write")
+    out = _invoke_claude("do the review", cwd=str(tmp_path), timeout_s=10)
+    assert "--permission-mode acceptEdits" in out
+    assert "--allowedTools Bash Read Write" in out
+
+
+def test_invoke_claude_omits_perm_flags_when_unset(tmp_path, monkeypatch):
+    fake = _fake_bin(tmp_path, "claude_args2.sh", 'echo "$@"')
+    monkeypatch.setenv("MARSHAL_CLAUDE_BIN", fake)
+    monkeypatch.delenv("MARSHAL_CLAUDE_PERMISSION_MODE", raising=False)
+    monkeypatch.delenv("MARSHAL_CLAUDE_ALLOWED_TOOLS", raising=False)
+    out = _invoke_claude("x", cwd=str(tmp_path), timeout_s=10)
+    assert "--permission-mode" not in out
+    assert "--allowedTools" not in out

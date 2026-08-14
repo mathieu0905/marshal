@@ -116,6 +116,12 @@ def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
     mode = os.environ.get("MARSHAL_CLAUDE_PERMISSION_MODE")
     if mode:
         args += ["--permission-mode", mode]
+    # Scoped tool allowlist (preferred over --dangerously-skip-permissions): lets the
+    # headless review run the tools it needs and write the verdict file. Space-separated
+    # tool names in $MARSHAL_CLAUDE_ALLOWED_TOOLS, e.g. "Bash Read Write Grep Glob Task".
+    allowed = os.environ.get("MARSHAL_CLAUDE_ALLOWED_TOOLS")
+    if allowed and allowed.split():
+        args += ["--allowedTools", *allowed.split()]
     proc = subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=timeout_s)
     if proc.returncode != 0:
         raise DeepReviewError(f"claude exited {proc.returncode}: {proc.stderr[:500]}")
