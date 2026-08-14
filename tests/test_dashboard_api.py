@@ -122,3 +122,14 @@ def test_spa_renders_pr_queue(client):
     assert "renderInbox" in html
     assert "待处理" in html            # blocked badge label
     assert "github_token" in html      # SPA reads the token flag for the empty-state hint
+
+
+def test_inbox_survives_build_failure(client, monkeypatch):
+    import marshal_core.pr_inbox as pri
+    monkeypatch.setenv("MARSHAL_INBOX_TTL_S", "0")
+    def boom(s, repos=None):
+        raise RuntimeError("github down")
+    monkeypatch.setattr(pri, "build_inbox", boom)
+    r = client.get("/api/inbox")
+    assert r.status_code == 200          # no 500
+    assert r.json()["prs"] == []

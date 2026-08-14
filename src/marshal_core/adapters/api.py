@@ -64,9 +64,13 @@ def api_inbox():
     ttl = float(os.environ.get("MARSHAL_INBOX_TTL_S", "90"))
     now = time.monotonic()
     if _pr_cache["data"] is None or now - _pr_cache["at"] > ttl:
-        with _Session() as s:
-            _pr_cache["data"] = pr_inbox.build_inbox(s)
-        _pr_cache["at"] = now
+        try:
+            with _Session() as s:
+                _pr_cache["data"] = pr_inbox.build_inbox(s)
+            _pr_cache["at"] = now
+        except Exception:
+            if _pr_cache["data"] is None:
+                _pr_cache["data"] = []   # first build failed -> serve empty, never 500
     return {"prs": _pr_cache["data"],
             "github_token": bool(os.environ.get("GITHUB_TOKEN")),
             "repos": [f"{o}/{r}" for o, r in pr_inbox.bound_repos()]}

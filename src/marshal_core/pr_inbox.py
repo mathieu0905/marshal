@@ -48,12 +48,32 @@ def pr_detail(org: str, repo: str, number) -> dict:
     return r.json() if r.status_code == 200 and isinstance(r.json(), dict) else {}
 
 
+def _ci_from_check_runs(runs: list):
+    """Reduce GitHub Actions check-runs to a status string. failure > pending > success."""
+    concl = [x.get("conclusion") for x in runs if x.get("status") == "completed"]
+    if any(c in ("failure", "timed_out", "cancelled", "action_required") for c in concl):
+        return "failure"
+    if runs and len(concl) == len(runs) and all(c == "success" for c in concl):
+        return "success"
+    if runs:
+        return "pending"
+    return None
+
+
 def commit_status(org: str, repo: str, sha: str):
     if not sha:
         return None
-    r = httpx.get(f"https://api.github.com/repos/{org}/{repo}/commits/{sha}/status",
-                  headers=_headers(), timeout=15)
-    return r.json().get("state") if r.status_code == 200 else None
+    # GitHub Actions report via check-runs, not the legacy combined-status API.
+    cr = httpx.get(f"https://api.github.com/repos/{org}/{repo}/commits/{sha}/check-runs",
+                   headers=_headers(), timeout=15)
+    if cr.status_code == 200:
+        state = _ci_from_check_runs((cr.json() or {}).get("check_runs") or [])
+        if state:
+            return state
+    # fall back to the legacy combined status (older repos / commit statuses)
+    st = httpx.get(f"https://api.github.com/repos/{org}/{repo}/commits/{sha}/status",
+                   headers=_headers(), timeout=15)
+    return st.json().get("state") if st.status_code == 200 else None
 
 
 def eligibility(mergeable_state, ci_state):

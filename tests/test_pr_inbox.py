@@ -71,3 +71,16 @@ def test_build_inbox_uses_newest_review_when_pr_reviewed_twice(db_session, monke
     assert lr["verdict"] == "needs_human"        # the NEWER review wins, not "escalate"
     assert lr["reviewed_head"] == "curhead"
     assert lr["stale"] is False                  # reviewed at the current head
+
+
+def test_ci_from_check_runs():
+    assert pr_inbox._ci_from_check_runs([{"status": "completed", "conclusion": "failure"}]) == "failure"
+    assert pr_inbox._ci_from_check_runs(
+        [{"status": "completed", "conclusion": "success"},
+         {"status": "completed", "conclusion": "success"}]) == "success"
+    assert pr_inbox._ci_from_check_runs([{"status": "in_progress", "conclusion": None}]) == "pending"
+    assert pr_inbox._ci_from_check_runs([]) is None
+    # any failing run wins, even mixed with successes
+    assert pr_inbox._ci_from_check_runs(
+        [{"status": "completed", "conclusion": "success"},
+         {"status": "completed", "conclusion": "timed_out"}]) == "failure"
