@@ -178,6 +178,13 @@ class Store:
             if m:
                 repo = repo or m.group(1)
                 pr = pr if pr is not None else int(m.group(2))
+        # explicit backfill (written by the GitHub SHA->PR resolver) fills any residual gap
+        bf = ev.get("_backfill")
+        if isinstance(bf, dict):
+            if repo is None and isinstance(bf.get("repo"), str):
+                repo = bf["repo"]
+            if pr is None and bf.get("pr") is not None:
+                pr = bf["pr"]
 
         # human identity: "repo #pr", else the top finding's title
         if repo and pr is not None:
