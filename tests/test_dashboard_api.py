@@ -178,6 +178,9 @@ def test_worker_endpoint_busy_when_job_running(client):
     assert j["current"]["kind"] == "deep"
     assert j["current"]["repo"] == "node"
     assert j["queue"]["running"] == 1
+    # elapsed is computed server-side (tz-proof), non-negative, and freshly small
+    assert j["current"]["elapsed_s"] >= 0
+    assert j["current"]["elapsed_s"] < 60
 
 
 def test_worker_busy_even_if_heartbeat_stale(client):

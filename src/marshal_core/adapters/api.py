@@ -135,6 +135,16 @@ def api_worker():
         except ValueError:
             pass
     current = stats["current"]
+    if current and current.get("started_at"):
+        # elapsed computed server-side (both UTC) — the stored timestamp is naive UTC,
+        # so a browser must NOT Date.parse it as local time (that yields a bogus/negative age)
+        try:
+            started = datetime.fromisoformat(current["started_at"])
+            if started.tzinfo is None:
+                started = started.replace(tzinfo=timezone.utc)
+            current["elapsed_s"] = max(0.0, (datetime.now(timezone.utc) - started).total_seconds())
+        except ValueError:
+            pass
     state = "busy" if current is not None else ("idle" if alive else "down")
     return {"heartbeat": hb, "seconds_ago": seconds_ago, "alive": alive,
             "state": state, "queue": stats["counts"], "current": current}

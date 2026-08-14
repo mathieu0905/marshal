@@ -686,7 +686,7 @@ async function refreshWorker(){
     let label;
     if(w.state==='busy' && w.current){
       const c = w.current;
-      const dur = c.started_at ? ' · '+fmtDur((Date.now()-Date.parse(c.started_at))/1000) : '';
+      const dur = (c.elapsed_s!=null) ? ' · '+fmtDur(c.elapsed_s) : '';   // server-computed (tz-proof)
       label = 'busy · '+esc(c.kind)+' #'+esc(c.id)+dur;
     } else {
       label = w.state;   // idle | down
