@@ -17,7 +17,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from marshal_core.contracts import NormalizedEvent
-from marshal_core.knowledge.models import Base
+from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
 from marshal_core.modules.orchestrator import Orchestrator
 from marshal_pack_cowboy.pack import CowboyPack
@@ -164,7 +164,7 @@ def run_once(store: Store, pack) -> bool:
 
 def main() -> None:  # pragma: no cover - thin process loop
     engine = create_engine(os.environ.get("MARSHAL_DB", "sqlite:///marshal.db"))
-    Base.metadata.create_all(engine)
+    ensure_schema(engine)
     Session = sessionmaker(bind=engine)
     pack = CowboyPack()
     poll = float(os.environ.get("MARSHAL_WORKER_POLL_SECONDS", "2"))

@@ -1,6 +1,6 @@
 """知识核持久模型 — schema 领域无关 (domain/severity 取值由领域包定义)。"""
 from datetime import datetime, timezone
-from sqlalchemy import String, Integer, JSON, DateTime
+from sqlalchemy import String, Integer, JSON, DateTime, inspect, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -54,6 +54,7 @@ class EscapeRegistry(Base):
     domain_pack: Mapped[str] = mapped_column(String, index=True, default="cowboy")
     discovered_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
     introduced_at: Mapped[str | None] = mapped_column(String, nullable=True)
+    introduced_at_ts: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     root_cause_class: Mapped[str] = mapped_column(String, default="")
     change_ref: Mapped[str | None] = mapped_column(String, nullable=True)
     description: Mapped[str] = mapped_column(String, default="")
@@ -81,3 +82,17 @@ class ReviewJob(Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     result: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     error: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+def ensure_schema(engine) -> None:
+    """create_all + idempotent additive column migrations, so a DB created before a
+    column was added to a model gets it on next startup instead of erroring on reads.
+    Safe to call at every startup. The ALTER only ever fires against an older SQLite
+    marshal.db (a fresh create_all — SQLite or Postgres — already includes the column,
+    so the guard skips it)."""
+    Base.metadata.create_all(engine)
+    cols = {c["name"] for c in inspect(engine).get_columns("escape_registry")}
+    if "introduced_at_ts" not in cols:
+        with engine.begin() as conn:
+            conn.execute(text(
+                "ALTER TABLE escape_registry ADD COLUMN introduced_at_ts DATETIME"))

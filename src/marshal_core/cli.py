@@ -11,7 +11,7 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from marshal_core.knowledge.models import Base
+from marshal_core.knowledge.models import Base, ensure_schema
 from marshal_core.knowledge.store import Store
 from marshal_core.review import aggregate_review, verify_findings
 from marshal_pack_cowboy.pack import CowboyPack
@@ -35,7 +35,7 @@ def _db_url() -> str:
 
 def _session():
     engine = create_engine(_db_url())
-    Base.metadata.create_all(engine)
+    ensure_schema(engine)
     return sessionmaker(bind=engine)()
 
 

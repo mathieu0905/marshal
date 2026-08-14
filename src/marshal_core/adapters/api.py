@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from marshal_core.contracts import StructuredResult, NormalizedEvent
-from marshal_core.knowledge.models import Base
+from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
 from marshal_core.modules.orchestrator import Orchestrator
 from marshal_core.adapters.github import parse_pull_request_event, build_check_run
@@ -17,7 +17,7 @@ _STATIC_DIR = Path(__file__).parent / "static"
 
 app = FastAPI(title="Marshal")
 _engine = create_engine(os.environ.get("MARSHAL_DB", "sqlite:///marshal.db"))
-Base.metadata.create_all(_engine)
+ensure_schema(_engine)
 _Session = sessionmaker(bind=_engine)
 _PACK = CowboyPack()
 
