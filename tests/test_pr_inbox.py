@@ -51,3 +51,23 @@ def test_build_inbox_joins_prs_eligibility_and_last_review(db_session, monkeypat
     assert p7["last_review"] == {"verdict": "escalate", "reviewed_head": "oldhead", "stale": True}
     assert p9["last_review"] is None                        # never reviewed
     assert p7["title"] == "fix A" and p7["url"] == "u7"
+
+
+def test_build_inbox_uses_newest_review_when_pr_reviewed_twice(db_session, monkeypatch):
+    s = Store(db_session)
+    # two reviews of node#7: an older one, then a newer one at the PR's current head
+    s.record_gate_run(change_ref="oldhead", job_id="j1", verdict="escalate",
+                      evidence={"gates": {"repo": "node", "pr": 7}})
+    s.record_gate_run(change_ref="curhead", job_id="j2", verdict="needs_human",
+                      evidence={"gates": {"repo": "node", "pr": 7}})
+    monkeypatch.setattr(pr_inbox, "list_open_prs",
+                        lambda o, r, per_page=30: [{"number": 7, "title": "t", "html_url": "u",
+                                                    "updated_at": "2026-08-14T00:00:00Z",
+                                                    "draft": False, "head": {"sha": "curhead"}}])
+    monkeypatch.setattr(pr_inbox, "pr_detail", lambda o, r, n: {"mergeable_state": "clean"})
+    monkeypatch.setattr(pr_inbox, "commit_status", lambda o, r, sha: "success")
+    inbox = pr_inbox.build_inbox(db_session, repos=[("cowboyinc", "node")])
+    lr = inbox[0]["last_review"]
+    assert lr["verdict"] == "needs_human"        # the NEWER review wins, not "escalate"
+    assert lr["reviewed_head"] == "curhead"
+    assert lr["stale"] is False                  # reviewed at the current head
