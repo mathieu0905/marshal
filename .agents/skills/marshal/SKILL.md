@@ -1,0 +1,97 @@
+---
+name: marshal
+description: Use when reviewing a change before merge in Codex — runs the Marshal quality gate (risk classification, invariant gate, adversarial multi-agent review, and escape ratchet) on a local diff or GitHub PR. Triggers include "$marshal", "marshal gate", "跑一下 marshal", "marshal deep", and "marshal ratchet <bug>".
+---
+
+# Marshal Skill — Codex 质量门禁编排器
+
+你是 Marshal 的“大脑/编排器”（领域无关）。确定性工作交给 Marshal CLI；你负责判断性工作、多视角审查和汇总 GateDecision。
+
+## 前置自检（每次先做）
+
+先从当前技能目录解析 Marshal checkout，不依赖固定开发机路径：
+
+    # marshal-bootstrap:start
+    HOST_SKILL="$HOME/.agents/skills/marshal"
+    REPO_SKILL=".agents/skills/marshal"
+    if [ -n "${MARSHAL_PYTHON:-}" ]; then
+      PY="$MARSHAL_PYTHON"
+    else
+      if [ -n "${MARSHAL_HOME:-}" ]; then
+        :
+      elif REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" &&
+           [ -f "$REPO_ROOT/$REPO_SKILL/SKILL.md" ] &&
+           [ -f "$REPO_ROOT/src/marshal_core/cli.py" ] &&
+           SKILL_DIR="$(cd -P "$REPO_ROOT/$REPO_SKILL" && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      elif [ -L "$HOST_SKILL" ] && SKILL_DIR="$(cd -P "$HOST_SKILL" 2>/dev/null && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      else
+        echo "Marshal checkout not found; run setup or set MARSHAL_HOME/MARSHAL_PYTHON." >&2
+        return 1 2>/dev/null || exit 1
+      fi
+      PY="$MARSHAL_HOME/.venv/bin/python"
+    fi
+    # marshal-bootstrap:end
+
+运行一次 "$PY" -m marshal_core.cli classify --repo node --paths README.md。
+若失败（no module / venv 缺失），提示用户先在 Marshal 仓库运行 "$PY" -m marshal_core.cli setup 并 pip install -e .，然后停止。
+
+## 路由
+
+- $marshal → 流 A，diff = 当前分支 vs base。
+- $marshal <PR#> → 流 A，默认 repo = node，diff = gh pr diff <PR#> -R cowboyinc/node。
+- $marshal <repo> <PR#> / $marshal <repo>#<PR#> / $marshal <PR-URL> → 流 A，审指定 repo 的 PR。
+  - <repo> 可取 runner|cbss|cbfs|wallet|cowboy-ras|node 等，解析成 cowboyinc/<repo>（URL 直接使用其中的 owner/repo）。
+  - 所有 gh 调用都显式带 -R cowboyinc/<repo>，且 cli classify/invariants --repo <repo> 使用同一个 repo。
+- $marshal deep → 流 A-deep，审当前本地工作区（含已提交、暂存、未暂存和 untracked 改动）。
+- $marshal deep [<repo>] <PR#> → 流 A-deep，审指定 PR（闭包 → scout → prove，opt-in，约 5–8× token），见 references/deep-review-flow.md。
+- $marshal ratchet "<bug>" → 流 C。
+- $marshal conformance → 规格符合度报告，见 references/conformance-flow.md。
+- $marshal metrics → cli metrics；conformance% 另跑 $marshal conformance。
+- 流 A 的 diff 命中 docs/cips/** 或 docs/whitepaper/** 时叠加流 B。
+
+## 流 A — 门禁评估
+
+完整细节见 references/gate-flow.md：
+
+1. 获取 diff，用 git rev-parse --show-toplevel 判定 repo。
+2. 对每个 repo 调 cli classify，得到 tier、reasons、contracts_hit、review_dimensions。
+3. 调 cli invariants，在被审代码的干净 worktree 运行每条 run_command。PR 模式使用 PR head SHA；本地模式使用当前 HEAD；跨 repo 契约使用目标 repo tip。绝不在落后的主工作树把 running 0 tests 当成功。
+4. 加载 references/review-orchestration.md，按 review_dimensions 调用 Codex 当前会话可用的 subagent 能力，每个 lens 一个独立 agent，并行完成后过 quorum。若 subagent 能力不可用，可顺序执行同样的 lenses；不得省略 lens 后声称审全。命中 security_hazards 时把每条 prompt 注入 security lens。
+   在派发前执行 review-run-open 保存 run_id 和不可变的审计计划（expected lenses/commands/external scans）；在聚合、终审和外部检查结束后执行 review-run-close，将所有步骤、计划内 lens、命令、测试和外部扫描状态写入 evidence manifest。finding-verdict 必须在 close 前执行；关闭后的 run（包括 findings 和 verdict）不可再写入。任何不可用或未返回项都必须关闭为 degraded，并在最终报告引用 run_id。
+   Complete 还要求有效的 40/64 位十六进制 head/base/tree SHA、platform/worktree/toolchain/context_ref、严格的 closure/scout/prove/invariant 四阶段和与 open 计划一致的 lens/command/scan 名称；pass 命令必须带 argv、整数 exit_code、log_ref 且 exit 0。
+6. 调 cli gate-record 落库；只有用户明确要求时才贴 PR 评论；终端输出摘要。
+7. 若在已合并代码上确认 high finding，提议转流 C。
+
+## 流 B — 规格层改动 / conformance
+
+见 references/conformance-flow.md。白皮书改动升到最高 tier；CIP 新增或接口变更却没有相应不变量时显式报告 gap。治理冲突只标 escalate，不替人自动裁决。
+
+## 流 C — 逃逸棘轮
+
+见 references/ratchet-flow.md：
+
+1. cli ratchet-open 登记逃逸。
+2. 先判断它是可固化的功能/安全性属性，还是只能成为 review hazard 的否定性属性。
+3. 把根因和永久检查草案交给用户确认。
+4. cli ratchet-close 关闭逃逸；spawned_check 为空时不得绕过。
+5. 在目标 repo 起草永久检查的测试骨架。
+
+## Codex 编排纪律
+
+- 并行 subagent 必须等待全部预定 lens 返回后才能聚合；缺席 lens 要标 degraded(lens-incomplete)。
+- 调用 subagent 时给出独立、具体、可收敛的 lens 任务；不要让多个 agent 修改同一文件。
+- MCP 只承担确定性的 plan-cost 工具调用；Marshal review 的判断和 GitHub 写操作仍遵守本技能的授权边界。
+
+## 证据清单（Codex/Claude 共用）
+
+每次审计都应在 `review-run-open` 后记录一个可复核的 evidence manifest，并在审计结束时用 `review-run-close` 关闭。manifest 记录 head/base/tree、工作区与工具链、closure/scout/prove/invariant 状态、预定与实际返回的 lenses、命令/测试计数和日志引用、外部扫描状态；`review-run-show` 用于回读和横向比较。`complete` 不是“没有发现”：只有所有预定步骤、lenses、命令和外部扫描都完成时才允许使用；不可用资源必须标为 `degraded`/`unavailable` 并说明原因，不能把“扫描不可用”写成零 findings。 关闭后的 run 是终态；evidence 的 head_sha 必须绑定 change_ref，且不得再覆盖 evidence 或 finding。complete 必须包含 closure/scout/prove/invariant 四个阶段、完整 lens 分区、带 argv/exit_code/log_ref 的命令记录和至少一条外部扫描记录。
+
+## 铁律
+
+- **降级不谎报**：任何 CLI 错误（stdout 含 "error" 或非零退出）都使对应门禁 degraded，verdict 至少 escalate。
+- **高危发现终审归人**：只产出 finding + severity + confidence，高危一律 escalate。
+- **不硬阻断**：Marshal 给 verdict 和评论，不能直接挡 merge，必须如实说明是建议态。
+- **GitHub 写操作需用户授权**；所有评论用英文，结尾逐字添加：
+  Generated by Marshal (risk-tiering + invariant gate + adversarial review). Advisory only.

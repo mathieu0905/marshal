@@ -39,7 +39,7 @@ def test_cbfs_placement_and_auth_are_high():
 
 # ---- 跨 repo 契约 ----
 def test_cip9_ras_contract_fires_on_both_sides():
-    cbfs = PACK.contracts_hit({"repo": "cbfs", "diff_paths": ["cowboy-ras/src/types.rs"]})
+    cbfs = PACK.contracts_hit({"repo": "cbfs", "diff_paths": ["manifest/src/lib.rs"]})
     assert "cip9-ras" in cbfs
     node = PACK.contracts_hit({"repo": "node", "diff_paths": ["ras/src/types.rs"]})
     assert "cip9-ras" in node
@@ -56,7 +56,7 @@ def test_cip24_cbss_contract_fires_on_both_sides():
 def test_contract_invariants_point_at_node_anchor_tests():
     # 契约校验跑在 node 侧 (字节兼容守护住在 node)。
     invs = {i.id: i for i in PACK.list_invariants(
-        {"repo": "cbfs", "diff_paths": ["cowboy-ras/src/types.rs"]})}
+        {"repo": "cbfs", "diff_paths": ["manifest/src/lib.rs"]})}
     assert "contract.ras_canonical_vectors" in invs
     ras = invs["contract.ras_canonical_vectors"]
     assert ras.location_repo == "node"

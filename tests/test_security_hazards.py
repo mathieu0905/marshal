@@ -24,6 +24,18 @@ def test_python_binding_diff_also_triggers_hazard():
     assert any(h["id"] == "cbss-mpk-rpc-exposure" for h in hz)
 
 
+def test_cowboy_crypto_mirror_triggers_hazard():
+    # esc-20260611-cbss-ibe-no-ephemeral: PR #672 把 IBE wrap kernel 镜像进新的
+    # cowboy-crypto/ PyO3 crate, when_paths 没跟上 → classify 返回零 hazard,
+    # confidentiality lens 没注入 review。钉死: kernel 的任何新家都必须触发。
+    hz = PACK.security_hazards(
+        {"repo": "node", "diff_paths": ["cowboy-crypto/src/lib.rs"]})
+    ids = [h["id"] for h in hz]
+    assert "cbss-mpk-rpc-exposure" in ids
+    h = next(h for h in hz if h["id"] == "cbss-mpk-rpc-exposure")
+    assert h["invariant_able"] is False
+
+
 def test_non_crypto_diff_has_no_hazard():
     hz = PACK.security_hazards({"repo": "node", "diff_paths": ["execution/src/gas.rs"]})
     assert hz == []

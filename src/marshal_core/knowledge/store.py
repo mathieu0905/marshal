@@ -3,15 +3,26 @@ import json
 import re
 from datetime import timedelta
 
-from sqlalchemy import select, func, update
+from sqlalchemy import select, func, or_, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from .models import InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta, ReviewJob, _now
+from .evidence import (
+    REQUIRED_STEPS, REVIEW_RUN_STATUSES, evidence_has_unresolved,
+    validate_review_evidence,
+)
+from .models import (
+    InvariantRegistry, GateRun, AuditLog, EscapeRegistry, Meta, ReviewJob, _now,
+    Concept, ConceptEdge, ConceptAnchorRow, PlannedEvent, ReviewRun, ReviewFinding,
+)
 
 # The "awaiting human review" queue. `escalate` is the renamed-forward verdict for
 # what older gate_runs recorded as `needs_human`; the two are the same bucket, so every
 # inbox/metrics/timeseries read must treat them together (older DBs have only
 # needs_human, newer DBs have both).
 NEEDS_HUMAN_VERDICTS = ("needs_human", "escalate")
+# Finding-level human adjudication vocabulary (distinct concept from the gate-verdict
+# queue-bucket above): the golden annotation recorded by `finding-verdict`.
+_HUMAN_VERDICTS = {"accepted", "rejected", "modified"}
 
 
 class Store:
@@ -268,6 +279,13 @@ class Store:
                 slot[status] += n
         return sorted(agg.values(), key=lambda r: r["count"], reverse=True)
 
+    def list_escapes(self, domain_pack: str | None = None) -> list[EscapeRegistry]:
+        """全部逃逸 (③ ratchet-lenses 的彈藥源); 可按 domain_pack 过滤。"""
+        stmt = select(EscapeRegistry)
+        if domain_pack is not None:   # '' 是"筛空名 pack", 非"不筛" (后者传 None)
+            stmt = stmt.where(EscapeRegistry.domain_pack == domain_pack)
+        return list(self.s.scalars(stmt))
+
     def metrics(self) -> dict:
         """⑦ 度量: 从知识核聚合方法论指标。诚实标注当前数据模型不支持的指标
         (escape_rate 缺总-bug 分母;time_to_detection 缺 introduced_at 时间戳;
@@ -285,12 +303,18 @@ class Store:
         esc_open = _count(EscapeRegistry, EscapeRegistry.status == "open")
         esc_closed = _count(EscapeRegistry, EscapeRegistry.status == "closed")
         gate_total = _count(GateRun)
+        # Report main's canonical vocabulary (pass/block/escalate) always. For dashboard
+        # back-compat with databases written under the older vocabulary, additionally
+        # surface a folded `needs_human` bucket (legacy `needs_human` + renamed-forward
+        # `escalate`) — but only when legacy rows actually exist, so a clean DB shows just
+        # the canonical keys.
         gate_by_verdict = {
-            "pass": _count(GateRun, GateRun.verdict == "pass"),
-            "block": _count(GateRun, GateRun.verdict == "block"),
-            # fold the renamed `escalate` into the needs_human bucket
-            "needs_human": _count(GateRun, GateRun.verdict.in_(NEEDS_HUMAN_VERDICTS)),
+            v: _count(GateRun, GateRun.verdict == v)
+            for v in ("pass", "block", "escalate")
         }
+        legacy_needs_human = _count(GateRun, GateRun.verdict == "needs_human")
+        if legacy_needs_human:
+            gate_by_verdict["needs_human"] = legacy_needs_human + gate_by_verdict["escalate"]
         return {
             "invariant_gate_count": inv_active,
             "ratchet_invariants": inv_ratchet,
@@ -363,7 +387,8 @@ class Store:
             self.s.add(Model(**data))
         return len(rows)
 
-    def close_escape(self, escape_id: str, spawned_check: str) -> EscapeRegistry:
+    def close_escape(self, escape_id: str, spawned_check: str,
+                     fix_ref: str | None = None) -> EscapeRegistry:
         if not spawned_check:
             raise ValueError("cannot close escape without a spawned_check (棘轮纪律)")
         esc = self.s.get(EscapeRegistry, escape_id)
@@ -371,6 +396,8 @@ class Store:
             raise ValueError(f"escape not found: {escape_id}")
         esc.spawned_check = spawned_check
         esc.status = "closed"
+        if fix_ref is not None:
+            esc.fix_ref = fix_ref
         self.s.commit()
         return esc
 
@@ -450,3 +477,319 @@ class Store:
             j.finished_at = _now()
         self.s.commit()
         return len(rows)
+
+    def save_planned_event(self, event, job_id: str) -> PlannedEvent:
+        if not isinstance(job_id, str) or not job_id:
+            raise ValueError("planned event job_id must be non-empty")
+        row = PlannedEvent(
+            job_id=job_id, kind=event.kind, repo=event.repo,
+            change_ref=event.change_ref, diff_paths=list(event.diff_paths),
+            labels=list(event.labels), actor=event.actor)
+        self.s.merge(row)
+        self.s.commit()
+        return row
+
+    def get_planned_event(self, job_id: str) -> dict | None:
+        row = self.s.get(PlannedEvent, job_id)
+        if row is None:
+            return None
+        return {
+            "kind": row.kind, "repo": row.repo, "change_ref": row.change_ref,
+            "diff_paths": list(row.diff_paths or []), "labels": list(row.labels or []),
+            "actor": row.actor,
+        }
+
+    def close_escape_with_invariant(self, escape_id: str, spawned_check: str,
+                                    invariant: dict,
+                                    fix_ref: str | None = None) -> EscapeRegistry:
+        """Atomically register the ratchet check and close its escape."""
+        if not spawned_check:
+            raise ValueError("cannot close escape without a spawned_check (棘轮纪律)")
+        esc = self.s.get(EscapeRegistry, escape_id)
+        if esc is None:
+            raise ValueError(f"escape not found: {escape_id}")
+        row = InvariantRegistry(**invariant, origin="ratchet", escape_id=escape_id)
+        self.s.merge(row)
+        esc.spawned_check = spawned_check
+        esc.status = "closed"
+        if fix_ref is not None:
+            esc.fix_ref = fix_ref
+        self.s.commit()
+        return esc
+
+    def open_review_run(self, **kw) -> ReviewRun:
+        # New runs start open; evidence is closed out explicitly after all
+        # lenses and external checks have reported their availability.
+        status = kw.pop("status", "open")
+        if status != "open" or status not in REVIEW_RUN_STATUSES:
+            raise ValueError("new review runs must have status open")
+        evidence = dict(kw.pop("evidence", {}) or {})
+        plan_fields = {
+            "lenses": kw.pop("expected_lenses", None),
+            "commands": kw.pop("expected_commands", None),
+            "external_scans": kw.pop("expected_external_scans", None),
+        }
+        if any(value is not None for value in plan_fields.values()):
+            if any(not isinstance(value, list) or not value for value in plan_fields.values()):
+                raise ValueError(
+                    "review plan lenses, commands, and external_scans must be non-empty lists"
+                )
+            plan = {name: list(value) for name, value in plan_fields.items()}
+            evidence["review_plan"] = plan
+        run = ReviewRun(**kw, status=status, evidence=validate_review_evidence(evidence))
+        self.s.add(run)
+        self.s.commit()
+        return run
+
+
+    def close_review_run(self, run_id: int, status: str, evidence: dict) -> ReviewRun:
+        if status not in {"complete", "degraded"}:
+            raise ValueError("review run close status must be complete or degraded")
+        run = self.s.get(ReviewRun, run_id)
+        if run is None:
+            raise ValueError(f"review run not found: {run_id}")
+        if (run.status or "open") != "open":
+            raise ValueError(f"review run {run_id} is already closed")
+        if not isinstance(evidence, dict):
+            raise ValueError("review evidence must be a JSON object")
+        required = ("head_sha", "base_sha", "tree_sha", "steps", "lenses",
+                    "commands", "external_scans")
+        missing = [field for field in required if field not in evidence]
+        if missing:
+            raise ValueError("review evidence is missing required sections: " + ", ".join(missing))
+        manifest = validate_review_evidence(evidence, complete=status == "complete")
+        if not isinstance(manifest["steps"], dict) or set(manifest["steps"]) != REQUIRED_STEPS:
+            raise ValueError(
+                "review evidence steps must contain exactly "
+                + ", ".join(sorted(REQUIRED_STEPS))
+            )
+        for field in ("head_sha", "base_sha", "tree_sha"):
+            if not isinstance(manifest[field], str) or not manifest[field].strip():
+                raise ValueError(f"review evidence {field} must be a non-empty string")
+        if not isinstance(manifest["lenses"], dict):
+            raise ValueError("review evidence lenses must be an object")
+        if not all(
+            field in manifest["lenses"] for field in ("expected", "returned", "missing")
+        ):
+            raise ValueError(
+                "review evidence lenses must include expected, returned, and missing"
+            )
+        if not manifest["commands"]:
+            raise ValueError("review evidence commands must not be empty")
+        if manifest["head_sha"] != run.change_ref:
+            raise ValueError(
+                "review evidence head_sha must match the review run change_ref"
+            )
+        plan = (run.evidence or {}).get("review_plan")
+        if not isinstance(plan, dict):
+            raise ValueError("review runs require a review plan recorded at open")
+        if plan is not None:
+            supplied_plan = manifest.get("review_plan", plan)
+            if supplied_plan != plan:
+                raise ValueError("review evidence review_plan does not match the open plan")
+            actual_names = {
+                "lenses": manifest["lenses"]["expected"],
+                "commands": [item["name"] for item in manifest["commands"]],
+                "external_scans": [item["name"] for item in manifest["external_scans"]],
+            }
+            for field in ("lenses", "commands", "external_scans"):
+                if set(actual_names[field]) != set(plan[field]):
+                    raise ValueError(f"review evidence {field} does not match the open plan")
+            manifest["review_plan"] = plan
+        if status == "complete" and evidence_has_unresolved(manifest):
+            raise ValueError(
+                "cannot mark review run complete while evidence contains unresolved "
+                "steps, commands, lenses, or external scans"
+            )
+        result = self.s.execute(
+            update(ReviewRun)
+            .where(
+                ReviewRun.id == run_id,
+                or_(ReviewRun.status == "open", ReviewRun.status.is_(None)),
+            )
+            .values(status=status, evidence=manifest)
+        )
+        if result.rowcount != 1:
+            self.s.rollback()
+            current = self.s.get(ReviewRun, run_id)
+            if current is None:
+                raise ValueError(f"review run not found: {run_id}")
+            raise ValueError(f"review run {run_id} is already closed")
+        self.s.commit()
+        return self.s.get(ReviewRun, run_id)
+
+    def review_run_snapshot(self, run_id: int) -> dict:
+        run = self.s.get(ReviewRun, run_id)
+        if run is None:
+            raise ValueError(f"review run not found: {run_id}")
+        findings = []
+        for finding in self.list_findings(run_id):
+            findings.append({
+                "id": finding.id, "key": finding.key, "title": finding.title,
+                "claim": finding.claim, "location": finding.location,
+                "severity": finding.severity, "lens": finding.lens,
+                "votes": finding.votes or [],
+                "quorum_verdict": finding.quorum_verdict,
+                "human_verdict": finding.human_verdict,
+                "human_note": finding.human_note,
+            })
+        return {
+            "run_id": run.id, "change_ref": run.change_ref, "repo": run.repo,
+            "mode": run.mode, "host": run.host, "model": run.model,
+            "skill_rev": run.skill_rev, "context_ref": run.context_ref,
+            "status": run.status or "open", "evidence": run.evidence or {},
+            "created_at": run.created_at.isoformat() if run.created_at else None,
+            "findings": findings,
+        }
+
+    def _require_open_review_run(self, run_id: int) -> ReviewRun:
+        run = self.s.get(ReviewRun, run_id)
+        if run is None:
+            raise ValueError(f"review run not found: {run_id!r}")
+        if (run.status or "open") != "open":
+            raise ValueError(f"review run {run_id} is already closed")
+        return run
+
+    def record_finding(self, **kw) -> ReviewFinding:
+        run_id = kw.get("run_id")
+        key = kw.get("key")
+        if not isinstance(run_id, int):
+            raise ValueError(f"review run not found: {run_id!r}")
+        self._require_open_review_run(run_id)
+        if not isinstance(key, str) or not key:
+            raise ValueError("review finding key must be non-empty")
+        existing = self.s.scalar(select(ReviewFinding).where(
+            ReviewFinding.run_id == run_id, ReviewFinding.key == key))
+        if existing is not None:
+            for name, value in kw.items():
+                if name != "run_id" and hasattr(existing, name):
+                    setattr(existing, name, value)
+            self.s.commit()
+            return existing
+        f = ReviewFinding(**kw)
+        self.s.add(f)
+        try:
+            self.s.commit()
+        except IntegrityError:
+            self.s.rollback()
+            existing = self.s.scalar(select(ReviewFinding).where(
+                ReviewFinding.run_id == run_id, ReviewFinding.key == key))
+            if existing is None:
+                raise
+            for name, value in kw.items():
+                if name != "run_id" and hasattr(existing, name):
+                    setattr(existing, name, value)
+            self.s.commit()
+            return existing
+        return f
+
+    def record_findings(self, findings: list[dict]) -> list[ReviewFinding]:
+        """Atomically upsert one review run's finding batch."""
+        if not findings:
+            return []
+        run_ids = {item.get("run_id") for item in findings}
+        if len(run_ids) != 1:
+            raise ValueError("all findings in a batch must use one review run")
+        run_id = next(iter(run_ids))
+        if not isinstance(run_id, int):
+            raise ValueError(f"review run not found: {run_id!r}")
+        self._require_open_review_run(run_id)
+        keys = [item.get("key") for item in findings]
+        if any(not isinstance(key, str) or not key for key in keys):
+            raise ValueError("review finding keys must be non-empty")
+        if len(keys) != len(set(keys)):
+            raise ValueError("duplicate review finding key in batch")
+        saved = []
+        for item in findings:
+            existing = self.s.scalar(select(ReviewFinding).where(
+                ReviewFinding.run_id == run_id, ReviewFinding.key == item["key"]))
+            if existing is None:
+                existing = ReviewFinding(**item)
+                self.s.add(existing)
+            else:
+                for name, value in item.items():
+                    if name != "run_id" and hasattr(existing, name):
+                        setattr(existing, name, value)
+            saved.append(existing)
+        self.s.commit()
+        return saved
+
+    def list_findings(self, run_id: int) -> list[ReviewFinding]:
+        stmt = select(ReviewFinding).where(ReviewFinding.run_id == run_id).order_by(ReviewFinding.id)
+        return list(self.s.scalars(stmt))
+
+    def set_human_verdict(self, finding_id: int, verdict: str,
+                          note: str = "") -> ReviewFinding:
+        if verdict not in _HUMAN_VERDICTS:
+            raise ValueError(
+                f"human verdict must be one of {sorted(_HUMAN_VERDICTS)}, got {verdict!r}")
+        f = self.s.get(ReviewFinding, finding_id)
+        if f is None:
+            raise ValueError(f"finding not found: {finding_id}")
+        self._require_open_review_run(f.run_id)
+        if f.human_verdict:
+            raise ValueError(f"finding {finding_id} already has a human verdict")
+        f.human_verdict = verdict
+        f.human_note = note
+        self.s.commit()
+        return f
+
+    def upsert_concept(self, **kw) -> Concept:
+        """派生写入 (单向 markdown→DB): 幂等 upsert 一个概念缓存行。"""
+        c = Concept(**kw)
+        self.s.merge(c)
+        self.s.commit()
+        return c
+
+    def list_concepts(self, domain_pack: str) -> list[Concept]:
+        stmt = select(Concept).where(Concept.domain_pack == domain_pack)
+        return list(self.s.scalars(stmt))
+
+    def concept_tree(self, domain_pack: str) -> list[dict]:
+        """按 parent_id 组装 primary-parent 树 (可 review 骨架)。返回根列表, 每节点
+        含 id/importance/confidence/doc_only/children。孤儿 (parent 不存在) 挂到根;
+        parent 环成员 (self-parent / 互指) 亦挂到根暴露, 绝不静默丢弃 (人审 typo 常见),
+        且不构造循环子引用 (否则 flatten / json.dumps 会无限循环)。"""
+        concepts = self.list_concepts(domain_pack)
+        nodes = {c.id: {"id": c.id, "importance": c.importance,
+                        "confidence": c.confidence, "doc_only": c.doc_only,
+                        "children": []}
+                 for c in concepts}
+        parent_of = {c.id: c.parent_id for c in concepts}
+
+        def _reaches_cycle(start: str) -> bool:
+            # 顺 parent 链上溯; 重访即环 (含 self-parent 与祖先环)。缺失的 parent 视为终点。
+            seen: set[str] = set()
+            cur = start
+            while cur and cur in nodes:
+                if cur in seen:
+                    return True
+                seen.add(cur)
+                cur = parent_of.get(cur, "")
+            return False
+
+        roots = []
+        for c in concepts:
+            node = nodes[c.id]
+            # 只在 parent 存在且此链无环时嵌套; 否则 (孤儿 / 环成员 / 环下后代) 挂到根暴露。
+            parent = nodes.get(c.parent_id) if c.parent_id else None
+            if parent is not None and not _reaches_cycle(c.id):
+                parent["children"].append(node)
+            else:
+                roots.append(node)
+        return roots
+
+    def list_edges(self, concept_ids: set[str]) -> list[ConceptEdge]:
+        """返回**任一端**落在 concept_ids 内的边。深审 run 结论:必须包含悬空引用
+        (src 在但 dst 是未建概念)—— 否则 report 既漏"悬空引用"信号, 又把"只依赖了尚未
+        建立的概念"的节点误报成 orphan(它的唯一边被过滤掉了)。"""
+        stmt = select(ConceptEdge).where(
+            or_(ConceptEdge.src_id.in_(concept_ids), ConceptEdge.dst_id.in_(concept_ids))
+        )
+        return list(self.s.scalars(stmt))
+
+    def list_anchors(self, concept_ids: set[str]) -> list[ConceptAnchorRow]:
+        """返回 concept_id 落在 concept_ids 内的全部锚点行 (verified 与否都含);
+        空集合返回空列表。用于把概念映射回其代码/文档落点 (repo/path/symbol)。"""
+        stmt = select(ConceptAnchorRow).where(ConceptAnchorRow.concept_id.in_(concept_ids))
+        return list(self.s.scalars(stmt))

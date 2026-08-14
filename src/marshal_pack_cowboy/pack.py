@@ -2,6 +2,7 @@
 import re
 from dataclasses import dataclass
 from marshal_core.domain_pack import InvariantDef
+from marshal_pack_cowboy import ci_security
 
 _HIGH_PREFIXES = (
     "execution/src/execution/engine",
@@ -37,15 +38,47 @@ _REPO_HIGH_PREFIXES = {
 
 _LOW_SUFFIXES = (".md",)
 _LOW_SUBSTR = ("/tests/", "test_", "/scripts/", "tests.rs")
+
+# CI / infra-as-code. A benign workflow edit (runner label, comment) is operational
+# (low). The dangerous cases — untrusted trigger × {privileged runner | secret | write
+# perm | open cross-repo dispatch} — are detected by combination over whole-file content
+# in `ci_security` (drives escalation via security_hazards), NOT by a flat token scan
+# (which mis-escalated #649 off an incidental `secrets.SLACK` context line, yet still
+# missed the coverage.yml runner risk whose secret sat outside the diff window).
+_CI_PREFIX = ".github/"
 _SYS_ADDR_TOKENS = ("0x06", "0x09", "0x91", "0x92", "0x93", "0x94", "0x95")
 
 REVIEW_DIMENSIONS = [
     {"name": "correctness", "prompt": "找出这个改动会怎样产生错误结果或破坏现有行为。"},
     {"name": "spec", "prompt": "实现是否偏离它所引用 CIP 的真实意图?指出语义漂移。"},
     {"name": "cross-repo", "prompt": "这个改动是否破坏跨 repo 契约(编码/类型序列化字节兼容)?"},
-    {"name": "security", "prompt": "默认怀疑:有无越权、未校验输入、可被滥用的路径?"},
+    {"name": "security", "prompt": ("默认怀疑:越权、未校验输入、可滥用路径;安全判定"
+                                    "**勿信攻击者可控的 tx 字段**(chain_id/nonce/calldata);"
+                                    "有无重放/新鲜度缺失(nonce/domain-separation),或资源"
+                                    "无界(单笔可放大到停机/爆内存)?")},
     {"name": "econ", "prompt": "gas/费用/escrow 守恒是否被破坏?burn+tip==fee?escrow 非负?"},
     {"name": "determinism", "prompt": "PVM 确定性:有无非确定来源、绕过 int guard、黑名单 import?"},
+]
+
+# 路径条件触发的视角:命中 `when_paths`(子串匹配任一 diff 路径)即**并入** review_plan,
+# 不看 tier —— 补 tier-only 基集会漏的横切面(如 mid 档改到 receipt 组装却拿不到共识面)。
+# 纯附加、去重,绝不删基集视角(只增覆盖、不减)。当前 pack 只放两条真空白;availability
+# 暂折进 security prompt(缺乏干净的路径触发器),待触发器成熟再拆独立视角。
+PATH_REVIEW_DIMENSIONS = [
+    # 共识面(领域视角,Cowboy 专属):改动是否变更进入某共识哈希的字节 →
+    # state_root / receipt_root / logs_root / block digest?若是=可能静默分叉,需 flag-day。
+    # 触发子串刻意比分级器的 `_root` 更宽,兜住 receipt/digest/event 组装这类 mid 档改动。
+    {"name": "consensus-surface",
+     "prompt": ("这个改动是否变更进入**共识哈希**的字节(state_root/receipt_root/"
+                "logs_root/block digest)?含事件/结构化错误/extra_data 进 root。若是,"
+                "是否构成 flag-day、需协调上线?"),
+     "when_paths": ("receipt", "_root", "digest", "event", "logs", "extra_data")},
+    # 证据对抗(元视角,universal-candidate:第二个 pack 出现时可上提 core):PR 自带
+    # 测试是否 false-green?触发于改动碰测试文件时 —— 对新增/改动测试做心智 mutation。
+    {"name": "test-validity",
+     "prompt": ("假设本 PR 新增/改动的测试是 false-green:对被测代码做一次心智 mutation,"
+                "测试还会过吗?它是否只覆盖了漏洞的部分形态(留下未测的绕过向量)?"),
+     "when_paths": ("/tests/", "test_", "tests.rs", "_test.")},
 ]
 
 _ECON_INVARIANTS = [
@@ -69,6 +102,19 @@ _ECON_INVARIANTS = [
                  location_path="execution/src/econ_invariants.rs",
                  location_test="econ_invariants::econ_tx_fee_conservation", severity="high",
                  run_command=["cargo", "test", "-p", "cowboy-execution", "econ_invariants::econ_tx_fee_conservation", "--", "--exact"]),
+    # Ratchet esc-20260727-gas-waterfall-alias-mint (escaped bugs H2/H-2, surfaced+fixed
+    # by node #1142): execute_transaction snapshots the sender/actor BEFORE the fee
+    # waterfall and writes it back after; a tier (card->actor->owner) that writes an
+    # account ALIASING that snapshot has its debit erased while burn+tip carry it (CBY
+    # mint). Confirmed: actor==0x16 (token-card) and UseOwnerBalance owner==tx.from.
+    # Property: a full execute_transaction gas cascade conserves Σ CBY == burn+tip whether
+    # the sponsor aliases the sender or is a third party. proptest! macro → `-- --exact`
+    # on the full module path.
+    InvariantDef(id="econ.fee_waterfall_alias_conservation", domain="econ", spec_ref="CIP-28",
+                 executor_kind="proptest", location_repo="node",
+                 location_path="execution/src/execution/tests.rs",
+                 location_test="execution::tests::econ_waterfall_alias_conservation::econ_fee_waterfall_alias_conservation", severity="high",
+                 run_command=["cargo", "test", "-p", "cowboy-execution", "execution::tests::econ_waterfall_alias_conservation::econ_fee_waterfall_alias_conservation", "--", "--exact"]),
     # Ratchet esc-20260605-timer-burn (escaped bug surfaced+fixed by node #580):
     # a duplicate refund block double-credited the timer fee-payer (silent mint)
     # and the burn was accumulated after take_block_fees() drained it, so it never
@@ -104,11 +150,13 @@ CONTRACTS = [
                             "node": ["runner/src/types"]},
              verify_invariants=["contract.runner_types_serde"]),
     # CIP-9 RAS: 共享 crate cowboy-ras 的元数据/存储键线格式. 权威源住 node/ras/
-    # (package cowboy-ras, 由 node/runner/cbfs 共依); cbfs 自带一份 cowboy-ras/.
+    # (package cowboy-ras, node 内 workspace 成员, 由 node/runner/cbfs 共依). 独立
+    # cowboy-ras/ repo 已下架 (2026-07); cbfs 不再 vendored RAS 类型, 改依赖 node crate,
+    # 故 cbfs 触发只留 manifest/src (原 "cowboy-ras/src" 已无对应路径, 移除).
     # 任一侧动 RAS 类型/存储键 → 必须重跑 node 侧锁定金标准哈希向量, 否则跨 repo
     # 元数据线格式漂移 (CIP-9 §存储布局).
     Contract(id="cip9-ras", repos=["cbfs", "node"],
-             trigger_paths={"cbfs": ["cowboy-ras/src", "manifest/src"],
+             trigger_paths={"cbfs": ["manifest/src"],
                             "node": ["ras/src/types", "ras/src/storage_keys",
                                      "ras/src/test_vectors"]},
              verify_invariants=["contract.ras_canonical_vectors"]),
@@ -121,6 +169,19 @@ CONTRACTS = [
                                      "crates/cbssd/src/chain_authorizer"],
                             "node": ["types/src/cbss"]},
              verify_invariants=["contract.cbss_wire_round_trip"]),
+    # System-actor address allocation: the WP §9.1 address space is allocated by
+    # spec (whitepaper/CIP) and pinned in code (node runner/src/system_actors.rs +
+    # types/src/constants.rs). Address collisions are a recurring class (WP 0x0D
+    # addrmap, CIP-16 0x14, CIP-34 0x14). Grown via escape
+    # esc-20260629-sys-addr-alloc-unverified: the opcode side already had
+    # contract.sys_opcode_uniqueness, but the address side's real uniqueness test
+    # (cowboy-runner addresses_are_unique) was UNREGISTERED — cowboy#211's 0x14
+    # allocation was verified entirely by hand. Any PR touching the address
+    # constants OR the spec address table re-runs the uniqueness backstop.
+    Contract(id="sys-actor-addr", repos=["node", "cowboy"],
+             trigger_paths={"node": ["runner/src/system_actors", "types/src/constants"],
+                            "cowboy": ["docs/whitepaper", "docs/cips"]},
+             verify_invariants=["contract.sys_actor_address_uniqueness"]),
 ]
 
 _CONTRACT_BY_ID = {c.id: c for c in CONTRACTS}
@@ -153,6 +214,26 @@ _CONTRACT_INVARIANTS = {
         severity="high",
         run_command=["cargo", "test", "-p", "cowboy-types",
                      "execution::tests::sys_opcode_uniqueness", "--", "--exact"]),
+    # Address-uniqueness guard — grown via escape esc-20260629-sys-addr-alloc-unverified.
+    # The address-space mirror of sys_opcode_uniqueness for WP §9.1. The test already
+    # existed (cowboy-runner system_actors::tests::addresses_are_unique) but was
+    # unregistered; cowboy#211's 0x14 INTENT_SETTLEMENT allocation + opcode 146-151
+    # reservation were verified entirely by hand (fetched cowboy-protocol-codec,
+    # enumerated 130 SYS_* constants). KNOWN LIMITATION (hardening follow-up): the
+    # test asserts uniqueness over a HARDCODED address array — an implementer adding a
+    # new actor (e.g. INTENT_SETTLEMENT=0x14) MUST add it to that array for the guard
+    # to bite. Follow-ups tracked in COW-2399: make the array exhaustive (reflect over
+    # all *_SYSTEM_ACTOR consts), harden system_actor_addrmap.py (spec<->code
+    # reconciliation) from xfail skeleton to a hard gate, and add an opcode spec<->codec
+    # reconciliation analog. Verified `1 passed` on node main before registering.
+    "contract.sys_actor_address_uniqueness": InvariantDef(
+        id="contract.sys_actor_address_uniqueness", domain="cross-repo",
+        spec_ref="WP", executor_kind="test", location_repo="node",
+        location_path="runner/src/system_actors.rs",
+        location_test="system_actors::tests::addresses_are_unique",
+        severity="high",
+        run_command=["cargo", "test", "-p", "cowboy-runner", "--lib",
+                     "system_actors::tests::addresses_are_unique", "--", "--exact"]),
     "contract.runner_types_serde": InvariantDef(
         id="contract.runner_types_serde", domain="cross-repo", spec_ref="CIP-2",
         executor_kind="conformance-vector", location_repo="node",
@@ -284,7 +365,14 @@ _RAS_ROUTE_INVARIANTS = [
 # test in tests/regression/simulate.rs via the `lib` test target.
 _PVM_PREFIXES = ("pvm/crates/pvm-runtime/src/simulate",
                  "pvm/crates/pvm-runtime/src/determinism",
-                 "pvm/crates/pvm-runtime/src/lib")
+                 "pvm/crates/pvm-runtime/src/lib",
+                 # reflection guard surfaces on the runtime builtins/scope path and
+                 # on the node-side deploy validator that owns validate_actor_code.
+                 "pvm/crates/vm/src/scope",
+                 # the cold-stdlib mis-rejection lives in the FSM continuation
+                 # codegen pass, which compiles every module on the determinism path.
+                 "pvm/crates/codegen/src/pvm_fsm",
+                 "execution/src/pvm_executor")
 
 _PVM_INVARIANTS = [
     InvariantDef(id="pvm.strict_simulation_allows_valid_code", domain="determinism",
@@ -295,6 +383,53 @@ _PVM_INVARIANTS = [
                  run_command=["cargo", "test", "--manifest-path", "pvm/Cargo.toml",
                               "-p", "pvm-runtime", "--test", "lib",
                               "run_simulation_strict_allows_deterministic_code"]),
+    # (escape esc-20260610-pvm-reflection-bypass) from node PR #660 (COW-2051,
+    # WP §3 reflection block). The PR's validate_actor_code only rejects a Call
+    # whose callee is a *bare Name* eval/exec/compile. Indirect reflection —
+    # `e = eval; e(...)`, `getattr(__builtins__,"eval")(...)`, `__builtins__["exec"](...)`
+    # — reaches the unstripped runtime builtins (Scope::with_builtins injects the
+    # full vm.builtins; INT_GUARD_PREAMBLE only replaces `int`), so WP §3's
+    # reflection prohibition is still violable at runtime. Almanax flagged HIGH;
+    # Marshal independently found the same vectors but issued a clean PASS and
+    # mis-reported Almanax as 0 findings (4 min after the HIGH went live). Static
+    # AST analysis CANNOT catch the aliased/subscript forms without full scope
+    # analysis — the real fix is a runtime builtins guard (del/guard eval/exec/
+    # compile in the actor scope while routing stdlib internals through a
+    # privileged loader). pending=True: the runtime guard and this regression test
+    # are not yet written; flip to active once the guard lands.
+    InvariantDef(id="pvm.reflection_indirect_bypass_blocked", domain="determinism",
+                 spec_ref="WP-§3", executor_kind="test", location_repo="node",
+                 location_path="pvm/crates/pvm-runtime/tests/regression/reflection.rs",
+                 location_test="regression::reflection::indirect_eval_bypass_is_neutralized",
+                 severity="high", pending=True,
+                 run_command=["cargo", "test", "--manifest-path", "pvm/Cargo.toml",
+                              "-p", "pvm-runtime", "--test", "lib",
+                              "indirect_eval_bypass_is_neutralized"]),
+    # (escape esc-20260610-pvm-fsm-stdlib-cold-misreject) found re-reviewing node
+    # PR #665: pvm_fsm.rs::continuation_meta rejects ANY decorated (async) function
+    # whose decorator is not @runner/actor.continuation, and stdlib
+    # _collections_abc.py has `@abstractmethod async def __anext__/asend/athrow` —
+    # so a COLD interpreter compiling the whitelisted stdlib chain under the
+    # determinism path (preamble `import re` → enum → functools → collections →
+    # _collections_abc) dies with SyntaxError. Warm-pool sys.modules caching masks
+    # it: the full pvm-runtime suite is green while filtered/standalone runs of the
+    # same tests FAIL (order-dependent false-green); pre-existing on devnet
+    # (decimal_default_context_is_deterministic fails standalone at base 2a286711),
+    # and CI never sees it because pvm/ is workspace-excluded (COW-366 family).
+    # The run_command is a single-test filtered invocation ON PURPOSE: a fresh
+    # process = cold interpreter pool, which is exactly the property under test —
+    # do NOT "fix" it to run inside the full suite. pending=True: the codegen fix
+    # (skip/ignore non-continuation decorators on non-actor compiles) and this
+    # regression test are not yet written; flip to active once they land.
+    InvariantDef(id="pvm.cold_determinism_stdlib_import_allowed", domain="determinism",
+                 spec_ref="WP-§3", executor_kind="test", location_repo="node",
+                 location_path="pvm/crates/pvm-runtime/tests/regression/determinism_hardening.rs",
+                 location_test="regression::determinism_hardening::cold_interpreter_compiles_whitelisted_stdlib_under_determinism",
+                 severity="high", pending=True,
+                 run_command=["cargo", "test", "--manifest-path", "pvm/Cargo.toml",
+                              "-p", "pvm-runtime", "--test", "lib",
+                              "regression::determinism_hardening::cold_interpreter_compiles_whitelisted_stdlib_under_determinism",
+                              "--", "--exact"]),
 ]
 
 
@@ -370,10 +505,14 @@ class SecurityHazard:
 SECURITY_HAZARDS = [
     SecurityHazard(
         id="cbss-mpk-rpc-exposure",
-        # node 仓打包的 crate (cbss-crypto/, cowboy-py/) + cbss 仓真实路径:
-        # crates/cbss-crypto/ 全体, 以及 cbssd 中真正做密钥派生/封缄/份额的文件
-        # (不含 config/transport 等普通守护代码, 否则误报)。
-        when_paths=("cbss-crypto/", "cowboy-py/", "crates/cbss-crypto/",
+        # node 仓打包的 crate (cbss-crypto/, cowboy-py/, cowboy-crypto/) + cbss 仓
+        # 真实路径: crates/cbss-crypto/ 全体, 以及 cbssd 中真正做密钥派生/封缄/份额的
+        # 文件 (不含 config/transport 等普通守护代码, 否则误报)。
+        # cowboy-crypto/ 是 PR #672 新增的 PyO3 镜像 kernel — 当时不在此列表导致
+        # lens 没注入 (esc-20260611-cbss-ibe-no-ephemeral): kernel 复制到新路径时
+        # hazard 触发器必须跟着走。
+        when_paths=("cbss-crypto/", "cowboy-py/", "cowboy-crypto/",
+                    "crates/cbss-crypto/",
                     "crates/cbssd/src/cip7_content_key_seal",
                     "crates/cbssd/src/cip9_volume_seal",
                     "crates/cbssd/src/hpke_identity",
@@ -504,18 +643,23 @@ class CowboyPack:
                for lbl in scope.get("labels", [])):
             reasons.append("CIP new / interface change")
 
+        ci_paths = [p for p in paths if p.startswith(_CI_PREFIX)]
+
         if contracts or reasons:
             tier = "high"
         elif paths and all(p.endswith(_LOW_SUFFIXES) or any(s in p for s in _LOW_SUBSTR)
-                           for p in paths):
+                           or p.startswith(_CI_PREFIX) for p in paths):
             tier = "low"
+            if ci_paths:
+                reasons.append("CI/infra workflow (operational, non-privileged)")
         else:
             tier = "mid"
             reasons.append("default mid (ordinary actor / RPC handler)")
 
         return {"tier": tier, "reasons": reasons, "contracts_hit": contracts,
                 "security_hazards": self.security_hazards(scope),
-                "review_dimensions": [d["name"] for d in self.review_plan(tier)]}
+                "review_dimensions": [d["name"]
+                                      for d in self.review_plan({**scope, "tier": tier})]}
 
     def security_hazards(self, scope: dict) -> list[dict]:
         """否定性/对抗性安全危险点 (信任边)。命中即附一条 review lens 提示。
@@ -530,6 +674,15 @@ class CowboyPack:
             if any(p.startswith(hz.when_paths) for p in paths):
                 out.append({"id": hz.id, "title": hz.title, "prompt": hz.prompt,
                             "invariant_able": hz.invariant_able})
+        # CI/CD threat model: combination over whole workflow-file content (P1+P2).
+        # Negative properties (invariant_able=False) — they escalate tier + inject a
+        # review lens, exactly like the path-based hazards above.
+        ci_hazards, _ = ci_security.scan_scope(scope)
+        for hz in ci_hazards:
+            out.append({"id": hz["id"], "title": hz["title"], "prompt": hz["prompt"],
+                        "invariant_able": hz["invariant_able"],
+                        "severity": hz["severity"], "path": hz["path"],
+                        "evidence": hz["evidence"]})
         return out
 
     def ratchet_guidance(self, root_cause_class: str) -> dict:
@@ -586,9 +739,26 @@ class CowboyPack:
             out.setdefault(inv.spec_ref, []).append(inv.id)
         return out
 
-    def review_plan(self, tier: str) -> list[dict]:
+    def review_plan(self, scope: dict) -> list[dict]:
+        """按 scope 选对抗 review 视角 (机制: tier×路径; 数据: 本包)。
+
+        core 只收 [{name, prompt}]。scope 带 `tier` 则直接用 (classify_detailed
+        已算过, 省一次重复 classify); 缺则由 classify(scope) 推。签名吃整个 scope
+        (含 diff_paths) 是为将来让视角按路径条件触发 (对齐 list_invariants /
+        security_hazards); 当前实现仍按 tier 定视角数。
+        """
+        tier = scope.get("tier") or self.classify(scope)
         n = {"high": 6, "mid": 3, "low": 1}.get(tier, 3)
-        return REVIEW_DIMENSIONS[:n]
+        plan = [dict(d) for d in REVIEW_DIMENSIONS[:n]]     # tier 基集(有序前缀)
+        seen = {d["name"] for d in plan}
+        paths = scope.get("diff_paths", [])
+        for dim in PATH_REVIEW_DIMENSIONS:                  # 路径触发, 并入去重
+            if dim["name"] in seen:
+                continue
+            if any(sub in p for p in paths for sub in dim["when_paths"]):
+                plan.append({"name": dim["name"], "prompt": dim["prompt"]})
+                seen.add(dim["name"])
+        return plan
 
     def contracts_hit(self, scope: dict) -> list[str]:
         repo = scope.get("repo", "")

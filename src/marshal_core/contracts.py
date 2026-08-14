@@ -34,9 +34,9 @@ class GateDecision(BaseModel):
     change_ref: str
     tier: Literal["high", "mid", "low"]
     gates: list[dict] = []      # [{name, outcome, evidence_ref}]
-    verdict: Literal["pass", "block", "needs_human"]
+    verdict: Literal["pass", "block", "escalate"]
 
 
 class PlanResponse(BaseModel):
     job_id: str
-    invariants: list[dict] = []   # [{invariant_id, run_command}]
+    invariants: list[dict] = []   # [{invariant_id, run_command, location_repo, executor_kind}]

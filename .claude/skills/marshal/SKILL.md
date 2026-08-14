@@ -9,10 +9,30 @@ description: Use when reviewing a change before merge — runs the Marshal quali
 
 ## 前置自检(每次先做)
 
-用绝对路径调 CLI(不依赖 cwd 的 Python):
+从已安装 skill symlink（或当前 Marshal checkout）解析绝对路径，不依赖 cwd:
 
-    MARSHAL_HOME=${MARSHAL_HOME:-/home/ubuntu/workspace/marshal}
-    PY="$MARSHAL_HOME/.venv/bin/python"
+    # marshal-bootstrap:start
+    HOST_SKILL="$HOME/.claude/skills/marshal"
+    REPO_SKILL=".claude/skills/marshal"
+    if [ -n "${MARSHAL_PYTHON:-}" ]; then
+      PY="$MARSHAL_PYTHON"
+    else
+      if [ -n "${MARSHAL_HOME:-}" ]; then
+        :
+      elif REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" &&
+           [ -f "$REPO_ROOT/$REPO_SKILL/SKILL.md" ] &&
+           [ -f "$REPO_ROOT/src/marshal_core/cli.py" ] &&
+           SKILL_DIR="$(cd -P "$REPO_ROOT/$REPO_SKILL" && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      elif [ -L "$HOST_SKILL" ] && SKILL_DIR="$(cd -P "$HOST_SKILL" 2>/dev/null && pwd)"; then
+        MARSHAL_HOME="$(cd "$SKILL_DIR/../../.." && pwd -P)"
+      else
+        echo "Marshal checkout not found; run setup or set MARSHAL_HOME/MARSHAL_PYTHON." >&2
+        return 1 2>/dev/null || exit 1
+      fi
+      PY="$MARSHAL_HOME/.venv/bin/python"
+    fi
+    # marshal-bootstrap:end
 
 跑一次 `"$PY" -m marshal_core.cli classify --repo node --paths README.md`。
 若失败(no module / venv 缺失)→ 提示用户先在 marshal 仓库跑 `"$PY" -m marshal_core.cli setup` 并 `pip install -e .`,然后停止。
@@ -25,6 +45,8 @@ description: Use when reviewing a change before merge — runs the Marshal quali
   - `<repo>` 取 `runner|cbss|cbfs|wallet|cowboy-ras|node` 等;解析成 `cowboyinc/<repo>`(URL 直接含 owner/repo)。
   - 所有 `gh` 调用都带 `-R cowboyinc/<repo>`(`gh pr diff <PR#> -R …`、`gh pr view <PR#> -R … --json headRefOid`),且 `cli classify/invariants --repo <repo>` 用同一个 `<repo>`。
   - 例:`/marshal runner 42`、`/marshal runner#42`、`/marshal https://github.com/cowboyinc/runner/pull/42` 三者等价。
+- `/marshal deep` → 流 A-deep，审当前本地工作区（含已提交、暂存、未暂存和 untracked 改动）。
+- `/marshal deep [<repo>] <PR#>` → 流 A-deep，审指定 PR(**深审**:闭包→scout→prove,买严谨度不买召回;opt-in,~5–8× token)。详见 `references/deep-review-flow.md`。常规 `/marshal <PR#>` 路径不变。
 - `/marshal ratchet "<bug>"` → 流 C
 - `/marshal conformance` → ⑤ 规格符合度报告(见 `references/conformance-flow.md`)
 - `/marshal metrics` → ⑦ 度量报告:`cli metrics`(不变量数/棘轮增量/逃逸开关/门禁判决分布);conformance% 另跑 `/marshal conformance`。诚实呈现 `unavailable` 指标,不补造数
@@ -39,7 +61,8 @@ description: Use when reviewing a change before merge — runs the Marshal quali
 4. 按 `review_dimensions` 调 `/code-review ultra`(高危全视角)做对抗式 review,默认怀疑。
    若 classify 返回 `security_hazards`(否定性属性,如机密性),把每条 `prompt` 注入
    security lens —— 这类洞**不变量门禁抓不到**(往返测试在脆弱构造上为绿),只能靠 review。
-5. 汇总 `GateDecision`:任一不变量 fail→block;高危+确认高severity发现→needs_human;跑不起来/超预算→needs_human+degraded;否则 pass。
+   在派发前执行 review-run-open 保存 run_id 和不可变的审计计划（expected lenses/commands/external scans）；在聚合、终审和外部检查结束后执行 review-run-close，将所有步骤、计划内 lens、命令、测试和外部扫描状态写入 evidence manifest。finding-verdict 必须在 close 前执行；关闭后的 run（包括 findings 和 verdict）不可再写入。任何不可用或未返回项都必须关闭为 degraded，并在最终报告引用 run_id。
+   Complete 还要求有效的 40/64 位十六进制 head/base/tree SHA、platform/worktree/toolchain/context_ref、严格的 closure/scout/prove/invariant 四阶段和与 open 计划一致的 lens/command/scan 名称；pass 命令必须带 argv、整数 exit_code、log_ref 且 exit 0。
 6. `cli gate-record` 落库;有 PR# 且用户要 → 贴 PR 评论;终端打印摘要。
 7. 若在已合并代码上确认高severity发现 → 提议转流 C。
 
@@ -48,7 +71,7 @@ description: Use when reviewing a change before merge — runs the Marshal quali
 详见 `references/conformance-flow.md`。要点:
 - `/marshal conformance`:`cli conformance --spec-root <workspace>/cowboy` → 打印 CIP conformance% + 最欠覆盖网洞(MUST 数 vs 不变量数排序)。
 - diff 命中 `cowboy docs/cips/**`(修正案)或 `docs/whitepaper/**`(宪法)→ 升 tier(**动白皮书=最高**),对改动的 CIP 跑 `cli spec-requirements --ref CIP-N --spec-root <workspace>/cowboy` 抽 requirement,并查它当前被哪些不变量覆盖;新增/接口变更 CIP 而无对应不变量 → 提示补(可转流 C)。
-- **不替人裁治理冲突**:宪法↔修正案静默抵触只标 `needs_human`,不自动 block(治理 a 档)。
+- **不替人裁治理冲突**:宪法↔修正案静默抵触只标 `escalate`,不自动 block(治理 a 档)。
 
 ## 流 C — 逃逸棘轮
 
@@ -62,9 +85,13 @@ description: Use when reviewing a change before merge — runs the Marshal quali
    (spawned_check 为空 CLI 会拒绝 — 这是棘轮纪律,不要绕过。)
 5. 提示去 `<repo>` 把这条 proptest 真正实现;可顺手起草测试骨架。
 
+## 证据清单（Codex/Claude 共用）
+
+每次审计都应在 `review-run-open` 后记录一个可复核的 evidence manifest，并在审计结束时用 `review-run-close` 关闭。manifest 记录 head/base/tree、工作区与工具链、closure/scout/prove/invariant 状态、预定与实际返回的 lenses、命令/测试计数和日志引用、外部扫描状态；`review-run-show` 用于回读和横向比较。`complete` 不是“没有发现”：只有所有预定步骤、lenses、命令和外部扫描都完成时才允许使用；不可用资源必须标为 `degraded`/`unavailable` 并说明原因，不能把“扫描不可用”写成零 findings。 关闭后的 run 是终态；evidence 的 head_sha 必须绑定 change_ref，且不得再覆盖 evidence 或 finding。complete 必须包含 closure/scout/prove/invariant 四个阶段、完整 lens 分区、带 argv/exit_code/log_ref 的命令记录和至少一条外部扫描记录。
+
 ## 铁律
 
-- **降级不谎报**:任何 CLI 错误(stdout 含 `"error"` 或非零退出)→ 对应门禁记 degraded,verdict 至少 needs_human,显式告诉用户哪步没跑成。绝不把"没审成"说成"审过了"。
-- **高危发现终审归人**:你只产出"发现+severity+confidence",高危一律 needs_human。
+- **降级不谎报**:任何 CLI 错误(stdout 含 `"error"` 或非零退出)→ 对应门禁记 degraded,verdict 至少 escalate,显式告诉用户哪步没跑成。绝不把"没审成"说成"审过了"。
+- **高危发现终审归人**:你只产出"发现+severity+confidence",高危一律 escalate。
 - **不硬阻断**:你给 verdict 和评论,挡不住 merge — 如实说明这是建议态。
 - **GitHub 评论**:一律英文,且结尾逐字加 `Generated by Marshal (risk-tiering + invariant gate + adversarial review). Advisory only.`(详见 gate-flow.md)。

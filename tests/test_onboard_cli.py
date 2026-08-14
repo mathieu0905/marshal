@@ -1,0 +1,84 @@
+import json
+
+import pytest
+
+from marshal_core.cli import main
+
+PAGE = """---
+type: concept
+concept_id: gas
+parent: ""
+importance: constitutional
+status: authoritative
+last_updated: 2026-07-25
+---
+gas.
+"""
+
+
+def _repo(tmp_path):
+    repo = tmp_path / "node"
+    (repo / "execution").mkdir(parents=True)
+    (repo / "execution" / "gas.rs").write_text("pub struct GasReport {}\n")
+    (repo / "README.md").write_text("# node\n")
+    return repo
+
+
+def test_onboard_estimate_cli(tmp_path, capsys):
+    rc = main(["onboard-estimate", "--repo", str(_repo(tmp_path))])
+    assert rc == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["is_estimate"] is True and "method" in out
+
+
+def test_onboard_detect_cli(tmp_path, capsys):
+    rc = main(["onboard-detect", "--repo", str(_repo(tmp_path))])
+    assert rc == 0
+    out = json.loads(capsys.readouterr().out)
+    assert "candidate_seeds" in out and out["languages"].get("rust") == 1
+
+
+def test_onboard_report_cli(tmp_path, capsys):
+    concepts = tmp_path / "concepts"
+    concepts.mkdir()
+    (concepts / "gas.md").write_text(PAGE)          # constitutional, 无 anchor → doc_only
+    rc = main(["onboard-report", "--domain-pack", "cowboy",
+               "--concepts-dir", str(concepts), "--repo-root", f"node={_repo(tmp_path)}"])
+    assert rc == 0
+    out = json.loads(capsys.readouterr().out)
+    assert "gas" in out["unanchored_high"]          # 高重要性无锚定被拎出
+
+
+def test_onboard_report_requires_domain_pack(tmp_path):
+    # 无 --domain-pack: 必须硬失败, 不能默认 "cowboy" 清零已策展 pack
+    d = tmp_path / "concepts"
+    d.mkdir()
+    with pytest.raises(SystemExit):
+        main(["onboard-report", "--concepts-dir", str(d), "--repo-root", f"node={tmp_path}"])
+
+
+def test_onboard_estimate_bad_repo_fails(tmp_path, capsys):
+    rc = main(["onboard-estimate", "--repo", str(tmp_path / "nope")])
+    assert rc != 0                                  # typo 路径 → 非零, 不是 $0
+
+
+def test_onboard_detect_bad_repo_fails(tmp_path, capsys):
+    rc = main(["onboard-detect", "--repo", str(tmp_path / "nope")])
+    assert rc != 0
+
+
+def test_onboard_report_bad_repo_root_fails(tmp_path, capsys):
+    # typo 的 repo-root → verify_anchors 全灭 → 假 unanchored_high;必须 fail-fast, 不出报告
+    concepts = tmp_path / "concepts"
+    concepts.mkdir()
+    (concepts / "gas.md").write_text(PAGE)
+    rc = main(["onboard-report", "--domain-pack", "probe", "--concepts-dir", str(concepts),
+               "--repo-root", "node=/does/not/exist"])
+    assert rc != 0
+    assert "unanchored_high" not in capsys.readouterr().out   # 没有静默吐出假报告
+
+
+def test_onboard_report_bad_concepts_dir_fails(tmp_path, capsys):
+    rc = main(["onboard-report", "--domain-pack", "probe",
+               "--concepts-dir", str(tmp_path / "nope"), "--repo-root", f"node={tmp_path}"])
+    assert rc != 0

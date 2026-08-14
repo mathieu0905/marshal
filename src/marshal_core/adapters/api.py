@@ -36,14 +36,18 @@ async def webhook(request: Request):
     ev = parse_pull_request_event(payload)
     _EVENTS[ev.change_ref] = ev
     with _Session() as s:
-        job = Orchestrator(_PACK, Store(s)).handle_event(ev)
+        store = Store(s)
+        job = Orchestrator(_PACK, store).handle_event(ev)
+        store.save_planned_event(ev, job.job_id)
     return {"job_id": job.job_id, "invariant_ids": job.params["invariant_ids"]}
 
 
 @app.post("/plan")
 async def plan(event: NormalizedEvent):
     with _Session() as s:
-        resp = Orchestrator(_PACK, Store(s)).plan(event)
+        store = Store(s)
+        resp = Orchestrator(_PACK, store).plan(event)
+        store.save_planned_event(event, resp.job_id)
     _EVENTS[event.change_ref] = event
     return resp.model_dump()
 
@@ -51,10 +55,18 @@ async def plan(event: NormalizedEvent):
 @app.post("/results")
 async def results(result: StructuredResult):
     change_ref = result.job_id.removeprefix("inv-")
-    ev = _EVENTS.get(change_ref) or NormalizedEvent(
-        kind="pr", repo="node", change_ref=change_ref)
+    ev = _EVENTS.get(change_ref)
     with _Session() as s:
-        decision = Orchestrator(_PACK, Store(s)).handle_result(ev, result)
+        store = Store(s)
+        if ev is None:
+            stored = store.get_planned_event(result.job_id)
+            if stored is not None:
+                ev = NormalizedEvent(**stored)
+        if ev is None:
+            raise HTTPException(status_code=404, detail=(
+                f"unknown job_id {result.job_id!r}: no matching plan; "
+                "submit the change via /webhook or /plan first"))
+        decision = Orchestrator(_PACK, store).handle_result(ev, result)
     check_run = build_check_run(decision, shadow=True)
     return {"verdict": decision.verdict, "check_run": check_run}
 
