@@ -108,6 +108,7 @@ async function renderHealth(){
   const ebmax = Math.max(1, ...eb.map(x=>x.count));
   const ib = h.invariant_breakdown || {by_status:{},by_severity:{},candidate_red_ids:[]};
   const gaps = h.unavailable || {};
+  const mttd = h.mean_time_to_detection || {};
   const ts = h.verdict_timeseries || [];
   const tsmax = Math.max(1, ...ts.map(d => (d.pass||0)+(d.needs_human||0)+(d.block||0)));
   const tsW = (n) => (100*(n||0)/tsmax).toFixed(1);
@@ -142,7 +143,7 @@ async function renderHealth(){
       ${ib.candidate_red_ids.length?`<div class="row" style="margin-top:8px"><span class="tier-high">candidate-red (gap): ${ib.candidate_red_ids.map(esc).join(', ')}</span></div>`:''}
     </div>
     <div class="card"><h3>Honest gaps</h3>
-      <div class="gap">MTTD — pending Phase 4 (needs introduced_at timestamp)</div>
+      <div class="gap">MTTD — ${mttd.mean_days!=null ? esc(mttd.mean_days)+' days (mean over '+esc(mttd.count)+' escapes)' : 'no timestamped escapes yet'}${mttd.excluded ? ' · '+esc(mttd.excluded)+' excluded (no introduced_at timestamp)' : ''}</div>
       ${Object.entries(gaps).map(([k,why])=>`<div class="gap">${esc(k)} — ${esc(why)}</div>`).join('')}
     </div>`;
 }

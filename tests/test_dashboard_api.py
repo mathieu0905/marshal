@@ -100,3 +100,9 @@ def test_spa_locks_both_buttons_during_job(client):
     # the same card and clobber the shared status span.
     html = client.get("/").text
     assert "querySelectorAll('.btn')" in html
+
+
+def test_spa_renders_real_mttd_not_placeholder(client):
+    html = client.get("/").text
+    assert "mean_time_to_detection" in html      # SPA reads the real metric
+    assert "pending Phase 4" not in html          # placeholder is gone
