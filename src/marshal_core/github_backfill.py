@@ -56,6 +56,67 @@ def resolve_sha(sha: str, candidates, fetch=fetch_pulls):
     return None
 
 
+def resolve_pr(session, change_ref: str, prefer_repo: str | None = None, fetch=None):
+    """Return (org, repo, pr) for the PR that owns a commit, else None."""
+    if fetch is None:
+        fetch = fetch_pulls
+    cands = candidate_repos(session)
+    if prefer_repo:  # try the job's own repo first
+        cands = sorted(cands, key=lambda c: c[1] != prefer_repo)
+    for org, repo in cands:
+        try:
+            pulls = fetch(org, repo, change_ref)
+        except Exception:
+            continue
+        if pulls and pulls[0].get("number") is not None:
+            return org, repo, pulls[0]["number"]
+    return None
+
+
+def format_verdict_comment(verdict: dict) -> str:
+    """Render a deep-review verdict as a GitHub PR comment (advisory)."""
+    lines = [f"## 🤠 Marshal deep review — **{verdict.get('verdict', '?')}**"]
+    if verdict.get("summary"):
+        lines.append("")
+        lines.append(str(verdict["summary"]))
+    findings = verdict.get("findings") or []
+    if isinstance(findings, list) and findings:
+        lines.append("")
+        lines.append(f"**Findings ({len(findings)}):**")
+        for f in findings[:20]:
+            if isinstance(f, dict):
+                title = f.get("title") or f.get("location") or ""
+                lines.append(f"- **{f.get('severity', '?')}** — {title}")
+            else:
+                lines.append(f"- {f}")
+    lines.append("")
+    lines.append("_Posted by the Marshal dashboard deep-review worker — advisory._")
+    return "\n".join(lines)
+
+
+def post_pr_comment(org: str, repo: str, pr, body: str) -> bool:
+    """Real GitHub POST of a PR comment. Needs $GITHUB_TOKEN. Returns success."""
+    token = os.environ.get("GITHUB_TOKEN")
+    if not token:
+        return False
+    r = httpx.post(
+        f"https://api.github.com/repos/{org}/{repo}/issues/{pr}/comments",
+        headers={"Authorization": f"Bearer {token}",
+                 "Accept": "application/vnd.github+json"},
+        json={"body": body}, timeout=15)
+    return r.status_code in (200, 201)
+
+
+def post_deep_verdict(session, change_ref: str, repo: str, verdict: dict,
+                      resolver=resolve_pr, poster=post_pr_comment) -> bool:
+    """Resolve the PR for change_ref and post the verdict as a comment. Best-effort."""
+    found = resolver(session, change_ref, prefer_repo=repo)
+    if not found:
+        return False
+    org, gh_repo, pr = found
+    return poster(org, gh_repo, pr, format_verdict_comment(verdict))
+
+
 def backfill(session, fetch=None, limit: int = 200) -> int:
     """Resolve repo/pr for inbox gate_runs that lack an identity and cache it into
     evidence['_backfill']. Returns the number of rows backfilled."""

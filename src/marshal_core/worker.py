@@ -146,6 +146,14 @@ def _run_deep(store: Store, job: dict) -> None:
                   "invariants_run": verdict.get("invariants_run"),
                   "invariants_pass": verdict.get("invariants_pass")})
     store.finish_job(job["id"], result={"verdict": verdict["verdict"], "gate_run_id": gr.id})
+    # Opt-in: post the verdict to the PR (the skill itself stays local-only; the worker
+    # posts deterministically). Off unless $MARSHAL_DEEP_POST is set. Best-effort.
+    if os.environ.get("MARSHAL_DEEP_POST"):
+        try:
+            from marshal_core.github_backfill import post_deep_verdict
+            post_deep_verdict(store.s, job["change_ref"], job["repo"], verdict)
+        except Exception:
+            pass
 
 
 def _run_mechanical(store: Store, pack, job: dict) -> dict:

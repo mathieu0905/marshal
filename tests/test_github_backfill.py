@@ -75,3 +75,40 @@ def test_backfill_skips_rows_that_already_have_identity(db_session):
 
     assert gbf.backfill(db_session, fetch=fake_fetch) == 0
     assert calls == []   # never queried GitHub for an already-identified row
+
+
+def test_format_verdict_comment():
+    body = gbf.format_verdict_comment({
+        "verdict": "needs_human", "summary": "risky change",
+        "findings": [{"severity": "high", "title": "leak"}, {"severity": "low", "title": "nit"}]})
+    assert "needs_human" in body and "risky change" in body
+    assert "**high** — leak" in body and "advisory" in body.lower()
+
+
+def test_resolve_pr_prefers_job_repo(db_session):
+    s = Store(db_session)
+    s.record_gate_run(change_ref="a", job_id="a", verdict="escalate",
+                      evidence={"gates": {"comment_url": "https://github.com/cowboyinc/node/pull/1"}})
+    s.record_gate_run(change_ref="b", job_id="b", verdict="escalate",
+                      evidence={"gates": {"comment_url": "https://github.com/cowboyinc/cbfs/pull/2"}})
+    seen = []
+    def fake(org, repo, sha):
+        seen.append(repo)
+        return [{"number": 42}] if repo == "cbfs" else []
+    assert gbf.resolve_pr(db_session, "somesha", prefer_repo="cbfs", fetch=fake) == ("cowboyinc", "cbfs", 42)
+    assert seen[0] == "cbfs"   # tried the preferred repo first
+
+
+def test_post_deep_verdict_resolves_and_posts(db_session):
+    posted = {}
+    ok = gbf.post_deep_verdict(
+        db_session, "sha", "node", {"verdict": "block"},
+        resolver=lambda *a, **k: ("cowboyinc", "node", 7),
+        poster=lambda org, repo, pr, body: posted.update(pr=pr, body=body) or True)
+    assert ok and posted["pr"] == 7 and "block" in posted["body"]
+
+
+def test_post_deep_verdict_noop_when_pr_unresolved(db_session):
+    assert gbf.post_deep_verdict(db_session, "sha", "node", {"verdict": "pass"},
+                                 resolver=lambda *a, **k: None,
+                                 poster=lambda *a, **k: True) is False
