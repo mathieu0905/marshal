@@ -231,6 +231,7 @@ const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.tri
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let current = 'inbox';
 let _inboxPrs = [], _inboxFilter = 'all', _collapsed = new Set(), _group = false;
+let _jobs = {}, _polling = new Set();   // change_ref(head_sha) -> {id,kind,status,result,error}; live poll loops
 
 async function getJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error(u+' '+r.status); return r.json(); }
 
@@ -382,7 +383,7 @@ function renderInboxCards(app, prs){
       (p.updated_at||'').slice(0,16).replace('T',' '),
       p.draft ? 'draft' : null,
     ].filter(Boolean);
-    const card = $(`<div class="card${p.eligible?'':' blocked'}">
+    const card = $(`<div class="card${p.eligible?'':' blocked'}" data-sha="${esc(p.head_sha)}">
       <div class="row" style="align-items:baseline">
         <b class="title"><span class="repotag">${esc(p.repo)}</span> <span class="prnum">#${esc(p.number)}</span> ${esc(p.title)}</b>
         ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 On hold'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
@@ -396,10 +397,14 @@ function renderInboxCards(app, prs){
     </div>`);
     app.appendChild(card);
     if(p.eligible){
-      const rePlanBtn = card.querySelector('.re-plan');
-      rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, p.head_sha, p.repo, 'mechanical'));
-      const deepBtn = card.querySelector('.deep');
-      deepBtn.addEventListener('click', () => startJob(deepBtn, p.head_sha, p.repo, 'deep'));
+      card.querySelector('.re-plan').addEventListener('click', () => startJob(p.head_sha, p.repo, 'mechanical'));
+      card.querySelector('.deep').addEventListener('click', () => startJob(p.head_sha, p.repo, 'deep'));
+    }
+    // restore state for a job already in flight on this PR (survives the 15s refresh)
+    const j = _jobs[p.head_sha];
+    if(j){
+      applyJobToCard(p.head_sha);
+      if((j.status==='pending' || j.status==='running') && j.id!=null) pollLoop(j.id, p.head_sha, j.kind);
     }
   }
 }
@@ -629,42 +634,66 @@ function wireChart(app){
   svg.addEventListener('mouseleave', ()=>{ if(cross) cross.setAttribute('opacity','0'); tip.style.opacity='0'; });
 }
 
-async function startJob(btn, changeRef, repo, kind){
-  const row = btn.parentElement;
-  const btns = row.querySelectorAll('.btn');
-  btns.forEach(b => b.disabled = true);      // lock BOTH buttons while either job runs
-  const statusEl = row.querySelector('.jobstatus');
-  statusEl.innerHTML = '<span class="dot pending"></span> queued…';
-  try {
-    const r = await fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({change_ref: changeRef, repo: repo, kind: kind || 'mechanical'})});
-    if(!r.ok) throw new Error('enqueue '+r.status);
-    const job = await r.json();
-    pollJob(job.id, statusEl, btns);
-  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled=false); }
+function jobDoneMsg(j){
+  const res = j.result || {};
+  return res.verdict != null
+    ? 'deep: ' + esc(res.verdict) + (res.gate_run_id != null ? ' → run #' + esc(res.gate_run_id) : '')
+    : 're-planned: ' + esc(res.count != null ? res.count : '?') + ' invariants';
 }
 
-async function pollJob(id, statusEl, btns){
+// Paint the current card for `sha` from _jobs — the single source of truth, so the
+// state is correct no matter how many times the list re-renders (15s refresh).
+function applyJobToCard(sha){
+  const card = document.querySelector('.card[data-sha="' + sha + '"]');
+  if(!card) return;
+  const st = card.querySelector('.jobstatus');
+  const btns = card.querySelectorAll('.btn');
+  const j = _jobs[sha];
+  if(!st || !j) return;
+  if(j.status==='pending' || j.status==='running'){
+    btns.forEach(b => b.disabled = true);                 // no double-submit while active
+    st.innerHTML = '<span class="dot '+j.status+'"></span> ' + (j.status==='pending' ? 'queued…' : 'running…');
+  } else if(j.status==='done'){
+    btns.forEach(b => b.disabled = false);
+    st.innerHTML = '<span class="dot done"></span> ' + jobDoneMsg(j);
+  } else {  // failed
+    btns.forEach(b => b.disabled = false);
+    st.innerHTML = '<span class="dot failed"></span> ' + esc(j.error || 'failed');
+  }
+}
+
+async function startJob(sha, repo, kind){
+  if(_jobs[sha] && (_jobs[sha].status==='pending' || _jobs[sha].status==='running')) return;  // already active
+  _jobs[sha] = {kind, status:'pending'};
+  applyJobToCard(sha);
   try {
-    const j = await getJSON('/api/jobs/'+id);
-    if(j.status==='done'){
-      const res = j.result || {};
-      let msg;
-      if(res.verdict!=null){
-        msg = 'deep: ' + esc(res.verdict) + (res.gate_run_id!=null ? ' → run #'+esc(res.gate_run_id) : '');
-      } else {
-        msg = 're-planned: ' + esc(res.count!=null ? res.count : '?') + ' invariants';
-      }
-      statusEl.innerHTML = '<span class="dot done"></span> ' + msg;
-      btns.forEach(b => b.disabled = false); return;
+    const r = await fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({change_ref: sha, repo: repo, kind: kind || 'mechanical'})});
+    if(!r.ok) throw new Error('enqueue '+r.status);
+    const job = await r.json();
+    _jobs[sha].id = job.id;
+    pollLoop(job.id, sha, kind);
+  } catch(e){ _jobs[sha] = {kind, status:'failed', error:e.message}; applyJobToCard(sha); }
+}
+
+// One poll loop per job id (deduped via _polling), so a card re-render doesn't spawn
+// duplicate loops. Updates _jobs then repaints whichever card currently shows this sha.
+async function pollLoop(id, sha, kind){
+  if(_polling.has(id)) return;
+  _polling.add(id);
+  const tick = async () => {
+    try {
+      const j = await getJSON('/api/jobs/'+id);
+      _jobs[sha] = {id, kind, status:j.status, result:j.result, error:j.error};
+      applyJobToCard(sha);
+      if(j.status==='done' || j.status==='failed'){ _polling.delete(id); return; }
+    } catch(e){
+      _jobs[sha] = {id, kind, status:'failed', error:e.message};
+      applyJobToCard(sha); _polling.delete(id); return;
     }
-    if(j.status==='failed'){
-      statusEl.innerHTML = '<span class="dot failed"></span> '+esc(j.error||'failed');
-      btns.forEach(b => b.disabled = false); return;
-    }
-    statusEl.innerHTML = `<span class="dot ${esc(j.status)}"></span> ${esc(j.status)}…`;
-    setTimeout(() => pollJob(id, statusEl, btns), 1500);
-  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled = false); }
+    setTimeout(tick, 1500);
+  };
+  tick();
 }
 
 async function show(tab){
