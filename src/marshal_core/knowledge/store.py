@@ -133,6 +133,23 @@ class Store:
             },
         }
 
+    def mttd(self) -> dict:
+        # Mean time-to-detection over escapes that have both an introduced_at_ts and a
+        # discovered_at. Escapes lacking the timestamp are excluded and counted honestly
+        # (no fabricated interval), matching the metrics() honesty policy.
+        rows = self.s.execute(
+            select(EscapeRegistry.discovered_at, EscapeRegistry.introduced_at_ts)).all()
+        deltas, excluded = [], 0
+        for discovered_at, introduced_at_ts in rows:
+            if discovered_at is not None and introduced_at_ts is not None:
+                deltas.append((discovered_at - introduced_at_ts).total_seconds())
+            else:
+                excluded += 1
+        if not deltas:
+            return {"mean_days": None, "count": 0, "excluded": excluded}
+        return {"mean_days": round(sum(deltas) / len(deltas) / 86400, 2),
+                "count": len(deltas), "excluded": excluded}
+
     def verdict_timeseries(self) -> list[dict]:
         # Bucket gate runs by calendar day (UTC) and verdict. Done in Python so it
         # stays engine-agnostic (SQLite date() vs Postgres date_trunc differ).
