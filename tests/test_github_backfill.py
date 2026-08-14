@@ -1,5 +1,32 @@
 from marshal_core.knowledge.store import Store
 from marshal_core import github_backfill as gbf
+import marshal_core.worker as worker
+
+
+def test_maybe_backfill_noop_without_token(db_session, monkeypatch):
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    assert worker.maybe_backfill(db_session) == 0
+
+
+def test_maybe_backfill_runs_when_token_set(db_session, monkeypatch):
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(gbf, "fetch_pulls",
+                        lambda org, repo, sha: [{"number": 42}] if repo == "node" else [])
+    s = Store(db_session)
+    s.record_gate_run(change_ref="known", job_id="k", verdict="escalate",
+                      evidence={"gates": {"comment_url": "https://github.com/cowboyinc/node/pull/1#c"}})
+    s.record_gate_run(change_ref="baresha", job_id="b", verdict="escalate",
+                      evidence={"gates": {"tier": "mid"}})
+    assert worker.maybe_backfill(db_session) == 1
+    row = next(r for r in s.list_needs_human() if r["change_ref"] == "baresha")
+    assert row["summary"]["title"] == "node #42"
+
+
+def test_maybe_backfill_swallows_errors(db_session, monkeypatch):
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(gbf, "backfill",
+                        lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
+    assert worker.maybe_backfill(db_session) == 0   # swallowed, worker keeps running
 
 
 def test_inbox_summary_reads_backfill():

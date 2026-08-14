@@ -163,15 +163,33 @@ def run_once(store: Store, pack) -> bool:
     return True
 
 
+def maybe_backfill(session) -> int:
+    """Auto-fill repo/PR identity for inbox rows that lack it (new escalate reviews).
+    No-op unless $GITHUB_TOKEN is set; never raises — enrichment must not crash the
+    worker or block job processing."""
+    if not os.environ.get("GITHUB_TOKEN"):
+        return 0
+    try:
+        from marshal_core.github_backfill import backfill
+        return backfill(session, limit=int(os.environ.get("MARSHAL_BACKFILL_LIMIT", "50")))
+    except Exception:
+        return 0
+
+
 def main() -> None:  # pragma: no cover - thin process loop
     engine = create_engine(db_url())
     ensure_schema(engine)
     Session = sessionmaker(bind=engine)
     pack = CowboyPack()
     poll = float(os.environ.get("MARSHAL_WORKER_POLL_SECONDS", "2"))
+    backfill_every = float(os.environ.get("MARSHAL_BACKFILL_INTERVAL_S", "300"))
+    last_backfill = 0.0
     while True:
         with Session() as s:
             handled = run_once(Store(s), pack)
+            if time.monotonic() - last_backfill >= backfill_every:
+                maybe_backfill(s)
+                last_backfill = time.monotonic()
         if not handled:
             time.sleep(poll)
 

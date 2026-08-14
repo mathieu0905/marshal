@@ -56,9 +56,11 @@ def resolve_sha(sha: str, candidates, fetch=fetch_pulls):
     return None
 
 
-def backfill(session, fetch=fetch_pulls, limit: int = 200) -> int:
+def backfill(session, fetch=None, limit: int = 200) -> int:
     """Resolve repo/pr for inbox gate_runs that lack an identity and cache it into
     evidence['_backfill']. Returns the number of rows backfilled."""
+    if fetch is None:
+        fetch = fetch_pulls
     candidates = candidate_repos(session)
     if not candidates:
         return 0
