@@ -68,6 +68,8 @@ def _deep_worktree(repo: str, change_ref: str):
     # tool access inside repo_root, so an out-of-workspace path is real attack surface.
     if repo_root == workspace_real or os.path.commonpath([repo_root, workspace_real]) != workspace_real:
         raise DeepReviewError(f"repo path escapes workspace: {repo!r}")
+    if not os.path.isdir(repo_root):
+        raise DeepReviewError(f"no local checkout for repo {repo!r} at {repo_root}")
     os.makedirs(_worktree_base(), exist_ok=True)
     wt = _worktree_path(repo, change_ref)
     # Self-heal a worktree left behind by a hard-crashed prior run: the path is a
@@ -80,6 +82,10 @@ def _deep_worktree(repo: str, change_ref: str):
                    capture_output=True, text=True)
     if os.path.exists(wt):
         shutil.rmtree(wt, ignore_errors=True)
+    # PR head commits are often absent from the local checkout — fetch the ref
+    # best-effort so `worktree add` can resolve it (no-op if already local / no origin).
+    subprocess.run(["git", "-C", repo_root, "fetch", "--quiet", "origin", change_ref],
+                   capture_output=True, text=True)
     try:
         subprocess.run(["git", "-C", repo_root, "worktree", "add", "--detach", wt, change_ref],
                        check=True, capture_output=True, text=True)
@@ -183,12 +189,15 @@ def main() -> None:  # pragma: no cover - thin process loop
     pack = CowboyPack()
     poll = float(os.environ.get("MARSHAL_WORKER_POLL_SECONDS", "2"))
     backfill_every = float(os.environ.get("MARSHAL_BACKFILL_INTERVAL_S", "300"))
+    with Session() as s:
+        Store(s).reclaim_stale_jobs()   # clear orphans left by a previously-killed worker
     last_backfill = 0.0
     while True:
         with Session() as s:
             handled = run_once(Store(s), pack)
             if time.monotonic() - last_backfill >= backfill_every:
                 maybe_backfill(s)
+                Store(s).reclaim_stale_jobs()
                 last_backfill = time.monotonic()
         if not handled:
             time.sleep(poll)

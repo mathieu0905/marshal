@@ -112,3 +112,23 @@ def test_fail_job_sets_failed_with_error(db_session):
     assert failed["status"] == "failed"
     assert failed["finished_at"] is not None
     assert failed["error"] == "boom"
+
+
+def test_reclaim_stale_running_jobs(db_session):
+    from datetime import datetime, timezone, timedelta
+    s = Store(db_session)
+    j = s.enqueue_job(change_ref="x")
+    s.claim_next_job()                       # -> running, started_at ~now
+    row = db_session.get(_RJ, j["id"])       # backdate to 2h ago (orphaned)
+    row.started_at = datetime.now(timezone.utc) - timedelta(hours=2)
+    db_session.commit()
+    assert s.reclaim_stale_jobs(older_than_s=1800) == 1
+    assert s.get_job(j["id"])["status"] == "failed"
+
+
+def test_reclaim_leaves_fresh_running_jobs(db_session):
+    s = Store(db_session)
+    j = s.enqueue_job(change_ref="y")
+    s.claim_next_job()                       # running, started_at ~now
+    assert s.reclaim_stale_jobs(older_than_s=1800) == 0
+    assert s.get_job(j["id"])["status"] == "running"

@@ -1,6 +1,7 @@
 """知识核读写薄封装。"""
 import json
 import re
+from datetime import timedelta
 
 from sqlalchemy import select, func, update
 from sqlalchemy.orm import Session
@@ -435,3 +436,17 @@ class Store:
         j.finished_at = _now()
         self.s.commit()
         return self._job_dict(j)
+
+    def reclaim_stale_jobs(self, older_than_s: float = 1800) -> int:
+        """Fail jobs stuck in 'running' past older_than_s. A worker killed mid-job
+        leaves the row 'running' forever; this clears those orphans. Returns the count."""
+        cutoff = _now() - timedelta(seconds=older_than_s)
+        rows = self.s.scalars(
+            select(ReviewJob).where(ReviewJob.status == "running",
+                                    ReviewJob.started_at < cutoff)).all()
+        for j in rows:
+            j.status = "failed"
+            j.error = "reclaimed: worker exited before finishing this job"
+            j.finished_at = _now()
+        self.s.commit()
+        return len(rows)
