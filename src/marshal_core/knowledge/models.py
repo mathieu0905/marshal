@@ -15,7 +15,8 @@ def ensure_schema(engine) -> None:
     Base.metadata.create_all(engine)
     inspector = inspect(engine)
     additions_by_table = {
-        "escape_registry": {"fix_ref": "VARCHAR", "missed_by_run_id": "INTEGER"},
+        "escape_registry": {"fix_ref": "VARCHAR", "missed_by_run_id": "INTEGER",
+                            "introduced_at_ts": "DATETIME"},
         # These columns were added after review tracing shipped. Keep this
         # migration additive so existing sweep databases remain readable.
         "review_run": {"status": "VARCHAR", "evidence": "JSON"},
@@ -109,6 +110,7 @@ class EscapeRegistry(Base):
     domain_pack: Mapped[str] = mapped_column(String, index=True, default="cowboy")
     discovered_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
     introduced_at: Mapped[str | None] = mapped_column(String, nullable=True)
+    introduced_at_ts: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     root_cause_class: Mapped[str] = mapped_column(String, default="")
     change_ref: Mapped[str | None] = mapped_column(String, nullable=True)
     description: Mapped[str] = mapped_column(String, default="")
@@ -117,6 +119,27 @@ class EscapeRegistry(Base):
     status: Mapped[str] = mapped_column(String, default="open")
     fix_ref: Mapped[str | None] = mapped_column(String, nullable=True)
     missed_by_run_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+
+class Meta(Base):
+    __tablename__ = "meta"
+    key: Mapped[str] = mapped_column(String, primary_key=True)
+    value: Mapped[str] = mapped_column(String, default="")
+
+
+class ReviewJob(Base):
+    __tablename__ = "review_job"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    change_ref: Mapped[str] = mapped_column(String, index=True)
+    repo: Mapped[str] = mapped_column(String, default="node")
+    kind: Mapped[str] = mapped_column(String, default="mechanical")   # 'mechanical' | 'deep'
+    status: Mapped[str] = mapped_column(String, default="pending")    # pending|running|done|failed
+    requested_by: Mapped[str] = mapped_column(String, default="dashboard")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
+    started_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    result: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
 class PlannedEvent(Base):

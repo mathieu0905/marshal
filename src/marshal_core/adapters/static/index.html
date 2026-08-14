@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marshal Dashboard</title>
+<style>
+  /* Cowboy design system — western palette (hay / bison / nugget / cactus / canyon),
+     matching examples/cip34_chat_demo, including its Google Fonts webfonts.
+     NOTE: this @import fetches from fonts.googleapis.com (an external request) — the
+     SPA is no longer fully self-contained; the font-family stacks still fall back to
+     system fonts if the fetch is blocked or offline. */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root {
+    --bg:#f9f7f5;          /* hay-100 — warm parchment */
+    --card:#ffffff;        /* cards */
+    --surface2:#f4f0eb;    /* hay-200 */
+    --line:#ebe5df;        /* hay-400 — border */
+    --fg:#1d1916;          /* bison-900 */
+    --muted:#72675f;       /* bison-300 */
+    --accent:#ff9d14;      /* nugget-500 — gold */
+    --accent-ink:#291400;  /* text on the gold accent */
+    --link:#a85700;        /* nugget-700 */
+    --on-color:#fff7eb;    /* light text on saturated chips */
+    --pass:#29754a;        /* cactus-600 */
+    --needs:#e58200;       /* nugget-600 — amber */
+    --block:#b22d10;       /* canyon-600 — red */
+    --red:#b22d10;
+    --shadow-card:0 4px 4px -4px #dfd6cd, 0 0 1px 0 #988e86;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --serif:'Fraunces',ui-serif,Georgia,serif;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:var(--sans); font-size:14px; line-height:1.5; background:var(--bg); color:var(--fg); }
+  header { padding:14px 22px; border-bottom:1px solid var(--line); background:var(--card); box-shadow:var(--shadow-card); display:flex; gap:14px; align-items:center; }
+  header h1 { font-size:18px; margin:0; font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; }
+  nav button { background:none; border:none; color:var(--muted); font:inherit; font-weight:500; cursor:pointer; padding:6px 12px; border-radius:8px; }
+  nav button:hover { color:var(--fg); }
+  nav button.active { background:var(--surface2); color:var(--fg); box-shadow:inset 0 -2px 0 var(--accent); }
+  #status { font-family:var(--mono); font-size:12px; }
+  main { padding:22px; max-width:960px; margin:0 auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-card); }
+  .card h3 { margin:0 0 10px; font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+  .row { display:flex; flex-wrap:wrap; gap:10px 18px; color:var(--muted); font-size:13px; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; background:transparent; border:1px solid var(--line); color:var(--muted); font-family:var(--mono); font-size:11px; }
+  .tag[style] { color:var(--on-color); border-color:transparent; }   /* colored legend chips get light text */
+  .tier-high { color:var(--block); font-weight:600; }
+  .verdict-needs_human, .verdict-escalate { border-left:3px solid var(--needs); }
+  .card.blocked { opacity:.75; }
+  b.title { font-size:14.5px; font-weight:600; }
+  .sev-badge { font-size:11px; font-weight:600; color:var(--block); }
+  .stale-badge { font-size:11px; font-weight:600; color:var(--needs); border:1px solid var(--needs); border-radius:4px; padding:1px 6px; }
+  .finding { font-size:12.5px; margin:3px 0; color:var(--fg); }
+  .finding .sev { font-weight:700; text-transform:uppercase; font-size:10px; margin-right:6px; }
+  .sev.sev-high { color:var(--block); } .sev.sev-medium, .sev.sev-mid { color:var(--needs); }
+  .sev.sev-low, .sev.sev-advisory, .sev.sev-info { color:var(--muted); }
+  .viewlink { color:var(--link); font-size:12px; text-decoration:none; align-self:center; }
+  .viewlink:hover { text-decoration:underline; }
+  details summary { cursor:pointer; color:var(--link); font-size:13px; }
+  details summary:hover { text-decoration:underline; }
+  pre { overflow:auto; background:var(--surface2); border:1px solid var(--line); padding:10px 12px; border-radius:8px; font-family:var(--mono); font-size:12px; }
+  .bar { height:16px; border-radius:4px; background:var(--accent); }
+  .stack { display:flex; height:14px; border-radius:4px; overflow:hidden; background:var(--surface2); }
+  .stack span { display:block; height:100%; }
+  .barlabel { display:flex; justify-content:space-between; font-size:12px; margin:7px 0 2px; }
+  .gap { color:var(--muted); font-size:12px; border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
+  .muted { color:var(--muted); }
+  .jobrow { margin-top:12px; font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:center; }
+  .btn { background:transparent; color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:5px 12px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
+  .btn:hover { border-color:var(--accent); }
+  .btn.deep { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:600; }
+  .btn.deep:hover { filter:brightness(1.05); }
+  .btn:disabled { opacity:.5; cursor:default; }
+  .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .dot.pending { background:var(--muted); } .dot.running { background:var(--needs); }
+  .dot.done { background:var(--pass); } .dot.failed { background:var(--block); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🤠 Marshal</h1>
+  <nav>
+    <button id="tab-inbox" class="active" onclick="show('inbox')">Inbox</button>
+    <button id="tab-health" onclick="show('health')">Health</button>
+  </nav>
+  <span id="status" class="muted" style="margin-left:auto"></span>
+</header>
+<main id="app"><p class="muted">Loading…</p></main>
+<script>
+const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let current = 'inbox';
+
+async function getJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error(u+' '+r.status); return r.json(); }
+
+function bar(label, value, max){
+  const pct = max ? Math.round(100*value/max) : 0;
+  return `<div class="barlabel"><span>${esc(label)}</span><span>${value}</span></div>
+          <div class="bar" style="width:${pct}%"></div>`;
+}
+
+async function renderInbox(){
+  const data = await getJSON('/api/inbox');
+  const prs = data.prs || [];
+  const app = document.getElementById('app');
+  if(!prs.length){
+    app.innerHTML = data.github_token
+      ? '<p class="muted">No open PRs across the bound repos.</p>'
+      : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
+    return;
+  }
+  app.innerHTML = '';
+  for(const p of prs){
+    const lr = p.last_review;
+    const reviewBadge = lr
+      ? (lr.stale
+          ? '<span class="stale-badge">🔄 stale · last '+esc(lr.verdict||'deep')+'</span>'
+          : '<span class="tag">last: '+esc(lr.verdict||'deep')+'</span>')
+      : '<span class="muted">not reviewed</span>';
+    const meta = [
+      (p.head_sha||'').slice(0,8),
+      (p.updated_at||'').slice(0,16).replace('T',' '),
+      p.draft ? 'draft' : null,
+    ].filter(Boolean);
+    const card = $(`<div class="card${p.eligible?'':' blocked'}">
+      <div class="row" style="align-items:baseline">
+        <b class="title">${esc(p.repo)} #${esc(p.number)} — ${esc(p.title)}</b>
+        ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 待处理'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
+      </div>
+      <div class="row">${meta.map(b=>`<span>${esc(b)}</span>`).join('')}</div>
+      <div class="jobrow">
+        <a class="viewlink" href="${esc(p.url)}" target="_blank" rel="noopener">view ↗</a>
+        ${p.eligible?'<button class="btn re-plan">re-review</button><button class="btn deep">deep review</button>':''}
+        <span class="jobstatus"></span>
+      </div>
+    </div>`);
+    app.appendChild(card);
+    if(p.eligible){
+      const rePlanBtn = card.querySelector('.re-plan');
+      rePlanBtn.addEventListener('click', () => startJob(rePlanBtn, p.head_sha, p.repo, 'mechanical'));
+      const deepBtn = card.querySelector('.deep');
+      deepBtn.addEventListener('click', () => startJob(deepBtn, p.head_sha, p.repo, 'deep'));
+    }
+  }
+}
+
+async function renderHealth(){
+  const h = await getJSON('/api/health');
+  const app = document.getElementById('app');
+  const v = h.gate_runs_by_verdict || {};
+  const vmax = Math.max(1, ...Object.values(v));
+  const eb = h.escape_breakdown || [];
+  const ebmax = Math.max(1, ...eb.map(x=>x.count));
+  const ib = h.invariant_breakdown || {by_status:{},by_severity:{},candidate_red_ids:[]};
+  const gaps = h.unavailable || {};
+  const mttd = h.mean_time_to_detection || {};
+  const ts = h.verdict_timeseries || [];
+  const tsmax = Math.max(1, ...ts.map(d => (d.pass||0)+(d.needs_human||0)+(d.block||0)));
+  const tsW = (n) => (100*(n||0)/tsmax).toFixed(1);
+  const stackRow = (d) => {
+    const total = (d.pass||0)+(d.needs_human||0)+(d.block||0);
+    return `<div class="barlabel"><span>${esc(d.date)}</span><span>${total}</span></div>
+      <div class="stack">
+        <span style="width:${tsW(d.pass)}%;background:var(--pass)"></span>
+        <span style="width:${tsW(d.needs_human)}%;background:var(--needs)"></span>
+        <span style="width:${tsW(d.block)}%;background:var(--block)"></span>
+      </div>`;
+  };
+  app.innerHTML = `
+    <div class="card"><h3>Gate output</h3>
+      ${bar('pass', v.pass||0, vmax)}${bar('needs_human', v.needs_human||0, vmax)}${bar('block', v.block||0, vmax)}
+      <div class="row" style="margin-top:8px"><span class="muted">total runs: ${h.gate_runs_total||0}</span></div>
+    </div>
+    <div class="card"><h3>Gate output over time</h3>
+      ${ts.map(stackRow).join('') || '<span class="muted">no runs yet</span>'}
+      <div class="row" style="margin-top:8px">
+        <span class="tag" style="background:var(--pass)">pass</span>
+        <span class="tag" style="background:var(--needs)">needs_human</span>
+        <span class="tag" style="background:var(--block)">block</span>
+      </div>
+    </div>
+    <div class="card"><h3>Ratchet — escapes by root cause</h3>
+      ${eb.map(x=>bar(x.root_cause_class+`  (${x.open} open / ${x.closed} closed)`, x.count, ebmax)).join('') || '<span class="muted">no escapes recorded</span>'}
+    </div>
+    <div class="card"><h3>Invariant coverage</h3>
+      <div class="row">${Object.entries(ib.by_status).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
+      <div class="row" style="margin-top:6px">${Object.entries(ib.by_severity).map(([k,n])=>`<span class="tag">${esc(k)}: ${n}</span>`).join('')}</div>
+      ${ib.candidate_red_ids.length?`<div class="row" style="margin-top:8px"><span class="tier-high">candidate-red (gap): ${ib.candidate_red_ids.map(esc).join(', ')}</span></div>`:''}
+    </div>
+    <div class="card"><h3>Honest gaps</h3>
+      <div class="gap">MTTD — ${mttd.mean_days!=null ? esc(mttd.mean_days)+' days (mean over '+esc(mttd.count)+' escapes)' : 'no timestamped escapes yet'}${mttd.excluded ? ' · '+esc(mttd.excluded)+' excluded (no introduced_at timestamp)' : ''}</div>
+      ${Object.entries(gaps).map(([k,why])=>`<div class="gap">${esc(k)} — ${esc(why)}</div>`).join('')}
+    </div>`;
+}
+
+async function startJob(btn, changeRef, repo, kind){
+  const row = btn.parentElement;
+  const btns = row.querySelectorAll('.btn');
+  btns.forEach(b => b.disabled = true);      // lock BOTH buttons while either job runs
+  const statusEl = row.querySelector('.jobstatus');
+  statusEl.innerHTML = '<span class="dot pending"></span> queued…';
+  try {
+    const r = await fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({change_ref: changeRef, repo: repo, kind: kind || 'mechanical'})});
+    if(!r.ok) throw new Error('enqueue '+r.status);
+    const job = await r.json();
+    pollJob(job.id, statusEl, btns);
+  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled=false); }
+}
+
+async function pollJob(id, statusEl, btns){
+  try {
+    const j = await getJSON('/api/jobs/'+id);
+    if(j.status==='done'){
+      const res = j.result || {};
+      let msg;
+      if(res.verdict!=null){
+        msg = 'deep: ' + esc(res.verdict) + (res.gate_run_id!=null ? ' → run #'+esc(res.gate_run_id) : '');
+      } else {
+        msg = 're-planned: ' + esc(res.count!=null ? res.count : '?') + ' invariants';
+      }
+      statusEl.innerHTML = '<span class="dot done"></span> ' + msg;
+      btns.forEach(b => b.disabled = false); return;
+    }
+    if(j.status==='failed'){
+      statusEl.innerHTML = '<span class="dot failed"></span> '+esc(j.error||'failed');
+      btns.forEach(b => b.disabled = false); return;
+    }
+    statusEl.innerHTML = `<span class="dot ${esc(j.status)}"></span> ${esc(j.status)}…`;
+    setTimeout(() => pollJob(id, statusEl, btns), 1500);
+  } catch(e){ statusEl.innerHTML = '<span class="dot failed"></span> '+esc(e.message); btns.forEach(b => b.disabled = false); }
+}
+
+async function show(tab){
+  current = tab;
+  document.getElementById('tab-inbox').classList.toggle('active', tab==='inbox');
+  document.getElementById('tab-health').classList.toggle('active', tab==='health');
+  const st = document.getElementById('status');
+  try { st.textContent='refreshing…'; await (tab==='inbox'?renderInbox():renderHealth()); st.textContent=''; }
+  catch(e){ document.getElementById('app').innerHTML='<p class="muted">Error: '+esc(e.message)+'</p>'; st.textContent=''; }
+}
+
+show('inbox');
+setInterval(() => show(current), 15000);  // live: poll every 15s
+</script>
+</body>
+</html>
