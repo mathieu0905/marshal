@@ -11,7 +11,7 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from marshal_core.knowledge.models import Base, ensure_schema
+from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
 from marshal_core.review import aggregate_review, verify_findings
 from marshal_pack_cowboy.pack import CowboyPack
@@ -202,7 +202,7 @@ def cmd_seed(a) -> int:
         if store.get_meta("snapshot_version") == a.version:
             return _emit({"ok": True, "seeded": False, "version": a.version})
         src_engine = create_engine(f"sqlite:///{snap_path}")
-        Base.metadata.create_all(src_engine)
+        ensure_schema(src_engine)   # migrate a snapshot that predates a column before ORM read
         src = sessionmaker(bind=src_engine)()
         try:
             n_inv, n_esc = store.seed_authoritative_tables(src)

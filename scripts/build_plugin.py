@@ -11,13 +11,13 @@ from sqlalchemy.orm import sessionmaker
 
 # 让脚本能 import marshal_core(repo 用 src 布局)
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-from marshal_core.knowledge.models import Base, InvariantRegistry, EscapeRegistry  # noqa: E402
+from marshal_core.knowledge.models import ensure_schema, InvariantRegistry, EscapeRegistry  # noqa: E402
 from marshal_core.knowledge.store import Store  # noqa: E402
 
 
 def _session(path):
     engine = create_engine(f"sqlite:///{path}")
-    Base.metadata.create_all(engine)
+    ensure_schema(engine)   # migrate a pre-existing source db before ORM read
     return sessionmaker(bind=engine)()
 
 

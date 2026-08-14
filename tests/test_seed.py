@@ -96,3 +96,38 @@ def test_cli_seed_idempotent_and_version_gated(tmp_path):
     # 版本 bump → 重新 seed
     p3 = _cli(["seed", "--snapshot", str(snap), "--version", "0.0.2"], env)
     assert json.loads(p3.stdout)["seeded"] is True
+
+
+def test_seed_from_snapshot_predating_introduced_at_ts(tmp_path):
+    # Regression: a snapshot created before the introduced_at_ts column must still
+    # seed cleanly. Without ensure_schema on the source engine, the ORM read of
+    # EscapeRegistry raises OperationalError (no such column).
+    from sqlalchemy import create_engine, text
+    from sqlalchemy.orm import sessionmaker
+    from marshal_core.knowledge.models import Base, ensure_schema
+    from marshal_core.knowledge.store import Store
+
+    src_path = tmp_path / "old_snapshot.db"
+    src_eng = create_engine(f"sqlite:///{src_path}")
+    # hand-build an escape_registry WITHOUT introduced_at_ts (the pre-migration shape)
+    with src_eng.begin() as c:
+        c.execute(text(
+            "CREATE TABLE escape_registry (id VARCHAR PRIMARY KEY, domain_pack VARCHAR, "
+            "discovered_at DATETIME, introduced_at VARCHAR, root_cause_class VARCHAR, "
+            "change_ref VARCHAR, description VARCHAR, postmortem_ref VARCHAR, "
+            "spawned_check VARCHAR, status VARCHAR)"))
+        c.execute(text("INSERT INTO escape_registry (id, domain_pack, status) "
+                       "VALUES ('e-old', 'cowboy', 'closed')"))
+        c.execute(text("CREATE TABLE invariant_registry (id VARCHAR PRIMARY KEY, "
+                       "domain_pack VARCHAR, domain VARCHAR, spec_ref VARCHAR, "
+                       "executor_kind VARCHAR, location_repo VARCHAR, location_path VARCHAR, "
+                       "location_test VARCHAR, severity VARCHAR, status VARCHAR, "
+                       "origin VARCHAR, escape_id VARCHAR)"))
+
+    ensure_schema(src_eng)   # the fix: migrate the pre-column snapshot before ORM read
+
+    dest_eng = create_engine(f"sqlite:///{tmp_path}/dest.db")
+    ensure_schema(dest_eng)
+    with sessionmaker(bind=dest_eng)() as dest_s, sessionmaker(bind=src_eng)() as src_s:
+        n_inv, n_esc = Store(dest_s).seed_authoritative_tables(src_s)
+    assert n_esc == 1   # the legacy escape transferred without an OperationalError
