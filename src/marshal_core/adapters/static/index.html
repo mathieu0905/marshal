@@ -89,6 +89,20 @@
               background-size:200% 100%; animation:shimmer 1.3s linear infinite; }
   @keyframes shimmer { from { background-position:200% 0; } to { background-position:-200% 0; } }
 
+  /* Review Queue summary */
+  .summary { padding:15px 18px; }
+  .sumrow { display:flex; gap:14px 30px; align-items:baseline; flex-wrap:wrap; }
+  .sumstat { display:flex; flex-direction:column; }
+  .sumstat .n { font-family:var(--mono); font-size:27px; font-weight:600; line-height:1; color:var(--fg); }
+  .sumstat.go .n { color:var(--accent); }
+  .sumstat.hold .n { color:var(--muted); }
+  .sumstat .l { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-top:7px; }
+  .sumbreak { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:13px; padding-top:12px;
+              border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+  .pill { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--line); border-radius:20px;
+          padding:3px 11px; background:var(--surface2); color:var(--muted); }
+  .pill b { color:var(--fg); font-family:var(--mono); }
+
   /* ---------- Health dashboard ---------- */
   .kpigrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin-bottom:14px; }
   .kpi { position:relative; background:linear-gradient(155deg,var(--card),var(--surface2)); border:1px solid var(--line);
@@ -186,6 +200,33 @@ function bar(label, value, max){
           <div class="bar" style="width:${pct}%"></div>`;
 }
 
+function inboxSummary(prs){
+  const total = prs.length;
+  const eligible = prs.filter(p=>p.eligible).length;
+  const onhold = total - eligible;
+  const held = prs.filter(p=>!p.eligible).map(p=>p.blocked_reason||'');
+  const n = (test)=> held.filter(test).length;
+  const conflict = n(r=>r==='merge conflict');
+  const ci = n(r=>/^CI /.test(r));
+  const reviewed = n(r=>/no new commits/.test(r));
+  const cip = n(r=>/CIP-10/.test(r));
+  const other = onhold - conflict - ci - reviewed - cip;
+  const pill = (emoji,label,c)=> c ? `<span class="pill">${emoji} ${label} <b>${c}</b></span>` : '';
+  return `<div class="card summary">
+    <div class="sumrow">
+      <div class="sumstat go"><span class="n">${eligible}</span><span class="l">ready to review</span></div>
+      <div class="sumstat hold"><span class="n">${onhold}</span><span class="l">on hold</span></div>
+      <div class="sumstat"><span class="n">${total}</span><span class="l">open PRs</span></div>
+    </div>
+    ${onhold ? `<div class="sumbreak"><span>on hold:</span>
+      ${pill('🔀','conflict',conflict)}
+      ${pill('🧪','CI',ci)}
+      ${pill('✅','reviewed',reviewed)}
+      ${pill('🚫','CIP-10',cip)}
+      ${pill('•','other',other)}</div>` : ''}
+  </div>`;
+}
+
 function inboxLoading(){
   return `<div class="loading">
     <div class="spinner"></div>
@@ -216,7 +257,7 @@ async function renderInbox(){
         : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
       return;
     }
-    app.innerHTML = '';
+    app.innerHTML = inboxSummary(prs);
     renderInboxCards(app, prs);
   } catch(e){
     app.dataset.view = '';                       // let the next attempt show the loading state again
