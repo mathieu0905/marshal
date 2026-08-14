@@ -128,13 +128,38 @@ def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
     return proc.stdout
 
 
-def _deep_prompt(job: dict) -> str:
+def _resolve_pr_number(repo: str, change_ref: str):
+    """PR whose HEAD is this commit, so deep review can run in PR mode (full PR diff) like an
+    interactive `/marshal deep <repo> <PR#>`. None if the sha isn't a PR head / lookup fails."""
+    org = os.environ.get("MARSHAL_GH_ORG", "cowboyinc")
+    try:
+        from marshal_core.github_backfill import fetch_pulls
+        pulls = fetch_pulls(org, repo, change_ref)
+    except Exception:
+        return None
+    for p in pulls:                                   # prefer the PR this commit is the HEAD of
+        if (p.get("head") or {}).get("sha") == change_ref:
+            return p.get("number")
+    return pulls[0].get("number") if pulls else None
+
+
+def _deep_prompt(job: dict, pr_number=None) -> str:
     budget_min = int(os.environ.get("MARSHAL_DEEP_BUDGET_MIN", "40"))
     max_findings = int(os.environ.get("MARSHAL_DEEP_MAX_FINDINGS", "8"))
+    if pr_number is not None:
+        target = (
+            f"Run `/marshal deep {job['repo']} {pr_number}` — the deep review gate on PR "
+            f"#{pr_number} of cowboyinc/{job['repo']}, reviewing the FULL PR diff (gh pr diff), "
+            f"not just a single commit.\n"
+        )
+    else:
+        target = (
+            f"Run the /marshal deep review gate on the current git worktree, checked out at "
+            f"commit {job['change_ref']} of the {job['repo']} repo. Review the DIFF of this commit "
+            f"against its parent and that change's immediate blast radius — NOT the whole repository.\n"
+        )
     return (
-        f"Run the /marshal deep review gate on the current git worktree, checked out at "
-        f"commit {job['change_ref']} of the {job['repo']} repo. Review the DIFF of this commit "
-        f"against its parent and that change's immediate blast radius — NOT the whole repository.\n"
+        target +
         f"HARD BUDGET: converge within about {budget_min} minutes. Use a FOCUSED lens set (at "
         f"most 3, the highest-risk for this diff) and cap proven findings at {max_findings}. If "
         f"the change is large, prioritise consensus / econ-conservation / security surfaces and "
@@ -151,8 +176,9 @@ def _deep_prompt(job: dict) -> str:
 
 
 def _run_deep(store: Store, job: dict) -> None:
+    pr = _resolve_pr_number(job["repo"], job["change_ref"])   # PR mode (full diff) when it's a PR head
     with _deep_worktree(job["repo"], job["change_ref"]) as wt:
-        _invoke_claude(_deep_prompt(job), cwd=wt, timeout_s=_deep_timeout())
+        _invoke_claude(_deep_prompt(job, pr), cwd=wt, timeout_s=_deep_timeout())
         verdict = _parse_verdict(os.path.join(wt, VERDICT_FILE))
     gr = store.record_gate_run(
         change_ref=job["change_ref"], job_id=f"deep-{job['id']}",
