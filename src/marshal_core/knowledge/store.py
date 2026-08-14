@@ -51,6 +51,59 @@ class Store:
     def get_gate_run(self, run_id: int) -> GateRun | None:
         return self.s.get(GateRun, run_id)
 
+    @staticmethod
+    def inbox_summary(evidence: dict | None) -> dict:
+        """Project a gate_run's free-form evidence into a STABLE inbox card schema.
+
+        gate_run.evidence has no fixed shape: production rows nest everything under
+        `evidence.gates` with per-review keys, while flat fixtures put fields at the
+        top level. This normalizer reads either shape and always returns the same keys
+        (null where unknown), so the SPA never has to guess. Best-effort by design —
+        fields the source doesn't carry come back null, not fabricated.
+        """
+        ev = evidence or {}
+        g = ev.get("gates") if isinstance(ev.get("gates"), dict) else ev
+        if not isinstance(g, dict):
+            g = {}
+
+        def _first_str(*keys):
+            for k in keys:
+                v = g.get(k)
+                if isinstance(v, str) and v.strip():
+                    return v
+            return None
+
+        def _count(*keys):
+            for k in keys:
+                v = g.get(k)
+                if isinstance(v, bool):
+                    continue
+                if isinstance(v, int):
+                    return v
+                if isinstance(v, (list, dict)):
+                    return len(v)
+            return None
+
+        inv_pass = inv_total = None
+        if isinstance(g.get("invariants_run"), int) and not isinstance(g.get("invariants_run"), bool):
+            inv_total = g["invariants_run"]
+            inv_pass = g.get("invariants_pass") if isinstance(g.get("invariants_pass"), int) else None
+        elif isinstance(g.get("invariants"), dict):
+            vals = list(g["invariants"].values())
+            inv_total = len(vals)
+            inv_pass = sum(1 for x in vals if str(x).lower() == "pass")
+
+        return {
+            "tier": _first_str("tier"),
+            "cip": _first_str("cip"),
+            "repo": _first_str("repo"),
+            "invariants_pass": inv_pass,
+            "invariants_total": inv_total,
+            "findings": _count("high_sev_findings", "findings"),
+            "advisory": _count("advisory_findings", "advisory"),
+            "headline": _first_str("summary", "headline", "change", "reason", "remedy"),
+        }
+
     def list_needs_human(self, limit: int = 50) -> list[dict]:
         stmt = (select(GateRun)
                 .where(GateRun.verdict == "needs_human")
@@ -59,6 +112,7 @@ class Store:
         return [
             {"id": r.id, "change_ref": r.change_ref, "job_id": r.job_id,
              "verdict": r.verdict, "evidence": r.evidence,
+             "summary": self.inbox_summary(r.evidence),
              "created_at": r.created_at.isoformat()}
             for r in self.s.scalars(stmt)
         ]
