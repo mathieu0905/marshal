@@ -125,9 +125,9 @@ class Store:
             "ratchet_increment": esc_closed,   # 每个 closed escape 至少织出一条检查
             "gate_runs_total": gate_total,
             "gate_runs_by_verdict": gate_by_verdict,
+            "mean_time_to_detection": self.mttd(),
             "unavailable": {
                 "escape_rate": "needs a total-bug denominator (not tracked)",
-                "mean_time_to_detection": "needs introduced_at as a timestamp (currently free string)",
                 "tiered_review_coverage": "needs a Classifications table (not modeled in this slice)",
                 "cip_conformance_pct": "use `conformance --spec-root <cowboy>`",
             },

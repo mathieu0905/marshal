@@ -50,8 +50,10 @@ def test_health_composes_metrics_and_breakdowns(client):
     assert "escape_breakdown" in body
     assert "invariant_breakdown" in body
     assert "verdict_timeseries" in body
-    # honest gaps carried through, including MTTD still pending in Phase 1
-    assert "mean_time_to_detection" in body["unavailable"]
+    # honest gaps carried through (but MTTD now computed in Phase 4)
+    assert "mean_time_to_detection" not in body["unavailable"]
+    assert "mean_time_to_detection" in body                      # now a real top-level metric
+    assert "count" in body["mean_time_to_detection"]
 
 
 def test_escapes_endpoint_returns_breakdown(client):
