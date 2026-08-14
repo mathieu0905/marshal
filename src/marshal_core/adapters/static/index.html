@@ -102,6 +102,15 @@
   .pill { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--line); border-radius:20px;
           padding:3px 11px; background:var(--surface2); color:var(--muted); }
   .pill b { color:var(--fg); font-family:var(--mono); }
+  .sumstat.click { cursor:pointer; padding:5px 10px; margin:-5px -4px; border-radius:9px; }
+  .sumstat.click:hover { background:var(--surface2); }
+  .sumstat.active { background:var(--surface2); box-shadow:inset 0 -2px 0 var(--accent); }
+  .pill.click { cursor:pointer; }
+  .pill.click:hover { border-color:var(--accent); }
+  .pill.active { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  .pill.active b { color:var(--accent-ink); }
+  .clearf { cursor:pointer; color:var(--link); margin-left:2px; }
+  .clearf:hover { text-decoration:underline; }
 
   /* ---------- Health dashboard ---------- */
   .kpigrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin-bottom:14px; }
@@ -191,6 +200,7 @@
 const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let current = 'inbox';
+let _inboxPrs = [], _inboxFilter = 'all';
 
 async function getJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error(u+' '+r.status); return r.json(); }
 
@@ -200,31 +210,64 @@ function bar(label, value, max){
           <div class="bar" style="width:${pct}%"></div>`;
 }
 
-function inboxSummary(prs){
-  const total = prs.length;
-  const eligible = prs.filter(p=>p.eligible).length;
-  const onhold = total - eligible;
-  const held = prs.filter(p=>!p.eligible).map(p=>p.blocked_reason||'');
-  const n = (test)=> held.filter(test).length;
-  const conflict = n(r=>r==='merge conflict');
-  const ci = n(r=>/^CI /.test(r));
-  const reviewed = n(r=>/no new commits/.test(r));
-  const cip = n(r=>/CIP-10/.test(r));
-  const other = onhold - conflict - ci - reviewed - cip;
-  const pill = (emoji,label,c)=> c ? `<span class="pill">${emoji} ${label} <b>${c}</b></span>` : '';
+function holdCategory(r){
+  r = r || '';
+  if(r==='merge conflict') return 'conflict';
+  if(/^CI /.test(r)) return 'ci';
+  if(/no new commits/.test(r)) return 'reviewed';
+  if(/CIP-10/.test(r)) return 'cip';
+  return 'other';
+}
+
+function matchFilter(p, f){
+  if(f==='all') return true;
+  if(f==='ready') return p.eligible;
+  if(f==='hold') return !p.eligible;
+  return !p.eligible && holdCategory(p.blocked_reason)===f;   // a specific on-hold category
+}
+
+function inboxSummary(prs, filter){
+  const total = prs.length, eligible = prs.filter(p=>p.eligible).length, onhold = total - eligible;
+  const cats = {conflict:0, ci:0, reviewed:0, cip:0, other:0};
+  prs.filter(p=>!p.eligible).forEach(p=>cats[holdCategory(p.blocked_reason)]++);
+  const act = f => filter===f ? ' active' : '';
+  const stat = (f,val,label,cls)=>`<div class="sumstat click${cls||''}${act(f)}" data-f="${f}"><span class="n">${val}</span><span class="l">${label}</span></div>`;
+  const pill = (f,emoji,label,c)=> c ? `<span class="pill click${act(f)}" data-f="${f}">${emoji} ${label} <b>${c}</b></span>` : '';
   return `<div class="card summary">
     <div class="sumrow">
-      <div class="sumstat go"><span class="n">${eligible}</span><span class="l">ready to review</span></div>
-      <div class="sumstat hold"><span class="n">${onhold}</span><span class="l">on hold</span></div>
-      <div class="sumstat"><span class="n">${total}</span><span class="l">open PRs</span></div>
+      ${stat('ready', eligible, 'ready to review', ' go')}
+      ${stat('hold', onhold, 'on hold', ' hold')}
+      ${stat('all', total, 'open PRs')}
     </div>
     ${onhold ? `<div class="sumbreak"><span>on hold:</span>
-      ${pill('🔀','conflict',conflict)}
-      ${pill('🧪','CI',ci)}
-      ${pill('✅','reviewed',reviewed)}
-      ${pill('🚫','CIP-10',cip)}
-      ${pill('•','other',other)}</div>` : ''}
+      ${pill('conflict','🔀','conflict',cats.conflict)}
+      ${pill('ci','🧪','CI',cats.ci)}
+      ${pill('reviewed','✅','reviewed',cats.reviewed)}
+      ${pill('cip','🚫','CIP-10',cats.cip)}
+      ${pill('other','•','other',cats.other)}
+      ${filter!=='all' ? `<span class="clearf" data-f="all">show all ✕</span>` : ''}</div>` : ''}
   </div>`;
+}
+
+function paintInbox(){
+  const app = document.getElementById('app');
+  app.innerHTML = inboxSummary(_inboxPrs, _inboxFilter);
+  const shown = _inboxPrs.filter(p=>matchFilter(p, _inboxFilter));
+  if(!shown.length){
+    const m = document.createElement('p');
+    m.className = 'muted'; m.style.padding = '4px 2px';
+    m.textContent = 'No PRs match this filter.';
+    app.appendChild(m);
+  } else {
+    renderInboxCards(app, shown);
+  }
+  app.querySelectorAll('[data-f]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const f = el.getAttribute('data-f');
+      _inboxFilter = (_inboxFilter===f && f!=='all') ? 'all' : f;   // click active filter again -> clear
+      paintInbox();
+    });
+  });
 }
 
 function inboxLoading(){
@@ -251,14 +294,14 @@ async function renderInbox(){
   try {
     const data = await getJSON('/api/inbox');
     const prs = data.prs || [];
+    _inboxPrs = prs;
     if(!prs.length){
       app.innerHTML = data.github_token
         ? '<p class="muted">No open PRs across the bound repos.</p>'
         : '<p class="muted">No PRs — set GITHUB_TOKEN so the dashboard can list open PRs. Bound repos: '+esc((data.repos||[]).join(', '))+'</p>';
       return;
     }
-    app.innerHTML = inboxSummary(prs);
-    renderInboxCards(app, prs);
+    paintInbox();
   } catch(e){
     app.dataset.view = '';                       // let the next attempt show the loading state again
     throw e;                                      // surfaced by show()'s catch
