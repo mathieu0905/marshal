@@ -117,6 +117,24 @@
   .gaprow:first-child { border-top:none; padding-top:0; margin-top:0; }
   .gaprow .gk { color:var(--fg); font-weight:600; flex:0 0 auto; }
 
+  /* plain-language help */
+  .help { font-size:12.5px; color:var(--muted); line-height:1.55; margin:-2px 0 13px; }
+  .help b { color:var(--fg); font-weight:600; }
+  .g { color:var(--pass); font-weight:600; } .a { color:var(--needs); font-weight:600; } .r { color:var(--block); font-weight:600; }
+  .kpi .help { font-size:11px; margin:7px 0 0; }
+  .intro { background:linear-gradient(150deg,var(--surface2),var(--card)); border:1px solid var(--line);
+           border-left:3px solid var(--accent); border-radius:12px; padding:15px 17px; margin-bottom:14px; box-shadow:var(--shadow-card); }
+  .intro h2 { margin:0 0 6px; font-family:var(--serif); font-size:16px; font-weight:600; }
+  .intro p { margin:0; font-size:13px; color:var(--muted); line-height:1.6; }
+  .legend-key { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:11px; font-size:12.5px; }
+  .legend-key span { display:flex; align-items:center; gap:6px; color:var(--fg); }
+  .legend-key i { width:12px; height:12px; border-radius:3px; flex:0 0 auto; }
+  .glossary { margin-bottom:14px; }
+  .glossary summary { font-weight:600; color:var(--link); font-size:13px; }
+  .glossary dl { margin:12px 0 0; }
+  .glossary dt { font-family:var(--mono); font-size:12px; font-weight:600; color:var(--fg); margin-top:11px; }
+  .glossary dd { margin:3px 0 0; font-size:12.5px; color:var(--muted); line-height:1.55; }
+
   /* ---------- dark theme (palette re-map; all components read the vars) ---------- */
   @media (prefers-color-scheme:dark){ :root{
     --bg:#131110; --card:#1d1a17; --surface2:#26221d; --line:#332e28; --fg:#f2ece4; --muted:#a79a8e;
@@ -202,11 +220,11 @@ async function renderInbox(){
 
 const fmt = (n) => (typeof n==='number' ? n.toLocaleString('en-US') : n);
 
-function kpiTile(to, label, sub, cls){
+function kpiTile(to, label, sub, cls, help){
   const isInt = Number.isInteger(to);
   return `<div class="kpi ${cls||''}">
     <div class="n" data-to="${to}" data-int="${isInt?1:0}">${isInt?fmt(to):to.toFixed(1)}</div>
-    <div class="l">${esc(label)}</div>${sub?`<div class="s">${esc(sub)}</div>`:''}</div>`;
+    <div class="l">${esc(label)}</div>${sub?`<div class="s">${esc(sub)}</div>`:''}${help?`<div class="help">${esc(help)}</div>`:''}</div>`;
 }
 
 function donutSVG(segments, centerN, centerL){
@@ -297,8 +315,6 @@ async function renderHealth(){
   const svMax = Math.max(1, ...Object.values(sv));
   const stColor = {active:'var(--pass)','candidate-red':'var(--block)',pending:'var(--needs)'};
   const svColor = {high:'var(--block)',medium:'var(--needs)',mid:'var(--needs)',low:'var(--muted)'};
-  const gaps = h.unavailable || {};
-  const mttd = h.mean_time_to_detection || {};
 
   const legend = [
     ['pass', passN, 'var(--pass)'], ['human review', human, 'var(--needs)'], ['block', blockN, 'var(--block)'],
@@ -311,19 +327,41 @@ async function renderHealth(){
      <div class="track" style="width:${(100*nn/svMax).toFixed(1)}%"><i style="width:100%;background:${svColor[k]||'var(--muted)'}"></i></div></div>`).join('');
   const red = (ib.candidate_red_ids||[]).map(id=>`<span class="chip-red" title="${esc(id)}">${esc(id)}</span>`).join('');
 
-  const mttdTxt = mttd.mean_days!=null
-    ? `<b>${esc(mttd.mean_days)}</b> days mean over ${esc(mttd.count)} escapes`
-    : `not yet measurable — 0 timestamped escapes`;
-
   app.innerHTML = `
-    <div class="kpigrid">
-      ${kpiTile(total, 'gate runs', `${fmt(passN)} pass · ${fmt(human)} human`, '')}
-      ${kpiTile(Number(passRate.toFixed(1)), 'pass rate', `${fmt(blockN)} blocked`, passRate>=50?'good':'warn')}
-      ${kpiTile(h.invariant_gate_count||0, 'invariants gated', `${h.ratchet_invariants||0} ratcheted`, '')}
-      ${kpiTile(h.escapes_open||0, 'open escapes', `${h.escapes_closed||0} closed`, (h.escapes_open||0)>0?'warn':'good')}
+    <div class="intro">
+      <h2>🤠 How healthy is our review process?</h2>
+      <p><b>Marshal is a robot code reviewer.</b> Every time someone proposes a code change (a
+      “pull request”), Marshal reviews it and reaches a decision. This page is the scoreboard for all
+      those reviews. One colour code is used everywhere:</p>
+      <div class="legend-key">
+        <span><i style="background:var(--pass)"></i><b class="g">green = pass</b> — looks safe</span>
+        <span><i style="background:var(--needs)"></i><b class="a">amber = human review</b> — a person should look</span>
+        <span><i style="background:var(--block)"></i><b class="r">red = block</b> — a problem was found</span>
+      </div>
     </div>
 
+    <div class="kpigrid">
+      ${kpiTile(total, 'gate runs', `${fmt(passN)} pass · ${fmt(human)} human`, '', 'Total reviews Marshal has ever run.')}
+      ${kpiTile(Number(passRate.toFixed(1)), 'pass rate', `${fmt(blockN)} blocked`, passRate>=50?'good':'warn', 'Share that came back clean. Higher = better.')}
+      ${kpiTile(h.invariant_gate_count||0, 'invariants gated', `${h.ratchet_invariants||0} ratcheted`, '', 'Auto safety-rules checked on every change.')}
+      ${kpiTile(h.escapes_open||0, 'open escapes', `${h.escapes_closed||0} closed`, (h.escapes_open||0)>0?'warn':'good', 'Known bugs not fully fixed yet. Lower = better.')}
+    </div>
+
+    <details class="card glossary"><summary>📖 Plain-English glossary — tap to expand</summary>
+      <dl>
+        <dt>Pull request (PR)</dt><dd>A proposed change to the code, waiting to be merged in.</dd>
+        <dt>Gate run</dt><dd>One Marshal review of one PR. Every gate run ends in a verdict.</dd>
+        <dt>Verdict</dt><dd>The result of a review: <span class="g">pass</span> (safe), <span class="a">human review</span> (a person should decide), or <span class="r">block</span> (a real problem).</dd>
+        <dt>Escape</dt><dd>A real bug that got <em>past</em> a review and was caught later. The thing we most want to avoid.</dd>
+        <dt>Ratchet</dt><dd>Each escape is turned into a permanent test so that exact bug can never come back. The count only goes up — it “ratchets”.</dd>
+        <dt>Invariant</dt><dd>A fixed rule Marshal checks on every change, e.g. “money is never created or destroyed”.</dd>
+      </dl>
+    </details>
+
     <div class="card chartcard"><h3>Verdicts over time · ${h.verdict_timeseries?h.verdict_timeseries.length:0} active days</h3>
+      <div class="help">Each vertical slice is <b>one day</b>. Taller = more reviews that day. The colours stack:
+        <span class="g">green (pass)</span> at the bottom, <span class="a">amber (human)</span> in the middle,
+        <span class="r">red (block)</span> on top. <b>Hover any day</b> to see its exact numbers.</div>
       ${areaChartSVG(h.verdict_timeseries||[])}
       <div class="row" style="margin-top:10px">
         <span class="tag" style="background:var(--pass)">pass</span>
@@ -335,6 +373,8 @@ async function renderHealth(){
 
     <div class="grid2">
       <div class="card"><h3>Gate outcomes</h3>
+        <div class="help">Every review ends in exactly one of three outcomes. A bigger slice = more reviews
+          ended that way. You want a <b class="g">fat green</b> slice and a <b class="r">thin red</b> one.</div>
         <div class="donutwrap">${donutSVG(
             [{value:passN,color:'var(--pass)'},{value:human,color:'var(--needs)'},{value:blockN,color:'var(--block)'}],
             total, 'GATE RUNS')}
@@ -344,20 +384,22 @@ async function renderHealth(){
         </div>
       </div>
       <div class="card"><h3>Invariant coverage · ${stTot} total</h3>
+        <div class="help">The auto safety-rules Marshal enforces. <b>active</b> = enforced right now;
+          <b class="r">candidate-red</b> = a known gap not enforced yet; <b>pending</b> = being added.
+          “Severity” = how bad it is if that rule ever breaks.</div>
         <div class="seg">${stSeg}</div>
         <div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:10px 16px">${stLeg}</div>
         <h3 style="margin-top:14px">By severity</h3>${svBars}
-        ${red?`<div style="margin-top:8px"><span class="muted" style="font-size:12px">candidate-red gaps</span><br>${red}</div>`:''}
+        ${red?`<div style="margin-top:8px"><span class="muted" style="font-size:12px">candidate-red gaps (rules we still need to enforce)</span><br>${red}</div>`:''}
       </div>
     </div>
 
-    <div class="card"><h3>Ratchet — escapes by root cause <span class="muted" style="text-transform:none;letter-spacing:0">(closed ▬ / open ▬)</span></h3>
+    <div class="card"><h3>Ratchet — escapes by root cause</h3>
+      <div class="help">An <b>escape</b> is a real bug that slipped past review and was caught later. Marshal turns
+        each one into a permanent test (a <b>ratchet</b>) so it can’t recur. Each bar is a type of bug;
+        longer = more escapes of that type. <b class="g">Green = fixed &amp; guarded</b>,
+        <b class="a">amber = still open</b>.</div>
       ${escapeBars(h.escape_breakdown||[])}
-    </div>
-
-    <div class="card"><h3>Honest gaps — what we don't (yet) measure</h3>
-      <div class="gaprow"><span class="gk">MTTD</span><span>${mttdTxt}${mttd.excluded?` · ${esc(mttd.excluded)} excluded (no introduced_at timestamp)`:''}</span></div>
-      ${Object.entries(gaps).map(([k,why])=>`<div class="gaprow"><span class="gk">${esc(k)}</span><span>${esc(why)}</span></div>`).join('')}
     </div>`;
 
   wireChart(app);
