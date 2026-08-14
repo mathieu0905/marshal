@@ -236,3 +236,15 @@ def test_invoke_claude_omits_perm_flags_when_unset(tmp_path, monkeypatch):
     out = _invoke_claude("x", cwd=str(tmp_path), timeout_s=10)
     assert "--permission-mode" not in out
     assert "--allowedTools" not in out
+
+
+def test_deep_prompt_is_scoped_and_budgeted(monkeypatch):
+    from marshal_core.worker import _deep_prompt
+    monkeypatch.setenv("MARSHAL_DEEP_BUDGET_MIN", "40")
+    monkeypatch.setenv("MARSHAL_DEEP_MAX_FINDINGS", "8")
+    p = _deep_prompt({"change_ref": "abc123", "repo": "node"})
+    assert "abc123" in p and "node" in p
+    assert "DIFF of this commit" in p and "NOT the whole repository" in p   # scoped
+    assert "40 minutes" in p and "cap proven findings at 8" in p            # budgeted
+    assert "NEVER run unbounded" in p                                        # converge, don't hang
+    assert "do NOT post" in p and "MARSHAL_VERDICT.json" in p               # local-only + contract

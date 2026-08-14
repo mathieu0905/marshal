@@ -129,15 +129,24 @@ def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
 
 
 def _deep_prompt(job: dict) -> str:
+    budget_min = int(os.environ.get("MARSHAL_DEEP_BUDGET_MIN", "40"))
+    max_findings = int(os.environ.get("MARSHAL_DEEP_MAX_FINDINGS", "8"))
     return (
-        f"Run the full /marshal deep review gate on the current git worktree, which is "
-        f"checked out at commit {job['change_ref']} of the {job['repo']} repo. "
+        f"Run the /marshal deep review gate on the current git worktree, checked out at "
+        f"commit {job['change_ref']} of the {job['repo']} repo. Review the DIFF of this commit "
+        f"against its parent and that change's immediate blast radius — NOT the whole repository.\n"
+        f"HARD BUDGET: converge within about {budget_min} minutes. Use a FOCUSED lens set (at "
+        f"most 3, the highest-risk for this diff) and cap proven findings at {max_findings}. If "
+        f"the change is large, prioritise consensus / econ-conservation / security surfaces and "
+        f"prove the highest-priority hypotheses first. As you approach the budget, STOP starting "
+        f"new prove agents and emit a verdict NOW, marking any hypotheses you could not finish as "
+        f"degraded/uncertain (verdict then at least needs_human). NEVER run unbounded — a timely "
+        f"degraded verdict is REQUIRED over a perfect one that never lands.\n"
         f"This is a LOCAL-ONLY dashboard-triggered review: do NOT post anything to GitHub, "
-        f"Linear, or any external service. When the review is complete, write your final "
-        f"verdict to a file named {VERDICT_FILE} in the current working directory, as JSON "
-        f'with keys: "verdict" (one of "pass", "needs_human", "block"; map an escalate to '
-        f'"needs_human"), "summary" (string), "findings" (array of strings), '
-        f'"invariants_run" (int), "invariants_pass" (int).'
+        f"Linear, or any external service. When done, write your final verdict to a file named "
+        f"{VERDICT_FILE} in the current working directory, as JSON with keys: \"verdict\" (one of "
+        f'"pass", "needs_human", "block"; map an escalate to "needs_human"), "summary" (string), '
+        f'"findings" (array of strings), "invariants_run" (int), "invariants_pass" (int).'
     )
 
 
