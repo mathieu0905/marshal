@@ -128,6 +128,12 @@ def api_invariants():
         return {"invariants": Store(s).invariant_rows()}
 
 
+@app.get("/api/escape-timeline")
+def api_escape_timeline():
+    with _Session() as s:
+        return {"timeline": Store(s).escape_timeline()}
+
+
 @app.get("/api/worker")
 def api_worker():
     """Worker liveness + queue depth for the dashboard's status strip. `state` is

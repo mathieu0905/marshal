@@ -61,6 +61,19 @@ class Store:
         return {"by_status": by_status, "by_severity": by_severity,
                 "candidate_red_ids": candidate_red_ids}
 
+    def escape_timeline(self) -> list[dict]:
+        """Cumulative escape count by discovery date — the ratchet population over time
+        (each escape becomes a permanent check)."""
+        days: dict[str, int] = {}
+        for (d,) in self.s.execute(select(EscapeRegistry.discovered_at)):
+            if d is not None:
+                days[d.date().isoformat()] = days.get(d.date().isoformat(), 0) + 1
+        out, cum = [], 0
+        for day in sorted(days):
+            cum += days[day]
+            out.append({"date": day, "cumulative": cum})
+        return out
+
     def list_gate_runs(self, limit: int = 50) -> list[dict]:
         """Most-recent gate runs for the Health › Verdicts drill-down table."""
         out = []

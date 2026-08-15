@@ -239,6 +239,8 @@
   .dtable tbody tr:hover td { background:var(--surface2); }
   .dtable td.mono, .dtable .mono { font-family:var(--mono); font-size:11.5px; }
   .vb { display:inline-block; font-family:var(--mono); font-size:10.5px; font-weight:600; border:1px solid; border-radius:6px; padding:1px 8px; }
+  .fchips { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin:2px 0 12px; }
+  .pager { display:flex; gap:10px; align-items:center; margin-top:13px; font-size:12px; color:var(--muted); }
 
   /* ---------- dark theme (palette re-map; all components read the vars) ---------- */
   @media (prefers-color-scheme:dark){ :root{
@@ -290,6 +292,8 @@ const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','
 let current = 'inbox';
 let _inboxPrs = [], _inboxFilter = 'all', _collapsed = new Set(), _group = false;
 let _jobs = {}, _polling = new Set();   // change_ref(head_sha) -> {id,kind,status,result,error}; live poll loops
+let _vRuns = [], _vFilter = 'all', _vPage = 0;                 // Verdicts table: filter + page
+let _invRows = [], _invSev = 'all', _invStatus = 'all';        // Invariants table: severity + status filters
 
 async function getJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error(u+' '+r.status); return r.json(); }
 
@@ -812,6 +816,54 @@ function invariantTable(rows){
   </tbody></table></div>`;
 }
 
+function chips(items, active, attr){
+  return items.map(it=>`<span class="pill click${it.v===active?' active':''}" ${attr}="${esc(it.v)}">${esc(it.label)}${it.n!=null?` <b>${it.n}</b>`:''}</span>`).join('');
+}
+function countLineSVG(pts){   // pts:[{x,y}] absolute counts — cumulative growth
+  if(!pts.length) return '<p class="muted">no data</p>';
+  const W=720,H=190,padL=36,padR=12,padT=12,padB=22,iw=W-padL-padR,ih=H-padT-padB,n=pts.length;
+  const max=Math.max(1,...pts.map(p=>p.y));
+  const X=i=>padL+(n===1?iw/2:iw*i/(n-1)), Y=v=>padT+ih*(1-v/max);
+  let grid=''; for(let t=0;t<=4;t++){ const y=padT+ih*t/4, val=Math.round(max*(1-t/4));
+    grid+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" style="stroke:var(--line)"/>`+
+          `<text x="${padL-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="9" style="fill:var(--muted)">${val}</text>`; }
+  const p=pts.map((d,i)=>`${X(i).toFixed(1)},${Y(d.y).toFixed(1)}`).join(' ');
+  const xi=[...new Set([0,Math.floor((n-1)/2),n-1])];
+  const xlab=xi.map(i=>`<text x="${X(i).toFixed(1)}" y="${H-7}" text-anchor="middle" font-size="9" style="fill:var(--muted)">${esc(pts[i].x)}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:auto">${grid}`+
+    `<polygon points="${padL},${Y(0).toFixed(1)} ${p} ${(W-padR)},${Y(0).toFixed(1)}" style="fill:var(--accent);fill-opacity:.14"/>`+
+    `<polyline points="${p}" style="fill:none;stroke:var(--accent)" stroke-width="2"/>${xlab}</svg>`;
+}
+const VCAT = { all:()=>true, pass:r=>r.verdict==='pass', human:r=>r.verdict==='needs_human'||r.verdict==='escalate', block:r=>r.verdict==='block' };
+function paintVerdictTable(){
+  const el=document.getElementById('recentRuns'); if(!el) return;
+  const cnt=f=>_vRuns.filter(VCAT[f]).length;
+  const filtered=_vRuns.filter(VCAT[_vFilter]||VCAT.all);
+  const PAGE=25, pages=Math.max(1,Math.ceil(filtered.length/PAGE));
+  if(_vPage>=pages) _vPage=pages-1; if(_vPage<0) _vPage=0;
+  const slice=filtered.slice(_vPage*PAGE,(_vPage+1)*PAGE);
+  const chipHtml=chips([{v:'all',label:'all',n:_vRuns.length},{v:'pass',label:'pass',n:cnt('pass')},
+                        {v:'human',label:'human',n:cnt('human')},{v:'block',label:'block',n:cnt('block')}], _vFilter,'data-vf');
+  el.innerHTML=`<div class="fchips">${chipHtml}</div>${verdictTable(slice)}
+    <div class="pager"><button class="btn" data-vpage="-1" ${_vPage<=0?'disabled':''}>‹ prev</button>
+      <span>page ${_vPage+1} / ${pages} · ${filtered.length} runs</span>
+      <button class="btn" data-vpage="1" ${_vPage>=pages-1?'disabled':''}>next ›</button></div>`;
+  el.querySelectorAll('[data-vf]').forEach(c=>c.addEventListener('click',()=>{ _vFilter=c.getAttribute('data-vf'); _vPage=0; paintVerdictTable(); }));
+  el.querySelectorAll('[data-vpage]').forEach(b=>b.addEventListener('click',()=>{ _vPage+=(+b.getAttribute('data-vpage')); paintVerdictTable(); }));
+}
+function paintInvTable(){
+  const el=document.getElementById('invTable'); if(!el) return;
+  const rows=_invRows.filter(r=>(_invSev==='all'||r.severity===_invSev)&&(_invStatus==='all'||r.status===_invStatus));
+  const sevs=[...new Set(_invRows.map(r=>r.severity).filter(Boolean))];
+  const stats=[...new Set(_invRows.map(r=>r.status).filter(Boolean))];
+  const sevChips=chips([{v:'all',label:'all severities'}].concat(sevs.map(s=>({v:s,label:s,n:_invRows.filter(r=>r.severity===s).length}))), _invSev,'data-isev');
+  const stChips=chips([{v:'all',label:'all statuses'}].concat(stats.map(s=>({v:s,label:s,n:_invRows.filter(r=>r.status===s).length}))), _invStatus,'data-istatus');
+  el.innerHTML=`<div class="fchips">${sevChips}</div><div class="fchips">${stChips}</div>
+    <div class="muted" style="font-size:12px;margin:2px 0 8px">${rows.length} of ${_invRows.length} invariants</div>${invariantTable(rows)}`;
+  el.querySelectorAll('[data-isev]').forEach(c=>c.addEventListener('click',()=>{ _invSev=c.getAttribute('data-isev'); paintInvTable(); }));
+  el.querySelectorAll('[data-istatus]').forEach(c=>c.addEventListener('click',()=>{ _invStatus=c.getAttribute('data-istatus'); paintInvTable(); }));
+}
+
 async function renderVerdicts(){
   const h=await getJSON('/api/health'); const app=document.getElementById('app'); app.dataset.view='verdicts';
   const v=h.gate_runs_by_verdict||{}, total=h.gate_runs_total||0;
@@ -837,7 +889,7 @@ async function renderVerdicts(){
       ${areaChartSVG(ts)}</div>
     <div class="card"><h3>Recent gate runs</h3><div id="recentRuns"><p class="muted">loading…</p></div></div>`;
   wireChart(app); countUp(app);
-  try { const rr=await getJSON('/api/gate-runs?limit=40'); const el=document.getElementById('recentRuns'); if(el) el.innerHTML=verdictTable(rr.runs); } catch(e){}
+  try { const rr=await getJSON('/api/gate-runs?limit=200'); _vRuns=rr.runs||[]; paintVerdictTable(); } catch(e){}
 }
 
 async function renderEscapes(){
@@ -850,10 +902,15 @@ async function renderEscapes(){
       ${kpiTile(closed,'closed & ratcheted','','good','Fixed and locked with a test.')}
       ${kpiTile(h.ratchet_invariants||0,'ratchet invariants',`${h.invariant_gate_count||0} gated`,'','Permanent checks the ratchet added.')}
     </div>
+    <div class="card"><h3>Ratchet growth · cumulative escapes over time</h3>
+      <div class="help">Every escape becomes a permanent check. This running total is the ratchet population — steady growth means the safety net keeps expanding.</div>
+      <div id="escGrowth"><p class="muted">loading…</p></div></div>
     <div class="card"><h3>Escapes by root cause · all ${eb.length} classes</h3>
       <div class="help">Each bar is a class of escaped bug. <b class="g">Green = closed &amp; guarded</b>, <b class="a">amber = still open</b>; longer = more escapes of that type.</div>
       ${escapeBarsFull(eb)}</div>`;
   countUp(app);
+  try { const t=await getJSON('/api/escape-timeline'); const el=document.getElementById('escGrowth');
+        if(el) el.innerHTML=countLineSVG((t.timeline||[]).map(d=>({x:d.date.slice(5), y:d.cumulative}))); } catch(e){}
 }
 
 async function renderInvariants(){
@@ -880,7 +937,7 @@ async function renderInvariants(){
     </div>
     <div class="card"><h3>All invariants</h3><div id="invTable"><p class="muted">loading…</p></div></div>`;
   countUp(app);
-  try { const inv=await getJSON('/api/invariants'); const el=document.getElementById('invTable'); if(el) el.innerHTML=invariantTable(inv.invariants); } catch(e){}
+  try { const inv=await getJSON('/api/invariants'); _invRows=inv.invariants||[]; paintInvTable(); } catch(e){}
 }
 
 const VIEWS = {

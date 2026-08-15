@@ -211,3 +211,20 @@ def test_invariants_endpoint_lists(client):
     r = client.get("/api/invariants")
     assert r.status_code == 200
     assert isinstance(r.json()["invariants"], list)           # empty in the bare test DB
+
+
+def test_escape_timeline_endpoint_cumulative(client):
+    from datetime import datetime, timezone
+    import marshal_core.adapters.api as api
+    from marshal_core.knowledge.models import EscapeRegistry
+    with api._Session() as s:
+        s.add(EscapeRegistry(id="e1", discovered_at=datetime(2026, 6, 1, tzinfo=timezone.utc),
+                             root_cause_class="x", status="closed"))
+        s.add(EscapeRegistry(id="e2", discovered_at=datetime(2026, 6, 1, tzinfo=timezone.utc),
+                             root_cause_class="y", status="open"))
+        s.add(EscapeRegistry(id="e3", discovered_at=datetime(2026, 6, 3, tzinfo=timezone.utc),
+                             root_cause_class="z", status="closed"))
+        s.commit()
+    tl = client.get("/api/escape-timeline").json()["timeline"]
+    assert [d["cumulative"] for d in tl] == [2, 3]         # 2 on 06-01, then +1 on 06-03
+    assert tl[0]["date"] == "2026-06-01" and tl[1]["date"] == "2026-06-03"
