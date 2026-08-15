@@ -212,6 +212,7 @@ def build_inbox(session, repos=None) -> list[dict]:
                 "head_sha": head_sha, "updated_at": pr.get("updated_at", ""),
                 "draft": bool(pr.get("draft")),
                 "eligible": eligible, "blocked_reason": reason,
+                "ci_state": ci, "mergeable_state": detail.get("mergeable_state"),
                 "last_review": last_review,
             })
     prs.sort(key=lambda p: p["updated_at"], reverse=True)

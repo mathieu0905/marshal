@@ -54,6 +54,20 @@
   .side-foot { margin-top:auto; padding:14px; border-top:1px solid var(--ink-line); display:flex; flex-direction:column; gap:10px; }
   .env { font-family:var(--mono); font-size:10.5px; color:var(--ink-muted); letter-spacing:.02em; }
   .env b { color:var(--pass); font-weight:600; }
+  /* worker queue mini-panel (animated) */
+  #workerQueue { display:flex; flex-direction:column; gap:6px; }
+  #workerQueue:empty { display:none; }
+  .wq-job { font-family:var(--mono); font-size:10.5px; color:var(--ink-muted); }
+  .wq-job.running { color:var(--ink-fg); }
+  .wq-line { display:flex; align-items:center; gap:6px; }
+  .wq-ico { color:var(--needs); }
+  .wq-el { margin-left:auto; color:var(--needs); font-weight:600; }
+  .wq-dot { width:6px; height:6px; border-radius:50%; background:var(--ink-muted); flex:0 0 auto; animation:wpulse 1.5s ease-in-out infinite; }
+  .proc-bar { height:4px; border-radius:3px; background:rgba(255,255,255,.06); overflow:hidden; margin-top:5px; }
+  .proc-bar i { display:block; height:100%; width:38%; border-radius:3px; background:linear-gradient(90deg,transparent,var(--accent),transparent); animation:sweep 1.3s ease-in-out infinite; }
+  @keyframes sweep { 0% { transform:translateX(-120%); } 100% { transform:translateX(330%); } }
+  .wq-more { font-family:var(--mono); font-size:10px; color:var(--ink-muted); }
+  @media (max-width:760px){ #workerQueue { display:none; } }
 
   /* worker pill — on the dark sidebar */
   .wpill { font-family:var(--mono); font-size:11px; display:inline-flex; align-items:center; gap:7px;
@@ -93,6 +107,23 @@
   .repotag { font-family:var(--mono); font-size:11px; font-weight:600; color:var(--link); background:var(--surface2);
              border:1px solid var(--line); border-radius:5px; padding:1px 7px; margin-right:3px; white-space:nowrap; }
   .prnum { font-family:var(--mono); font-weight:500; color:var(--muted); margin-right:2px; }
+  /* Review Queue PR card v2 */
+  .pr-card { position:relative; background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+             padding:15px 18px 13px 20px; margin-bottom:12px; box-shadow:var(--shadow-card); overflow:hidden;
+             transition:box-shadow .16s, transform .1s; }
+  .pr-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--st,var(--muted)); }
+  .pr-card:hover { box-shadow:var(--shadow-pop); }
+  .pr-card.blocked { opacity:.82; }
+  .pr-top { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .pr-title { font-size:14.5px; font-weight:600; flex:1; min-width:0; line-height:1.35; }
+  .pr-elig { font-size:11.5px; font-weight:600; white-space:nowrap; }
+  .pr-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip { display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:10.5px; font-weight:600;
+          border:1px solid var(--line); border-radius:6px; padding:2px 8px; color:var(--muted); background:var(--surface2); white-space:nowrap; }
+  .chip.ok { color:var(--pass); border-color:color-mix(in srgb,var(--pass) 38%,transparent); }
+  .chip.warn { color:var(--needs); border-color:color-mix(in srgb,var(--needs) 40%,transparent); }
+  .chip.bad { color:var(--block); border-color:color-mix(in srgb,var(--block) 42%,transparent); }
+  .pr-meta { display:flex; flex-wrap:wrap; gap:14px; font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:10px; }
   .sev-badge { font-size:11px; font-weight:600; color:var(--block); }
   .stale-badge { font-size:11px; font-weight:600; color:var(--needs); border:1px solid var(--needs); border-radius:4px; padding:1px 6px; }
   .finding { font-size:12.5px; margin:3px 0; color:var(--fg); }
@@ -275,6 +306,7 @@
     </nav>
     <div class="side-foot">
       <span id="worker" class="wpill"><span class="wd"></span> worker …</span>
+      <div id="workerQueue"></div>
       <div class="env">shadow-safe · <b>advisory</b></div>
     </div>
   </aside>
@@ -432,25 +464,53 @@ async function renderInbox(){
   }
 }
 
+function relTime(iso){
+  if(!iso) return '—';
+  const t=Date.parse(iso); if(isNaN(t)) return esc(String(iso).slice(0,10));
+  const s=Math.max(0,(Date.now()-t)/1000);
+  if(s<90) return 'just now';
+  const m=s/60; if(m<60) return Math.round(m)+'m ago';
+  const h=m/60; if(h<24) return Math.round(h)+'h ago';
+  const d=h/24; if(d<30) return Math.round(d)+'d ago';
+  return esc(String(iso).slice(0,10));
+}
+function prAccent(p){
+  if(p.eligible) return 'var(--accent)';
+  const r=p.blocked_reason||'';
+  if(r==='merge conflict' || r==='CI failing') return 'var(--block)';
+  if(r==='CI pending') return 'var(--needs)';
+  if(/no new commits/.test(r)) return 'var(--pass)';
+  return 'var(--muted)';
+}
+function ciChip(ci){
+  if(ci==='success') return '<span class="chip ok">✓ CI</span>';
+  if(ci==='failure') return '<span class="chip bad">✗ CI</span>';
+  if(ci==='pending') return '<span class="chip warn">◷ CI</span>';
+  return '';
+}
+function reviewChip(lr){
+  if(!lr) return '<span class="chip">not reviewed</span>';
+  const v=esc(lr.verdict||'deep'), c=lr.verdict==='pass'?'ok':(lr.verdict==='block'?'bad':'warn');
+  return lr.stale ? `<span class="chip warn">🔄 stale · ${v}</span>` : `<span class="chip ${c}">reviewed · ${v}</span>`;
+}
+
 function renderInboxCards(app, prs){
   for(const p of prs){
     const lr = p.last_review;
-    const reviewBadge = lr
-      ? (lr.stale
-          ? '<span class="stale-badge">🔄 stale · last '+esc(lr.verdict||'deep')+'</span>'
-          : '<span class="tag">last: '+esc(lr.verdict||'deep')+'</span>')
-      : '<span class="muted">not reviewed</span>';
-    const meta = [
-      (p.head_sha||'').slice(0,8),
-      (p.updated_at||'').slice(0,16).replace('T',' '),
-      p.draft ? 'draft' : null,
-    ].filter(Boolean);
-    const card = $(`<div class="card${p.eligible?'':' blocked'}" data-sha="${esc(p.head_sha)}">
-      <div class="row" style="align-items:baseline">
-        <b class="title"><span class="repotag">${esc(p.repo)}</span> <span class="prnum">#${esc(p.number)}</span> ${esc(p.title)}</b>
-        ${p.eligible ? reviewBadge : '<span class="sev-badge">🕗 On hold'+(p.blocked_reason?' · '+esc(p.blocked_reason):'')+'</span>'}
+    const card = $(`<div class="pr-card${p.eligible?'':' blocked'}" data-sha="${esc(p.head_sha)}" style="--st:${prAccent(p)}">
+      <div class="pr-top">
+        <b class="pr-title"><span class="repotag">${esc(p.repo)}</span> <span class="prnum">#${esc(p.number)}</span> ${esc(p.title)}</b>
+        ${p.eligible ? '<span class="pr-elig" style="color:var(--accent)">● ready to review</span>'
+                     : '<span class="pr-elig" style="color:var(--muted)">🕗 on hold</span>'}
       </div>
-      <div class="row">${meta.map(b=>`<span>${esc(b)}</span>`).join('')}</div>
+      <div class="pr-chips">
+        ${p.eligible ? '' : `<span class="chip">${esc(p.blocked_reason||'on hold')}</span>`}
+        ${ciChip(p.ci_state)}
+        ${p.mergeable_state==='dirty' ? '<span class="chip bad">⚠ conflict</span>' : ''}
+        ${reviewChip(lr)}
+        ${p.draft ? '<span class="chip">draft</span>' : ''}
+      </div>
+      <div class="pr-meta"><span>${esc((p.head_sha||'').slice(0,8))}</span><span>updated ${relTime(p.updated_at)}</span></div>
       <div class="jobrow">
         <a class="viewlink" href="${esc(p.url)}" target="_blank" rel="noopener">view ↗</a>
         ${p.eligible?'<button class="btn re-plan">re-review</button><button class="btn deep">deep review</button>':''}
@@ -706,7 +766,7 @@ function jobDoneMsg(j){
 // Paint the current card for `sha` from _jobs — the single source of truth, so the
 // state is correct no matter how many times the list re-renders (15s refresh).
 function applyJobToCard(sha){
-  const card = document.querySelector('.card[data-sha="' + sha + '"]');
+  const card = document.querySelector('[data-sha="' + sha + '"]');
   if(!card) return;
   const st = card.querySelector('.jobstatus');
   const btns = card.querySelectorAll('.btn');
@@ -980,11 +1040,27 @@ async function refreshWorker(){
     el.title = w.state==='down'
       ? 'No worker is processing jobs — re-review / deep review stay queued until a worker is running.'
       : (w.seconds_ago!=null ? 'last heartbeat '+Math.round(w.seconds_ago)+'s ago' : '');
+    renderWorkerQueue(w.jobs || []);
   } catch(e){
     el.className = 'wpill down';
     el.innerHTML = '<span class="wd"></span> worker ?';
     el.title = 'cannot reach /api/worker: '+esc(e.message);
+    renderWorkerQueue([]);
   }
+}
+
+function renderWorkerQueue(jobs){
+  const wq = document.getElementById('workerQueue'); if(!wq) return;
+  if(!jobs.length){ wq.innerHTML=''; return; }
+  const rows = jobs.slice(0,5).map(j=>{
+    const who = esc(j.kind)+' #'+esc(j.id)+(j.repo?' · '+esc(j.repo):'');
+    if(j.status==='running'){
+      const t = (j.elapsed_s!=null) ? '<span class="wq-el">'+fmtDur(j.elapsed_s)+'</span>' : '';
+      return `<div class="wq-job running"><div class="wq-line"><span class="wq-ico">▸</span> ${who}${t}</div><div class="proc-bar"><i></i></div></div>`;
+    }
+    return `<div class="wq-job pending"><span class="wq-dot"></span> ${who}</div>`;
+  }).join('');
+  wq.innerHTML = rows + (jobs.length>5 ? `<div class="wq-more">+ ${jobs.length-5} more queued</div>` : '');
 }
 
 show('inbox');

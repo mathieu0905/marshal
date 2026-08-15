@@ -464,7 +464,12 @@ class Store:
         running = self.s.scalars(
             select(ReviewJob).where(ReviewJob.status == "running")
             .order_by(ReviewJob.started_at)).first()
-        return {"counts": counts, "current": self._job_dict(running) if running else None}
+        # running first (status 'running' > 'pending'), then pending oldest-first
+        active = self.s.scalars(
+            select(ReviewJob).where(ReviewJob.status.in_(("running", "pending")))
+            .order_by(ReviewJob.status.desc(), ReviewJob.created_at).limit(12))
+        return {"counts": counts, "current": self._job_dict(running) if running else None,
+                "active": [self._job_dict(j) for j in active]}
 
     def claim_next_job(self) -> dict | None:
         # Compare-and-swap claim: read the oldest pending job, then atomically flip

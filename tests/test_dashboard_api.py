@@ -122,7 +122,7 @@ def test_inbox_returns_pr_queue(client, monkeypatch):
 def test_spa_renders_pr_queue(client):
     html = client.get("/").text
     assert "renderInbox" in html
-    assert "On hold" in html           # blocked badge label
+    assert "on hold" in html           # blocked badge label
     assert "github_token" in html      # SPA reads the token flag for the empty-state hint
 
 
@@ -228,3 +228,20 @@ def test_escape_timeline_endpoint_cumulative(client):
     tl = client.get("/api/escape-timeline").json()["timeline"]
     assert [d["cumulative"] for d in tl] == [2, 3]         # 2 on 06-01, then +1 on 06-03
     assert tl[0]["date"] == "2026-06-01" and tl[1]["date"] == "2026-06-03"
+
+
+def test_worker_endpoint_includes_active_jobs(client):
+    from datetime import datetime, timezone
+    import marshal_core.adapters.api as api
+    from marshal_core.knowledge.store import Store
+    with api._Session() as s:
+        st = Store(s)
+        st.set_meta("worker:heartbeat", datetime.now(timezone.utc).isoformat())
+        st.enqueue_job(change_ref="aaa", repo="node", kind="deep")     # oldest
+        st.enqueue_job(change_ref="bbb", repo="cbss", kind="mechanical")
+        st.claim_next_job()                                            # oldest -> running
+    jobs = client.get("/api/worker").json()["jobs"]
+    assert len(jobs) == 2
+    assert jobs[0]["status"] == "running" and jobs[0]["repo"] == "node"   # running first
+    assert jobs[1]["status"] == "pending"
+    assert "elapsed_s" in jobs[0]

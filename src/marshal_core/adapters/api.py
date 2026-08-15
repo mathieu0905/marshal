@@ -152,20 +152,26 @@ def api_worker():
             alive = seconds_ago < 15
         except ValueError:
             pass
-    current = stats["current"]
-    if current and current.get("started_at"):
-        # elapsed computed server-side (both UTC) — the stored timestamp is naive UTC,
-        # so a browser must NOT Date.parse it as local time (that yields a bogus/negative age)
-        try:
-            started = datetime.fromisoformat(current["started_at"])
-            if started.tzinfo is None:
-                started = started.replace(tzinfo=timezone.utc)
-            current["elapsed_s"] = max(0.0, (datetime.now(timezone.utc) - started).total_seconds())
-        except ValueError:
-            pass
+    now = datetime.now(timezone.utc)
+
+    def _elapsed(job):
+        # elapsed computed server-side (both UTC) — the stored timestamp is naive UTC, so a
+        # browser must NOT Date.parse it as local time (that yields a bogus/negative age)
+        if job and job.get("started_at"):
+            try:
+                started = datetime.fromisoformat(job["started_at"])
+                if started.tzinfo is None:
+                    started = started.replace(tzinfo=timezone.utc)
+                job["elapsed_s"] = max(0.0, (now - started).total_seconds())
+            except ValueError:
+                pass
+        return job
+
+    current = _elapsed(stats["current"])
+    jobs = [_elapsed(j) for j in stats.get("active", [])]
     state = "busy" if current is not None else ("idle" if alive else "down")
-    return {"heartbeat": hb, "seconds_ago": seconds_ago, "alive": alive,
-            "state": state, "queue": stats["counts"], "current": current}
+    return {"heartbeat": hb, "seconds_ago": seconds_ago, "alive": alive, "state": state,
+            "queue": stats["counts"], "current": current, "jobs": jobs}
 
 
 @app.get("/")
