@@ -12,47 +12,75 @@
      system fonts if the fetch is blocked or offline. */
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap');
   :root {
-    --bg:#f9f7f5;          /* hay-100 — warm parchment */
-    --card:#ffffff;        /* cards */
-    --surface2:#f4f0eb;    /* hay-200 */
-    --line:#ebe5df;        /* hay-400 — border */
-    --fg:#1d1916;          /* bison-900 */
-    --muted:#72675f;       /* bison-300 */
-    --accent:#ff9d14;      /* nugget-500 — gold */
-    --accent-ink:#291400;  /* text on the gold accent */
-    --link:#a85700;        /* nugget-700 */
-    --on-color:#fff7eb;    /* light text on saturated chips */
-    --pass:#29754a;        /* cactus-600 */
-    --needs:#e58200;       /* nugget-600 — amber */
-    --block:#b22d10;       /* canyon-600 — red */
-    --red:#b22d10;
-    --shadow-card:0 4px 4px -4px #dfd6cd, 0 0 1px 0 #988e86;
+    /* refined platform neutrals + Marshal gold */
+    --bg:#f5f6f8; --card:#ffffff; --surface2:#eef1f5; --line:#e4e7ec;
+    --fg:#131824; --muted:#667085;
+    --accent:#ff9d14; --accent-ink:#2a1600; --link:#b45309; --on-color:#fff7eb;
+    --pass:#12805c; --needs:#d97706; --block:#d1462f; --red:#d1462f;
+    /* the always-dark sidebar — the platform look */
+    --ink:#0f1420; --ink-2:#161d2c; --ink-line:#26304a; --ink-fg:#e9ecf3; --ink-muted:#94a0b8;
+    --shadow-card:0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.06);
+    --shadow-pop:0 12px 32px -12px rgba(16,24,40,.22), 0 4px 10px -4px rgba(16,24,40,.10);
+    --radius:14px; --radius-sm:10px; --sidew:250px;
     --sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     --serif:'Fraunces',ui-serif,Georgia,serif;
     --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   }
   * { box-sizing: border-box; }
-  body { margin:0; font-family:var(--sans); font-size:14px; line-height:1.5; background:var(--bg); color:var(--fg); }
-  header { padding:14px 22px; border-bottom:1px solid var(--line); background:var(--card); box-shadow:var(--shadow-card); display:flex; gap:14px; align-items:center; }
-  header h1 { font-size:18px; margin:0; font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; }
-  nav button { background:none; border:none; color:var(--muted); font:inherit; font-weight:500; cursor:pointer; padding:6px 12px; border-radius:8px; }
-  nav button:hover { color:var(--fg); }
-  nav button.active { background:var(--surface2); color:var(--fg); box-shadow:inset 0 -2px 0 var(--accent); }
-  #status { font-family:var(--mono); font-size:12px; }
-  .wpill { font-family:var(--mono); font-size:11.5px; display:inline-flex; align-items:center; gap:7px;
-           padding:4px 11px; border-radius:20px; border:1px solid var(--line); background:var(--surface2);
-           color:var(--muted); white-space:nowrap; cursor:default; }
-  .wpill .wd { width:8px; height:8px; border-radius:50%; background:var(--muted); flex:0 0 auto; }
-  .wpill.idle .wd { background:var(--pass); }
-  .wpill.idle { color:var(--fg); }
+  body { margin:0; font-family:var(--sans); font-size:14px; line-height:1.5; background:var(--bg); color:var(--fg); -webkit-font-smoothing:antialiased; }
+
+  /* ---------- app shell ---------- */
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:var(--sidew); flex:0 0 var(--sidew); background:linear-gradient(185deg,var(--ink-2),var(--ink));
+             color:var(--ink-fg); display:flex; flex-direction:column; position:sticky; top:0; height:100vh;
+             border-right:1px solid var(--ink-line); }
+  .brand { display:flex; align-items:center; gap:12px; padding:22px 20px 20px; }
+  .brand-badge { width:40px; height:40px; border-radius:12px; flex:0 0 auto; display:grid; place-items:center;
+                 background:linear-gradient(145deg,#ffc25e,var(--accent)); color:#231000;
+                 box-shadow:0 6px 18px -5px rgba(255,157,20,.55), inset 0 1px 0 rgba(255,255,255,.4); }
+  .brand-badge svg { width:23px; height:23px; }
+  .brand-name { font-family:var(--serif); font-weight:600; font-size:19px; letter-spacing:-.01em; line-height:1.05; color:#fff; }
+  .brand-sub { font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-muted); margin-top:3px; }
+  .nav { display:flex; flex-direction:column; gap:3px; padding:6px 12px; }
+  .nav .lbl { font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-muted); padding:14px 10px 6px; }
+  .navitem { display:flex; align-items:center; gap:11px; width:100%; text-align:left; background:none; border:none;
+             color:var(--ink-muted); font:inherit; font-weight:500; font-size:13.5px; cursor:pointer;
+             padding:10px 11px; border-radius:10px; transition:background .13s,color .13s; }
+  .navitem:hover { background:rgba(255,255,255,.05); color:var(--ink-fg); }
+  .navitem.active { background:rgba(255,157,20,.15); color:#fff; box-shadow:inset 2px 0 0 var(--accent); }
+  .navitem svg { width:17px; height:17px; flex:0 0 auto; opacity:.92; }
+  .side-foot { margin-top:auto; padding:14px; border-top:1px solid var(--ink-line); display:flex; flex-direction:column; gap:10px; }
+  .env { font-family:var(--mono); font-size:10.5px; color:var(--ink-muted); letter-spacing:.02em; }
+  .env b { color:var(--pass); font-weight:600; }
+
+  /* worker pill — on the dark sidebar */
+  .wpill { font-family:var(--mono); font-size:11px; display:inline-flex; align-items:center; gap:7px;
+           padding:6px 11px; border-radius:9px; border:1px solid var(--ink-line); background:rgba(255,255,255,.03);
+           color:var(--ink-muted); white-space:nowrap; cursor:default; }
+  .wpill .wd { width:8px; height:8px; border-radius:50%; background:var(--ink-muted); flex:0 0 auto; }
+  .wpill.idle .wd { background:var(--pass); } .wpill.idle { color:var(--ink-fg); }
   .wpill.busy .wd { background:var(--needs); animation:wpulse 1.1s ease-in-out infinite; }
-  .wpill.busy { color:var(--needs); border-color:var(--needs); }
+  .wpill.busy { color:#f6b45a; border-color:rgba(217,119,6,.5); }
   .wpill.down .wd { background:var(--block); animation:wpulse 1.1s ease-in-out infinite; }
-  .wpill.down { color:var(--block); border-color:var(--block); }
-  @keyframes wpulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
-  main { padding:22px; max-width:960px; margin:0 auto; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-card); }
-  .card h3 { margin:0 0 10px; font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+  .wpill.down { color:#ff8f6e; border-color:rgba(209,70,47,.5); }
+  @keyframes wpulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+
+  /* ---------- content ---------- */
+  .content { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
+  .topbar { display:flex; align-items:center; gap:14px; padding:16px 32px; border-bottom:1px solid var(--line);
+            background:var(--card); position:sticky; top:0; z-index:5; box-shadow:var(--shadow-card); }
+  .page-title { font-family:var(--serif); font-size:20px; font-weight:600; letter-spacing:-.01em; }
+  #status { font-family:var(--mono); font-size:12px; color:var(--muted); margin-left:auto; }
+  main { padding:26px 32px 44px; max-width:1120px; width:100%; margin:0 auto; }
+  @media (max-width:760px){
+    .shell { flex-direction:column; }
+    .sidebar { width:auto; flex:none; height:auto; position:static; flex-direction:row; flex-wrap:wrap; align-items:center; }
+    .brand { padding:12px 16px; } .nav { flex-direction:row; padding:6px 10px; } .nav .lbl { display:none; }
+    .side-foot { margin:0; border:none; padding:10px 16px; flex-direction:row; align-items:center; }
+    main { padding:18px 16px 32px; } .topbar { padding:13px 16px; }
+  }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; margin-bottom:16px; box-shadow:var(--shadow-card); transition:box-shadow .15s, border-color .15s; }
+  .card h3 { margin:0 0 12px; font-size:11.5px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; }
   .row { display:flex; flex-wrap:wrap; gap:10px 18px; color:var(--muted); font-size:13px; }
   .tag { display:inline-block; padding:2px 8px; border-radius:4px; background:transparent; border:1px solid var(--line); color:var(--muted); font-family:var(--mono); font-size:11px; }
   .tag[style] { color:var(--on-color); border-color:transparent; }   /* colored legend chips get light text */
@@ -81,10 +109,10 @@
   .gap { color:var(--muted); font-size:12px; border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; }
   .muted { color:var(--muted); }
   .jobrow { margin-top:12px; font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:center; }
-  .btn { background:transparent; color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:5px 12px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
-  .btn:hover { border-color:var(--accent); }
-  .btn.deep { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:600; }
-  .btn.deep:hover { filter:brightness(1.05); }
+  .btn { background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:9px; padding:6px 13px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; transition:border-color .12s, box-shadow .12s, filter .12s; }
+  .btn:hover { border-color:var(--accent); box-shadow:0 0 0 3px rgba(255,157,20,.12); }
+  .btn.deep { background:linear-gradient(145deg,#ffb43e,var(--accent)); color:var(--accent-ink); border-color:transparent; font-weight:600; box-shadow:0 4px 12px -4px rgba(255,157,20,.5); }
+  .btn.deep:hover { filter:brightness(1.04); box-shadow:0 6px 16px -4px rgba(255,157,20,.6); }
   .btn:disabled { opacity:.5; cursor:default; }
   .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
   .dot.pending { background:var(--muted); } .dot.running { background:var(--needs); }
@@ -202,30 +230,44 @@
 
   /* ---------- dark theme (palette re-map; all components read the vars) ---------- */
   @media (prefers-color-scheme:dark){ :root{
-    --bg:#131110; --card:#1d1a17; --surface2:#26221d; --line:#332e28; --fg:#f2ece4; --muted:#a79a8e;
-    --accent:#ffa52b; --accent-ink:#241200; --link:#ffbf5e; --on-color:#1a1206;
-    --pass:#40b06e; --needs:#f5a02e; --block:#e8542d; --red:#e8542d;
-    --shadow-card:0 6px 16px -8px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.35);
+    --bg:#0e131d; --card:#161c28; --surface2:#1d2434; --line:#28324a; --fg:#e9ecf3; --muted:#94a0b8;
+    --accent:#ffab35; --accent-ink:#241200; --link:#ffc06a; --on-color:#0e131d;
+    --pass:#37b681; --needs:#f0a63a; --block:#f0603f; --red:#f0603f;
+    --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.55);
   } }
   :root[data-theme="dark"]{
-    --bg:#131110; --card:#1d1a17; --surface2:#26221d; --line:#332e28; --fg:#f2ece4; --muted:#a79a8e;
-    --accent:#ffa52b; --accent-ink:#241200; --link:#ffbf5e; --on-color:#1a1206;
-    --pass:#40b06e; --needs:#f5a02e; --block:#e8542d; --red:#e8542d;
-    --shadow-card:0 6px 16px -8px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.35);
+    --bg:#0e131d; --card:#161c28; --surface2:#1d2434; --line:#28324a; --fg:#e9ecf3; --muted:#94a0b8;
+    --accent:#ffab35; --accent-ink:#241200; --link:#ffc06a; --on-color:#0e131d;
+    --pass:#37b681; --needs:#f0a63a; --block:#f0603f; --red:#f0603f;
+    --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.55);
   }
 </style>
 </head>
 <body>
-<header>
-  <h1>🤠 Marshal Dashboard</h1>
-  <nav>
-    <button id="tab-inbox" class="active" onclick="show('inbox')">Review Queue</button>
-    <button id="tab-health" onclick="show('health')">Health</button>
-  </nav>
-  <span id="worker" class="wpill" style="margin-left:auto"><span class="wd"></span> worker …</span>
-  <span id="status" class="muted" style="margin-left:14px"></span>
-</header>
-<main id="app"><p class="muted">Loading…</p></main>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.6l2.63 3.9 4.62.62-1.6 2.98 1.6 2.98-4.62.62L12 16.6l-2.63-3.9-4.62-.62 1.6-2.98-1.6-2.98 4.62-.62L12 1.6zm0 5.1a2.6 2.6 0 100 5.2 2.6 2.6 0 000-5.2z"/></svg></div>
+      <div><div class="brand-name">Marshal</div><div class="brand-sub">Review Platform</div></div>
+    </div>
+    <nav class="nav">
+      <div class="lbl">Workspace</div>
+      <button id="tab-inbox" class="navitem active" onclick="show('inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Review Queue</button>
+      <button id="tab-health" class="navitem" onclick="show('health')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5 6 4-13 2.5 7H21"/></svg> System Health</button>
+    </nav>
+    <div class="side-foot">
+      <span id="worker" class="wpill"><span class="wd"></span> worker …</span>
+      <div class="env">shadow-safe · <b>advisory</b></div>
+    </div>
+  </aside>
+  <div class="content">
+    <div class="topbar">
+      <div class="page-title" id="pageTitle">Review Queue</div>
+      <span id="status" class="muted"></span>
+    </div>
+    <main id="app"><p class="muted">Loading…</p></main>
+  </div>
+</div>
 <script>
 const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -700,6 +742,7 @@ async function show(tab){
   current = tab;
   document.getElementById('tab-inbox').classList.toggle('active', tab==='inbox');
   document.getElementById('tab-health').classList.toggle('active', tab==='health');
+  document.getElementById('pageTitle').textContent = tab==='inbox' ? 'Review Queue' : 'System Health';
   const st = document.getElementById('status');
   try { st.textContent='refreshing…'; await (tab==='inbox'?renderInbox():renderHealth()); st.textContent=''; }
   catch(e){ document.getElementById('app').innerHTML='<p class="muted">Error: '+esc(e.message)+'</p>'; st.textContent=''; }
