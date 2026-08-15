@@ -49,6 +49,8 @@
   .navitem:hover { background:rgba(255,255,255,.05); color:var(--ink-fg); }
   .navitem.active { background:rgba(255,157,20,.15); color:#fff; box-shadow:inset 2px 0 0 var(--accent); }
   .navitem svg { width:17px; height:17px; flex:0 0 auto; opacity:.92; }
+  .navitem.sub { padding:7px 11px 7px 22px; font-size:12.5px; font-weight:450; }
+  .navitem.sub::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.45; flex:0 0 auto; }
   .side-foot { margin-top:auto; padding:14px; border-top:1px solid var(--ink-line); display:flex; flex-direction:column; gap:10px; }
   .env { font-family:var(--mono); font-size:10.5px; color:var(--ink-muted); letter-spacing:.02em; }
   .env b { color:var(--pass); font-weight:600; }
@@ -228,6 +230,16 @@
   .glossary dt { font-family:var(--mono); font-size:12px; font-weight:600; color:var(--fg); margin-top:11px; }
   .glossary dd { margin:3px 0 0; font-size:12.5px; color:var(--muted); line-height:1.55; }
 
+  /* data tables + badges (Health sub-pages) */
+  .dtable-wrap { overflow-x:auto; margin-top:4px; }
+  .dtable { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .dtable th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; padding:7px 14px 7px 0; border-bottom:1px solid var(--line); }
+  .dtable td { padding:9px 14px 9px 0; border-bottom:1px solid var(--line); white-space:nowrap; }
+  .dtable tr:last-child td { border-bottom:none; }
+  .dtable tbody tr:hover td { background:var(--surface2); }
+  .dtable td.mono, .dtable .mono { font-family:var(--mono); font-size:11.5px; }
+  .vb { display:inline-block; font-family:var(--mono); font-size:10.5px; font-weight:600; border:1px solid; border-radius:6px; padding:1px 8px; }
+
   /* ---------- dark theme (palette re-map; all components read the vars) ---------- */
   @media (prefers-color-scheme:dark){ :root{
     --bg:#0e131d; --card:#161c28; --surface2:#1d2434; --line:#28324a; --fg:#e9ecf3; --muted:#94a0b8;
@@ -252,8 +264,12 @@
     </div>
     <nav class="nav">
       <div class="lbl">Workspace</div>
-      <button id="tab-inbox" class="navitem active" onclick="show('inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Review Queue</button>
-      <button id="tab-health" class="navitem" onclick="show('health')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5 6 4-13 2.5 7H21"/></svg> System Health</button>
+      <button class="navitem active" data-view="inbox" onclick="show('inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Review Queue</button>
+      <div class="lbl">System Health</div>
+      <button class="navitem" data-view="health" onclick="show('health')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5 6 4-13 2.5 7H21"/></svg> Overview</button>
+      <button class="navitem sub" data-view="verdicts" onclick="show('verdicts')">Verdicts</button>
+      <button class="navitem sub" data-view="escapes" onclick="show('escapes')">Escapes &amp; Ratchet</button>
+      <button class="navitem sub" data-view="invariants" onclick="show('invariants')">Invariants</button>
     </nav>
     <div class="side-foot">
       <span id="worker" class="wpill"><span class="wd"></span> worker …</span>
@@ -738,13 +754,149 @@ async function pollLoop(id, sha, kind){
   tick();
 }
 
+// ---------- Health sub-pages ----------
+function vColor(v){ return v==='pass'?'var(--pass)':(v==='block'?'var(--block)':'var(--needs)'); }
+function vbadge(v){ const c=vColor(v); return `<span class="vb" style="color:${c};border-color:${c}">${esc(v||'?')}</span>`; }
+
+function lineSVG(vals){   // vals: [{x, y in 0..1}] — a percentage trend line
+  if(!vals.length) return '<p class="muted">no data</p>';
+  const W=720,H=182,padL=36,padR=12,padT=12,padB=22,iw=W-padL-padR,ih=H-padT-padB,n=vals.length;
+  const X=i=>padL+(n===1?iw/2:iw*i/(n-1)), Y=v=>padT+ih*(1-Math.max(0,Math.min(1,v)));
+  let grid=''; for(let t=0;t<=4;t++){ const y=padT+ih*t/4;
+    grid+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" style="stroke:var(--line)"/>`+
+          `<text x="${padL-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="9" style="fill:var(--muted)">${100-t*25}%</text>`; }
+  const pts=vals.map((d,i)=>`${X(i).toFixed(1)},${Y(d.y).toFixed(1)}`).join(' ');
+  const xi=[...new Set([0,Math.floor((n-1)/2),n-1])];
+  const xlab=xi.map(i=>`<text x="${X(i).toFixed(1)}" y="${H-7}" text-anchor="middle" font-size="9" style="fill:var(--muted)">${esc(vals[i].x)}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:auto">${grid}`+
+    `<polygon points="${padL},${Y(0).toFixed(1)} ${pts} ${W-padR},${Y(0).toFixed(1)}" style="fill:var(--pass);fill-opacity:.12"/>`+
+    `<polyline points="${pts}" style="fill:none;stroke:var(--pass)" stroke-width="2"/>${xlab}</svg>`;
+}
+function movingPassRate(ts, win){
+  const out=[]; for(let i=0;i<ts.length;i++){ let p=0,tot=0;
+    for(let j=Math.max(0,i-win+1);j<=i;j++){ const d=ts[j]; p+=d.pass||0; tot+=(d.pass||0)+(d.needs_human||0)+(d.block||0); }
+    out.push({x:ts[i].date.slice(5), y:tot?p/tot:0}); } return out;
+}
+function verdictTable(runs){
+  if(!runs.length) return '<p class="muted">no gate runs yet</p>';
+  return `<div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>run</th><th>PR</th><th>verdict</th><th>when</th><th>change</th></tr></thead><tbody>
+    ${runs.map(r=>`<tr><td class="mono">#${esc(r.id)}</td>
+      <td>${r.repo?`<span class="repotag">${esc(r.repo)}</span>`:''}${r.pr!=null?` <span class="prnum">#${esc(r.pr)}</span>`:'<span class="muted">—</span>'}</td>
+      <td>${vbadge(r.verdict)}</td>
+      <td class="muted">${esc((r.created_at||'').slice(0,16).replace('T',' '))}</td>
+      <td class="mono muted">${esc((r.change_ref||'').slice(0,10))}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+function escapeBarsFull(eb){
+  if(!eb.length) return '<p class="muted">no escapes recorded</p>';
+  const sorted=[...eb].sort((a,b)=>b.count-a.count), max=Math.max(1,...sorted.map(x=>x.count));
+  return sorted.map(x=>{
+    const nm=x.root_cause_class.length>74?x.root_cause_class.slice(0,72)+'…':x.root_cause_class;
+    const w=100*x.count/max, closedW=x.count?100*x.closed/x.count:0;
+    return `<div class="hbar"><div class="hh"><span class="nm" title="${esc(x.root_cause_class)}">${esc(nm)}</span>
+      <span class="ct">${x.count}${x.open?` · <span style="color:var(--needs)">${x.open} open</span>`:''}</span></div>
+      <div class="track" style="width:${w.toFixed(1)}%"><i style="width:${closedW.toFixed(1)}%;background:var(--pass)"></i><i style="width:${(100-closedW).toFixed(1)}%;background:var(--needs)"></i></div></div>`;
+  }).join('');
+}
+function invariantTable(rows){
+  if(!rows.length) return '<p class="muted">no invariants registered</p>';
+  const sc={high:'var(--block)',medium:'var(--needs)',mid:'var(--needs)',low:'var(--muted)'};
+  const stc={active:'var(--pass)','candidate-red':'var(--block)',pending:'var(--needs)'};
+  return `<div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>invariant</th><th>severity</th><th>status</th><th>repo</th><th>executor</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr><td class="mono" title="${esc(r.path||'')} :: ${esc(r.test||'')}">${esc(r.id)}</td>
+      <td><span class="vb" style="color:${sc[r.severity]||'var(--muted)'};border-color:${sc[r.severity]||'var(--muted)'}">${esc(r.severity||'?')}</span></td>
+      <td><span class="vb" style="color:${stc[r.status]||'var(--muted)'};border-color:${stc[r.status]||'var(--muted)'}">${esc(r.status||'?')}</span></td>
+      <td class="muted">${esc(r.repo||'—')}</td><td class="mono muted">${esc(r.executor||'')}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+async function renderVerdicts(){
+  const h=await getJSON('/api/health'); const app=document.getElementById('app'); app.dataset.view='verdicts';
+  const v=h.gate_runs_by_verdict||{}, total=h.gate_runs_total||0;
+  const human=v.needs_human!=null?v.needs_human:(v.escalate||0), passN=v.pass||0, blockN=v.block||0, outcomes=passN+human+blockN;
+  const passRate=outcomes?100*passN/outcomes:0, ts=h.verdict_timeseries||[];
+  const legend=[['pass',passN,'var(--pass)'],['human review',human,'var(--needs)'],['block',blockN,'var(--block)']]
+    .map(([k,val,c])=>`<span class="li"><span class="sw" style="background:${c}"></span>${k}<span class="lc">${fmt(val)} · ${outcomes?(100*val/outcomes).toFixed(1):0}%</span></span>`).join('');
+  app.innerHTML=`
+    <div class="kpigrid">
+      ${kpiTile(total,'gate runs','all-time reviews','','Every verdict Marshal has recorded.')}
+      ${kpiTile(Number(passRate.toFixed(1)),'pass rate',`${fmt(passN)} pass`, passRate>=50?'good':'warn','Share that came back clean.')}
+      ${kpiTile(human,'human review', v.escalate!=null?`${fmt(v.escalate)} escalate`:'', 'warn','Sent to a person to decide.')}
+      ${kpiTile(blockN,'blocked','', blockN?'bad':'good','A real problem was found.')}
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>Outcome split</h3>
+        <div class="donutwrap">${donutSVG([{value:passN,color:'var(--pass)'},{value:human,color:'var(--needs)'},{value:blockN,color:'var(--block)'}],total,'GATE RUNS')}<div class="legend">${legend}</div></div></div>
+      <div class="card"><h3>Pass rate · 7-day moving average</h3>
+        <div class="help">Rolling share of reviews that passed — the review-health trend line.</div>${lineSVG(movingPassRate(ts,7))}</div>
+    </div>
+    <div class="card chartcard"><h3>Verdicts over time · ${ts.length} active days</h3>
+      <div class="help">Each vertical slice is one day; colours stack <span class="g">pass</span> / <span class="a">human</span> / <span class="r">block</span>. <b>Hover</b> any day for its split.</div>
+      ${areaChartSVG(ts)}</div>
+    <div class="card"><h3>Recent gate runs</h3><div id="recentRuns"><p class="muted">loading…</p></div></div>`;
+  wireChart(app); countUp(app);
+  try { const rr=await getJSON('/api/gate-runs?limit=40'); const el=document.getElementById('recentRuns'); if(el) el.innerHTML=verdictTable(rr.runs); } catch(e){}
+}
+
+async function renderEscapes(){
+  const h=await getJSON('/api/health'); const app=document.getElementById('app'); app.dataset.view='escapes';
+  const eb=h.escape_breakdown||[]; const open=eb.reduce((a,x)=>a+(x.open||0),0), closed=eb.reduce((a,x)=>a+(x.closed||0),0);
+  app.innerHTML=`
+    <div class="kpigrid">
+      ${kpiTile(open+closed,'escapes total','tracked','','Real bugs that slipped past review.')}
+      ${kpiTile(open,'still open','', open?'warn':'good', open?'awaiting a permanent check':'all guarded')}
+      ${kpiTile(closed,'closed & ratcheted','','good','Fixed and locked with a test.')}
+      ${kpiTile(h.ratchet_invariants||0,'ratchet invariants',`${h.invariant_gate_count||0} gated`,'','Permanent checks the ratchet added.')}
+    </div>
+    <div class="card"><h3>Escapes by root cause · all ${eb.length} classes</h3>
+      <div class="help">Each bar is a class of escaped bug. <b class="g">Green = closed &amp; guarded</b>, <b class="a">amber = still open</b>; longer = more escapes of that type.</div>
+      ${escapeBarsFull(eb)}</div>`;
+  countUp(app);
+}
+
+async function renderInvariants(){
+  const h=await getJSON('/api/health'); const app=document.getElementById('app'); app.dataset.view='invariants';
+  const ib=h.invariant_breakdown||{by_status:{},by_severity:{},candidate_red_ids:[]};
+  const st=ib.by_status||{}, sv=ib.by_severity||{}, stTot=Object.values(st).reduce((a,b)=>a+b,0)||1, svMax=Math.max(1,...Object.values(sv).concat([1]));
+  const stColor={active:'var(--pass)','candidate-red':'var(--block)',pending:'var(--needs)'}, svColor={high:'var(--block)',medium:'var(--needs)',mid:'var(--needs)',low:'var(--muted)'};
+  const stSeg=Object.entries(st).map(([k,n])=>`<i style="width:${(100*n/stTot).toFixed(1)}%;background:${stColor[k]||'var(--muted)'}" title="${esc(k)}: ${n}"></i>`).join('');
+  const stLeg=Object.entries(st).map(([k,n])=>`<span class="li"><span class="sw" style="background:${stColor[k]||'var(--muted)'}"></span>${esc(k)}<span class="lc">${n}</span></span>`).join('');
+  const svBars=Object.entries(sv).map(([k,n])=>`<div class="hbar"><div class="hh"><span class="nm">${esc(k)}</span><span class="ct">${n}</span></div><div class="track" style="width:${(100*n/svMax).toFixed(1)}%"><i style="width:100%;background:${svColor[k]||'var(--muted)'}"></i></div></div>`).join('');
+  const red=(ib.candidate_red_ids||[]).map(id=>`<span class="chip-red" title="${esc(id)}">${esc(id)}</span>`).join('');
+  app.innerHTML=`
+    <div class="kpigrid">
+      ${kpiTile(h.invariant_gate_count||0,'invariants gated','enforced now','','Auto rules checked on every change.')}
+      ${kpiTile(st['active']||0,'active','','good','Enforced right now.')}
+      ${kpiTile(st['candidate-red']||0,'candidate-red','', (st['candidate-red']||0)?'bad':'good','Known gap, not yet enforced.')}
+      ${kpiTile(st['pending']||0,'pending','','warn','Being added.')}
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>By status · ${stTot} total</h3><div class="seg">${stSeg}</div>
+        <div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:10px 16px">${stLeg}</div>
+        ${red?`<div style="margin-top:10px"><span class="muted" style="font-size:12px">candidate-red (gaps to enforce)</span><br>${red}</div>`:''}</div>
+      <div class="card"><h3>By severity</h3>${svBars}</div>
+    </div>
+    <div class="card"><h3>All invariants</h3><div id="invTable"><p class="muted">loading…</p></div></div>`;
+  countUp(app);
+  try { const inv=await getJSON('/api/invariants'); const el=document.getElementById('invTable'); if(el) el.innerHTML=invariantTable(inv.invariants); } catch(e){}
+}
+
+const VIEWS = {
+  inbox:      { title:'Review Queue',      render:renderInbox },
+  health:     { title:'Health Overview',   render:renderHealth },
+  verdicts:   { title:'Verdicts',          render:renderVerdicts },
+  escapes:    { title:'Escapes & Ratchet', render:renderEscapes },
+  invariants: { title:'Invariant Coverage', render:renderInvariants },
+};
 async function show(tab){
   current = tab;
-  document.getElementById('tab-inbox').classList.toggle('active', tab==='inbox');
-  document.getElementById('tab-health').classList.toggle('active', tab==='health');
-  document.getElementById('pageTitle').textContent = tab==='inbox' ? 'Review Queue' : 'System Health';
+  const v = VIEWS[tab] || VIEWS.inbox;
+  document.querySelectorAll('.navitem').forEach(b => b.classList.toggle('active', b.dataset.view===tab));
+  document.getElementById('pageTitle').textContent = v.title;
   const st = document.getElementById('status');
-  try { st.textContent='refreshing…'; await (tab==='inbox'?renderInbox():renderHealth()); st.textContent=''; }
+  try { st.textContent='refreshing…'; await v.render(); st.textContent=''; }
   catch(e){ document.getElementById('app').innerHTML='<p class="muted">Error: '+esc(e.message)+'</p>'; st.textContent=''; }
 }
 

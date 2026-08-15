@@ -116,6 +116,18 @@ def api_health():
         return payload
 
 
+@app.get("/api/gate-runs")
+def api_gate_runs(limit: int = 50):
+    with _Session() as s:
+        return {"runs": Store(s).list_gate_runs(limit=min(max(limit, 1), 200))}
+
+
+@app.get("/api/invariants")
+def api_invariants():
+    with _Session() as s:
+        return {"invariants": Store(s).invariant_rows()}
+
+
 @app.get("/api/worker")
 def api_worker():
     """Worker liveness + queue depth for the dashboard's status strip. `state` is

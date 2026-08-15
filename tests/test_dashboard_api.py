@@ -196,3 +196,18 @@ def test_worker_busy_even_if_heartbeat_stale(client):
     j = client.get("/api/worker").json()
     assert j["state"] == "busy"
     assert j["alive"] is False
+
+
+def test_gate_runs_endpoint_lists_recent(client):
+    r = client.get("/api/gate-runs?limit=10")
+    assert r.status_code == 200
+    runs = r.json()["runs"]
+    assert isinstance(runs, list) and len(runs) >= 2          # fixture seeded 2 gate runs
+    assert {"id", "change_ref", "verdict", "created_at", "repo", "pr"} <= set(runs[0])
+    assert runs[0]["id"] >= runs[-1]["id"]                    # newest first
+
+
+def test_invariants_endpoint_lists(client):
+    r = client.get("/api/invariants")
+    assert r.status_code == 200
+    assert isinstance(r.json()["invariants"], list)           # empty in the bare test DB

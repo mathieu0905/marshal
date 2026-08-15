@@ -61,6 +61,24 @@ class Store:
         return {"by_status": by_status, "by_severity": by_severity,
                 "candidate_red_ids": candidate_red_ids}
 
+    def list_gate_runs(self, limit: int = 50) -> list[dict]:
+        """Most-recent gate runs for the Health › Verdicts drill-down table."""
+        out = []
+        for gr in self.s.scalars(select(GateRun).order_by(GateRun.id.desc()).limit(limit)):
+            s = self.inbox_summary(gr.evidence)
+            out.append({"id": gr.id, "change_ref": gr.change_ref, "verdict": gr.verdict,
+                        "created_at": gr.created_at.isoformat() if gr.created_at else None,
+                        "repo": s.get("repo"), "pr": s.get("pr")})
+        return out
+
+    def invariant_rows(self) -> list[dict]:
+        """The invariant registry, flattened for the Health › Invariants drill-down table."""
+        rows = self.s.scalars(select(InvariantRegistry)
+                              .order_by(InvariantRegistry.severity, InvariantRegistry.id))
+        return [{"id": r.id, "domain": r.domain, "severity": r.severity, "status": r.status,
+                 "repo": r.location_repo, "path": r.location_path, "test": r.location_test,
+                 "executor": r.executor_kind} for r in rows]
+
     def record_gate_run(self, change_ref: str, job_id: str, verdict: str,
                         evidence: dict) -> GateRun:
         run = GateRun(change_ref=change_ref, job_id=job_id, verdict=verdict,
