@@ -86,6 +86,46 @@
   @keyframes toastIn { from { opacity:0; transform:translateX(22px) scale(.96); } to { opacity:1; transform:none; } }
   @keyframes toastOut { to { opacity:0; transform:translateX(22px) scale(.96); } }
 
+  /* ---------- Worker Queue page (animated live pipeline) ---------- */
+  .wqp-flow { display:flex; align-items:center; gap:16px; padding:8px 6px 22px; }
+  .wqp-node { display:flex; flex-direction:column; align-items:center; gap:8px; flex:0 0 auto; }
+  .wqp-nl { font-size:10.5px; color:var(--muted); text-align:center; line-height:1.2; font-family:var(--mono); }
+  .wqp-badge { width:54px; height:54px; border-radius:16px; display:grid; place-items:center; font-size:25px;
+               background:linear-gradient(145deg,#ffc25e,var(--accent)); color:#231000; animation:nodePulse 1.9s ease-in-out infinite; }
+  .wqp-ghico { width:54px; height:54px; border-radius:16px; display:grid; place-items:center; font-size:24px;
+               background:var(--surface2); border:1px solid var(--line); color:var(--fg); }
+  @keyframes nodePulse { 0%,100% { box-shadow:0 0 0 0 rgba(255,157,20,.45); } 50% { box-shadow:0 0 0 11px rgba(255,157,20,0); } }
+  .wqp-wire { position:relative; flex:1 1 auto; height:3px; border-radius:3px; min-width:60px; background:linear-gradient(90deg,var(--accent),var(--line)); }
+  .wqp-wire span { position:absolute; top:-3px; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); animation:flow 1.7s linear infinite; }
+  .wqp-wire span:nth-child(2){ animation-delay:.42s; } .wqp-wire span:nth-child(3){ animation-delay:.85s; } .wqp-wire span:nth-child(4){ animation-delay:1.27s; }
+  @keyframes flow { 0% { left:-2%; opacity:0; } 12% { opacity:1; } 88% { opacity:1; } 100% { left:100%; opacity:0; } }
+  .wqp-target { position:relative; overflow:hidden; border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:var(--card); }
+  .wqp-scan { position:absolute; left:0; right:0; height:72px; top:-72px; pointer-events:none;
+              background:linear-gradient(180deg,transparent,rgba(255,157,20,.16),transparent); animation:scanY 2.6s cubic-bezier(.5,0,.5,1) infinite; }
+  @keyframes scanY { 0% { top:-72px; } 100% { top:100%; } }
+  .wqp-ttop { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .wqp-title { font-size:16px; font-weight:600; margin-top:11px; line-height:1.4; }
+  .wqp-meta { display:flex; flex-wrap:wrap; gap:14px; font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:9px; }
+  .wqp-status { font-family:var(--mono); font-size:12.5px; color:var(--needs); margin-top:14px; }
+  .wqp-status b { color:var(--fg); }
+  .wqp-target .proc-bar { margin-top:10px; height:5px; background:var(--surface2); }
+  .chip.ana { color:var(--accent); border-color:color-mix(in srgb,var(--accent) 45%,transparent); animation:anaPulse 1.4s ease-in-out infinite; }
+  @keyframes anaPulse { 0%,100% { opacity:1; } 50% { opacity:.45; } }
+  .wqp-wait { display:flex; align-items:center; gap:12px; padding:11px 4px; border-top:1px solid var(--line); animation:waitIn .4s ease both; }
+  .wqp-wait:first-of-type { border-top:none; }
+  @keyframes waitIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:none; } }
+  .qpos { width:24px; height:24px; border-radius:8px; display:grid; place-items:center; flex:0 0 auto; font-family:var(--mono);
+          font-size:12px; font-weight:600; color:var(--muted); background:var(--surface2); border:1px solid var(--line); }
+  .wqp-winfo { flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+  .wqp-wtitle { color:var(--fg); }
+  .wqp-wind { flex:0 0 auto; display:inline-flex; align-items:center; gap:3px; font-family:var(--mono); font-size:10.5px; color:var(--muted); }
+  .wqp-wdot { width:4px; height:4px; border-radius:50%; background:var(--muted); animation:wpulse 1.4s ease-in-out infinite; }
+  .wqp-wind .wqp-wdot:nth-child(2){ animation-delay:.2s; } .wqp-wind .wqp-wdot:nth-child(3){ animation-delay:.4s; }
+  .wqp-empty { display:flex; align-items:center; gap:16px; padding:26px 22px; }
+  .wqp-eico { font-size:34px; flex:0 0 auto; }
+  .wqp-eico.rest { width:54px; height:54px; border-radius:16px; display:grid; place-items:center; font-size:25px;
+                   background:linear-gradient(145deg,#ffc25e,var(--accent)); color:#231000; animation:nodePulse 2.4s ease-in-out infinite; }
+
   /* worker pill — on the dark sidebar */
   .wpill { font-family:var(--mono); font-size:11px; display:inline-flex; align-items:center; gap:7px;
            padding:6px 11px; border-radius:9px; border:1px solid var(--ink-line); background:rgba(255,255,255,.03);
@@ -319,6 +359,7 @@
     <nav class="nav">
       <div class="lbl">Workspace</div>
       <button class="navitem active" data-view="inbox" onclick="show('inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Review Queue</button>
+      <button class="navitem" data-view="workerqueue" onclick="show('workerqueue')"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12l1-9z"/></svg> Worker Queue</button>
       <div class="lbl">System Health</div>
       <button class="navitem" data-view="health" onclick="show('health')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5 6 4-13 2.5 7H21"/></svg> Overview</button>
       <button class="navitem sub" data-view="verdicts" onclick="show('verdicts')">Verdicts</button>
@@ -1034,12 +1075,92 @@ async function renderInvariants(){
   try { const inv=await getJSON('/api/invariants'); _invRows=inv.invariants||[]; paintInvTable(); } catch(e){}
 }
 
+// ---------- Worker Queue page (animated live pipeline) ----------
+let _wqTimer=null, _wqData=null, _wqFetchedAt=0, _wqSig='';
+function wqSig(d){ const w=d.worker||{}; return (w.state||'')+'|'+((w.jobs||[]).map(j=>j.id+':'+j.status+':'+(j.change_ref||'')).join(',')); }
+function prFor(j, map){
+  const s=j.change_ref||''; if(!s) return null; if(map[s]) return map[s];
+  for(const k in map){ if(k.startsWith(s) || s.startsWith(k)) return map[k]; }
+  return null;
+}
+async function wqFetch(){
+  const w=await getJSON('/api/worker');
+  if(!_inboxPrs.length){ try{ const inbox=await getJSON('/api/inbox'); _inboxPrs=inbox.prs||[]; }catch(e){} }
+  const map={}; _inboxPrs.forEach(p=>{ if(p.head_sha) map[p.head_sha]=p; });
+  _wqData={worker:w, prMap:map}; _wqFetchedAt=performance.now();
+}
+function wqUpdateElapsed(){
+  const delta=(performance.now()-_wqFetchedAt)/1000;
+  document.querySelectorAll('.wqp-elapsed[data-base]').forEach(el=>{
+    el.textContent=fmtDur((parseFloat(el.getAttribute('data-base'))||0)+delta);
+  });
+}
+function wqHero(j, p){
+  const num = p ? '#'+esc(p.number) : '';
+  const title = p ? esc(p.title) : '<span class="muted">(not in the open PR queue — showing commit only)</span>';
+  const url = p ? esc(p.url) : '';
+  const meta = [ (j.change_ref||'').slice(0,10), p?('updated '+relTime(p.updated_at)):'', p&&p.draft?'draft':'' ].filter(Boolean);
+  return `<div class="card wqp-hero">
+    <div class="wqp-flow">
+      <div class="wqp-node worker"><div class="wqp-badge">★</div><div class="wqp-nl">Marshal<br>worker</div></div>
+      <div class="wqp-wire"><span></span><span></span><span></span><span></span></div>
+      <div class="wqp-node gh"><div class="wqp-ghico">⎇</div><div class="wqp-nl">GitHub<br>${esc(j.repo)}</div></div>
+    </div>
+    <div class="wqp-target">
+      <div class="wqp-scan"></div>
+      <div class="wqp-ttop"><span class="repotag">${esc(j.repo)}</span> <span class="prnum">${num}</span>
+        <span class="chip warn">${esc(j.kind)} review</span> <span class="chip ana">◉ analyzing</span> ${p?ciChip(p.ci_state):''}${p&&p.mergeable_state==='dirty'?'<span class="chip bad">⚠ conflict</span>':''}</div>
+      <div class="wqp-title">${title}${url?` <a class="viewlink" href="${url}" target="_blank" rel="noopener">open on GitHub ↗</a>`:''}</div>
+      <div class="wqp-meta">${meta.map(m=>`<span>${esc(m)}</span>`).join('')}</div>
+      <div class="wqp-status">▸ ${esc(j.kind)} analysis in progress · <b class="wqp-elapsed" data-base="${j.elapsed_s||0}">${fmtDur(j.elapsed_s||0)}</b></div>
+      <div class="proc-bar"><i></i></div>
+    </div>
+  </div>`;
+}
+function wqWait(j, p, pos){
+  const num = p ? ' #'+esc(p.number) : '';
+  const title = p ? esc(p.title) : esc((j.change_ref||'').slice(0,10))+' — pending review';
+  return `<div class="wqp-wait" style="animation-delay:${(pos-1)*0.06}s">
+    <span class="qpos">${pos}</span>
+    <div class="wqp-winfo"><span class="repotag">${esc(j.repo)}</span><span class="prnum">${num}</span> <span class="wqp-wtitle">${title}</span></div>
+    <span class="wqp-wind"><span class="wqp-wdot"></span><span class="wqp-wdot"></span><span class="wqp-wdot"></span> waiting</span>
+  </div>`;
+}
+function wqBody(d){
+  const w=d.worker||{}, jobs=w.jobs||[], map=d.prMap||{};
+  const running=jobs.find(j=>j.status==='running'), pending=jobs.filter(j=>j.status==='pending');
+  let hero;
+  if(running){ hero = wqHero(running, prFor(running,map)); }
+  else if(w.state==='down'){ hero = `<div class="card wqp-empty down"><div class="wqp-eico">🔴</div><div><b>Worker is down</b><div class="muted">No worker is processing reviews. Jobs stay queued until a worker runs.</div></div></div>`; }
+  else { hero = `<div class="card wqp-empty"><div class="wqp-eico rest">★</div><div><b>Worker idle</b><div class="muted">No active review right now — the worker is waiting for the next job.</div></div></div>`; }
+  const queue = pending.length
+    ? `<div class="card"><h3>Up next · ${pending.length} waiting in line</h3>${pending.map((j,i)=>wqWait(j,prFor(j,map),i+1)).join('')}</div>`
+    : (running ? `<div class="muted" style="padding:2px 2px">No other reviews queued.</div>` : '');
+  return hero + queue;
+}
+async function renderWorkerQueuePage(){
+  const app=document.getElementById('app'); app.dataset.view='workerqueue';
+  await wqFetch();
+  _wqSig = wqSig(_wqData);
+  app.innerHTML = `<div id="wqBody">${wqBody(_wqData)}</div>`;
+  if(_wqTimer) clearInterval(_wqTimer);
+  let tick=0;
+  _wqTimer=setInterval(async ()=>{
+    if(current!=='workerqueue'){ clearInterval(_wqTimer); _wqTimer=null; return; }   // self-cleanup on leave
+    tick++; wqUpdateElapsed();                                    // live 1s elapsed tick (no re-render)
+    if(tick%4===0){ try{ await wqFetch(); const sig=wqSig(_wqData);
+      if(sig!==_wqSig){ _wqSig=sig; const b=document.getElementById('wqBody'); if(b) b.innerHTML=wqBody(_wqData); } // re-render only when the job set changes
+    }catch(e){} }
+  }, 1000);
+}
+
 const VIEWS = {
-  inbox:      { title:'Review Queue',      render:renderInbox },
-  health:     { title:'Health Overview',   render:renderHealth },
-  verdicts:   { title:'Verdicts',          render:renderVerdicts },
-  escapes:    { title:'Escapes & Ratchet', render:renderEscapes },
-  invariants: { title:'Invariant Coverage', render:renderInvariants },
+  inbox:       { title:'Review Queue',      render:renderInbox },
+  workerqueue: { title:'Worker Queue',      render:renderWorkerQueuePage },
+  health:      { title:'Health Overview',   render:renderHealth },
+  verdicts:    { title:'Verdicts',          render:renderVerdicts },
+  escapes:     { title:'Escapes & Ratchet', render:renderEscapes },
+  invariants:  { title:'Invariant Coverage', render:renderInvariants },
 };
 let _lastView = null;
 async function show(tab){
