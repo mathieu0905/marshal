@@ -69,6 +69,21 @@
   .wq-more { font-family:var(--mono); font-size:10px; color:var(--ink-muted); }
   @media (max-width:760px){ #workerQueue { display:none; } }
 
+  /* transitions, press feedback, toasts */
+  .view-enter { animation:viewEnter .3s cubic-bezier(.2,.7,.2,1); }
+  @keyframes viewEnter { from { opacity:0; transform:translateY(9px); } to { opacity:1; transform:none; } }
+  .btn:active:not(:disabled) { transform:translateY(1px); }
+  .pill.click:active, .sumstat.click:active, .navitem:active { transform:translateY(1px); }
+  .toasts { position:fixed; right:20px; bottom:20px; z-index:60; display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+  .toast { display:flex; align-items:center; gap:10px; background:var(--card); color:var(--fg); border:1px solid var(--line);
+           border-left:3px solid var(--muted); border-radius:12px; padding:11px 15px; box-shadow:var(--shadow-pop);
+           font-size:13px; max-width:340px; animation:toastIn .3s cubic-bezier(.2,.8,.2,1); }
+  .toast.out { animation:toastOut .3s ease forwards; }
+  .toast.ok { border-left-color:var(--pass); } .toast.bad { border-left-color:var(--block); } .toast.info { border-left-color:var(--accent); }
+  .toast .ti { font-size:15px; flex:0 0 auto; }
+  @keyframes toastIn { from { opacity:0; transform:translateX(22px) scale(.96); } to { opacity:1; transform:none; } }
+  @keyframes toastOut { to { opacity:0; transform:translateX(22px) scale(.96); } }
+
   /* worker pill — on the dark sidebar */
   .wpill { font-family:var(--mono); font-size:11px; display:inline-flex; align-items:center; gap:7px;
            padding:6px 11px; border-radius:9px; border:1px solid var(--ink-line); background:rgba(255,255,255,.03);
@@ -112,7 +127,11 @@
              padding:15px 18px 13px 20px; margin-bottom:12px; box-shadow:var(--shadow-card); overflow:hidden;
              transition:box-shadow .16s, transform .1s; }
   .pr-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--st,var(--muted)); }
-  .pr-card:hover { box-shadow:var(--shadow-pop); }
+  .pr-card:hover { box-shadow:var(--shadow-pop); transform:translateY(-1px); }
+  .pr-card.flash-ok { animation:flashOk 1.15s ease; }
+  .pr-card.flash-bad { animation:flashBad 1.15s ease; }
+  @keyframes flashOk { 0% { background:color-mix(in srgb,var(--pass) 16%,var(--card)); } 100% { background:var(--card); } }
+  @keyframes flashBad { 0% { background:color-mix(in srgb,var(--block) 16%,var(--card)); } 100% { background:var(--card); } }
   .pr-card.blocked { opacity:.82; }
   .pr-top { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
   .pr-title { font-size:14.5px; font-weight:600; flex:1; min-width:0; line-height:1.35; }
@@ -422,6 +441,7 @@ function paintInbox(){
       paintInbox();
     });
   });
+  animSummary();
 }
 
 function inboxLoading(){
@@ -795,7 +815,8 @@ async function startJob(sha, repo, kind){
     const job = await r.json();
     _jobs[sha].id = job.id;
     pollLoop(job.id, sha, kind);
-  } catch(e){ _jobs[sha] = {kind, status:'failed', error:e.message}; applyJobToCard(sha); }
+    toast(kind+' review queued · '+repo, 'info', '⏳');
+  } catch(e){ _jobs[sha] = {kind, status:'failed', error:e.message}; applyJobToCard(sha); toast('could not queue: '+e.message, 'bad', '✗'); }
 }
 
 // One poll loop per job id (deduped via _polling), so a card re-render doesn't spawn
@@ -808,7 +829,18 @@ async function pollLoop(id, sha, kind){
       const j = await getJSON('/api/jobs/'+id);
       _jobs[sha] = {id, kind, status:j.status, result:j.result, error:j.error};
       applyJobToCard(sha);
-      if(j.status==='done' || j.status==='failed'){ _polling.delete(id); return; }
+      if(j.status==='done' || j.status==='failed'){
+        _polling.delete(id);
+        if(j.status==='done'){
+          const res=j.result||{};
+          toast((res.verdict!=null ? (kind+' → '+res.verdict) : ('re-planned · '+(res.count!=null?res.count:'?')+' invariants')), 'ok', '✓');
+          flashCard(sha, 'flash-ok');
+        } else {
+          toast('failed · '+(j.error||'').slice(0,90), 'bad', '✗');
+          flashCard(sha, 'flash-bad');
+        }
+        return;
+      }
     } catch(e){
       _jobs[sha] = {id, kind, status:'failed', error:e.message};
       applyJobToCard(sha); _polling.delete(id); return;
@@ -1007,17 +1039,48 @@ const VIEWS = {
   escapes:    { title:'Escapes & Ratchet', render:renderEscapes },
   invariants: { title:'Invariant Coverage', render:renderInvariants },
 };
+let _lastView = null;
 async function show(tab){
   current = tab;
   const v = VIEWS[tab] || VIEWS.inbox;
   document.querySelectorAll('.navitem').forEach(b => b.classList.toggle('active', b.dataset.view===tab));
   document.getElementById('pageTitle').textContent = v.title;
   const st = document.getElementById('status');
-  try { st.textContent='refreshing…'; await v.render(); st.textContent=''; }
+  try {
+    st.textContent='refreshing…'; await v.render(); st.textContent='';
+    if(tab!==_lastView){                              // animate only on a real view switch, not the 15s refresh
+      const a=document.getElementById('app'); a.classList.remove('view-enter'); void a.offsetWidth; a.classList.add('view-enter');
+    }
+    _lastView=tab;
+  }
   catch(e){ document.getElementById('app').innerHTML='<p class="muted">Error: '+esc(e.message)+'</p>'; st.textContent=''; }
 }
 
 function fmtDur(s){ s=Math.round(s); if(s<60) return s+'s'; const m=Math.floor(s/60); if(m<60) return m+'m'; return Math.floor(m/60)+'h'+(m%60)+'m'; }
+
+function toast(msg, type, icon){
+  let box=document.getElementById('toasts');
+  if(!box){ box=document.createElement('div'); box.id='toasts'; box.className='toasts'; document.body.appendChild(box); }
+  const t=document.createElement('div'); t.className='toast '+(type||'info');
+  t.innerHTML=(icon?`<span class="ti">${icon}</span>`:'')+'<span>'+esc(msg)+'</span>';
+  box.appendChild(t);
+  setTimeout(()=>{ t.classList.add('out'); setTimeout(()=>t.remove(), 320); }, 4200);
+}
+function flashCard(sha, cls){
+  const card=document.querySelector('[data-sha="'+sha+'"]'); if(!card) return;
+  card.classList.remove('flash-ok','flash-bad'); void card.offsetWidth; card.classList.add(cls);
+}
+let _sumKey=null;
+function animSummary(){
+  const ns=[...document.querySelectorAll('.sumstat .n')];
+  const key=ns.map(e=>e.textContent).join('|');
+  if(key===_sumKey) return;                 // unchanged (e.g. a filter click) -> don't re-animate
+  _sumKey=key;
+  ns.forEach(el=>{ const to=parseInt(el.textContent,10); if(isNaN(to)) return;
+    const t0=performance.now(), dur=650;
+    (function step(t){ const p=Math.min(1,(t-t0)/dur); el.textContent=Math.round(to*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step); })(t0);
+  });
+}
 
 async function refreshWorker(){
   const el = document.getElementById('worker');
