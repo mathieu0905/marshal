@@ -21,8 +21,9 @@ from .knowledge.models import GateRun
 from .knowledge.store import Store
 
 _DEFAULT_REPOS = ("cowboyinc/node", "cowboyinc/cbfs", "cowboyinc/cbss",
-                  "cowboyinc/cbqs", "cowboyinc/cowboy", "cowboyinc/runner",
-                  "shawhanken/marshal")
+                  "cowboyinc/cbqs", "cowboyinc/cowboy-protocol", "cowboyinc/gateway",
+                  "cowboyinc/cowboy", "cowboyinc/runner", "cowboyinc/store-admin",
+                  "cowboyinc/wallet", "shawhanken/marshal")
 
 # The sweep's marker: `<!-- marshal-deep sha=<7..40 hex> -->`. Last match across all
 # comments wins (GitHub returns issue comments oldest-first, so the newest marker last).
