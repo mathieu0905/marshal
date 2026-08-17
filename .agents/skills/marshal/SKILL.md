@@ -49,6 +49,7 @@ description: Use when reviewing a change before merge in Codex — runs the Mars
 - $marshal ratchet "<bug>" → 流 C。
 - $marshal conformance → 规格符合度报告，见 references/conformance-flow.md。
 - $marshal metrics → cli metrics；conformance% 另跑 $marshal conformance。
+- $marshal reconcile [--apply] → 运维(非逐-PR 审查):cli reconcile-invariants,对账 DB registry 与 pack catalog。默认 dry-run 报告「catalog 有但 DB 未触发」的不变量 + 每仓 coverage_gaps;--apply 补种(pending 跳过、已有不覆盖、origin 从 escape 反查),--verify 先跑锚定测试只种会绿的。不发明新不变量(那靠棘轮/onboarding)。
 - 流 A 的 diff 命中 docs/cips/** 或 docs/whitepaper/** 时叠加流 B。
 
 ## 流 A — 门禁评估

@@ -50,6 +50,7 @@ description: Use when reviewing a change before merge — runs the Marshal quali
 - `/marshal ratchet "<bug>"` → 流 C
 - `/marshal conformance` → ⑤ 规格符合度报告(见 `references/conformance-flow.md`)
 - `/marshal metrics` → ⑦ 度量报告:`cli metrics`(不变量数/棘轮增量/逃逸开关/门禁判决分布);conformance% 另跑 `/marshal conformance`。诚实呈现 `unavailable` 指标,不补造数
+- `/marshal reconcile [--apply]` → 运维(**非逐-PR 审查**):对账 DB registry 与 pack catalog。`cli reconcile-invariants` —— 默认 dry-run 报告「catalog 有但 DB 没被任何 PR 触发过」的不变量 + 每仓 `coverage_gaps`(catalog∪DB 都=0 的 bound repo);`--apply` 补种(等同模拟所有 catalog 路径被 PR 触发登记,安全:pending 跳过、已有不覆盖、origin 从 escape 反查);`--verify` 先在各 repo checkout 跑锚定测试,只种会绿的(彻底防幽灵)。dashboard 的 Invariants 页也可一键触发同一流程。**不发明新不变量**(那靠流 C 棘轮 / onboarding)
 - 若流 A 的 diff 命中规格层文件(cowboy `docs/cips/**` 或 `docs/whitepaper/**`)→ 叠加流 B(见下)
 
 ## 流 A — 门禁评估
