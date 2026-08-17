@@ -1073,10 +1073,10 @@ async function renderInvariants(){
     <div class="card" id="reconcileCard">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
         <div><h3 style="margin:0">Catalog reconcile <span class="muted" style="font-weight:400">· pack ↔ DB</span></h3>
-          <p class="muted" style="font-size:12px;margin:4px 0 0">DB 是需求驱动镜像:catalog 里有、但还没被任何 PR 触发过的不变量会显示为缺失。一键检查所有被审计 repo 并补齐。</p></div>
+          <p class="muted" style="font-size:12px;margin:4px 0 0">The DB registry is a demand-driven mirror: an invariant defined in the pack catalog but never yet exercised by a PR reads as missing. Check every audited repo and seed the gaps in one click.</p></div>
         <div style="display:flex;gap:8px;flex-shrink:0">
-          <button class="btn" id="rcCheck">检查缺口</button>
-          <button class="btn deep" id="rcApply" style="display:none">入库 (<span id="rcAddN">0</span>)</button>
+          <button class="btn" id="rcCheck">Check gaps</button>
+          <button class="btn deep" id="rcApply" style="display:none">Seed (<span id="rcAddN">0</span>)</button>
         </div>
       </div>
       <div id="rcResult" style="margin-top:12px"></div>
@@ -1103,12 +1103,12 @@ function renderReconcile(d){
   const res=document.getElementById('rcResult'); if(!res) return;
   res.innerHTML=`
     <div style="margin-bottom:8px">
-      ${stat(c.added,'missing (catalog 有·DB 无)','var(--block)')}
+      ${stat(c.added,'missing (in catalog, not in DB)','var(--block)')}
       ${stat(c.present,'already in DB','var(--pass)')}
-      ${stat(c.pending,'pending (跳过·防幽灵)','var(--needs)')}
+      ${stat(c.pending,'pending (skipped · phantom guard)','var(--needs)')}
     </div>
     ${(plan.added&&plan.added.length)?`<div style="margin-bottom:8px"><span class="muted" style="font-size:12px">missing invariants</span><br>${_rcChips(plan.added,'var(--block)')}</div>`:''}
-    <div><span class="muted" style="font-size:12px">coverage gaps · bound repo 零覆盖(catalog∪DB 都=0,需人工 onboard)</span><br>${gaps.length?_rcChips(gaps,'var(--needs)'):'<span style="color:var(--pass);font-size:12px">✓ 没有 repo 完全无覆盖</span>'}</div>`;
+    <div><span class="muted" style="font-size:12px">coverage gaps · bound repos with zero coverage (catalog ∪ DB = 0 — need manual onboarding)</span><br>${gaps.length?_rcChips(gaps,'var(--needs)'):'<span style="color:var(--pass);font-size:12px">✓ no repo left uncovered</span>'}</div>`;
   const ap=document.getElementById('rcApply'), n=document.getElementById('rcAddN');
   if((c.added||0)>0 && !d.applied){ ap.style.display=''; if(n) n.textContent=c.added; }
   else ap.style.display='none';
@@ -1116,19 +1116,19 @@ function renderReconcile(d){
 function wireReconcile(){
   const chk=document.getElementById('rcCheck'), ap=document.getElementById('rcApply');
   if(chk) chk.addEventListener('click', async()=>{
-    chk.disabled=true; const t=chk.textContent; chk.textContent='检查中…';
+    chk.disabled=true; const t=chk.textContent; chk.textContent='Checking…';
     try{ const d=await reconcilePost(false); renderReconcile(d);
-      toast(`缺 ${d.counts.added} · 已有 ${d.counts.present} · pending ${d.counts.pending}`, d.counts.added? 'info':'ok', '🔍'); }
-    catch(e){ toast('检查失败: '+e.message,'bad','⚠'); }
+      toast(`${d.counts.added} missing · ${d.counts.present} in DB · ${d.counts.pending} pending`, d.counts.added? 'info':'ok', '🔍'); }
+    catch(e){ toast('Check failed: '+e.message,'bad','⚠'); }
     finally{ chk.disabled=false; chk.textContent=t; }
   });
   if(ap) ap.addEventListener('click', async()=>{
-    ap.disabled=true; const t=ap.textContent; ap.textContent='入库中…';
+    ap.disabled=true; const t=ap.textContent; ap.textContent='Seeding…';
     try{ const w=await reconcilePost(true);
-      toast(`已入库 ${w.counts.added} 条 catalog 不变量`,'ok','✓');
+      toast(`Seeded ${w.counts.added} catalog invariant(s)`,'ok','✓');
       const fresh=await reconcilePost(false); renderReconcile(fresh);
       const inv=await getJSON('/api/invariants'); _invRows=inv.invariants||[]; paintInvTable(); }
-    catch(e){ toast('入库失败: '+e.message,'bad','⚠'); ap.textContent=t; }
+    catch(e){ toast('Seed failed: '+e.message,'bad','⚠'); ap.textContent=t; }
     finally{ ap.disabled=false; }
   });
 }
