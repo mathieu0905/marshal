@@ -7,6 +7,7 @@ from contextlib import contextmanager
 import difflib
 import json
 import os
+import re
 import subprocess
 import sys
 import tomllib
@@ -560,6 +561,79 @@ def cmd_metrics(a) -> int:
         s.close()
 
 
+def _verify_anchor(inv, repo_root: Path) -> tuple[bool, str]:
+    """Run an invariant's anchor `run_command` in its repo checkout; green iff the
+    process exits 0 AND ≥1 test actually ran/passed (a `running 0 tests` / 0-passed
+    result is a false green — the very phantom the pending flag guards against)."""
+    if not inv.run_command:
+        return False, "no run_command"
+    if not repo_root.is_dir():
+        return False, f"repo checkout missing: {repo_root}"
+    try:
+        p = subprocess.run(inv.run_command, cwd=str(repo_root),
+                           capture_output=True, text=True, timeout=1800)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return False, f"exec error: {e}"
+    out = p.stdout + p.stderr
+    m = re.search(r"result: ok\. (\d+) passed", out)
+    if p.returncode == 0 and m and int(m.group(1)) >= 1:
+        return True, f"{m.group(1)} passed"
+    return False, f"exit={p.returncode}" + (f" ({m.group(1)} passed)" if m else " (no passing test)")
+
+
+def cmd_reconcile_invariants(a) -> int:
+    """Seed catalog invariants the demand-driven DB registry is missing, so every
+    audited repo reads its real coverage instead of 0. Dry-run by default."""
+    import marshal_core.pr_inbox as pr_inbox
+    defs = _PACK.all_invariant_defs()
+    workspace = Path(a.workspace)
+    roots = _parse_repo_roots(a.repo_root)
+
+    def _root(repo):
+        return Path(roots[repo]) if repo in roots else workspace / repo
+
+    allow_ids = None
+    verify = {}
+    if a.verify:
+        s0 = _session()
+        try:
+            existing = {r["id"] for r in Store(s0).invariant_rows()}
+        finally:
+            s0.close()
+        allow_ids = set()
+        for d in defs:
+            if getattr(d, "pending", False) or d.id in existing:
+                continue
+            ok, detail = _verify_anchor(d, _root(d.location_repo))
+            verify[d.id] = {"green": ok, "detail": detail}
+            if ok:
+                allow_ids.add(d.id)
+
+    s = _session()
+    try:
+        st = Store(s)
+        plan = st.reconcile_invariants(
+            defs, domain_pack=a.domain_pack, apply=a.apply, allow_ids=allow_ids)
+        db_repos = {r["repo"] for r in st.invariant_rows()}
+    finally:
+        s.close()
+
+    # 结构性缺口:被审计 (bound) 但 catalog **和** DB 都一条不变量都没有的 repo —— 真空白,
+    # 只能人工 onboard (加分类规则 + hand-seed 锚定真实测试 + 进 inbox)。DB 里有 ratchet
+    # 行但 catalog 无条目的 repo (如 marshal/runner) 不算空白,故也从 db_repos 扣除。
+    catalog_repos = {d.location_repo for d in defs}
+    bound = {repo for _, repo in pr_inbox.bound_repos()}
+    coverage_gaps = sorted(bound - catalog_repos - db_repos)
+
+    return _emit({
+        "applied": a.apply, "verified": a.verify,
+        "counts": {k: len(v) for k, v in plan.items()},
+        "plan": plan,
+        "verify": verify,
+        "coverage_gaps_no_invariant": coverage_gaps,
+    })
+
+
 def _parse_repo_roots(specs):
     """--repo-root repo=path 列表 → dict;缺 '=' 给清晰报错 (与其它命令风格一致)。"""
     roots = {}
@@ -978,6 +1052,20 @@ def build_parser() -> argparse.ArgumentParser:
 
     mt = sub.add_parser("metrics")
     mt.set_defaults(func=cmd_metrics)
+
+    ri = sub.add_parser("reconcile-invariants",
+                        help="seed catalog invariants the DB registry is missing "
+                             "(dry-run unless --apply); reports per-repo coverage gaps")
+    ri.add_argument("--apply", action="store_true",
+                    help="write the missing invariants (default: dry-run report only)")
+    ri.add_argument("--verify", action="store_true",
+                    help="run each candidate's anchor test first; seed only the green ones")
+    ri.add_argument("--workspace", default="/home/ubuntu/workspace",
+                    help="root holding the per-repo checkouts (used by --verify)")
+    ri.add_argument("--repo-root", action="append", default=[],
+                    help="override a repo's checkout path: repo=/abs/path (repeatable)")
+    ri.add_argument("--domain-pack", dest="domain_pack", default="cowboy")
+    ri.set_defaults(func=cmd_reconcile_invariants)
 
     wd = sub.add_parser("worktree-diff")
     wd.add_argument("--repo-root", default=".")

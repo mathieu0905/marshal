@@ -566,6 +566,59 @@ class Store:
         self.s.commit()
         return esc
 
+    def reconcile_invariants(self, defs, domain_pack: str = "cowboy",
+                             apply: bool = False, allow_ids=None) -> dict:
+        """Seed catalog invariants the DB registry is missing.
+
+        The registry is a demand-driven mirror: a catalog invariant only lands in
+        the DB once a real PR exercises its path, so a repo can have curated pack
+        coverage yet read 0 on the dashboard. This reconciles the two — it is
+        exactly the registration a PR touching every catalog path would trigger,
+        so it is no less safe than the normal gate flow.
+
+        Rules:
+        - `pending` defs are skipped (unimplemented skeletons — seeding them would
+          read as a false `degraded`; same exclusion `list_invariants` applies).
+        - defs already in the DB are skipped, never overwritten (preserves a
+          ratchet row's `origin`/`escape_id`).
+        - origin is recovered faithfully: if an escape's `spawned_check == id`, the
+          row is `origin=ratchet` (+ `escape_id`); otherwise `origin=hand`.
+        - `allow_ids` (optional): only seed ids in this set (the --verify gate —
+          ids whose anchor test was confirmed green); others go to `unverified`.
+
+        Returns a plan dict (`added`/`present`/`pending`/`unverified`), each a list
+        of ids. Writes only when `apply=True`.
+        """
+        existing = set(self.s.scalars(select(InvariantRegistry.id)))
+        by_check = {e.spawned_check: e.id
+                    for e in self.list_escapes(domain_pack=domain_pack)
+                    if e.spawned_check}
+        plan = {"added": [], "present": [], "pending": [], "unverified": []}
+        to_write = []
+        for d in defs:
+            if getattr(d, "pending", False):
+                plan["pending"].append(d.id)
+                continue
+            if d.id in existing:
+                plan["present"].append(d.id)
+                continue
+            if allow_ids is not None and d.id not in allow_ids:
+                plan["unverified"].append(d.id)
+                continue
+            esc_id = by_check.get(d.id)
+            to_write.append(InvariantRegistry(
+                id=d.id, domain_pack=domain_pack, domain=d.domain,
+                spec_ref=d.spec_ref, executor_kind=d.executor_kind,
+                location_repo=d.location_repo, location_path=d.location_path,
+                location_test=d.location_test, severity=d.severity,
+                origin=("ratchet" if esc_id else "hand"), escape_id=esc_id))
+            plan["added"].append(d.id)
+        if apply and to_write:
+            for row in to_write:
+                self.s.add(row)
+            self.s.commit()
+        return plan
+
     def open_review_run(self, **kw) -> ReviewRun:
         # New runs start open; evidence is closed out explicitly after all
         # lenses and external checks have reported their availability.

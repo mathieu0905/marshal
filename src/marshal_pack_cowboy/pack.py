@@ -647,6 +647,26 @@ class CowboyPack:
         # body lands and `pending` is flipped to False.
         return [i for i in out if not i.pending]
 
+    def all_invariant_defs(self) -> list[InvariantDef]:
+        """The **complete** catalog across every repo, independent of any scope —
+        the source of truth `list_invariants` samples from on demand. Used by the
+        reconcile path to seed the DB registry with catalog invariants that no PR
+        has happened to exercise yet (so a newly-onboarded repo reads its real
+        coverage instead of 0). Deduped by id, first occurrence wins. `pending`
+        skeletons are included here (the caller decides to skip them) so the full
+        catalog stays inspectable."""
+        out: list[InvariantDef] = []
+        seen: set[str] = set()
+        for coll in (_ECON_INVARIANTS, list(_CONTRACT_INVARIANTS.values()),
+                     _STATE_INVARIANTS, _CIP7_INVARIANTS, _RAS_ROUTE_INVARIANTS,
+                     _PVM_INVARIANTS, _CRYPTO_INVARIANTS, _CBFS_INVARIANTS,
+                     _CBSS_INVARIANTS, _CBQS_INVARIANTS):
+            for inv in coll:
+                if inv.id not in seen:
+                    out.append(inv)
+                    seen.add(inv.id)
+        return out
+
     def classify(self, scope: dict) -> str:
         return self.classify_detailed(scope)["tier"]
 
