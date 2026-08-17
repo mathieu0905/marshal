@@ -207,3 +207,25 @@ def api_get_job(job_id: int, x_marshal_token: str | None = Header(default=None))
         if job is None:
             raise HTTPException(status_code=404, detail="job not found")
         return job
+
+
+@app.post("/api/reconcile")
+def api_reconcile(body: dict | None = None,
+                  x_marshal_token: str | None = Header(default=None)):
+    """Reconcile the demand-driven DB registry against the full pack catalog:
+    seed the catalog invariants no PR has exercised yet. Dry-run unless
+    `{"apply": true}`. Web-triggered, so no --verify here (that needs repo
+    checkouts + cargo); the safety rules live in Store.reconcile_invariants."""
+    _check_job_token(x_marshal_token)
+    apply = bool((body or {}).get("apply", False))
+    defs = _PACK.all_invariant_defs()
+    with _Session() as s:
+        st = Store(s)
+        plan = st.reconcile_invariants(defs, apply=apply)
+        db_repos = {r["repo"] for r in st.invariant_rows()}
+    catalog_repos = {d.location_repo for d in defs}
+    bound = {repo for _, repo in pr_inbox.bound_repos()}
+    return {"applied": apply,
+            "counts": {k: len(v) for k, v in plan.items()},
+            "plan": plan,
+            "coverage_gaps": sorted(bound - catalog_repos - db_repos)}

@@ -213,6 +213,25 @@ def test_invariants_endpoint_lists(client):
     assert isinstance(r.json()["invariants"], list)           # empty in the bare test DB
 
 
+def test_reconcile_dry_run_reports_missing_without_writing(client):
+    before = len(client.get("/api/invariants").json()["invariants"])
+    d = client.post("/api/reconcile", json={"apply": False}).json()
+    assert d["applied"] is False
+    assert d["counts"]["added"] > 0                            # empty DB -> catalog all missing
+    assert "coverage_gaps" in d
+    after = len(client.get("/api/invariants").json()["invariants"])
+    assert after == before                                    # dry-run wrote nothing
+
+
+def test_reconcile_apply_seeds_and_is_idempotent(client):
+    d = client.post("/api/reconcile", json={"apply": True}).json()
+    assert d["applied"] is True and d["counts"]["added"] > 0
+    ids = {x["id"] for x in client.get("/api/invariants").json()["invariants"]}
+    assert "cbqs.at_least_once_safe_prefix_holds" in ids
+    again = client.post("/api/reconcile", json={"apply": False}).json()
+    assert again["counts"]["added"] == 0                       # nothing left to add
+
+
 def test_escape_timeline_endpoint_cumulative(client):
     from datetime import datetime, timezone
     import marshal_core.adapters.api as api
