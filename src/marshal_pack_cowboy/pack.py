@@ -34,6 +34,16 @@ _REPO_HIGH_PREFIXES = {
         # 访问控制(auth) / 完整性元数据(manifest) / 跨 repo 共享类型(cowboy-ras)
         ("crypto/", "erasure/", "placement/", "auth/", "manifest/", "cowboy-ras/"),
         "cbfs integrity/confidentiality surface (crypto/erasure/placement/auth/manifest)"),
+    "cbqs": (
+        # 交付正确性(at-least-once/终态生命周期/safe-prefix)+ 签名 receipt hash-chain
+        # (gated on durable commit)+ StreamGrant 授权 + 权威 broker 状态 / chain 实例绑定。
+        # broker 只存密文,机密性在 client/protocol,不在本 repo —— 故此处是「正确性+授权」面。
+        ("crates/cbqsd/src/receipt", "crates/cbqsd/src/authorization",
+         "crates/cbqsd/src/standard_append", "crates/cbqsd/src/standard_delivery",
+         "crates/cbqsd/src/standard_group", "crates/cbqsd/src/standard_lane",
+         "crates/cbqsd/src/broker_state", "crates/cbqsd/src/storage",
+         "crates/cbqsd/src/transport/chain"),
+        "cbqs delivery-correctness / signed-receipt-chain / StreamGrant-auth surface (CIP-39)"),
 }
 
 _LOW_SUFFIXES = (".md",)
@@ -483,6 +493,24 @@ _CBSS_INVARIANTS = [
                               "prop_any_t_subset_recovers"]),
 ]
 
+# cbqs 领域不变量 (住 cbqs 仓)。CIP-39 交付正确性核心 (at-least-once): 一个非终态的
+# 租约过期**不得**把消费组 safe-prefix 推过仍可重投的记录 —— 否则 safe prefix 越过一条
+# 未确认交付的消息 = 静默丢消息。真实单测, 已在 cbqs head 验证通过 (running 1 test; ok)。
+# 碰交付/终态/游标逻辑 (standard_delivery/standard_group/standard_lane) 时触发。
+_CBQS_PREFIXES = ("crates/cbqsd/src/standard_delivery",
+                  "crates/cbqsd/src/standard_group",
+                  "crates/cbqsd/src/standard_lane")
+_CBQS_INVARIANTS = [
+    InvariantDef(id="cbqs.at_least_once_safe_prefix_holds", domain="messaging", spec_ref="CIP-39",
+                 executor_kind="test", location_repo="cbqs",
+                 location_path="crates/cbqsd/src/standard_delivery.rs",
+                 location_test=("standard_delivery::tests::"
+                                "nonterminal_lease_expiry_does_not_advance_past_the_redeliverable_record"),
+                 severity="high",
+                 run_command=["cargo", "test", "-p", "cbqsd", "--lib",
+                              "nonterminal_lease_expiry_does_not_advance_past_the_redeliverable_record"]),
+]
+
 
 # 安全信任边 / 危险点 (架构: 否定性·对抗性属性,不可往返化)。
 # 教训源 = almanax 在 node #470 标出的 Critical:`cbss_encrypt_secret` 把 wrap key
@@ -603,6 +631,9 @@ class CowboyPack:
         elif scope.get("repo") == "cbss":
             if any(p.startswith(_CBSS_PREFIXES) for p in paths):
                 out.extend(_CBSS_INVARIANTS)
+        elif scope.get("repo") == "cbqs":
+            if any(p.startswith(_CBQS_PREFIXES) for p in paths):
+                out.extend(_CBQS_INVARIANTS)
         seen = {i.id for i in out}
         for cid in self.contracts_hit(scope):
             for inv_id in _CONTRACT_BY_ID[cid].verify_invariants:
@@ -731,6 +762,7 @@ class CowboyPack:
         all_defs = (list(_ECON_INVARIANTS) + list(_CONTRACT_INVARIANTS.values())
                     + list(_STATE_INVARIANTS) + list(_CRYPTO_INVARIANTS)
                     + list(_CBFS_INVARIANTS) + list(_CBSS_INVARIANTS)
+                    + list(_CBQS_INVARIANTS)
                     + list(_CIP7_INVARIANTS) + list(_RAS_ROUTE_INVARIANTS))
         for inv in all_defs:
             # pending (not-yet-enforcing) invariants must not inflate coverage.
