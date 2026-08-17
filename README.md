@@ -97,6 +97,7 @@ python -m marshal_core.cli <command> [options]
 | `spec-source --ref CIP-3` | Resolve a spec reference to its location in the domain source |
 | `spec-requirements --ref CIP-3 --spec-root <repo>` | Extract RFC2119 requirements from the spec text |
 | `conformance [--spec-root <repo>]` | Emit the spec-to-invariant coverage matrix; with a spec root, report CIP coverage and gaps |
+| `reconcile-invariants [--apply] [--verify]` | Reconcile the demand-driven DB registry against the full pack catalog: report (and, with `--apply`, seed) the invariants no PR has exercised yet, plus per-repo coverage gaps. `--verify` runs each anchor test first and seeds only the green ones. Dry-run by default |
 | `ratchet-open --escape-id ... --desc ...` | Register a quality escape |
 | `ratchet-close --escape-id ... --spawned-check ... --inv-json ...` | Close an escape and register its permanent check |
 | `gate-record --change-ref ... --verdict pass` | Persist a gate result |
@@ -408,13 +409,16 @@ described above (verdict always `cost-only`).
 The brain service also serves a self-contained web dashboard at `/`:
 
 - **Review Queue** — open PRs across the bound repos (`$MARSHAL_REPOS`, default
-  `cowboyinc/{node,cbfs,cbss,cowboy,runner}` + `shawhanken/marshal`), newest-first,
-  each tagged eligible / on-hold (merge conflict, CI failing or pending,
-  already-reviewed, CIP-10). "Already-reviewed" mirrors the `marshal-pr-sweep`
-  marker (`<!-- marshal-deep sha=… -->`). Eligible PRs get **re-review**
-  (mechanical) and **deep review** buttons; filter/group by repo.
+  `cowboyinc/{node,cbfs,cbss,cbqs,cowboy-protocol,gateway,cowboy,runner,store-admin,wallet}`
+  + `shawhanken/marshal`), newest-first, each tagged eligible / on-hold (merge
+  conflict, CI failing or pending, already-reviewed, CIP-10). "Already-reviewed"
+  mirrors the `marshal-pr-sweep` marker (`<!-- marshal-deep sha=… -->`). Eligible
+  PRs get **re-review** (mechanical) and **deep review** buttons; filter/group by repo.
 - **Health** — gate-output metrics, verdicts-over-time, escape ratchet and
-  invariant coverage, with plain-language help.
+  invariant coverage, with plain-language help. The **Invariants** page carries a
+  **Catalog reconcile** card: one click checks (and optionally seeds) the catalog
+  invariants the demand-driven DB registry is missing, and lists per-repo coverage
+  gaps — the same flow as `reconcile-invariants` / `POST /api/reconcile`.
 - **Worker status** — a header pill showing whether a job worker is running
   (`down` / `idle` / `busy · <job> · <elapsed>`) and the queue depth.
 
@@ -428,6 +432,8 @@ optional token):
 | `GET /api/health` | metrics + escape/invariant breakdowns |
 | `GET /api/worker` | worker liveness (down/idle/busy) + queue depth |
 | `GET /api/runs/{id}`, `GET /api/escapes` | a gate run's evidence / escape breakdown |
+| `GET /api/invariants` | the invariant registry, flattened for the Invariants page |
+| `POST /api/reconcile` | reconcile the DB registry against the pack catalog (`{apply?}`); returns counts, the missing-id plan, and coverage gaps |
 
 **Start the server** (the same app as the brain service; `GITHUB_TOKEN` powers the
 PR queue):
@@ -471,8 +477,8 @@ on localhost / behind auth if you leave the token unset.
 | `MARSHAL_HOME` | The current source-repo root | Where `.claude/skills`, `.agents/skills`, and the default database are located |
 | `MARSHAL_DB` | `sqlite:///$MARSHAL_HOME/marshal.db` | The SQLAlchemy database URL — used by both the CLI and the brain service |
 | `GITHUB_TOKEN` | _(unset)_ | Powers the dashboard's open-PR queue and the worker's PR-identity backfill |
-| `MARSHAL_REPOS` | `cowboyinc/{node,cbfs,cbss,cowboy,runner}`, `shawhanken/marshal` | Comma-separated `org/repo` list the Review Queue watches |
-| `MARSHAL_JOB_TOKEN` | _(unset)_ | If set, `POST/GET /api/jobs` require an `X-Marshal-Token` header |
+| `MARSHAL_REPOS` | `cowboyinc/{node,cbfs,cbss,cbqs,cowboy-protocol,gateway,cowboy,runner,store-admin,wallet}`, `shawhanken/marshal` | Comma-separated `org/repo` list the Review Queue watches |
+| `MARSHAL_JOB_TOKEN` | _(unset)_ | If set, `POST/GET /api/jobs` and `POST /api/reconcile` require an `X-Marshal-Token` header |
 | `MARSHAL_CLAUDE_ALLOWED_TOOLS` | _(unset)_ | Scoped tool allowlist passed to headless `claude -p` for deep reviews |
 | `MARSHAL_CLAUDE_PERMISSION_MODE` | _(unset)_ | Optional `--permission-mode` for the deep-review `claude -p` |
 | `CARGO_TARGET_DIR` | `~/.marshal/cargo-target` (in `run_deep_worker.sh`) | Shared cargo target so invariant builds are incremental, not cold |
