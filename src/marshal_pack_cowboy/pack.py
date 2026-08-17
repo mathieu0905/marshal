@@ -576,6 +576,20 @@ _RUNNER_INVARIANTS = [
                               "verifier::tests::test_majority_vote_threshold_not_met_fails"]),
 ]
 
+# 阶段二 (review-hazard) 不变量:JS/TS 仓 (wallet, store-admin) 没有 cargo/pytest 可跑的机械锚,
+# 只能由对抗 review 裁定 (invariant_able=False)。这些**不进** list_invariants (否则机械门禁会去
+# 跑一条无 run_command 的检查 → 假 degraded);它们的「牙」在上面 SECURITY_HAZARDS 的同源条目
+# (security_hazards() 按 when_paths 触发, 把 prompt 注入 review 并升 high)。此处只登记为 registry
+# 记录 (进 all_invariant_defs → 供 reconcile seed, 让 dashboard 如实显示覆盖)。location_test 留空。
+_REVIEW_INVARIANTS = [
+    InvariantDef(id="wallet.no_blind_signing_intent_binding", domain="security", spec_ref="",
+                 executor_kind="review-hazard", location_repo="wallet",
+                 location_path="src/lib/sign-binding.js", location_test="", severity="high"),
+    InvariantDef(id="store-admin.privileged_op_server_authz", domain="security", spec_ref="",
+                 executor_kind="review-hazard", location_repo="store-admin",
+                 location_path="src/services/approval-orchestrator.ts", location_test="", severity="high"),
+]
+
 
 # 安全信任边 / 危险点 (架构: 否定性·对抗性属性,不可往返化)。
 # 教训源 = almanax 在 node #470 标出的 Critical:`cbss_encrypt_secret` 把 wrap key
@@ -618,6 +632,37 @@ SECURITY_HAZARDS = [
                 "公开量且无 per-message 随机数 —— 若是,任何观察者可复算密钥解密,机密性"
                 "破裂 (IND-CPA 失败)。这是否定性属性:roundtrip 不变量无法表达,必须在此 "
                 "review 中裁定 (参 node #470 almanax Critical)。"),
+        invariant_able=False),
+    SecurityHazard(
+        id="wallet-blind-signing-intent-binding",
+        # wallet 是 JS,机械执行器跑不了 —— 只能阶段二裁定。签名摘要绑定 (sign-binding.js)、
+        # 审批 UI (popup/approve.js)、window.cowboy provider (content/inject, service-worker)。
+        when_paths=("src/lib/sign-binding", "src/popup/approve", "src/popup/popup",
+                    "src/background/service-worker", "src/content/inject",
+                    "src/content/content-script"),
+        title="wallet blind-signing: the signature the user approves must be bound to the intent shown",
+        prompt=("默认怀疑钓鱼/盲签。任何经 window.cowboy 发起的签名请求:(1) 被签的摘要必须"
+                "**域分离** —— personal-message 签名绝不能被重放为一笔交易 (transfer/deploy/"
+                "execute),反之亦然;(2) 弹窗必须把真实解码后的交易/消息展示给用户,绝不签"
+                "用户看不懂的 opaque bytes;(3) dApp 不得诱导钱包对任意 32 字节 hash 盲签。"
+                "这是否定性属性 (盲签 oracle / 意图错绑),roundtrip 不变量表达不了,必须"
+                "review 裁定 (参 esc-20260616-wallet-blind-signmessage)。"),
+        invariant_able=False),
+    SecurityHazard(
+        id="store-admin-privileged-op-authz-and-db-boundary",
+        # store-admin 是 TS,机械执行器跑不了 —— 只能阶段二裁定。特权审批/签名/发布 +
+        # read-cap 校验 + README 明定「不得写 explorer chain-truth DB」的边界。
+        when_paths=("src/services/signing", "src/services/read-cap-verifier",
+                    "src/services/approval-orchestrator", "src/services/review-workflow",
+                    "src/services/republish", "src/services/labs-publisher",
+                    "src/server", "src/app"),
+        title="store-admin privileged review/approval/signing must be server-authorized and stay in its DB boundary",
+        prompt=("默认怀疑越权/边界破坏。检查:(1) approval / publish / sign / republish 等特权"
+                "操作是否在**服务端**校验调用者的 reviewer 授权 —— 不能只靠 UI/客户端门控,"
+                "不能有 submission/member id 的 IDOR;(2) read-cap-verifier 是否真的门住访问,"
+                "不被绕过;(3) store-admin 是否**从不写 explorer chain-truth DB** (README 硬边界),"
+                "签名适配器不得越权铸造链上真相。否定性属性 (broken access control / 边界越界),"
+                "roundtrip 表达不了,必须 review 裁定。"),
         invariant_able=False),
 ]
 
@@ -735,7 +780,7 @@ class CowboyPack:
                      _STATE_INVARIANTS, _CIP7_INVARIANTS, _RAS_ROUTE_INVARIANTS,
                      _PVM_INVARIANTS, _CRYPTO_INVARIANTS, _CBFS_INVARIANTS,
                      _CBSS_INVARIANTS, _CBQS_INVARIANTS, _PROTOCOL_INVARIANTS,
-                     _GATEWAY_INVARIANTS, _RUNNER_INVARIANTS):
+                     _GATEWAY_INVARIANTS, _RUNNER_INVARIANTS, _REVIEW_INVARIANTS):
             for inv in coll:
                 if inv.id not in seen:
                     out.append(inv)
