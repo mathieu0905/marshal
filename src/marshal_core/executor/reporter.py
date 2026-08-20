@@ -1,6 +1,7 @@
 """通用 CI reporter — 项目无关。问大脑要 run-specs, 执行 argv, 回报结果。
 执行知识 (归属仓/执行器类型/argv) 全部来自大脑 /plan 响应; reporter 自身对
 任何具体项目零知识。跑不了的检查如实进 not_run 并整体 degraded, 绝不假装跑过。"""
+import base64
 import json
 import re
 import subprocess
@@ -25,6 +26,39 @@ def _post(url: str, payload: dict) -> dict:
 
 def _tests_ran(output: str) -> bool:
     return sum(int(n) for n in re.findall(r"(\d+) passed", output)) > 0
+
+
+def _decode_diff_paths(encoded: str) -> list[str]:
+    if not encoded:
+        return []
+    try:
+        raw = base64.b64decode(encoded, validate=True)
+    except (ValueError, TypeError) as e:
+        raise ValueError("diff paths are not valid base64") from e
+    if not raw:
+        return []
+    if not raw.endswith(b"\0"):
+        raise ValueError("diff paths payload is not NUL terminated")
+    return [item.decode("utf-8", errors="surrogateescape")
+            for item in raw[:-1].split(b"\0") if item]
+
+
+def _parse_labels(raw: str) -> list[str]:
+    if not raw or raw == "null":
+        return []
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError as e:
+        raise ValueError("labels payload is not valid JSON") from e
+    if not isinstance(value, list):
+        raise ValueError("labels payload must be a JSON list")
+    labels = []
+    for item in value:
+        name = item.get("name") if isinstance(item, dict) else item
+        if not isinstance(name, str):
+            raise ValueError("each label must have a string name")
+        labels.append(name)
+    return labels
 
 
 def _validate_plan(plan: object) -> tuple[str, list[dict], list[dict]]:
@@ -70,13 +104,15 @@ def _post_results(brain_url: str, job_id: str, results: list[dict],
         "cost": 0.0, "status": status})
 
 
-def run(brain_url: str, repo: str, change_ref: str, diff_paths: list[str]) -> int:
+def run(brain_url: str, repo: str, change_ref: str, diff_paths: list[str],
+        labels: list[str] | None = None) -> int:
     if not brain_url or not repo or not change_ref:
         raise ValueError("brain_url, repo, and change_ref must be non-empty")
     brain_url = brain_url.rstrip("/")
     plan = _post(f"{brain_url}/plan", {"kind": "pr", "repo": repo,
                                        "change_ref": change_ref,
-                                       "diff_paths": diff_paths})
+                                       "diff_paths": diff_paths,
+                                       "labels": list(labels or [])})
     job_id, invariants, not_run = _validate_plan(plan)
     results = []
     deadline = time.monotonic() + _TOTAL_TIMEOUT_SEC
@@ -138,10 +174,14 @@ def _main() -> int:
     p.add_argument("--repo", required=True)
     p.add_argument("--change-ref", required=True)
     p.add_argument("--diff-paths", default="")
+    p.add_argument("--diff-paths-b64", default="")
+    p.add_argument("--labels-json", default="[]")
     a = p.parse_args()
-    paths = [x for x in a.diff_paths.split(",") if x]
     try:
-        return run(a.brain_url, a.repo, a.change_ref, paths)
+        paths = (_decode_diff_paths(a.diff_paths_b64) if a.diff_paths_b64
+                 else [x for x in a.diff_paths.split(",") if x])
+        labels = _parse_labels(a.labels_json)
+        return run(a.brain_url, a.repo, a.change_ref, paths, labels)
     except (TypeError, ValueError, KeyError) as e:
         print(f"marshal reporter error: {e}", file=sys.stderr)
         return 2

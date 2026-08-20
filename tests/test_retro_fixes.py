@@ -200,3 +200,64 @@ def test_ratchet_close_registers_check_atomically():
     assert store.get_escape("esc").status == "closed"
     assert store.list_invariants("cowboy", "node")[0].id == "inv.x"
     session.close()
+
+
+def test_webhook_refuses_pr_beyond_files_api_limit(tmp_path, monkeypatch):
+    import importlib
+    from fastapi.testclient import TestClient
+    import marshal_core.adapters.api as api
+
+    monkeypatch.setenv("MARSHAL_DB", f"sqlite:///{tmp_path / 'limit.db'}")
+    api = importlib.reload(api)
+
+    payload = {
+        "repository": {"name": "node", "full_name": "cowboyinc/node"},
+        "pull_request": {
+            "number": 7, "head": {"sha": "limit"},
+            "user": {"login": "alice"}, "labels": [], "changed_files": 3001,
+        },
+    }
+
+    class _Never:
+        def __init__(self, **kwargs):
+            raise AssertionError("must reject before calling GitHub")
+
+    monkeypatch.setattr(api.httpx, "AsyncClient", _Never)
+    response = TestClient(api.app).post("/webhook", json=payload)
+    assert response.status_code == 502
+    assert "3000-file API limit" in response.json()["detail"]
+
+
+def test_webhook_refuses_incomplete_files_api_page(tmp_path, monkeypatch):
+    import importlib
+    from fastapi.testclient import TestClient
+    import marshal_core.adapters.api as api
+
+    monkeypatch.setenv("MARSHAL_DB", f"sqlite:///{tmp_path / 'incomplete.db'}")
+    api = importlib.reload(api)
+
+    payload = {
+        "repository": {"name": "node", "full_name": "cowboyinc/node"},
+        "pull_request": {
+            "number": 7, "head": {"sha": "incomplete"},
+            "user": {"login": "alice"}, "labels": [], "changed_files": 2,
+        },
+    }
+
+    class _OnePage:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            return False
+
+        async def get(self, *args, **kwargs):
+            return type("Response", (), {
+                "raise_for_status": lambda self: None,
+                "json": lambda self: [{"filename": "only-one.rs"}],
+            })()
+
+    monkeypatch.setattr(api.httpx, "AsyncClient", lambda **kwargs: _OnePage())
+    response = TestClient(api.app).post("/webhook", json=payload)
+    assert response.status_code == 502
+    assert "expected 2" in response.json()["detail"]

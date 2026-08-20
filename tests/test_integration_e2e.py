@@ -14,16 +14,33 @@ def client(tmp_path, monkeypatch):
     return TestClient(api.app)
 
 
-def test_full_slice_shadow(client):
-    # 1) PR 事件
-    webhook_payload = {
+def _webhook_payload():
+    return {
         "action": "synchronize",
-        "repository": {"name": "node"},
-        "pull_request": {"head": {"sha": "e2e123"}, "user": {"login": "alice"},
-                         "labels": []},
-        "_diff_paths": ["execution/src/execution/transaction.rs"],
+        "repository": {"name": "node", "full_name": "cowboyinc/node"},
+        "pull_request": {"number": 7, "head": {"sha": "e2e123"},
+                         "user": {"login": "alice"}, "labels": []},
     }
-    r1 = client.post("/webhook", json=webhook_payload)
+
+
+class _FilesResp:
+    def __init__(self, files):
+        self._files = files
+
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return self._files
+
+
+def test_full_slice_shadow(client, monkeypatch):
+    import marshal_core.adapters.api as api
+    monkeypatch.setattr(api.httpx, "AsyncClient", lambda **kw: _AsyncFilesClient(
+        _FilesResp([{"filename": "execution/src/execution/transaction.rs"}])))
+
+    # 1) PR 事件 — 改动文件列表来自 GitHub files API, 不再信 payload 私货
+    r1 = client.post("/webhook", json=_webhook_payload())
     assert r1.status_code == 200
     assert "econ.fee_conservation" in r1.json()["invariant_ids"]
 
@@ -43,6 +60,15 @@ def test_full_slice_shadow(client):
     assert body["check_run"]["head_sha"] == "e2e123"
 
 
+def test_webhook_refuses_when_files_api_unreachable(client, monkeypatch):
+    import marshal_core.adapters.api as api
+
+    monkeypatch.setattr(api.httpx, "AsyncClient", lambda **kw: _AsyncFilesClient(
+        error=RuntimeError("github unreachable")))
+    r = client.post("/webhook", json=_webhook_payload())
+    assert r.status_code == 502          # 拿不到改动文件 → 拒绝出结论, 不按空 diff 硬算
+
+
 def test_results_for_unknown_job_rejected(client):
     result = {
         "job_id": "inv-never-planned", "schema_version": "1", "kind": "invariant",
@@ -50,3 +76,20 @@ def test_results_for_unknown_job_rejected(client):
     }
     r = client.post("/results", json=result)
     assert r.status_code == 404
+
+
+class _AsyncFilesClient:
+    def __init__(self, response=None, error=None):
+        self.response = response
+        self.error = error
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *a):
+        return False
+
+    async def get(self, *a, **kw):
+        if self.error:
+            raise self.error
+        return self.response

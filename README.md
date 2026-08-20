@@ -274,8 +274,12 @@ jobs:
           repo: node                                # this repo's id in the Domain Pack
 ```
 
-- `base-ref` is optional; when omitted the action compares `HEAD~1...HEAD`.
-- The action computes the changed paths, then runs the bundled reporter, which
+- `base-ref` is optional; when omitted the action derives the diff base from the
+  triggering event (`pull_request`: the PR's base SHA, `push`: the `before` SHA,
+  `merge_group`: the queue's base SHA) and fetches it if the checkout is
+  shallow. If no base can be determined (e.g. the first push of a new branch),
+  the action fails loudly instead of reporting an empty diff.
+- The action computes the changed paths with a NUL-safe transport, so filenames containing commas are preserved. It also forwards canonical PR labels to the plan request. GitHub's files API is capped at 3,000 entries; a PR whose complete file list cannot be proven is rejected rather than planned with a partial scope. The action then runs the bundled reporter, which
   `POST`s to `{brain-url}/plan` and `{brain-url}/results`. Plans must declare a
   supported `executor_kind`; unknown or missing kinds are reported as `not_run`
   instead of passing on exit code alone. Each command has a 600-second limit and

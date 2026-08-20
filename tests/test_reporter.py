@@ -202,3 +202,23 @@ def test_total_timeout_marks_remaining_invariants_not_run(monkeypatch):
     assert executed == []
     assert posted["body"]["status"] == "degraded"
     assert {x["invariant_id"] for x in posted["body"]["payload"]["not_run"]} == {"a", "b"}
+
+
+def test_reporter_preserves_comma_paths_and_labels(monkeypatch):
+    posted = {}
+    _patch_brain(monkeypatch, [], posted)
+    encoded = reporter.base64.b64encode(
+        b"src/a,b.rs\0docs/normal.md\0").decode()
+    assert reporter._decode_diff_paths(encoded) == ["src/a,b.rs", "docs/normal.md"]
+    assert reporter._parse_labels('[{"name":"security"}, {"name":"cip"}]') == [
+        "security", "cip"]
+    reporter.run(brain_url="http://brain", repo="node",
+                 change_ref="sha1", diff_paths=["src/a,b.rs"],
+                 labels=["security"])
+    assert posted["body"]["payload"]["results"] == []
+
+
+def test_reporter_rejects_malformed_lossless_paths():
+    import pytest
+    with pytest.raises(ValueError, match="NUL terminated"):
+        reporter._decode_diff_paths(reporter.base64.b64encode(b"src/x.rs").decode())
