@@ -1,0 +1,1535 @@
+diff --git a/cdi/pom.xml b/cdi/pom.xml
+index fb0537bd..640079bf 100644
+--- a/cdi/pom.xml
++++ b/cdi/pom.xml
+@@ -21,7 +21,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-parent</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config</artifactId>
+diff --git a/cdi/src/main/java/io/smallrye/config/inject/ConfigExtension.java b/cdi/src/main/java/io/smallrye/config/inject/ConfigExtension.java
+index 8d53e7a7..09aee5d6 100644
+--- a/cdi/src/main/java/io/smallrye/config/inject/ConfigExtension.java
++++ b/cdi/src/main/java/io/smallrye/config/inject/ConfigExtension.java
+@@ -38,19 +38,19 @@ import java.util.Set;
+ import java.util.function.Supplier;
+ import java.util.stream.StreamSupport;
+ 
+-import javax.enterprise.event.Observes;
+-import javax.enterprise.inject.Instance;
+-import javax.enterprise.inject.spi.AfterBeanDiscovery;
+-import javax.enterprise.inject.spi.AfterDeploymentValidation;
+-import javax.enterprise.inject.spi.AnnotatedType;
+-import javax.enterprise.inject.spi.BeanManager;
+-import javax.enterprise.inject.spi.BeforeBeanDiscovery;
+-import javax.enterprise.inject.spi.Extension;
+-import javax.enterprise.inject.spi.InjectionPoint;
+-import javax.enterprise.inject.spi.ProcessAnnotatedType;
+-import javax.enterprise.inject.spi.ProcessInjectionPoint;
+-import javax.enterprise.inject.spi.WithAnnotations;
+-import javax.inject.Provider;
++import jakarta.enterprise.event.Observes;
++import jakarta.enterprise.inject.Instance;
++import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
++import jakarta.enterprise.inject.spi.AfterDeploymentValidation;
++import jakarta.enterprise.inject.spi.AnnotatedType;
++import jakarta.enterprise.inject.spi.BeanManager;
++import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
++import jakarta.enterprise.inject.spi.Extension;
++import jakarta.enterprise.inject.spi.InjectionPoint;
++import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
++import jakarta.enterprise.inject.spi.ProcessInjectionPoint;
++import jakarta.enterprise.inject.spi.WithAnnotations;
++import jakarta.inject.Provider;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.ConfigProvider;
+diff --git a/cdi/src/main/java/io/smallrye/config/inject/ConfigInjectionBean.java b/cdi/src/main/java/io/smallrye/config/inject/ConfigInjectionBean.java
+index 22bf1623..4024c4e2 100644
+--- a/cdi/src/main/java/io/smallrye/config/inject/ConfigInjectionBean.java
++++ b/cdi/src/main/java/io/smallrye/config/inject/ConfigInjectionBean.java
+@@ -23,16 +23,16 @@ import java.util.HashSet;
+ import java.util.Optional;
+ import java.util.Set;
+ 
+-import javax.enterprise.context.Dependent;
+-import javax.enterprise.context.spi.CreationalContext;
+-import javax.enterprise.inject.Instance;
+-import javax.enterprise.inject.spi.Annotated;
+-import javax.enterprise.inject.spi.Bean;
+-import javax.enterprise.inject.spi.BeanManager;
+-import javax.enterprise.inject.spi.InjectionPoint;
+-import javax.enterprise.inject.spi.PassivationCapable;
+-import javax.enterprise.util.AnnotationLiteral;
+-import javax.inject.Provider;
++import jakarta.enterprise.context.Dependent;
++import jakarta.enterprise.context.spi.CreationalContext;
++import jakarta.enterprise.inject.Instance;
++import jakarta.enterprise.inject.spi.Annotated;
++import jakarta.enterprise.inject.spi.Bean;
++import jakarta.enterprise.inject.spi.BeanManager;
++import jakarta.enterprise.inject.spi.InjectionPoint;
++import jakarta.enterprise.inject.spi.PassivationCapable;
++import jakarta.enterprise.util.AnnotationLiteral;
++import jakarta.inject.Provider;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.ConfigProvider;
+diff --git a/cdi/src/main/java/io/smallrye/config/inject/ConfigMappingInjectionBean.java b/cdi/src/main/java/io/smallrye/config/inject/ConfigMappingInjectionBean.java
+index c657968c..f90998cd 100644
+--- a/cdi/src/main/java/io/smallrye/config/inject/ConfigMappingInjectionBean.java
++++ b/cdi/src/main/java/io/smallrye/config/inject/ConfigMappingInjectionBean.java
+@@ -11,14 +11,14 @@ import java.util.Optional;
+ import java.util.Set;
+ import java.util.stream.Stream;
+ 
+-import javax.enterprise.context.Dependent;
+-import javax.enterprise.context.spi.CreationalContext;
+-import javax.enterprise.inject.Default;
+-import javax.enterprise.inject.spi.Annotated;
+-import javax.enterprise.inject.spi.AnnotatedType;
+-import javax.enterprise.inject.spi.Bean;
+-import javax.enterprise.inject.spi.BeanManager;
+-import javax.enterprise.inject.spi.InjectionPoint;
++import jakarta.enterprise.context.Dependent;
++import jakarta.enterprise.context.spi.CreationalContext;
++import jakarta.enterprise.inject.Default;
++import jakarta.enterprise.inject.spi.Annotated;
++import jakarta.enterprise.inject.spi.AnnotatedType;
++import jakarta.enterprise.inject.spi.Bean;
++import jakarta.enterprise.inject.spi.BeanManager;
++import jakarta.enterprise.inject.spi.InjectionPoint;
+ 
+ import org.eclipse.microprofile.config.ConfigProvider;
+ import org.eclipse.microprofile.config.inject.ConfigProperties;
+diff --git a/cdi/src/main/java/io/smallrye/config/inject/ConfigProducer.java b/cdi/src/main/java/io/smallrye/config/inject/ConfigProducer.java
+index 69cfbf2a..b6028745 100644
+--- a/cdi/src/main/java/io/smallrye/config/inject/ConfigProducer.java
++++ b/cdi/src/main/java/io/smallrye/config/inject/ConfigProducer.java
+@@ -21,10 +21,10 @@ import java.lang.reflect.Type;
+ import java.util.*;
+ import java.util.function.Supplier;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.enterprise.context.Dependent;
+-import javax.enterprise.inject.Produces;
+-import javax.enterprise.inject.spi.InjectionPoint;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.enterprise.context.Dependent;
++import jakarta.enterprise.inject.Produces;
++import jakarta.enterprise.inject.spi.InjectionPoint;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.ConfigProvider;
+diff --git a/cdi/src/main/java/io/smallrye/config/inject/ConfigProducerUtil.java b/cdi/src/main/java/io/smallrye/config/inject/ConfigProducerUtil.java
+index 53da5935..a74ba7fa 100644
+--- a/cdi/src/main/java/io/smallrye/config/inject/ConfigProducerUtil.java
++++ b/cdi/src/main/java/io/smallrye/config/inject/ConfigProducerUtil.java
+@@ -20,9 +20,9 @@ import java.util.function.BiFunction;
+ import java.util.function.IntFunction;
+ import java.util.function.Supplier;
+ 
+-import javax.enterprise.inject.spi.AnnotatedMember;
+-import javax.enterprise.inject.spi.AnnotatedType;
+-import javax.enterprise.inject.spi.InjectionPoint;
++import jakarta.enterprise.inject.spi.AnnotatedMember;
++import jakarta.enterprise.inject.spi.AnnotatedType;
++import jakarta.enterprise.inject.spi.InjectionPoint;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.ConfigValue;
+diff --git a/cdi/src/main/java/io/smallrye/config/inject/InjectionMessages.java b/cdi/src/main/java/io/smallrye/config/inject/InjectionMessages.java
+index d12fe48d..4cdb90ce 100644
+--- a/cdi/src/main/java/io/smallrye/config/inject/InjectionMessages.java
++++ b/cdi/src/main/java/io/smallrye/config/inject/InjectionMessages.java
+@@ -10,7 +10,7 @@ import java.util.Arrays;
+ import java.util.NoSuchElementException;
+ import java.util.stream.Collectors;
+ 
+-import javax.enterprise.inject.spi.InjectionPoint;
++import jakarta.enterprise.inject.spi.InjectionPoint;
+ 
+ import org.jboss.logging.Messages;
+ import org.jboss.logging.annotations.Cause;
+diff --git a/cdi/src/main/java/io/smallrye/config/inject/MetadataInjectionPoint.java b/cdi/src/main/java/io/smallrye/config/inject/MetadataInjectionPoint.java
+index 5ea1e70a..79004f25 100644
+--- a/cdi/src/main/java/io/smallrye/config/inject/MetadataInjectionPoint.java
++++ b/cdi/src/main/java/io/smallrye/config/inject/MetadataInjectionPoint.java
+@@ -6,11 +6,11 @@ import java.lang.reflect.Type;
+ import java.util.Collections;
+ import java.util.Set;
+ 
+-import javax.enterprise.inject.Default;
+-import javax.enterprise.inject.spi.Annotated;
+-import javax.enterprise.inject.spi.Bean;
+-import javax.enterprise.inject.spi.InjectionPoint;
+-import javax.enterprise.util.AnnotationLiteral;
++import jakarta.enterprise.inject.Default;
++import jakarta.enterprise.inject.spi.Annotated;
++import jakarta.enterprise.inject.spi.Bean;
++import jakarta.enterprise.inject.spi.InjectionPoint;
++import jakarta.enterprise.util.AnnotationLiteral;
+ 
+ class MetadataInjectionPoint implements InjectionPoint {
+     @Override
+diff --git a/cdi/src/main/resources/META-INF/services/javax.enterprise.inject.spi.Extension b/cdi/src/main/resources/META-INF/services/jakarta.enterprise.inject.spi.Extension
+similarity index 100%
+rename from cdi/src/main/resources/META-INF/services/javax.enterprise.inject.spi.Extension
+rename to cdi/src/main/resources/META-INF/services/jakarta.enterprise.inject.spi.Extension
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/ConfigInjectionTest.java b/cdi/src/test/java/io/smallrye/config/inject/ConfigInjectionTest.java
+index 4b309567..9a0be9b4 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/ConfigInjectionTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/ConfigInjectionTest.java
+@@ -16,8 +16,8 @@ import java.util.Optional;
+ import java.util.Set;
+ import java.util.function.Supplier;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.ConfigProvider;
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/ConfigMappingInjectionTest.java b/cdi/src/test/java/io/smallrye/config/inject/ConfigMappingInjectionTest.java
+index 0d260378..41704218 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/ConfigMappingInjectionTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/ConfigMappingInjectionTest.java
+@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import java.util.Optional;
+ 
+-import javax.enterprise.inject.spi.CDI;
+-import javax.inject.Inject;
++import jakarta.enterprise.inject.spi.CDI;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.ConfigProvider;
+ import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/ConfigPropertiesInjectionTest.java b/cdi/src/test/java/io/smallrye/config/inject/ConfigPropertiesInjectionTest.java
+index d049a169..3b51bac3 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/ConfigPropertiesInjectionTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/ConfigPropertiesInjectionTest.java
+@@ -14,9 +14,9 @@ import java.util.NoSuchElementException;
+ import java.util.Optional;
+ import java.util.Set;
+ 
+-import javax.enterprise.context.Dependent;
+-import javax.enterprise.inject.spi.CDI;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.Dependent;
++import jakarta.enterprise.inject.spi.CDI;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.ConfigProvider;
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/IndexedPropertiesInjectionTest.java b/cdi/src/test/java/io/smallrye/config/inject/IndexedPropertiesInjectionTest.java
+index 581ec273..1cfa9f57 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/IndexedPropertiesInjectionTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/IndexedPropertiesInjectionTest.java
+@@ -15,8 +15,8 @@ import java.util.function.Supplier;
+ import java.util.stream.Collectors;
+ import java.util.stream.Stream;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.ConfigProvider;
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/InjectedConfigSerializationTest.java b/cdi/src/test/java/io/smallrye/config/inject/InjectedConfigSerializationTest.java
+index d653f678..48eb2cfd 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/InjectedConfigSerializationTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/InjectedConfigSerializationTest.java
+@@ -10,7 +10,7 @@ import java.io.IOException;
+ import java.io.ObjectInputStream;
+ import java.io.ObjectOutputStream;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.ConfigProvider;
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/OptionalInjectionTest.java b/cdi/src/test/java/io/smallrye/config/inject/OptionalInjectionTest.java
+index ca4c5075..51bdc29c 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/OptionalInjectionTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/OptionalInjectionTest.java
+@@ -8,7 +8,7 @@ import java.util.OptionalDouble;
+ import java.util.OptionalInt;
+ import java.util.OptionalLong;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.ConfigProvider;
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/SupplierInjectionTest.java b/cdi/src/test/java/io/smallrye/config/inject/SupplierInjectionTest.java
+index 08d154eb..fe5bf5ec 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/SupplierInjectionTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/SupplierInjectionTest.java
+@@ -10,8 +10,8 @@ import java.util.Optional;
+ import java.util.Set;
+ import java.util.function.Supplier;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.ConfigProvider;
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+diff --git a/cdi/src/test/java/io/smallrye/config/inject/ValidateInjectionTest.java b/cdi/src/test/java/io/smallrye/config/inject/ValidateInjectionTest.java
+index 0aed6cce..d3ea5db0 100644
+--- a/cdi/src/test/java/io/smallrye/config/inject/ValidateInjectionTest.java
++++ b/cdi/src/test/java/io/smallrye/config/inject/ValidateInjectionTest.java
+@@ -15,10 +15,10 @@ import java.util.Objects;
+ import java.util.Set;
+ import java.util.stream.Collectors;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.enterprise.context.Dependent;
+-import javax.enterprise.inject.spi.InjectionPoint;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.enterprise.context.Dependent;
++import jakarta.enterprise.inject.spi.InjectionPoint;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.ConfigProvider;
+ import org.eclipse.microprofile.config.inject.ConfigProperties;
+@@ -63,7 +63,7 @@ import io.smallrye.config.SmallRyeConfigBuilder;
+  * </pre>
+  * 
+  * If n Exception messages are thrown during
+- * {@link ConfigExtension#validate(javax.enterprise.inject.spi.AfterDeploymentValidation)},
++ * {@link ConfigExtension#validate(jakarta.enterprise.inject.spi.AfterDeploymentValidation)},
+  * as defined by
+  * {@link org.jboss.weld.exceptions.DeploymentException#DeploymentException(List)}
+  * the messages will be bundled together as follows:
+diff --git a/common/pom.xml b/common/pom.xml
+index b4a055dd..e8712873 100644
+--- a/common/pom.xml
++++ b/common/pom.xml
+@@ -5,7 +5,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-parent</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config-common</artifactId>
+diff --git a/converters/json/pom.xml b/converters/json/pom.xml
+index 02b26e28..f6e26577 100644
+--- a/converters/json/pom.xml
++++ b/converters/json/pom.xml
+@@ -5,7 +5,7 @@
+     <parent>
+         <groupId>io.smallrye.config</groupId>
+         <artifactId>smallrye-config-parent</artifactId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+         <relativePath>../../</relativePath>
+     </parent>
+     
+diff --git a/converters/json/src/main/java/io/smallrye/config/converter/json/JsonArrayConverter.java b/converters/json/src/main/java/io/smallrye/config/converter/json/JsonArrayConverter.java
+index 458e808a..c80294ce 100644
+--- a/converters/json/src/main/java/io/smallrye/config/converter/json/JsonArrayConverter.java
++++ b/converters/json/src/main/java/io/smallrye/config/converter/json/JsonArrayConverter.java
+@@ -2,9 +2,9 @@ package io.smallrye.config.converter.json;
+ 
+ import java.io.StringReader;
+ 
+-import javax.json.Json;
+-import javax.json.JsonArray;
+-import javax.json.JsonReader;
++import jakarta.json.Json;
++import jakarta.json.JsonArray;
++import jakarta.json.JsonReader;
+ 
+ import org.eclipse.microprofile.config.spi.Converter;
+ 
+diff --git a/converters/json/src/main/java/io/smallrye/config/converter/json/JsonObjectConverter.java b/converters/json/src/main/java/io/smallrye/config/converter/json/JsonObjectConverter.java
+index 3584c4bf..b8952da4 100644
+--- a/converters/json/src/main/java/io/smallrye/config/converter/json/JsonObjectConverter.java
++++ b/converters/json/src/main/java/io/smallrye/config/converter/json/JsonObjectConverter.java
+@@ -2,9 +2,9 @@ package io.smallrye.config.converter.json;
+ 
+ import java.io.StringReader;
+ 
+-import javax.json.Json;
+-import javax.json.JsonObject;
+-import javax.json.JsonReader;
++import jakarta.json.Json;
++import jakarta.json.JsonObject;
++import jakarta.json.JsonReader;
+ 
+ import org.eclipse.microprofile.config.spi.Converter;
+ 
+diff --git a/converters/json/src/test/java/io/smallrye/config/converter/json/JsonArrayConverterTest.java b/converters/json/src/test/java/io/smallrye/config/converter/json/JsonArrayConverterTest.java
+index ced868d8..082c01e3 100644
+--- a/converters/json/src/test/java/io/smallrye/config/converter/json/JsonArrayConverterTest.java
++++ b/converters/json/src/test/java/io/smallrye/config/converter/json/JsonArrayConverterTest.java
+@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+ import java.io.StringReader;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
+-import javax.json.Json;
+-import javax.json.JsonArray;
+-import javax.json.JsonReader;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
++import jakarta.json.Json;
++import jakarta.json.JsonArray;
++import jakarta.json.JsonReader;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ import org.jboss.weld.junit5.WeldInitiator;
+diff --git a/converters/json/src/test/java/io/smallrye/config/converter/json/JsonObjectConverterTest.java b/converters/json/src/test/java/io/smallrye/config/converter/json/JsonObjectConverterTest.java
+index 36b6bcaf..c0d406d6 100644
+--- a/converters/json/src/test/java/io/smallrye/config/converter/json/JsonObjectConverterTest.java
++++ b/converters/json/src/test/java/io/smallrye/config/converter/json/JsonObjectConverterTest.java
+@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+ import java.io.StringReader;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
+-import javax.json.Json;
+-import javax.json.JsonObject;
+-import javax.json.JsonReader;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
++import jakarta.json.Json;
++import jakarta.json.JsonObject;
++import jakarta.json.JsonReader;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ import org.jboss.weld.junit5.WeldInitiator;
+diff --git a/coverage/pom.xml b/coverage/pom.xml
+index 05261a9d..7e3e14dd 100644
+--- a/coverage/pom.xml
++++ b/coverage/pom.xml
+@@ -5,7 +5,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-parent</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config-coverage</artifactId>
+diff --git a/doc/modules/ROOT/pages/interceptors/interceptors.adoc b/doc/modules/ROOT/pages/interceptors/interceptors.adoc
+index cea64ddd..28d68c30 100644
+--- a/doc/modules/ROOT/pages/interceptors/interceptors.adoc
++++ b/doc/modules/ROOT/pages/interceptors/interceptors.adoc
+@@ -42,7 +42,7 @@ Alternatively, interceptors may be registered via the Programmatic API in `Small
+ 
+ === Priority
+ 
+-A ConfigSourceInterceptor implementation class can specify a priority by way of the standard `javax.annotation.Priority`
++A ConfigSourceInterceptor implementation class can specify a priority by way of the standard `jakarta.annotation.Priority`
+ annotation. If no priority is explicitly assigned, the default priority value of
+ `io.smallrye.config.Priorities.APPLICATION` is assumed. If multiple interceptors are registered with the same priority,
+ then their execution order may be non-deterministic.
+diff --git a/examples/configmap/pom.xml b/examples/configmap/pom.xml
+index a73d46eb..4179ea2a 100644
+--- a/examples/configmap/pom.xml
++++ b/examples/configmap/pom.xml
+@@ -3,13 +3,13 @@
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+     <groupId>io.smallrye</groupId>
+-    <artifactId>smallrye-parent</artifactId>
++    <artifactId>smallrye-jakarta-parent</artifactId>
+     <version>34</version>
+   </parent>
+ 
+   <groupId>io.smallrye.config.examples</groupId>
+   <artifactId>configmap</artifactId>
+-  <version>2.8.2-SNAPSHOT</version>
++  <version>3.0.0-SNAPSHOT</version>
+ 
+   <name>SmallRye Config Examples: ConfigMap</name>
+ 
+diff --git a/examples/expansion/pom.xml b/examples/expansion/pom.xml
+index 11239444..b8e75439 100644
+--- a/examples/expansion/pom.xml
++++ b/examples/expansion/pom.xml
+@@ -19,13 +19,13 @@
+ 
+   <parent>
+     <groupId>io.smallrye</groupId>
+-    <artifactId>smallrye-parent</artifactId>
++    <artifactId>smallrye-jakarta-parent</artifactId>
+     <version>34</version>
+   </parent>
+ 
+   <groupId>io.smallrye.config.examples</groupId>
+   <artifactId>expansion</artifactId>
+-  <version>2.8.2-SNAPSHOT</version>
++  <version>3.0.0-SNAPSHOT</version>
+ 
+   <name>SmallRye Config Examples: Property Expansion</name>
+ 
+diff --git a/examples/expansion/src/main/java/io/smallrye/config/examples/expansion/ExampleExpansionBean.java b/examples/expansion/src/main/java/io/smallrye/config/examples/expansion/ExampleExpansionBean.java
+index 4f5f488a..c444284a 100644
+--- a/examples/expansion/src/main/java/io/smallrye/config/examples/expansion/ExampleExpansionBean.java
++++ b/examples/expansion/src/main/java/io/smallrye/config/examples/expansion/ExampleExpansionBean.java
+@@ -1,7 +1,7 @@
+ package io.smallrye.config.examples.expansion;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/examples/expansion/src/test/java/io/smallrye/config/examples/expansion/ExampleExpansionBeanTest.java b/examples/expansion/src/test/java/io/smallrye/config/examples/expansion/ExampleExpansionBeanTest.java
+index 8bf8f5ad..02379636 100644
+--- a/examples/expansion/src/test/java/io/smallrye/config/examples/expansion/ExampleExpansionBeanTest.java
++++ b/examples/expansion/src/test/java/io/smallrye/config/examples/expansion/ExampleExpansionBeanTest.java
+@@ -2,8 +2,8 @@ package io.smallrye.config.examples.expansion;
+ 
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.jboss.weld.junit5.WeldInitiator;
+ import org.jboss.weld.junit5.WeldJunit5Extension;
+diff --git a/examples/interceptors/pom.xml b/examples/interceptors/pom.xml
+index 3d55b985..e19b3faa 100644
+--- a/examples/interceptors/pom.xml
++++ b/examples/interceptors/pom.xml
+@@ -19,13 +19,13 @@
+ 
+   <parent>
+     <groupId>io.smallrye</groupId>
+-    <artifactId>smallrye-parent</artifactId>
++    <artifactId>smallrye-jakarta-parent</artifactId>
+     <version>34</version>
+   </parent>
+ 
+   <groupId>io.smallrye.config.examples</groupId>
+   <artifactId>interceptors</artifactId>
+-  <version>2.8.2-SNAPSHOT</version>
++  <version>3.0.0-SNAPSHOT</version>
+ 
+   <name>SmallRye Config Examples: Interceptors</name>
+ 
+diff --git a/examples/mapping/pom.xml b/examples/mapping/pom.xml
+index 99f92636..fabd1ca3 100644
+--- a/examples/mapping/pom.xml
++++ b/examples/mapping/pom.xml
+@@ -19,13 +19,13 @@
+ 
+   <parent>
+     <groupId>io.smallrye</groupId>
+-    <artifactId>smallrye-parent</artifactId>
++    <artifactId>smallrye-jakarta-parent</artifactId>
+     <version>34</version>
+   </parent>
+ 
+   <groupId>io.smallrye.config.examples</groupId>
+   <artifactId>mapping</artifactId>
+-  <version>2.8.2-SNAPSHOT</version>
++  <version>3.0.0-SNAPSHOT</version>
+ 
+   <name>SmallRye Config Examples: Config Mapping</name>
+ 
+diff --git a/examples/mapping/src/main/java/io/smallrye/config/examples/mapping/ServerMappingBean.java b/examples/mapping/src/main/java/io/smallrye/config/examples/mapping/ServerMappingBean.java
+index 3ee00935..5708cbb9 100644
+--- a/examples/mapping/src/main/java/io/smallrye/config/examples/mapping/ServerMappingBean.java
++++ b/examples/mapping/src/main/java/io/smallrye/config/examples/mapping/ServerMappingBean.java
+@@ -1,7 +1,7 @@
+ package io.smallrye.config.examples.mapping;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ @ApplicationScoped
+ public class ServerMappingBean {
+diff --git a/examples/mapping/src/test/java/io/smallrye/config/examples/mapping/ServerMappingBeanTest.java b/examples/mapping/src/test/java/io/smallrye/config/examples/mapping/ServerMappingBeanTest.java
+index fb6094ad..717c5345 100644
+--- a/examples/mapping/src/test/java/io/smallrye/config/examples/mapping/ServerMappingBeanTest.java
++++ b/examples/mapping/src/test/java/io/smallrye/config/examples/mapping/ServerMappingBeanTest.java
+@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
+ import java.time.Duration;
+ import java.util.stream.Stream;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.jboss.weld.junit5.WeldInitiator;
+ import org.jboss.weld.junit5.WeldJunit5Extension;
+diff --git a/examples/pom.xml b/examples/pom.xml
+index 8db19805..a8365872 100644
+--- a/examples/pom.xml
++++ b/examples/pom.xml
+@@ -20,7 +20,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-parent</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config-examples</artifactId>
+diff --git a/examples/profiles/pom.xml b/examples/profiles/pom.xml
+index 3bbc92e1..cecfda56 100644
+--- a/examples/profiles/pom.xml
++++ b/examples/profiles/pom.xml
+@@ -19,13 +19,13 @@
+ 
+   <parent>
+     <groupId>io.smallrye</groupId>
+-    <artifactId>smallrye-parent</artifactId>
++    <artifactId>smallrye-jakarta-parent</artifactId>
+     <version>34</version>
+   </parent>
+ 
+   <groupId>io.smallrye.config.examples</groupId>
+   <artifactId>profiles</artifactId>
+-  <version>2.8.2-SNAPSHOT</version>
++  <version>3.0.0-SNAPSHOT</version>
+ 
+   <name>SmallRye Config Examples: Profiles</name>
+ 
+diff --git a/examples/profiles/src/main/java/io/smallrye/config/examples/profiles/ExampleProfilesBean.java b/examples/profiles/src/main/java/io/smallrye/config/examples/profiles/ExampleProfilesBean.java
+index 01eea665..876d5b7d 100644
+--- a/examples/profiles/src/main/java/io/smallrye/config/examples/profiles/ExampleProfilesBean.java
++++ b/examples/profiles/src/main/java/io/smallrye/config/examples/profiles/ExampleProfilesBean.java
+@@ -1,7 +1,7 @@
+ package io.smallrye.config.examples.profiles;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/examples/profiles/src/test/java/io/smallrye/config/examples/profiles/ExampleProfilesBeanTest.java b/examples/profiles/src/test/java/io/smallrye/config/examples/profiles/ExampleProfilesBeanTest.java
+index 98249c24..7af94eb8 100644
+--- a/examples/profiles/src/test/java/io/smallrye/config/examples/profiles/ExampleProfilesBeanTest.java
++++ b/examples/profiles/src/test/java/io/smallrye/config/examples/profiles/ExampleProfilesBeanTest.java
+@@ -2,8 +2,8 @@ package io.smallrye.config.examples.profiles;
+ 
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.jboss.weld.junit5.WeldInitiator;
+ import org.jboss.weld.junit5.WeldJunit5Extension;
+diff --git a/implementation/pom.xml b/implementation/pom.xml
+index fdda37c8..1faeb2c6 100644
+--- a/implementation/pom.xml
++++ b/implementation/pom.xml
+@@ -20,7 +20,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-parent</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config-core</artifactId>
+diff --git a/implementation/src/main/java/io/smallrye/config/ConfigSourceInterceptor.java b/implementation/src/main/java/io/smallrye/config/ConfigSourceInterceptor.java
+index fd2a49de..4057e0e4 100644
+--- a/implementation/src/main/java/io/smallrye/config/ConfigSourceInterceptor.java
++++ b/implementation/src/main/java/io/smallrye/config/ConfigSourceInterceptor.java
+@@ -24,7 +24,7 @@ import io.smallrye.common.annotation.Experimental;
+  * <p>
+  *
+  * A {@link ConfigSourceInterceptor} implementation class can specify a priority by way of the standard
+- * {@code javax.annotation.Priority} annotation. If no priority is explicitly assigned, the default priority value
++ * {@code jakarta.annotation.Priority} annotation. If no priority is explicitly assigned, the default priority value
+  * of {@code io.smallrye.config.Priorities#APPLICATION} is assumed. If multiple interceptors are registered with the
+  * same priority, then their execution order may be non deterministic.
+  */
+diff --git a/implementation/src/main/java/io/smallrye/config/ExpressionConfigSourceInterceptor.java b/implementation/src/main/java/io/smallrye/config/ExpressionConfigSourceInterceptor.java
+index 4c742aa4..7ca635d2 100644
+--- a/implementation/src/main/java/io/smallrye/config/ExpressionConfigSourceInterceptor.java
++++ b/implementation/src/main/java/io/smallrye/config/ExpressionConfigSourceInterceptor.java
+@@ -6,7 +6,7 @@ import static io.smallrye.common.expression.Expression.Flag.NO_TRIM;
+ 
+ import java.util.Optional;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ import org.eclipse.microprofile.config.Config;
+ 
+diff --git a/implementation/src/main/java/io/smallrye/config/FallbackConfigSourceInterceptor.java b/implementation/src/main/java/io/smallrye/config/FallbackConfigSourceInterceptor.java
+index 5f624175..0043da22 100644
+--- a/implementation/src/main/java/io/smallrye/config/FallbackConfigSourceInterceptor.java
++++ b/implementation/src/main/java/io/smallrye/config/FallbackConfigSourceInterceptor.java
+@@ -5,7 +5,7 @@ import static io.smallrye.config.ConfigValue.CONFIG_SOURCE_COMPARATOR;
+ import java.util.Map;
+ import java.util.function.Function;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ @Priority(Priorities.LIBRARY + 600)
+ public class FallbackConfigSourceInterceptor extends AbstractMappingConfigSourceInterceptor {
+diff --git a/implementation/src/main/java/io/smallrye/config/LoggingConfigSourceInterceptor.java b/implementation/src/main/java/io/smallrye/config/LoggingConfigSourceInterceptor.java
+index 22998348..ad9c6fa8 100644
+--- a/implementation/src/main/java/io/smallrye/config/LoggingConfigSourceInterceptor.java
++++ b/implementation/src/main/java/io/smallrye/config/LoggingConfigSourceInterceptor.java
+@@ -2,7 +2,7 @@ package io.smallrye.config;
+ 
+ import static io.smallrye.config.SecretKeys.doLocked;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ @Priority(Priorities.LIBRARY + 150)
+ public class LoggingConfigSourceInterceptor implements ConfigSourceInterceptor {
+diff --git a/implementation/src/main/java/io/smallrye/config/Priorities.java b/implementation/src/main/java/io/smallrye/config/Priorities.java
+index bf095c53..10643a79 100644
+--- a/implementation/src/main/java/io/smallrye/config/Priorities.java
++++ b/implementation/src/main/java/io/smallrye/config/Priorities.java
+@@ -4,7 +4,7 @@ import io.smallrye.common.annotation.Experimental;
+ 
+ /**
+  * A collection of built-in priority constants for {@link ConfigSourceInterceptor} that are supposed to be
+- * ordered based on their {@code javax.annotation.Priority} class-level annotation.
++ * ordered based on their {@code jakarta.annotation.Priority} class-level annotation.
+  */
+ @Experimental("Interceptor API to intercept resolution of a configuration name")
+ public final class Priorities {
+diff --git a/implementation/src/main/java/io/smallrye/config/ProfileConfigSourceInterceptor.java b/implementation/src/main/java/io/smallrye/config/ProfileConfigSourceInterceptor.java
+index 325e2cc3..64e0a684 100644
+--- a/implementation/src/main/java/io/smallrye/config/ProfileConfigSourceInterceptor.java
++++ b/implementation/src/main/java/io/smallrye/config/ProfileConfigSourceInterceptor.java
+@@ -13,7 +13,7 @@ import java.util.List;
+ import java.util.NoSuchElementException;
+ import java.util.Set;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ @Priority(Priorities.LIBRARY + 200)
+ public class ProfileConfigSourceInterceptor implements ConfigSourceInterceptor {
+diff --git a/implementation/src/main/java/io/smallrye/config/RelocateConfigSourceInterceptor.java b/implementation/src/main/java/io/smallrye/config/RelocateConfigSourceInterceptor.java
+index 72711a98..bc7b23ad 100644
+--- a/implementation/src/main/java/io/smallrye/config/RelocateConfigSourceInterceptor.java
++++ b/implementation/src/main/java/io/smallrye/config/RelocateConfigSourceInterceptor.java
+@@ -5,7 +5,7 @@ import static io.smallrye.config.ConfigValue.CONFIG_SOURCE_COMPARATOR;
+ import java.util.Map;
+ import java.util.function.Function;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ @Priority(Priorities.LIBRARY + 300)
+ public class RelocateConfigSourceInterceptor extends AbstractMappingConfigSourceInterceptor {
+diff --git a/implementation/src/main/java/io/smallrye/config/SecretKeysConfigSourceInterceptor.java b/implementation/src/main/java/io/smallrye/config/SecretKeysConfigSourceInterceptor.java
+index 72e8123e..82fff961 100644
+--- a/implementation/src/main/java/io/smallrye/config/SecretKeysConfigSourceInterceptor.java
++++ b/implementation/src/main/java/io/smallrye/config/SecretKeysConfigSourceInterceptor.java
+@@ -2,7 +2,7 @@ package io.smallrye.config;
+ 
+ import java.util.Set;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ @Priority(Priorities.LIBRARY + 100)
+ public class SecretKeysConfigSourceInterceptor implements ConfigSourceInterceptor {
+diff --git a/implementation/src/main/java/io/smallrye/config/SmallRyeConfigBuilder.java b/implementation/src/main/java/io/smallrye/config/SmallRyeConfigBuilder.java
+index 82f8526b..eb2b682d 100644
+--- a/implementation/src/main/java/io/smallrye/config/SmallRyeConfigBuilder.java
++++ b/implementation/src/main/java/io/smallrye/config/SmallRyeConfigBuilder.java
+@@ -34,7 +34,7 @@ import java.util.Set;
+ import java.util.stream.Collectors;
+ import java.util.stream.Stream;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.spi.ConfigBuilder;
+diff --git a/implementation/src/test/java/io/smallrye/config/BuilderReuseTest.java b/implementation/src/test/java/io/smallrye/config/BuilderReuseTest.java
+index 9836e11b..5e0857c0 100644
+--- a/implementation/src/test/java/io/smallrye/config/BuilderReuseTest.java
++++ b/implementation/src/test/java/io/smallrye/config/BuilderReuseTest.java
+@@ -26,7 +26,7 @@ import java.util.Set;
+ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ConcurrentMap;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.spi.ConfigSource;
+diff --git a/implementation/src/test/java/io/smallrye/config/ConfigSourceInterceptorTest.java b/implementation/src/test/java/io/smallrye/config/ConfigSourceInterceptorTest.java
+index 0e68d3af..88e79f20 100644
+--- a/implementation/src/test/java/io/smallrye/config/ConfigSourceInterceptorTest.java
++++ b/implementation/src/test/java/io/smallrye/config/ConfigSourceInterceptorTest.java
+@@ -11,7 +11,7 @@ import java.util.Set;
+ import java.util.stream.Stream;
+ import java.util.stream.StreamSupport;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ import org.jboss.logging.Logger;
+ import org.junit.jupiter.api.Assertions;
+diff --git a/pom.xml b/pom.xml
+index 6bdafc42..7794f7eb 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -21,24 +21,24 @@
+ 
+   <parent>
+     <groupId>io.smallrye</groupId>
+-    <artifactId>smallrye-parent</artifactId>
++    <artifactId>smallrye-jakarta-parent</artifactId>
+     <version>34</version>
+   </parent>
+ 
+   <groupId>io.smallrye.config</groupId>
+   <artifactId>smallrye-config-parent</artifactId>
+-  <version>2.8.2-SNAPSHOT</version>
++  <version>3.0.0-SNAPSHOT</version>
+ 
+   <packaging>pom</packaging>
+   <name>SmallRye: MicroProfile Config Parent</name>
+   <url>http://smallrye.io</url>
+ 
+   <properties>
+-    <version.eclipse.microprofile.config>2.0</version.eclipse.microprofile.config>
+-    <version.smallrye.common>1.8.0</version.smallrye.common>
++    <version.eclipse.microprofile.config>3.0.1</version.eclipse.microprofile.config>
++    <version.smallrye.common>2.0.0-RC1</version.smallrye.common>
+     <version.asm>9.2</version.asm>
+ 
+-    <version.smallrye.testing.utilities>1.0.0</version.smallrye.testing.utilities>
++    <version.smallrye.testing.utilities>2.0.0-RC1</version.smallrye.testing.utilities>
+ 
+     <!-- Sonar settings -->
+     <sonar.projectName>SmallRye Config</sonar.projectName>
+diff --git a/release/pom.xml b/release/pom.xml
+index fe86eda5..32e5fbdb 100644
+--- a/release/pom.xml
++++ b/release/pom.xml
+@@ -5,7 +5,7 @@
+     <parent>
+         <groupId>io.smallrye.config</groupId>
+         <artifactId>smallrye-config-parent</artifactId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+     </parent>
+ 
+     <artifactId>smallrye-config-release</artifactId>
+diff --git a/sources/file-system/pom.xml b/sources/file-system/pom.xml
+index 180b8b22..66f1befc 100644
+--- a/sources/file-system/pom.xml
++++ b/sources/file-system/pom.xml
+@@ -4,7 +4,7 @@
+     <parent>
+         <artifactId>smallrye-config-parent</artifactId>
+         <groupId>io.smallrye.config</groupId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+         <relativePath>../../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/sources/hocon/pom.xml b/sources/hocon/pom.xml
+index 35e22458..1eb5cfc7 100644
+--- a/sources/hocon/pom.xml
++++ b/sources/hocon/pom.xml
+@@ -4,7 +4,7 @@
+     <parent>
+         <artifactId>smallrye-config-parent</artifactId>
+         <groupId>io.smallrye.config</groupId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+         <relativePath>../../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/sources/yaml/pom.xml b/sources/yaml/pom.xml
+index 4daab81b..2e0275b5 100644
+--- a/sources/yaml/pom.xml
++++ b/sources/yaml/pom.xml
+@@ -4,7 +4,7 @@
+     <parent>
+         <artifactId>smallrye-config-parent</artifactId>
+         <groupId>io.smallrye.config</groupId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+         <relativePath>../../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/sources/zookeeper/pom.xml b/sources/zookeeper/pom.xml
+index b7a11d59..d6f9fa49 100644
+--- a/sources/zookeeper/pom.xml
++++ b/sources/zookeeper/pom.xml
+@@ -20,7 +20,7 @@
+     <parent>
+         <groupId>io.smallrye.config</groupId>
+         <artifactId>smallrye-config-parent</artifactId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+         <relativePath>../../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/sources/zookeeper/src/test/java/io/smallrye/config/source/zookeeper/tests/ZooKeeperConfigSourceTest.java b/sources/zookeeper/src/test/java/io/smallrye/config/source/zookeeper/tests/ZooKeeperConfigSourceTest.java
+index 5585f469..e12c21e5 100644
+--- a/sources/zookeeper/src/test/java/io/smallrye/config/source/zookeeper/tests/ZooKeeperConfigSourceTest.java
++++ b/sources/zookeeper/src/test/java/io/smallrye/config/source/zookeeper/tests/ZooKeeperConfigSourceTest.java
+@@ -16,8 +16,8 @@ import java.util.NoSuchElementException;
+ import java.util.Set;
+ import java.util.logging.Logger;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.inject.Inject;
+ 
+ import org.apache.curator.framework.CuratorFramework;
+ import org.apache.curator.framework.CuratorFrameworkFactory;
+diff --git a/testsuite/extra/pom.xml b/testsuite/extra/pom.xml
+index 85d2e137..dc7b1e9c 100644
+--- a/testsuite/extra/pom.xml
++++ b/testsuite/extra/pom.xml
+@@ -22,7 +22,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-testsuite</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config-test-extra</artifactId>
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionBean.java b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionBean.java
+index 004ec852..ad3d7387 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionBean.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionBean.java
+@@ -19,8 +19,8 @@ package io.smallrye.config.test.collections;
+ import java.util.List;
+ import java.util.Set;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithConfiguredValueTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithConfiguredValueTest.java
+index 413b1567..975bd542 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithConfiguredValueTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithConfiguredValueTest.java
+@@ -26,7 +26,7 @@ import java.util.List;
+ import java.util.NoSuchElementException;
+ import java.util.Set;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.jboss.arquillian.container.test.api.Deployment;
+ import org.jboss.arquillian.testng.Arquillian;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithDefaultValueTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithDefaultValueTest.java
+index e6b420fd..45acd673 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithDefaultValueTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/CollectionWithDefaultValueTest.java
+@@ -24,7 +24,7 @@ import java.util.HashSet;
+ import java.util.List;
+ import java.util.Set;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.jboss.arquillian.container.test.api.Deployment;
+ import org.jboss.arquillian.testng.Arquillian;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueBean.java b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueBean.java
+index 4b881dda..0ecf3e0e 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueBean.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueBean.java
+@@ -19,7 +19,7 @@ package io.smallrye.config.test.collections.broken;
+ import java.util.List;
+ import java.util.Set;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueTest.java
+index ad7b538a..f2cd6b91 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/collections/broken/CollectionWithNoDefaultValueTest.java
+@@ -15,7 +15,7 @@
+  */
+ package io.smallrye.config.test.collections.broken;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.jboss.arquillian.container.test.api.Deployment;
+ import org.jboss.arquillian.container.test.api.ShouldThrowException;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterBean.java b/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterBean.java
+index c36e23dc..bf850cdd 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterBean.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterBean.java
+@@ -15,7 +15,7 @@
+  */
+ package io.smallrye.config.test.converter;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterTest.java
+index 25003fc5..f3a9edc8 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/converter/ConverterTest.java
+@@ -17,7 +17,7 @@ package io.smallrye.config.test.converter;
+ 
+ import static org.testng.Assert.assertEquals;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.spi.Converter;
+ import org.jboss.arquillian.container.test.api.Deployment;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/converter/IntConverter.java b/testsuite/extra/src/test/java/io/smallrye/config/test/converter/IntConverter.java
+index e642c3fe..7f0f252f 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/converter/IntConverter.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/converter/IntConverter.java
+@@ -15,7 +15,7 @@
+  */
+ package io.smallrye.config.test.converter;
+ 
+-import javax.annotation.Priority;
++import jakarta.annotation.Priority;
+ 
+ import org.eclipse.microprofile.config.spi.Converter;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/location/LocationConfigTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/location/LocationConfigTest.java
+index e511a1f4..009e706d 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/location/LocationConfigTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/location/LocationConfigTest.java
+@@ -2,7 +2,7 @@ package io.smallrye.config.test.location;
+ 
+ import static org.testng.Assert.assertEquals;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.jboss.arquillian.container.test.api.Deployment;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAlone.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAlone.java
+index cc212ba5..7f6a32bb 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAlone.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAlone.java
+@@ -22,8 +22,8 @@
+ 
+ package io.smallrye.config.test.provider;
+ 
+-import javax.enterprise.inject.Instance;
+-import javax.inject.Inject;
++import jakarta.enterprise.inject.Instance;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAloneTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAloneTest.java
+index ecd88750..61ee578a 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAloneTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/InstanceAloneTest.java
+@@ -18,8 +18,8 @@ package io.smallrye.config.test.provider;
+ import static org.testng.Assert.assertEquals;
+ import static org.testng.Assert.assertNotNull;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.jboss.arquillian.container.test.api.Deployment;
+ import org.jboss.arquillian.testng.Arquillian;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAlone.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAlone.java
+index c25ed62a..03b9e8c8 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAlone.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAlone.java
+@@ -22,8 +22,8 @@
+ 
+ package io.smallrye.config.test.provider;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAloneTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAloneTest.java
+index 8bc2d74c..88bdcfbf 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAloneTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderAloneTest.java
+@@ -18,8 +18,8 @@ package io.smallrye.config.test.provider;
+ import static org.testng.Assert.assertEquals;
+ import static org.testng.Assert.assertNotNull;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.jboss.arquillian.container.test.api.Deployment;
+ import org.jboss.arquillian.testng.Arquillian;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBean.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBean.java
+index 6e912cfe..7ef1b63f 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBean.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBean.java
+@@ -22,8 +22,8 @@
+ 
+ package io.smallrye.config.test.provider;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBeanWithList.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBeanWithList.java
+index 5c93569d..7e5fea60 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBeanWithList.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderBeanWithList.java
+@@ -2,8 +2,8 @@ package io.smallrye.config.test.provider;
+ 
+ import java.util.List;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperty;
+ 
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderTest.java
+index 066bb030..989d140d 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderTest.java
+@@ -18,8 +18,8 @@ package io.smallrye.config.test.provider;
+ import static org.testng.Assert.assertEquals;
+ import static org.testng.Assert.assertNotNull;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.jboss.arquillian.container.test.api.Deployment;
+ import org.jboss.arquillian.testng.Arquillian;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderWithListTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderWithListTest.java
+index 4fb6abc3..c8bec3b5 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderWithListTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/provider/ProviderWithListTest.java
+@@ -20,8 +20,8 @@ import static org.testng.Assert.assertNotNull;
+ 
+ import java.util.List;
+ 
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.jboss.arquillian.container.test.api.Deployment;
+ import org.jboss.arquillian.testng.Arquillian;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultipleProfilePropertiesConfigSourceTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultipleProfilePropertiesConfigSourceTest.java
+index 78ddf3da..4a8047ef 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultipleProfilePropertiesConfigSourceTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultipleProfilePropertiesConfigSourceTest.java
+@@ -2,7 +2,7 @@ package io.smallrye.config.test.source;
+ 
+ import static org.testng.Assert.assertEquals;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.jboss.arquillian.container.test.api.Deployment;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultiplePropertiesConfigSourceTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultiplePropertiesConfigSourceTest.java
+index 80a9e49f..baf13e78 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultiplePropertiesConfigSourceTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/source/MultiplePropertiesConfigSourceTest.java
+@@ -2,7 +2,7 @@ package io.smallrye.config.test.source;
+ 
+ import static org.testng.Assert.assertEquals;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.jboss.arquillian.container.test.api.Deployment;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/source/OrdinalSourceTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/source/OrdinalSourceTest.java
+index 55bb9498..a73981c8 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/source/OrdinalSourceTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/source/OrdinalSourceTest.java
+@@ -2,7 +2,7 @@ package io.smallrye.config.test.source;
+ 
+ import static org.testng.Assert.assertEquals;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.spi.ConfigSource;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/source/SmallRyeConfigTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/source/SmallRyeConfigTest.java
+index fb055580..a074824d 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/source/SmallRyeConfigTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/source/SmallRyeConfigTest.java
+@@ -7,7 +7,7 @@ import static org.testng.Assert.assertTrue;
+ import java.util.List;
+ import java.util.stream.StreamSupport;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.spi.ConfigSource;
+diff --git a/testsuite/extra/src/test/java/io/smallrye/config/test/source/YamlPropertiesTest.java b/testsuite/extra/src/test/java/io/smallrye/config/test/source/YamlPropertiesTest.java
+index a76cb262..81729019 100644
+--- a/testsuite/extra/src/test/java/io/smallrye/config/test/source/YamlPropertiesTest.java
++++ b/testsuite/extra/src/test/java/io/smallrye/config/test/source/YamlPropertiesTest.java
+@@ -2,7 +2,7 @@ package io.smallrye.config.test.source;
+ 
+ import static org.testng.Assert.assertEquals;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.jboss.arquillian.container.test.api.Deployment;
+diff --git a/testsuite/pom.xml b/testsuite/pom.xml
+index 9bc6b9aa..cba58c49 100644
+--- a/testsuite/pom.xml
++++ b/testsuite/pom.xml
+@@ -22,7 +22,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-parent</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config-testsuite</artifactId>
+diff --git a/testsuite/tck/pom.xml b/testsuite/tck/pom.xml
+index aaf05945..15839853 100644
+--- a/testsuite/tck/pom.xml
++++ b/testsuite/tck/pom.xml
+@@ -20,7 +20,7 @@
+   <parent>
+     <groupId>io.smallrye.config</groupId>
+     <artifactId>smallrye-config-testsuite</artifactId>
+-    <version>2.8.2-SNAPSHOT</version>
++    <version>3.0.0-SNAPSHOT</version>
+   </parent>
+ 
+   <artifactId>smallrye-config-tck</artifactId>
+diff --git a/utils/cdi-provider/pom.xml b/utils/cdi-provider/pom.xml
+index 2baef851..b85241d6 100644
+--- a/utils/cdi-provider/pom.xml
++++ b/utils/cdi-provider/pom.xml
+@@ -5,7 +5,7 @@
+     <parent>
+         <groupId>io.smallrye.config</groupId>
+         <artifactId>smallrye-config-parent</artifactId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+         <relativePath>../../</relativePath>
+     </parent>
+     
+diff --git a/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceMap.java b/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceMap.java
+index ce3e37a9..7b189ead 100644
+--- a/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceMap.java
++++ b/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceMap.java
+@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ import java.lang.annotation.Target;
+ 
+-import javax.inject.Qualifier;
++import jakarta.inject.Qualifier;
+ 
+ /**
+  * Mark a map that contains the config sources
+diff --git a/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceProvider.java b/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceProvider.java
+index 7de310cf..e2e13b92 100644
+--- a/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceProvider.java
++++ b/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/ConfigSourceProvider.java
+@@ -8,12 +8,12 @@ import java.util.Set;
+ import java.util.stream.Collectors;
+ import java.util.stream.StreamSupport;
+ 
+-import javax.annotation.PostConstruct;
+-import javax.enterprise.context.Dependent;
+-import javax.enterprise.inject.Produces;
+-import javax.enterprise.inject.spi.InjectionPoint;
+-import javax.inject.Inject;
+-import javax.inject.Provider;
++import jakarta.annotation.PostConstruct;
++import jakarta.enterprise.context.Dependent;
++import jakarta.enterprise.inject.Produces;
++import jakarta.enterprise.inject.spi.InjectionPoint;
++import jakarta.inject.Inject;
++import jakarta.inject.Provider;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.spi.ConfigSource;
+diff --git a/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/Name.java b/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/Name.java
+index 82eb4afa..5efb2fd8 100644
+--- a/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/Name.java
++++ b/utils/cdi-provider/src/main/java/io/smallrye/config/util/injection/Name.java
+@@ -5,8 +5,8 @@ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ import java.lang.annotation.Target;
+ 
+-import javax.enterprise.util.Nonbinding;
+-import javax.inject.Qualifier;
++import jakarta.enterprise.util.Nonbinding;
++import jakarta.inject.Qualifier;
+ 
+ /**
+  * The define the name of a config source
+diff --git a/utils/cdi-provider/src/test/java/io/smallrye/config/util/injection/ConfigSourceProviderTest.java b/utils/cdi-provider/src/test/java/io/smallrye/config/util/injection/ConfigSourceProviderTest.java
+index 8f27defc..9215bf87 100644
+--- a/utils/cdi-provider/src/test/java/io/smallrye/config/util/injection/ConfigSourceProviderTest.java
++++ b/utils/cdi-provider/src/test/java/io/smallrye/config/util/injection/ConfigSourceProviderTest.java
+@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
+ import java.util.Iterator;
+ import java.util.Map;
+ 
+-import javax.inject.Inject;
++import jakarta.inject.Inject;
+ 
+ import org.eclipse.microprofile.config.Config;
+ import org.eclipse.microprofile.config.spi.ConfigSource;
+diff --git a/utils/events/pom.xml b/utils/events/pom.xml
+index 09bbc13a..d4842784 100644
+--- a/utils/events/pom.xml
++++ b/utils/events/pom.xml
+@@ -5,7 +5,7 @@
+     <parent>
+         <groupId>io.smallrye.config</groupId>
+         <artifactId>smallrye-config-parent</artifactId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+         <relativePath>../../</relativePath>
+     </parent>
+     
+diff --git a/utils/events/src/main/java/io/smallrye/config/events/ChangeEventNotifier.java b/utils/events/src/main/java/io/smallrye/config/events/ChangeEventNotifier.java
+index e5fd2d64..e4ac119e 100644
+--- a/utils/events/src/main/java/io/smallrye/config/events/ChangeEventNotifier.java
++++ b/utils/events/src/main/java/io/smallrye/config/events/ChangeEventNotifier.java
+@@ -7,11 +7,11 @@ import java.util.Map;
+ import java.util.Optional;
+ import java.util.Set;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.enterprise.context.Initialized;
+-import javax.enterprise.event.Event;
+-import javax.enterprise.event.Observes;
+-import javax.inject.Inject;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.enterprise.context.Initialized;
++import jakarta.enterprise.event.Event;
++import jakarta.enterprise.event.Observes;
++import jakarta.inject.Inject;
+ 
+ /**
+  * Easy way to fire a change event
+diff --git a/utils/events/src/main/java/io/smallrye/config/events/KeyFilter.java b/utils/events/src/main/java/io/smallrye/config/events/KeyFilter.java
+index 94f9c415..98bcc424 100644
+--- a/utils/events/src/main/java/io/smallrye/config/events/KeyFilter.java
++++ b/utils/events/src/main/java/io/smallrye/config/events/KeyFilter.java
+@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ import java.lang.annotation.Target;
+ 
+-import javax.enterprise.util.AnnotationLiteral;
+-import javax.inject.Qualifier;
++import jakarta.enterprise.util.AnnotationLiteral;
++import jakarta.inject.Qualifier;
+ 
+ /**
+  * Filter the event on the key
+diff --git a/utils/events/src/main/java/io/smallrye/config/events/SourceFilter.java b/utils/events/src/main/java/io/smallrye/config/events/SourceFilter.java
+index dcbf7bd3..4fd66f90 100644
+--- a/utils/events/src/main/java/io/smallrye/config/events/SourceFilter.java
++++ b/utils/events/src/main/java/io/smallrye/config/events/SourceFilter.java
+@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ import java.lang.annotation.Target;
+ 
+-import javax.enterprise.util.AnnotationLiteral;
+-import javax.inject.Qualifier;
++import jakarta.enterprise.util.AnnotationLiteral;
++import jakarta.inject.Qualifier;
+ 
+ /**
+  * Filter by a config source
+diff --git a/utils/events/src/main/java/io/smallrye/config/events/TypeFilter.java b/utils/events/src/main/java/io/smallrye/config/events/TypeFilter.java
+index 1efb4e85..8ab17b47 100644
+--- a/utils/events/src/main/java/io/smallrye/config/events/TypeFilter.java
++++ b/utils/events/src/main/java/io/smallrye/config/events/TypeFilter.java
+@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ import java.lang.annotation.Target;
+ 
+-import javax.enterprise.util.AnnotationLiteral;
+-import javax.inject.Qualifier;
++import jakarta.enterprise.util.AnnotationLiteral;
++import jakarta.inject.Qualifier;
+ 
+ /**
+  * filter by change type
+diff --git a/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilter.java b/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilter.java
+index e1b6c806..ae5a8b7c 100644
+--- a/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilter.java
++++ b/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilter.java
+@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ import java.lang.annotation.Target;
+ 
+-import javax.enterprise.util.Nonbinding;
+-import javax.interceptor.InterceptorBinding;
++import jakarta.enterprise.util.Nonbinding;
++import jakarta.interceptor.InterceptorBinding;
+ 
+ /**
+  * an interceptor that match the value to a regular expression
+diff --git a/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilterInterceptor.java b/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilterInterceptor.java
+index 66f50add..a0e82f3d 100644
+--- a/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilterInterceptor.java
++++ b/utils/events/src/main/java/io/smallrye/config/events/regex/RegexFilterInterceptor.java
+@@ -4,10 +4,10 @@ import java.util.Optional;
+ import java.util.regex.Matcher;
+ import java.util.regex.Pattern;
+ 
+-import javax.annotation.Priority;
+-import javax.interceptor.AroundInvoke;
+-import javax.interceptor.Interceptor;
+-import javax.interceptor.InvocationContext;
++import jakarta.annotation.Priority;
++import jakarta.interceptor.AroundInvoke;
++import jakarta.interceptor.Interceptor;
++import jakarta.interceptor.InvocationContext;
+ 
+ import io.smallrye.config.events.ChangeEvent;
+ 
+diff --git a/utils/events/src/test/java/io/smallrye/config/events/ChangeEventNotifierTest.java b/utils/events/src/test/java/io/smallrye/config/events/ChangeEventNotifierTest.java
+index bb97ee55..d2409eab 100644
+--- a/utils/events/src/test/java/io/smallrye/config/events/ChangeEventNotifierTest.java
++++ b/utils/events/src/test/java/io/smallrye/config/events/ChangeEventNotifierTest.java
+@@ -2,8 +2,8 @@ package io.smallrye.config.events;
+ 
+ import java.util.Optional;
+ 
+-import javax.enterprise.context.ApplicationScoped;
+-import javax.enterprise.event.Observes;
++import jakarta.enterprise.context.ApplicationScoped;
++import jakarta.enterprise.event.Observes;
+ 
+ import org.jboss.weld.junit5.WeldInitiator;
+ import org.jboss.weld.junit5.WeldJunit5Extension;
+diff --git a/validator/pom.xml b/validator/pom.xml
+index ef927a4f..a99c9844 100644
+--- a/validator/pom.xml
++++ b/validator/pom.xml
+@@ -20,7 +20,7 @@
+     <parent>
+         <groupId>io.smallrye.config</groupId>
+         <artifactId>smallrye-config-parent</artifactId>
+-        <version>2.8.2-SNAPSHOT</version>
++        <version>3.0.0-SNAPSHOT</version>
+     </parent>
+ 
+     <artifactId>smallrye-config-validator</artifactId>
+@@ -28,11 +28,11 @@
+     <name>SmallRye: MicroProfile Config Validator</name>
+ 
+     <properties>
+-        <version.jakarta.validation>2.0.2</version.jakarta.validation>
++        <version.jakarta.validation>3.0.1</version.jakarta.validation>
+ 
+         <!-- Test -->
+-        <version.hibernate.validator>6.2.0.Final</version.hibernate.validator>
+-        <version.jakarta.el>3.0.4</version.jakarta.el>
++        <version.hibernate.validator>7.0.1.Final</version.hibernate.validator>
++        <version.jakarta.el>4.0.2</version.jakarta.el>
+     </properties>
+ 
+     <dependencies>
+diff --git a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java
+index b21f7f44..be1da504 100644
+--- a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java
++++ b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java
+@@ -9,9 +9,9 @@ import java.util.Map;
+ import java.util.Optional;
+ import java.util.Set;
+ 
+-import javax.validation.ConstraintViolation;
+-import javax.validation.Path;
+-import javax.validation.Validator;
++import jakarta.validation.ConstraintViolation;
++import jakarta.validation.Path;
++import jakarta.validation.Validator;
+ 
+ import io.smallrye.config.ConfigMappingInterface;
+ import io.smallrye.config.ConfigMappingInterface.CollectionProperty;
+diff --git a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java
+index 54aa1ac8..868a5837 100644
+--- a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java
++++ b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java
+@@ -1,7 +1,7 @@
+ package io.smallrye.config.validator;
+ 
+-import javax.validation.Validation;
+-import javax.validation.Validator;
++import jakarta.validation.Validation;
++import jakarta.validation.Validator;
+ 
+ public class BeanValidationConfigValidatorImpl implements BeanValidationConfigValidator {
+     private Validator validator;
+diff --git a/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java b/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java
+index 4a6aaf16..8bba9e92 100644
+--- a/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java
++++ b/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java
+@@ -11,9 +11,9 @@ import java.util.Map;
+ import java.util.Optional;
+ import java.util.OptionalInt;
+ 
+-import javax.validation.constraints.Max;
+-import javax.validation.constraints.Min;
+-import javax.validation.constraints.Size;
++import jakarta.validation.constraints.Max;
++import jakarta.validation.constraints.Min;
++import jakarta.validation.constraints.Size;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperties;
+ import org.junit.jupiter.api.Test;

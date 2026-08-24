@@ -1,0 +1,78 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_repository": "hibernate/hibernate-validator",
+  "source_change": {
+    "from": "6.2.3.Final",
+    "to": "7.0.0.CR1"
+  },
+  "target_repository": "smallrye/smallrye-config",
+  "target_base_commit": "dfedeac7d08c944c45d9f57de943e70ae0719dad",
+  "historical_recovery_commit": "b9f347561893d39ed396e53e6f12ad941b3139f7",
+  "test_class": "io.smallrye.config.validator.ValidateConfigTest",
+  "arms": {
+    "A0": {
+      "hibernate_validator": "6.2.3.Final",
+      "validation_api": "2.0.2",
+      "el": "3.0.4",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "result": "pass"
+    },
+    "A1": {
+      "hibernate_validator": "7.0.0.CR1",
+      "validation_api": "2.0.2",
+      "el": "3.0.4",
+      "tests": 4,
+      "failures": 0,
+      "errors": 4,
+      "signature": "javax.validation.NoProviderFoundException",
+      "result": "expected_breakage"
+    },
+    "A2_full_historical_commit": {
+      "hibernate_validator": "7.0.0.CR1",
+      "validation_api": "3.0.1",
+      "el": "4.0.2",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "result": "recovered"
+    },
+    "A2_validator_only_ablation": {
+      "changed_paths": 4,
+      "insertions": 11,
+      "deletions": 11,
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "result": "recovered"
+    },
+    "A2_platform_without_validator_ablation": {
+      "changed_paths_from_base": 95,
+      "insertions": 197,
+      "deletions": 197,
+      "tests": 4,
+      "failures": 0,
+      "errors": 4,
+      "signature": "javax.validation.NoProviderFoundException",
+      "result": "still_broken"
+    }
+  },
+  "historical_commit_scope": {
+    "changed_paths": 98,
+    "insertions": 207,
+    "deletions": 207,
+    "validator_paths": 4,
+    "description": "repository-wide javax-to-jakarta migration with root platform and dependency-family upgrades"
+  },
+  "decision": {
+    "breakage_relation_replayable": true,
+    "full_historical_commit_recovers": true,
+    "historical_a2_is_precise_maintainer_repair": false,
+    "strict_three_arm_positive_admitted": false,
+    "classification": "replayable breakage with broad migration recovery anchor and synthetic minimal recovery ablation"
+  },
+  "execution_scope": "targeted ValidateConfigTest after compiling and installing validator dependencies with tests skipped",
+  "excluded_infrastructure_result": "full dependency-module tests stopped before validator because two unrelated HTTPS tests failed certificate validation",
+  "workspace_policy": "all clones, caches, builds and temporary files were kept under .work/hibernate-validator-smallrye/replay-20260825; no global Maven repository was copied or used"
+}

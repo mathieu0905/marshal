@@ -1,0 +1,52 @@
+Collected: 2026-08-25
+
+Inputs:
+  .work/fse-hsqldb/artifacts/hsqldb-2.5.2.jar
+  .work/fse-hsqldb/artifacts/hsqldb-2.6.0.jar
+  .work/fse-hsqldb/artifacts/hsqldb-2.6.1.jar
+  .work/fse-hsqldb/artifacts/hsqldb-2.6.1-jdk8.jar
+
+Class-header command:
+  unzip -p ARTIFACT org/hsqldb/jdbc/JDBCDriver.class | od -An -t u1 -N8
+
+Raw class headers:
+  hsqldb-2.5.2.jar      202 254 186 190 0 0 0 52
+  hsqldb-2.6.0.jar      202 254 186 190 0 0 0 55
+  hsqldb-2.6.1.jar      202 254 186 190 0 0 0 55
+  hsqldb-2.6.1-jdk8.jar 202 254 186 190 0 0 0 52
+
+The first four bytes are CAFEBABE. The final two bytes are the class-file
+major version: 52 for Java 8 and 55 for Java 11.
+
+Manifest command:
+  unzip -p ARTIFACT META-INF/MANIFEST.MF | rg -i 'Build-Jdk|Created-By|Implementation-Version|Specification-Version'
+
+Selected manifest output:
+  hsqldb-2.5.2.jar
+    Implementation-Version: 2.5.2
+    Originally-Created-By: 1.8.0_282-b08 (Oracle Corporation)
+    Created-By: 1.8.0_282 (Oracle Corporation)
+    Specification-Version: 2.5.2
+
+  hsqldb-2.6.0.jar
+    Created-By: 11.0.10+9 (Oracle Corporation)
+    Specification-Version: 2.6.0
+    Implementation-Version: 2.6.0
+
+  hsqldb-2.6.1.jar
+    Created-By: 11.0.12 (Oracle Corporation)
+    Implementation-Version: 2.6.1
+    Originally-Created-By: 11.0.12+7 (Oracle Corporation)
+    Specification-Version: 2.6.1
+
+  hsqldb-2.6.1-jdk8.jar
+    Created-By: 11.0.12 (Oracle Corporation)
+    Implementation-Version: 2.6.1
+    Originally-Created-By: 11.0.12+7 (Oracle Corporation)
+    Specification-Version: 2.6.1
+
+Evidence boundary:
+  This proves a release-artifact bytecode boundary. It does not identify a
+  single HSQLDB source commit that changed the default Maven publication from
+  Java 8 to Java 11, and it does not prove that every wrapper failure in the
+  FSE records was caused by this boundary.

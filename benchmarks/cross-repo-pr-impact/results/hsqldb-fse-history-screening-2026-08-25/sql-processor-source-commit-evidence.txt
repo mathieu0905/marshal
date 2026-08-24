@@ -1,0 +1,51 @@
+Collected: 2026-08-25
+
+Repository mirror:
+  .work/fse-hsqldb/repos/ryenus__hsqldb.git
+
+Command:
+  git --git-dir=REPOSITORY show --format=fuller --stat --patch \
+    016e51e49219a8eebcafd47a8d06a9c321ec270b -- \
+    src/org/hsqldb/types/DateTimeType.java
+
+Commit:
+  016e51e49219a8eebcafd47a8d06a9c321ec270b
+  AuthorDate: 2019-12-22 12:44:37 +0000
+  Subject: core code updates - enhancements
+
+Whole-commit stat:
+  src/org/hsqldb/ExpressionColumn.java    |  7 +++++++
+  src/org/hsqldb/types/CharacterType.java | 28 ++++++++++++++--------------
+  src/org/hsqldb/types/DateTimeType.java  | 18 ++++++++----------
+  3 files changed, 29 insertions(+), 24 deletions(-)
+
+Relevant removed logic:
+  if (a instanceof java.sql.Timestamp) {
+      nanos = ((java.sql.Timestamp) a).getNanos();
+      nanos = DateTimeType.normaliseFraction(nanos, scale);
+  }
+
+Relevant replacement:
+  long millis = ((java.util.Date) a).getTime();
+  int nanos =
+      DateTimeType.normaliseFraction((int) (millis % 1000)
+                                     * 1000000, scale);
+
+Containment check:
+  git tag --contains 016e51e49219a8eebcafd47a8d06a9c321ec270b
+
+Selected output:
+  2.5.1
+  2.5.1_gradle-6.7.1
+  2.6.0
+  2.6.1
+  2.7.0
+  2.7.1
+  2.7.2
+  2.7.4
+
+Evidence boundary:
+  The removed Timestamp.getNanos branch directly explains truncation from
+  microseconds to milliseconds and enters HSQLDB 2.5.1. The commit is an exact
+  source mechanism anchor, but SQL Processor has no maintainer-authored target
+  repair for this contract, so it is not an A0/A1/A2 case.

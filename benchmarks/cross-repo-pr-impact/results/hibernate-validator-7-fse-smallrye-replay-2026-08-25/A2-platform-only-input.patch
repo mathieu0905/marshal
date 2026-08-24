@@ -1,0 +1,67 @@
+diff --git a/validator/pom.xml b/validator/pom.xml
+index a99c9844..79556a3d 100644
+--- a/validator/pom.xml
++++ b/validator/pom.xml
+@@ -28,11 +28,11 @@
+     <name>SmallRye: MicroProfile Config Validator</name>
+ 
+     <properties>
+-        <version.jakarta.validation>3.0.1</version.jakarta.validation>
++        <version.jakarta.validation>2.0.2</version.jakarta.validation>
+ 
+         <!-- Test -->
+-        <version.hibernate.validator>7.0.1.Final</version.hibernate.validator>
+-        <version.jakarta.el>4.0.2</version.jakarta.el>
++        <version.hibernate.validator>7.0.0.CR1</version.hibernate.validator>
++        <version.jakarta.el>3.0.4</version.jakarta.el>
+     </properties>
+ 
+     <dependencies>
+diff --git a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java
+index be1da504..b21f7f44 100644
+--- a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java
++++ b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidator.java
+@@ -9,9 +9,9 @@ import java.util.Map;
+ import java.util.Optional;
+ import java.util.Set;
+ 
+-import jakarta.validation.ConstraintViolation;
+-import jakarta.validation.Path;
+-import jakarta.validation.Validator;
++import javax.validation.ConstraintViolation;
++import javax.validation.Path;
++import javax.validation.Validator;
+ 
+ import io.smallrye.config.ConfigMappingInterface;
+ import io.smallrye.config.ConfigMappingInterface.CollectionProperty;
+diff --git a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java
+index 868a5837..54aa1ac8 100644
+--- a/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java
++++ b/validator/src/main/java/io/smallrye/config/validator/BeanValidationConfigValidatorImpl.java
+@@ -1,7 +1,7 @@
+ package io.smallrye.config.validator;
+ 
+-import jakarta.validation.Validation;
+-import jakarta.validation.Validator;
++import javax.validation.Validation;
++import javax.validation.Validator;
+ 
+ public class BeanValidationConfigValidatorImpl implements BeanValidationConfigValidator {
+     private Validator validator;
+diff --git a/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java b/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java
+index 8bba9e92..4a6aaf16 100644
+--- a/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java
++++ b/validator/src/test/java/io/smallrye/config/validator/ValidateConfigTest.java
+@@ -11,9 +11,9 @@ import java.util.Map;
+ import java.util.Optional;
+ import java.util.OptionalInt;
+ 
+-import jakarta.validation.constraints.Max;
+-import jakarta.validation.constraints.Min;
+-import jakarta.validation.constraints.Size;
++import javax.validation.constraints.Max;
++import javax.validation.constraints.Min;
++import javax.validation.constraints.Size;
+ 
+ import org.eclipse.microprofile.config.inject.ConfigProperties;
+ import org.junit.jupiter.api.Test;

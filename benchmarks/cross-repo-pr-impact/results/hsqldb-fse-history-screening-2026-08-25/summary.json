@@ -1,0 +1,112 @@
+{
+  "screened_at": "2026-08-25",
+  "family": "org.hsqldb:hsqldb FSE 2024 relationship family",
+  "source_repository": "ryenus/hsqldb",
+  "evidence_files": [
+    "artifact-bytecode-evidence.txt",
+    "sql-processor-source-commit-evidence.txt",
+    "../../workstreams/hsqldb-fse/candidate-root-audit.jsonl"
+  ],
+  "candidate_counts": {
+    "raw_records": 21,
+    "unique_root_repositories": 16,
+    "root_version_transition_units": 17,
+    "exact_source_mechanism_anchors": 1,
+    "units_with_fixed_input_exact_maintainer_a2": 0
+  },
+  "transition_counts": [
+    {
+      "before": "2.2.8",
+      "after": "2.6.1",
+      "raw_records": 2,
+      "root_repositories": 2
+    },
+    {
+      "before": "2.5.0",
+      "after": "2.5.1",
+      "raw_records": 4,
+      "root_repositories": 1
+    },
+    {
+      "before": "2.5.2",
+      "after": "2.6.0",
+      "raw_records": 14,
+      "root_repositories": 13
+    },
+    {
+      "before": "2.6.0",
+      "after": "2.6.1",
+      "raw_records": 1,
+      "root_repositories": 1
+    }
+  ],
+  "artifact_measurements": [
+    {
+      "artifact": "org.hsqldb:hsqldb:2.5.2",
+      "jdbc_driver_class_major": 52,
+      "java_baseline": 8,
+      "manifest_build_jdk": "1.8.0_282"
+    },
+    {
+      "artifact": "org.hsqldb:hsqldb:2.6.0",
+      "jdbc_driver_class_major": 55,
+      "java_baseline": 11,
+      "manifest_build_jdk": "11.0.10+9"
+    },
+    {
+      "artifact": "org.hsqldb:hsqldb:2.6.1",
+      "jdbc_driver_class_major": 55,
+      "java_baseline": 11,
+      "manifest_build_jdk": "11.0.12"
+    },
+    {
+      "artifact": "org.hsqldb:hsqldb:2.6.1:jdk8",
+      "jdbc_driver_class_major": 52,
+      "java_baseline": 8,
+      "manifest_build_jdk": "11.0.12"
+    }
+  ],
+  "source_findings": [
+    {
+      "transition": "2.5.0 to 2.5.1",
+      "commit": "016e51e49219a8eebcafd47a8d06a9c321ec270b",
+      "status": "exact_source_mechanism_anchor",
+      "effect": "DateTimeType stops reading Timestamp.getNanos and derives fractional seconds from millisecond precision.",
+      "target_root": "hudec/sql-processor",
+      "maintainer_a2": null
+    },
+    {
+      "transition": "2.5.2 to 2.6.0",
+      "release_tag_commit": "699d9f522d52b21b7cea53fae2a364dd5b571d47",
+      "status": "publication_mechanism_not_single_source_commit",
+      "effect": "The default Maven artifact changes from Java 8 class files to Java 11 class files."
+    }
+  ],
+  "near_miss_repairs": [
+    {
+      "root_repository": "languagetool-org/languagetool",
+      "commit": "ad5e824cda8c0694204681b45899a304978dfa67",
+      "effect": "Add the jdk8 classifier.",
+      "rejection": "The commit uses HSQLDB 2.7.1 rather than fixed A1=2.6.0."
+    },
+    {
+      "root_repository": "zapodot/embedded-db-junit",
+      "commits": [
+        "3919591881ba05d215c7495ec148002e0d58750d",
+        "f52d8ce5ded294c4aa22746e45f854b7218ebb85"
+      ],
+      "effect": "Add the jdk8 classifier while upgrading HSQLDB.",
+      "rejection": "The commits change HSQLDB to 2.7.0 rather than keeping fixed A1=2.6.0."
+    }
+  ],
+  "execution_policy": "Run A0/A1/A2 only when one source change or fixed source input and one maintainer-authored target repair can be applied without changing A1.",
+  "execution_performed": false,
+  "execution_stop_reason": "No root-version unit has both an isolated source input and an exact maintainer A2 that preserves the fixed A1 source version.",
+  "decision": "rejected_before_replay_no_fixed_input_exact_a2",
+  "strict_three_arm_established": false,
+  "accepted_causal_cases": 0,
+  "bounded_negative_labels": 0,
+  "a3_cases": 0,
+  "complete_project_packages": 0,
+  "unknown_label_policy": "A missing repair, stopped repository, wrapper failure, or broad migration remains unknown and is not a compatible negative."
+}
