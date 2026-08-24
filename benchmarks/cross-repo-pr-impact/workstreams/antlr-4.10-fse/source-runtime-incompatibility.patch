@@ -1,0 +1,40 @@
+From c68e127a7cf14470565d6e6ae1eff06db3e56ea7 Mon Sep 17 00:00:00 2001
+From: Terence Parr <parrt@antlr.org>
+Date: Fri, 18 Mar 2022 11:12:27 -0700
+Subject: [PATCH] Revert "[Java] Preserve serialized ATN version 3
+ compatibility (#3583)"
+
+This reverts commit 01bc811557adad0de63e8db85b78ca8885480378.
+
+diff --git a/runtime/Java/src/org/antlr/v4/runtime/atn/ATNDeserializer.java b/runtime/Java/src/org/antlr/v4/runtime/atn/ATNDeserializer.java
+index 95e37eaa0..0bd643a13 100644
+--- a/runtime/Java/src/org/antlr/v4/runtime/atn/ATNDeserializer.java
++++ b/runtime/Java/src/org/antlr/v4/runtime/atn/ATNDeserializer.java
+@@ -20,10 +20,10 @@ import java.util.Locale;
+  * @author Sam Harwell
+  */
+ public class ATNDeserializer {
+-
+-  static final int LEGACY_SERIALIZED_VERSION = 3;
+-
+-	public static final int SERIALIZED_VERSION = 4;
++	public static final int SERIALIZED_VERSION;
++	static {
++		SERIALIZED_VERSION = 4;
++	}
+ 
+ 	interface UnicodeDeserializer {
+ 		// Wrapper for readInt() or readInt32()
+@@ -90,12 +90,6 @@ public class ATNDeserializer {
+ 
+ 		int p = 0;
+ 		int version = toInt(data[p++]);
+-    if (version == LEGACY_SERIALIZED_VERSION) {
+-      // Preserve backwards compatibility for version 3. We simply skip over the UUID and assume all
+-      // features were supported.
+-      p += 8;
+-      version = SERIALIZED_VERSION;
+-    }
+ 		if (version != SERIALIZED_VERSION) {
+ 			String reason = String.format(Locale.getDefault(), "Could not deserialize ATN with version %d (expected %d).", version, SERIALIZED_VERSION);
+ 			throw new UnsupportedOperationException(new InvalidClassException(ATN.class.getName(), reason));

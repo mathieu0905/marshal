@@ -1,0 +1,67 @@
+{
+  "evaluated_at": "2026-08-25",
+  "candidate_frame": {
+    "source_coordinate": "org.antlr:antlr4-runtime",
+    "source_pair": ["4.9.3", "4.10"],
+    "fse_records": 5,
+    "independent_root_repositories": 5,
+    "formal_positive_relations_accepted": 0,
+    "mechanism_anchors_retained": 1
+  },
+  "source": {
+    "repository": "antlr/antlr4",
+    "old_tag_commit": "e4c1a74c66bd5290364ea2b36c97cd724b247357",
+    "new_tag_object": "02e66ccd31559cb96c9dc684df56c568aebd7533",
+    "new_tag_commit": "c7567ba9bb40c361dda60e60e2bc932a16d2adf8",
+    "incompatibility_commit": "c68e127a7cf14470565d6e6ae1eff06db3e56ea7",
+    "contract": "The Java runtime rejects serialized ATN version 3 and expects version 4."
+  },
+  "mechanism_anchor": {
+    "target_repository": "radkovo/jStyleParser",
+    "target_base_commit": "aed9ffc08dda481222bd9cd66635116768e23a54",
+    "maintainer_java_update_commit": "20f0d40bfaed8fee7549d80f47b5c3fabc254895",
+    "maintainer_antlr_update_commit": "66e905d079dd9f7a7b58dac9705fe284beb5876e",
+    "maintainer_merge_commit": "afec854a12632c1d2ecd64a3e83ca4cd2e076bae",
+    "arms": {
+      "A0": {
+        "antlr_runtime": "4.9.3",
+        "antlr_generator": "4.5.3",
+        "result": "pass",
+        "tests": 182,
+        "skipped": 2
+      },
+      "A1": {
+        "antlr_runtime": "4.10",
+        "antlr_generator": "4.5.3",
+        "result": "fail",
+        "tests_started": 170,
+        "errors": 167,
+        "skipped": 2,
+        "signature": "Could not deserialize ATN with version 3 (expected 4)"
+      },
+      "A2": {
+        "antlr_runtime": "4.10",
+        "antlr_generator": "4.13.2",
+        "result": "pass",
+        "tests": 182,
+        "skipped": 2,
+        "warning": "ANTLR tool 4.13.2 does not match runtime 4.10"
+      }
+    },
+    "environment": {
+      "java": "OpenJDK 11.0.31",
+      "maven": "3.9.8"
+    },
+    "admission": "mechanism_anchor_only",
+    "admission_boundary": "The maintainer changed generator and runtime together to 4.13.2. A2 extracts the generator line while fixing runtime 4.10, creating a combination maintainers did not adopt; it is not an exact maintainer repair."
+  },
+  "rejected_roots": {
+    "ojai/ojai": "No post-4.10 maintainer ANTLR coordination action.",
+    "threefish/nutz-sqltpl": "Repository history ends before ANTLR 4.10 and contains no target repair.",
+    "nRo/DataFrame": "No ANTLR maintenance action after the 2021-12 generator/runtime update.",
+    "locationtech/geowave": "Generator and runtime remain 4.7.2; no repair exists on master or 2.x."
+  },
+  "formal_chain_independent_positive_relations_added": 0,
+  "public_ledger_updated": false,
+  "independent_semantic_review_required": true
+}
