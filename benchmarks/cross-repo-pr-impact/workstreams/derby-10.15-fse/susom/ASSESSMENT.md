@@ -6,7 +6,7 @@
 
 本轮建立一条高证据跨仓机制锚点。Apache Derby 提交 `5a6efccce73b05ac7a27512563868192303f564d` 把 `org.apache.derby.jdbc` 包从 `derby.jar` 移到 `derbytools.jar`。`susom/database` 仍让 Hikari 显式加载 `org.apache.derby.jdbc.EmbeddedDriver`，但只声明 `org.apache.derby:derby`，因此从 Derby 10.14.2.0 升到 10.15.1.3 后无法找到该类。维护者提交 `811158529d847bde72fc97c5701d411301f395b4` 只增加 `derbytools` 测试依赖；将同一修复移植到固定目标基线后，原生测试恢复。
 
-目标侧固定发布版的 A0/A1/A2 已成立，但源侧尚未构建 `5a6efcc` 的父、子提交制品。正式旗舰计数因此仍为零；当前计数为一个高证据机制锚点、零个源提交隔离案例、零个限定负例、零个 A3。它既不是多仓关系族，也不能在补完源提交隔离前进入旗舰正式集。
+目标侧固定发布版的 A0/A1/A2 与源提交隔离三臂均已成立。源提交隔离使用同一工具链分别构建 `8f3b7b2` 与 `5a6efcc`，再把两侧制品以同一测试版本装入相互隔离的 Maven 仓库。固定 Susom 基线在父制品上通过，在子制品上以 `EmbeddedDriver` 缺失失败，只加入同侧 `derbytools` 后恢复。因此当前计数为一个源提交隔离正例。它仍不是多仓关系族；项目包是否进入旗舰正式集，继续服从仓库数量、负空间和重复执行等包级标准。
 
 ## 目标基线恢复
 
@@ -30,7 +30,21 @@ FSE 记录 `fse2024-behavioral-0310` 没有保存客户端 Git 修订。这里�
 
 发布制品与之吻合：10.14.2.0 的 `derby.jar` 含该类；10.15.1.3 的 `derby.jar` 不含；10.15.1.3 的 `derbytools.jar` 含该类。A1 只换发布制品后以缺类失败，A2 只把维护者选择的制品放回类路径后通过。因此 `5a6efcc` 足以解释本关系，不需要把 Derby 10.15 的其余发布变化纳入标签。
 
-本轮没有从源仓构建 `5a6efcc` 的父、子提交制品。提交清单差异、正式发布制品内容和目标侧单因素恢复共同支持这一机制解释，但不能实验性证明“只加入 `5a6efcc`”就足以产生失败。进入旗舰正式集前必须另做父、子制品构建，并在同一目标基线上重放；当前不得把它写成已完成的源提交隔离案例。
+源提交隔离使用 JDK 9+181、Ant 1.10.15 和 JUnit 3.8.2，对父子提交执行相同的 `clobber buildsource buildjars`。两侧构建均成功。父提交的 `derby.jar` 含 `EmbeddedDriver`；子提交的 `derby.jar` 不含该类，而子提交的 `derbytools.jar` 含该类。父子制品都以 `10.15.0.0-exact` 安装到各自独立的 Maven 仓库，`derby` 的测试 POM 只声明同侧、同版本的 `derbyshared`，没有混入正式发布版制品。
+
+旧构建首次因源码树缺少 JUnit 3.8.2 在 `build.xml:163` 中止。该失败被保留；补入 JUnit 是两侧完全相同的构建前置，不改变源码或父子比较。构建过程中缺少 `svnversion` 只产生相同警告，父子均完成全部制品构建。
+
+## 源提交隔离三臂
+
+三个目标臂固定 Susom 提交、Java 11、测试选择器和除 Derby 输入外的所有依赖。父臂与子臂的目标 `pom.xml` 差异逐字节相同，均只把 Derby 改为 `10.15.0.0-exact`；恢复臂在子臂上增加同版本 `derbytools`。
+
+| 臂 | 源制品 | 目标结果 |
+|---|---|---|
+| 父 | `8f3b7b2` 的 `derby` 与 `derbyshared` | 通过，1 个测试 |
+| 子 | `5a6efcc` 的 `derby` 与 `derbyshared` | 失败，1 个错误；`Failed to load driver class org.apache.derby.jdbc.EmbeddedDriver` |
+| 子加恢复 | 子制品再加入同侧 `derbytools` | 通过，1 个测试 |
+
+这组结果实验性证明 `5a6efcc` 对当前目标破坏充分，且维护者选择的 `derbytools` 依赖对恢复充分。
 
 ## 维护者修复纯度
 
@@ -64,4 +78,4 @@ FSE 公开执行使用 Java 8。本包另行在 Java 8u482 下重放：A0 通过
 
 本轮没有限定负例，也没有 A3。未声明 `derbytools` 的其他仓库、普通绿色构建或没有维护者修复的客户端都不能自动变成负例。`susom/database` 的维护者修复晚于公开失败数年，但时间晚不改变其补丁纯度；该时间差必须在正式数据中保留，不能写成即时协调响应。
 
-可重复运行器为 `run_screening.sh`。结果目录 `results/derby-10.15-fse-susom-2026-08-25/` 保存三臂日志、Surefire XML、测试输出、依赖树、输入补丁、Java 8 环境观察和制品内容证据。
+发布版重放运行器为 `run_screening.sh`，结果目录为 `results/derby-10.15-fse-susom-2026-08-25/`。源提交隔离运行器为 `run_source_commit_isolation.sh`，新结果目录 `results/derby-10.15-fse-susom-source-isolation-2026-08-25/` 保存父子构件、构建日志、工具链失败尝试、制品清单、目标三臂日志、Surefire XML、依赖树、输入补丁和机器摘要。

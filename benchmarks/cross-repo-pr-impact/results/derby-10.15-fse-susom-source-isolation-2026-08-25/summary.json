@@ -1,0 +1,60 @@
+{
+  "evaluated_at": "2026-08-25",
+  "candidate_id": "fse2024-behavioral-0310",
+  "source": {
+    "repository": "apache/derby",
+    "parent_commit": "8f3b7b2fa2f3e775dc90fb3cfa9f46257ae8df0e",
+    "behavior_commit": "5a6efccce73b05ac7a27512563868192303f564d",
+    "parent_relation_verified": true,
+    "behavior": "Move org.apache.derby.jdbc, including EmbeddedDriver, from derby.jar into derbytools.jar"
+  },
+  "source_build": {
+    "environment": "OpenJDK 9+181; Ant 1.10.15; JUnit 3.8.2",
+    "command_same_for_both_commits": true,
+    "command": "ant -quiet -Djunit=<JUnit-3.8.2> clobber buildsource buildjars",
+    "parent_exit_code": 0,
+    "child_exit_code": 0,
+    "toolchain_adaptation": "Provide the missing JUnit 3.8.2 build prerequisite identically to both source arms",
+    "rejected_attempt": "Without JUnit, build.xml:163 stops before compilation; preserved under source-builds/toolchain-attempts",
+    "artifact_test_version": "10.15.0.0-exact",
+    "isolated_maven_repositories": true
+  },
+  "artifact_inventory": {
+    "parent_derby_embedded_driver": "present",
+    "parent_derbytools_embedded_driver": "absent",
+    "child_derby_embedded_driver": "absent",
+    "child_derbytools_embedded_driver": "present"
+  },
+  "target": {
+    "repository": "susom/database",
+    "reconstructed_baseline": "b9aac59d053af41144f59c77a7f9053f8fe61102",
+    "environment": "Temurin Java 11.0.30; Maven 3.9.8",
+    "native_test": "com.github.susom.database.test.VertxLoggingTest#testMdcTransferToWorkerDatabase",
+    "parent_and_child_target_inputs_identical": true,
+    "parent": {
+      "source_artifacts": ["derby", "derbyshared"],
+      "result": "pass",
+      "tests": 1,
+      "errors": 0,
+      "exit_code": 0
+    },
+    "child": {
+      "source_artifacts": ["derby", "derbyshared"],
+      "result": "fail",
+      "tests": 1,
+      "errors": 1,
+      "exit_code": 1,
+      "signature": "Failed to load driver class org.apache.derby.jdbc.EmbeddedDriver in either of HikariConfig class loader or Thread context classloader"
+    },
+    "child_repaired": {
+      "source_artifacts": ["derby", "derbyshared", "derbytools"],
+      "result": "pass",
+      "tests": 1,
+      "errors": 0,
+      "exit_code": 0
+    }
+  },
+  "accepted_source_commit_isolated_relations": 1,
+  "positive_target_repositories": 1,
+  "package_status": "source_commit_isolated_positive_relation_complete"
+}

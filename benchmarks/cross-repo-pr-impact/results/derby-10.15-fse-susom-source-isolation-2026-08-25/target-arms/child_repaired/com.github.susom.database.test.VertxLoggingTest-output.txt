@@ -1,0 +1,895 @@
+01:06:16,717 DEBUG [main] io.netty.util.internal.logging.InternalLoggerFactory Using SLF4J as the default logging framework
+01:06:16,718 DEBUG [main] io.netty.util.ResourceLeakDetector -Dio.netty.leakDetection.level: simple
+01:06:16,718 DEBUG [main] io.netty.util.ResourceLeakDetector -Dio.netty.leakDetection.targetRecords: 4
+01:06:16,726 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+01:06:16,726 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+01:06:16,731 DEBUG [main] io.netty.channel.MultithreadEventLoopGroup -Dio.netty.eventLoopThreads: 288
+01:06:16,745 DEBUG [main] io.netty.channel.nio.NioEventLoop -Dio.netty.noKeySetOptimization: false
+01:06:16,745 DEBUG [main] io.netty.channel.nio.NioEventLoop -Dio.netty.selectorAutoRebuildThreshold: 512
+01:06:16,755 DEBUG [main] io.netty.util.internal.PlatformDependent0 -Dio.netty.noUnsafe: false
+01:06:16,755 DEBUG [main] io.netty.util.internal.PlatformDependent0 Java version: 11
+01:06:16,756 DEBUG [main] io.netty.util.internal.PlatformDependent0 sun.misc.Unsafe.theUnsafe: available
+01:06:16,756 DEBUG [main] io.netty.util.internal.PlatformDependent0 sun.misc.Unsafe.copyMemory: available
+01:06:16,756 DEBUG [main] io.netty.util.internal.PlatformDependent0 java.nio.Buffer.address: available
+01:06:16,757 DEBUG [main] io.netty.util.internal.PlatformDependent0 direct buffer constructor: unavailable
+java.lang.UnsupportedOperationException: Reflective setAccessible(true) disabled
+	at io.netty.util.internal.ReflectionUtil.trySetAccessible(ReflectionUtil.java:31)
+	at io.netty.util.internal.PlatformDependent0$4.run(PlatformDependent0.java:233)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at io.netty.util.internal.PlatformDependent0.<clinit>(PlatformDependent0.java:227)
+	at io.netty.util.internal.PlatformDependent.isAndroid(PlatformDependent.java:289)
+	at io.netty.util.internal.PlatformDependent.<clinit>(PlatformDependent.java:92)
+	at io.netty.channel.nio.NioEventLoop.newTaskQueue0(NioEventLoop.java:279)
+	at io.netty.channel.nio.NioEventLoop.newTaskQueue(NioEventLoop.java:150)
+	at io.netty.channel.nio.NioEventLoop.<init>(NioEventLoop.java:138)
+	at io.netty.channel.nio.NioEventLoopGroup.newChild(NioEventLoopGroup.java:146)
+	at io.netty.channel.nio.NioEventLoopGroup.newChild(NioEventLoopGroup.java:37)
+	at io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:84)
+	at io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:58)
+	at io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:47)
+	at io.netty.channel.MultithreadEventLoopGroup.<init>(MultithreadEventLoopGroup.java:59)
+	at io.netty.channel.nio.NioEventLoopGroup.<init>(NioEventLoopGroup.java:86)
+	at io.netty.channel.nio.NioEventLoopGroup.<init>(NioEventLoopGroup.java:81)
+	at io.netty.channel.nio.NioEventLoopGroup.<init>(NioEventLoopGroup.java:68)
+	at io.vertx.core.net.impl.transport.Transport.eventLoopGroup(Transport.java:153)
+	at io.vertx.core.impl.VertxImpl.<init>(VertxImpl.java:143)
+	at io.vertx.core.impl.VertxImpl.vertx(VertxImpl.java:92)
+	at io.vertx.core.impl.VertxFactoryImpl.vertx(VertxFactoryImpl.java:40)
+	at io.vertx.core.impl.VertxFactoryImpl.vertx(VertxFactoryImpl.java:32)
+	at io.vertx.core.impl.VertxFactoryImpl.vertx(VertxFactoryImpl.java:27)
+	at io.vertx.core.Vertx.vertx(Vertx.java:75)
+	at com.github.susom.database.test.VertxLoggingTest.testMdcTransferToWorkerDatabase(VertxLoggingTest.java:99)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.invokeTestMethod(VertxUnitRunner.java:95)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.lambda$invokeExplosively$0(VertxUnitRunner.java:114)
+	at io.vertx.ext.unit.impl.TestContextImpl.run(TestContextImpl.java:90)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.invokeExplosively(VertxUnitRunner.java:130)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.access$000(VertxUnitRunner.java:39)
+	at io.vertx.ext.unit.junit.VertxUnitRunner$1.evaluate(VertxUnitRunner.java:84)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:272)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:386)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:323)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:143)
+01:06:16,761 DEBUG [main] io.netty.util.internal.PlatformDependent0 java.nio.Bits.unaligned: available, true
+01:06:16,762 DEBUG [main] io.netty.util.internal.PlatformDependent0 jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable
+java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent0$6 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @cc43f62
+	at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:361)
+	at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:591)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:558)
+	at io.netty.util.internal.PlatformDependent0$6.run(PlatformDependent0.java:347)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at io.netty.util.internal.PlatformDependent0.<clinit>(PlatformDependent0.java:338)
+	at io.netty.util.internal.PlatformDependent.isAndroid(PlatformDependent.java:289)
+	at io.netty.util.internal.PlatformDependent.<clinit>(PlatformDependent.java:92)
+	at io.netty.channel.nio.NioEventLoop.newTaskQueue0(NioEventLoop.java:279)
+	at io.netty.channel.nio.NioEventLoop.newTaskQueue(NioEventLoop.java:150)
+	at io.netty.channel.nio.NioEventLoop.<init>(NioEventLoop.java:138)
+	at io.netty.channel.nio.NioEventLoopGroup.newChild(NioEventLoopGroup.java:146)
+	at io.netty.channel.nio.NioEventLoopGroup.newChild(NioEventLoopGroup.java:37)
+	at io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:84)
+	at io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:58)
+	at io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:47)
+	at io.netty.channel.MultithreadEventLoopGroup.<init>(MultithreadEventLoopGroup.java:59)
+	at io.netty.channel.nio.NioEventLoopGroup.<init>(NioEventLoopGroup.java:86)
+	at io.netty.channel.nio.NioEventLoopGroup.<init>(NioEventLoopGroup.java:81)
+	at io.netty.channel.nio.NioEventLoopGroup.<init>(NioEventLoopGroup.java:68)
+	at io.vertx.core.net.impl.transport.Transport.eventLoopGroup(Transport.java:153)
+	at io.vertx.core.impl.VertxImpl.<init>(VertxImpl.java:143)
+	at io.vertx.core.impl.VertxImpl.vertx(VertxImpl.java:92)
+	at io.vertx.core.impl.VertxFactoryImpl.vertx(VertxFactoryImpl.java:40)
+	at io.vertx.core.impl.VertxFactoryImpl.vertx(VertxFactoryImpl.java:32)
+	at io.vertx.core.impl.VertxFactoryImpl.vertx(VertxFactoryImpl.java:27)
+	at io.vertx.core.Vertx.vertx(Vertx.java:75)
+	at com.github.susom.database.test.VertxLoggingTest.testMdcTransferToWorkerDatabase(VertxLoggingTest.java:99)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.invokeTestMethod(VertxUnitRunner.java:95)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.lambda$invokeExplosively$0(VertxUnitRunner.java:114)
+	at io.vertx.ext.unit.impl.TestContextImpl.run(TestContextImpl.java:90)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.invokeExplosively(VertxUnitRunner.java:130)
+	at io.vertx.ext.unit.junit.VertxUnitRunner.access$000(VertxUnitRunner.java:39)
+	at io.vertx.ext.unit.junit.VertxUnitRunner$1.evaluate(VertxUnitRunner.java:84)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:272)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:386)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:323)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:143)
+01:06:16,763 DEBUG [main] io.netty.util.internal.PlatformDependent0 java.nio.DirectByteBuffer.<init>(long, int): unavailable
+01:06:16,763 DEBUG [main] io.netty.util.internal.PlatformDependent sun.misc.Unsafe: available
+01:06:16,764 DEBUG [main] io.netty.util.internal.PlatformDependent maxDirectMemory: 32178700288 bytes (maybe)
+01:06:16,764 DEBUG [main] io.netty.util.internal.PlatformDependent -Dio.netty.tmpdir: /tmp (java.io.tmpdir)
+01:06:16,764 DEBUG [main] io.netty.util.internal.PlatformDependent -Dio.netty.bitMode: 64 (sun.arch.data.model)
+01:06:16,765 DEBUG [main] io.netty.util.internal.PlatformDependent -Dio.netty.maxDirectMemory: -1 bytes
+01:06:16,765 DEBUG [main] io.netty.util.internal.PlatformDependent -Dio.netty.uninitializedArrayAllocationThreshold: -1
+01:06:16,766 DEBUG [main] io.netty.util.internal.CleanerJava9 java.nio.ByteBuffer.cleaner(): available
+01:06:16,766 DEBUG [main] io.netty.util.internal.PlatformDependent -Dio.netty.noPreferDirect: false
+01:06:16,772 DEBUG [main] io.netty.util.internal.PlatformDependent org.jctools-core.MpscChunkedArrayQueue: available
+01:06:16,869 DEBUG [main] io.netty.resolver.dns.DefaultDnsServerAddressStreamProvider Default DNS servers: [/119.29.29.29:53] (sun.net.dns.ResolverConfiguration)
+01:06:16,873 DEBUG [main] io.netty.util.NetUtil -Djava.net.preferIPv4Stack: false
+01:06:16,873 DEBUG [main] io.netty.util.NetUtil -Djava.net.preferIPv6Addresses: false
+01:06:16,874 DEBUG [main] io.netty.util.NetUtil Loopback interface: lo (lo, 0:0:0:0:0:0:0:1%lo)
+01:06:16,875 DEBUG [main] io.netty.util.NetUtil /proc/sys/net/core/somaxconn: 4096
+01:06:16,901 DEBUG [main] com.zaxxer.hikari.HikariConfig Driver class org.apache.derby.jdbc.EmbeddedDriver found in Thread context class loader jdk.internal.loader.ClassLoaders$AppClassLoader@5c29bfd
+01:06:17,108 DEBUG [main] com.github.susom.database.DatabaseProvider Created 'derby' connection pool of size 10 using driver org.apache.derby.jdbc.EmbeddedDriver
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.numHeapArenas: 288
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.numDirectArenas: 288
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.pageSize: 8192
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.maxOrder: 11
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.chunkSize: 16777216
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.tinyCacheSize: 512
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.smallCacheSize: 256
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.normalCacheSize: 64
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.cacheTrimInterval: 8192
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.useCacheForAllThreads: true
+01:06:17,137 DEBUG [main] io.netty.buffer.PooledByteBufAllocator -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+01:06:17,182 DEBUG [main] io.netty.channel.DefaultChannelId -Dio.netty.processId: 1662153 (auto-detected)
+01:06:17,183 DEBUG [main] io.netty.channel.DefaultChannelId -Dio.netty.machineId: e8:61:1f:ff:fe:5c:3b:98 (auto-detected)
+01:06:17,197 DEBUG [main] io.netty.buffer.ByteBufUtil -Dio.netty.allocator.type: pooled
+01:06:17,197 DEBUG [main] io.netty.buffer.ByteBufUtil -Dio.netty.threadLocalDirectBufferSize: 0
+01:06:17,197 DEBUG [main] io.netty.buffer.ByteBufUtil -Dio.netty.maxThreadLocalCharBufferSize: 16384
+01:06:17,281 DEBUG [vert.x-eventloop-thread-2] io.netty.buffer.AbstractByteBuf -Dio.netty.buffer.checkAccessible: true
+01:06:17,282 DEBUG [vert.x-eventloop-thread-2] io.netty.buffer.AbstractByteBuf -Dio.netty.buffer.checkBounds: true
+01:06:17,283 DEBUG [vert.x-eventloop-thread-2] io.netty.util.ResourceLeakDetectorFactory Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@6a859da4
+01:06:17,312 DEBUG [vert.x-eventloop-thread-2] io.netty.util.Recycler -Dio.netty.recycler.maxCapacityPerThread: 4096
+01:06:17,312 DEBUG [vert.x-eventloop-thread-2] io.netty.util.Recycler -Dio.netty.recycler.maxSharedCapacityFactor: 2
+01:06:17,312 DEBUG [vert.x-eventloop-thread-2] io.netty.util.Recycler -Dio.netty.recycler.linkCapacity: 16
+01:06:17,312 DEBUG [vert.x-eventloop-thread-2] io.netty.util.Recycler -Dio.netty.recycler.ratio: 8
+01:06:17,326 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:17,335 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:17,339 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:17,340 DEBUG [vert.x-eventloop-thread-2] io.netty.handler.codec.compression.ZlibCodecFactory -Dio.netty.noJdkZlibDecoder: false
+01:06:17,340 DEBUG [vert.x-eventloop-thread-2] io.netty.handler.codec.compression.ZlibCodecFactory -Dio.netty.noJdkZlibEncoder: false
+01:06:17,341 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:17,342 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:17,344 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:17,345 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:17,349 DEBUG [vert.x-eventloop-thread-2] com.github.susom.database.test.VertxLoggingTest Request before blocking: {userId=joe, requestId=1}
+01:06:17,351 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Request inside blocking: {userId=joe, requestId=1}
+01:06:17,352 DEBUG [vert.x-eventloop-thread-2] com.github.susom.database.test.VertxLoggingTest Request after blocking: {userId=joe, requestId=1}
+01:06:17,353 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Nested request inside blocking: {userId=joe, requestId=1}
+01:06:17,353 DEBUG [vert.x-eventloop-thread-2] com.github.susom.database.test.VertxLoggingTest Nested request after blocking: {userId=joe, requestId=1}
+01:06:17,355 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Nested2 request inside blocking: {userId=joe, requestId=1}
+01:06:17,355 DEBUG [vert.x-eventloop-thread-2] com.github.susom.database.test.VertxLoggingTest Nested2 request after blocking: {userId=joe, requestId=1}
+01:06:17,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:17,413 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:17,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:17,414 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:17,414 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:17,415 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:17,415 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:17,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:17,513 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:17,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:17,513 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:17,514 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:17,514 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:17,514 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:17,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:17,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:17,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:17,613 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:17,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:17,614 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:17,614 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:17,711 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:17,712 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:17,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:17,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:17,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:17,713 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:17,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:17,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:17,812 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:17,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:17,813 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:17,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:17,814 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:17,814 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:17,911 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:17,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:17,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:17,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:17,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:17,913 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:17,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,013 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,013 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,014 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,111 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,113 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,212 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,313 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,313 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,413 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,413 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,513 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,513 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,514 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,613 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,613 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,614 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,711 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,712 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,713 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,811 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,811 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,812 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,812 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:18,911 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:18,911 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:18,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:18,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:18,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:18,913 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:18,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,011 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,012 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,013 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,111 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,113 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,212 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,313 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,412 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,413 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,511 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,513 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,611 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,612 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,613 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,711 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,711 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,712 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,812 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,813 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,813 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:19,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:19,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:19,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:19,913 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:19,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:19,913 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:19,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,011 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,012 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,013 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,111 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,112 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,213 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,311 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,312 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,413 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,413 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,513 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,611 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,612 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,612 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,712 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,713 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,811 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,811 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,812 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,812 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:20,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:20,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:20,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:20,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:20,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:20,913 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:20,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,013 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,013 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,111 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,112 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,212 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,311 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,313 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,413 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,413 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,513 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,611 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,611 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,612 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,612 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,712 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,712 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,812 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,812 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,813 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:21,911 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:21,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:21,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:21,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:21,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:21,912 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:21,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,013 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,013 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,112 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,213 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,311 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,313 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,411 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,411 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,411 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,412 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,412 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,511 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,512 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,612 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,613 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,711 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,711 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,712 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,812 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,812 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,813 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:22,911 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:22,911 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:22,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:22,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:22,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:22,912 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:22,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,012 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,013 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,111 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,112 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,213 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,312 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,412 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,412 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,513 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,611 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,611 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,611 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,611 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,612 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,711 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,711 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,711 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,712 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,811 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,811 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,812 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,812 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:23,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:23,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:23,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:23,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:23,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:23,913 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:23,913 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,011 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,011 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,011 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,012 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,012 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,111 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,111 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,112 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,211 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,212 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,212 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,311 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,312 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,412 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,412 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,512 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,612 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,612 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,712 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,713 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,811 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,811 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,811 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,812 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,812 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:24,911 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:24,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:24,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:24,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:24,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:24,912 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:24,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,012 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,012 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,113 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,212 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,311 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,311 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,311 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,312 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,411 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,412 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,412 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,513 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,513 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,613 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,613 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,613 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,711 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,712 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,712 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,713 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,812 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,813 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,813 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,813 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:25,911 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:25,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:25,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:25,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:25,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:25,912 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:25,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,013 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,013 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,111 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,112 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,112 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,211 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,212 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,212 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,311 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,312 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,412 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,412 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,512 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,512 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,512 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,512 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,612 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,612 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,612 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,612 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,712 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,712 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,712 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,712 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,812 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,812 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,812 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,812 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:26,911 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:26,912 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:26,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:26,912 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:26,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:26,912 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:26,912 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:27,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:27,012 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:27,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:27,012 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:27,012 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:27,012 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:27,013 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:27,112 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:27,112 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:27,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:27,113 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:27,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:27,113 DEBUG [DbWorker-1-9] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:27,113 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:27,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:27,212 DEBUG [DbWorker-1-0] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:27,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:27,212 DEBUG [DbWorker-1-1] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:27,212 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:27,213 DEBUG [DbWorker-1-2] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:27,213 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:27,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:27,312 DEBUG [DbWorker-1-3] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:27,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:27,312 DEBUG [DbWorker-1-4] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:27,312 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:27,313 DEBUG [DbWorker-1-5] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:27,313 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
+01:06:27,411 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer before blocking: {userId=<timer>}
+01:06:27,412 DEBUG [DbWorker-1-6] com.github.susom.database.test.VertxLoggingTest Timer inside blocking: {userId=<timer>}
+01:06:27,412 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer after blocking: {userId=<timer>}
+01:06:27,412 DEBUG [DbWorker-1-7] com.github.susom.database.test.VertxLoggingTest Timer nested inside blocking: {userId=<timer>}
+01:06:27,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested after blocking: {userId=<timer>}
+01:06:27,413 DEBUG [DbWorker-1-8] com.github.susom.database.test.VertxLoggingTest Timer nested2 inside blocking: {userId=<timer>}
+01:06:27,413 DEBUG [vert.x-eventloop-thread-1] com.github.susom.database.test.VertxLoggingTest Timer nested2 after blocking: {userId=<timer>}
