@@ -1,0 +1,61 @@
+{
+  "evaluated_at": "2026-08-25",
+  "candidate_frame": {
+    "records": 6,
+    "independent_root_repositories": 6,
+    "bump_and_history_roots": 5,
+    "fse_roots": 1
+  },
+  "accepted_relation": {
+    "source_repository": "qos-ch/slf4j",
+    "source_pair": ["1.7.36", "2.0.0"],
+    "target_repository": "rabbitmq/rabbitmq-jms-client",
+    "A0_commit": "41b2abf72827e123c8c472d3f07b30ac3bc24be0",
+    "A1_commit": "4fa8b7fea9971db148c98a5a3816a3c850332a92",
+    "A2_commit": "c2695a908a60b5c3db041afa193399cceb18f10c",
+    "repair_change_commit": "a127ab8221ab8544d7db257f75dee0fc9b02aa8f",
+    "source_pull_request": 189,
+    "repair_pull_request": 190,
+    "test": "com.rabbitmq.jms.LoggingProviderCompatibilityTest#initializesTheConfiguredLoggingProvider",
+    "arms": {
+      "A0": {
+        "slf4j_api": "1.7.36",
+        "logback_classic": "1.2.11",
+        "result": "pass",
+        "tests": 115
+      },
+      "A1": {
+        "slf4j_api": "2.0.0",
+        "logback_classic": "1.2.11",
+        "result": "fail",
+        "tests": 115,
+        "failures": 1,
+        "signature": "SLF4J ignores the pre-1.8 binding and returns NOPLoggerFactory instead of LoggerContext"
+      },
+      "A2": {
+        "slf4j_api": "2.0.0",
+        "logback_classic": "1.4.0",
+        "result": "pass",
+        "tests": 115,
+        "repair_scope": "the sole Logback version change in the maintainer-merged target PR 190"
+      }
+    },
+    "environment": "OpenJDK 11 and Maven 3.9.8",
+    "label_boundary": "PR 190 was a real maintainer-merged repair but was replaced one week later by reverting to the SLF4J 1.7 dependency line."
+  },
+  "slf4j_package_after_this_work": {
+    "adjudicated_root_repositories": 4,
+    "positive_roots": [
+      "jadler-mocking/jadler",
+      "rabbitmq/rabbitmq-jms-client"
+    ],
+    "bounded_negative_roots": [
+      "Password4j/password4j",
+      "diffplug/spotless"
+    ],
+    "rejected_root": "project-ncl/pnc-common"
+  },
+  "accepted_chain_independent_positive_relations_added": 1,
+  "public_ledger_updated": false,
+  "independent_semantic_review_required": true
+}

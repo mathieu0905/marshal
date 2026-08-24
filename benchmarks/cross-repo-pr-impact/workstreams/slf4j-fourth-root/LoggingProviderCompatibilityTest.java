@@ -1,0 +1,25 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+package com.rabbitmq.jms;
+
+import ch.qos.logback.classic.LoggerContext;
+import org.junit.jupiter.api.Test;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class LoggingProviderCompatibilityTest {
+
+    @Test
+    void initializesTheConfiguredLoggingProvider() {
+        Logger logger = LoggerFactory.getLogger(LoggingProviderCompatibilityTest.class);
+        ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
+
+        assertThat(loggerFactory).isInstanceOf(LoggerContext.class);
+        assertThat(logger.getName()).isEqualTo(LoggingProviderCompatibilityTest.class.getName());
+    }
+}

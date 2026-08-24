@@ -10,7 +10,7 @@
 |---|---|---|---|
 | 模型质检接受，待人工复核 | Alembic 到六个 OpenStack 消费仓 | 90 条仓库命令，Cinder 三次破坏与恢复，五个限定负例，六仓兼容变化 | 第二位人工盲复核 |
 | 永久三臂 | jcabi-aspects 到四个消费仓 | 60 条仓库命令，两个正例、两个限定负例；两轮 A3 覆盖审计均拒绝 | 只保留破坏案例，不计完整项目包 |
-| 闭集不完整 | SLF4J 到 Jadler、Password4j、Spotless、RabbitMQ JMS Client | 60 条仓库命令已执行；RabbitMQ 日志行为退化，负标签撤销 | 补可靠第四仓或把 RabbitMQ 正确重标 |
+| 四仓候选，待补正式重复 | SLF4J 到 Jadler、Password4j、Spotless、RabbitMQ JMS Client | Jadler 与 RabbitMQ 两个正例、Password4j 与 Spotless 两个限定负例；RabbitMQ 新合同一轮三臂成立 | 对新增合同做三次正式重复和独立语义复核 |
 | 历史因果储备 | OpenDev 其余四条强因果关系 | 同任务失败到配套修复成功，已物化失败时点输入 | 扩成含可靠干扰仓与兼容变化的项目包 |
 | OpenDev 单正例锚点 | Ironic Python Agent 到 Requirements | 历史持续集成组合与本地 A0/A1/A2 都证明新的 `hardware` 依赖触发共享登记失败，只应用维护者两行登记后恢复 | 限定为共享依赖登记合同；限定负例 0、A3 0，待独立盲审 |
 | 单正例锚点 | OpenStack SDK 到 Python OpenStack Client | 字段新增导致输出断言失败，配套修改恢复；17 仓时点输入已完成代码覆盖审计 | 只有一个直接下游消费者；其余仓保持未知，不再为凑四仓主动扩张 |
@@ -81,7 +81,7 @@ Jackson、SLF4J、jcabi、Plexus Utils、SnakeYAML、Log4j Core、AssertJ、Comm
 2. escope 到 babel-eslint 已确认只能作为三臂锚点；window-stream 到 Godot 已形成单正例四臂筛选。后续重复不改变两者缺少可靠多仓负空间的边界。
 3. OpenStack SDK 的 17 仓审计已经证明当前搜索空间只有一个直接下游消费者，不再把一般性 SDK 依赖仓或上游服务仓拿来补数量。
 4. 按 `NPM_CAUSAL_SOURCE_ASSESSMENT.md` 的 25 条客户端恢复搜索框继续核对真实代码修复；terser 四仓已完成统一 4.3.0 的隔离重复，不把三个目标拆成独立源案例，也不把一个负例解释成完整影响面。`node-minify` 与 `fis3-plugins` 已因缺少变化表面执行覆盖而拒绝，说明无目标修改的依赖升级不能自动成为负标签；`test-machinepack` 已因源仓自修复与目标路径不相关而拒绝，版本调整只能作为兼容动作单独分层。
-5. SnakeYAML 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；H2 2.0 收口为同源根仓内的单正例锚点，Kryo 3.0.3 到 5.0.0 的三个独立根仓均因没有维护者精确恢复而停止在历史筛选阶段。Jackson 第二正例已收口为不同精确源合同的单仓锚点，原始模块测试不在恢复结论内。Derby 九仓已收口为一个待源提交隔离的机制锚点、两个版本辅助对照和六个历史拒绝。Log4j 已补到四仓，下一步补 Powertools A3 和全包正式重复；当前另两路并发补 Derby 精确父子构件与 SLF4J 第四仓。
+5. SnakeYAML 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；H2 2.0 收口为同源根仓内的单正例锚点，Kryo 3.0.3 到 5.0.0 的三个独立根仓均因没有维护者精确恢复而停止在历史筛选阶段。Jackson 第二正例已收口为不同精确源合同的单仓锚点，原始模块测试不在恢复结论内。Derby 九仓已收口为一个待源提交隔离的机制锚点、两个版本辅助对照和六个历史拒绝。Log4j 已补到四仓，下一步补 Powertools A3 和全包正式重复；SLF4J 已补到四个已判定仓，下一步重复新增 RabbitMQ 合同；当前另一路并发补 Derby 精确父子构件。
 6. 持续保存 OpenDev 最近窗口，在执行清单和日志失效前完成语义核验。
 
 “首批十个项目包”是用于检查关系隔离、生态覆盖和正式集划分是否可行的中间规模，不是长期目标的终点。即使达到十个，独立复核、保留集、Marshal 实测和可比系统运行仍未完成时，旗舰评测也不能宣告完成。

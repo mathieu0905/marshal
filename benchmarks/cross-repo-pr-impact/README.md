@@ -27,7 +27,7 @@
 
 `openstack/requirements` 到六个 OpenStack 消费仓已经完成三次正式重复：90 条命令全部符合方向并核验版本和目标测试执行。三次 Cinder A1 都复现同一 12 表检查约束差异，A2 只应用维护者修复后恢复；五个干扰仓和 A3 两臂稳定通过。模型质检按 MySQL 模型同步合同接受，仍待第二位人工盲复核。
 
-SLF4J 四仓的 60 条正式命令已经执行，但 RabbitMQ JMS Client 不能作负例：SLF4J 2 实际禁用了旧 Logback，日志行为已经退化，只是 114 项测试没有判定它。当前只接受 Jadler 正例以及 Password4j、Spotless 两个窄负例，闭集剩三个已判定仓，需补第四仓或重标 RabbitMQ 后再提升。正式摘要与日志位于 `results/slf4j-formal-repetitions-2026-08-24/`。
+SLF4J 四仓的原 60 条正式命令没有判定 RabbitMQ JMS Client 的日志退化。新增日志提供方合同后，RabbitMQ 的连续维护链形成一轮严格三臂：旧组合 115 项通过，仅升级 SLF4J 后回退到 `NOPLoggerFactory` 并有 1 项失败，只应用维护者合并的一行 Logback 1.4.0 更新后 115 项恢复。当前闭集为 Jadler、RabbitMQ 两个正例和 Password4j、Spotless 两个窄负例；由于 RabbitMQ 合同是数据集补充且尚未完成三次正式重复和独立语义复核，本组仍只算四仓候选。原正式摘要位于 `results/slf4j-formal-repetitions-2026-08-24/`，补充重放位于 `results/slf4j-fourth-root-rabbit-2026-08-25/`。
 
 terser 4.3.0 的共同破坏变化已经完成三次统一版本隔离重复，Assetgraph Builder、UI5 Builder、Preconstruct 分别形成测试期望、生产配置和生成物快照适配，Angular CLI 支持历史构建合同内无需修改。模型质检拒绝 4.2.0 到 4.2.1 的 A3，因为没有证明任何真实变化表面进入测试；Preconstruct 也只能按三个选中用例和 35 个快照的子测试证据计。它保留为破坏案例，不计完整四臂项目包。
 
