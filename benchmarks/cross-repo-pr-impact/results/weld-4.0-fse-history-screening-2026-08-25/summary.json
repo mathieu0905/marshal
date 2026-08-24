@@ -1,0 +1,34 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_dependency_family": "Weld",
+  "source_transition": {
+    "before": "3.0.0.Final",
+    "after": "4.0.0.CR1",
+    "coordinates": [
+      "org.jboss.weld.se:weld-se-core",
+      "org.jboss.weld:weld-core-impl"
+    ]
+  },
+  "source_frame": "FSE 2024 behavioral breakage replication package",
+  "counts": {
+    "raw_candidate_records": 12,
+    "published_failure_observations": 12,
+    "unique_modules": 7,
+    "unique_root_repositories": 1,
+    "unique_source_inputs": 1,
+    "exact_source_mechanisms": 1,
+    "exact_maintainer_repairs": 0,
+    "replayed_candidates": 0,
+    "accepted_relations": 0
+  },
+  "root_decisions": [
+    {
+      "repository": "astefanutti/camel-cdi",
+      "decision": "rejected_before_replay",
+      "reason": "The javax-to-jakarta source mechanism precisely explains the failures, but the complete target history contains neither Weld 4.0.0.CR1 adoption nor a maintainer-authored Jakarta recovery."
+    }
+  ],
+  "decision": "rejected_before_replay",
+  "reason": "Twelve module-level observations collapse to one repository relation, and that relation has no historical A2.",
+  "label_boundary": "Published dependency-update failures are retained as leads. A synthetic namespace port would demonstrate compatibility engineering, not recover maintainer behavior, so it is not admitted as a causal benchmark case."
+}

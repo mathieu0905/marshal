@@ -43,6 +43,8 @@ Hibernate Validator 6.2.3.Final 到 7.0.0.CR1 对 SmallRye Config 的四项 Vali
 
 HSQLDB 的 21 条 FSE 记录按模块和根仓去重后形成 16 个根仓、17 个“根仓与版本变化”审计单元。SQL Processor 的 2.5.0 到 2.5.1 变化可隔离到时间戳纳秒处理提交，但没有维护者 A2；2.5.2 到 2.6.0 的主体是默认发布物从 Java 8 类文件变为 Java 11 类文件，不能虚构成单一源提交。LanguageTool 与 Embedded DB JUnit 的分类器修复都同时换到其他 HSQLDB 版本，不保持固定 A1 输入。严格 A2 为 0，因此本轮没有运行重型三臂，正式接纳 0 条。
 
+Weld 3.0.0.Final 到 4.0.0.CR1 的 12 条 FSE 失败覆盖两个坐标和 7 个模块，但全部折叠到 `astefanutti/camel-cdi` 一个根仓。上游 `javax.enterprise` 到 `jakarta.enterprise` 的类型与服务描述迁移能精确解释服务发现失败和类型转换异常；目标完整历史却没有 Weld 4、Jakarta 迁移或维护者 A2。该组保留 1 条高质量失败线索，重放前拒绝，正式接纳 0 条。
+
 OpenDev 的 Ironic Python Agent 到 Requirements 关系已补成本地受控三臂：旧源与旧登记表通过，源变化将 `hardware>=0.24.0` 移入受共享规则检查的可选依赖后失败，只应用 Requirements 维护者的两行登记后恢复。历史 Zuul 两臂另外证明真实组合中的同签名失败与恢复。该结论只覆盖共享依赖登记合同，限定负例和 A3 均为 0，因此只进入单正例锚点层。
 
 React Redux 4.1.2 到 4.2.0 删除了 React Redux Provide 5.1.0 直接导入的内部 `isPlainObject` 模块；目标原生六项测试由通过变为在生产导入处失败，只应用维护者的导入替换和 `is-plain-object 2.0.1` 依赖后恢复。4.0.5 到 4.0.6 的独立兼容臂确实改变同一工具模块的原始导出结构，目标导入在两侧都规范化为函数并通过六项测试。它当前是缺少限定负例、三次重复和独立盲审的单正例四臂锚点。

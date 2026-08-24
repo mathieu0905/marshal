@@ -9,6 +9,7 @@
 - 当前阶段：五个原执行包、SLF4J 补充合同和 Log4j 的模型语义质检已经完成，接受 Alembic、SnakeYAML、SLF4J、Log4j 四个完整四臂候选；第二位人工盲复核仍未完成。扩展改为一个项目包一个并发任务；Checkstyle 已收口为 A3 拒绝的四仓三臂候选，Mockito 收口为两个单正例锚点，Logback 降为单正例锚点，Spring Core 完整筛选后接受数为零。request 到 PolyClay 与 PowerMock 到 ViSearch 已被真实重放拒绝；Ironic Python Agent 到 Requirements、Babel ES2015 Preset 到 Rollup Preset、Imagemin Optipng 到 Images to Less Variables、ESLint 到 TestCafe 各形成 1 条高证据三臂锚点，React Redux 到 React Redux Provide 形成 1 条单正例四臂锚点。Backbone PR 2878 形成 1 条链独立、2 个共同必要目标仓的多目标三臂锚点；共享目标上的 MongoDB 标签拒绝。Socket.IO 到 Karma 又形成 1 条原生 91 项合同下的三臂锚点，但没有负空间和 A3。H2 的 `MVCC` 提交形成 Database Rider、CloudSlang Score 两条正关系，`VALUE` 关键字提交又形成 Fluent JDBC 一条正关系；三条共享 H2 根仓，仍只能算一个不完整项目族。JUnit 4.11 到 4.12、JAX-RS 2.0.1 到 2.1-m08 和 Kryo 3.0.3 到 5.0.0 分别因缺维护者精确恢复而接纳 0 条；ANTLR 4.10 五仓正式接纳 0 条，只保留 jStyleParser 机制锚点，ANTLR 3.2 到 3.3 的四模块又折叠为一个从未采用 3.3 的 OPPL2 根仓并接纳 0 条。Hibernate Validator 7 到 SmallRye 的破坏和恢复可重放，但历史 A2 是 98 路径全仓迁移，严格正例仍为 0；HSQLDB 的 21 条记录折叠为 17 个审计单元后，固定输入精确 A2 同样为 0。Jackson 第二正例已形成不同精确源合同的单仓锚点，原始模块测试不在恢复结论内。Derby 九仓已收口为一个源提交隔离正例、两个版本辅助对照和六个历史拒绝；该正例仍无限定负空间和 A3。Log4j 与 SLF4J 均已完成正式重复并通过补充合同的独立模型质检，但标签分别限于 API/Core 多制品版本协调和异质消费合同闭集。
 - JUnit 4.13.1 到 4.13.2 的 3 条记录已独立收口为 3 个根仓、0 条正式关系：Easy Props 缺新版本采用和维护者 A2，Sonar LDAP 的签名错误不具依赖特异性，Kinesis 的精确修复被维护者明确标为客户端启动竞争导致的易波动测试，不能据此反推 JUnit 因果。
 - Log4j 四仓五臂三轮正式重复已完成，60 个组合的版本、方向和失败签名全部符合预期；独立模型质检按 API/Core 多制品版本协调合同接受，不能泛化成 Log4j 2.18.0 对所有消费者的破坏，仍待第二位人工盲复核。
+- Weld 4.0 的两个坐标共 12 条失败已折叠为 Camel CDI 一个根仓；上游 Jakarta 迁移机制成立，但目标仓在 Weld 4 发布前三年停止维护，完整历史没有新版本采用或维护者恢复，故不重放并接纳 0 条。
 
 ## 决定依据
 

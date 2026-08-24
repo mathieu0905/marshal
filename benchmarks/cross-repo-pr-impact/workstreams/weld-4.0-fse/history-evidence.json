@@ -1,0 +1,91 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0508",
+      "fse2024-behavioral-0509",
+      "fse2024-behavioral-0510",
+      "fse2024-behavioral-0511",
+      "fse2024-behavioral-0512",
+      "fse2024-behavioral-0513",
+      "fse2024-behavioral-0516",
+      "fse2024-behavioral-0517",
+      "fse2024-behavioral-0518",
+      "fse2024-behavioral-0519",
+      "fse2024-behavioral-0520",
+      "fse2024-behavioral-0521"
+    ],
+    "raw_candidate_records": 12,
+    "failure_observations": 12,
+    "unique_coordinates": 2,
+    "unique_modules": 7,
+    "unique_root_repositories": 1,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "weld/core",
+    "before_tag": {
+      "name": "3.0.0.Final",
+      "commit": "42e40b56341205984c9275b44a5b73fb098237c7",
+      "committed_at": "2017-05-12T12:55:44+02:00"
+    },
+    "after_tag": {
+      "name": "4.0.0.CR1",
+      "commit": "45756d46bae876bb16f1e11c01d898e79f2587f4",
+      "committed_at": "2020-12-04T19:16:43+01:00"
+    },
+    "jakarta_migration_commit": {
+      "commit": "0338683d17f782d4f7ad533654b21f565c92b2e9",
+      "subject": "An updated Jakarta EE 9 WIP off of master",
+      "committed_at": "2020-04-23T10:04:49+02:00",
+      "ancestor_of_after_tag": true,
+      "files_changed": 3580,
+      "insertions": 9458,
+      "deletions": 9332,
+      "mechanism_paths": [
+        "impl/src/main/java/org/jboss/weld/bootstrap/ExtensionBeanDeployer.java",
+        "environments/se/core/src/main/java/org/jboss/weld/environment/se/Weld.java",
+        "environments/se/core/src/main/resources/META-INF/services/jakarta.enterprise.inject.se.SeContainerInitializer",
+        "environments/se/core/src/main/resources/META-INF/services/jakarta.enterprise.inject.spi.Extension"
+      ],
+      "mechanism": "The implementation type bound and service-discovery names move from javax.enterprise to jakarta.enterprise. A javax Extension object is not an instance of jakarta Extension, and a javax SeContainerInitializer cannot discover Weld through the Jakarta-named service descriptor."
+    },
+    "boundary": "The complete release delta is broad. The Jakarta migration commit establishes the mechanism behind the published signatures, but it does not supply a target-side maintainer recovery."
+  },
+  "target_repository": {
+    "repository": "astefanutti/camel-cdi",
+    "default_branch": "master",
+    "remote_head": "686c7f5fe3a706f47378e0c49c323040795ddff8",
+    "remote_head_date": "2017-11-13T17:05:00+01:00",
+    "history_first_commit": "2bed2e1810d10e114fe688304d992a85b39c651f",
+    "history_first_commit_date": "2014-08-26T00:17:27+02:00",
+    "reachable_commit_count": 792,
+    "unique_pom_blob_count": 523,
+    "pom_blobs_declaring_weld_version": 166,
+    "pom_blobs_with_3_0_0_final": 7,
+    "pom_blobs_with_4_0_0_cr1": 0,
+    "historical_3_0_0_final_adoption": {
+      "commit": "2ab8814006158e94898072f215eb20076c333ece",
+      "committed_at": "2017-05-15T11:33:11+02:00",
+      "changed_paths": [
+        "pom.xml"
+      ],
+      "change": "3.0.0.Beta1 to 3.0.0.Final"
+    },
+    "final_namespace_evidence": {
+      "extension_class": "impl/src/main/java/org/apache/camel/cdi/CdiCamelExtension.java implements javax.enterprise.inject.spi.Extension",
+      "service_descriptor": "impl/src/main/resources/META-INF/services/javax.enterprise.inject.spi.Extension",
+      "jakarta_enterprise_adoption_commits": 0
+    },
+    "exact_maintainer_repair": null
+  },
+  "admission_result": {
+    "exact_source_mechanisms": 1,
+    "published_failure_observations": 12,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0
+  }
+}
