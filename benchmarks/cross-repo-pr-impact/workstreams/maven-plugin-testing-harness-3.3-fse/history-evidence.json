@@ -1,0 +1,85 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0341",
+      "fse2024-behavioral-0342"
+    ],
+    "raw_candidate_records": 2,
+    "failure_observations": 2,
+    "unique_root_repositories": 2,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "apache/maven-plugin-testing",
+    "before_release": {
+      "tag": "maven-plugin-testing-3.2.0",
+      "commit": "5f2f3a23b62bf1cc2465c94b173700ee557edc5a"
+    },
+    "breaking_release": {
+      "tag": "maven-plugin-testing-3.3.0",
+      "commit": "7733ae9dfa24bba9f92c4d2335acf35f553fae82"
+    },
+    "behavior_onset": {
+      "commit": "65c28851c702a295cdb0cd4014ad65fd530b9d30",
+      "date": "2014-11-17T10:20:10-05:00",
+      "subject": "MPLUGINTESTING-44 enforce maven 3.2.4 as minimal supported version",
+      "effect": "AbstractMojoTestCase reads /META-INF/maven/org.apache.maven/maven-core/pom.properties from the test JVM and fails setUp when the discovered Maven library is 3.2.3 or older."
+    },
+    "source_isolation": "The behavior commit is contained in 3.3.0 and not 3.2.0. It changes only AbstractMojoTestCase and introduces the exact assertion found in both public failures."
+  },
+  "target_repositories": [
+    {
+      "repository": "reines/dropwizard-debpkg-maven-plugin",
+      "default_branch": "master",
+      "remote_head": "7cc70dbaaac57cb5bdc1268c860eccf8de5099a5",
+      "history_first_commit": "4e524e6560b8d7db79556d08cde413088503add7",
+      "last_commit_date": "2016-03-09T07:53:11+00:00",
+      "reachable_ref_count": 16,
+      "reachable_commit_count": 132,
+      "relevant_pom_blob_count": 33,
+      "head_dependency_state": {
+        "maven_plugin_testing_harness": "3.2.0",
+        "maven_plugin_api": "3.2.3",
+        "maven_compat": "3.2.3"
+      },
+      "commits_declaring_harness_3_3_0": 0,
+      "exact_maintainer_repair_under_3_3_0": null
+    },
+    {
+      "repository": "meridor/stecker",
+      "default_branch": "master",
+      "remote_head": "4c41a24513339d71d7f581691ae627870816e80e",
+      "history_first_commit": "ca3c471468c734dfaf168b093e4c4eb411894d5e",
+      "last_commit_date": "2017-03-03T15:23:01+03:00",
+      "reachable_ref_count": 29,
+      "reachable_commit_count": 63,
+      "relevant_pom_blob_count": 30,
+      "head_dependency_state": {
+        "maven_plugin_testing_harness": "3.2.0",
+        "maven_plugin_api": "3.2.3",
+        "maven_compat": "3.2.3"
+      },
+      "commits_declaring_harness_3_3_0": 0,
+      "exact_maintainer_repair_under_3_3_0": null
+    }
+  ],
+  "environment_boundary": {
+    "checked_value": "The maven-core library version visible as a resource on the project test JVM classpath.",
+    "not_proven_equivalent": "The version printed by an external mvn executable in CI.",
+    "valid_a2_requirement": "A maintainer-authored revision must retain harness 3.3.0 and restore the published test with a compatible project dependency graph."
+  },
+  "admission_result": {
+    "raw_records": 2,
+    "unique_root_relations": 2,
+    "source_mechanisms_identified": 1,
+    "fixed_target_revisions": 0,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}
