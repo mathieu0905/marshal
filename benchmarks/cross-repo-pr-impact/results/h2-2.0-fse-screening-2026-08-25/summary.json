@@ -2,43 +2,49 @@
   "evaluated_at": "2026-08-25",
   "candidate_frame": {
     "dependency": "com.h2database:h2",
-    "from": "1.4.200",
     "to": "2.0.202",
-    "published_records": 16,
-    "independent_root_repositories": 10
+    "included_current_versions": ["1.3.168", "1.3.170", "1.3.172", "1.4.182", "1.4.187", "1.4.192", "1.4.193", "1.4.194", "1.4.195", "1.4.196", "1.4.197", "1.4.199", "1.4.200"],
+    "published_records": 49,
+    "directory_root_repositories": 36,
+    "independent_repository_histories": 35,
+    "history_deduplication": "reyez/ninja and ninjaframework/ninja share one Git history"
   },
-  "accepted_anchor": {
+  "source_behavior": {
     "source_repository": "h2database/h2database",
     "source_pull_request": 2297,
     "source_behavior_commit": "4c40a20aece767dde1ef8a41c5a7c764bc1d20a8",
     "source_parent": "1b9ddc11be1d603a3fd98b2f0440fb2537376c2e",
-    "behavior": "VALUE becomes a reserved keyword",
-    "target_repository": "jhannes/fluent-jdbc",
-    "target_base_commit": "50ee7bd1c34a6fc3867a6620f97b415c8862dd65",
-    "maintainer_repair_commit": "22027921c9dfb8c4bc97c92b0f9453b3dbf4098d",
-    "arms": {
-      "A0": {"result": "pass", "tests": 13, "errors": 0},
-      "A1": {"result": "fail", "reported_test_invocations": 23, "errors": 23, "signature": "JdbcSQLSyntaxErrorException 42001 at unquoted VALUE columns"},
-      "A2": {"result": "pass", "tests": 13, "errors": 0, "repair_scope": "only the two maintainer-authored VALUE-to-amount test-file changes"}
-    },
-    "replay_environment": "Java 21; Lombok test dependency raised uniformly from 1.18.12 to 1.18.38 in temporary worktrees only"
+    "behavior": "VALUE becomes a reserved keyword"
   },
-  "shared_contract_clusters": {
-    "USER_keyword": {
-      "exact_h2_commit": "65969409da11d6cf809f0b8be1be7f4473934559",
-      "affected_root_repositories": ["Devskiller/jpa2ddl", "minijax/minijax"],
-      "roots_with_maintainer_repair": 0,
-      "decision": "reject"
+  "accepted_anchors": [
+    {
+      "target_repository": "jhannes/fluent-jdbc",
+      "target_base_commit": "50ee7bd1c34a6fc3867a6620f97b415c8862dd65",
+      "maintainer_repair_commit": "22027921c9dfb8c4bc97c92b0f9453b3dbf4098d",
+      "arms": {
+        "A0": {"result": "pass", "tests": 13, "errors": 0},
+        "A1": {"result": "fail", "reported_test_invocations": 23, "errors": 23, "signature": "JdbcSQLSyntaxErrorException 42001 at unquoted VALUE columns"},
+        "A2": {"result": "pass", "tests": 13, "errors": 0, "repair_scope": "the two maintainer-authored VALUE-to-amount test-file changes"}
+      },
+      "replay_environment": "Java 21; Lombok test dependency raised uniformly from 1.18.12 to 1.18.38 in temporary worktrees only"
     },
-    "VALUE_keyword": {
-      "exact_h2_commit": "4c40a20aece767dde1ef8a41c5a7c764bc1d20a8",
-      "affected_root_repositories_with_recovered_repair": ["jhannes/fluent-jdbc"],
-      "decision": "accept_as_single-repository-anchor_only"
+    {
+      "target_repository": "BrunoEberhard/minimal-j",
+      "target_base_commit": "1e432bda7cdf89eba0136c8f5b641a5ac5e956f9",
+      "maintainer_repair_commit": "9bebccf5d20f7a96c8d7393f4b544b97480f7401",
+      "test_classes": ["org.minimalj.model.backend.TransactionTest", "org.minimalj.repository.sql.relation.SqlCrudTest"],
+      "arms": {
+        "A0": {"result": "pass", "unique_test_methods": 7, "errors": 0},
+        "A1": {"result": "fail", "unique_test_methods": 7, "surefire_error_records": 14, "signature": "JdbcSQLSyntaxErrorException 42001 at unquoted value columns; the second record per method is a cascading cleanup or global-state error, not a rerun"},
+        "A2": {"result": "pass", "unique_test_methods": 7, "errors": 0, "repair_scope": "maintainer-authored H2 keyword list in reservedSqlWords.txt"}
+      },
+      "replay_environment": "Java 11; target tests run offline against locally built H2 main JARs; TMPDIR and java.io.tmpdir are under the repository .work directory"
     }
-  },
-  "accepted_chain_independent_positive_relations": 1,
-  "positive_target_repositories": 1,
+  ],
+  "accepted_chain_independent_positive_relations": 2,
+  "positive_target_repositories": 2,
   "qualified_negative_relations": 0,
   "accepted_a3_cases": 0,
-  "package_status": "rejected_as_multi-repository-flagship-family"
+  "source_change_coverage_boundary": "The accepted anchors establish the generated-SQL identifier impact of VALUE becoming a keyword; they do not cover all 51 files or domain-value-expression behavior in the source commit.",
+  "package_status": "two-positive-causal-family_not_complete_flagship_package"
 }
