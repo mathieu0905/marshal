@@ -1,0 +1,72 @@
+{
+  "screened_at": "2026-08-24",
+  "native_command": "node 8.17.0 ./node_modules/gulp/bin/gulp.js lint",
+  "source_change": {
+    "package": "eslint",
+    "before": "4.18.2",
+    "after": "4.19.0",
+    "relevant_commit": "8d3814e4ae823e58f40539047bb35bcaf5c76660"
+  },
+  "target": {
+    "repository": "DevExpress/testcafe",
+    "baseline_version": "0.18.6",
+    "baseline_commit": "72e3c05af334c5a38e45e68e29df8cdaa7856bfc",
+    "repair_commit": "de11b259db998c147f4d839607c88d257ea7b88a",
+    "repair_release": "0.19.2-dev20180316"
+  },
+  "arms": [
+    {
+      "arm": "A0",
+      "versions": {
+        "target_commit": "72e3c05af334c5a38e45e68e29df8cdaa7856bfc",
+        "target_version": "0.18.6",
+        "eslint": "4.18.2",
+        "gulp_eslint": "4.0.2",
+        "gulp": "3.9.1",
+        "markdownlint": "0.6.3",
+        "gulp_qunit_harness": "1.0.2",
+        "qunit_harness": "1.3.2"
+      },
+      "exit_status": 0,
+      "result": "lint_passed"
+    },
+    {
+      "arm": "A1",
+      "versions": {
+        "target_commit": "72e3c05af334c5a38e45e68e29df8cdaa7856bfc",
+        "target_version": "0.18.6",
+        "eslint": "4.19.0",
+        "gulp_eslint": "4.0.2",
+        "gulp": "3.9.1",
+        "markdownlint": "0.6.3",
+        "gulp_qunit_harness": "1.0.2",
+        "qunit_harness": "1.3.2"
+      },
+      "exit_status": 1,
+      "result": "lint_failed",
+      "failure": "selector-test.js:178:9 Unexpected control character(s) in regular expression: \\x00 (no-control-regex)"
+    },
+    {
+      "arm": "A2",
+      "versions": {
+        "target_commit": "72e3c05af334c5a38e45e68e29df8cdaa7856bfc",
+        "target_version": "0.18.6",
+        "eslint": "4.19.0",
+        "gulp_eslint": "4.0.2",
+        "gulp": "3.9.1",
+        "markdownlint": "0.6.3",
+        "gulp_qunit_harness": "1.0.2",
+        "qunit_harness": "1.3.2"
+      },
+      "exit_status": 0,
+      "result": "lint_passed"
+    }
+  ],
+  "decision": "accepted_single_positive_three_arm_screening",
+  "repair_scope": "one maintainer-authored test-fixture regular-expression change",
+  "actual_repair_repository": "DevExpress/testcafe",
+  "intermediary_repository_changed": false,
+  "bounded_negative_labels": 0,
+  "a3_cases": 0,
+  "accepted_causal_cases": 1
+}
