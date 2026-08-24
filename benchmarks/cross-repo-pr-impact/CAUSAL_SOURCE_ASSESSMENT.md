@@ -161,6 +161,8 @@ FSE 2024 论文《Understanding the Impact of APIs Behavioral Breaking Changes o
 
 JUnit 4.11 到 4.12 的八仓筛选在执行前停止：七仓没有维护者恢复，PIT 只有一条 2023 年未重放修复线索。五个 PowerMock 客户端的字段错误也不能归到虚构的单次字段改名；真实 JUnit 历史是先删除 `MethodValidator`，再做全仓字段风格迁移，最后按新字段名恢复该类。该家族接纳 0 条，PIT 只保留单仓后续线索，其余仓继续保持未知。
 
+JAX-RS 2.0.1 到 2.1-m08 的八条目录记录经关系去重后只有两个根仓：Fastjson 一条、Microbule 七个模块共用一条。源破坏可以精确隔离到 `79bd5309`：它给 `ResponseBuilder` 新增抽象 `status(int, String)`，使按旧接口编译的 CXF 实现在运行时产生 `AbstractMethodError`。但 Fastjson 与 Microbule 的历史都保持 JAX-RS 2.0.1 和旧 CXF，没有维护者精确 A2；模块扩散不能替代独立恢复关系。因此该家族在执行前接纳 0 条，固定旧版本与停止维护也不作负例。
+
 ## GitLab 多项目流水线
 
 ### 项目与流水线可见性

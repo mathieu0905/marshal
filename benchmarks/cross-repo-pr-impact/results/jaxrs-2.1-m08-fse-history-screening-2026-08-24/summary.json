@@ -1,0 +1,67 @@
+{
+  "screened_at": "2026-08-24",
+  "family": "javax.ws.rs:javax.ws.rs-api 2.0.1 to 2.1-m08",
+  "source_repository": "javaee/jax-rs-api",
+  "source_release": {
+    "baseline_2_0_1_commit": "c866c4f2a9e93a5c445b27119b7bac0479e9033f",
+    "m07_commit": "27e436d7099cfb568623f0747395477a2f41d4b6",
+    "m08_commit": "10de4a9040bda23796600afd3876a6ae20b625d9",
+    "isolated_breaking_commit": "79bd5309ee7b3de3247bc8db1db5c61e29b7d53b",
+    "effect": "Add abstract ResponseBuilder.status(int, String) and route status(StatusType) through it.",
+    "failure_mechanism": "JAX-RS 2.0.1 ResponseBuilder implementations in old CXF do not implement the new abstract method and throw AbstractMethodError."
+  },
+  "candidate_counts": {
+    "directory_records": 8,
+    "independent_root_repositories": 2,
+    "fastjson_records": 1,
+    "microbule_module_records": 7,
+    "root_repositories_with_exact_a2": 0
+  },
+  "root_repositories": [
+    {
+      "repository": "alibaba/fastjson",
+      "candidate_ids": [
+        "fse2024-behavioral-0242"
+      ],
+      "declared_runtime_versions": {
+        "jax_rs_api": "2.0.1",
+        "cxf": "3.1.2",
+        "jersey_test_components": "2.23.2"
+      },
+      "history_result": "No maintainer adaptation to 2.1-m08; current pom still pins the old API and CXF versions.",
+      "a2_status": "missing"
+    },
+    {
+      "repository": "jwcarman/microbule",
+      "candidate_ids": [
+        "fse2024-behavioral-0243",
+        "fse2024-behavioral-0244",
+        "fse2024-behavioral-0245",
+        "fse2024-behavioral-0246",
+        "fse2024-behavioral-0247",
+        "fse2024-behavioral-0248",
+        "fse2024-behavioral-0249"
+      ],
+      "declared_runtime_versions": {
+        "jax_rs_api": "2.0.1",
+        "cxf": "3.1.11"
+      },
+      "latest_code_branch_commit": "547465fa506db9907005b141421893afd155c971",
+      "history_result": "Repository history ends without a JAX-RS 2.1-m08 or CXF adaptation; seven modules share this one history.",
+      "a2_status": "missing"
+    }
+  ],
+  "execution_policy": "Run A0/A1/A2 only after at least two independent root repositories have exact maintainer-authored A2 changes.",
+  "execution_performed": false,
+  "arms": {
+    "a0": "not_run",
+    "a1": "not_run",
+    "a2": "unavailable_in_both_root_repositories",
+    "a3": "not_available"
+  },
+  "decision": "rejected_before_replay_no_maintainer_a2_in_either_independent_root_repository",
+  "accepted_causal_cases": 0,
+  "bounded_negative_labels": 0,
+  "a3_cases": 0,
+  "unknown_label_policy": "Pinning the old API or ending repository history is not a compatible negative."
+}
