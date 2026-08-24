@@ -1,0 +1,21 @@
+{
+  "evaluated_at": "2026-08-25",
+  "candidate_id": "fse2024-behavioral-0311",
+  "target_repository": "FrodeRanders/muprocessmanager",
+  "target_baseline": "704f1857a6ede476f937f6a896220424905f6c13",
+  "maintainer_response_commit": "58628e7ec4dd914f6f1ec6ff7caab681cc446ae1",
+  "native_test_contraction": "test.AppTest#testVolatileProcess covers the same setUp boundary as the published test.AppTest#testPersistedProcess",
+  "fixed_source_10_15_1_3": {
+    "A0_10_14_2_0": "pass_1_test",
+    "A1_10_15_1_3_without_derbytools": "fail_missing_org.apache.derby.jdbc.EmbeddedDataSource",
+    "A2_10_15_1_3_with_maintainer_derbytools": "fail_missing_org.apache.derby.shared.common.security.SystemPermission"
+  },
+  "version_assisted_observation": {
+    "source_release": "10.15.2.0",
+    "without_derbytools": "fail_missing_EmbeddedDataSource",
+    "with_derbytools": "pass_1_test",
+    "upstream_metadata_change": "Derby 10.15.2.0 derby POM adds derbyshared as a transitive dependency"
+  },
+  "strict_a2": false,
+  "decision": "retain_version_assisted_repair_diagnostic_not_fixed_source_a2"
+}

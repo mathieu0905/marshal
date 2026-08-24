@@ -1,0 +1,69 @@
+{
+  "evaluated_at": "2026-08-25",
+  "candidate_id": "fse2024-behavioral-0310",
+  "source": {
+    "repository": "apache/derby",
+    "behavior_commit": "5a6efccce73b05ac7a27512563868192303f564d",
+    "parent_commit": "8f3b7b2fa2f3e775dc90fb3cfa9f46257ae8df0e",
+    "behavior": "Move org.apache.derby.jdbc, including EmbeddedDriver, from derby.jar into derbytools.jar",
+    "release_before": "10.14.2.0",
+    "release_after": "10.15.1.3",
+    "single_commit_mechanism_hypothesis": "supported_by_commit_inventory_diff_released_jar_inventory_and_single_dependency_recovery",
+    "source_parent_child_local_build": false,
+    "source_commit_isolation_complete": false,
+    "promotion_requirement": "Build the source parent and behavior commit artifacts, then replay them on the same target baseline before flagship admission."
+  },
+  "target": {
+    "repository": "susom/database",
+    "reconstructed_baseline": "b9aac59d053af41144f59c77a7f9053f8fe61102",
+    "baseline_is_original_fse_sha": false,
+    "baseline_recovery": "last pre-upgrade commit matching Derby 10.13.1.1, HikariCP 2.7.9, all published stack line numbers, test selector, and exception text",
+    "maintainer_repair_commit": "811158529d847bde72fc97c5701d411301f395b4",
+    "maintainer_repair_changed_files": ["pom.xml"],
+    "maintainer_repair_added_lines": 6,
+    "maintainer_repair_scope": "add org.apache.derby:derbytools only",
+    "mixed_later_squash_commit_excluded": "f60723eb53f5aba831d18f5f3d79ceecae4bb879"
+  },
+  "fixed_release_target_three_arm": {
+    "environment": "Temurin Java 11.0.30; Maven 3.9.8",
+    "native_test": "com.github.susom.database.test.VertxLoggingTest#testMdcTransferToWorkerDatabase",
+    "A0": {
+      "derby": "10.14.2.0",
+      "derbytools": null,
+      "result": "pass",
+      "tests": 1,
+      "errors": 0,
+      "exit_code": 0
+    },
+    "A1": {
+      "derby": "10.15.1.3",
+      "derbytools": null,
+      "result": "fail",
+      "tests": 1,
+      "errors": 1,
+      "exit_code": 1,
+      "signature": "Failed to load driver class org.apache.derby.jdbc.EmbeddedDriver in either of HikariConfig class loader or Thread context classloader"
+    },
+    "A2": {
+      "derby": "10.15.1.3",
+      "derbytools": "10.15.1.3",
+      "result": "pass",
+      "tests": 1,
+      "errors": 0,
+      "exit_code": 0
+    }
+  },
+  "fse_java8_observation": {
+    "environment": "Temurin Java 8u482",
+    "A0": "pass",
+    "A1": "fail_with_published_missing_EmbeddedDriver_signature",
+    "A2": "fail_with_UnsupportedClassVersionError_class_file_53_vs_52",
+    "interpretation": "Java 8 reproduces the published breakage but cannot host Derby 10.15's repair artifact; the strict three-arm comparison therefore uses Java 11 uniformly."
+  },
+  "high_evidence_mechanism_anchors": 1,
+  "accepted_source_commit_isolated_relations": 0,
+  "positive_target_repositories": 1,
+  "qualified_negative_relations": 0,
+  "accepted_a3_cases": 0,
+  "package_status": "mechanism_anchor_pending_source_parent_child_build_not_flagship_admitted"
+}

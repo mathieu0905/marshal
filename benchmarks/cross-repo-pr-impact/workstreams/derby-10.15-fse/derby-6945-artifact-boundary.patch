@@ -1,0 +1,38 @@
+Source repository: apache/derby
+Source commit: 5a6efccce73b05ac7a27512563868192303f564d
+Parent commit: 8f3b7b2fa2f3e775dc90fb3cfa9f46257ae8df0e
+SVN revision: 1824087
+Issue: DERBY-6945
+
+The relevant build.xml hunk is reproduced below. The full commit also replaces
+the generated class lists for other Derby artifacts and updates Derby's tests.
+
+diff --git a/build.xml b/build.xml
+--- a/build.xml
++++ b/build.xml
+@@
+     <jar destfile="${derby.jar.dir}/derby.jar"
+          basedir="${out.dir}"
+-         includesfile="${derby.jar.dir}/lists/derby.list"
++         includes="org/apache/derby/agg/**,
++                   org/apache/derby/authentication/**,
++                   org/apache/derby/catalog/**,
++                   org/apache/derby/database/**,
++                   org/apache/derby/diag/**,
++                   org/apache/derby/io/**,
++                   org/apache/derby/jdbc/load/**,
++                   org/apache/derby/iapi/jdbc/**,
++                   org/apache/derby/impl/jdbc/**,
++                   org/apache/derby/impl/store/**,
++                   org/apache/derby/info/engine/info.properties"
+@@
+     <jar destfile="${derby.jar.dir}/derbytools.jar"
+          basedir="${out.dir}"
+-         includesfile="${derby.jar.dir}/lists/derbytools.list"
++         includes="org/apache/derby/tools/**,
++                   org/apache/derby/iapi/tools/**,
++                   org/apache/derby/impl/tools/**,
++                   org/apache/derby/jdbc/**,
++                   org/apache/derby/loc/sysinfoMessages.properties,
++                   org/apache/derby/loc/toolsmessages.properties,
++                   org/apache/derby/info/tools/info.properties"

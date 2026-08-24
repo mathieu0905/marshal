@@ -1,0 +1,20 @@
+{
+  "candidate_id": "fse2024-behavioral-0310",
+  "source_repository": "apache/derby",
+  "source_behavior_commit": "5a6efccce73b05ac7a27512563868192303f564d",
+  "source_behavior_parent": "8f3b7b2fa2f3e775dc90fb3cfa9f46257ae8df0e",
+  "source_change": "DERBY-6945 moves org.apache.derby.jdbc, including EmbeddedDriver, from derby.jar into derbytools.jar",
+  "source_release_before": "10.14.2.0",
+  "source_release_after": "10.15.1.3",
+  "target_repository": "susom/database",
+  "target_reconstructed_baseline": "b9aac59d053af41144f59c77a7f9053f8fe61102",
+  "target_baseline_boundary": "The FSE workbook omits a client SHA. This is the last target commit before its own Derby/Vert.x upgrade and matches the published dependency state, test method, source line, Hikari call path, and exception signature.",
+  "maintainer_repair_commit": "811158529d847bde72fc97c5701d411301f395b4",
+  "maintainer_repair": "Add the matching org.apache.derby:derbytools test dependency",
+  "later_squash_commit": "f60723eb53f5aba831d18f5f3d79ceecae4bb879",
+  "fse_observed_environment": "Java 8",
+  "fixed_release_target_three_arm_environment": "Java 11.0.30",
+  "native_test": "com.github.susom.database.test.VertxLoggingTest#testMdcTransferToWorkerDatabase",
+  "source_parent_child_local_build": false,
+  "flagship_admission": "pending source parent and behavior commit artifact replay"
+}
