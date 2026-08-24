@@ -1,0 +1,43 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_dependency_family": "JUnit",
+  "source_transition": {
+    "before": "4.10",
+    "after": "4.11",
+    "coordinates": [
+      "junit:junit"
+    ]
+  },
+  "source_frame": "FSE 2024 behavioral breakage replication package",
+  "counts": {
+    "raw_candidate_records": 3,
+    "published_failure_observations": 3,
+    "unique_modules": 3,
+    "unique_root_repositories": 3,
+    "unique_source_inputs": 1,
+    "exact_source_mechanisms": 2,
+    "exact_maintainer_repairs": 0,
+    "replayed_candidates": 0,
+    "accepted_relations": 0
+  },
+  "root_decisions": [
+    {
+      "repository": "knightliao/hermes-jsonrpc",
+      "decision": "rejected_before_replay",
+      "reason": "The static-@Rule source mechanism is exact, but every reachable BaseTestCase version retains the invalid annotation combination and no maintainer A2 exists."
+    },
+    {
+      "repository": "hmsonline/storm-cassandra-cql",
+      "decision": "rejected_before_replay",
+      "reason": "The static-@Rule source mechanism is exact, but the target never adopts JUnit 4.11 or repairs the rule declaration."
+    },
+    {
+      "repository": "pveentjer/Multiverse",
+      "decision": "rejected_before_replay",
+      "reason": "The published AssertionError exposes a false target timing predicate, but no exact JUnit source mechanism or maintainer recovery was found."
+    }
+  ],
+  "decision": "rejected_before_replay",
+  "reason": "None of the three independent root relations has a maintainer-authored exact A2; the Multiverse relation also lacks an isolated source mechanism.",
+  "label_boundary": "The two exact static-rule failures remain strong discovery leads. Dataset-author annotation fixes and a single unexplained timing failure are not admitted as causal benchmark cases."
+}

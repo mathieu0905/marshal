@@ -23,6 +23,8 @@
 
 JUnit 4.13.1 到 4.13.2 的另一组 3 条记录折叠为 3 个根仓。Easy Props 只有硬编码制品名机制但从未采用新版本；Sonar LDAP 的签名错误会被多个无关依赖升级触发；Kinesis 虽有隔离升级和保持 4.13.2 的精确测试修复，但维护者明确将其定性为客户端启动竞争导致的易波动测试，失败路径也未触及 JUnit 4.13.2 的源变化面。三者均不同时具备候选特异的 JUnit 源机制和维护者恢复，因此不执行三臂，正式接纳 0 条。
 
+JUnit 4.10 到 4.11 的 3 条记录对应 Hermes JSON-RPC、Storm Cassandra CQL 和 Multiverse 三个独立根仓。前两条的错误可精确定位到 JUnit 新增的静态 `@Rule` 拒绝，但完整目标历史都没有维护者恢复；第三条只暴露目标计时谓词为假，未找到候选特异的 JUnit 源机制。三条都在重放前拒绝，正式接纳 0 条。
+
 Spring Boot Starter Test 2.5.3 到 2.6.0 的 3 条记录来自 `fonimus/ssh-shell-spring-boot` 同一根仓的三个模块。Spring Boot 默认禁止循环引用的精确源机制可以解释公开错误，但目标唯一的 2.6.0 采用 PR 未合并且没有修复；后来合入的迁移同时升级 Spring Boot、Spring Shell 并改动 82 个文件，不能作为固定 2.6.0 输入下的精确 A2。因此该族在重放前拒绝，正式接纳 0 条。
 
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。

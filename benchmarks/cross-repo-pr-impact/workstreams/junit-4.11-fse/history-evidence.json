@@ -1,0 +1,123 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0252",
+      "fse2024-behavioral-0253",
+      "fse2024-behavioral-0254"
+    ],
+    "raw_candidate_records": 3,
+    "failure_observations": 3,
+    "unique_coordinates": 1,
+    "unique_modules": 3,
+    "unique_root_repositories": 3,
+    "exact_target_revisions_recorded": 0,
+    "root_independence": "All three GitHub repositories report fork=false and have distinct initial commit histories. No module-level duplication is counted as a separate root."
+  },
+  "source_repository": {
+    "repository": "junit-team/junit4",
+    "before_tag": {
+      "name": "r4.10",
+      "commit": "45a44647e7306262162e1346b750c3209019f2e1",
+      "committed_at": "2011-09-29T14:18:35-04:00"
+    },
+    "after_tag": {
+      "name": "r4.11",
+      "commit": "c2e4d911fadfbd64444fb285342a8f1b72336169",
+      "committed_at": "2012-11-13T12:10:09-08:00"
+    },
+    "static_rule_validation_commit": {
+      "commit": "b4f0afa639b42fa551fdcb26d9c1855ae4d778cf",
+      "subject": "@Rule fields/methods must not be static",
+      "committed_at": "2011-10-16T14:18:05+02:00",
+      "ancestor_of_before_tag": false,
+      "ancestor_of_after_tag": true,
+      "issue": "KentBeck/junit#339",
+      "mechanism_paths": [
+        "src/main/java/org/junit/internal/runners/rules/RuleFieldValidator.java",
+        "src/test/java/org/junit/tests/experimental/rules/RuleFieldValidatorTest.java"
+      ],
+      "mechanism": "RuleFieldValidator changes from only checking that @ClassRule members are static to also rejecting static @Rule fields and methods. The added regression test asserts the exact 'must not be static' message."
+    },
+    "assert_true_boundary": "Assert.assertTrue still fails exactly when its boolean argument is false. JUnit 4.11 reformats and extends Assert, but the Multiverse stack frame does not identify a source behavior that makes the target timing predicate false."
+  },
+  "target_repositories": [
+    {
+      "repository": "knightliao/hermes-jsonrpc",
+      "github_repository_id": 31455470,
+      "default_branch": "master",
+      "remote_head": "5a607961fd09a4f362742d75d892bd973321e59e",
+      "remote_head_date": "2021-08-23T00:39:51+08:00",
+      "history_first_commit": "4b15c8abceeb7627f336d5caaedeb763edd097c4",
+      "history_first_commit_date": "2014-08-15T00:35:41+08:00",
+      "reachable_commit_count": 152,
+      "default_branch_commit_count": 99,
+      "unique_pom_blob_count": 154,
+      "pom_blobs_mentioning_junit": 131,
+      "offending_file": "hermes-jsonrpc-client/src/test/java/com/github/knightliao/hermesjsonrpc/client/test/protocol/base/BaseTestCase.java",
+      "offending_file_introduction": "5d8f77a34d835c3f23b91a74b57fc9c1c08d9c7d",
+      "unique_offending_file_blobs": 5,
+      "blobs_retaining_static_class_rule_and_rule": 5,
+      "later_junit_upgrade": {
+        "commit": "f99d10facf16c34e35d6b6de2126a87321eebad1",
+        "committed_at": "2021-08-22T16:13:11Z",
+        "change": "junit.version 4.10 to 4.13.1",
+        "offending_annotation_repaired": false
+      },
+      "exact_maintainer_repair": null
+    },
+    {
+      "repository": "hmsonline/storm-cassandra-cql",
+      "github_repository_id": 16520834,
+      "default_branch": "master",
+      "remote_head": "2e0d30cdb097287a9111ade0efeb6abd83c78f7b",
+      "remote_head_date": "2016-03-18T14:50:15-04:00",
+      "history_first_commit": "e2173abe6116636bce60ad1b07f7f4fcbd845e38",
+      "history_first_commit_date": "2014-02-04T10:17:45-08:00",
+      "reachable_commit_count": 253,
+      "default_branch_commit_count": 234,
+      "unique_pom_blob_count": 81,
+      "pom_blobs_with_junit_4_10": 81,
+      "pom_blobs_with_junit_4_11": 0,
+      "offending_files": [
+        "src/test/java/com/hmsonline/trident/cql/CqlTestEnvironment.java",
+        "src/test/java/com/hmsonline/trident/cql/example/sales/SalesTopology.java"
+      ],
+      "unique_cql_test_environment_blobs": 5,
+      "cql_test_environment_blobs_retaining_static_rule": 5,
+      "unique_sales_topology_blobs": 3,
+      "sales_topology_blobs_retaining_static_rule": 3,
+      "class_rule_adoption_commits": 0,
+      "exact_maintainer_repair": null
+    },
+    {
+      "repository": "pveentjer/Multiverse",
+      "github_repository_id": 3119164,
+      "default_branch": "master",
+      "remote_head": "b73cd3ceb17d0a5122216f2cacc86c4f864ee957",
+      "remote_head_date": "2013-08-28T09:41:24+03:00",
+      "history_first_commit": "4a84f85e3a474ff1a369d670d2cb8b6b8a381045",
+      "history_first_commit_date": "2012-01-06T18:28:47+02:00",
+      "reachable_commit_count": 67,
+      "default_branch_commit_count": 61,
+      "unique_pom_blob_count": 28,
+      "pom_blobs_mentioning_junit": 20,
+      "pom_blobs_with_junit_4_10": 15,
+      "pom_blobs_with_junit_4_11": 0,
+      "junit_4_10_adoption_commit": "8381dda384fba8b491943393c6a4a071264de8a5",
+      "failing_test_file": "multiverse-core/src/test/java/org/multiverse/api/blocking/DefaultRetryLatch_tryAwaitTest.java",
+      "unique_failing_test_blobs": 1,
+      "failing_assertion_introduction": "4a84f85e3a474ff1a369d670d2cb8b6b8a381045",
+      "exact_maintainer_repair": null
+    }
+  ],
+  "admission_result": {
+    "exact_source_mechanisms": 2,
+    "published_failure_observations": 3,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0
+  }
+}
