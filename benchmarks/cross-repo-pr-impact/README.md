@@ -47,6 +47,8 @@ Mockito 3.12.4 到 4.0.0 的 6 条记录按模块和仓库迁移折叠为 Error 
 
 Maven Plugin Testing Harness 3.2.0 到 3.3.0 的 2 条记录来自 Dropwizard Debpkg 插件与 Stecker 两个根仓。源提交只修改测试基类，并新增从测试 JVM 类路径读取 `maven-core` 版本、要求高于 3.2.3 的精确断言；两条公开失败与之完全一致。但两个目标全历史都停留在 harness 3.2.0 和 Maven 库 3.2.3，既未采用 3.3.0，也无维护者 A2，因此不重放并接纳 0 条。
 
+Liquibase 4.2.2 到 4.3.0 的 2 条记录来自 Score 与 Datasafe 两个根仓，公开执行都命中 `HubUpdater.register:306` 的同一空指针。源变化是有效前向提交，LB-1212 的行为起点和上游后续修复都能精确定位；但两仓完整历史都从 3.x 直接跳到已含上游修复的 4.8.0，从未采用固定 4.3.0，也无消费仓维护者 A2。因此保留为双根仓机制锚点，不重放并接纳 0 条。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。

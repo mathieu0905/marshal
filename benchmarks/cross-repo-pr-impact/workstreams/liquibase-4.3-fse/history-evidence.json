@@ -1,0 +1,103 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0567",
+      "fse2024-behavioral-0568"
+    ],
+    "raw_candidate_records": 2,
+    "failure_observations": 2,
+    "unique_root_repositories": 2,
+    "exact_target_revisions_recorded": 0,
+    "shared_failure_location": "liquibase.hub.HubUpdater.register(HubUpdater.java:306)"
+  },
+  "source_repository": {
+    "repository": "liquibase/liquibase",
+    "remote_head": "ff8db73714e888dbeb0bbfaf6f2085f8eca35c0a",
+    "reachable_commit_count": 33120,
+    "release_4_2_2": {
+      "commit": "a5a01b5d125d9e1175dac4b82934d83c5712e505",
+      "committed_at": "2020-12-09T14:02:38-06:00"
+    },
+    "release_4_3_0": {
+      "commit": "c6ca2a5d73de791d0d80a492188c8608d2542963",
+      "committed_at": "2021-02-04T15:21:43-06:00",
+      "is_descendant_of_4_2_2": true
+    },
+    "behavior_onset": {
+      "commit": "e315881fce77eb2c7dba601925d4611a35aabf5e",
+      "committed_at": "2021-01-05T14:56:06-06:00",
+      "subject": "Auto-registration for update, rollback, changeLogSync, and dropAll operations",
+      "effect": "StandardHubService replaces the previous online/offline pair and eagerly creates the SnakeYAML-dependent HttpClient. Missing SnakeYAML can leave HubServiceFactory without a plugin."
+    },
+    "upstream_repair": {
+      "commit": "e92af8703d85e8c6005925081cd827832b1c8555",
+      "merge_commit": "8cf38a98e6de398fa201600223d045dd9e88e250",
+      "committed_at": "2021-02-11T11:55:51-06:00",
+      "issue": "LB-1212",
+      "effect": "HubServiceFactory returns an offline fallback instead of null when StandardHubService cannot load."
+    },
+    "boundary": "The source pair is a real forward release transition and the exact defect is identified. The repair is upstream and lands after 4.3.0; it is not a consumer-maintainer A2 under fixed 4.3.0."
+  },
+  "target_repositories": [
+    {
+      "repository": "CloudSlang/score",
+      "historical_alias": "openscore/score",
+      "alias_evidence": "The old URL redirects to CloudSlang/score and both Git endpoints resolve to e22dcd4bd2baf76136e2f90ebf8464e758e1110e.",
+      "default_branch": "master",
+      "remote_head": "e22dcd4bd2baf76136e2f90ebf8464e758e1110e",
+      "history_first_commit": "fcdcf715010047d0652b51b27aa899454a37a79a",
+      "reachable_commit_count": 4622,
+      "root_pom_version_evidence": {
+        "3.4.2_blobs": 716,
+        "4.3.0_blobs": 0,
+        "4.8.0_blobs": 1,
+        "later_release_blobs_present": true
+      },
+      "first_post_failure_adoption": {
+        "commit": "d135af3cab19019123342e2b404da2da2f9a441b",
+        "committed_at": "2022-03-08T21:15:00+00:00",
+        "transition": ["3.4.2", "4.8.0"]
+      },
+      "exact_maintainer_repair_under_4_3_0": null
+    },
+    {
+      "repository": "adorsys/datasafe",
+      "default_branch": "develop",
+      "remote_head": "28f411adddf060f81aa620685001455bd16c1e50",
+      "history_first_commit": "7f3ba0ce1fb43f8714ff9103170bb20131d89d14",
+      "reachable_commit_count": 2159,
+      "root_pom_version_evidence": {
+        "3.6.1_blobs": 95,
+        "4.3.0_blobs": 0,
+        "4.8.0_blobs": 1,
+        "4.23.1_blobs": 64
+      },
+      "first_post_failure_adoption": {
+        "commit": "ada0fa6a93535dab74b71d2e8da524402e8a6ba6",
+        "committed_at": "2022-03-08T21:30:37+00:00",
+        "transition": ["3.6.1", "4.8.0"]
+      },
+      "unrelated_later_repair": {
+        "commit": "633ec76538101d97d7599fcfc83f6be42194ff2c",
+        "subject": "fix keyword-like columns in db must be quoted for new versions of liquibase and h2",
+        "source_input": "Liquibase 4.23.1 and H2 2.x"
+      },
+      "exact_maintainer_repair_under_4_3_0": null
+    }
+  ],
+  "admission_result": {
+    "raw_records": 2,
+    "unique_root_relations": 2,
+    "forward_source_changes": 1,
+    "exact_source_mechanisms": 1,
+    "fixed_target_revisions": 0,
+    "exact_maintainer_repairs": 0,
+    "local_replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}
