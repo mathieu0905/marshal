@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-1345",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 1345,
+      "change_id": "open-telemetry/opentelemetry-specification#1345",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/1345",
+      "status": "MERGED",
+      "subject": "Make Resource.Merge consistent with Span.SetAttribute.",
+      "branch": "master",
+      "created": "2021-01-15T11:19:12Z",
+      "submitted": "2021-01-20T15:22:32Z"
+    },
+    "base_commit": "f8ff8c36a53bb8255013406393db667ba1905def",
+    "candidate_commit": "950f8c2e8df6e45cb32549a2b357e1c91de715c7",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "spec-compliance-matrix.md",
+      "specification/resource/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/f8ff8c36a53bb8255013406393db667ba1905def...950f8c2e8df6e45cb32549a2b357e1c91de715c7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/1501"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/2542"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 1501,
+        "change_id": "open-telemetry/opentelemetry-go#1501",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/1501",
+        "status": "MERGED",
+        "subject": "Reverse order of attribute precedence when merging two Resources",
+        "branch": "main",
+        "created": "2021-01-29T05:07:15Z",
+        "submitted": "2021-01-29T20:50:55Z"
+      },
+      "commit": "39cc1d7182f70db3d2d987584ebdcb7d1f0641e4",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "sdk/resource/resource.go",
+        "sdk/resource/resource_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/1501",
+          "statement": "明确反映源规范变化并反转优先级。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 2542,
+        "change_id": "open-telemetry/opentelemetry-java#2542",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/2542",
+        "status": "MERGED",
+        "subject": "Reverse the direction of the Resource.merge",
+        "branch": "master",
+        "created": "2021-01-15T22:51:26Z",
+        "submitted": "2021-01-20T16:10:08Z"
+      },
+      "commit": "ac76e449b53bb3c4a99675ea281d847a93d62f1c",
+      "changed_paths": [
+        "sdk-extensions/autoconfigure/src/main/java/io/opentelemetry/sdk/autoconfigure/OpenTelemetrySdkAutoConfiguration.java",
+        "sdk/common/src/main/java/io/opentelemetry/sdk/resources/Resource.java",
+        "sdk/common/src/test/java/io/opentelemetry/sdk/resources/ResourceTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/2542",
+          "statement": "明确实现源规范中的合并方向变化。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-953923",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstacksdk",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 953923,
+      "change_id": "I4c87a61bca04ac12fd7bb284174f351df545a3f0",
+      "url": "https://review.opendev.org/c/openstack/openstacksdk/+/953923",
+      "status": "MERGED",
+      "subject": "Remove un-needed nodepool testing",
+      "branch": "unmaintained/zed",
+      "created": "2025-07-02 02:19:39.000000000",
+      "submitted": "2025-07-18 15:57:19.000000000"
+    },
+    "base_commit": "49ee948e6d026854ea3dab19a6b4c5942762de50",
+    "candidate_commit": "c046fc90dab2ca5aafad50e9cc4263cc820aa19b",
+    "changed_paths": [
+      ".zuul.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/953923/revisions/c046fc90dab2ca5aafad50e9cc4263cc820aa19b/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstacksdk",
+      "target_repository": "openstack/diskimage-builder",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/diskimage-builder/+/952953"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/diskimage-builder",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 952953,
+        "change_id": "I4f5e10e63d51fee6c4ca9afb829b515f67bce71e",
+        "url": "https://review.opendev.org/c/openstack/diskimage-builder/+/952953",
+        "status": "MERGED",
+        "subject": "Remove nodepool based testing",
+        "branch": "master",
+        "created": "2025-06-20 02:43:41.000000000",
+        "submitted": "2025-09-29 17:02:37.000000000"
+      },
+      "commit": "71eb9df3620dddb935785bcebb7297b5d96f63cf",
+      "changed_paths": [
+        ".zuul.d/jobs.yaml",
+        "playbooks/dib-nodepool/collect-openstack-logs.yaml",
+        "playbooks/dib-nodepool/files/cpu-level.sh",
+        "playbooks/dib-nodepool/node-information.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/diskimage-builder/+/952953",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstacksdk/+/953923",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/16e27ee8eac7430fbbd8642d7f2da9f0"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/diskimage-builder",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/diskimage-builder/raw/commit/71eb9df3620dddb935785bcebb7297b5d96f63cf/LICENSE"
+    },
+    {
+      "repository": "openstack/openstacksdk",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstacksdk/raw/commit/c046fc90dab2ca5aafad50e9cc4263cc820aa19b/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

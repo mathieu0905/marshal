@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-2731",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 2731,
+      "change_id": "kubernetes/enhancements#2731",
+      "url": "https://github.com/kubernetes/enhancements/pull/2731",
+      "status": "MERGED",
+      "subject": "[WIP] KEP-2436: wildcard and default value",
+      "branch": "master",
+      "created": "2021-05-12T21:10:21Z",
+      "submitted": "2021-06-15T22:25:43Z"
+    },
+    "base_commit": "e2d142220f74e95c44d98afdacfee42c3fa4a704",
+    "candidate_commit": "edf167fa5af438e6e7b94dbd01c2d44559e31a34",
+    "changed_paths": [
+      "keps/sig-cloud-provider/2436-controller-manager-leader-migration/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/e2d142220f74e95c44d98afdacfee42c3fa4a704...edf167fa5af438e6e7b94dbd01c2d44559e31a34.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/102711"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 102711,
+        "change_id": "kubernetes/kubernetes#102711",
+        "url": "https://github.com/kubernetes/kubernetes/pull/102711",
+        "status": "MERGED",
+        "subject": "Leader Migration: wildcard and default value",
+        "branch": "master",
+        "created": "2021-06-08T22:20:16Z",
+        "submitted": "2021-06-16T00:03:58Z"
+      },
+      "commit": "6ba7b3d26b36d4436d5acdc4914879f831eafe64",
+      "changed_paths": [
+        "staging/src/k8s.io/controller-manager/config/types.go",
+        "staging/src/k8s.io/controller-manager/config/v1alpha1/types.go",
+        "staging/src/k8s.io/controller-manager/pkg/leadermigration/config/default.go",
+        "staging/src/k8s.io/controller-manager/pkg/leadermigration/migrator.go",
+        "staging/src/k8s.io/controller-manager/pkg/leadermigration/migrator_test.go",
+        "staging/src/k8s.io/controller-manager/pkg/leadermigration/options/options.go",
+        "staging/src/k8s.io/controller-manager/pkg/leadermigration/options/options_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/102711",
+          "statement": "目标正文明确声明实现源 KEP 修订后的通配符和默认值。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

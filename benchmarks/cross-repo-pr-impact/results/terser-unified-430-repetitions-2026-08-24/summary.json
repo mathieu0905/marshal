@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-08-24",
+  "package_id": "terser-wrap-func-args-multi-consumer",
+  "status": "three_repetitions_complete_pending_independent_semantic_review",
+  "source": {
+    "repository": "terser/terser",
+    "behavior_commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "pull_request": "https://github.com/terser/terser/pull/433",
+    "before_version": "4.2.1",
+    "after_version": "4.3.0",
+    "compatible_control_before": "4.2.0",
+    "compatible_control_after": "4.2.1",
+    "behavior": "wrap_func_args 的默认值变为 true，匿名函数作为调用参数时增加括号"
+  },
+  "project_package": {
+    "candidate_positive_repositories": [
+      "assetgraph/assetgraph-builder",
+      "SAP/ui5-builder",
+      "preconstruct/preconstruct"
+    ],
+    "candidate_bounded_negative_repositories": [
+      "angular/angular-cli"
+    ],
+    "search_frame_complete": false,
+    "boundary": "四仓只构成经过执行的候选项目包，不代表 terser 4.3.0 的完整影响仓库集合"
+  },
+  "protocol": {
+    "repetitions": 3,
+    "repository_commands_per_repetition": 17,
+    "arms": {
+      "a0": "terser 4.2.1 与目标修复前代码",
+      "a1": "terser 4.3.0 与目标修复前代码",
+      "a2": "terser 4.3.0 与抽取的目标修复；Angular CLI 不运行此臂",
+      "a3_before": "terser 4.2.0 与目标修复前代码；Angular CLI 不运行此臂",
+      "a3_after": "terser 4.2.1 与目标修复前代码；Angular CLI 不运行此臂"
+    },
+    "isolation": "每个仓库、配置和重复使用新的工作目录；Preconstruct 每份副本重新生成开发入口；Angular CLI 每臂使用独立优化器缓存并控制 build_angular 内实际加载的 terser",
+    "shared_after_input": "四个仓库的 A1 和三个正例仓的 A2 均使用同一份 terser 4.3.0 包代码；各仓保留自身历史解析的传递依赖"
+  },
+  "aggregate": {
+    "repository_commands": 51,
+    "expected_direction_matches": 51,
+    "version_inputs_verified": 51,
+    "repository_command_seconds": 665,
+    "retries": 0,
+    "by_arm": {
+      "a0": {"commands": 12, "nonzero_exits": 3},
+      "a1": {"commands": 12, "nonzero_exits": 9},
+      "a2": {"commands": 9, "nonzero_exits": 3},
+      "a3_before": {"commands": 9, "nonzero_exits": 3},
+      "a3_after": {"commands": 9, "nonzero_exits": 3}
+    }
+  },
+  "repository_results": {
+    "assetgraph/assetgraph-builder": {
+      "commands": 15,
+      "a1": "三轮均为 0 项通过，精确输出断言拒绝新增括号",
+      "a2": "三轮均为 1 项通过，只应用放宽输出正则的修复片段",
+      "other_arms": "九个命令均为 1 项通过",
+      "label_boundary": "测试期望适配，不是生产代码修复"
+    },
+    "SAP/ui5-builder": {
+      "commands": 15,
+      "a1": "三轮均为 6 项精确输出断言失败",
+      "a2": "三轮均为 17 项通过，只应用三处 wrap_func_args: false 生产配置修复",
+      "other_arms": "九个命令均为 17 项通过",
+      "label_boundary": "执行证明输出合同恢复；维护者所述懒解析性能影响未在本实验中测量"
+    },
+    "preconstruct/preconstruct": {
+      "commands": 15,
+      "a1": "三轮均为 3 个选中用例失败、11 个选中快照不匹配",
+      "a2": "三轮均为 3 个选中用例通过、35 个选中快照匹配，只应用两个快照修复片段",
+      "other_arms": "九个命令均为 3 个选中用例通过、35 个选中快照匹配",
+      "process_exit_boundary": "十五个命令均为非零退出；通过方向仍被未选中的 39 个快照报告为过期，不能写成完整测试套件通过",
+      "label_boundary": "收窄到历史修复文件对应的三个用例和 35 个快照"
+    },
+    "angular/angular-cli": {
+      "commands": 6,
+      "a0": "三轮原生完整差异化构建用例均通过；10 个 JavaScript 包、1536695 字节、0 处新双括号",
+      "a1": "三轮同一原生用例均通过；10 个 JavaScript 包、1538889 字节、531 处新双括号",
+      "output_comparison": "每轮固定 8 个包变化，runtime-es2015.js 与 runtime-es5.js 不变",
+      "label_boundary": "只支持该历史完整差异化构建合同无需目标修改；不支持全部工作流、浏览器运行时或性能均不受影响"
+    }
+  },
+  "retained_discarded_runs": [
+    {
+      "path": "discarded-repeat-1-source-map-preservation-error",
+      "reason": "首次统一版本脚本把 Angular 历史嵌套 source-map 放入错误层级，A1 在源映射处理中失败；不计入正式结果"
+    },
+    {
+      "path": "../terser-formal-repetitions-2026-08-24/discarded-repeat-1-control-path-error",
+      "reason": "早期历史版本重复使用了错误的 Preconstruct 开发入口和 Angular terser 路径；不计入正式结果"
+    }
+  ],
+  "review": {
+    "packet": "blind-review-packet.json",
+    "independent_review_completed": false,
+    "required_questions": [
+      "PR 433 是否是四仓实测现象的共同源行为",
+      "三个目标修复片段是否准确且没有带入无关变化",
+      "Angular CLI 的限定负标签是否严格限制在已执行的完整差异化构建合同",
+      "四仓是否可以作为同一个源变化的项目包单位"
+    ]
+  },
+  "claim_limits": [
+    "执行重复不等于独立语义复核",
+    "一个限定负例不构成完整负空间",
+    "当前 npm 搜索框不完备，不能把未收录仓库解释为不受影响",
+    "单个项目包不能支持 Marshal 或竞品的总体优劣结论"
+  ]
+}

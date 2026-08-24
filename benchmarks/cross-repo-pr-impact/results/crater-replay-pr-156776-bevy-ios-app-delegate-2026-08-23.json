@@ -1,0 +1,131 @@
+{
+  "measured_at": "2026-08-23T22:35:02+08:00",
+  "track": "versioned_ecosystem_breakage",
+  "status": "causal_dependency_recovery_confirmed",
+  "parent_question": "Can an exact downstream package from the archived dependency-regression group be recovered by replacing only bevy_channel_trigger-0.6.0 with its linked repair?",
+  "source_change": {
+    "repository": "rust-lang/rust",
+    "pull_request": 156776,
+    "url": "https://github.com/rust-lang/rust/pull/156776",
+    "title": "Minor unsoundness fix with FnDef lifetimes",
+    "baseline_toolchain_commit": "b52edc25bfbaa955b4b83c10f998e5224c3478b2",
+    "target_toolchain_commit": "e622d8d7bed4f2668d446e06c6c1436ecae15796"
+  },
+  "original_crater_experiment": {
+    "report": "https://crater-reports.s3.amazonaws.com/pr-156776/index.html",
+    "config": "https://crater-reports.s3.amazonaws.com/pr-156776/config.json",
+    "completed_at": "2026-06-09T13:47:47.000050556Z",
+    "mode": "check-only",
+    "cap_lints": "forbid",
+    "dependency_group": "bevy_channel_trigger-0.6.0",
+    "subject": "bevy_ios_app_delegate-0.4.0",
+    "baseline_result": "test-pass",
+    "baseline_log": "https://crater-reports.s3.amazonaws.com/pr-156776/master%23b52edc25bfbaa955b4b83c10f998e5224c3478b2/reg/bevy_ios_app_delegate-0.4.0/log.txt",
+    "target_result": "build-faulty-deps",
+    "target_log": "https://crater-reports.s3.amazonaws.com/pr-156776/try%23e622d8d7bed4f2668d446e06c6c1436ecae15796/reg/bevy_ios_app_delegate-0.4.0/log.txt",
+    "target_failure_signature": "bevy_channel_trigger-0.6.0 fails at src/lib.rs:40 because lifetime 'a must outlive 'static",
+    "command": "cargo check --frozen --all --all-targets --message-format=json",
+    "lockfile_source": "the Cargo.lock shipped inside bevy_ios_app_delegate-0.4.0; the original Crater log confirms it was not regenerated",
+    "root_package_control": {
+      "subject": "bevy_channel_trigger-0.6.0",
+      "baseline_result": "build-fail:ash-and-syn",
+      "target_result": "build-fail:ash",
+      "reason_not_used": "The root package did not form a pass-to-fail contrast. The archived downstream subject did."
+    }
+  },
+  "dependency_fix": {
+    "repository": "rustunit/bevy_channel_trigger",
+    "pull_request": 3,
+    "url": "https://github.com/rustunit/bevy_channel_trigger/pull/3",
+    "state_at_replay": "merged",
+    "head_parent_commit": "4cb023aecca108248e59b608a485e0d254e09c55",
+    "head_commit": "774789b04974f2e244d13fe8b0db27ebe1f5e18d",
+    "equivalent_main_commit": "82f7e25dfea6ee76ab64dec223e33f76af306674",
+    "authored_at": "2026-06-10T11:58:38-04:00",
+    "merged_commit_committed_at": "2026-06-15T08:25:37+02:00",
+    "changed_files": [
+      "src/lib.rs"
+    ],
+    "change_summary": "Remove the unconstrained method and helper lifetime and require Event::Trigger to implement Default for every lifetime; six insertions and six deletions in one file.",
+    "merge_note": "The pull-request head is not an ancestor of main because the merge produced a different commit. The main commit has the same tree and parent-relative repair."
+  },
+  "local_replay": {
+    "host": "Linux 6.8.0-137-generic x86_64",
+    "cargo": "cargo 1.98.0-nightly (4d1f98451 2026-05-15)",
+    "baseline_rustc": "rustc 1.98.0-nightly (b52edc25b 2026-05-22)",
+    "target_rustc": "rustc 1.98.0-nightly (e622d8d7b 2026-05-22)",
+    "subject": "the published bevy_ios_app_delegate-0.4.0 source",
+    "intervention": "replace only the locked registry instance of bevy_channel_trigger-0.6.0 with the exact pull-request head source",
+    "shared_conditions": {
+      "command": "cargo check --frozen --all --all-targets --message-format=json",
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "RUST_BACKTRACE": "full",
+        "RUSTFLAGS": "--cap-lints=forbid",
+        "RUSTDOCFLAGS": "--cap-lints=forbid"
+      },
+      "lockfile": "the packaged lockfile; the repaired arm changes only the bevy_channel_trigger source and checksum fields",
+      "resolved_package_count": 151,
+      "fresh_target_directory_per_repetition": true,
+      "repetitions_per_arm": 3
+    },
+    "arms": [
+      {
+        "name": "baseline_compiler_with_published_dependency",
+        "toolchain_commit": "b52edc25bfbaa955b4b83c10f998e5224c3478b2",
+        "dependency_variant": "registry bevy_channel_trigger-0.6.0",
+        "exit_codes": [0, 0, 0],
+        "elapsed_seconds": [16, 15, 16],
+        "result": "pass"
+      },
+      {
+        "name": "target_compiler_with_published_dependency",
+        "toolchain_commit": "e622d8d7bed4f2668d446e06c6c1436ecae15796",
+        "dependency_variant": "registry bevy_channel_trigger-0.6.0",
+        "exit_codes": [101, 101, 101],
+        "elapsed_seconds": [16, 15, 16],
+        "result": "fail",
+        "failure_signature": "lifetime may not live long enough at bevy_channel_trigger src/lib.rs:40; requires that 'a must outlive 'static",
+        "matching_original_crater_signature": true
+      },
+      {
+        "name": "target_compiler_with_repaired_dependency",
+        "toolchain_commit": "e622d8d7bed4f2668d446e06c6c1436ecae15796",
+        "dependency_variant": "bevy_channel_trigger-0.6.0 at 774789b04974f2e244d13fe8b0db27ebe1f5e18d",
+        "exit_codes": [0, 0, 0],
+        "elapsed_seconds": [15, 15, 15],
+        "result": "pass"
+      }
+    ]
+  },
+  "comparability": {
+    "verdict": "The archived downstream package, packaged dependency graph, compiler commits and command are fixed. The target failure matches the archived dependency failure, and replacing only bevy_channel_trigger with the linked repair restores all three repetitions.",
+    "fixed": [
+      "published bevy_ios_app_delegate-0.4.0 source",
+      "all 150 packages other than the repaired dependency",
+      "original baseline and target compiler commits",
+      "check command and lint flags",
+      "fresh build target for every repetition"
+    ],
+    "changed": [
+      "compiler commit between the first and second arms",
+      "only the source of bevy_channel_trigger-0.6.0 between the second and third arms"
+    ],
+    "limitations": [
+      "The replay ran on the host rather than inside the original Crater container digest.",
+      "The repaired arm used a local path override, which removes the registry source and checksum lines for one lockfile entry; no version or other dependency changed.",
+      "The result proves dependency-mediated breakage and recovery for bevy_ios_app_delegate-0.4.0, not for every dependent package or the current default branch.",
+      "This is a package-version dependency case and does not identify a separate companion change in the downstream application's repository."
+    ]
+  },
+  "yield_assessment": {
+    "sampled_experiments": 20,
+    "source_pull_requests_with_auditable_direct_fix_links": 3,
+    "auditable_fix_candidates": 4,
+    "candidates_with_completed_controlled_replay": 4,
+    "distinct_source_pull_requests_replayed": 3,
+    "interpretation": "The linked-fix screen had high replay success after manual recovery, but only three of twenty sampled experiments exposed auditable direct fix links. This supports a small high-strength subtrack, not a hundreds-case flagship source by itself."
+  },
+  "claim_update": "All four auditable Crater fix candidates now survive controlled replay. One required preserving the archived downstream execution subject rather than testing the root dependency in isolation.",
+  "next_action": "Stop expanding the same four-candidate pilot. Preserve the Crater procedure as a versioned-ecosystem subtrack and return collection effort to rolling OpenDev evidence and actively executed cross-repository changes."
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-python-peps-3850",
+  "project": "python",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "python/peps",
+    "pull_request": {
+      "provider": "github",
+      "number": 3850,
+      "change_id": "python/peps#3850",
+      "url": "https://github.com/python/peps/pull/3850",
+      "status": "MERGED",
+      "subject": "PEP 744: Add link to slides and clarification about LLVM dependency",
+      "branch": "main",
+      "created": "2024-06-21T03:46:52Z",
+      "submitted": "2024-07-04T05:08:25Z"
+    },
+    "base_commit": "25419bd3d36a345d6ae1317b2585fc1a8b7a68c2",
+    "candidate_commit": "3fd8a15512fbbb23e7bdb3e1d66246f3b6af28a6",
+    "changed_paths": [
+      "peps/pep-0744.rst"
+    ],
+    "patch_url": "https://github.com/python/peps/compare/25419bd3d36a345d6ae1317b2585fc1a8b7a68c2...3fd8a15512fbbb23e7bdb3e1d66246f3b6af28a6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "python/peps",
+      "target_repository": "python/cpython",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/python/cpython/pull/121635"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "python/cpython",
+      "pull_request": {
+        "provider": "github",
+        "number": 121635,
+        "change_id": "python/cpython#121635",
+        "url": "https://github.com/python/cpython/pull/121635",
+        "status": "MERGED",
+        "subject": "Add note about `PYTHON_JIT` environment variable to JIT `README`",
+        "branch": "main",
+        "created": "2024-07-11T21:56:30Z",
+        "submitted": "2024-07-17T22:17:47Z"
+      },
+      "commit": "17ba612af3a2262d8eeb41173a28d641f6b11433",
+      "changed_paths": [
+        "Tools/jit/README.md"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/python/cpython/pull/121635",
+          "statement": "目标正文明确说明为解决源 PEP 评审意见而补充相邻仓库文档。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "python/peps",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/peps"
+    },
+    {
+      "repository": "python/cpython",
+      "spdx": "PSF-2.0",
+      "evidence_url": "https://github.com/python/cpython/blob/main/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

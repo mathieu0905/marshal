@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-opencontainers-runtime-spec-1094",
+  "project": "opencontainers-runtime",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "opencontainers/runtime-spec",
+    "pull_request": {
+      "provider": "github",
+      "number": 1094,
+      "change_id": "opencontainers/runtime-spec#1094",
+      "url": "https://github.com/opencontainers/runtime-spec/pull/1094",
+      "status": "MERGED",
+      "subject": "Proposal: runtime should ignore capabilities that cannot be granted",
+      "branch": "master",
+      "created": "2021-03-09T16:41:04Z",
+      "submitted": "2021-03-26T19:09:08Z"
+    },
+    "base_commit": "7413a7f753e1bd9a6a9c6dc7f96f55888cbbd476",
+    "candidate_commit": "8c363e85f48f2c36a905a8c58b6283fec016d28a",
+    "changed_paths": [
+      "config.md"
+    ],
+    "patch_url": "https://github.com/opencontainers/runtime-spec/compare/7413a7f753e1bd9a6a9c6dc7f96f55888cbbd476...8c363e85f48f2c36a905a8c58b6283fec016d28a.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "containers/crun",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/containers/crun/pull/638"
+    },
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "opencontainers/runc",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/opencontainers/runc/pull/2854"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "containers/crun",
+      "pull_request": {
+        "provider": "github",
+        "number": 638,
+        "change_id": "containers/crun#638",
+        "url": "https://github.com/containers/crun/pull/638",
+        "status": "MERGED",
+        "subject": "linux: ignore unknown capabilities",
+        "branch": "master",
+        "created": "2021-03-29T08:14:36Z",
+        "submitted": "2021-03-30T18:12:05Z"
+      },
+      "commit": "78aeac9f215589883a9eea9b554bade138bd8bb3",
+      "changed_paths": [
+        "src/libcrun/linux.c",
+        "tests/test_capabilities.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/containers/crun/pull/638",
+          "statement": "明确按源规范忽略未知能力。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "opencontainers/runc",
+      "pull_request": {
+        "provider": "github",
+        "number": 2854,
+        "change_id": "opencontainers/runc#2854",
+        "url": "https://github.com/opencontainers/runc/pull/2854",
+        "status": "MERGED",
+        "subject": "capabilities: WARN, not ERROR, for unknown / unavailable capabilities",
+        "branch": "master",
+        "created": "2021-03-15T12:05:31Z",
+        "submitted": "2021-04-02T01:27:57Z"
+      },
+      "commit": "5fb831a0fa68578e8020dc9c59b90336cfd95198",
+      "changed_paths": [
+        "go.mod",
+        "go.sum",
+        "libcontainer/capabilities/capabilities.go",
+        "libcontainer/capabilities/capabilities_linux_test.go",
+        "vendor/github.com/opencontainers/runtime-spec/specs-go/config.go",
+        "vendor/github.com/sirupsen/logrus/hooks/test/test.go",
+        "vendor/modules.txt"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/opencontainers/runc/pull/2854",
+          "statement": "明确按源规范从报错改为警告。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opencontainers/runtime-spec",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runtime-spec"
+    },
+    {
+      "repository": "containers/crun",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/containers/crun"
+    },
+    {
+      "repository": "opencontainers/runc",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runc"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

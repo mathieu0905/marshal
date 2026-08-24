@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-959277",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/bifrost",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 959277,
+      "change_id": "Ia2d88165e498b4a3280869ca12df3b27015cc123",
+      "url": "https://review.opendev.org/c/openstack/bifrost/+/959277",
+      "status": "MERGED",
+      "subject": "Do not pass empty values to instance_info",
+      "branch": "stable/2024.2",
+      "created": "2025-09-03 05:32:06.000000000",
+      "submitted": "2025-09-24 08:58:05.000000000"
+    },
+    "base_commit": "dc471faafe404a67ba536cf922a4723da12f791d",
+    "candidate_commit": "251d4f5b8a3ae9199dd4c696564108d1475c87fc",
+    "changed_paths": [
+      "playbooks/roles/bifrost-deploy-nodes-dynamic/tasks/main.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/959277/revisions/251d4f5b8a3ae9199dd4c696564108d1475c87fc/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/bifrost",
+      "target_repository": "openstack/kayobe",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/kayobe/+/964310"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/kayobe",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 964310,
+        "change_id": "Ia614645d6b49f10a0c81ae0a0ab2398a9b56912c",
+        "url": "https://review.opendev.org/c/openstack/kayobe/+/964310",
+        "status": "MERGED",
+        "subject": "Remove default(omit) from Bifrost inventory template",
+        "branch": "stable/2024.2",
+        "created": "2025-10-17 17:09:22.000000000",
+        "submitted": "2025-10-18 23:28:23.000000000"
+      },
+      "commit": "1d2ec5b1cfa15dec220a228adf4eb6be47de142f",
+      "changed_paths": [
+        "ansible/inventory/group_vars/all/bifrost",
+        "ansible/kolla-bifrost-hostvars.yml",
+        "etc/kayobe/bifrost.yml",
+        "releasenotes/notes/fix-bifrost-invenory-05f8a92915998f09.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/kayobe/+/964310",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/bifrost/+/959277",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/6dd3f4a36a2f43ddb8ab2aaa40f58b46"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/bifrost",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/bifrost/raw/commit/251d4f5b8a3ae9199dd4c696564108d1475c87fc/LICENSE"
+    },
+    {
+      "repository": "openstack/kayobe",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/kayobe/raw/commit/1d2ec5b1cfa15dec220a228adf4eb6be47de142f/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

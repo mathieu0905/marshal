@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-945434",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/stx-puppet",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 945434,
+      "change_id": "I567b0d7f557e77666da2be4a8255fdf68f8873c6",
+      "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/945434",
+      "status": "MERGED",
+      "subject": "Save log file permission changes during upgrade",
+      "branch": "master",
+      "created": "2025-03-25 09:04:08.000000000",
+      "submitted": "2025-06-13 13:51:15.000000000"
+    },
+    "base_commit": "bcaaab6c636fcfa40200ca9f277306dcd499e47f",
+    "candidate_commit": "232ab8cf50bcade213e6fad020e25519459d4aa1",
+    "changed_paths": [
+      "puppet-manifests/src/modules/platform/manifests/logpermission.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/945434/revisions/232ab8cf50bcade213e6fad020e25519459d4aa1/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/stx-puppet",
+      "target_repository": "starlingx/update",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/update/+/952423"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/update",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 952423,
+        "change_id": "Ic775c5feaba24dd88d1de50d1c80148b38316431",
+        "url": "https://review.opendev.org/c/starlingx/update/+/952423",
+        "status": "MERGED",
+        "subject": "Revert log file permission change during upgrade rollback",
+        "branch": "master",
+        "created": "2025-06-12 06:22:05.000000000",
+        "submitted": "2025-06-13 18:16:07.000000000"
+      },
+      "commit": "3300839049da5d958b2572ec56eaacc9ae43f0f1",
+      "changed_paths": [
+        "software/software/agent_hooks.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/update/+/952423",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/stx-puppet/+/945434",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/5694f18b3dc84237bc4bf533a13bfa1d"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet/src/commit/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c"
+    },
+    {
+      "repository": "starlingx/update",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/update/raw/commit/3300839049da5d958b2572ec56eaacc9ae43f0f1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

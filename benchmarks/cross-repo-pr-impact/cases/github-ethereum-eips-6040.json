@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-6040",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 6040,
+      "change_id": "ethereum/EIPs#6040",
+      "url": "https://github.com/ethereum/EIPs/pull/6040",
+      "status": "MERGED",
+      "subject": "Update EIP-3860: Clarify nonce rules",
+      "branch": "master",
+      "created": "2022-11-24T10:23:10Z",
+      "submitted": "2022-11-25T11:10:14Z"
+    },
+    "base_commit": "232a490b454bab98e1f3b28675740103ad5c1296",
+    "candidate_commit": "c3c14c8b80b7969d2fc5ad14eee818ab9da9ffd6",
+    "changed_paths": [
+      "EIPS/eip-3860.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/232a490b454bab98e1f3b28675740103ad5c1296...c3c14c8b80b7969d2fc5ad14eee818ab9da9ffd6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/6161"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 6161,
+        "change_id": "erigontech/erigon#6161",
+        "url": "https://github.com/erigontech/erigon/pull/6161",
+        "status": "MERGED",
+        "subject": "Update EIP-3860 according to ethereum/EIPs/pull/6040",
+        "branch": "devel",
+        "created": "2022-11-30T10:59:19Z",
+        "submitted": "2022-11-30T11:19:16Z"
+      },
+      "commit": "db19fa943cfc766425b80aae04012e9bac735549",
+      "changed_paths": [
+        "core/vm/evm.go",
+        "core/vm/gas_table.go",
+        "tests/testdata"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/6161",
+          "statement": "标题和正文明确按源规范更新实现。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

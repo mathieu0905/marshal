@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-1916",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 1916,
+      "change_id": "kubernetes/enhancements#1916",
+      "url": "https://github.com/kubernetes/enhancements/pull/1916",
+      "status": "MERGED",
+      "subject": "kep: Pod resource metrics",
+      "branch": "master",
+      "created": "2020-07-30T19:43:19Z",
+      "submitted": "2020-10-16T14:59:26Z"
+    },
+    "base_commit": "83873ef7fff7fbf61b4f80fdd1369a36c44104ea",
+    "candidate_commit": "849b4fed21180ce1a4eab63998843e778c059f70",
+    "changed_paths": [
+      "keps/sig-instrumentation/1748-pod-resource-metrics/README.md",
+      "keps/sig-instrumentation/1748-pod-resource-metrics/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/83873ef7fff7fbf61b4f80fdd1369a36c44104ea...849b4fed21180ce1a4eab63998843e778c059f70.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/94866"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 94866,
+        "change_id": "kubernetes/kubernetes#94866",
+        "url": "https://github.com/kubernetes/kubernetes/pull/94866",
+        "status": "MERGED",
+        "subject": "scheduler: Implement resource metrics at /metrics/resources",
+        "branch": "master",
+        "created": "2020-09-17T20:15:31Z",
+        "submitted": "2020-11-13T02:36:24Z"
+      },
+      "commit": "264496cc4166d841a4c278fe096d6dd29e8f836a",
+      "changed_paths": [
+        "cmd/kube-scheduler/app/BUILD",
+        "cmd/kube-scheduler/app/server.go",
+        "pkg/api/v1/resource/helpers.go",
+        "pkg/scheduler/metrics/BUILD",
+        "pkg/scheduler/metrics/resources/BUILD",
+        "pkg/scheduler/metrics/resources/resources.go",
+        "pkg/scheduler/metrics/resources/resources_test.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/resource/quantity_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/94866",
+          "statement": "目标正文明确声明实现源 KEP 描述的资源指标端点。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

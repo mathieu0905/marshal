@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3858",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3858,
+      "change_id": "kubernetes/enhancements#3858",
+      "url": "https://github.com/kubernetes/enhancements/pull/3858",
+      "status": "MERGED",
+      "subject": "KEP-3857: Recursively Read-only (RRO) hostPath mounts",
+      "branch": "master",
+      "created": "2023-02-08T17:16:10Z",
+      "submitted": "2024-02-08T18:27:43Z"
+    },
+    "base_commit": "b9c4dfc1c117aad14ff98c5d6824806194afb8e8",
+    "candidate_commit": "0912aabcb72ceac34cc45da471f6a918a8617b6a",
+    "changed_paths": [
+      "keps/sig-node/3857-rro-hostpath/README.md",
+      "keps/sig-node/3857-rro-hostpath/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/b9c4dfc1c117aad14ff98c5d6824806194afb8e8...0912aabcb72ceac34cc45da471f6a918a8617b6a.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/123272"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 123272,
+        "change_id": "kubernetes/kubernetes#123272",
+        "url": "https://github.com/kubernetes/kubernetes/pull/123272",
+        "status": "MERGED",
+        "subject": "cri-api: KEP-3857: Recursive Read-only (RRO) mounts [Split from #123180 for ease of review]",
+        "branch": "master",
+        "created": "2024-02-13T16:46:49Z",
+        "submitted": "2024-02-16T19:09:47Z"
+      },
+      "commit": "a834bd84b5408c495095681adb3ad049b5e2566d",
+      "changed_paths": [
+        "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.pb.go",
+        "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.proto",
+        "staging/src/k8s.io/cri-api/pkg/errors/errors.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/123272",
+          "statement": "目标实现源 KEP 的递归只读挂载接口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

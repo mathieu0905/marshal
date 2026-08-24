@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-979677",
+  "project": "x",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "x/devstack-plugin-tobiko",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 979677,
+      "change_id": "Ia8b4f1dc789d430e13edb0f1b90b835f54c1b45c",
+      "url": "https://review.opendev.org/c/x/devstack-plugin-tobiko/+/979677",
+      "status": "MERGED",
+      "subject": "Set the correct Neutron API devstack name",
+      "branch": "master",
+      "created": "2026-03-09 15:03:44.000000000",
+      "submitted": "2026-03-10 12:53:23.000000000"
+    },
+    "base_commit": "5b513fa9b60c9a6621f2890fc3e42221e80395d3",
+    "candidate_commit": "957a85805762ff01c6567c6fc5366b84c67af3ab",
+    "changed_paths": [
+      "zuul.d/devstack-tobiko.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/979677/revisions/957a85805762ff01c6567c6fc5366b84c67af3ab/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "x/devstack-plugin-tobiko",
+      "target_repository": "openstack/neutron",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/neutron/+/977050"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/neutron",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 977050,
+        "change_id": "I652344fe6629ac3d308cd4d4c4e68d267f6f2efc",
+        "url": "https://review.opendev.org/c/openstack/neutron/+/977050",
+        "status": "MERGED",
+        "subject": "Use the `devstack-tobiko` job",
+        "branch": "stable/2024.2",
+        "created": "2026-02-17 09:05:22.000000000",
+        "submitted": "2026-03-13 12:49:56.000000000"
+      },
+      "commit": "25c5202a609e2e20c596b248374f47283e28e6cb",
+      "changed_paths": [
+        "zuul.d/job-templates.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/neutron/+/977050",
+          "statement": "Depends-On: https://review.opendev.org/c/x/devstack-plugin-tobiko/+/979677",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/75b9d1588121479e88f22b3b0b0d1a07"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/neutron",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/neutron/raw/commit/5b9b84bf7b5c9e601bc17f0f7a7408c3fc439ce0/LICENSE"
+    },
+    {
+      "repository": "x/devstack-plugin-tobiko",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/x/devstack-plugin-tobiko/src/commit/ff5353e7339d75384df657da31b3b130ccb5a40a"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

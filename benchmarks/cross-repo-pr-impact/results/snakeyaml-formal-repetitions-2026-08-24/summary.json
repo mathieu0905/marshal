@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-08-24",
+  "project_package": {
+    "provider_repository": "snakeyaml/snakeyaml",
+    "breaking_change": "org.yaml:snakeyaml 1.32 to 2.0",
+    "compatible_change": "org.yaml:snakeyaml 1.31 to 1.32",
+    "positive_consumers": [
+      "apache/jclouds",
+      "zio/zio-json"
+    ],
+    "bounded_negative_consumers": [
+      "xlate/yaml-json",
+      "xvik/yaml-updater"
+    ]
+  },
+  "decision": {
+    "execution_status": "three_repetitions_complete",
+    "formal_label_accepted": false,
+    "reason": "三轮共 60 条仓库命令的输入版本和结果方向全部符合合同；独立复核者尚未接受两个修复抽取、两个限定负例边界和 A3 语义。"
+  },
+  "protocol": {
+    "repetitions": 3,
+    "arms": {
+      "a0": {
+        "snakeyaml": "1.32",
+        "meaning": "旧组合"
+      },
+      "a1": {
+        "snakeyaml": "2.0",
+        "meaning": "只改变源依赖"
+      },
+      "a2": {
+        "snakeyaml": "2.0",
+        "meaning": "正例应用精确维护者修复；限定负例与 A1 输入相同"
+      },
+      "a3_before": {
+        "snakeyaml": "1.31",
+        "meaning": "兼容变化前臂"
+      },
+      "a3_after": {
+        "snakeyaml": "1.32",
+        "meaning": "兼容变化后臂"
+      }
+    },
+    "commands": {
+      "apache/jclouds": "mvn -B -ntp -pl apis/byon -am clean test -DskipTests=false",
+      "zio/zio-json": "./sbt -batch zioJsonYaml/clean zioJsonYaml/test",
+      "xlate/yaml-json": "mvn -B -ntp clean test -DskipTests=false",
+      "xvik/yaml-updater": "/tmp/gradle-7.2/bin/gradle :yaml-config-updater:clean :yaml-config-updater:test --no-daemon"
+    },
+    "environment": "OpenJDK 11.0.31",
+    "isolation": "每个重复、试验臂和仓库使用独立源码副本；每轮缓存按试验臂复制并隔离，同一试验臂中的 Maven 消费仓共享该臂的 Maven 缓存。"
+  },
+  "aggregate": {
+    "repository_commands": 60,
+    "expected_direction_matches": 60,
+    "version_inputs_verified": 60,
+    "pass_commands_with_tests_executed": 54,
+    "expected_compile_failures": 6,
+    "unexpected_nonzero_exits": 0,
+    "by_arm": {
+      "a0": {
+        "commands": 12,
+        "passed": 12
+      },
+      "a1": {
+        "commands": 12,
+        "passed": 6,
+        "expected_compile_failures": 6
+      },
+      "a2": {
+        "commands": 12,
+        "passed": 12
+      },
+      "a3_before": {
+        "commands": 12,
+        "passed": 12
+      },
+      "a3_after": {
+        "commands": 12,
+        "passed": 12
+      }
+    }
+  },
+  "consumer_results": {
+    "apache/jclouds": {
+      "commands": 15,
+      "a1": "三轮都在两个构造器调用处编译失败，Class 不能转换为 LoaderOptions",
+      "other_arms": "其余 12 条命令均通过，BYON 每次执行 31 项测试",
+      "repair": "A2 使用父子相邻的维护者修复提交，在两个消费点创建并传入 LoaderOptions"
+    },
+    "zio/zio-json": {
+      "commands": 15,
+      "a1": "三轮都因 SafeConstructor 缺少 LoaderOptions 参数而编译失败",
+      "other_arms": "其余 12 条命令均通过，每次执行 16 项测试",
+      "repair": "A2 使用 PR 974 的维护者生产修复，向 SafeConstructor 传入 LoaderOptions"
+    },
+    "xlate/yaml-json": {
+      "commands": 15,
+      "result": "全部通过；每次执行默认配置 78 项、YAML 1.1 与 1.2 配置各 60 项测试",
+      "boundary": "仅覆盖固定提交的原生解析、读取、写入和生成合同，不说明未执行输入无影响。"
+    },
+    "xvik/yaml-updater": {
+      "commands": 15,
+      "result": "全部通过；每次执行 33 个测试套件共 146 项测试",
+      "boundary": "仅覆盖 yaml-config-updater 模块的原生测试，不说明其他模块或未执行输入无影响。"
+    }
+  },
+  "compatible_change_evidence": {
+    "formal_repetition": "四仓的 1.31 与 1.32 两臂在三轮中全部通过。",
+    "separate_coverage_screening": "单次覆盖筛选中，四仓都在 ScannerImpl.java:333 得到 mi=0, ci=7, mb=1, cb=1，证明新增 3 MB 判断进入测试并走过正常输入分支。正式重复没有再次插桩。",
+    "boundary": "未覆盖超限异常分支，不能声称四仓验证了 3 MB 上限的全部行为。"
+  },
+  "label_limits": [
+    "YAML JSON 与 YAML Updater 的 A2 和 A1 输入相同，只是独立稳定性确认，不产生第二组限定负例。",
+    "本项目包只在四仓闭集和记录命令内支持两个正例与两个限定负例，不代表 SnakeYAML 2.0 的完整影响面。",
+    "三次重复证明执行方向稳定，但不能替代独立语义复核。",
+    "Polyglot Maven 因真实基线在 1.31 和 1.32 下均不成立，继续保持拒绝状态。"
+  ],
+  "next_required_steps": [
+    "由未参与筛选和执行的复核者判断两个维护者修复是否精确、两个限定负例是否越界。",
+    "独立判断 1.31 到 1.32 的新增判断是否足以作为该四仓闭集的兼容变化。",
+    "复核通过后按仓库关系将项目包分配到开发、正式或保留用途；在此之前不进入正式产品分数。"
+  ]
+}

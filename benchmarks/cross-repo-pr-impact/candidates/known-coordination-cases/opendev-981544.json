@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-981544",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/devstack",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 981544,
+      "change_id": "I21ac773ee953ea65e3b92712362adc4279065322",
+      "url": "https://review.opendev.org/c/openstack/devstack/+/981544",
+      "status": "MERGED",
+      "subject": "Update devstack stable/2026.1 branch setting",
+      "branch": "stable/2026.1",
+      "created": "2026-03-20 16:53:44.000000000",
+      "submitted": "2026-03-23 01:25:14.000000000"
+    },
+    "base_commit": "b8839901c6af61b9e7246205aa197e283437bb64",
+    "candidate_commit": "4a7b1487e1b7dd71f91a8a7654f8d743e72b8891",
+    "changed_paths": [
+      "stackrc",
+      "tests/test_libs_from_pypi.sh"
+    ],
+    "patch_url": "https://review.opendev.org/changes/981544/revisions/4a7b1487e1b7dd71f91a8a7654f8d743e72b8891/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/devstack",
+      "target_repository": "openstack/grenade",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/grenade/+/981625"
+    },
+    {
+      "source_repository": "openstack/devstack",
+      "target_repository": "openstack/grenade",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/grenade/+/981624"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/grenade",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 981625,
+        "change_id": "Ib62bfcf368ad1b07317da382c45c1656410f7d78",
+        "url": "https://review.opendev.org/c/openstack/grenade/+/981625",
+        "status": "MERGED",
+        "subject": "Update grenade setting in stable/2026.1",
+        "branch": "stable/2026.1",
+        "created": "2026-03-20 23:50:21.000000000",
+        "submitted": "2026-03-23 17:25:56.000000000"
+      },
+      "commit": "a74a50d05c586f06a0c5620968dd965e688fc5f2",
+      "changed_paths": [
+        ".zuul.yaml",
+        "roles/configure-grenade-branches/defaults/main.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/grenade/+/981625",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/devstack/+/981544",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/ece993a009aa4a94beecfa74aef8d299"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/grenade",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 981624,
+        "change_id": "I1fa3af1a62f758967c0706da98733bc2990dd5f9",
+        "url": "https://review.opendev.org/c/openstack/grenade/+/981624",
+        "status": "MERGED",
+        "subject": "Update the master grenade setting",
+        "branch": "master",
+        "created": "2026-03-20 23:45:42.000000000",
+        "submitted": "2026-03-23 17:25:54.000000000"
+      },
+      "commit": "3a3bec1127205e4dd94a79926ab61420571c464a",
+      "changed_paths": [
+        ".zuul.yaml",
+        "roles/configure-grenade-branches/defaults/main.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/grenade/+/981624",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/devstack/+/981544",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/d2e36b03874a4987b692cbfed6607c46"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/devstack",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/devstack/raw/commit/7fa24750a676a44ab224206cc13096f904057d44/LICENSE"
+    },
+    {
+      "repository": "openstack/grenade",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/grenade/raw/commit/a74a50d05c586f06a0c5620968dd965e688fc5f2/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

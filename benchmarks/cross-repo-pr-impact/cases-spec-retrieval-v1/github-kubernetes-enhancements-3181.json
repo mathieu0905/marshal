@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3181",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3181,
+      "change_id": "kubernetes/enhancements#3181",
+      "url": "https://github.com/kubernetes/enhancements/pull/3181",
+      "status": "MERGED",
+      "subject": "Update HonorPVReclaimPolicy to beta",
+      "branch": "master",
+      "created": "2022-01-24T22:09:59Z",
+      "submitted": "2022-02-01T00:13:53Z"
+    },
+    "base_commit": "8f81febd786ca3896df679ef9a99fda98bdd4cec",
+    "candidate_commit": "e1235f5fc09e8fcb3b61e51f0cded70addf88b52",
+    "changed_paths": [
+      "keps/prod-readiness/sig-storage/2644.yaml",
+      "keps/sig-storage/2644-honor-pv-reclaim-policy/README.md",
+      "keps/sig-storage/2644-honor-pv-reclaim-policy/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/8f81febd786ca3896df679ef9a99fda98bdd4cec...e1235f5fc09e8fcb3b61e51f0cded70addf88b52.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/109205"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 109205,
+        "change_id": "kubernetes/kubernetes#109205",
+        "url": "https://github.com/kubernetes/kubernetes/pull/109205",
+        "status": "MERGED",
+        "subject": "Add or Remove PV deletion protection finalizer based on PV recalimPolicy",
+        "branch": "master",
+        "created": "2022-03-31T15:51:21Z",
+        "submitted": "2022-04-07T09:57:58Z"
+      },
+      "commit": "a7b1fcba40784af64c949b28e7a2ca03433a3a75",
+      "changed_paths": [
+        "pkg/controller/volume/persistentvolume/delete_test.go",
+        "pkg/controller/volume/persistentvolume/framework_test.go",
+        "pkg/controller/volume/persistentvolume/provision_test.go",
+        "pkg/controller/volume/persistentvolume/pv_controller.go",
+        "pkg/controller/volume/persistentvolume/pv_controller_base.go",
+        "pkg/controller/volume/persistentvolume/pv_controller_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/109205",
+          "statement": "目标实现源 KEP 更新后的持久卷删除保护行为。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

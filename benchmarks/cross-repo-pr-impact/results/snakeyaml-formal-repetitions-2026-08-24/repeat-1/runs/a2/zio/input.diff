@@ -1,0 +1,30 @@
+diff --git a/build.sbt b/build.sbt
+index ca1b7690..6474994e 100644
+--- a/build.sbt
++++ b/build.sbt
+@@ -248,7 +248,7 @@ lazy val zioJsonYaml = project
+   .settings(buildInfoSettings("zio.json.yaml"))
+   .settings(
+     libraryDependencies ++= Seq(
+-      "org.yaml" % "snakeyaml"    % "1.33",
++      "org.yaml" % "snakeyaml"    % "2.0",
+       "dev.zio" %% "zio"          % zioVersion,
+       "dev.zio" %% "zio-test"     % zioVersion % "test",
+       "dev.zio" %% "zio-test-sbt" % zioVersion % "test"
+diff --git a/zio-json-yaml/src/main/scala/zio/json/yaml/internal/YamlValueConstruction.scala b/zio-json-yaml/src/main/scala/zio/json/yaml/internal/YamlValueConstruction.scala
+index 46aab20f..af34ded1 100644
+--- a/zio-json-yaml/src/main/scala/zio/json/yaml/internal/YamlValueConstruction.scala
++++ b/zio-json-yaml/src/main/scala/zio/json/yaml/internal/YamlValueConstruction.scala
+@@ -2,10 +2,9 @@ package zio.json.yaml.internal
+ 
+ import org.yaml.snakeyaml.constructor.SafeConstructor
+ import org.yaml.snakeyaml.nodes.{ MappingNode, Node }
+-import scala.annotation.nowarn
++import org.yaml.snakeyaml.LoaderOptions
+ 
+-@nowarn
+-private[yaml] final class YamlValueConstruction extends SafeConstructor {
++private[yaml] final class YamlValueConstruction extends SafeConstructor(new LoaderOptions()) {
+   def toJavaValue(node: Node): AnyRef =
+     getConstructor(node).construct(node)
+ 

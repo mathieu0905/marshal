@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-4899",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 4899,
+      "change_id": "kubernetes/enhancements#4899",
+      "url": "https://github.com/kubernetes/enhancements/pull/4899",
+      "status": "MERGED",
+      "subject": "KEP-4858: IP/CIDR Validation Improvements",
+      "branch": "master",
+      "created": "2024-10-02T22:17:28Z",
+      "submitted": "2025-02-11T21:21:59Z"
+    },
+    "base_commit": "bf666042b620ef85c086a1ede9f5fdccb45c001f",
+    "candidate_commit": "efc6636b49656622f1ca454142058cfdf7834fe7",
+    "changed_paths": [
+      "keps/sig-network/4858-ip-cidr-validation/README.md",
+      "keps/sig-network/4858-ip-cidr-validation/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/bf666042b620ef85c086a1ede9f5fdccb45c001f...efc6636b49656622f1ca454142058cfdf7834fe7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/128786"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 128786,
+        "change_id": "kubernetes/kubernetes#128786",
+        "url": "https://github.com/kubernetes/kubernetes/pull/128786",
+        "status": "MERGED",
+        "subject": "warn on bad IPs in objects",
+        "branch": "master",
+        "created": "2024-11-13T16:13:32Z",
+        "submitted": "2025-03-11T07:11:47Z"
+      },
+      "commit": "7316d8313772921d32e5d3f37470162ddd0449db",
+      "changed_paths": [
+        "pkg/api/pod/warnings.go",
+        "pkg/api/pod/warnings_test.go",
+        "pkg/api/service/warnings.go",
+        "pkg/api/service/warnings_test.go",
+        "pkg/apis/core/validation/validation.go",
+        "pkg/apis/networking/validation/validation.go",
+        "pkg/apis/networking/validation/validation_test.go",
+        "pkg/controller/endpoint/endpoints_controller.go",
+        "pkg/controller/endpoint/endpoints_controller_test.go",
+        "pkg/controller/endpointslice/endpointslice_controller.go",
+        "pkg/controller/endpointslice/endpointslice_controller_test.go",
+        "pkg/controller/endpointslicemirroring/endpointslicemirroring_controller.go",
+        "pkg/controller/endpointslicemirroring/endpointslicemirroring_controller_test.go",
+        "pkg/controller/endpointslicemirroring/reconciler_test.go",
+        "pkg/controller/endpointslicemirroring/utils.go",
+        "pkg/controller/endpointslicemirroring/utils_test.go",
+        "pkg/registry/core/endpoint/strategy.go",
+        "pkg/registry/core/endpoint/strategy_test.go",
+        "pkg/registry/core/node/strategy.go",
+        "pkg/registry/core/node/strategy_test.go",
+        "pkg/registry/core/pod/strategy.go",
+        "pkg/registry/core/pod/strategy_test.go",
+        "pkg/registry/core/service/strategy.go",
+        "pkg/registry/core/service/strategy_test.go",
+        "pkg/registry/discovery/endpointslice/strategy.go",
+        "pkg/registry/discovery/endpointslice/strategy_test.go",
+        "pkg/registry/networking/ingress/strategy.go",
+        "pkg/registry/networking/ingress/strategy_test.go",
+        "pkg/registry/networking/networkpolicy/strategy.go",
+        "pkg/registry/networking/networkpolicy/strategy_test.go",
+        "staging/src/k8s.io/apimachinery/pkg/util/validation/ip.go",
+        "staging/src/k8s.io/apimachinery/pkg/util/validation/ip_test.go",
+        "staging/src/k8s.io/apimachinery/pkg/util/validation/validation.go",
+        "staging/src/k8s.io/apimachinery/pkg/util/validation/validation_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/128786",
+          "statement": "目标说明源 KEP 用于确定验证细节，并实现其中已达成一致的地址校验方案。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "status": "three_arm_anchor",
+  "date": "2026-08-24",
+  "source": {
+    "repository": "estools/escope",
+    "before_version": "3.3.0",
+    "before_commit": "a3402c3e5c04f4e3dc15c88fd2d7ce8608d26ba7",
+    "after_version": "3.4.0",
+    "after_commit": "69145ebb4b7ebda6ca87d6235491c26447d5c82a"
+  },
+  "target": {
+    "repository": "babel/babel-eslint",
+    "baseline_commit": "3dcb32ced84799131dfb817d43d7723616669a48",
+    "repair_pull_request": 244,
+    "repair_commit": "d8ac8f9f22a46efbdd0743ff028b2e63b462bf7e",
+    "repair_scope": "index.js adds six lines that unwrap default exports at the two internal escope module loads"
+  },
+  "environment": {
+    "runtime": "Node.js 6 container",
+    "target_command": "node -e \"console.log(require('escope/package.json').version); var parser=require('./'); var ast=parser.parse('class A {}'); console.log(ast.type)\""
+  },
+  "arms": [
+    {
+      "arm": "A0",
+      "source_version": "3.3.0",
+      "target_repair_applied": false,
+      "exit_code": 0,
+      "output_marker": "Program"
+    },
+    {
+      "arm": "A1",
+      "source_version": "3.4.0",
+      "target_repair_applied": false,
+      "exit_code": 1,
+      "failure_signature": "TypeError: Cannot read property 'visitClass' of undefined at monkeypatch"
+    },
+    {
+      "arm": "A2",
+      "source_version": "3.4.0",
+      "target_repair_applied": true,
+      "exit_code": 0,
+      "output_marker": "Program"
+    }
+  ],
+  "full_suite_observation": {
+    "accepted_as_contract": false,
+    "reason": "Modern transitive dependency resolution makes the baseline full suite fail 16 unrelated Flow assertions; this does not distinguish A0, A1 and A2."
+  },
+  "a3_assessment": {
+    "status": "rejected",
+    "escope_3_2_1_to_3_3_0": "Invalid because ESLint 1.10.3 requires escope ^3.3.0 and installs a nested 3.6.0 that is actually loaded by the target.",
+    "escope_3_4_0_to_3_5_0": "Both versions pass with the repaired target but both fail with the fixed pre-repair target baseline, so the pair cannot serve as A3.",
+    "independent_consumer_search": "No independent repository was found that executes the same internal-module loading surface across both sides; repository hits were vendored dependencies or code already requiring .default.",
+    "decision": "Retain A0/A1/A2 as a three-arm positive anchor and do not manufacture a bounded negative."
+  },
+  "remaining_requirements": [
+    "repeat all accepted arms three times with isolated dependency directories",
+    "obtain independent semantic review"
+  ]
+}

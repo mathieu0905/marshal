@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-1257",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 1257,
+      "change_id": "open-telemetry/opentelemetry-specification#1257",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/1257",
+      "status": "MERGED",
+      "subject": "Map `Error` `Status` to `error` tag in Zipkin & Jaeger",
+      "branch": "master",
+      "created": "2020-11-23T18:42:20Z",
+      "submitted": "2020-12-10T21:14:11Z"
+    },
+    "base_commit": "08a71c6efdbe77c4d63c14dfc9600740ed0bd119",
+    "candidate_commit": "2133e6bed81385c53467e10924249429a6105b3d",
+    "changed_paths": [
+      "spec-compliance-matrix.md",
+      "specification/trace/sdk_exporters/jaeger.md",
+      "specification/trace/sdk_exporters/zipkin.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/08a71c6efdbe77c4d63c14dfc9600740ed0bd119...2133e6bed81385c53467e10924249429a6105b3d.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1620"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/2147"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 1620,
+        "change_id": "open-telemetry/opentelemetry-dotnet#1620",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1620",
+        "status": "MERGED",
+        "subject": "Exporter spec fixup 2",
+        "branch": "master",
+        "created": "2020-11-25T00:36:38Z",
+        "submitted": "2020-11-28T02:43:30Z"
+      },
+      "commit": "77334aef89f6fb5f55e4f96897119962f48db042",
+      "changed_paths": [
+        "src/OpenTelemetry.Api/CHANGELOG.md",
+        "src/OpenTelemetry.Api/Internal/ActivityHelperExtensions.cs",
+        "src/OpenTelemetry.Api/Internal/StatusHelper.cs",
+        "src/OpenTelemetry.Api/README.md",
+        "src/OpenTelemetry.Api/Trace/ActivityExtensions.cs",
+        "src/OpenTelemetry.Exporter.Jaeger/CHANGELOG.md",
+        "src/OpenTelemetry.Exporter.Jaeger/Implementation/JaegerActivityExtensions.cs",
+        "src/OpenTelemetry.Exporter.OpenTelemetryProtocol/Implementation/ActivityExtensions.cs",
+        "src/OpenTelemetry.Exporter.Zipkin/CHANGELOG.md",
+        "src/OpenTelemetry.Exporter.Zipkin/Implementation/ZipkinActivityConversionExtensions.cs",
+        "test/OpenTelemetry.Exporter.Jaeger.Tests/Implementation/JaegerActivityConversionTest.cs",
+        "test/OpenTelemetry.Exporter.Zipkin.Tests/Implementation/ZipkinActivityConversionTest.cs",
+        "test/OpenTelemetry.Exporter.Zipkin.Tests/ZipkinExporterTests.cs",
+        "test/OpenTelemetry.Instrumentation.Http.Tests/HttpClientTests.netcore31.cs",
+        "test/OpenTelemetry.Instrumentation.Http.Tests/HttpWebRequestTests.netfx.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1620",
+          "statement": "明确使导出器匹配源规范。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 2147,
+        "change_id": "open-telemetry/opentelemetry-java#2147",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/2147",
+        "status": "MERGED",
+        "subject": "Remove Status.value",
+        "branch": "master",
+        "created": "2020-11-27T06:27:03Z",
+        "submitted": "2020-12-01T04:46:27Z"
+      },
+      "commit": "d0ffce05828d95169c69c27ffd2d206cfded8bb0",
+      "changed_paths": [
+        "api/src/main/java/io/opentelemetry/api/trace/StatusCode.java",
+        "exporters/jaeger-thrift/src/main/java/io/opentelemetry/exporter/jaeger/thrift/Adapter.java",
+        "exporters/jaeger-thrift/src/test/java/io/opentelemetry/exporter/jaeger/thrift/JaegerThriftSpanExporterTest.java",
+        "exporters/jaeger/src/main/java/io/opentelemetry/exporter/jaeger/Adapter.java",
+        "exporters/jaeger/src/test/java/io/opentelemetry/exporter/jaeger/AdapterTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/2147",
+          "statement": "明确依据已获批准的源规范删除 Status.value。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

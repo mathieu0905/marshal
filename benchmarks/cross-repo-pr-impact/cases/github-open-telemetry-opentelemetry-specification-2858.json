@@ -1,0 +1,271 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-2858",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 2858,
+      "change_id": "open-telemetry/opentelemetry-specification#2858",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/2858",
+      "status": "MERGED",
+      "subject": "Deprecate jaeger exporters.",
+      "branch": "main",
+      "created": "2022-10-08T00:07:12Z",
+      "submitted": "2022-12-20T18:36:03Z"
+    },
+    "base_commit": "bb15d98f7d6c5a5b7b0076baebfca3932643206a",
+    "candidate_commit": "94e84105cd770049012e7a5dcfba22dabae08169",
+    "changed_paths": [
+      "spec-compliance-matrix.md",
+      "specification/sdk-environment-variables.md",
+      "specification/trace/sdk_exporters/jaeger.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/bb15d98f7d6c5a5b7b0076baebfca3932643206a...94e84105cd770049012e7a5dcfba22dabae08169.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-js",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/pull/3585"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-php",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php/pull/890"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "pull_request": {
+        "provider": "github",
+        "number": 3585,
+        "change_id": "open-telemetry/opentelemetry-js#3585",
+        "url": "https://github.com/open-telemetry/opentelemetry-js/pull/3585",
+        "status": "MERGED",
+        "subject": "chore(jeager-exporter): deprecate jaeger exporter",
+        "branch": "main",
+        "created": "2023-02-03T09:37:21Z",
+        "submitted": "2023-03-06T05:48:08Z"
+      },
+      "commit": "10a5fe64d94309f40f9ac97b6d01470e5619df9a",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "packages/opentelemetry-exporter-jaeger/README.md",
+        "packages/opentelemetry-exporter-jaeger/src/jaeger.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-js/pull/3585",
+          "statement": "明确按源规范发布弃用通知。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "pull_request": {
+        "provider": "github",
+        "number": 890,
+        "change_id": "open-telemetry/opentelemetry-php#890",
+        "url": "https://github.com/open-telemetry/opentelemetry-php/pull/890",
+        "status": "MERGED",
+        "subject": "removing jaeger exporters",
+        "branch": "main",
+        "created": "2022-12-07T23:28:14Z",
+        "submitted": "2022-12-09T03:25:42Z"
+      },
+      "commit": "ad9b675ca3900164f5629a839adc92ce4c3981d1",
+      "changed_paths": [
+        ".gitsplit.yml",
+        ".phan/config.php",
+        "Makefile",
+        "README.md",
+        "composer.json",
+        "deptrac.yaml",
+        "examples/traces/exporters/jaeger.php",
+        "examples/traces/exporters/jaeger_thrift.php",
+        "examples/traces/exporters/zipkin.php",
+        "examples/traces/features/parent_span_example.php",
+        "examples/traces/troubleshooting/logging_of_span_data.php",
+        "phpmetrics.json",
+        "script/thrift_gen.sh",
+        "src/Contrib/Jaeger/AgentExporter.php",
+        "src/Contrib/Jaeger/BatchAdapter/BatchAdapter.php",
+        "src/Contrib/Jaeger/BatchAdapter/BatchAdapterFactory.php",
+        "src/Contrib/Jaeger/BatchAdapter/BatchAdapterFactoryInterface.php",
+        "src/Contrib/Jaeger/BatchAdapter/BatchAdapterInterface.php",
+        "src/Contrib/Jaeger/Exporter.php",
+        "src/Contrib/Jaeger/HttpCollectorExporter.php",
+        "src/Contrib/Jaeger/HttpSender.php",
+        "src/Contrib/Jaeger/IdConverter.php",
+        "src/Contrib/Jaeger/JaegerTransport.php",
+        "src/Contrib/Jaeger/ParsedEndpointUrl.php",
+        "src/Contrib/Jaeger/README.md",
+        "src/Contrib/Jaeger/SpanConverter.php",
+        "src/Contrib/Jaeger/TagFactory/TagFactory.php",
+        "src/Contrib/Jaeger/ThriftHttpTransport.php",
+        "src/Contrib/Jaeger/ThriftUdpTransport.php",
+        "src/Contrib/Jaeger/TransportInterface.php",
+        "src/Contrib/Jaeger/composer.json",
+        "src/Contrib/composer.json",
+        "src/SDK/Common/Configuration/Defaults.php",
+        "src/SDK/Common/Configuration/KnownValues.php",
+        "src/SDK/Common/Configuration/ValueTypes.php",
+        "src/SDK/Common/Configuration/Variables.php",
+        "tests/TraceContext/W3CTestService/index.php",
+        "tests/Unit/Contrib/Jaeger/AgentExporterTest.php",
+        "tests/Unit/Contrib/Jaeger/IdConverterTest.php",
+        "tests/Unit/Contrib/Jaeger/JaegerExporterTest.php",
+        "tests/Unit/Contrib/Jaeger/JaegerHttpCollectorExporterTest.php",
+        "tests/Unit/Contrib/Jaeger/JaegerHttpSenderTest.php",
+        "tests/Unit/Contrib/Jaeger/JaegerSpanConverterTest.php",
+        "tests/Unit/SDK/Common/Configuration/ConfigurationTest.php",
+        "tests/Unit/SDK/Trace/ExporterFactoryTest.php",
+        "thrift/jaeger/Agent/AgentClient.php",
+        "thrift/jaeger/Agent/AgentIf.php",
+        "thrift/jaeger/Agent/Agent_emitBatch_args.php",
+        "thrift/jaeger/Agent/Agent_emitZipkinBatch_args.php",
+        "thrift/jaeger/Agent/AggregationValidatorClient.php",
+        "thrift/jaeger/Agent/AggregationValidatorIf.php",
+        "thrift/jaeger/Agent/AggregationValidator_validateTrace_args.php",
+        "thrift/jaeger/Agent/AggregationValidator_validateTrace_result.php",
+        "thrift/jaeger/Agent/BaggageRestriction.php",
+        "thrift/jaeger/Agent/BaggageRestrictionManagerClient.php",
+        "thrift/jaeger/Agent/BaggageRestrictionManagerIf.php",
+        "thrift/jaeger/Agent/BaggageRestrictionManager_getBaggageRestrictions_args.php",
+        "thrift/jaeger/Agent/BaggageRestrictionManager_getBaggageRestrictions_result.php",
+        "thrift/jaeger/Agent/Dependencies.php",
+        "thrift/jaeger/Agent/DependencyClient.php",
+        "thrift/jaeger/Agent/DependencyIf.php",
+        "thrift/jaeger/Agent/DependencyLink.php",
+        "thrift/jaeger/Agent/Dependency_getDependenciesForTrace_args.php",
+        "thrift/jaeger/Agent/Dependency_getDependenciesForTrace_result.php",
+        "thrift/jaeger/Agent/Dependency_saveDependencies_args.php",
+        "thrift/jaeger/Agent/OperationSamplingStrategy.php",
+        "thrift/jaeger/Agent/PerOperationSamplingStrategies.php",
+        "thrift/jaeger/Agent/ProbabilisticSamplingStrategy.php",
+        "thrift/jaeger/Agent/RateLimitingSamplingStrategy.php",
+        "thrift/jaeger/Agent/SamplingManagerClient.php",
+        "thrift/jaeger/Agent/SamplingManagerIf.php",
+        "thrift/jaeger/Agent/SamplingManager_getSamplingStrategy_args.php",
+        "thrift/jaeger/Agent/SamplingManager_getSamplingStrategy_result.php",
+        "thrift/jaeger/Agent/SamplingStrategyResponse.php",
+        "thrift/jaeger/Agent/SamplingStrategyType.php",
+        "thrift/jaeger/Agent/ServiceThrottlingConfig.php",
+        "thrift/jaeger/Agent/ThrottlingConfig.php",
+        "thrift/jaeger/Agent/ThrottlingResponse.php",
+        "thrift/jaeger/Agent/ThrottlingServiceClient.php",
+        "thrift/jaeger/Agent/ThrottlingServiceIf.php",
+        "thrift/jaeger/Agent/ThrottlingService_getThrottlingConfigs_args.php",
+        "thrift/jaeger/Agent/ThrottlingService_getThrottlingConfigs_result.php",
+        "thrift/jaeger/Agent/ValidateTraceResponse.php",
+        "thrift/jaeger/Agent/Zipkin/Annotation.php",
+        "thrift/jaeger/Agent/Zipkin/AnnotationType.php",
+        "thrift/jaeger/Agent/Zipkin/BinaryAnnotation.php",
+        "thrift/jaeger/Agent/Zipkin/Constant.php",
+        "thrift/jaeger/Agent/Zipkin/Endpoint.php",
+        "thrift/jaeger/Agent/Zipkin/Response.php",
+        "thrift/jaeger/Agent/Zipkin/Span.php",
+        "thrift/jaeger/Agent/Zipkin/ZipkinCollectorClient.php",
+        "thrift/jaeger/Agent/Zipkin/ZipkinCollectorIf.php",
+        "thrift/jaeger/Agent/Zipkin/ZipkinCollector_submitZipkinBatch_args.php",
+        "thrift/jaeger/Agent/Zipkin/ZipkinCollector_submitZipkinBatch_result.php",
+        "thrift/jaeger/Batch.php",
+        "thrift/jaeger/BatchSubmitResponse.php",
+        "thrift/jaeger/ClientStats.php",
+        "thrift/jaeger/CollectorClient.php",
+        "thrift/jaeger/CollectorIf.php",
+        "thrift/jaeger/Collector_submitBatches_args.php",
+        "thrift/jaeger/Collector_submitBatches_result.php",
+        "thrift/jaeger/Crossdock/Downstream.php",
+        "thrift/jaeger/Crossdock/JoinTraceRequest.php",
+        "thrift/jaeger/Crossdock/ObservedSpan.php",
+        "thrift/jaeger/Crossdock/StartTraceRequest.php",
+        "thrift/jaeger/Crossdock/TraceResponse.php",
+        "thrift/jaeger/Crossdock/TracedServiceClient.php",
+        "thrift/jaeger/Crossdock/TracedServiceIf.php",
+        "thrift/jaeger/Crossdock/TracedService_joinTrace_args.php",
+        "thrift/jaeger/Crossdock/TracedService_joinTrace_result.php",
+        "thrift/jaeger/Crossdock/TracedService_startTrace_args.php",
+        "thrift/jaeger/Crossdock/TracedService_startTrace_result.php",
+        "thrift/jaeger/Crossdock/Transport.php",
+        "thrift/jaeger/Log.php",
+        "thrift/jaeger/Process.php",
+        "thrift/jaeger/README.md",
+        "thrift/jaeger/Span.php",
+        "thrift/jaeger/SpanRef.php",
+        "thrift/jaeger/SpanRefType.php",
+        "thrift/jaeger/Tag.php",
+        "thrift/jaeger/TagType.php",
+        "thrift/jaeger/composer.json"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-php/pull/890",
+          "statement": "明确参考源规范移除 Jaeger 导出器。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

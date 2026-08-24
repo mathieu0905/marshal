@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-1624",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 1624,
+      "change_id": "kubernetes/enhancements#1624",
+      "url": "https://github.com/kubernetes/enhancements/pull/1624",
+      "status": "MERGED",
+      "subject": "provide recommended .status.conditions schema",
+      "branch": "master",
+      "created": "2020-03-23T15:44:50Z",
+      "submitted": "2020-05-08T21:23:52Z"
+    },
+    "base_commit": "567b090166af84c4422d8fb91c10221e90bf7d43",
+    "candidate_commit": "92b2b81198e986c7f96614eaa0b6c46aedc040e9",
+    "changed_paths": [
+      "keps/sig-api-machinery/1623-standardize-conditions/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/567b090166af84c4422d8fb91c10221e90bf7d43...92b2b81198e986c7f96614eaa0b6c46aedc040e9.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes-sigs/gateway-api",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes-sigs/gateway-api/pull/168"
+    },
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/90454"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes-sigs/gateway-api",
+      "pull_request": {
+        "provider": "github",
+        "number": 168,
+        "change_id": "kubernetes-sigs/gateway-api#168",
+        "url": "https://github.com/kubernetes-sigs/gateway-api/pull/168",
+        "status": "MERGED",
+        "subject": "Mark fields in Condition required",
+        "branch": "master",
+        "created": "2020-04-28T18:30:55Z",
+        "submitted": "2020-05-08T15:33:43Z"
+      },
+      "commit": "9dfdb75f45d6fcf457fdbe9d533c6019701ff494",
+      "changed_paths": [
+        "api/v1alpha1/gateway_types.go",
+        "api/v1alpha1/gatewayclass_types.go",
+        "api/v1alpha1/generated.pb.go",
+        "api/v1alpha1/generated.proto",
+        "config/crd/bases/networking.x-k8s.io_gatewayclasses.yaml",
+        "config/crd/bases/networking.x-k8s.io_gateways.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes-sigs/gateway-api/pull/168",
+          "statement": "明确根据源 KEP 把条件字段标为必填。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 90454,
+        "change_id": "kubernetes/kubernetes#90454",
+        "url": "https://github.com/kubernetes/kubernetes/pull/90454",
+        "status": "MERGED",
+        "subject": "add conditions to metav1",
+        "branch": "master",
+        "created": "2020-04-24T13:42:25Z",
+        "submitted": "2020-06-30T20:32:08Z"
+      },
+      "commit": "95c64c73d1b87f7a1e696ff31900121fb3f13027",
+      "changed_paths": [
+        "staging/src/k8s.io/apiextensions-apiserver/pkg/generated/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/generated.pb.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/generated.proto",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/code-generator/_examples/apiserver/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/kube-aggregator/pkg/generated/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/sample-apiserver/pkg/generated/openapi/zz_generated.openapi.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/90454",
+          "statement": "正文明确实现源 KEP。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/kubernetes/enhancements"
+    },
+    {
+      "repository": "kubernetes-sigs/gateway-api",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/kubernetes-sigs/gateway-api"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/kubernetes/kubernetes"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

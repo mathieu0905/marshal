@@ -1,0 +1,78 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.5.1/userguide/gradle_daemon.html#sec:disabling_the_daemon.
+Daemon will be stopped at the end of the build 
+
+> Configure project :plugin-gradle
+Signing plugin detected. Will automatically sign the published artifacts.
+
+> Task :testlib:dependencies
+
+------------------------------------------------------------
+Project ':testlib' - Spotless - keep your code spotless with Gradle
+------------------------------------------------------------
+
+testRuntimeClasspath - Runtime classpath of source set 'test'.
++--- project :lib
++--- com.diffplug.durian:durian-core:1.2.0
++--- com.diffplug.durian:durian-testlib:1.2.0
+|    +--- com.diffplug.durian:durian-core:1.2.0
+|    +--- com.diffplug.durian:durian-reflect:1.2.0
+|    |    +--- com.diffplug.durian:durian-core:1.2.0
+|    |    \--- com.diffplug.durian:durian-collect:1.2.0
+|    |         \--- com.diffplug.durian:durian-core:1.2.0
+|    +--- com.diffplug.durian:durian-cache:1.2.0
+|    |    +--- com.diffplug.durian:durian-core:1.2.0
+|    |    +--- com.diffplug.durian:durian-collect:1.2.0 (*)
+|    |    \--- com.diffplug.durian:durian-concurrent:1.2.0
+|    |         +--- com.diffplug.durian:durian-core:1.2.0
+|    |         \--- com.diffplug.durian:durian-collect:1.2.0 (*)
+|    +--- com.diffplug.durian:durian-eventbus:1.2.0
+|    |    +--- com.diffplug.durian:durian-core:1.2.0
+|    |    +--- com.diffplug.durian:durian-collect:1.2.0 (*)
+|    |    +--- com.diffplug.durian:durian-reflect:1.2.0 (*)
+|    |    +--- com.diffplug.durian:durian-concurrent:1.2.0 (*)
+|    |    \--- com.diffplug.durian:durian-cache:1.2.0 (*)
+|    +--- com.diffplug.durian:durian-io:1.2.0
+|    |    +--- com.diffplug.durian:durian-core:1.2.0
+|    |    \--- com.diffplug.durian:durian-collect:1.2.0 (*)
+|    +--- com.diffplug.durian:durian-concurrent:1.2.0 (*)
+|    +--- com.diffplug.durian:durian-parse:1.2.0
+|    |    +--- com.diffplug.durian:durian-core:1.2.0
+|    |    +--- com.diffplug.durian:durian-collect:1.2.0 (*)
+|    |    \--- com.diffplug.durian:durian-io:1.2.0 (*)
+|    +--- com.diffplug.durian:durian-collect:1.2.0 (*)
+|    \--- junit:junit:4.12
+|         \--- org.hamcrest:hamcrest-core:1.3
++--- org.junit.jupiter:junit-jupiter:5.8.0
+|    +--- org.junit:junit-bom:5.8.0
+|    |    +--- org.junit.jupiter:junit-jupiter:5.8.0 (c)
+|    |    +--- org.junit.jupiter:junit-jupiter-api:5.8.0 (c)
+|    |    +--- org.junit.jupiter:junit-jupiter-engine:5.8.0 (c)
+|    |    +--- org.junit.jupiter:junit-jupiter-params:5.8.0 (c)
+|    |    +--- org.junit.platform:junit-platform-commons:1.8.0 (c)
+|    |    \--- org.junit.platform:junit-platform-engine:1.8.0 (c)
+|    +--- org.junit.jupiter:junit-jupiter-api:5.8.0
+|    |    +--- org.junit:junit-bom:5.8.0 (*)
+|    |    +--- org.opentest4j:opentest4j:1.2.0
+|    |    \--- org.junit.platform:junit-platform-commons:1.8.0
+|    |         \--- org.junit:junit-bom:5.8.0 (*)
+|    +--- org.junit.jupiter:junit-jupiter-params:5.8.0
+|    |    +--- org.junit:junit-bom:5.8.0 (*)
+|    |    \--- org.junit.jupiter:junit-jupiter-api:5.8.0 (*)
+|    \--- org.junit.jupiter:junit-jupiter-engine:5.8.0
+|         +--- org.junit:junit-bom:5.8.0 (*)
+|         +--- org.junit.platform:junit-platform-engine:1.8.0
+|         |    +--- org.junit:junit-bom:5.8.0 (*)
+|         |    +--- org.opentest4j:opentest4j:1.2.0
+|         |    \--- org.junit.platform:junit-platform-commons:1.8.0 (*)
+|         \--- org.junit.jupiter:junit-jupiter-api:5.8.0 (*)
++--- org.assertj:assertj-core:3.15.0
++--- com.diffplug.durian:durian-io:1.2.0 (*)
+\--- com.diffplug.durian:durian-collect:1.2.0 (*)
+
+(c) - dependency constraint
+(*) - dependencies omitted (listed previously)
+
+A web-based, searchable dependency report is available by adding the --scan option.
+
+BUILD SUCCESSFUL in 6s
+1 actionable task: 1 executed

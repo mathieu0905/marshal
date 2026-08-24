@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-989427",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/integ",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 989427,
+      "change_id": "Iadc70daa101d12c1b79953ddd74a5521607d6211",
+      "url": "https://review.opendev.org/c/starlingx/integ/+/989427",
+      "status": "MERGED",
+      "subject": "Add Kubernetes 1.32.13 package",
+      "branch": "master",
+      "created": "2026-05-20 17:03:04.000000000",
+      "submitted": "2026-05-25 21:44:57.000000000"
+    },
+    "base_commit": "771f8e19820d5cf91f7ec097f80a090b35d53ebf",
+    "candidate_commit": "92c7fac2b8a056d844c95e3b76044b8a104264f7",
+    "changed_paths": [
+      "debian_iso_image.inc",
+      "debian_pkg_dirs",
+      "debian_trixie_iso_image_std.inc",
+      "debian_trixie_pkg_dirs_std",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/changelog",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/control",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/copyright",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-client.install",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-client.lintian-overrides",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-kubeadm.install",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-master.dirs",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-master.install",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-master.lintian-overrides",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-misc.docs",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-misc.manpages",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-node.install",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-node.lintian-overrides",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/kubernetes-1.32.13-unit-test.install",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/Revert-kubeadm-use-new-etcd-livez-and-readyz-endpoint.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubeadm-platform-pods-zero-cpu-resources-readiness-p.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubeadm-reduce-UpgradeManifestTimeout.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubelet-cpumanager-introduce-concept-of-isolated-CPU.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubelet-cpumanager-keep-normal-containers-off-reserv.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubelet-cpumanager-platform-pods-on-reserved-cpus.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubelet-cpumanager-policy-none-use-allocatable-cpus-only.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubelet-disable-CFS-quota-throttling-non-integer-cpu.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/kubelet-isolcpus-SMT-aware-sorted-allocation.patch",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/patches/series",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/rules",
+      "kubernetes/kubernetes-1.32.13/debian/deb_folder/source/format",
+      "kubernetes/kubernetes-1.32.13/debian/meta_data.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/989427/revisions/92c7fac2b8a056d844c95e3b76044b8a104264f7/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/integ",
+      "target_repository": "starlingx/ansible-playbooks",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/989472"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 989472,
+        "change_id": "I65bfdd3d5b7f99fdae62689b93ab818b5d029342",
+        "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/989472",
+        "status": "MERGED",
+        "subject": "Add support for Kubernetes 1.32.13",
+        "branch": "master",
+        "created": "2026-05-21 01:32:13.000000000",
+        "submitted": "2026-05-25 21:54:04.000000000"
+      },
+      "commit": "8b88819596a54436f13f857c84ec79946fcc50b9",
+      "changed_paths": [
+        "playbookconfig/src/playbooks/roles/bootstrap/prepare-env/vars/k8s-v1.32.13",
+        "playbookconfig/src/playbooks/roles/common/bringup-kubemaster/templates/k8s-v1.32.13",
+        "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.32.13",
+        "playbookconfig/src/playbooks/roles/k8s-storage-backends/snapshot-controller/files/k8s-v1.32.13",
+        "playbookconfig/src/playbooks/roles/k8s-storage-backends/snapshot-controller/templates/k8s-v1.32.13"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/989472",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/integ/+/989427",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/54d8c7d040ff4044887421422a4f6a0e"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/ansible-playbooks/raw/commit/0219d566f0810743658a2cf504cd5eba2b8523fb/LICENSE"
+    },
+    {
+      "repository": "starlingx/integ",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/integ/raw/commit/74dcd0d2123ec155cdc7ffa0d094e509f2da9837/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

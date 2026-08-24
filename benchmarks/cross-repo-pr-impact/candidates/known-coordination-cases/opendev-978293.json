@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-978293",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/telemetry-tempest-plugin",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 978293,
+      "change_id": "I0a5b89020c3a7b91dae5eef3c52c6ac7856883ab",
+      "url": "https://review.opendev.org/c/openstack/telemetry-tempest-plugin/+/978293",
+      "status": "MERGED",
+      "subject": "Adopt to gabbi 4.0.0",
+      "branch": "master",
+      "created": "2026-02-28 06:30:34.000000000",
+      "submitted": "2026-03-06 14:02:43.000000000"
+    },
+    "base_commit": "dcd19b0198fcdc55c149d545a52923f4b88621be",
+    "candidate_commit": "f46f9c828acd450bb8a417915bb829c7c83c072f",
+    "changed_paths": [
+      ".zuul.yaml",
+      "requirements.txt",
+      "telemetry_tempest_plugin/scenario/gnocchi_gabbits/live.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/978293/revisions/f46f9c828acd450bb8a417915bb829c7c83c072f/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/telemetry-tempest-plugin",
+      "target_repository": "openstack/ceilometer",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/ceilometer/+/973303"
+    },
+    {
+      "source_repository": "openstack/telemetry-tempest-plugin",
+      "target_repository": "openstack/ceilometer",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/ceilometer/+/976674"
+    },
+    {
+      "source_repository": "openstack/telemetry-tempest-plugin",
+      "target_repository": "openstack/ceilometer",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/ceilometer/+/973656"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/ceilometer",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 973303,
+        "change_id": "I95969a6091bb47c48695eae3631cfc0d01ab263c",
+        "url": "https://review.opendev.org/c/openstack/ceilometer/+/973303",
+        "status": "MERGED",
+        "subject": "[keystone] Add convenience function to use openstacksdk",
+        "branch": "master",
+        "created": "2026-01-13 20:22:32.000000000",
+        "submitted": "2026-03-31 08:15:06.000000000"
+      },
+      "commit": "a9001b5e972ab28d073faedd908928dbc7553825",
+      "changed_paths": [
+        "ceilometer/keystone_client.py",
+        "ceilometer/tests/unit/test_keystone_client.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/ceilometer/+/973303",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/telemetry-tempest-plugin/+/978293",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/f8e167a7930d4a268cadbeb5eeb29f2b"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/ceilometer",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 976674,
+        "change_id": "I33d32efae28441e07984b229aac5eda3386556c9",
+        "url": "https://review.opendev.org/c/openstack/ceilometer/+/976674",
+        "status": "MERGED",
+        "subject": "[pre-commit] Configure autopep8 for pre-commit",
+        "branch": "master",
+        "created": "2026-02-12 18:32:32.000000000",
+        "submitted": "2026-03-11 16:16:06.000000000"
+      },
+      "commit": "f7362d4219defa5623ee7220b919801639ea55a2",
+      "changed_paths": [
+        ".pre-commit-config.yaml",
+        "ceilometer/event/trait_plugins.py",
+        "ceilometer/keystone_client.py",
+        "ceilometer/objectstore/rgw.py",
+        "ceilometer/objectstore/swift.py",
+        "ceilometer/polling/plugin_base.py",
+        "ceilometer/publisher/gnocchi.py",
+        "ceilometer/publisher/zaqar.py",
+        "ceilometer/tests/unit/compute/test_discovery.py",
+        "ceilometer/tests/unit/polling/test_dynamic_pollster.py",
+        "ceilometer/tests/unit/publisher/test_gnocchi.py",
+        "pyproject.toml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/ceilometer/+/976674",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/telemetry-tempest-plugin/+/978293",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/6e0626b1085643b0b33dda6877c6bd14"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/ceilometer",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 973656,
+        "change_id": "Ic644c481e2bdf56e934b1c0e957b4e2902ba1504",
+        "url": "https://review.opendev.org/c/openstack/ceilometer/+/973656",
+        "status": "MERGED",
+        "subject": "[objectstore] Refactor RGW endpoint lookup to consolidate logic",
+        "branch": "master",
+        "created": "2026-01-16 17:33:24.000000000",
+        "submitted": "2026-03-10 20:55:22.000000000"
+      },
+      "commit": "d3c8ae0842167f490c876fac763d170ede5c4a1e",
+      "changed_paths": [
+        "ceilometer/objectstore/rgw.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/ceilometer/+/973656",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/telemetry-tempest-plugin/+/978293",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/43fbafb7214a443ba4718c5d68924bf7"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/ceilometer",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/ceilometer/raw/commit/a00f7cf695f2a8d4b526e175b5341427cd0c8e4e/LICENSE"
+    },
+    {
+      "repository": "openstack/telemetry-tempest-plugin",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/telemetry-tempest-plugin/raw/commit/f46f9c828acd450bb8a417915bb829c7c83c072f/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

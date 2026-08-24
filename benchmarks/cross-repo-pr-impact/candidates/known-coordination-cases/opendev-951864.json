@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-951864",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/kolla-ansible",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 951864,
+      "change_id": "If178c23249370c7c69744843737e61a6309d6a19",
+      "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/951864",
+      "status": "MERGED",
+      "subject": "Remove ironic-inspector deployment",
+      "branch": "master",
+      "created": "2025-06-05 14:26:18.000000000",
+      "submitted": "2025-09-09 12:45:58.000000000"
+    },
+    "base_commit": "58b83afc64da83104edf1cd79cb439b66167f5f5",
+    "candidate_commit": "cbe6fe7cef02b92aecd12e4e13f312055f49a424",
+    "changed_paths": [
+      "ansible/group_vars/all.yml",
+      "ansible/inventory/all-in-one",
+      "ansible/inventory/multinode",
+      "ansible/roles/bifrost/defaults/main.yml",
+      "ansible/roles/bifrost/tasks/bootstrap.yml",
+      "ansible/roles/bifrost/tasks/stop.yml",
+      "ansible/roles/bifrost/templates/bifrost.yml.j2",
+      "ansible/roles/common/tasks/config.yml",
+      "ansible/roles/common/templates/cron-logrotate-ironic-inspector.conf.j2",
+      "ansible/roles/fluentd/defaults/main.yml",
+      "ansible/roles/fluentd/templates/conf/filter/01-rewrite.conf.j2",
+      "ansible/roles/ironic/defaults/main.yml",
+      "ansible/roles/ironic/handlers/main.yml",
+      "ansible/roles/ironic/tasks/bootstrap.yml",
+      "ansible/roles/ironic/tasks/bootstrap_service.yml",
+      "ansible/roles/ironic/tasks/clone.yml",
+      "ansible/roles/ironic/tasks/config.yml",
+      "ansible/roles/ironic/tasks/deploy.yml",
+      "ansible/roles/ironic/tasks/precheck.yml",
+      "ansible/roles/ironic/tasks/upgrade.yml",
+      "ansible/roles/ironic/templates/inspector.ipxe.j2",
+      "ansible/roles/ironic/templates/ipa.ipxe.j2",
+      "ansible/roles/ironic/templates/ironic-dnsmasq.conf.j2",
+      "ansible/roles/ironic/templates/ironic-http.json.j2",
+      "ansible/roles/ironic/templates/ironic-inspector.conf.j2",
+      "ansible/roles/ironic/templates/ironic-inspector.json.j2",
+      "ansible/roles/ironic/templates/ironic-tftp.json.j2",
+      "ansible/roles/ironic/templates/ironic.conf.j2",
+      "ansible/roles/ironic/templates/pxelinux.default.j2",
+      "ansible/roles/loadbalancer/tasks/precheck.yml",
+      "ansible/roles/loadbalancer/tasks/upgrade.yml",
+      "ansible/roles/prometheus/defaults/main.yml",
+      "ansible/roles/service-ks-register/tasks/main.yml",
+      "ansible/site.yml",
+      "doc/source/reference/bare-metal/ironic-guide.rst",
+      "etc/kolla/globals.yml",
+      "etc/kolla/passwords.yml",
+      "releasenotes/notes/drop-ironic-inspector-38fc91c64517ffc1.yaml",
+      "roles/openstack-clients/defaults/main.yml",
+      "tests/get_logs.sh",
+      "tests/templates/inventory.j2",
+      "tests/templates/ironic-overrides.j2",
+      "tests/test-ironic.sh",
+      "zuul.d/jobs.yaml",
+      "zuul.d/project.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/951864/revisions/cbe6fe7cef02b92aecd12e4e13f312055f49a424/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/kolla-ansible",
+      "target_repository": "openstack/kolla",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/kolla/+/958826"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/kolla",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 958826,
+        "change_id": "Ie7e607c5a9c6f8c2e36aea5d52dc2ffbe97dddb3",
+        "url": "https://review.opendev.org/c/openstack/kolla/+/958826",
+        "status": "MERGED",
+        "subject": "Drop ironic-inspector",
+        "branch": "master",
+        "created": "2025-08-29 05:57:11.000000000",
+        "submitted": "2025-09-19 11:58:09.000000000"
+      },
+      "commit": "97899bce586d3a1713a9db20cffc2345625f064b",
+      "changed_paths": [
+        "docker/bifrost/bifrost-base/Dockerfile.j2",
+        "docker/ironic-inspector/Dockerfile.j2",
+        "docker/ironic-inspector/extend_start.sh",
+        "docker/ironic-inspector/ironic_inspector_sudoers",
+        "kolla/common/sources.py",
+        "kolla/common/users.py",
+        "releasenotes/notes/drop-ironic-inspector-093cc36e06787168.yaml",
+        "roles/kolla-build-config/defaults/main.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/kolla/+/958826",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/kolla-ansible/+/951864",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/8d0f2d81def64e0ea8a911b89407f5a2"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/kolla",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/kolla/raw/commit/5121ff7679f416844ef74774c825b6be1382c74b/LICENSE"
+    },
+    {
+      "repository": "openstack/kolla-ansible",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/kolla-ansible/raw/commit/87d3868632ca765285d64f6ca6df2806746fc892/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-243",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 243,
+      "change_id": "open-telemetry/opentelemetry-specification#243",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/243",
+      "status": "MERGED",
+      "subject": "Fix typo in FailedNotRetryable",
+      "branch": "master",
+      "created": "2019-09-03T16:28:06Z",
+      "submitted": "2019-09-07T15:31:02Z"
+    },
+    "base_commit": "fa85353546e96200c41aa62d329d5f3e68f6ee8b",
+    "candidate_commit": "99811ca5cd4cdce5816942a0d7ac602cc75a015d",
+    "changed_paths": [
+      "specification/sdk-exporter.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/fa85353546e96200c41aa62d329d5f3e68f6ee8b...99811ca5cd4cdce5816942a0d7ac602cc75a015d.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/516"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-js",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/pull/247"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 516,
+        "change_id": "open-telemetry/opentelemetry-java#516",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/516",
+        "status": "MERGED",
+        "subject": "Fix typo in FailedNotRetryable",
+        "branch": "master",
+        "created": "2019-09-03T20:19:07Z",
+        "submitted": "2019-09-11T19:16:28Z"
+      },
+      "commit": "4006bab062f63acc15b6b169fab55ed2822a5672",
+      "changed_paths": [
+        "exporters/jaeger/src/main/java/io/opentelemetry/exporters/jaeger/JaegerGrpcSpanExporter.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/export/InMemorySpanExporter.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/export/MultiSpanExporter.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/export/SpanExporter.java",
+        "sdk/src/test/java/io/opentelemetry/sdk/trace/export/InMemorySpanExporterTest.java",
+        "sdk/src/test/java/io/opentelemetry/sdk/trace/export/MultiSpanExporterTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/516",
+          "statement": "明确继续源规范的拼写修正。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "pull_request": {
+        "provider": "github",
+        "number": 247,
+        "change_id": "open-telemetry/opentelemetry-js#247",
+        "url": "https://github.com/open-telemetry/opentelemetry-js/pull/247",
+        "status": "MERGED",
+        "subject": "fix: rename FailedNoneRetryable -> FailedNotRetryable",
+        "branch": "master",
+        "created": "2019-09-10T20:17:56Z",
+        "submitted": "2019-09-11T16:42:43Z"
+      },
+      "commit": "f7230c7e531440671d5aaccddeff55dfd9c29e2a",
+      "changed_paths": [
+        "packages/opentelemetry-basic-tracer/src/export/ExportResult.ts",
+        "packages/opentelemetry-basic-tracer/src/export/InMemorySpanExporter.ts",
+        "packages/opentelemetry-basic-tracer/test/export/InMemorySpanExporter.test.ts",
+        "packages/opentelemetry-exporter-jaeger/src/jaeger.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-js/pull/247",
+          "statement": "明确基于源规范重命名接口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

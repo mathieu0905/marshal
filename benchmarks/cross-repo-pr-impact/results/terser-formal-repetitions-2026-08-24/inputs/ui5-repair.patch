@@ -1,0 +1,42 @@
+diff --git a/lib/lbt/bundle/AutoSplitter.js b/lib/lbt/bundle/AutoSplitter.js
+index cfb2a9c..d98e6cd 100644
+--- a/lib/lbt/bundle/AutoSplitter.js
++++ b/lib/lbt/bundle/AutoSplitter.js
+@@ -205,7 +205,8 @@ class AutoSplitter {
+ 						warnings: false, // TODO configure?
+ 						compress: false, // TODO configure?
+ 						output: {
+-							comments: copyrightCommentsPattern
++							comments: copyrightCommentsPattern,
++							wrap_func_args: false
+ 						}
+ 						// , outFileName: resource.name
+ 						// , outSourceMap: true
+diff --git a/lib/lbt/bundle/Builder.js b/lib/lbt/bundle/Builder.js
+index 3362ae5..1e5beb8 100644
+--- a/lib/lbt/bundle/Builder.js
++++ b/lib/lbt/bundle/Builder.js
+@@ -329,7 +329,8 @@ class BundleBuilder {
+ 				warnings: false, // TODO configure?
+ 				compress: false, // TODO configure?
+ 				output: {
+-					comments: copyrightCommentsPattern
++					comments: copyrightCommentsPattern,
++					wrap_func_args: false
+ 				}
+ 				// , outFileName: resource.name
+ 				// , outSourceMap: true
+diff --git a/lib/processors/uglifier.js b/lib/processors/uglifier.js
+index d1547cc..4ff321e 100644
+--- a/lib/processors/uglifier.js
++++ b/lib/processors/uglifier.js
+@@ -18,7 +18,8 @@ module.exports = function({resources}) {
+ 			}, {
+ 				warnings: false,
+ 				output: {
+-					comments: copyrightCommentsPattern
++					comments: copyrightCommentsPattern,
++					wrap_func_args: false
+ 				},
+ 				compress: false
+ 			});

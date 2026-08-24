@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-4319",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 4319,
+      "change_id": "open-telemetry/opentelemetry-specification#4319",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/4319",
+      "status": "MERGED",
+      "subject": "Deprecate Event API and SDK in favor of Emit Event in the Log API",
+      "branch": "main",
+      "created": "2024-12-04T18:54:08Z",
+      "submitted": "2024-12-06T17:27:04Z"
+    },
+    "base_commit": "50027a1036746dce293ee0a8592639f131fc1fb8",
+    "candidate_commit": "323c4cd83c3be66aac803f54175bda6d24ef2ed7",
+    "changed_paths": [
+      "specification/README.md",
+      "specification/logs/README.md",
+      "specification/logs/event-api.md",
+      "specification/logs/event-sdk.md",
+      "specification/versioning-and-stability.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/50027a1036746dce293ee0a8592639f131fc1fb8...323c4cd83c3be66aac803f54175bda6d24ef2ed7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-php",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php/pull/1466"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/4654"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "pull_request": {
+        "provider": "github",
+        "number": 1466,
+        "change_id": "open-telemetry/opentelemetry-php#1466",
+        "url": "https://github.com/open-telemetry/opentelemetry-php/pull/1466",
+        "status": "MERGED",
+        "subject": "deprecate event logger",
+        "branch": "main",
+        "created": "2025-01-06T07:02:32Z",
+        "submitted": "2025-01-08T23:50:35Z"
+      },
+      "commit": "805080a2d8bd1ff9e5bf55787b64ac7a8c3b9392",
+      "changed_paths": [
+        "src/API/Globals.php",
+        "src/API/Instrumentation/CachedInstrumentation.php",
+        "src/API/Instrumentation/Configurator.php",
+        "src/API/Instrumentation/ContextKeys.php",
+        "src/API/Logs/EventLoggerInterface.php",
+        "src/API/Logs/EventLoggerProviderInterface.php",
+        "src/API/Logs/NoopEventLogger.php",
+        "src/API/Logs/NoopEventLoggerProvider.php",
+        "src/SDK/Logs/EventLogger.php",
+        "src/SDK/Logs/EventLoggerProvider.php",
+        "src/SDK/Logs/EventLoggerProviderFactory.php",
+        "src/SDK/Logs/EventLoggerProviderInterface.php",
+        "src/SDK/Logs/NoopEventLoggerProvider.php",
+        "src/SDK/Sdk.php",
+        "src/SDK/SdkAutoloader.php",
+        "src/SDK/SdkBuilder.php"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-php/pull/1466",
+          "statement": "明确因源规范移除旧事件记录器。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 4654,
+        "change_id": "open-telemetry/opentelemetry-python#4654",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/4654",
+        "status": "MERGED",
+        "subject": "Mark events API/SDK as deprecated",
+        "branch": "main",
+        "created": "2025-06-24T13:23:52Z",
+        "submitted": "2025-12-03T05:28:30Z"
+      },
+      "commit": "5d0173411d4a12ba33145700ba6c72fa0828267b",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "opentelemetry-api/src/opentelemetry/_events/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/_events/__init__.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/4654",
+          "statement": "明确参考源规范弃用 Event API/SDK。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

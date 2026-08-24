@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-python-peps-271",
+  "project": "python",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "python/peps",
+    "pull_request": {
+      "provider": "github",
+      "number": 271,
+      "change_id": "python/peps#271",
+      "url": "https://github.com/python/peps/pull/271",
+      "status": "MERGED",
+      "subject": "PEP 484: Allow deriving NewType from another unique type",
+      "branch": "master",
+      "created": "2017-05-30T09:07:57Z",
+      "submitted": "2017-05-30T16:56:57Z"
+    },
+    "base_commit": "91299310ff219af2364f34b89df3ddcd4e2091c5",
+    "candidate_commit": "9767cda7477492867599b4a48ed19dd490abeaa8",
+    "changed_paths": [
+      "pep-0484.txt"
+    ],
+    "patch_url": "https://github.com/python/peps/compare/91299310ff219af2364f34b89df3ddcd4e2091c5...9767cda7477492867599b4a48ed19dd490abeaa8.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "python/peps",
+      "target_repository": "python/cpython",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/python/cpython/pull/3696"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "python/cpython",
+      "pull_request": {
+        "provider": "github",
+        "number": 3696,
+        "change_id": "python/cpython#3696",
+        "url": "https://github.com/python/cpython/pull/3696",
+        "status": "MERGED",
+        "subject": "bpo-31564: NewType can subclass NewType",
+        "branch": "master",
+        "created": "2017-09-22T14:48:12Z",
+        "submitted": "2017-09-24T02:37:48Z"
+      },
+      "commit": "3e57ec77358b52755394bfec551ff5e6bc3bfdb7",
+      "changed_paths": [
+        "Doc/library/typing.rst"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/python/cpython/pull/3696",
+          "statement": "正文明确源 PEP 变化后允许 NewType 派生。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "python/peps",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/peps"
+    },
+    {
+      "repository": "python/cpython",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/cpython"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

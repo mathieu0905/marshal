@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-08-23",
+  "baseline": "按 source.repository 查六项固定映射，每条只预测一个目标仓库",
+  "cases": 99,
+  "effective_directed_repository_relations": 6,
+  "known_target_macro_recall": 1.0,
+  "mean_reciprocal_rank": 1.0,
+  "recall_at_1": 1.0,
+  "recall_at_3": 1.0,
+  "recall_at_5": 1.0,
+  "repository_predictions_per_case": {
+    "mean": 1.0,
+    "median": 1,
+    "maximum": 1
+  },
+  "command": "python benchmarks/cross-repo-pr-impact/baseline_source_repository_lookup.py | python benchmarks/cross-repo-pr-impact/score.py /dev/stdin",
+  "conclusion": "仓库检索主任务已被源仓库身份完全决定，当前 99 条案例不能区分内容敏感的影响分析方法。"
+}

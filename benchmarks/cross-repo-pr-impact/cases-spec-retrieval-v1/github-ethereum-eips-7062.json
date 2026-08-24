@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-7062",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 7062,
+      "change_id": "ethereum/EIPs#7062",
+      "url": "https://github.com/ethereum/EIPs/pull/7062",
+      "status": "MERGED",
+      "subject": "4844: add `data_gas_used` to header",
+      "branch": "master",
+      "created": "2023-05-24T08:39:20Z",
+      "submitted": "2023-06-01T14:23:42Z"
+    },
+    "base_commit": "ef5fe548ea04551e27aab392d6f6b77e997207ac",
+    "candidate_commit": "972c95f87cbafa852918344371f269809b95cb02",
+    "changed_paths": [
+      "EIPS/eip-4844.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/ef5fe548ea04551e27aab392d6f6b77e997207ac...972c95f87cbafa852918344371f269809b95cb02.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/27382"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 27382,
+        "change_id": "ethereum/go-ethereum#27382",
+        "url": "https://github.com/ethereum/go-ethereum/pull/27382",
+        "status": "MERGED",
+        "subject": "consensus, core, eth/downloader, params: 4844 chain validation",
+        "branch": "master",
+        "created": "2023-05-30T06:54:24Z",
+        "submitted": "2023-05-31T07:21:14Z"
+      },
+      "commit": "e947b90641311e9c2a46eef384dfa35d40d4b964",
+      "changed_paths": [
+        "consensus/beacon/consensus.go",
+        "consensus/clique/clique.go",
+        "consensus/ethash/consensus.go",
+        "consensus/misc/eip1559.go",
+        "consensus/misc/eip1559_test.go",
+        "consensus/misc/eip4844.go",
+        "consensus/misc/eip4844_test.go",
+        "core/block_validator.go",
+        "core/types/block.go",
+        "core/types/gen_header_json.go",
+        "core/types/gen_header_rlp.go",
+        "eth/downloader/queue.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/27382",
+          "statement": "目标正文明确说明按源规范更新实现区块头字段校验。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "assessed_at": "2026-08-24",
+  "status": "selected_for_formal_a3_repetition",
+  "source_repository": "jcabi/jcabi-aspects",
+  "counterfactual_scope": "把 2016 年的真实相邻发布施加到 2023 年的真实消费者固定提交；不是历史同期案例",
+  "source_change": {
+    "before": {
+      "version": "0.22.2",
+      "git_commit": "b3b3809c20259eb32042ba526828bdd00af32ef7",
+      "committed_at": "2015-11-05T04:40:35Z"
+    },
+    "after": {
+      "version": "0.22.3",
+      "git_commit": "eb12ab237be39c9baefa62becf480780d4d4bb6a",
+      "committed_at": "2016-01-11T11:00:58Z"
+    },
+    "primary_behavior_change": "MethodValidator 捕获 Hibernate Validator 的 ConstraintDeclarationException，仅忽略消息以 HV000151 开头的参数约束覆盖异常；其他同类异常继续抛出",
+    "behavior_commit": "4eb18e3e3ceed355e5ebf2fbaad3dd70bcf1d4f8",
+    "public_class_inventory": "公开类文件集合不变；发布物从 jar 打包改为 OSGi bundle，并更换内部标记文件",
+    "additional_release_changes": "完整发布还包含依赖更新和若干字段初始化位置重构，因此本实验评价完整真实发布，不把结果归因成单行补丁"
+  },
+  "environment": {
+    "java": "OpenJDK 11.0.31",
+    "maven": "Apache Maven 3.9.8",
+    "operating_system": "Linux"
+  },
+  "quick_screening": [
+    {
+      "repository": "jcabi/jcabi-s3",
+      "commit": "0efa37ae2c431ae148e921dc3c1a9fcb8aa2bd3a",
+      "command": ["mvn", "clean", "test", "-B"],
+      "before": {"exit_code": 0, "tests": 12, "failures": 0, "maven_seconds": 7.063},
+      "after": {"exit_code": 0, "tests": 12, "failures": 0, "maven_seconds": 7.466}
+    },
+    {
+      "repository": "jcabi/jcabi-simpledb",
+      "commit": "4af3ea931691caa0a667852b626485b1b0cbffcf",
+      "command": ["mvn", "clean", "test", "-B"],
+      "before": {"exit_code": 0, "tests": 5, "failures": 0, "maven_seconds": 10.541},
+      "after": {"exit_code": 0, "tests": 5, "failures": 0, "maven_seconds": 11.017},
+      "coverage_note": "代码含接口与实现参数约束，但本次 jcabi 插件日志报告 0 个切点被编织，不能用这 5 项测试证明 MethodValidator 行为分支"
+    },
+    {
+      "repository": "jcabi/jcabi-w3c",
+      "commit": "4054d4ad3c26607ec1bd8221b2bb1faa70ee78b0",
+      "command": ["mvn", "clean", "test", "-B"],
+      "before": {"exit_code": 0, "tests": 9, "failures": 0, "maven_seconds": 21.415},
+      "after": {"exit_code": 0, "tests": 9, "failures": 0, "maven_seconds": 7.864}
+    },
+    {
+      "repository": "jcabi/jcabi-maven-plugin",
+      "commit": "c6d7c3d883b5176a0532516af477f77f96884ebb",
+      "command": ["mvn", "clean", "verify", "-B"],
+      "before": {"exit_code": 0, "integration_scenarios": 5, "maven_seconds": 179},
+      "after": {"exit_code": 0, "integration_scenarios": 5, "maven_seconds": 120},
+      "coverage_note": "三个夹具各执行 2 项测试；约束测试通过预期的 ConstraintViolationException，证明 MethodValidator 相邻路径实际运行，但不直接触发 HV000151 分支"
+    }
+  ],
+  "cold_dependency_verification": {
+    "repository": "jcabi/jcabi-maven-plugin",
+    "isolation": "前后两臂使用不同消费者副本、不同 Maven 本地仓和不同嵌套构建仓",
+    "before": {
+      "exit_code": 0,
+      "maven_time": "14:05",
+      "integration_scenarios": 5,
+      "ajc_tests": 2,
+      "failures": 0,
+      "resolved_version": "0.22.2"
+    },
+    "after": {
+      "exit_code": 0,
+      "maven_time": "14:40",
+      "integration_scenarios": 5,
+      "ajc_tests": 2,
+      "failures": 0,
+      "resolved_version": "0.22.3"
+    }
+  },
+  "claim": "0.22.2 到 0.22.3 可作为该四仓闭集的 A3 候选：固定消费者代码无需配套修改即可通过原生命令",
+  "claim_status": "supported_for_screening_only",
+  "limitations": [
+    "源发布早于消费者快照约七年，只能解释为主动反事实",
+    "完整发布含多个变化，不能把兼容结果只归因于 HV000151 处理",
+    "冷目录只复核了实际执行约束切面的 jcabi-maven-plugin，其他三仓仍需进入正式重复",
+    "现有测试没有直接执行 HV000151 异常分支",
+    "尚未完成 A0 至 A3 每臂三次独立重复和独立语义复核"
+  ],
+  "next_action": "按固定顺序执行整个项目包的 A0、A1、A2、A3 三次独立重复，并由独立复核者判断 A3 与两个维护者修复的语义边界"
+}

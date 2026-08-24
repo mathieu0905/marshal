@@ -1,0 +1,88 @@
+{
+  "status": "four_arm_screening_only",
+  "date": "2026-08-24",
+  "evidence_class": "generated_output_snapshot_adaptation",
+  "source": {
+    "repository": "terser/terser",
+    "a3_before_version": "4.2.0",
+    "before_version": "4.2.1",
+    "after_version": "4.3.9",
+    "behavior_commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "behavior": "wrap_func_args defaults to true and adds parentheses around anonymous function arguments"
+  },
+  "target": {
+    "repository": "preconstruct/preconstruct",
+    "baseline_commit": "15caef21f49eaa85334af2cf022fd78ad0b27b71",
+    "pull_request": "https://github.com/preconstruct/preconstruct/pull/119",
+    "snapshot_repair_commits": [
+      "c6df9cde959fe2f6c7df1fa66f1c279430997964",
+      "5ff97b1adb77ebf6f3429a28013c69cc55328c38"
+    ],
+    "repair_paths": [
+      "packages/preconstruct/src/build/__tests__/__snapshots__/basic.ts.snap",
+      "packages/preconstruct/src/build/__tests__/__snapshots__/build.ts.snap"
+    ],
+    "contract": "basic and UMD generated-output snapshots"
+  },
+  "environment": {
+    "runtime": "Node.js 12.22.12",
+    "package_manager": "Yarn 1.22.19",
+    "dependency_input": "historical yarn.lock with registry host rewritten from registry.yarnpkg.com to registry.npmjs.org",
+    "environment_interventions": [
+      "removed the withdrawn release-only dependency @mitchellhamilton/experimental-changesets-auto-release 0.0.2 from the temporary root package.json",
+      "installed with lifecycle scripts disabled, then ran the historical postinstall command explicitly",
+      "rebuilt v8-profiler-next for Node.js 12",
+      "replaced only packages/preconstruct/node_modules/terser for each arm"
+    ],
+    "selected_command": "jest basic.ts and build.ts with only basic, umd with dep on other module, and monorepo umd with dep on other module selected"
+  },
+  "arms": [
+    {
+      "arm": "A0",
+      "source_version": "4.2.1",
+      "target_repair_applied": false,
+      "selected_result": "3 selected test cases passed; 35 selected snapshots matched"
+    },
+    {
+      "arm": "A1",
+      "source_version": "4.3.9",
+      "target_repair_applied": false,
+      "selected_result": "3 selected test cases failed; 11 selected snapshots mismatched",
+      "failure_signature": "generated UMD wrappers and source maps contain the new anonymous-function parentheses"
+    },
+    {
+      "arm": "A2",
+      "source_version": "4.3.9",
+      "target_repair_applied": true,
+      "selected_result": "3 selected test cases passed; 35 selected snapshots matched"
+    },
+    {
+      "arm": "A3_before",
+      "source_version": "4.2.0",
+      "target_repair_applied": false,
+      "selected_result": "3 selected test cases passed; 35 selected snapshots matched"
+    },
+    {
+      "arm": "A3_after",
+      "source_version": "4.2.1",
+      "target_repair_applied": false,
+      "selected_result": "3 selected test cases passed; 35 selected snapshots matched"
+    }
+  ],
+  "suite_limitations": {
+    "selected_process_exit": "nonzero on passing arms because Jest reports 39 snapshots belonging to unselected tests as obsolete",
+    "full_suite_observation": "10 tests passed and 2 unrelated Flow fixture tests failed because @babel/preset-flow was unavailable in their temporary fixture directories",
+    "comparability": "The three selected tests and their 35 snapshots execute the exact files changed by the historical repair, but this is a narrowed contract rather than an unmodified full-suite pass."
+  },
+  "repair_ablation": {
+    "applied_change": "only the two historical snapshot-update commits",
+    "excluded_change": "the pull request's package.json and yarn.lock dependency update",
+    "interpretation": "The historical target adaptation accepts the changed generated output; it does not change Preconstruct production behavior."
+  },
+  "remaining_requirements": [
+    "obtain an unmodified full-suite execution or retain the narrowed-contract classification",
+    "identify and execute related consumers that can provide reliable negative space",
+    "repeat accepted arms three times in isolated dependency directories",
+    "obtain independent semantic review"
+  ]
+}

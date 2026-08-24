@@ -1,0 +1,757 @@
+<html>
+<head>
+<title>TestNG:  Surefire test</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>Surefire test</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>87/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Mon Aug 24 18:12:46 CST 2026</td>
+</tr>
+<tr><td>Total time:</td><td>2 seconds (2569 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKey()'><b>testinstallPrivateKey</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.ovf.xml.ProductSectionHandlerTest.test()'><b>test</b><br>Test class: org.jclouds.ovf.xml.ProductSectionHandlerTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.ovf.xml.ProductSectionHandlerTest@60e949e1</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testblockUntilRunningStatic()'><b>testblockUntilRunningStatic</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testAmzTypeSupportsYum()'><b>testAmzTypeSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.ovf.xml.DiskSectionHandlerTest.test()'><b>test</b><br>Test class: org.jclouds.ovf.xml.DiskSectionHandlerTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.ovf.xml.DiskSectionHandlerTest@673bb956</td></tr>
+<tr>
+<td title='org.jclouds.compute.util.ConcurrentOpenSocketFinderTest.testChecksSocketsConcurrently()'><b>testChecksSocketsConcurrently</b><br>Test class: org.jclouds.compute.util.ConcurrentOpenSocketFinderTest</td>
+<td></td>
+<td>1</td>
+<td>org.jclouds.compute.util.ConcurrentOpenSocketFinderTest@1fd386c3</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testinboundPortsBadFormat()'><b>testinboundPortsBadFormat</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td><div><pre>java.lang.IllegalArgumentException: port must be a positive integer &lt; 65535
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.TemplateOptions.inboundPorts(TemplateOptions.java:551)
+	at org.jclouds.compute.options.TemplateOptionsTest.testinboundPortsBadFormat(TemplateOptionsTest.java:134)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1727455613", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1727455613'><pre>java.lang.IllegalArgumentException: port must be a positive integer &lt; 65535
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.TemplateOptions.inboundPorts(TemplateOptions.java:551)
+	at org.jclouds.compute.options.TemplateOptionsTest.testinboundPortsBadFormat(TemplateOptionsTest.java:134)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKeyStatic()'><b>testinstallPrivateKeyStatic</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.Sha512CryptTest.testMakeCryptedPasswordHash()'><b>testMakeCryptedPasswordHash</b><br>Test class: org.jclouds.compute.functions.Sha512CryptTest<br>Parameters: Hello world!, $6$rounds=10000$saltstringsaltstring, $6$rounds=10000$saltstringsaltst$OW1/O6BYHV6BcXZu8QVeXbDWra3Oeqh0sbHbbMCVNSnCM/UrjmM0Dp8vOuZeHBy/YTBmSK6H9qs/y3RnOaw5v.</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.Sha512CryptTest@29d334c</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKeyBadFormat()'><b>testauthorizePublicKeyBadFormat</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td><div><pre>java.lang.IllegalArgumentException: key should start with ssh-rsa
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.TemplateOptions.authorizePublicKey(TemplateOptions.java:490)
+	at org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKeyBadFormat(TemplateOptionsTest.java:73)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1927018070", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1927018070'><pre>java.lang.IllegalArgumentException: key should start with ssh-rsa
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.TemplateOptions.authorizePublicKey(TemplateOptions.java:490)
+	at org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKeyBadFormat(TemplateOptionsTest.java:73)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKeyNPE()'><b>testauthorizePublicKeyNPE</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td><div><pre>java.lang.NullPointerException: publicKey
+	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:907)
+	at org.jclouds.compute.options.TemplateOptions.authorizePublicKey(TemplateOptions.java:490)
+	at org.jclouds.compute.options.TemplateOptions$Builder.authorizePublicKey(TemplateOptions.java:701)
+	at org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKeyNPE(TemplateOptionsTest.java:98)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1390561007", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1390561007'><pre>java.lang.NullPointerException: publicKey
+	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:907)
+	at org.jclouds.compute.options.TemplateOptions.authorizePublicKey(TemplateOptions.java:490)
+	at org.jclouds.compute.options.TemplateOptions$Builder.authorizePublicKey(TemplateOptions.java:701)
+	at org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKeyNPE(TemplateOptionsTest.java:98)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.util.ConcurrentOpenSocketFinderTest.testReturnsReachable()'><b>testReturnsReachable</b><br>Test class: org.jclouds.compute.util.ConcurrentOpenSocketFinderTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.util.ConcurrentOpenSocketFinderTest@1fd386c3</td></tr>
+<tr>
+<td title='org.jclouds.net.domain.IpPermissionTest.testPairwise()'><b>testPairwise</b><br>Test class: org.jclouds.net.domain.IpPermissionTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.net.domain.IpPermissionTest@1e730495</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testRhelDescriptionSupportsYum()'><b>testRhelDescriptionSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.Sha512CryptTest.testMakeCryptedPasswordHash()'><b>testMakeCryptedPasswordHash</b><br>Test class: org.jclouds.compute.functions.Sha512CryptTest<br>Parameters: the minimum number is still observed, $6$rounds=10$roundstoolow, $6$rounds=1000$roundstoolow$kUMsbe306n21p9R.FRkW3IGn.S9NPN0x50YhH1xhLsPuWGsUSklZt58jaTfF4ZEQpyUNGc0dqbpBYYBaHHrsX.</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.Sha512CryptTest@29d334c</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCentosNameSupportsYum()'><b>testCentosNameSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKeyNPE()'><b>testinstallPrivateKeyNPE</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td><div><pre>java.lang.NullPointerException: privateKey
+	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:907)
+	at org.jclouds.compute.options.TemplateOptions.installPrivateKey(TemplateOptions.java:475)
+	at org.jclouds.compute.options.TemplateOptions$Builder.installPrivateKey(TemplateOptions.java:690)
+	at org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKeyNPE(TemplateOptionsTest.java:67)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1635444207", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1635444207'><pre>java.lang.NullPointerException: privateKey
+	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:907)
+	at org.jclouds.compute.options.TemplateOptions.installPrivateKey(TemplateOptions.java:475)
+	at org.jclouds.compute.options.TemplateOptions$Builder.installPrivateKey(TemplateOptions.java:690)
+	at org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKeyNPE(TemplateOptionsTest.java:67)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.util.ConcurrentOpenSocketFinderTest.testSocketFinderAllowedInterfacesPrivate()'><b>testSocketFinderAllowedInterfacesPrivate</b><br>Test class: org.jclouds.compute.util.ConcurrentOpenSocketFinderTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.util.ConcurrentOpenSocketFinderTest@1fd386c3</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testFedoraDescriptionSupportsYum()'><b>testFedoraDescriptionSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.net.domain.IpPermissionTest.testCompareGroupIds()'><b>testCompareGroupIds</b><br>Test class: org.jclouds.net.domain.IpPermissionTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.net.domain.IpPermissionTest@1e730495</td></tr>
+<tr>
+<td title='org.jclouds.compute.config.PersistNodeCredentialsTest.testRefreshCredentialsForNodeWhenStatementIsNullSameCredentialsAndDoesCache()'><b>testRefreshCredentialsForNodeWhenStatementIsNullSameCredentialsAndDoesCache</b><br>Test class: org.jclouds.compute.config.PersistNodeCredentialsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.config.PersistNodeCredentialsTest@6d868997</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMCENTOSDoesntSupportApt()'><b>testCIMCENTOSDoesntSupportApt</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.ovf.xml.OperatingSystemSectionHandlerTest.test()'><b>test</b><br>Test class: org.jclouds.ovf.xml.OperatingSystemSectionHandlerTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.ovf.xml.OperatingSystemSectionHandlerTest@cd7f1ae</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKey()'><b>testauthorizePublicKey</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testNullauthorizePublicKey()'><b>testNullauthorizePublicKey</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testblockUntilRunningDefault()'><b>testblockUntilRunningDefault</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testinboundPortsStatic()'><b>testinboundPortsStatic</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.util.ConcurrentOpenSocketFinderTest.testSocketFinderAllowedInterfacesAll()'><b>testSocketFinderAllowedInterfacesAll</b><br>Test class: org.jclouds.compute.util.ConcurrentOpenSocketFinderTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.util.ConcurrentOpenSocketFinderTest@1fd386c3</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testSuseTypeSupportsZypper()'><b>testSuseTypeSupportsZypper</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.config.PersistNodeCredentialsTest.testRefreshCredentialsForNodeWhenStatementIsAdminAccessNewCredentialsAndDoesCache()'><b>testRefreshCredentialsForNodeWhenStatementIsAdminAccessNewCredentialsAndDoesCache</b><br>Test class: org.jclouds.compute.config.PersistNodeCredentialsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.config.PersistNodeCredentialsTest@6d868997</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testblockUntilRunning()'><b>testblockUntilRunning</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testNetworks()'><b>testNetworks</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testSuseNameSupportsZypper()'><b>testSuseNameSupportsZypper</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMUBUNTUSupportsApt()'><b>testCIMUBUNTUSupportsApt</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKeyBadFormat()'><b>testinstallPrivateKeyBadFormat</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td><div><pre>java.lang.IllegalArgumentException: key should start with -----BEGIN RSA PRIVATE KEY-----
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.TemplateOptions.installPrivateKey(TemplateOptions.java:475)
+	at org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKeyBadFormat(TemplateOptionsTest.java:42)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace532429975", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace532429975'><pre>java.lang.IllegalArgumentException: key should start with -----BEGIN RSA PRIVATE KEY-----
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.TemplateOptions.installPrivateKey(TemplateOptions.java:475)
+	at org.jclouds.compute.options.TemplateOptionsTest.testinstallPrivateKeyBadFormat(TemplateOptionsTest.java:42)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.net.domain.IpPermissionTest.testCompareExclusionCidrBlocks()'><b>testCompareExclusionCidrBlocks</b><br>Test class: org.jclouds.net.domain.IpPermissionTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.net.domain.IpPermissionTest@1e730495</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMDEBIANDoesntSupportYum()'><b>testCIMDEBIANDoesntSupportYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.config.PersistNodeCredentialsTest.testRefreshCredentialsForNodeIfRanAdminAccessWhenStatementIsAdminAccessNewCredentialsAndDoesCache()'><b>testRefreshCredentialsForNodeIfRanAdminAccessWhenStatementIsAdminAccessNewCredentialsAndDoesCache</b><br>Test class: org.jclouds.compute.config.PersistNodeCredentialsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.config.PersistNodeCredentialsTest@6d868997</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.HardwarePredicatesTest.testHardwareId()'><b>testHardwareId</b><br>Test class: org.jclouds.compute.predicates.HardwarePredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.HardwarePredicatesTest@c7a977f</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCentosTypeSupportsYum()'><b>testCentosTypeSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testauthorizePublicKeyStatic()'><b>testauthorizePublicKeyStatic</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.Sha512CryptTest.testMakeCryptedPasswordHash()'><b>testMakeCryptedPasswordHash</b><br>Test class: org.jclouds.compute.functions.Sha512CryptTest<br>Parameters: This is just a test, $6$rounds=5000$toolongsaltstring, $6$toolongsaltstrin$lQ8jolhgVRVhY4b5pZKaysCLi0QBxGoNeKQzQ3glMhwllF7oGDZxUhx1yxdYcz/e1JSbq3y6JMxxl8audkUEm0</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.Sha512CryptTest@29d334c</td></tr>
+<tr>
+<td title='org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest.simpleRootTest()'><b>simpleRootTest</b><br>Test class: org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest@100f9bbe</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.ImagePredicatesTest.testImageId()'><b>testImageId</b><br>Test class: org.jclouds.compute.predicates.ImagePredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.ImagePredicatesTest@27f9e982</td></tr>
+<tr>
+<td title='org.jclouds.compute.util.ConcurrentOpenSocketFinderTest.testRespectsTimeout()'><b>testRespectsTimeout</b><br>Test class: org.jclouds.compute.util.ConcurrentOpenSocketFinderTest</td>
+<td></td>
+<td>1</td>
+<td>org.jclouds.compute.util.ConcurrentOpenSocketFinderTest@1fd386c3</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.ImagePredicatesTest.testUserMetadataContains()'><b>testUserMetadataContains</b><br>Test class: org.jclouds.compute.predicates.ImagePredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.ImagePredicatesTest@27f9e982</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMRHELSupportsYum()'><b>testCIMRHELSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testRedHatEnterpriseLinuxNameSupportsYum()'><b>testRedHatEnterpriseLinuxNameSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.net.domain.IpPermissionTest.testCompareProtocol()'><b>testCompareProtocol</b><br>Test class: org.jclouds.net.domain.IpPermissionTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.net.domain.IpPermissionTest@1e730495</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.Sha512CryptTest.testMakeCryptedPasswordHash()'><b>testMakeCryptedPasswordHash</b><br>Test class: org.jclouds.compute.functions.Sha512CryptTest<br>Parameters: a short string, $6$rounds=123456$asaltof16chars.., $6$rounds=123456$asaltof16chars..$BtCwjqMJGx5hrJhZywWvt0RLE8uZ4oPwcelCjmw2kSYu.Ec6ycULevoBK25fs2xXgMNrCzIMVcgEJAstJeonj1</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.Sha512CryptTest@29d334c</td></tr>
+<tr>
+<td title='org.jclouds.net.domain.IpPermissionTest.testCompareCidrBlocks()'><b>testCompareCidrBlocks</b><br>Test class: org.jclouds.net.domain.IpPermissionTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.net.domain.IpPermissionTest@1e730495</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMCENTOSSupportsYum()'><b>testCIMCENTOSSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testNodeNames()'><b>testNodeNames</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.net.domain.IpPermissionTest.testCompareTenantIdGroupNamePairs()'><b>testCompareTenantIdGroupNamePairs</b><br>Test class: org.jclouds.net.domain.IpPermissionTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.net.domain.IpPermissionTest@1e730495</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testBlockUntilRunningUnsetsBlockOnPort()'><b>testBlockUntilRunningUnsetsBlockOnPort</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest.simpleTest()'><b>simpleTest</b><br>Test class: org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest@100f9bbe</td></tr>
+<tr>
+<td title='org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest.testUserAddAsRoot()'><b>testUserAddAsRoot</b><br>Test class: org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest@100f9bbe</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testFedoraNameSupportsYum()'><b>testFedoraNameSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.config.PersistNodeCredentialsTest.testReturnsCorrectFunction()'><b>testReturnsCorrectFunction</b><br>Test class: org.jclouds.compute.config.PersistNodeCredentialsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.config.PersistNodeCredentialsTest@6d868997</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testNullinstallPrivateKey()'><b>testNullinstallPrivateKey</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testblockOnPort()'><b>testblockOnPort</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionWhenNodeDied()'><b>testIllegalStateExceptionWhenNodeDied</b><br>Test class: org.jclouds.compute.functions.PollNodeRunningTest</td>
+<td><div><pre>java.lang.IllegalStateException: node(id) terminated
+	at org.jclouds.compute.functions.PollNodeRunning.apply(PollNodeRunning.java:76)
+	at org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionWhenNodeDied(PollNodeRunningTest.java:85)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace805717330", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace805717330'><pre>java.lang.IllegalStateException: node(id) terminated
+	at org.jclouds.compute.functions.PollNodeRunning.apply(PollNodeRunning.java:76)
+	at org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionWhenNodeDied(PollNodeRunningTest.java:85)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.PollNodeRunningTest@edf4f36</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMDEBIANSupportsApt()'><b>testCIMDEBIANSupportsApt</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testFedoraTypeSupportsYum()'><b>testFedoraTypeSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testblockOnPortBadFormat()'><b>testblockOnPortBadFormat</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td><div><pre>java.lang.IllegalArgumentException: port must be a positive integer &lt; 65535
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.RunScriptOptions.blockOnPort(RunScriptOptions.java:286)
+	at org.jclouds.compute.options.TemplateOptions.blockOnPort(TemplateOptions.java:775)
+	at org.jclouds.compute.options.TemplateOptionsTest.testblockOnPortBadFormat(TemplateOptionsTest.java:104)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace338425842", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace338425842'><pre>java.lang.IllegalArgumentException: port must be a positive integer &lt; 65535
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.compute.options.RunScriptOptions.blockOnPort(RunScriptOptions.java:286)
+	at org.jclouds.compute.options.TemplateOptions.blockOnPort(TemplateOptions.java:775)
+	at org.jclouds.compute.options.TemplateOptionsTest.testblockOnPortBadFormat(TemplateOptionsTest.java:104)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.config.PersistNodeCredentialsTest.testRefreshCredentialsForNodeIfRanAdminAccessWhenStatementIsNullSameCredentialsAndNoCaching()'><b>testRefreshCredentialsForNodeIfRanAdminAccessWhenStatementIsNullSameCredentialsAndNoCaching</b><br>Test class: org.jclouds.compute.config.PersistNodeCredentialsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.config.PersistNodeCredentialsTest@6d868997</td></tr>
+<tr>
+<td title='org.jclouds.ovf.xml.NetworkSectionHandlerTest.test()'><b>test</b><br>Test class: org.jclouds.ovf.xml.NetworkSectionHandlerTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.ovf.xml.NetworkSectionHandlerTest@13e9f2e2</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testNullblockOnPort()'><b>testNullblockOnPort</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testRhelTypeSupportsYum()'><b>testRhelTypeSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testblockOnPortStatic()'><b>testblockOnPortStatic</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionWhenNodeStillPending()'><b>testIllegalStateExceptionWhenNodeStillPending</b><br>Test class: org.jclouds.compute.functions.PollNodeRunningTest</td>
+<td><div><pre>java.lang.IllegalStateException: node(id) didn&apos;t achieve the status running; aborting after 0 seconds with final status: PENDING
+	at org.jclouds.compute.functions.PollNodeRunning.apply(PollNodeRunning.java:69)
+	at org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionWhenNodeStillPending(PollNodeRunningTest.java:61)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1046933383", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1046933383'><pre>java.lang.IllegalStateException: node(id) didn&apos;t achieve the status running; aborting after 0 seconds with final status: PENDING
+	at org.jclouds.compute.functions.PollNodeRunning.apply(PollNodeRunning.java:69)
+	at org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionWhenNodeStillPending(PollNodeRunningTest.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.PollNodeRunningTest@edf4f36</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testSuseDescriptionSupportsZypper()'><b>testSuseDescriptionSupportsZypper</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.util.ConcurrentOpenSocketFinderTest.testAbortsWhenNodeNotRunning()'><b>testAbortsWhenNodeNotRunning</b><br>Test class: org.jclouds.compute.util.ConcurrentOpenSocketFinderTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.util.ConcurrentOpenSocketFinderTest@1fd386c3</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testinboundPorts()'><b>testinboundPorts</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionAndNodeResetWhenRefSetToNull()'><b>testIllegalStateExceptionAndNodeResetWhenRefSetToNull</b><br>Test class: org.jclouds.compute.functions.PollNodeRunningTest</td>
+<td><div><pre>java.lang.IllegalStateException: api response for node(id) was null
+	at org.jclouds.compute.functions.PollNodeRunning.apply(PollNodeRunning.java:67)
+	at org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionAndNodeResetWhenRefSetToNull(PollNodeRunningTest.java:108)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1375520918", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1375520918'><pre>java.lang.IllegalStateException: api response for node(id) was null
+	at org.jclouds.compute.functions.PollNodeRunning.apply(PollNodeRunning.java:67)
+	at org.jclouds.compute.functions.PollNodeRunningTest.testIllegalStateExceptionAndNodeResetWhenRefSetToNull(PollNodeRunningTest.java:108)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.PollNodeRunningTest@edf4f36</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testRhelNameSupportsYum()'><b>testRhelNameSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.util.ConcurrentOpenSocketFinderTest.testSocketFinderAllowedInterfacesPublic()'><b>testSocketFinderAllowedInterfacesPublic</b><br>Test class: org.jclouds.compute.util.ConcurrentOpenSocketFinderTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.util.ConcurrentOpenSocketFinderTest@1fd386c3</td></tr>
+<tr>
+<td title='org.jclouds.compute.options.TemplateOptionsTest.testDefaultOpen22()'><b>testDefaultOpen22</b><br>Test class: org.jclouds.compute.options.TemplateOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.options.TemplateOptionsTest@2c383e33</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMRHELDoesntSupportApt()'><b>testCIMRHELDoesntSupportApt</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCIMUBUNTUDoesntSupportYum()'><b>testCIMUBUNTUDoesntSupportYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest.simpleRootTestWithSudoPassword()'><b>simpleRootTestWithSudoPassword</b><br>Test class: org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.callables.RunScriptOnNodeUsingSshTest@100f9bbe</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testRedHatEnterpriseLinuxDescriptionSupportsYum()'><b>testRedHatEnterpriseLinuxDescriptionSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.Sha512CryptTest.testMakeCryptedPasswordHash()'><b>testMakeCryptedPasswordHash</b><br>Test class: org.jclouds.compute.functions.Sha512CryptTest<br>Parameters: Hello world!, $6$saltstring, $6$saltstring$svn8UoSVapNtMuq1ukKS4tPQd8iKwSMHWjl/O817G3uBnIFNjnQJuesI68u4OTLiBFdcbYEdFCoEOfaS35inz1</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.Sha512CryptTest@29d334c</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testUbuntuNameSupportsApt()'><b>testUbuntuNameSupportsApt</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.PollNodeRunningTest.testRecoversWhenTemporarilyNodeNotFound()'><b>testRecoversWhenTemporarilyNodeNotFound</b><br>Test class: org.jclouds.compute.functions.PollNodeRunningTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.PollNodeRunningTest@edf4f36</td></tr>
+<tr>
+<td title='org.jclouds.compute.functions.Sha512CryptTest.testMakeCryptedPasswordHash()'><b>testMakeCryptedPasswordHash</b><br>Test class: org.jclouds.compute.functions.Sha512CryptTest<br>Parameters: a very much longer text to encrypt.  This one even stretches over morethan one line., $6$rounds=1400$anotherlongsaltstring, $6$rounds=1400$anotherlongsalts$POfYwTEok97VWcjxIiSOjiykti.o/pQs.wPvMxQ6Fm7I6IoYN3CmLs66x9t0oSwbtEW7o7UmJEiDwGqd8p4ur1</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.functions.Sha512CryptTest@29d334c</td></tr>
+<tr>
+<td title='org.jclouds.compute.predicates.OperatingSystemPredicatesTest.testCentosDescriptionSupportsYum()'><b>testCentosDescriptionSupportsYum</b><br>Test class: org.jclouds.compute.predicates.OperatingSystemPredicatesTest</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.compute.predicates.OperatingSystemPredicatesTest@55caeb35</td></tr>
+</table><p>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-992753-semantic-impact",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 992753,
+      "change_id": "I2501ec4e6b6804babf9a69c7bd772f7abbe49c64",
+      "url": "https://review.opendev.org/c/starlingx/config/+/992753",
+      "status": "MERGED",
+      "subject": "sysinv puppet: hieradata generation for dpll-mgr instances",
+      "branch": "master",
+      "created": "2026-06-10 19:53:33.000000000",
+      "submitted": "2026-06-16 16:42:26.000000000"
+    },
+    "base_commit": "d2136da479c1f20f320b47f792c4aca888f467f6",
+    "candidate_commit": "e5750c3b134a079d0ecd1256581829dc8a24bac3",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/puppet/networking.py",
+      "sysinv/sysinv/sysinv/sysinv/tests/puppet/test_networking.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/992753/revisions/e5750c3b134a079d0ecd1256581829dc8a24bac3/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/stx-puppet",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/starlingx/stx-puppet/+/993255"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/stx-puppet",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 993255,
+        "change_id": "Ib3e994ccb4e1b2c3a80f918258f8b2a4e7884eb6",
+        "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/993255",
+        "status": "MERGED",
+        "subject": "puppet: add dpll-mgr service manifest and templates",
+        "branch": "master",
+        "created": "2026-06-13 19:10:15.000000000",
+        "submitted": "2026-06-16 16:42:33.000000000"
+      },
+      "commit": "9810c13e642d0b27af3d1e9bdef63d5122d1b66f",
+      "changed_paths": [
+        "puppet-manifests/debian/trixie/src/modules/platform/manifests/ptpinstance.pp",
+        "puppet-manifests/debian/trixie/src/modules/platform/templates/dpll-mgr-instance.erb",
+        "puppet-manifests/debian/trixie/src/modules/platform/templates/dpll-mgr-instance.json.erb",
+        "puppet-manifests/debian/trixie/src/modules/platform/templates/dpll-mgr-instance.service.erb"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "deployment_configuration",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/993255",
+          "statement": "config 生成 dpll-mgr JSON hieradata；stx-puppet 明确消费该结构生成配置、单元和服务生命周期。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/config"
+    },
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

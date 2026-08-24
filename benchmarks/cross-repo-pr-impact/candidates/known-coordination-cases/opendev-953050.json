@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-953050",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/puppet-openstack-integration",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 953050,
+      "change_id": "Id4d27626b78c491e594ba4c5ee4bd24dca93cd44",
+      "url": "https://review.opendev.org/c/openstack/puppet-openstack-integration/+/953050",
+      "status": "MERGED",
+      "subject": "manila: Drop deprecated parameters to disable manila v2 user",
+      "branch": "master",
+      "created": "2025-06-22 10:41:29.000000000",
+      "submitted": "2025-06-23 22:19:24.000000000"
+    },
+    "base_commit": "ab5fcc2788f8d4195cb6ade9ece97aff5bac0562",
+    "candidate_commit": "2fcfffeb2fb12243c14782ea467c8631e6661c45",
+    "changed_paths": [
+      "manifests/manila.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/953050/revisions/2fcfffeb2fb12243c14782ea467c8631e6661c45/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/puppet-openstack-integration",
+      "target_repository": "openstack/puppet-manila",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-manila/+/953046"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/puppet-manila",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 953046,
+        "change_id": "I1063eae7d2ef11da6f1bda2c93e6877e8e8e1d2f",
+        "url": "https://review.opendev.org/c/openstack/puppet-manila/+/953046",
+        "status": "MERGED",
+        "subject": "Remove management of manila v2 user",
+        "branch": "master",
+        "created": "2025-06-22 08:40:49.000000000",
+        "submitted": "2025-06-24 02:27:38.000000000"
+      },
+      "commit": "274881b7c47fb07d624f45e8b8db2ed1abf4da7a",
+      "changed_paths": [
+        "manifests/keystone/auth.pp",
+        "releasenotes/notes/remove-share-v2-user-ab05c374d1dee1ce.yaml",
+        "spec/classes/manila_keystone_auth_spec.rb"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-manila/+/953046",
+          "statement": "Depends-On: https://review.opendev.org/953050",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/74e0dba10f6745af8a056b6d527b5360"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/puppet-manila",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-manila/raw/commit/274881b7c47fb07d624f45e8b8db2ed1abf4da7a/LICENSE"
+    },
+    {
+      "repository": "openstack/puppet-openstack-integration",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-openstack-integration/raw/commit/2fcfffeb2fb12243c14782ea467c8631e6661c45/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

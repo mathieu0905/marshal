@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://marshal.local/schemas/cross-repo-pr-impact-case-v1.1.json",
+  "title": "Marshal cross-repository PR impact case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "project",
+    "split",
+    "case_kind",
+    "source",
+    "relations",
+    "targets",
+    "label_source",
+    "licenses",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "project": {"type": "string", "minLength": 1},
+    "split": {"enum": ["development", "validation", "test", "config-regression"]},
+    "case_kind": {"enum": ["independent_positive", "hard_control", "config_regression"]},
+    "source": {"$ref": "#/$defs/source"},
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/relation"}
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/target"}
+    },
+    "label_source": {"$ref": "#/$defs/labelSource"},
+    "licenses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/license"}
+    },
+    "provenance": {"$ref": "#/$defs/provenance"}
+  },
+  "$defs": {
+    "pullRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "number", "change_id", "url", "status", "subject", "branch", "created", "submitted"],
+      "properties": {
+        "provider": {"enum": ["gerrit", "github"]},
+        "number": {"type": "integer", "minimum": 1},
+        "change_id": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "format": "uri"},
+        "status": {"type": "string", "minLength": 1},
+        "subject": {"type": "string", "minLength": 1},
+        "branch": {"type": "string", "minLength": 1},
+        "created": {"type": "string", "minLength": 1},
+        "submitted": {"type": "string", "minLength": 1}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "repository", "pull_request", "base_commit", "candidate_commit", "changed_paths", "patch_url"],
+      "properties": {
+        "host": {"type": "string", "minLength": 1},
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+"},
+        "pull_request": {"$ref": "#/$defs/pullRequest"},
+        "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "changed_paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "patch_url": {"type": "string", "format": "uri"}
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_repository", "target_repository", "relation_kind", "evidence_url"],
+      "properties": {
+        "source_repository": {"type": "string", "minLength": 3},
+        "target_repository": {"type": "string", "minLength": 3},
+        "relation_kind": {"enum": ["explicit_depends_on", "linked_companion_change", "semantic_companion_change", "specification_implementation", "ci_failure_repaired_by_companion_change", "configured_contract", "verified_no_impact"]},
+        "evidence_url": {"type": "string", "format": "uri"}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "kind", "url", "statement"],
+      "properties": {
+        "level": {"enum": ["executed", "ci_contrast_proven", "implementation_proven", "specification_proven", "coordination_proven", "config_derived"]},
+        "kind": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "format": "uri"},
+        "statement": {"type": "string", "minLength": 1},
+        "ci_url": {"type": ["string", "null"], "format": "uri"},
+        "result_path": {"type": "string", "minLength": 1}
+      }
+    },
+    "expectedChecks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label_kind", "paths", "symbols", "tests", "commands", "expected_result"],
+      "properties": {
+        "label_kind": {"enum": ["unavailable", "manually_curated", "ci_observed", "executed"]},
+        "paths": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "symbols": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "tests": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "commands": {
+          "type": "array",
+          "items": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+        },
+        "expected_result": {"enum": ["coordination_observed", "coordinated_change_required", "cross_repo_check_required", "no_cross_repo_impact", "pass", "fail", "fail_without_companion_pass_with_companion", "not_exercised_without_source_pass_with_source"]}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "pull_request", "commit", "changed_paths", "label_scope", "impact_kind", "impact_kind_source", "expected_checks", "evidence"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+"},
+        "pull_request": {"$ref": "#/$defs/pullRequest"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "changed_paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "label_scope": {"enum": ["known_coordination", "causal_impact"]},
+        "impact_kind_source": {"enum": ["manual", "unclassified"]},
+        "impact_kind": {
+          "enum": [
+            "unclassified",
+            "transaction_encoding",
+            "shared_type_serialization",
+            "specification_or_vector",
+            "wire_format",
+            "identifier_or_address_allocation",
+            "dependency_or_build_interface",
+            "runtime_api_contract",
+            "data_schema",
+            "deployment_configuration",
+            "test_contract",
+            "other_cross_repo_contract"
+          ]
+        },
+        "expected_checks": {"$ref": "#/$defs/expectedChecks"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}}
+      }
+    },
+    "labelSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "derived_from_marshal_config"],
+      "properties": {
+        "kind": {"enum": ["independent_project_evidence", "marshal_configuration", "executed_reproduction"]},
+        "derived_from_marshal_config": {"type": "boolean"}
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "spdx", "evidence_url"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 3},
+        "spdx": {"type": "string", "minLength": 1},
+        "evidence_url": {"type": "string", "format": "uri"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collector", "collected_at", "query"],
+      "properties": {
+        "collector": {"type": "string", "minLength": 1},
+        "collected_at": {"type": "string", "format": "date"},
+        "query": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

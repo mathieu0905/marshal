@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-978073",
+  "project": "wandertracks",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "wandertracks/wandertracks",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 978073,
+      "change_id": "Iaef4bf411b0a23f0b21da5e390877c8a79225825",
+      "url": "https://review.opendev.org/c/wandertracks/wandertracks/+/978073",
+      "status": "MERGED",
+      "subject": "Add IANA timezone to tracks and dives",
+      "branch": "master",
+      "created": "2026-02-26 13:37:11.000000000",
+      "submitted": "2026-02-26 18:48:38.000000000"
+    },
+    "base_commit": "2cc62e54aea730318d6f1ede96613818d0b1bd7b",
+    "candidate_commit": "7c5067920d1ba9a9a80b18813734133c32238098",
+    "changed_paths": [
+      "wandertracks/api/tracks.py",
+      "wandertracks/app.py",
+      "wandertracks/cli.py",
+      "wandertracks/models/mongo_dive.py",
+      "wandertracks/models/mongo_track.py",
+      "wandertracks/tests/test_timezone.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/978073/revisions/7c5067920d1ba9a9a80b18813734133c32238098/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "wandertracks/wandertracks",
+      "target_repository": "wandertracks/wandertracks-web",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/978074"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "wandertracks/wandertracks-web",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 978074,
+        "change_id": "I50a7b174d95f18831467f318469b2f13809a5ec7",
+        "url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/978074",
+        "status": "MERGED",
+        "subject": "Add timezone-aware datetime display and dive toggle",
+        "branch": "master",
+        "created": "2026-02-26 13:41:11.000000000",
+        "submitted": "2026-02-26 21:28:09.000000000"
+      },
+      "commit": "0ef0dce2d946399fa82006c64f177816a7adc6d0",
+      "changed_paths": [
+        "components/editor/MetadataEditor.tsx",
+        "components/editor/TrackSelectionDialog.tsx",
+        "lib/datetime.ts",
+        "src/pages/DiveDetailPage.tsx",
+        "src/pages/DivesPage.tsx",
+        "src/pages/MapPage.tsx",
+        "types/index.ts"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/978074",
+          "statement": "Depends-On: https://review.opendev.org/c/wandertracks/wandertracks/+/978073",
+          "ci_url": "https://zuul.opendev.org/t/opendev/buildset/b44f275267f3466aaf335d749df07823"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "wandertracks/wandertracks",
+      "spdx": "GPL-3.0-only",
+      "evidence_url": "https://opendev.org/wandertracks/wandertracks/raw/commit/7c5067920d1ba9a9a80b18813734133c32238098/COPYING"
+    },
+    {
+      "repository": "wandertracks/wandertracks-web",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/wandertracks/wandertracks-web/src/commit/0ef0dce2d946399fa82006c64f177816a7adc6d0"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

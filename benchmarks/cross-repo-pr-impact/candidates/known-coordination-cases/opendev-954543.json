@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-954543",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 954543,
+      "change_id": "If71a4266c178786b3fab7dd568cff88bd7b479ff",
+      "url": "https://review.opendev.org/c/starlingx/config/+/954543",
+      "status": "MERGED",
+      "subject": "Kube-apiserver port change upgrade rollback",
+      "branch": "master",
+      "created": "2025-07-09 19:22:04.000000000",
+      "submitted": "2025-07-18 15:13:31.000000000"
+    },
+    "base_commit": "648fff8c6cff026113ca95198bfd79f6554dd2ae",
+    "candidate_commit": "1b7209b988a0bf1c2ca89c688ee18c48d91f0cee",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/conductor/manager.py",
+      "sysinv/sysinv/sysinv/sysinv/conductor/rpcapi.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/954543/revisions/1b7209b988a0bf1c2ca89c688ee18c48d91f0cee/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/update",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/update/+/954291"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/update",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 954291,
+        "change_id": "Id44a21d16921979e45d2e01eacc4169b97d35d2f",
+        "url": "https://review.opendev.org/c/starlingx/update/+/954291",
+        "status": "MERGED",
+        "subject": "Add rollback support for kube api server port update",
+        "branch": "master",
+        "created": "2025-07-07 19:10:24.000000000",
+        "submitted": "2025-07-18 17:39:40.000000000"
+      },
+      "commit": "254e814577a13141c859540c14096d57b845214d",
+      "changed_paths": [
+        "software/upgrade-scripts/04-kubernetes-service-parameters-apply.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/update/+/954291",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config/+/954543",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/5c1127d6111a4cf4b915b9f9fbb1c601"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/update",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/update/raw/commit/3300839049da5d958b2572ec56eaacc9ae43f0f1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

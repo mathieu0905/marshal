@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-956184",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/project-config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 956184,
+      "change_id": "I149a0d146920424f6f4d202e5d915406b92e9bb2",
+      "url": "https://review.opendev.org/c/openstack/project-config/+/956184",
+      "status": "MERGED",
+      "subject": "Remove nodepool configuration/elements",
+      "branch": "master",
+      "created": "2025-07-30 18:02:54.000000000",
+      "submitted": "2025-08-20 04:22:33.000000000"
+    },
+    "base_commit": "fd40838964afceef90d91255302b4d624df30c1d",
+    "candidate_commit": "b22bdcf480bf91562709da61252f14ba3c2f6f46",
+    "changed_paths": [
+      "nodepool/elements/README.rst",
+      "nodepool/elements/bindep-fallback.txt",
+      "nodepool/elements/cache-devstack/README.rst",
+      "nodepool/elements/cache-devstack/element-deps",
+      "nodepool/elements/cache-devstack/source-repository-dstat_graph",
+      "nodepool/elements/cache-devstack/source-repository-images",
+      "nodepool/elements/cache-devstack/source-repository-pip",
+      "nodepool/elements/cache-devstack/source-repository-stackviz",
+      "nodepool/elements/cache-devstack/source-repository-zanatacli",
+      "nodepool/elements/control-plane-minimal/README.rst",
+      "nodepool/elements/control-plane-minimal/element-deps",
+      "nodepool/elements/control-plane-minimal/package-installs.yaml",
+      "nodepool/elements/control-plane-minimal/post-install.d/80-enable-haveged",
+      "nodepool/elements/control-plane-minimal/post-install.d/80-enable-infra-services",
+      "nodepool/elements/control-plane-minimal/post-install.d/89-sshd",
+      "nodepool/elements/infra-package-needs/README.rst",
+      "nodepool/elements/infra-package-needs/element-deps",
+      "nodepool/elements/infra-package-needs/install.d/10-packages",
+      "nodepool/elements/infra-package-needs/install.d/40-install-bindep",
+      "nodepool/elements/infra-package-needs/install.d/89-rsyslog",
+      "nodepool/elements/infra-package-needs/package-installs.yaml",
+      "nodepool/elements/infra-package-needs/pkg-map",
+      "nodepool/elements/infra-package-needs/post-install.d/80-enable-haveged",
+      "nodepool/elements/infra-package-needs/post-install.d/80-enable-infra-services",
+      "nodepool/elements/infra-package-needs/post-install.d/89-sshd",
+      "nodepool/elements/infra-package-needs/pre-install.d/00-gentoo-useflags",
+      "nodepool/elements/infra-package-needs/rsyslog.d/50-default.conf",
+      "nodepool/elements/initialize-urandom/README.rst",
+      "nodepool/elements/initialize-urandom/element-deps",
+      "nodepool/elements/initialize-urandom/init-scripts/systemd/initialize-urandom.service",
+      "nodepool/elements/initialize-urandom/post-install.d/80-initialize-urandom",
+      "nodepool/elements/initialize-urandom/static/usr/local/bin/initialize-urandom.py",
+      "nodepool/elements/nodepool-base/README.rst",
+      "nodepool/elements/nodepool-base/cleanup.d/50-root",
+      "nodepool/elements/nodepool-base/element-deps",
+      "nodepool/elements/nodepool-base/environment.d/75-nodepool-base-env",
+      "nodepool/elements/nodepool-base/finalise.d/89-boot-settings",
+      "nodepool/elements/nodepool-base/finalise.d/89-glean",
+      "nodepool/elements/nodepool-base/finalise.d/89-journald-persistent",
+      "nodepool/elements/nodepool-base/finalise.d/99-nodepool-dir",
+      "nodepool/elements/nodepool-base/glean@.service.d/override.conf",
+      "nodepool/elements/nodepool-base/install.d/05-record-details",
+      "nodepool/elements/nodepool-base/install.d/06-record-builddate",
+      "nodepool/elements/nodepool-base/install.d/20-iptables",
+      "nodepool/elements/nodepool-base/install.d/50-disable-metadata-cloudinit",
+      "nodepool/elements/nodepool-base/install.d/91-venv-os-testr",
+      "nodepool/elements/nodepool-base/install.d/96-clean-cron",
+      "nodepool/elements/nodepool-base/install.d/99-disable-rfc3041",
+      "nodepool/elements/nodepool-base/package-installs.yaml",
+      "nodepool/elements/nodepool-base/pkg-map",
+      "nodepool/elements/nodepool-base/post-install.d/20-iptables",
+      "nodepool/elements/nodepool-base/post-install.d/89-data-files",
+      "nodepool/elements/nodepool-base/pre-install.d/10-preseed",
+      "nodepool/elements/nodepool-base/root.d/50-apt-allow-unauthenticated",
+      "nodepool/elements/nodepool-base/root.d/60-apt-phased-updates",
+      "nodepool/elements/openstack-repos/README.rst",
+      "nodepool/elements/openstack-repos/element-deps",
+      "nodepool/elements/openstack-repos/extra-data.d/50-create-repo-list",
+      "nodepool/elements/zuul-worker/README.rst",
+      "nodepool/elements/zuul-worker/element-deps",
+      "nodepool/elements/zuul-worker/extra-data.d/60-zuul-user",
+      "nodepool/elements/zuul-worker/install.d/60-zuul-worker",
+      "nodepool/nb01-test.opendev.org.yaml",
+      "nodepool/nb07.opendev.org.yaml",
+      "nodepool/nl05.opendev.org.yaml",
+      "nodepool/nl06.opendev.org.yaml",
+      "nodepool/nl07.opendev.org.yaml",
+      "nodepool/nl08.opendev.org.yaml",
+      "nodepool/nodepool.yaml",
+      "nodepool/scripts/do-not-delete.txt"
+    ],
+    "patch_url": "https://review.opendev.org/changes/956184/revisions/b22bdcf480bf91562709da61252f14ba3c2f6f46/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/project-config",
+      "target_repository": "openstack/openstack-zuul-jobs",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-zuul-jobs/+/956707"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-zuul-jobs",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 956707,
+        "change_id": "I41ab03154c55ebeeded9f79bdd90730cb7cde540",
+        "url": "https://review.opendev.org/c/openstack/openstack-zuul-jobs/+/956707",
+        "status": "MERGED",
+        "subject": "Remove project-config-dib job",
+        "branch": "master",
+        "created": "2025-08-06 16:44:07.000000000",
+        "submitted": "2025-08-31 12:35:04.000000000"
+      },
+      "commit": "7d68de643bec869f429d669512f58b98d4a2e0d0",
+      "changed_paths": [
+        "zuul.d/jobs.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-zuul-jobs/+/956707",
+          "statement": "Depends-On: https://review.opendev.org/956184",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/84ea48f1413e402199b9a6ecc5ffc0d2"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-zuul-jobs",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-zuul-jobs/raw/commit/7d68de643bec869f429d669512f58b98d4a2e0d0/LICENSE"
+    },
+    {
+      "repository": "openstack/project-config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/project-config/raw/commit/6558ee2add3d439d76edcc044e8f26718c955847/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

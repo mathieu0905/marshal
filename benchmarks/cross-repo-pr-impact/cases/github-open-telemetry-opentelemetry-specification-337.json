@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-337",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 337,
+      "change_id": "open-telemetry/opentelemetry-specification#337",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/337",
+      "status": "MERGED",
+      "subject": "Loosen the SpanKind specification to allow string values",
+      "branch": "master",
+      "created": "2019-10-24T19:00:33Z",
+      "submitted": "2019-11-04T18:06:24Z"
+    },
+    "base_commit": "6a5af6b645cc0d6217efdabcdadf6c5e0ba1bc7d",
+    "candidate_commit": "c7ff294e7b75cdb9c5b876cd7ed349ce9fdf0c40",
+    "changed_paths": [
+      "specification/api-tracing.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/6a5af6b645cc0d6217efdabcdadf6c5e0ba1bc7d...c7ff294e7b75cdb9c5b876cd7ed349ce9fdf0c40.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/288"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 288,
+        "change_id": "open-telemetry/opentelemetry-go#288",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/288",
+        "status": "MERGED",
+        "subject": "Change SpanKind type an integer type",
+        "branch": "master",
+        "created": "2019-11-04T18:57:00Z",
+        "submitted": "2019-11-05T00:05:44Z"
+      },
+      "commit": "14d35fde7b647c8f566ac45e570b4627ab8b51f4",
+      "changed_paths": [
+        "api/trace/api.go",
+        "bridge/opentracing/bridge.go",
+        "bridge/opentracing/internal/mock.go",
+        "bridge/opentracing/mix_test.go",
+        "exporter/trace/stdout/stdout_test.go",
+        "sdk/trace/span.go",
+        "sdk/trace/trace_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/288",
+          "statement": "明确参考源规范修改 SpanKind 类型。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-1001023-cinder-impact",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/requirements",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 1001023,
+      "change_id": "I7d625904ad9e746ea649594cb617a861d50c2520",
+      "url": "https://review.opendev.org/c/openstack/requirements/+/1001023",
+      "status": "MERGED",
+      "subject": "Bump alembic to latest version",
+      "branch": "master",
+      "created": "2026-08-15 12:56:38.000000000",
+      "submitted": "2026-08-21 19:28:16.000000000"
+    },
+    "base_commit": "b8de3b00af9dd2ffc1a85bf836cf3c7ee9e8bac7",
+    "candidate_commit": "978799539e019141d8b0710d09bf91c956976079",
+    "changed_paths": [
+      "upper-constraints.txt"
+    ],
+    "patch_url": "https://review.opendev.org/changes/1001023/revisions/1/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/requirements",
+      "target_repository": "openstack/cinder",
+      "relation_kind": "ci_failure_repaired_by_companion_change",
+      "evidence_url": "https://review.opendev.org/c/openstack/cinder/+/1000516"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/cinder",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 1000516,
+        "change_id": "If5693d51ea210eba2d296d846978875887d8683f",
+        "url": "https://review.opendev.org/c/openstack/cinder/+/1000516",
+        "status": "MERGED",
+        "subject": "tests: Ignore CHECK constraints in test_models_sync",
+        "branch": "master",
+        "created": "2026-08-11 16:02:23.000000000",
+        "submitted": "2026-08-21 17:38:16.000000000"
+      },
+      "commit": "913fa91a8eee20bf852387fe8c01a2d3d45cb87e",
+      "changed_paths": [
+        "cinder/tests/unit/db/test_migrations.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "dependency_or_build_interface",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "ci_observed",
+        "paths": [
+          "cinder/tests/unit/db/test_migrations.py"
+        ],
+        "symbols": [
+          "TestModelsSyncMySQL.test_models_sync"
+        ],
+        "tests": [
+          "cinder/tests/unit/db/test_migrations.py"
+        ],
+        "commands": [
+          [
+            "tox",
+            "-e",
+            "py313"
+          ]
+        ],
+        "expected_result": "fail_without_companion_pass_with_companion"
+      },
+      "evidence": [
+        {
+          "level": "ci_contrast_proven",
+          "kind": "same_job_failure_then_companion_fix_pass",
+          "url": "https://zuul.opendev.org/t/openstack/build/a910bfbc663642c7b7bd5e3dab0c11c2",
+          "statement": "cross-cinder-py313 failed on requirements patchset 1 at TestModelsSyncMySQL.test_models_sync; patchset 2 added Depends-On for Cinder 1000516 and the same job passed.",
+          "ci_url": "https://zuul.opendev.org/t/openstack/build/6929808c35ff466080f9d39934e26125",
+          "result_path": "results/ci-contrast-2026-08-22.jsonl"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/cinder",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/cinder/raw/commit/abfb2c6061ecb7480f8c1937230e382d238e7cd9/LICENSE"
+    },
+    {
+      "repository": "openstack/requirements",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/requirements/src/commit/fea2f5b9219eb644383022338bd0cb4fbf2784b8"
+    }
+  ],
+  "provenance": {
+    "collector": "curated_cinder_case",
+    "collected_at": "2026-08-22",
+    "query": "requirements 1001023 cross-cinder-py313 fail/pass contrast"
+  }
+}

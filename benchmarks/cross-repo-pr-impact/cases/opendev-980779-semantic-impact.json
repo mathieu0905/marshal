@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-980779-semantic-impact",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/kolla",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 980779,
+      "change_id": "Ib327dfb770aea5d953baba2399f97cf3ea12defd",
+      "url": "https://review.opendev.org/c/openstack/kolla/+/980779",
+      "status": "MERGED",
+      "subject": "horizon: add django-redis dependency",
+      "branch": "master",
+      "created": "2026-03-16 15:56:19.000000000",
+      "submitted": "2026-03-25 07:23:25.000000000"
+    },
+    "base_commit": "acda933879243491e77dd9238bc47633126bd0bc",
+    "candidate_commit": "b3ee26625aff71231888b6daa427b82a2de92c14",
+    "changed_paths": [
+      "docker/horizon/Dockerfile.j2",
+      "releasenotes/notes/bug-2093414-12e2d0f21e34bc59.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/980779/revisions/b3ee26625aff71231888b6daa427b82a2de92c14/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/kolla",
+      "target_repository": "openstack/kolla-ansible",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/openstack/kolla-ansible/+/980784"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/kolla-ansible",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 980784,
+        "change_id": "I771754acc0febb466f4f921fdf29946d9e54f0c3",
+        "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/980784",
+        "status": "MERGED",
+        "subject": "horizon: add Valkey session cache backend and prefer it",
+        "branch": "master",
+        "created": "2026-03-16 16:03:45.000000000",
+        "submitted": "2026-04-16 21:17:18.000000000"
+      },
+      "commit": "3e2982aacf428c33dd36d0d1a4110a87ccf351fc",
+      "changed_paths": [
+        "ansible/group_vars/all/horizon.yml",
+        "ansible/roles/horizon/templates/_9998-kolla-settings.py.j2",
+        "releasenotes/notes/bug-2093414-7cd37ece5c306507.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "deployment_configuration",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/980784",
+          "statement": "Kolla 镜像新增 django-redis；kolla-ansible 随后配置依赖它的 Valkey 会话后端。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/kolla",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/kolla"
+    },
+    {
+      "repository": "openstack/kolla-ansible",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/kolla-ansible"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

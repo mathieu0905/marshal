@@ -1,0 +1,263 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-875",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 875,
+      "change_id": "open-telemetry/opentelemetry-specification#875",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/875",
+      "status": "MERGED",
+      "subject": "Spans must have parent Contexts instead of parent Span(Context)s.",
+      "branch": "master",
+      "created": "2020-08-25T18:06:02Z",
+      "submitted": "2020-09-23T14:15:47Z"
+    },
+    "base_commit": "da9f4593af21961683606be7a1e80d2cf4cd0242",
+    "candidate_commit": "03fa286f60dbe3f0aa584bb451f5c1a1a76ab7ad",
+    "changed_paths": [
+      "specification/trace/api.md",
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/da9f4593af21961683606be7a1e80d2cf4cd0242...03fa286f60dbe3f0aa584bb451f5c1a1a76ab7ad.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-erlang",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/97"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/1611"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/1146"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "pull_request": {
+        "provider": "github",
+        "number": 97,
+        "change_id": "open-telemetry/opentelemetry-erlang#97",
+        "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/97",
+        "status": "MERGED",
+        "subject": "take only a context and not a span ctx or span for parent",
+        "branch": "master",
+        "created": "2020-09-19T00:15:44Z",
+        "submitted": "2020-09-22T21:48:44Z"
+      },
+      "commit": "08932ca667a5b3a0318b31c54428359a14e83c0b",
+      "changed_paths": [
+        ".circleci/config.yml",
+        "rebar.config",
+        "rebar.lock",
+        "src/opentelemetry.app.src",
+        "src/ot_batch_processor.erl",
+        "src/ot_propagation_http_w3c.erl",
+        "src/ot_span_ets.erl",
+        "src/ot_span_processor.erl",
+        "src/ot_span_utils.erl",
+        "src/ot_tracer.hrl",
+        "src/ot_tracer_default.erl",
+        "src/ot_tracer_server.erl",
+        "test/opentelemetry_SUITE.erl",
+        "test/ot_test_utils.hrl"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/97",
+          "statement": "明确按源规范收窄父级参数。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 1611,
+        "change_id": "open-telemetry/opentelemetry-java#1611",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1611",
+        "status": "MERGED",
+        "subject": "Implement spec change to only accept Context as span parent.",
+        "branch": "master",
+        "created": "2020-09-01T15:00:17Z",
+        "submitted": "2020-09-25T02:37:38Z"
+      },
+      "commit": "332ce258ac6c63830c3ae8a779a940116204b7a1",
+      "changed_paths": [
+        "api/src/main/java/io/opentelemetry/trace/DefaultTracer.java",
+        "api/src/main/java/io/opentelemetry/trace/Span.java",
+        "api/src/test/java/io/opentelemetry/trace/DefaultTracerTest.java",
+        "api/src/test/java/io/opentelemetry/trace/SpanBuilderTest.java",
+        "opentracing_shim/src/main/java/io/opentelemetry/opentracingshim/SpanBuilderShim.java",
+        "sdk/tracing/src/main/java/io/opentelemetry/sdk/trace/SpanBuilderSdk.java",
+        "sdk/tracing/src/test/java/io/opentelemetry/sdk/trace/SpanBuilderSdkTest.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/actorpropagation/Actor.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/clientserver/Server.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/concurrentcommonrequesthandler/Client.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/concurrentcommonrequesthandler/HandlerTest.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/concurrentcommonrequesthandler/RequestHandler.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/concurrentcommonrequesthandler/RequestHandlerContext.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/multiplecallbacks/Client.java",
+        "sdk_extensions/testbed/src/test/java/io/opentelemetry/sdk/extensions/trace/testbed/promisepropagation/Promise.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1611",
+          "statement": "明确实现源规范的新父级参数约束。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 1146,
+        "change_id": "open-telemetry/opentelemetry-python#1146",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/1146",
+        "status": "MERGED",
+        "subject": "Parent is now always passed in via Context, intead of Span or SpanContext",
+        "branch": "master",
+        "created": "2020-09-22T23:52:58Z",
+        "submitted": "2020-10-08T15:39:05Z"
+      },
+      "commit": "77fba4a68337d25d151c89a9f187c9e977b2b3d0",
+      "changed_paths": [
+        "exporter/opentelemetry-exporter-datadog/src/opentelemetry/exporter/datadog/exporter.py",
+        "exporter/opentelemetry-exporter-datadog/src/opentelemetry/exporter/datadog/propagator.py",
+        "exporter/opentelemetry-exporter-datadog/src/opentelemetry/exporter/datadog/spanprocessor.py",
+        "exporter/opentelemetry-exporter-datadog/tests/test_datadog_exporter.py",
+        "exporter/opentelemetry-exporter-datadog/tests/test_datadog_format.py",
+        "exporter/opentelemetry-exporter-jaeger/examples/jaeger_exporter_example.py",
+        "exporter/opentelemetry-exporter-jaeger/src/opentelemetry/exporter/jaeger/__init__.py",
+        "exporter/opentelemetry-exporter-jaeger/tests/test_jaeger_exporter.py",
+        "exporter/opentelemetry-exporter-opencensus/tests/test_otcollector_trace_exporter.py",
+        "exporter/opentelemetry-exporter-zipkin/src/opentelemetry/exporter/zipkin/__init__.py",
+        "exporter/opentelemetry-exporter-zipkin/tests/test_zipkin_exporter.py",
+        "instrumentation/opentelemetry-instrumentation-celery/src/opentelemetry/instrumentation/celery/__init__.py",
+        "instrumentation/opentelemetry-instrumentation-jinja2/tests/test_jinja2.py",
+        "instrumentation/opentelemetry-instrumentation-opentracing-shim/src/opentelemetry/instrumentation/opentracing_shim/__init__.py",
+        "instrumentation/opentelemetry-instrumentation-opentracing-shim/tests/test_shim.py",
+        "instrumentation/opentelemetry-instrumentation-requests/tests/test_requests_integration.py",
+        "instrumentation/opentelemetry-instrumentation-sqlite3/tests/test_sqlite3.py",
+        "opentelemetry-api/CHANGELOG.md",
+        "opentelemetry-api/src/opentelemetry/trace/__init__.py",
+        "opentelemetry-api/src/opentelemetry/trace/propagation/tracecontext.py",
+        "opentelemetry-api/src/opentelemetry/trace/span.py",
+        "opentelemetry-api/tests/propagators/test_global_httptextformat.py",
+        "opentelemetry-api/tests/test_implementation.py",
+        "opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py",
+        "opentelemetry-api/tests/trace/test_defaultspan.py",
+        "opentelemetry-sdk/CHANGELOG.md",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/propagation/b3_format.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/sampling.py",
+        "opentelemetry-sdk/tests/context/test_asyncio.py",
+        "opentelemetry-sdk/tests/trace/propagation/test_b3_format.py",
+        "opentelemetry-sdk/tests/trace/test_implementation.py",
+        "opentelemetry-sdk/tests/trace/test_trace.py",
+        "tests/opentelemetry-docker-tests/tests/mysql/test_mysql_functional.py",
+        "tests/opentelemetry-docker-tests/tests/postgres/test_aiopg_functional.py",
+        "tests/opentelemetry-docker-tests/tests/postgres/test_psycopg_functional.py",
+        "tests/opentelemetry-docker-tests/tests/pymongo/test_pymongo_functional.py",
+        "tests/opentelemetry-docker-tests/tests/pymysql/test_pymysql_functional.py",
+        "tests/opentelemetry-docker-tests/tests/redis/test_redis_functional.py",
+        "tests/opentelemetry-docker-tests/tests/sqlalchemy_tests/mixins.py",
+        "tests/util/src/opentelemetry/test/mock_textmap.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/1146",
+          "statement": "明确按源规范只通过 Context 传递父级。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

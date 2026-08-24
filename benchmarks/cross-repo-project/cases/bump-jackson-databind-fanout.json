@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "project_id": "bump-jackson-databind-fanout",
+  "title": "jackson-databind 补丁版本升级对两个消费仓的影响",
+  "split": "test",
+  "scenario_kind": "released_dependency_fanout",
+  "source": {
+    "dataset": "BUMP",
+    "dataset_repository": "https://github.com/chains-project/bump",
+    "dataset_revision": "324d5513aa5ca40b5cb32de5b816a58fa60bd7bb",
+    "license": "MIT"
+  },
+  "provider": {
+    "repository": {
+      "full_name": "FasterXML/jackson-databind",
+      "url": "https://github.com/FasterXML/jackson-databind.git",
+      "license": "Apache-2.0",
+      "license_file": "LICENSE",
+      "prepare_commands": {
+        "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+        "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+      }
+    },
+    "artifact": {"ecosystem": "Maven", "coordinate": "com.fasterxml.jackson.core:jackson-databind"},
+    "variants": [
+      {"variant_id": "2.9.10.5", "version": "2.9.10.5", "git_ref": "refs/tags/jackson-databind-2.9.10.5", "git_commit": "82c84c74e99ab04cd46b5349f24be1c753034ce1"},
+      {"variant_id": "2.13.4", "version": "2.13.4", "git_ref": "refs/tags/jackson-databind-2.13.4", "git_commit": "13cd41d616022f63a0af38db2389de52199cf62c"},
+      {"variant_id": "2.13.4.1", "version": "2.13.4.1", "git_ref": "refs/tags/jackson-databind-2.13.4.1", "git_commit": "19e6b6fbcfd4105dc6365928ebc2f07da61e78c5"}
+    ],
+    "change": {
+      "summary": "两个消费仓升级到 jackson-databind 2.13.4.1；分别暴露传递依赖版本不一致和锁文件与实际解析结果不一致。",
+      "compare_urls": [
+        "https://github.com/FasterXML/jackson-databind/compare/jackson-databind-2.9.10.5...jackson-databind-2.13.4.1",
+        "https://github.com/FasterXML/jackson-databind/compare/jackson-databind-2.13.4...jackson-databind-2.13.4.1"
+      ]
+    }
+  },
+  "consumers": [
+    {
+      "case_id": "bump-simplelocalize-cli-741f3b5",
+      "repository": {
+        "full_name": "simplelocalize/simplelocalize-cli",
+        "url": "https://github.com/simplelocalize/simplelocalize-cli.git",
+        "license": "LicenseRef-SimpleLocalize-Free",
+        "license_file": "LICENSE.md",
+        "prepare_commands": {
+          "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+          "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+        }
+      },
+      "dependency": {
+        "direction": "provider_to_consumer",
+        "coordinate": "com.fasterxml.jackson.core:jackson-databind",
+        "from_provider_variant": "2.9.10.5",
+        "to_provider_variant": "2.13.4.1",
+        "manifest_path": "pom.xml"
+      },
+      "change": {
+        "summary": "pom.xml 中 jackson-databind 由 2.9.10.5 升级为 2.13.4.1。",
+        "files": ["pom.xml"],
+        "pull_request_url": "https://github.com/simplelocalize/simplelocalize-cli/pull/61"
+      },
+      "variants": {
+        "before": {"git_commit": "c041887aeed06af1f84345b68350818d1f8f2f0f", "expected": {"outcome": "pass"}},
+        "after": {"git_commit": "741f3b5e20a91b0e9305ae79261e3c5e64971c98", "expected": {"outcome": "fail", "failure_category": "compilation_failure"}}
+      },
+      "test": {
+        "working_directory": ".",
+        "command": ["mvn", "clean", "test", "-B"],
+        "timeout_seconds": 1800,
+        "environment": {"java_major": "11"}
+      },
+      "source_record_url": "https://github.com/chains-project/bump/blob/324d5513aa5ca40b5cb32de5b816a58fa60bd7bb/data/benchmark/741f3b5e20a91b0e9305ae79261e3c5e64971c98.json"
+    },
+    {
+      "case_id": "bump-dependency-lock-maven-plugin-6cb50e7",
+      "repository": {
+        "full_name": "vandmo/dependency-lock-maven-plugin",
+        "url": "https://github.com/vandmo/dependency-lock-maven-plugin.git",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "prepare_commands": {
+          "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+          "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+        }
+      },
+      "dependency": {
+        "direction": "provider_to_consumer",
+        "coordinate": "com.fasterxml.jackson.core:jackson-databind",
+        "from_provider_variant": "2.13.4",
+        "to_provider_variant": "2.13.4.1",
+        "manifest_path": ".dependency-lock/pom.xml"
+      },
+      "change": {
+        "summary": ".dependency-lock/pom.xml 中 jackson-databind 由 2.13.4 升级为 2.13.4.1。",
+        "files": [".dependency-lock/pom.xml"],
+        "pull_request_url": "https://github.com/vandmo/dependency-lock-maven-plugin/pull/63"
+      },
+      "variants": {
+        "before": {"git_commit": "bfd3d3819299ff67d4ce545752423e9bbf723dee", "expected": {"outcome": "pass"}},
+        "after": {"git_commit": "6cb50e747a317a2e3159c921e50847b197bca3cd", "expected": {"outcome": "fail", "failure_category": "dependency_lock_failure"}}
+      },
+      "test": {
+        "working_directory": ".",
+        "command": ["mvn", "clean", "test", "-B"],
+        "timeout_seconds": 1800,
+        "environment": {"java_major": "11"}
+      },
+      "source_record_url": "https://github.com/chains-project/bump/blob/324d5513aa5ca40b5cb32de5b816a58fa60bd7bb/data/benchmark/6cb50e747a317a2e3159c921e50847b197bca3cd.json"
+    }
+  ]
+}

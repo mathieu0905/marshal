@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-2646",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 2646,
+      "change_id": "kubernetes/enhancements#2646",
+      "url": "https://github.com/kubernetes/enhancements/pull/2646",
+      "status": "MERGED",
+      "subject": "suspended jobs: graduate to beta",
+      "branch": "master",
+      "created": "2021-04-22T15:39:58Z",
+      "submitted": "2021-04-30T12:45:58Z"
+    },
+    "base_commit": "6fb1308852735734d47e6f08c0b0dd263ef5df4f",
+    "candidate_commit": "6a63054c84ac3460bddb02e0cff9d1d2525fdf7c",
+    "changed_paths": [
+      "keps/prod-readiness/sig-apps/2232.yaml",
+      "keps/sig-apps/2232-suspend-jobs/README.md",
+      "keps/sig-apps/2232-suspend-jobs/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/6fb1308852735734d47e6f08c0b0dd263ef5df4f...6a63054c84ac3460bddb02e0cff9d1d2525fdf7c.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/102022"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 102022,
+        "change_id": "kubernetes/kubernetes#102022",
+        "url": "https://github.com/kubernetes/kubernetes/pull/102022",
+        "status": "MERGED",
+        "subject": "graduate SuspendJob to beta",
+        "branch": "master",
+        "created": "2021-05-14T19:31:24Z",
+        "submitted": "2021-06-23T00:18:10Z"
+      },
+      "commit": "ba708e5fc9ed46c0afe6f60d6baf18bc1f5ffe0f",
+      "changed_paths": [
+        "api/openapi-spec/swagger.json",
+        "pkg/apis/batch/types.go",
+        "pkg/controller/job/job_controller.go",
+        "pkg/controller/job/job_controller_test.go",
+        "pkg/controller/job/metrics/metrics.go",
+        "pkg/features/kube_features.go",
+        "staging/src/k8s.io/api/batch/v1/generated.proto",
+        "staging/src/k8s.io/api/batch/v1/types.go",
+        "staging/src/k8s.io/api/batch/v1/types_swagger_doc_generated.go",
+        "test/e2e/apps/job.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/102022",
+          "statement": "源 KEP 和目标实现共同把挂起任务能力提升到测试阶段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

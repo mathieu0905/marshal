@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-3694",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 3694,
+      "change_id": "open-telemetry/opentelemetry-specification#3694",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/3694",
+      "status": "MERGED",
+      "subject": "Stabilize `ExplicitBucketBoundaries` instrument advisory parameter",
+      "branch": "main",
+      "created": "2023-09-18T17:32:24Z",
+      "submitted": "2023-09-20T16:37:42Z"
+    },
+    "base_commit": "007f415120090972e22a90afd499640321f160f3",
+    "candidate_commit": "fcaba11cfa0c2d9a4cc4a5b8b6313206d8c4c95e",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/metrics/api.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/007f415120090972e22a90afd499640321f160f3...fcaba11cfa0c2d9a4cc4a5b8b6313206d8c4c95e.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-erlang",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/628"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/5848"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/5897"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "pull_request": {
+        "provider": "github",
+        "number": 628,
+        "change_id": "open-telemetry/opentelemetry-erlang#628",
+        "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/628",
+        "status": "MERGED",
+        "subject": "Support explicit_bucket_boundaries advisory parameters",
+        "branch": "main",
+        "created": "2023-09-19T14:44:40Z",
+        "submitted": "2023-10-02T10:37:39Z"
+      },
+      "commit": "8c09768bc147cd1262213cf98d25a90d24ebdca7",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "apps/opentelemetry_api_experimental/include/otel_metrics.hrl",
+        "apps/opentelemetry_api_experimental/src/otel_counter.erl",
+        "apps/opentelemetry_api_experimental/src/otel_histogram.erl",
+        "apps/opentelemetry_api_experimental/src/otel_instrument.erl",
+        "apps/opentelemetry_api_experimental/src/otel_meter.erl",
+        "apps/opentelemetry_api_experimental/src/otel_meter_noop.erl",
+        "apps/opentelemetry_api_experimental/src/otel_updown_counter.erl",
+        "apps/opentelemetry_experimental/include/otel_metrics.hrl",
+        "apps/opentelemetry_experimental/src/otel_aggregation_histogram_explicit.erl",
+        "apps/opentelemetry_experimental/src/otel_meter_default.erl",
+        "apps/opentelemetry_experimental/src/otel_meter_server.erl",
+        "apps/opentelemetry_experimental/src/otel_view.erl",
+        "apps/opentelemetry_experimental/test/otel_metrics_SUITE.erl"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/628",
+          "statement": "按源规范支持显式桶边界建议参数。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 5848,
+        "change_id": "open-telemetry/opentelemetry-java#5848",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/5848",
+        "status": "MERGED",
+        "subject": "Refactor advice API",
+        "branch": "main",
+        "created": "2023-09-21T19:38:21Z",
+        "submitted": "2023-10-06T18:33:11Z"
+      },
+      "commit": "dd82b8427fcf7bd345d665dd2072446559bfeee1",
+      "changed_paths": [
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/DoubleCounterAdviceConfigurer.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/DoubleGaugeAdviceConfigurer.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/DoubleHistogramAdviceConfigurer.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/DoubleUpDownCounterAdviceConfigurer.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedDoubleCounterBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedDoubleGaugeBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedDoubleHistogramBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedDoubleUpDownCounterBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedLongCounterBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedLongGaugeBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedLongHistogramBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedLongUpDownCounterBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/LongCounterAdviceConfigurer.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/LongGaugeAdviceConfigurer.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/LongHistogramAdviceConfigurer.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/LongUpDownCounterAdviceConfigurer.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkDoubleCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkDoubleGauge.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkDoubleHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkDoubleUpDownCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkLongCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkLongGauge.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkLongHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkLongUpDownCounter.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/AttributesAdviceTest.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/ExplicitBucketBoundariesAdviceTest.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/IdentityTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/5848",
+          "statement": "因源规范稳定而重构建议 API。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 5897,
+        "change_id": "open-telemetry/opentelemetry-java#5897",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/5897",
+        "status": "MERGED",
+        "subject": "Stabilize explicit bucket boundaries advice API",
+        "branch": "main",
+        "created": "2023-10-10T16:39:38Z",
+        "submitted": "2023-11-06T16:58:34Z"
+      },
+      "commit": "cb59ed6c81eb898c0ff46098b39bd51d4c7fc7c4",
+      "changed_paths": [
+        "api/all/src/main/java/io/opentelemetry/api/metrics/DoubleHistogramBuilder.java",
+        "api/all/src/main/java/io/opentelemetry/api/metrics/LongHistogramBuilder.java",
+        "docs/apidiffs/current_vs_latest/opentelemetry-api.txt",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedDoubleHistogramBuilder.java",
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/metrics/ExtendedLongHistogramBuilder.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkDoubleHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkLongHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/aggregator/ExplicitBucketHistogramUtils.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/ExplicitBucketBoundariesAdviceTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/5897",
+          "statement": "继续完成显式桶边界 API 稳定化。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

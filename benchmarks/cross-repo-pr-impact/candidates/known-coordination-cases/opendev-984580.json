@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-984580",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/app-kernel-module-management",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 984580,
+      "change_id": "I45ae5e8c6f30d1e62a774f4e7e016f9c122ba4dd",
+      "url": "https://review.opendev.org/c/starlingx/app-kernel-module-management/+/984580",
+      "status": "MERGED",
+      "subject": "Upversion Kernel Module Management to 2.6.0",
+      "branch": "master",
+      "created": "2026-04-14 14:48:14.000000000",
+      "submitted": "2026-04-27 14:54:12.000000000"
+    },
+    "base_commit": "6df1b8739e51f6f882643c08d0a508c6159d9a57",
+    "candidate_commit": "e4b8bae053bafb6dd4d329317821ba8cc07de585",
+    "changed_paths": [
+      "helm-charts/custom/kernel-module-management-helm/debian/all/deb_folder/changelog",
+      "helm-charts/custom/kernel-module-management-helm/debian/all/meta_data.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modulebuildsignconfigs.kmm.sigs.x-k8s.io.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/moduleimagesconfigs.kmm.sigs.x-k8s.io.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modules.kmm.sigs.x-k8s.io.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/nodemodulesconfigs.kmm.sigs.x-k8s.io.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/preflightvalidations.kmm.sigs.x-k8s.io.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/certificate.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrole.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrolebinding.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/configmap.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/deployment.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/issuer.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/role.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/rolebinding.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/service.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/serviceaccount.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/validatingwebhookconfiguration.yaml",
+      "helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/values.yaml",
+      "stx-kernel-module-management-images/debian/all/build.sh",
+      "stx-kernel-module-management-images/debian/all/files/patch_kmm.patch",
+      "stx-kernel-module-management-images/debian/all/operator.stable_docker_image",
+      "stx-kernel-module-management-images/debian/all/signimage.stable_docker_image",
+      "stx-kernel-module-management-images/debian/all/webhook.stable_docker_image",
+      "stx-kernel-module-management-images/debian/all/worker.stable_docker_image"
+    ],
+    "patch_url": "https://review.opendev.org/changes/984580/revisions/e4b8bae053bafb6dd4d329317821ba8cc07de585/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/app-kernel-module-management",
+      "target_repository": "starlingx/root",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/root/+/985973"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/root",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 985973,
+        "change_id": "Idff58c3c839e94074cddd797167e9e06329f04a6",
+        "url": "https://review.opendev.org/c/starlingx/root/+/985973",
+        "status": "MERGED",
+        "subject": "Removing KMM Images",
+        "branch": "master",
+        "created": "2026-04-23 15:43:58.000000000",
+        "submitted": "2026-04-27 15:04:28.000000000"
+      },
+      "commit": "4a40f91e46612c643b473c2c6efff478ee2e9f64",
+      "changed_paths": [
+        "build-tools/build-docker-images/tag-management/image-tags.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/root/+/985973",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/app-kernel-module-management/+/984580",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/850bec45f5f0469f9945233a27468fff"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/app-kernel-module-management",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/app-kernel-module-management/src/commit/e4b8bae053bafb6dd4d329317821ba8cc07de585"
+    },
+    {
+      "repository": "starlingx/root",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/root/raw/commit/19e373ccc0aef251009c8a6e1077f05001a3e6fd/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

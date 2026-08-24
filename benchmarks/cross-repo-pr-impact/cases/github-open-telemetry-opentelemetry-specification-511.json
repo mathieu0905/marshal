@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-511",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 511,
+      "change_id": "open-telemetry/opentelemetry-specification#511",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/511",
+      "status": "MERGED",
+      "subject": "Remove the handling of retries by the SDK.",
+      "branch": "master",
+      "created": "2020-03-10T18:03:10Z",
+      "submitted": "2020-04-13T22:13:56Z"
+    },
+    "base_commit": "4ab7c2fb4964c14fe972b03b5bb6825573bafb24",
+    "candidate_commit": "dcf1ea470ec308d0f4602982a0d227affe07d6e5",
+    "changed_paths": [
+      "specification/sdk-tracing.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/4ab7c2fb4964c14fe972b03b5bb6825573bafb24...dcf1ea470ec308d0f4602982a0d227affe07d6e5.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/1112"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/590"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 1112,
+        "change_id": "open-telemetry/opentelemetry-java#1112",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1112",
+        "status": "MERGED",
+        "subject": "Remove the RETRYABLE failure mode from the exporter interfaces.",
+        "branch": "master",
+        "created": "2020-04-14T17:29:32Z",
+        "submitted": "2020-04-14T23:11:05Z"
+      },
+      "commit": "28c650abc050bd7dfeea8653b9f1dd819a464015",
+      "changed_paths": [
+        "exporters/inmemory/src/main/java/io/opentelemetry/exporters/inmemory/InMemorySpanExporter.java",
+        "exporters/inmemory/src/test/java/io/opentelemetry/exporters/inmemory/InMemorySpanExporterTest.java",
+        "exporters/jaeger/src/main/java/io/opentelemetry/exporters/jaeger/JaegerGrpcSpanExporter.java",
+        "exporters/otlp/src/main/java/io/opentelemetry/exporters/otlp/OtlpGrpcMetricExporter.java",
+        "exporters/otlp/src/main/java/io/opentelemetry/exporters/otlp/OtlpGrpcSpanExporter.java",
+        "exporters/otlp/src/test/java/io/opentelemetry/exporters/otlp/OtlpGrpcMetricExporterTest.java",
+        "exporters/otlp/src/test/java/io/opentelemetry/exporters/otlp/OtlpGrpcSpanExporterTest.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/metrics/export/MetricExporter.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/export/MultiSpanExporter.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/export/SpanExporter.java",
+        "sdk/src/test/java/io/opentelemetry/sdk/trace/export/MultiSpanExporterTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1112",
+          "statement": "明确因源规范合并移除 RETRYABLE 模式。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 590,
+        "change_id": "open-telemetry/opentelemetry-python#590",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/590",
+        "status": "MERGED",
+        "subject": "Exporter retry logic should not be the responsibility of the SDK",
+        "branch": "master",
+        "created": "2020-04-16T19:00:34Z",
+        "submitted": "2020-04-20T20:18:47Z"
+      },
+      "commit": "a1d357a5ba4f3365ec8dee060c60eb367efc811e",
+      "changed_paths": [
+        "ext/opentelemetry-ext-otcollector/src/opentelemetry/ext/otcollector/metrics_exporter/__init__.py",
+        "ext/opentelemetry-ext-otcollector/src/opentelemetry/ext/otcollector/trace_exporter/__init__.py",
+        "ext/opentelemetry-ext-zipkin/src/opentelemetry/ext/zipkin/__init__.py",
+        "ext/opentelemetry-ext-zipkin/tests/test_zipkin_exporter.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/metrics/export/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/export/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/export/in_memory_span_exporter.py",
+        "opentelemetry-sdk/tests/trace/export/test_in_memory_span_exporter.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/590",
+          "statement": "明确按源规范移除 SDK 导出重试职责。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-965396",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstack-zuul-jobs",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 965396,
+      "change_id": "I1529bfea454a4d16c1a3d1b6db730a0accdf3d40",
+      "url": "https://review.opendev.org/c/openstack/openstack-zuul-jobs/+/965396",
+      "status": "MERGED",
+      "subject": "Convert py27 job to ubuntu jammy",
+      "branch": "master",
+      "created": "2025-10-30 15:09:36.000000000",
+      "submitted": "2025-11-04 17:56:37.000000000"
+    },
+    "base_commit": "0fcfe8e598e4841106f7b4b74b92340958baf561",
+    "candidate_commit": "028a5c3b0850e5e83bf554c251ae223b7b802807",
+    "changed_paths": [
+      "playbooks/tox/py27.yaml",
+      "zuul.d/jobs.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/965396/revisions/028a5c3b0850e5e83bf554c251ae223b7b802807/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstack-zuul-jobs",
+      "target_repository": "openstack/pbr",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/pbr/+/965397"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/pbr",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 965397,
+        "change_id": "I7f2774a8497c847211ce496c9496748f607bd2d9",
+        "url": "https://review.opendev.org/c/openstack/pbr/+/965397",
+        "status": "MERGED",
+        "subject": "Run py27 job with default ansible",
+        "branch": "master",
+        "created": "2025-10-30 15:10:58.000000000",
+        "submitted": "2025-11-04 21:40:43.000000000"
+      },
+      "commit": "963722ab86c9fa55a4e29d840f45ffd516c509b1",
+      "changed_paths": [
+        ".zuul.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/pbr/+/965397",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstack-zuul-jobs/+/965396",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/0f09d231524d4fd89096e96b6fe56171"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-zuul-jobs",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-zuul-jobs/raw/commit/7d68de643bec869f429d669512f58b98d4a2e0d0/LICENSE"
+    },
+    {
+      "repository": "openstack/pbr",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/pbr/raw/commit/963722ab86c9fa55a4e29d840f45ffd516c509b1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

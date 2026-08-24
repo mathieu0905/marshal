@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9969",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9969,
+      "change_id": "ethereum/EIPs#9969",
+      "url": "https://github.com/ethereum/EIPs/pull/9969",
+      "status": "MERGED",
+      "subject": "Triple price.md",
+      "branch": "master",
+      "created": "2025-07-02T16:43:32Z",
+      "submitted": "2025-07-11T10:56:38Z"
+    },
+    "base_commit": "e70cedb6b0841ed5f84e7caa2bd67ee2a0a165d7",
+    "candidate_commit": "b365411e54fb9c7f360181ca365809364e37fbe3",
+    "changed_paths": [
+      "EIPS/eip-7883.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/e70cedb6b0841ed5f84e7caa2bd67ee2a0a165d7...b365411e54fb9c7f360181ca365809364e37fbe3.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/32231"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 32231,
+        "change_id": "ethereum/go-ethereum#32231",
+        "url": "https://github.com/ethereum/go-ethereum/pull/32231",
+        "status": "MERGED",
+        "subject": "core/vm: triple modexp cost post-cancun",
+        "branch": "master",
+        "created": "2025-07-17T09:18:36Z",
+        "submitted": "2025-07-21T10:29:56Z"
+      },
+      "commit": "1396417fb3b43228b50c18e3b5ede1c3af1a655d",
+      "changed_paths": [
+        "core/vm/contracts.go",
+        "core/vm/testdata/precompiles/modexp_eip7883.json"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/32231",
+          "statement": "目标按源规范三倍调整模幂运算成本并加入对应向量。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-952865",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/update",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 952865,
+      "change_id": "Ida4d5c811b376018b2703ff0e89bb65697995b3f",
+      "url": "https://review.opendev.org/c/starlingx/update/+/952865",
+      "status": "MERGED",
+      "subject": "Create boot counter management service",
+      "branch": "master",
+      "created": "2025-06-18 20:46:43.000000000",
+      "submitted": "2025-07-02 13:19:54.000000000"
+    },
+    "base_commit": "fd05b3c6a740cee6bf975a236c2e7b8d3416c785",
+    "candidate_commit": "93c9834c8ed1363aebf942300a24bedc41e7fe71",
+    "changed_paths": [
+      "software/debian/deb_folder/rules",
+      "software/service-files/reset-boot-counter.service",
+      "software/service-files/reset-boot-counter.sh"
+    ],
+    "patch_url": "https://review.opendev.org/changes/952865/revisions/93c9834c8ed1363aebf942300a24bedc41e7fe71/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/update",
+      "target_repository": "starlingx/metal",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/metal/+/952864"
+    },
+    {
+      "source_repository": "starlingx/update",
+      "target_repository": "starlingx/integ",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/integ/+/953118"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/metal",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 952864,
+        "change_id": "I2a03acf2b589373d4eaab08a71db6a58c2672200",
+        "url": "https://review.opendev.org/c/starlingx/metal/+/952864",
+        "status": "MERGED",
+        "subject": "Convert boot_failure to counter and add system_mode",
+        "branch": "master",
+        "created": "2025-06-18 20:45:15.000000000",
+        "submitted": "2025-07-07 16:54:57.000000000"
+      },
+      "commit": "c6ce3a19548831ce59e8d48b7f4da1e9ec80b908",
+      "changed_paths": [
+        "installer/pxe-network-installer/pxe-network-installer/grub.cfg.stx"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/metal/+/952864",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/update/+/952865",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/166fcd45422b412c81d4ee4abc93b82e"
+        }
+      ]
+    },
+    {
+      "repository": "starlingx/integ",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 953118,
+        "change_id": "If8ad2c4c22917e426abc44efebb904d003b8aea8",
+        "url": "https://review.opendev.org/c/starlingx/integ/+/953118",
+        "status": "MERGED",
+        "subject": "Enable reset-boot-counter service",
+        "branch": "master",
+        "created": "2025-06-23 14:42:11.000000000",
+        "submitted": "2025-07-04 16:22:48.000000000"
+      },
+      "commit": "74dcd0d2123ec155cdc7ffa0d094e509f2da9837",
+      "changed_paths": [
+        "base/systemd-presets/source/stx/systemd/traits/aio.preset",
+        "base/systemd-presets/source/stx/systemd/traits/controller.preset",
+        "base/systemd-presets/source/stx/systemd/traits/lowlatency.preset",
+        "base/systemd-presets/source/stx/systemd/traits/storage.preset",
+        "base/systemd-presets/source/stx/systemd/traits/worker-lowlatency.preset",
+        "base/systemd-presets/source/stx/systemd/traits/worker.preset"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/integ/+/953118",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/update/+/952865",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/10a5329680a94b1e991903512f38f76c"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/integ",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/integ/raw/commit/74dcd0d2123ec155cdc7ffa0d094e509f2da9837/LICENSE"
+    },
+    {
+      "repository": "starlingx/metal",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/metal/raw/commit/c6ce3a19548831ce59e8d48b7f4da1e9ec80b908/LICENSE"
+    },
+    {
+      "repository": "starlingx/update",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/update/raw/commit/3300839049da5d958b2572ec56eaacc9ae43f0f1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "status": "four_arm_screening_only",
+  "date": "2026-08-24",
+  "evidence_class": "production_configuration_adaptation",
+  "source": {
+    "repository": "terser/terser",
+    "a3_before_version": "4.2.0",
+    "before_version": "4.2.1",
+    "after_version": "4.3.0",
+    "behavior_commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "behavior": "wrap_func_args defaults to true and adds parentheses around anonymous function arguments"
+  },
+  "target": {
+    "repository": "SAP/ui5-builder",
+    "baseline_commit": "b0b9470b23e1e56a68077517f7549ecd16e90198",
+    "repair_commit": "90592f3aec986f44f38fd6c8f9576656ca3fa45f",
+    "pull_request": "https://github.com/SAP/ui5-builder/pull/331",
+    "repair_paths": [
+      "lib/lbt/bundle/AutoSplitter.js",
+      "lib/lbt/bundle/Builder.js",
+      "lib/processors/uglifier.js"
+    ],
+    "contract": "test/lib/builder/builder.js exact generated-output assertions"
+  },
+  "environment": {
+    "runtime": "Node.js 10 buster container",
+    "dependency_input": "historical package-lock.json",
+    "controlled_dependency": "terser per arm",
+    "command": "./node_modules/.bin/ava test/lib/builder/builder.js --serial"
+  },
+  "arms": [
+    {
+      "arm": "A0",
+      "source_version": "4.2.1",
+      "target_repair_applied": false,
+      "result": "17 passing, 0 failing"
+    },
+    {
+      "arm": "A1",
+      "source_version": "4.3.0",
+      "target_repair_applied": false,
+      "result": "11 passing, 6 failing",
+      "failure_signature": "six exact output assertions contain new parentheses around anonymous function arguments"
+    },
+    {
+      "arm": "A2",
+      "source_version": "4.3.0",
+      "target_repair_applied": true,
+      "result": "17 passing, 0 failing"
+    },
+    {
+      "arm": "A3_before",
+      "source_version": "4.2.0",
+      "target_repair_applied": false,
+      "result": "17 passing, 0 failing"
+    },
+    {
+      "arm": "A3_after",
+      "source_version": "4.2.1",
+      "target_repair_applied": false,
+      "result": "17 passing, 0 failing",
+      "execution_note": "separate invocation on the same isolated A0 worktree"
+    }
+  ],
+  "repair_ablation": {
+    "applied_change": "only repair commit 90592f3aec986f44f38fd6c8f9576656ca3fa45f",
+    "excluded_change": "the dependency-update commit from pull request 331",
+    "interpretation": "Setting wrap_func_args to false in all three production minification paths restores the historical output contract. The maintainer's performance concern was not independently benchmarked."
+  },
+  "remaining_requirements": [
+    "identify and execute related consumers that cover the same generated-output surface without requiring a target repair",
+    "repeat accepted arms three times in isolated dependency directories",
+    "obtain independent semantic review"
+  ]
+}

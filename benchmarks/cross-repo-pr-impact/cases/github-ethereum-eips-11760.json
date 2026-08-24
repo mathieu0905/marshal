@@ -1,0 +1,257 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-11760",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 11760,
+      "change_id": "ethereum/EIPs#11760",
+      "url": "https://github.com/ethereum/EIPs/pull/11760",
+      "status": "MERGED",
+      "subject": "Add EIP: Builder Execution Requests",
+      "branch": "master",
+      "created": "2026-06-03T16:38:07Z",
+      "submitted": "2026-07-03T00:35:52Z"
+    },
+    "base_commit": "fe0940cae2457d8a190471cc57812af96698c125",
+    "candidate_commit": "e2a1b51bfc293e678480f0fb36bddbd421aa6614",
+    "changed_paths": [
+      "EIPS/eip-draft_builder_requests.md",
+      "assets/eip-draft_builder_requests/.gitignore",
+      "assets/eip-draft_builder_requests/README.md",
+      "assets/eip-draft_builder_requests/builder_requests.sol",
+      "assets/eip-draft_builder_requests/foundry.toml",
+      "assets/eip-draft_builder_requests/test/BuilderRequests.t.sol",
+      "assets/eip-draft_builder_requests/test/TestHarness.sol"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/fe0940cae2457d8a190471cc57812af96698c125...e2a1b51bfc293e678480f0fb36bddbd421aa6614.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/execution-specs",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/execution-specs/pull/2990"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/execution-specs",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/execution-specs/pull/3070"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/35175"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/execution-specs",
+      "pull_request": {
+        "provider": "github",
+        "number": 2990,
+        "change_id": "ethereum/execution-specs#2990",
+        "url": "https://github.com/ethereum/execution-specs/pull/2990",
+        "status": "MERGED",
+        "subject": "feat(spec,tests): Implement EIP-8282",
+        "branch": "eips/amsterdam/eip-8282",
+        "created": "2026-06-16T00:09:40Z",
+        "submitted": "2026-06-30T18:48:46Z"
+      },
+      "commit": "0c4dac3fbd9cdcb413b9b91892d7dfa5f3519705",
+      "changed_paths": [
+        "packages/testing/src/execution_testing/__init__.py",
+        "packages/testing/src/execution_testing/forks/base_fork.py",
+        "packages/testing/src/execution_testing/forks/bytecode.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/amsterdam/contracts/builder_deposit_request.bin",
+        "packages/testing/src/execution_testing/forks/forks/eips/amsterdam/contracts/builder_exit_request.bin",
+        "packages/testing/src/execution_testing/forks/forks/eips/amsterdam/eip_7928.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/amsterdam/eip_8282.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/cancun/eip_4788.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/prague/eip_2935.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/prague/eip_6110.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/prague/eip_7002.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/prague/eip_7251.py",
+        "packages/testing/src/execution_testing/forks/forks/forks.py",
+        "packages/testing/src/execution_testing/test_types/__init__.py",
+        "packages/testing/src/execution_testing/test_types/request_types.py",
+        "src/ethereum/forks/amsterdam/fork.py",
+        "src/ethereum/forks/amsterdam/requests.py",
+        "tests/amsterdam/eip7928_block_level_access_lists/test_fork_transition.py",
+        "tests/amsterdam/eip8037_state_creation_gas_cost_increase/test_block_2d_gas_accounting.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/__init__.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/conftest.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/helpers.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/spec.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_builder_deposits.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_builder_exits.py",
+        "tests/frontier/validation/test_header.py",
+        "tests/ported_static/stStaticCall/test_static_internal_call_hitting_gas_limit2.py",
+        "tests/prague/eip7685_general_purpose_el_requests/test_multi_type_requests.py",
+        "tests/prague/eip7702_set_code_tx/test_set_code_txs.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/execution-specs/pull/2990",
+          "statement": "实现源 PR 当时的规范版本。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "pull_request": {
+        "provider": "github",
+        "number": 3070,
+        "change_id": "ethereum/execution-specs#3070",
+        "url": "https://github.com/ethereum/execution-specs/pull/3070",
+        "status": "MERGED",
+        "subject": "feat(spec,tests): Implement EIP-8282",
+        "branch": "forks/amsterdam",
+        "created": "2026-06-30T18:51:12Z",
+        "submitted": "2026-07-02T19:29:03Z"
+      },
+      "commit": "5d7a308494586cbc835aa12d5477efd26f6b48f1",
+      "changed_paths": [
+        "packages/testing/src/execution_testing/__init__.py",
+        "packages/testing/src/execution_testing/cli/pytest_commands/plugins/execute/eth_config/tests/test_execute_eth_config.py",
+        "packages/testing/src/execution_testing/forks/forks/eips/amsterdam/contracts/builder_deposit_request.bin",
+        "packages/testing/src/execution_testing/forks/forks/eips/amsterdam/contracts/builder_exit_request.bin",
+        "packages/testing/src/execution_testing/forks/forks/eips/amsterdam/eip_8282.py",
+        "packages/testing/src/execution_testing/test_types/__init__.py",
+        "packages/testing/src/execution_testing/test_types/request_types.py",
+        "packages/testing/src/execution_testing/test_types/system_contract_request_types.py",
+        "src/ethereum/forks/amsterdam/fork.py",
+        "src/ethereum/forks/amsterdam/requests.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/__init__.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/builder_deposit_deploy_tx.json",
+        "tests/amsterdam/eip8282_builder_execution_requests/builder_exit_deploy_tx.json",
+        "tests/amsterdam/eip8282_builder_execution_requests/conftest.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/helpers.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/spec.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_builder_deposits.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_builder_exits.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_builder_requests_during_fork.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_builder_requests_out_of_gas.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_contract_deployment.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_eip_mainnet.py",
+        "tests/amsterdam/eip8282_builder_execution_requests/test_modified_builder_contract.py",
+        "tests/prague/eip7685_general_purpose_el_requests/test_multi_type_requests.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/execution-specs/pull/3070",
+          "statement": "继续实现源 PR 的后续规范版本，不是同一补丁回贴。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 35175,
+        "change_id": "ethereum/go-ethereum#35175",
+        "url": "https://github.com/ethereum/go-ethereum/pull/35175",
+        "status": "MERGED",
+        "subject": "core: implement EIP-8282: Builder Execution Requests",
+        "branch": "master",
+        "created": "2026-06-15T15:09:57Z",
+        "submitted": "2026-06-25T14:12:07Z"
+      },
+      "commit": "1196201525f93df462e8fefdff07e46df472e18a",
+      "changed_paths": [
+        "core/bal_test.go",
+        "core/bintrie_witness_test.go",
+        "core/genesis.go",
+        "core/state_processor.go",
+        "params/config.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/35175",
+          "statement": "明确实现源 EIP。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/execution-specs"
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/execution-specs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

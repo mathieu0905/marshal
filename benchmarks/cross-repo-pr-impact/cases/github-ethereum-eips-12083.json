@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-12083",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 12083,
+      "change_id": "ethereum/EIPs#12083",
+      "url": "https://github.com/ethereum/EIPs/pull/12083",
+      "status": "MERGED",
+      "subject": "Update EIP-8038: revise COLD_STORAGE_ACCESS and ACCOUNT_WRITE values",
+      "branch": "master",
+      "created": "2026-08-04T11:56:44Z",
+      "submitted": "2026-08-04T12:14:20Z"
+    },
+    "base_commit": "d8636a330deb59a8a8f88d39dcbccb2c7d77db28",
+    "candidate_commit": "257e67728e3b80b029755a9d194bd736eb570510",
+    "changed_paths": [
+      "EIPS/eip-2780.md",
+      "EIPS/eip-8007.md",
+      "EIPS/eip-8038.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/d8636a330deb59a8a8f88d39dcbccb2c7d77db28...257e67728e3b80b029755a9d194bd736eb570510.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/10993"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/35497"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 10993,
+        "change_id": "besu-eth/besu#10993",
+        "url": "https://github.com/besu-eth/besu/pull/10993",
+        "status": "MERGED",
+        "subject": "Revise COLD_STORAGE_ACCESS and ACCOUNT_WRITE values",
+        "branch": "glamsterdam-devnet-8",
+        "created": "2026-08-06T10:25:32Z",
+        "submitted": "2026-08-06T17:01:45Z"
+      },
+      "commit": "6396472a1a539621766fac9ffb7459ca04225e42",
+      "changed_paths": [
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/AbstractBlockProcessorIntegrationTest.java",
+        "evm/src/main/java/org/hyperledger/besu/evm/gascalculator/AmsterdamGasCalculator.java",
+        "evm/src/test/java/org/hyperledger/besu/evm/gascalculator/AmsterdamGasCalculatorTest.java",
+        "evm/src/test/java/org/hyperledger/besu/evm/operation/SStoreOperationTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/10993",
+          "statement": "按源规范修订两项价格。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 35497,
+        "change_id": "ethereum/go-ethereum#35497",
+        "url": "https://github.com/ethereum/go-ethereum/pull/35497",
+        "status": "MERGED",
+        "subject": "core/vm, params, tests: update gas price parameters",
+        "branch": "master",
+        "created": "2026-08-10T05:05:22Z",
+        "submitted": "2026-08-10T06:46:14Z"
+      },
+      "commit": "3222cc8dae8fc98bf821d7966ee90979ee230e45",
+      "changed_paths": [
+        "core/vm/eip8037_test.go",
+        "core/vm/eip8038_test.go",
+        "params/protocol_params.go",
+        "tests/block_test_util.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/35497",
+          "statement": "按源规范更新虚拟机燃料参数和测试。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

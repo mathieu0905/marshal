@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-opencontainers-runtime-spec-1040",
+  "project": "opencontainers-runtime",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "opencontainers/runtime-spec",
+    "pull_request": {
+      "provider": "github",
+      "number": 1040,
+      "change_id": "opencontainers/runtime-spec#1040",
+      "url": "https://github.com/opencontainers/runtime-spec/pull/1040",
+      "status": "MERGED",
+      "subject": "[WIP][RFC] cgroup: extend cgroup v2 support",
+      "branch": "master",
+      "created": "2020-04-13T14:05:52Z",
+      "submitted": "2020-08-17T20:42:28Z"
+    },
+    "base_commit": "2a060269036678148a707a92eeec6d2f8ee50553",
+    "candidate_commit": "e61c6b62aa1a325ceceb650b8ff447265f4ef537",
+    "changed_paths": [
+      "config-linux.md",
+      "schema/config-linux.json",
+      "specs-go/config.go"
+    ],
+    "patch_url": "https://github.com/opencontainers/runtime-spec/compare/2a060269036678148a707a92eeec6d2f8ee50553...e61c6b62aa1a325ceceb650b8ff447265f4ef537.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "containers/crun",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/containers/crun/pull/459"
+    },
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "opencontainers/runc",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/opencontainers/runc/pull/2584"
+    },
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "opencontainers/runc",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/opencontainers/runc/pull/2669"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "containers/crun",
+      "pull_request": {
+        "provider": "github",
+        "number": 459,
+        "change_id": "containers/crun#459",
+        "url": "https://github.com/containers/crun/pull/459",
+        "status": "MERGED",
+        "subject": "cgroup: add support for unified cgroup v2",
+        "branch": "master",
+        "created": "2020-08-17T21:36:51Z",
+        "submitted": "2020-08-21T15:08:07Z"
+      },
+      "commit": "c2efd79b2a6f6068c0afc4af82d43c6f86ed512b",
+      "changed_paths": [
+        "libocispec",
+        "src/libcrun/cgroup.c",
+        "src/libcrun/utils.c",
+        "src/libcrun/utils.h",
+        "tests/init.c",
+        "tests/test_resources.py",
+        "tests/tests_utils.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/containers/crun/pull/459",
+          "statement": "明确增加源规范定义的统一 cgroup v2 支持。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "opencontainers/runc",
+      "pull_request": {
+        "provider": "github",
+        "number": 2584,
+        "change_id": "opencontainers/runc#2584",
+        "url": "https://github.com/opencontainers/runc/pull/2584",
+        "status": "MERGED",
+        "subject": "libct/cgroups: support Cgroups.Resources.Unified",
+        "branch": "master",
+        "created": "2020-09-11T01:15:51Z",
+        "submitted": "2020-09-26T09:48:17Z"
+      },
+      "commit": "4929c05ad18ab99686040d8b40a969c3f884717c",
+      "changed_paths": [
+        "go.mod",
+        "go.sum",
+        "libcontainer/cgroups/fs/fs.go",
+        "libcontainer/cgroups/fs2/fs2.go",
+        "libcontainer/cgroups/fscommon/fscommon.go",
+        "libcontainer/cgroups/systemd/v1.go",
+        "libcontainer/cgroups/v1_utils.go",
+        "libcontainer/configs/cgroup_linux.go",
+        "libcontainer/integration/exec_test.go",
+        "libcontainer/specconv/spec_linux.go",
+        "tests/integration/cgroups.bats",
+        "vendor/github.com/opencontainers/runtime-spec/specs-go/config.go",
+        "vendor/modules.txt"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/opencontainers/runc/pull/2584",
+          "statement": "实现源规范的 Resources.Unified。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "opencontainers/runc",
+      "pull_request": {
+        "provider": "github",
+        "number": 2669,
+        "change_id": "opencontainers/runc#2669",
+        "url": "https://github.com/opencontainers/runc/pull/2669",
+        "status": "MERGED",
+        "subject": "Initial v2 resources.unified systemd support",
+        "branch": "master",
+        "created": "2020-10-30T00:07:27Z",
+        "submitted": "2020-11-06T20:31:31Z"
+      },
+      "commit": "2e968a833fcfdb5b2c427da046e1b5d8ceb568b6",
+      "changed_paths": [
+        "go.mod",
+        "go.sum",
+        "libcontainer/cgroups/systemd/common.go",
+        "libcontainer/cgroups/systemd/cpuset.go",
+        "libcontainer/cgroups/systemd/cpuset_test.go",
+        "libcontainer/cgroups/systemd/v2.go",
+        "tests/integration/cgroups.bats",
+        "tests/integration/helpers.bash",
+        "tests/integration/update.bats",
+        "update.go",
+        "vendor/github.com/willf/bitset/Makefile",
+        "vendor/github.com/willf/bitset/README.md",
+        "vendor/github.com/willf/bitset/bitset.go",
+        "vendor/github.com/willf/bitset/go.mod",
+        "vendor/github.com/willf/bitset/go.sum",
+        "vendor/modules.txt"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/opencontainers/runc/pull/2669",
+          "statement": "为同一规范补充 systemd 管理器路径，不是重复回贴。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opencontainers/runtime-spec",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runtime-spec"
+    },
+    {
+      "repository": "containers/crun",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/containers/crun"
+    },
+    {
+      "repository": "opencontainers/runc",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runc"
+    },
+    {
+      "repository": "opencontainers/runc",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runc"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

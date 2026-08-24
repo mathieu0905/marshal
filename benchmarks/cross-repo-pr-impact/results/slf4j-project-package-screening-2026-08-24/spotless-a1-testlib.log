@@ -1,0 +1,302 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.5.1/userguide/gradle_daemon.html#sec:disabling_the_daemon.
+Daemon will be stopped at the end of the build 
+
+> Configure project :plugin-gradle
+Signing plugin detected. Will automatically sign the published artifacts.
+
+> Task :lib:compileJava UP-TO-DATE
+> Task :lib:processResources UP-TO-DATE
+> Task :lib:classes UP-TO-DATE
+> Task :lib:compileDiktatJava
+> Task :lib:processDiktatResources NO-SOURCE
+> Task :lib:diktatClasses
+> Task :lib:compileFlexmarkJava
+> Task :lib:processFlexmarkResources NO-SOURCE
+> Task :lib:flexmarkClasses
+> Task :lib:compileKtfmtJava
+> Task :lib:processKtfmtResources NO-SOURCE
+> Task :lib:ktfmtClasses
+> Task :lib:compileKtlintJava
+> Task :lib:processKtlintResources NO-SOURCE
+> Task :lib:ktlintClasses
+> Task :lib:compilePalantirJavaFormatJava
+> Task :lib:processPalantirJavaFormatResources NO-SOURCE
+> Task :lib:palantirJavaFormatClasses
+> Task :lib:compileScalafmtJava
+> Task :lib:processScalafmtResources NO-SOURCE
+> Task :lib:scalafmtClasses
+> Task :lib:compileSortPomJava
+> Task :lib:processSortPomResources NO-SOURCE
+> Task :lib:sortPomClasses
+> Task :lib:jar
+> Task :testlib:compileJava
+> Task :testlib:processResources
+> Task :testlib:classes
+> Task :testlib:compileTestJava
+> Task :testlib:processTestResources NO-SOURCE
+> Task :testlib:testClasses
+
+> Task :testlib:test
+
+com.diffplug.spotless.EncodingErrorMsgTest
+
+  Test canUseUnrepresentableOnPurpose() PASSED
+  Test utf8asCP1252() PASSED
+  Test cp1252asUtf8() PASSED
+
+com.diffplug.spotless.FileSignatureTest
+
+  Test testFromDirectory() PASSED
+  Test testFromSet() PASSED
+  Test testFromList() PASSED
+  Test testFromFilesAndDirectory() PASSED
+  Test windowsRoot() SKIPPED
+  Test testSubpath() PASSED
+
+com.diffplug.spotless.FilterByFileFormatterStepTest
+
+  Test equality() PASSED
+  Test behavior() PASSED
+
+com.diffplug.spotless.FormatterPropertiesTest
+
+  Test invalidPropertyFiles() PASSED
+  Test multiplePropertyFiles() PASSED
+  Test nonExistingFile() PASSED
+  Test differentPropertyFileTypes() PASSED
+
+com.diffplug.spotless.FormatterTest
+
+  Test toUnix() PASSED
+  Test equality() PASSED
+
+com.diffplug.spotless.JvmTest
+
+  Test supportProposesJvmUpgrade() PASSED
+  Test supportEmptyConfiguration() PASSED
+  Test supportAdd() PASSED
+  Test supportProposesFormatterUpgrade() PASSED
+  Test supportAllowsExperimentalVersions() PASSED
+
+  supportAddFailsFor(Consumer, String)
+
+    Test 1 Non-semantic version PASSED
+    Test 2 Duplicated JVM version PASSED
+    Test 3 Duplicated formatter version PASSED
+    Test 4 Higher JVM for lower formatter version PASSED
+    Test 5 Lower JVM for higher formatter version PASSED
+
+  Test supportListsMinimumJvmIfOnlyHigherJvmSupported() PASSED
+
+com.diffplug.spotless.LazyForwardingEqualityTest
+
+  Test testEquality() PASSED
+
+com.diffplug.spotless.PaddedCellTest
+
+  Test diverging() PASSED
+  Test cycleOrder() PASSED
+  Test pingPong() PASSED
+  Test fourState() PASSED
+  Test wellBehaved() PASSED
+  Test converging() PASSED
+
+com.diffplug.spotless.ProvisionerTest
+
+  Test testManipulation() PASSED
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access using Lookup on org.gradle.internal.classloader.ClassLoaderUtils$AbstractClassLoaderLookuper (file:/tmp/gradle-home/caches/7.5.1/generated-gradle-jars/gradle-api-7.5.1.jar) to class java.lang.ClassLoader
+WARNING: Please consider reporting this to the maintainers of org.gradle.internal.classloader.ClassLoaderUtils$AbstractClassLoaderLookuper
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+com.diffplug.spotless.antlr4.Antlr4FormatterStepTest
+
+  Test formatGrammar() PASSED (6s)
+
+com.diffplug.spotless.cpp.CppDefaultsTest
+
+  Test testDelimiterExpr() PASSED
+
+com.diffplug.spotless.generic.EndWithNewlineStepTest
+
+  Test equality() PASSED
+  Test behavior() PASSED
+
+com.diffplug.spotless.generic.IndentStepTest
+
+  Test spaceToSpace() PASSED
+  Test tabToSpace() PASSED
+  Test tabToTab() PASSED
+  Test spaceToTab() PASSED
+  Test equality() PASSED
+  Test allowLeadingSpaceIfMultiLineComment() PASSED
+  Test doesntClipNewlines() PASSED
+
+com.diffplug.spotless.generic.LicenseHeaderStepTest
+
+  Test should_apply_license_containing_YEAR_token_with_custom_separator() PASSED
+  Test parseExistingYear() PASSED
+  Test updateYearWithLatest() PASSED
+  Test should_apply_license_containing_YEAR_token_with_non_default_year_separator() PASSED
+  Test should_remove_header_when_empty() PASSED
+  Test efficient() PASSED
+  Test should_update_year_for_license_with_address() PASSED
+  Test sanitizerDoesntGoTooFar() PASSED
+  Test should_apply_license_containing_YEAR_token_in_range() PASSED
+  Test equality() PASSED
+  Test should_preserve_year_for_license_with_address() PASSED
+  Test should_apply_license_containing_YEAR_token_with_special_character_in_year_separator() PASSED
+  Test should_apply_license_containing_YEAR_token() PASSED
+  Test sanitized() PASSED
+  Test fromHeader() PASSED
+
+com.diffplug.spotless.generic.PipeStepPairTest
+
+  Test broken() PASSED
+  Test andApply() PASSED
+  Test single() PASSED
+  Test multiple() PASSED
+
+com.diffplug.spotless.generic.TrimTrailingWhitespaceStepTest
+
+  Test trimTrailingWhitespace() PASSED
+  Test equality() PASSED
+
+com.diffplug.spotless.java.GoogleJavaFormatStepTest
+
+  Test behaviorWithAospStyle() PASSED (3.4s)
+  Test fixWindowsBugForGfj1Point1() PASSED
+  Test behaviorWithCustomGroupArtifact() PASSED
+  Test jvm13Features() SKIPPED
+  Test behaviorWithReflowLongStrings() PASSED (3.6s)
+  Test behavior18() PASSED (3.5s)
+  Test equalityGroupArtifact() PASSED (4.8s)
+  Test equality() PASSED (4.4s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.java.ImportOrderStepTest
+
+  Test sortImportsFromFile() PASSED
+  Test sortImportsWildcardsLast() PASSED
+  Test sortImportsDefault() PASSED
+  Test misplacedImports() PASSED
+  Test sortImportsUnmatched() PASSED
+  Test removeDuplicates() PASSED
+  Test empty() PASSED
+  Test doesntThrowIfImportOrderIsntSerializable() PASSED
+  Test equality() PASSED
+  Test groovyImports() PASSED
+  Test sortImportsFromArray() PASSED
+  Test removeComments() PASSED
+
+com.diffplug.spotless.java.PalantirJavaFormatStepTest
+
+  Test behavior2() PASSED (5s)
+  Test jvm13Features() SKIPPED
+  Test equality() PASSED (6.6s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.java.RemoveUnusedImportsStepTest
+
+  Test equality() PASSED
+  Test behavior() PASSED
+
+com.diffplug.spotless.json.JsonSimpleStepTest
+
+  Test canSetIndentationLevelTo0() PASSED
+  Test handlesEmptyFile() PASSED
+  Test cannotProvideNullProvisioner() PASSED
+  Test handlesSingletonArray() PASSED
+  Test equality() PASSED
+  Test handlesNestedObject() PASSED
+  Test canSetCustomIndentationLevel() PASSED
+  Test handlesSingletonObjectWithArray() PASSED
+  Test handlesNotJson() PASSED
+  Test handlesObjectWithNull() PASSED
+  Test handlesComplexNestedObject() PASSED
+  Test handlesSingletonObject() PASSED
+  Test handlesInvalidJson() PASSED
+
+com.diffplug.spotless.json.gson.GsonStepTest
+
+  Test canSetIndentationLevelTo0() PASSED
+  Test handlesEmptyFile() PASSED
+  Test cannotProvideNullProvisioner() PASSED
+  Test handlesSingletonArray() PASSED
+  Test equality() PASSED
+  Test handlesNestedObject() PASSED
+  Test canSetCustomIndentationLevel() PASSED
+  Test handlesNotJson() PASSED
+  Test handlesHtmlEscapeWhenEnabled() PASSED
+  Test handlesObjectWithNull() PASSED
+  Test handlesComplexNestedObject() PASSED
+  Test handlesVersionIncompatibility() PASSED
+  Test writesRawHtmlWhenHtmlEscapeDisabled() PASSED
+  Test doesNoSortingWhenSortByKeyDisabled() PASSED
+  Test handlesInvalidJson() PASSED
+  Test handlesSortingWhenSortByKeyEnabled() PASSED
+
+com.diffplug.spotless.kotlin.DiktatStepTest
+
+  Test behavior() PASSED (12.2s)
+  Test notSupportedVersion() PASSED
+  Test behaviorConf() PASSED (3.9s)
+
+com.diffplug.spotless.kotlin.KtLintStepTest
+
+  Test worksPre0_46_1() PASSED (6.1s)
+  Test equality() PASSED (2.4s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.kotlin.KtfmtStepTest
+
+  Test dropboxStyle_0_18() SKIPPED
+  Test dropboxStyle_0_19() SKIPPED
+  Test equality() SKIPPED
+  Test behavior() SKIPPED
+
+com.diffplug.spotless.markdown.FlexmarkStepTest
+
+  Test behavior() PASSED (7s)
+
+com.diffplug.spotless.markdown.FreshMarkStepTest
+
+  Test equality() PASSED (4.2s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.npm.SimpleJsonWriterTest
+
+  Test itFailsOnUnsupportedObject() PASSED
+  Test itWritesABooleanProperty() PASSED
+  Test itWritesAValidEmptyObject() PASSED
+  Test itHandlesSeveralOptionsSimultaneously() PASSED
+  Test itWritesAnInteger() PASSED
+  Test itWritesToFile() PASSED
+  Test itWritesAStringProperty() PASSED
+
+com.diffplug.spotless.pom.SortPomTest
+
+  Test testSortPomWithDefaultConfig() PASSED (2.2s)
+
+com.diffplug.spotless.scala.ScalaFmtStepTest
+
+  Test behaviorDefaultConfig() PASSED (7.3s)
+  Test behaviorCustomConfigVersion_3_0_0() PASSED
+  Test equality() PASSED (10.1s)
+  Test behaviorDefaultConfigVersion_3_0_0() PASSED
+  Test behaviorCustomConfig() PASSED
+  Test invalidConfiguration() PASSED
+
+com.diffplug.spotless.sql.DBeaverSQLFormatterStepTest
+
+  Test equality() PASSED
+  Test behaviorWithConfigFile() PASSED
+  Test behavior() PASSED
+  Test behaviorWithAlternativeConfigFile() PASSED
+
+SUCCESS: Executed 155 tests in 1m 41s (7 skipped)
+
+
+BUILD SUCCESSFUL in 3m 33s
+14 actionable tasks: 12 executed, 2 up-to-date

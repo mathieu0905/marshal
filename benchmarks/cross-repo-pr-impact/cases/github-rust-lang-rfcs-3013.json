@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3013",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3013,
+      "change_id": "rust-lang/rfcs#3013",
+      "url": "https://github.com/rust-lang/rfcs/pull/3013",
+      "status": "MERGED",
+      "subject": "User/ardavis/checked cfg",
+      "branch": "master",
+      "created": "2020-11-04T17:43:36Z",
+      "submitted": "2021-02-23T18:15:25Z"
+    },
+    "base_commit": "10890126d3c5aa787b4bab2e9730bc8c53f32909",
+    "candidate_commit": "ee717ed5f8dad980537a938c74ca998eb759065f",
+    "changed_paths": [
+      "text/0000-conditional-compilation-checking.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/10890126d3c5aa787b4bab2e9730bc8c53f32909...ee717ed5f8dad980537a938c74ca998eb759065f.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/cargo",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/cargo/pull/10486"
+    },
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/93915"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/cargo",
+      "pull_request": {
+        "provider": "github",
+        "number": 10486,
+        "change_id": "rust-lang/cargo#10486",
+        "url": "https://github.com/rust-lang/cargo/pull/10486",
+        "status": "MERGED",
+        "subject": "Add support for rustc --check-cfg well known names and values",
+        "branch": "master",
+        "created": "2022-03-18T15:12:37Z",
+        "submitted": "2022-04-12T15:14:55Z"
+      },
+      "commit": "02cd9442c7c11d4b0e25911c8f31530a998cbb24",
+      "changed_paths": [
+        "src/cargo/core/compiler/context/mod.rs",
+        "src/cargo/core/compiler/mod.rs",
+        "src/cargo/core/features.rs",
+        "src/doc/src/reference/unstable.md",
+        "tests/testsuite/build.rs",
+        "tests/testsuite/check.rs",
+        "tests/testsuite/test.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/cargo/pull/10486",
+          "statement": "为源 RFC 的 rustc 选项增加 Cargo 支持。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 93915,
+        "change_id": "rust-lang/rust#93915",
+        "url": "https://github.com/rust-lang/rust/pull/93915",
+        "status": "MERGED",
+        "subject": "Implement --check-cfg option (RFC 3013), take 2",
+        "branch": "master",
+        "created": "2022-02-11T20:08:12Z",
+        "submitted": "2022-02-19T05:08:21Z"
+      },
+      "commit": "3a73ca587bb8a8fb52d6045fbe31d50d5a56ff19",
+      "changed_paths": [
+        "compiler/rustc_attr/src/builtin.rs",
+        "compiler/rustc_driver/src/lib.rs",
+        "compiler/rustc_interface/src/interface.rs",
+        "compiler/rustc_interface/src/util.rs",
+        "compiler/rustc_lint_defs/src/builtin.rs",
+        "compiler/rustc_session/src/config.rs",
+        "compiler/rustc_session/src/parse.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "src/librustdoc/core.rs",
+        "src/librustdoc/doctest.rs",
+        "src/test/run-make-fulldeps/issue-19371/foo.rs",
+        "src/test/ui/check-cfg/empty-names.rs",
+        "src/test/ui/check-cfg/empty-names.stderr",
+        "src/test/ui/check-cfg/empty-values.rs",
+        "src/test/ui/check-cfg/empty-values.stderr",
+        "src/test/ui/check-cfg/invalid-arguments.anything_else.stderr",
+        "src/test/ui/check-cfg/invalid-arguments.names_simple_ident.stderr",
+        "src/test/ui/check-cfg/invalid-arguments.rs",
+        "src/test/ui/check-cfg/invalid-arguments.values_simple_ident.stderr",
+        "src/test/ui/check-cfg/invalid-arguments.values_string_literals.stderr",
+        "src/test/ui/check-cfg/invalid-cfg-name.rs",
+        "src/test/ui/check-cfg/invalid-cfg-name.stderr",
+        "src/test/ui/check-cfg/invalid-cfg-value.rs",
+        "src/test/ui/check-cfg/invalid-cfg-value.stderr",
+        "src/test/ui/feature-gates/feature-gate-check-cfg.rs",
+        "src/test/ui/feature-gates/feature-gate-check-cfg.stderr",
+        "src/tools/tidy/src/ui_tests.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/93915",
+          "statement": "正文明确实现源 RFC。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/cargo",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/cargo"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

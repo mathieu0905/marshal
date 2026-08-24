@@ -1,0 +1,268 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-621",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 621,
+      "change_id": "open-telemetry/opentelemetry-specification#621",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/621",
+      "status": "MERGED",
+      "subject": "Remove SpanId from Sampler input",
+      "branch": "master",
+      "created": "2020-05-26T15:18:14Z",
+      "submitted": "2020-05-28T14:56:25Z"
+    },
+    "base_commit": "5b78ee1adf437bb6c151d8992129f22970a96677",
+    "candidate_commit": "dd3a0def741d93d8889561fd4a4706fe8f78c39b",
+    "changed_paths": [
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/5b78ee1adf437bb6c151d8992129f22970a96677...dd3a0def741d93d8889561fd4a4706fe8f78c39b.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/706"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-erlang",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/80"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/775"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/1286"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 706,
+        "change_id": "open-telemetry/opentelemetry-dotnet#706",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/706",
+        "status": "MERGED",
+        "subject": "Remove SpanID from sampling parameters",
+        "branch": "master",
+        "created": "2020-05-29T00:05:17Z",
+        "submitted": "2020-05-29T19:14:12Z"
+      },
+      "commit": "a4f038bda2c270b3add21ad281ca3d425a809fa1",
+      "changed_paths": [
+        "src/OpenTelemetry/Trace/Sampler.cs",
+        "src/OpenTelemetry/Trace/Samplers/AlwaysOffSampler.cs",
+        "src/OpenTelemetry/Trace/Samplers/AlwaysOnSampler.cs",
+        "src/OpenTelemetry/Trace/Samplers/AlwaysParentSampler.cs",
+        "src/OpenTelemetry/Trace/Samplers/ProbabilitySampler.cs",
+        "src/OpenTelemetry/Trace/SpanSdk.cs",
+        "test/OpenTelemetry.Tests/Implementation/Trace/Samplers/SamplersTest.cs",
+        "test/OpenTelemetry.Tests/Implementation/Trace/SpanTest.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/706",
+          "statement": "明确按源规范更新采样参数。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "pull_request": {
+        "provider": "github",
+        "number": 80,
+        "change_id": "open-telemetry/opentelemetry-erlang#80",
+        "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/80",
+        "status": "MERGED",
+        "subject": "remove the span id from the sampler arguments",
+        "branch": "master",
+        "created": "2020-06-26T21:27:04Z",
+        "submitted": "2020-06-27T00:02:40Z"
+      },
+      "commit": "0f88da5f596c02d9e77490122a04d66b98ba34ad",
+      "changed_paths": [
+        "src/ot_sampler.erl",
+        "src/ot_span_utils.erl",
+        "test/ot_samplers_SUITE.erl"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/80",
+          "statement": "明确从采样器参数移除 span id。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 775,
+        "change_id": "open-telemetry/opentelemetry-go#775",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/775",
+        "status": "MERGED",
+        "subject": "Remove SpanID from sampling parameters",
+        "branch": "master",
+        "created": "2020-05-28T23:16:12Z",
+        "submitted": "2020-05-29T00:55:11Z"
+      },
+      "commit": "52a0bad9e2afc5c245a5cb70ba1813fe6c7588f6",
+      "changed_paths": [
+        "api/trace/always_off_sampler.go",
+        "api/trace/always_off_sampler_test.go",
+        "api/trace/always_on_sampler.go",
+        "api/trace/always_on_sampler_test.go",
+        "api/trace/sampler.go",
+        "sdk/trace/sampling.go",
+        "sdk/trace/span.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/775",
+          "statement": "明确按源规范更新采样参数。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 1286,
+        "change_id": "open-telemetry/opentelemetry-java#1286",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1286",
+        "status": "MERGED",
+        "subject": "Remove SpanID from sampling parameters",
+        "branch": "master",
+        "created": "2020-05-28T23:39:49Z",
+        "submitted": "2020-05-29T15:52:47Z"
+      },
+      "commit": "ffdc6f0c682102cd2bce9e835f0e78d257040367",
+      "changed_paths": [
+        "examples/sdk-usage/src/main/java/io/opentelemetry/sdk/example/ConfigureTraceExample.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/Sampler.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/Samplers.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/SpanBuilderSdk.java",
+        "sdk/src/test/java/io/opentelemetry/sdk/trace/SamplersTest.java",
+        "sdk/src/test/java/io/opentelemetry/sdk/trace/SpanBuilderSdkTest.java",
+        "sdk_contrib/jaeger_remote_sampler/src/main/java/io/opentelemetry/sdk/contrib/trace/jaeger/sampler/JaegerRemoteSampler.java",
+        "sdk_contrib/jaeger_remote_sampler/src/main/java/io/opentelemetry/sdk/contrib/trace/jaeger/sampler/PerOperationSampler.java",
+        "sdk_contrib/jaeger_remote_sampler/src/main/java/io/opentelemetry/sdk/contrib/trace/jaeger/sampler/RateLimitingSampler.java",
+        "sdk_contrib/jaeger_remote_sampler/src/test/java/io/opentelemetry/sdk/contrib/trace/jaeger/sampler/RateLimitingSamplerTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1286",
+          "statement": "明确按源规范更新采样参数。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

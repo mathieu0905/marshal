@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3354",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3354,
+      "change_id": "kubernetes/enhancements#3354",
+      "url": "https://github.com/kubernetes/enhancements/pull/3354",
+      "status": "MERGED",
+      "subject": "Promote STS minReadySeconds to GA",
+      "branch": "master",
+      "created": "2022-06-07T22:14:18Z",
+      "submitted": "2022-06-13T13:50:12Z"
+    },
+    "base_commit": "b522105845782e08e8d521a5787f1137e7a93ded",
+    "candidate_commit": "ab4f9ae5d8b8760955082f93077edaf1c8d5d73b",
+    "changed_paths": [
+      "keps/prod-readiness/sig-apps/2599.yaml",
+      "keps/sig-apps/2599-minreadyseconds-for-statefulsets/README.md",
+      "keps/sig-apps/2599-minreadyseconds-for-statefulsets/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/b522105845782e08e8d521a5787f1137e7a93ded...ab4f9ae5d8b8760955082f93077edaf1c8d5d73b.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/110896"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 110896,
+        "change_id": "kubernetes/kubernetes#110896",
+        "url": "https://github.com/kubernetes/kubernetes/pull/110896",
+        "status": "MERGED",
+        "subject": "Promote minReadySeconds to GA",
+        "branch": "master",
+        "created": "2022-07-01T02:50:43Z",
+        "submitted": "2022-07-14T16:45:09Z"
+      },
+      "commit": "9ab807fdaa82b349fc9321a2b3b792c35d2825f8",
+      "changed_paths": [
+        "api/openapi-spec/swagger.json",
+        "api/openapi-spec/v3/apis__apps__v1_openapi.json",
+        "pkg/apis/apps/types.go",
+        "pkg/apis/apps/validation/validation.go",
+        "pkg/apis/apps/validation/validation_test.go",
+        "pkg/controller/statefulset/stateful_set.go",
+        "pkg/controller/statefulset/stateful_set_control.go",
+        "pkg/controller/statefulset/stateful_set_control_test.go",
+        "pkg/controller/statefulset/stateful_set_status_updater_test.go",
+        "pkg/features/kube_features.go",
+        "pkg/generated/openapi/zz_generated.openapi.go",
+        "pkg/registry/apps/statefulset/strategy.go",
+        "pkg/registry/apps/statefulset/strategy_test.go",
+        "staging/src/k8s.io/api/apps/v1/generated.proto",
+        "staging/src/k8s.io/api/apps/v1/types.go",
+        "staging/src/k8s.io/api/apps/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/api/apps/v1beta1/generated.proto",
+        "staging/src/k8s.io/api/apps/v1beta1/types.go",
+        "staging/src/k8s.io/api/apps/v1beta1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/api/apps/v1beta2/generated.proto",
+        "staging/src/k8s.io/api/apps/v1beta2/types.go",
+        "staging/src/k8s.io/api/apps/v1beta2/types_swagger_doc_generated.go",
+        "test/integration/statefulset/statefulset_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/110896",
+          "statement": "目标按源 KEP 将最小就绪时间能力提升到稳定版。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-941463",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/puppet-openstack-integration",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 941463,
+      "change_id": "Ib4972776ae6b87906681d0a06c65add887020e55",
+      "url": "https://review.opendev.org/c/openstack/puppet-openstack-integration/+/941463",
+      "status": "MERGED",
+      "subject": "Enable cloudkitty",
+      "branch": "master",
+      "created": "2025-02-12 15:54:09.000000000",
+      "submitted": "2025-08-18 09:44:17.000000000"
+    },
+    "base_commit": "ae4a6580ac3edfbf629c1bedf4586853d6020564",
+    "candidate_commit": "b80f5c1bffd4051a7756f3878f2f9632296aa7f1",
+    "changed_paths": [
+      "README.md",
+      "fixtures/scenario001.pp",
+      "manifests/cloudkitty.pp",
+      "manifests/tempest.pp",
+      "run_tests.sh"
+    ],
+    "patch_url": "https://review.opendev.org/changes/941463/revisions/b80f5c1bffd4051a7756f3878f2f9632296aa7f1/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/puppet-openstack-integration",
+      "target_repository": "openstack/puppet-cloudkitty",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-cloudkitty/+/957727"
+    },
+    {
+      "source_repository": "openstack/puppet-openstack-integration",
+      "target_repository": "openstack/puppet-cloudkitty",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-cloudkitty/+/957567"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/puppet-cloudkitty",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 957727,
+        "change_id": "I77754811ff0db013cb92e59e94edbb2a2cd7b68d",
+        "url": "https://review.opendev.org/c/openstack/puppet-cloudkitty/+/957727",
+        "status": "MERGED",
+        "subject": "Enable integration test",
+        "branch": "master",
+        "created": "2025-08-18 15:11:30.000000000",
+        "submitted": "2025-08-20 03:52:23.000000000"
+      },
+      "commit": "11d46e1487c396233658b06058b369a4aca4ff68",
+      "changed_paths": [
+        ".zuul.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-cloudkitty/+/957727",
+          "statement": "Depends-On: https://review.opendev.org/941463",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/05c2e57fc42d4651bd715a54fa1d6c62"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/puppet-cloudkitty",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 957567,
+        "change_id": "I8413d894acb8e3bf98647580371ad9bd67f74926",
+        "url": "https://review.opendev.org/c/openstack/puppet-cloudkitty/+/957567",
+        "status": "MERGED",
+        "subject": "Use p-o-i manifest in acceptance tests",
+        "branch": "master",
+        "created": "2025-08-15 19:29:21.000000000",
+        "submitted": "2025-08-18 15:09:55.000000000"
+      },
+      "commit": "de68525efa1769e8e4badde7ee8ebb28c5412225",
+      "changed_paths": [
+        "spec/acceptance/10_basic_cloudkitty_spec.rb"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-cloudkitty/+/957567",
+          "statement": "Depends-On: https://review.opendev.org/941463",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/a94f02aa6a984f89b2036ba30eb40f82"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/puppet-cloudkitty",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-cloudkitty/raw/commit/11d46e1487c396233658b06058b369a4aca4ff68/LICENSE"
+    },
+    {
+      "repository": "openstack/puppet-openstack-integration",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-openstack-integration/raw/commit/2fcfffeb2fb12243c14782ea467c8631e6661c45/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-opencontainers-runtime-spec-876",
+  "project": "opencontainers-runtime",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "opencontainers/runtime-spec",
+    "pull_request": {
+      "provider": "github",
+      "number": 876,
+      "change_id": "opencontainers/runtime-spec#876",
+      "url": "https://github.com/opencontainers/runtime-spec/pull/876",
+      "status": "MERGED",
+      "subject": "Make Linux memory allocations int64 not uint64",
+      "branch": "master",
+      "created": "2017-06-23T20:33:30Z",
+      "submitted": "2017-06-23T23:24:23Z"
+    },
+    "base_commit": "0b38a4ce7f0b364c9a17766a755bb8a35b3689c9",
+    "candidate_commit": "6990fdab69e0f78e0eb3e2a9afcd51b80ca4562d",
+    "changed_paths": [
+      "config-linux.md",
+      "schema/config-linux.json",
+      "specs-go/config.go"
+    ],
+    "patch_url": "https://github.com/opencontainers/runtime-spec/compare/0b38a4ce7f0b364c9a17766a755bb8a35b3689c9...6990fdab69e0f78e0eb3e2a9afcd51b80ca4562d.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "opencontainers/runc",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/opencontainers/runc/pull/1495"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "opencontainers/runc",
+      "pull_request": {
+        "provider": "github",
+        "number": 1495,
+        "change_id": "opencontainers/runc#1495",
+        "url": "https://github.com/opencontainers/runc/pull/1495",
+        "status": "MERGED",
+        "subject": "Update spec to master, switch to int64 for memory limits",
+        "branch": "master",
+        "created": "2017-06-24T00:19:40Z",
+        "submitted": "2017-06-27T18:10:09Z"
+      },
+      "commit": "3d9074ead33a5c27dc20bb49457c69c6d2ae6b57",
+      "changed_paths": [
+        "libcontainer/cgroups/fs/memory.go",
+        "libcontainer/configs/cgroup_linux.go",
+        "libcontainer/specconv/example.go",
+        "spec.go",
+        "update.go",
+        "vendor.conf",
+        "vendor/github.com/opencontainers/runtime-spec/specs-go/config.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/opencontainers/runc/pull/1495",
+          "statement": "明确因源规范变化切换内存限制类型。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opencontainers/runtime-spec",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runtime-spec"
+    },
+    {
+      "repository": "opencontainers/runc",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runc"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

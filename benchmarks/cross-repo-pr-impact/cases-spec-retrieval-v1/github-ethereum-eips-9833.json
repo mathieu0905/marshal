@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9833",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9833,
+      "change_id": "ethereum/EIPs#9833",
+      "url": "https://github.com/ethereum/EIPs/pull/9833",
+      "status": "MERGED",
+      "subject": "Adds EIP for secp256r1",
+      "branch": "master",
+      "created": "2025-05-28T05:57:18Z",
+      "submitted": "2025-07-01T20:21:20Z"
+    },
+    "base_commit": "a2bc1f817cc66ceef951f0f8d61d2dbb04bdf5c0",
+    "candidate_commit": "73dfcb6a3cba117d288377066d73e815d9ee0ce4",
+    "changed_paths": [
+      "EIPS/eip-xxxx.md",
+      "assets/eip-xxxx/test-vectors.json"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/a2bc1f817cc66ceef951f0f8d61d2dbb04bdf5c0...73dfcb6a3cba117d288377066d73e815d9ee0ce4.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/31991"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 31991,
+        "change_id": "ethereum/go-ethereum#31991",
+        "url": "https://github.com/ethereum/go-ethereum/pull/31991",
+        "status": "MERGED",
+        "subject": "EIP-7951: Precompile for secp256r1 Curve Support",
+        "branch": "master",
+        "created": "2025-06-09T11:58:41Z",
+        "submitted": "2025-07-07T18:59:45Z"
+      },
+      "commit": "b103f0ef74867541e28271da3d3fe1ae52195640",
+      "changed_paths": [
+        "core/vm/contracts.go",
+        "core/vm/contracts_test.go",
+        "core/vm/testdata/precompiles/p256Verify.json",
+        "crypto/secp256r1/verifier.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/31991",
+          "statement": "源首提交新增草案和测试向量，目标实现同一预编译并直接引用源 PR；预筛只因占位文件名误拒。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

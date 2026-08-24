@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-python-peps-302",
+  "project": "python",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "python/peps",
+    "pull_request": {
+      "provider": "github",
+      "number": 302,
+      "change_id": "python/peps#302",
+      "url": "https://github.com/python/peps/pull/302",
+      "status": "MERGED",
+      "subject": "PEP 484: Remove statement about unicode, in the python2.7 section.",
+      "branch": "master",
+      "created": "2017-07-07T18:23:58Z",
+      "submitted": "2017-07-18T20:59:40Z"
+    },
+    "base_commit": "dba43db7b96b379966e2e5251ddad833972bb578",
+    "candidate_commit": "fa18517c3cfd9ebbacb2c19b6eacee42f34974eb",
+    "changed_paths": [
+      "pep-0484.txt"
+    ],
+    "patch_url": "https://github.com/python/peps/compare/dba43db7b96b379966e2e5251ddad833972bb578...fa18517c3cfd9ebbacb2c19b6eacee42f34974eb.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "python/peps",
+      "target_repository": "python/typeshed",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/python/typeshed/pull/1470"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "python/typeshed",
+      "pull_request": {
+        "provider": "github",
+        "number": 1470,
+        "change_id": "python/typeshed#1470",
+        "url": "https://github.com/python/typeshed/pull/1470",
+        "status": "MERGED",
+        "subject": "Add \"conventions\" section to README.md",
+        "branch": "master",
+        "created": "2017-07-07T19:59:57Z",
+        "submitted": "2017-07-18T20:58:25Z"
+      },
+      "commit": "6713bc3a34344cb93d0cbd2c90d0eda047c89bd3",
+      "changed_paths": [
+        "README.md"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/python/typeshed/pull/1470",
+          "statement": "明确记录源 PEP 删除的 unicode 提升约定。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "python/peps",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/peps"
+    },
+    {
+      "repository": "python/typeshed",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/typeshed"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

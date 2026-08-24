@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-987890",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/upstream",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 987890,
+      "change_id": "I0c9b18ad8ad6bd0312617a8fe2a5775926310c2a",
+      "url": "https://review.opendev.org/c/starlingx/upstream/+/987890",
+      "status": "MERGED",
+      "subject": "Fix openstack password set for Trixie",
+      "branch": "master",
+      "created": "2026-05-08 16:48:02.000000000",
+      "submitted": "2026-05-12 18:13:34.000000000"
+    },
+    "base_commit": "c8e086c249e3891231a085128ac18a82f0529ca9",
+    "candidate_commit": "d42cd7ee0028edbb4233cb7f55b429863e634155",
+    "changed_paths": [
+      "debian_trixie_iso_image_std.inc",
+      "debian_trixie_pkg_dirs_std",
+      "openstack/python-openstackclient/debian/trixie/patches/0004-Fix-user-password-set-use-self-service-API.patch",
+      "openstack/python-openstackclient/debian/trixie/patches/series",
+      "openstack/python-openstacksdk/debian/trixie/deb_patches/0001-Add-wheel-to-package.patch",
+      "openstack/python-openstacksdk/debian/trixie/deb_patches/series",
+      "openstack/python-openstacksdk/debian/trixie/meta_data.yaml",
+      "openstack/python-openstacksdk/debian/trixie/patches/0001-Identity-add-update_password-function.patch",
+      "openstack/python-openstacksdk/debian/trixie/patches/series"
+    ],
+    "patch_url": "https://review.opendev.org/changes/987890/revisions/d42cd7ee0028edbb4233cb7f55b429863e634155/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/upstream",
+      "target_repository": "starlingx/tools",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/tools/+/987891"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/tools",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 987891,
+        "change_id": "I31817f139cf4138ee25459234fc67148e000c5f0",
+        "url": "https://review.opendev.org/c/starlingx/tools/+/987891",
+        "status": "MERGED",
+        "subject": "Remove python3-openstacksdk from mirror",
+        "branch": "master",
+        "created": "2026-05-08 16:59:22.000000000",
+        "submitted": "2026-05-12 18:14:15.000000000"
+      },
+      "commit": "02643e6c161bf49e4f30e0565e33d885274d672c",
+      "changed_paths": [
+        "debian-mirror-tools/config/debian/trixie/common/base-trixie.lst"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/tools/+/987891",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/upstream/+/987890",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/227d31acaff6407b8f2dcd45aa690d68"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/tools",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/tools/src/commit/02643e6c161bf49e4f30e0565e33d885274d672c"
+    },
+    {
+      "repository": "starlingx/upstream",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/upstream/raw/commit/d42cd7ee0028edbb4233cb7f55b429863e634155/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

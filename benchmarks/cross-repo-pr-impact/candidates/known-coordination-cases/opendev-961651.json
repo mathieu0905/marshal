@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-961651",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/requirements",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 961651,
+      "change_id": "I71720113bf00bac881d50bd362bef9214b322952",
+      "url": "https://review.opendev.org/c/openstack/requirements/+/961651",
+      "status": "MERGED",
+      "subject": "Remove build-lower-constraints tool",
+      "branch": "master",
+      "created": "2025-09-18 13:20:29.000000000",
+      "submitted": "2025-10-14 01:41:44.000000000"
+    },
+    "base_commit": "6ed25d28a297ef009a5442807fa9a3c95946efa2",
+    "candidate_commit": "fea2f5b9219eb644383022338bd0cb4fbf2784b8",
+    "changed_paths": [
+      "openstack_requirements/cmds/build_lower_constraints.py",
+      "openstack_requirements/tests/test_build_lower_constraints.py",
+      "setup.cfg"
+    ],
+    "patch_url": "https://review.opendev.org/changes/961651/revisions/fea2f5b9219eb644383022338bd0cb4fbf2784b8/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/requirements",
+      "target_repository": "openstack/project-team-guide",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/project-team-guide/+/961654"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/project-team-guide",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 961654,
+        "change_id": "Ia8e33432db55c11dab2f47c2a808af86704095b3",
+        "url": "https://review.opendev.org/c/openstack/project-team-guide/+/961654",
+        "status": "MERGED",
+        "subject": "Remove references to build-lower-constraints file",
+        "branch": "master",
+        "created": "2025-09-18 13:21:00.000000000",
+        "submitted": "2025-10-14 22:28:02.000000000"
+      },
+      "commit": "897592c9b95c92130fcc899db2f11356c39c797c",
+      "changed_paths": [
+        "doc/source/dependency-management.rst"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/project-team-guide/+/961654",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/requirements/+/961651",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/ff82dbad6d694da3a47fa98b0ed46349"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/project-team-guide",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/project-team-guide/raw/commit/897592c9b95c92130fcc899db2f11356c39c797c/LICENSE"
+    },
+    {
+      "repository": "openstack/requirements",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/requirements/src/commit/fea2f5b9219eb644383022338bd0cb4fbf2784b8"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

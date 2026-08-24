@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-988899-semantic-impact",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/magnum",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 988899,
+      "change_id": "I947cb043d8f36e5fd51fdd9c166a6a7c56d6d057",
+      "url": "https://review.opendev.org/c/openstack/magnum/+/988899",
+      "status": "MERGED",
+      "subject": "Add node_labels and node_taints to NodeGroup",
+      "branch": "master",
+      "created": "2026-05-18 03:02:23.000000000",
+      "submitted": "2026-07-17 06:52:50.000000000"
+    },
+    "base_commit": "511b8033a759823cbfe9161a3491f8b00277ce63",
+    "candidate_commit": "8ec7fb5783daa3da9828f8e7289a1b455409e5ff",
+    "changed_paths": [
+      "magnum/api/controllers/v1/nodegroup.py",
+      "magnum/api/controllers/versions.py",
+      "magnum/api/rest_api_version_history.rst",
+      "magnum/db/sqlalchemy/alembic/versions/b3e1cf4a2d5e_add_node_labels_and_node_taints.py",
+      "magnum/db/sqlalchemy/models.py",
+      "magnum/objects/nodegroup.py",
+      "magnum/tests/unit/api/controllers/v1/test_nodegroup.py",
+      "magnum/tests/unit/db/utils.py",
+      "releasenotes/notes/nodegroup-node-labels-taints-7d62e1ab2e1c2415.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/988899/revisions/8ec7fb5783daa3da9828f8e7289a1b455409e5ff/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/magnum",
+      "target_repository": "openstack/python-magnumclient",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/openstack/python-magnumclient/+/988900"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/python-magnumclient",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 988900,
+        "change_id": "Id5e9b6593e83b9ffe856e73823bf418b1a66321f",
+        "url": "https://review.opendev.org/c/openstack/python-magnumclient/+/988900",
+        "status": "MERGED",
+        "subject": "Add node label and taint support to nodegroups",
+        "branch": "master",
+        "created": "2026-05-18 03:08:52.000000000",
+        "submitted": "2026-07-17 06:52:52.000000000"
+      },
+      "commit": "e202ee5c6ffa669f2058e24a2e8e732ca1483435",
+      "changed_paths": [
+        "magnumclient/common/utils.py",
+        "magnumclient/osc/v1/nodegroups.py",
+        "magnumclient/tests/osc/unit/v1/fakes.py",
+        "magnumclient/tests/osc/unit/v1/test_nodegroups.py",
+        "magnumclient/tests/test_utils.py",
+        "magnumclient/v1/nodegroups.py",
+        "releasenotes/notes/nodegroup-update-labels-taints-0d8c4b6e2f1a3c5d.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "runtime_api_contract",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/openstack/python-magnumclient/+/988900",
+          "statement": "Magnum 增加 node_labels、node_taints 和微版本；python-magnumclient 明确暴露新字段与命令参数。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/magnum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/magnum"
+    },
+    {
+      "repository": "openstack/python-magnumclient",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/python-magnumclient"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

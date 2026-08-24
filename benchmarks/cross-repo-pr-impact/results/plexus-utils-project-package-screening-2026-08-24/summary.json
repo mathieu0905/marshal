@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "status": "three_arm_screening_only",
+  "source": {
+    "repository": "codehaus-plexus/plexus-utils",
+    "old_version": "3.5.1",
+    "breaking_version": "4.0.0",
+    "breaking_surface": "XML classes moved from plexus-utils to plexus-xml"
+  },
+  "environment": {
+    "java": "11",
+    "isolation": "separate working tree and Maven local repository for each arm"
+  },
+  "positive_targets": [
+    {
+      "repository": "s4u/pgpverify-maven-plugin",
+      "baseline_commit": "e471c02de5bb8e8309c3b4fd1116ed024c9484c2",
+      "historical_fix_pr": "https://github.com/s4u/pgpverify-maven-plugin/pull/466",
+      "historical_fix_head": "2923b7582f733744b816f3e5bc514136bad60731",
+      "command": "mvn -B -ntp clean test",
+      "a0": {
+        "plexus_utils": "3.5.1",
+        "exit_code": 0,
+        "tests": 300,
+        "log": "pgpverify-a0.log"
+      },
+      "a1": {
+        "plexus_utils": "4.0.0",
+        "exit_code": 1,
+        "failure": "MavenCompilerUtils cannot resolve org.codehaus.plexus.util.xml.Xpp3Dom",
+        "log": "pgpverify-a1.log"
+      },
+      "a2": {
+        "plexus_utils": "4.0.0",
+        "target_fix": "add plexus-xml 3.0.0 and move the direct XML dependency to it",
+        "exit_code": 0,
+        "tests": 300,
+        "log": "pgpverify-a2.log",
+        "patch": "pgpverify-a2.patch"
+      }
+    },
+    {
+      "repository": "mathieucarbou/license-maven-plugin",
+      "baseline_commit": "988dbfa9dcb5fc57610033eeaf42d35d06281210",
+      "historical_fix_pr": "https://github.com/mathieucarbou/license-maven-plugin/pull/636",
+      "historical_fix_head": "ac5300c6faab4dafd6cf73fcb4166f99fa81b369",
+      "command": "./mvnw -B -ntp clean test",
+      "a0": {
+        "plexus_utils": "3.5.1",
+        "exit_code": 0,
+        "tests": 343,
+        "log": "license-a0.log"
+      },
+      "a1": {
+        "plexus_utils": "4.0.0",
+        "exit_code": 1,
+        "main_module_tests": 330,
+        "main_module_errors": 231,
+        "failure": "NoClassDefFoundError for org/codehaus/plexus/util/xml/pull/XmlPullParserException",
+        "log": "license-a1.log"
+      },
+      "a2": {
+        "plexus_utils": "4.0.0",
+        "target_fix": "add plexus-xml 3.0.0",
+        "exit_code": 0,
+        "tests": 343,
+        "log": "license-a2.log",
+        "patch": "license-a2.patch"
+      }
+    }
+  ],
+  "bounded_negative_targets": [
+    {
+      "repository": "codehaus-plexus/plexus-io",
+      "baseline_commit": "cb53f1978a8013f983df0f6ad8175ec06c7044ed",
+      "upgrade_pr": "https://github.com/codehaus-plexus/plexus-io/pull/106",
+      "command": "mvn -B -ntp clean verify",
+      "a0_exit_code": 0,
+      "a1_exit_code": 0,
+      "tests_per_arm": 49,
+      "coverage_boundary": "native tests execute file scanning, selection, resource attributes and file utilities",
+      "logs": ["plexus-io-a0.log", "plexus-io-a1.log"]
+    },
+    {
+      "repository": "mojohaus/build-helper-maven-plugin",
+      "baseline_commit": "ddfbc5955fff70a009b86aa2a2b1934d72b4d13a",
+      "upgrade_pr": "https://github.com/mojohaus/build-helper-maven-plugin/pull/183",
+      "command": "mvn -B -ntp clean verify -Prun-its -Dinvoker.test=regex-*,uptodate-*,remove-project-artifact",
+      "a0_exit_code": 0,
+      "a1_exit_code": 0,
+      "unit_tests_per_arm": 55,
+      "integration_tests_per_arm": 14,
+      "coverage_boundary": "selected native integration tests execute StringUtils-based regex and up-to-date paths plus FileUtils.deleteDirectory in remove-project-artifact",
+      "logs": ["build-helper-targeted-a0.log", "build-helper-targeted-a1.log"],
+      "excluded_full_run": {
+        "result": "both arms fail the same eight unrelated historical integration tests",
+        "logs": ["build-helper-full-a0.log", "build-helper-full-a1.log"]
+      }
+    }
+  ],
+  "a3": {
+    "status": "not_qualified",
+    "rejected_pair": "3.4.2 to 3.5.0",
+    "source_changes": [
+      "StringUtils.isEmpty no longer treats whitespace-only strings as empty",
+      "Xpp3DomUtils merge no longer fills a dominant empty value from the recessive value",
+      "CommandLineUtils.getSystemEnvVars no longer declares IOException"
+    ],
+    "reason": "the four selected repositories' native checks do not jointly execute these changed methods or behaviors; running both versions would only prove a green build, not exposure to the compatible change surface"
+  },
+  "decision": "keep as a two-positive, two-bounded-negative three-arm candidate; do not promote to a formal project package before a qualifying A3, three isolated repetitions and independent semantic review"
+}

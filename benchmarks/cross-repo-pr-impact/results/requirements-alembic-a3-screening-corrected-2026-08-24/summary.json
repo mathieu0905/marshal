@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "run_id": "requirements-alembic-a3-screening-corrected-2026-08-24",
+  "experiment_tier": "auxiliary_screening",
+  "research_question": "Alembic 1.17.2 到 1.18.0 的真实相邻发布是否能在六个固定 OpenStack 消费仓的 MySQL 模型同步命令中保持通过。",
+  "null_hypothesis": "至少一个固定消费者的命令会因该源变化失败。",
+  "alternative_hypothesis": "六个消费者的前后两臂都通过，且实际解析版本正确。",
+  "environment": {
+    "python": "3.13.11",
+    "sqlalchemy": "2.0.51",
+    "database": "MariaDB 10.2.44",
+    "database_container": "marshal-cinder-mariadb-20260824",
+    "database_port": 33317
+  },
+  "arms": {
+    "before": {
+      "alembic": "1.17.2"
+    },
+    "after": {
+      "alembic": "1.18.0"
+    }
+  },
+  "repositories": [
+    {
+      "repository": "openstack/cinder",
+      "commit": "b5b763129e2bde5077c0cf3a5eb434021abaa6e0",
+      "test": "cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync",
+      "before": {"exit_code": 0, "version": "1.17.2", "duration_seconds": 102.42, "result": "pass"},
+      "after": {"exit_code": 0, "version": "1.18.0", "duration_seconds": 115.27, "result": "pass"},
+      "evidence_directory": "../requirements-alembic-a3-screening-2026-08-24"
+    },
+    {
+      "repository": "openstack/heat",
+      "commit": "79feefc60e12fab1f40e53e40318091169696a72",
+      "test": "heat.tests.db.test_migrations.ModelsMigrationsSyncMysql.test_models_sync",
+      "before": {"exit_code": 0, "version": "1.17.2", "duration_seconds": 80.63, "result": "pass"},
+      "after": {"exit_code": 0, "version": "1.18.0", "duration_seconds": 125.92, "result": "pass"}
+    },
+    {
+      "repository": "openstack/ironic",
+      "commit": "72d6dea279cf493d855953a404868fce1b39fbf1",
+      "test": "ironic.tests.unit.db.sqlalchemy.test_migrations.ModelsMigrationsSyncMysql.test_models_sync",
+      "before": {"exit_code": 0, "version": "1.17.2", "duration_seconds": 181.0, "result": "pass"},
+      "after": {"exit_code": 0, "version": "1.18.0", "duration_seconds": 60.87, "result": "pass"}
+    },
+    {
+      "repository": "openstack/keystone",
+      "commit": "16afc813b7e6de727d8a91e065d7824b06e32925",
+      "test": "keystone.tests.unit.common.sql.test_upgrades.TestModelsSyncMySQL.test_models_sync",
+      "before": {"exit_code": 0, "version": "1.17.2", "duration_seconds": 71.15, "result": "pass"},
+      "after": {"exit_code": 0, "version": "1.18.0", "duration_seconds": 148.39, "result": "pass"},
+      "evidence_directory": "keystone-system-deps-retry1"
+    },
+    {
+      "repository": "openstack/nova",
+      "commit": "fec26fb64baef2251bf547850ae71edfa6a7413d",
+      "test": "nova.tests.unit.db.(api|main).test_migrations.TestModelsSyncMySQL.test_models_sync",
+      "before": {"exit_code": 0, "version": "1.17.2", "duration_seconds": 93.55, "result": "pass", "tests_run": 2},
+      "after": {"exit_code": 0, "version": "1.18.0", "duration_seconds": 68.96, "result": "pass", "tests_run": 2}
+    },
+    {
+      "repository": "openstack/placement",
+      "commit": "0d503c6df70aa3049c29d4c2d8672703e068463e",
+      "test": "placement.tests.functional.db.test_migrations.ModelsMigrationsSyncMysql.test_models_sync",
+      "before": {"exit_code": 0, "version": "1.17.2", "duration_seconds": 38.22, "result": "pass"},
+      "after": {"exit_code": 0, "version": "1.18.0", "duration_seconds": 38.76, "result": "pass"}
+    }
+  ],
+  "counts": {
+    "repositories": 6,
+    "valid_commands": 12,
+    "passed_commands": 12,
+    "version_verified_commands": 12,
+    "wrong_working_directory_artifacts_rejected": 10,
+    "environment_failures_before_repair": 2,
+    "environment_repair_reruns": 2
+  },
+  "evaluation_summary": {
+    "outcome": "六仓前后两臂全部通过，版本和目标测试均已核验。",
+    "claim_update": "Alembic 1.17.2 到 1.18.0 可作为该固定闭集的 A3 候选，但单次筛选不产生正式标签。",
+    "baseline_relation": "结果补齐了此前 Cinder 单仓 A3 筛选，并把同一协议扩展到五个干扰仓。",
+    "failure_mode": "首次五仓批次因错误工作目录整体作废；Keystone 首次真实批次因缺少 OpenLDAP 开发头文件失败，补齐同版本系统构建依赖后两臂通过。",
+    "conclusion": "备择假设在这些固定提交和命令范围内得到单次支持。",
+    "next_action": "制定六仓 A0、A1、A2、A3 的三次正式重复合同；A1 与 A2 对五个干扰仓输入相同，统计时不得重复计为独立负例。"
+  },
+  "limitations": [
+    "本轮是单次辅助筛选，不是正式重复。",
+    "测试覆盖 Alembic 自动生成元数据比较路径，但不覆盖 1.18.0 的所有数据库专有分支。",
+    "Keystone 两臂在相同系统依赖修复后运行；原始环境失败保留。"
+  ]
+}

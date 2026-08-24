@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3191",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3191,
+      "change_id": "rust-lang/rfcs#3191",
+      "url": "https://github.com/rust-lang/rfcs/pull/3191",
+      "status": "MERGED",
+      "subject": "New Cargo and Rust options to support embedding Natvis into a PDB",
+      "branch": "master",
+      "created": "2021-11-03T21:00:27Z",
+      "submitted": "2022-04-11T14:23:55Z"
+    },
+    "base_commit": "6214e77c84766c69e7b27b677e5197c67d5b5769",
+    "candidate_commit": "99f0d49fc033660be9d0776ef73bf375e75c9eae",
+    "changed_paths": [
+      "text/0000-natvis.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/6214e77c84766c69e7b27b677e5197c67d5b5769...99f0d49fc033660be9d0776ef73bf375e75c9eae.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/97028"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 97028,
+        "change_id": "rust-lang/rust#97028",
+        "url": "https://github.com/rust-lang/rust/pull/97028",
+        "status": "MERGED",
+        "subject": "Add support for embedding pretty printers via `#[debugger_visualizer]` attribute",
+        "branch": "master",
+        "created": "2022-05-13T20:27:37Z",
+        "submitted": "2022-05-29T02:59:53Z"
+      },
+      "commit": "7ac62ce75cef963017245287f0a7b140e09589d7",
+      "changed_paths": [
+        "compiler/rustc_codegen_llvm/src/debuginfo/gdb.rs",
+        "compiler/rustc_codegen_ssa/src/back/link.rs",
+        "compiler/rustc_codegen_ssa/src/back/linker.rs",
+        "compiler/rustc_codegen_ssa/src/base.rs",
+        "compiler/rustc_codegen_ssa/src/lib.rs",
+        "compiler/rustc_feature/src/builtin_attrs.rs",
+        "compiler/rustc_passes/src/check_attr.rs",
+        "compiler/rustc_passes/src/debugger_visualizer.rs",
+        "compiler/rustc_span/src/lib.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "src/doc/unstable-book/src/language-features/debugger-visualizer.md",
+        "src/test/debuginfo/auxiliary/dependency-with-embedded-visualizers.natvis",
+        "src/test/debuginfo/auxiliary/dependency-with-embedded-visualizers.py",
+        "src/test/debuginfo/auxiliary/dependency-with-embedded-visualizers.rs",
+        "src/test/debuginfo/embedded-visualizer-point.natvis",
+        "src/test/debuginfo/embedded-visualizer-point.py",
+        "src/test/debuginfo/embedded-visualizer.natvis",
+        "src/test/debuginfo/embedded-visualizer.py",
+        "src/test/debuginfo/embedded-visualizer.rs",
+        "src/test/debuginfo/msvc-embedded-natvis.rs",
+        "src/test/ui/feature-gates/auxiliary/debugger-visualizer.natvis",
+        "src/test/ui/feature-gates/feature-gate-debugger-visualizer.rs",
+        "src/test/ui/feature-gates/feature-gate-debugger-visualizer.stderr",
+        "src/test/ui/invalid/invalid-debugger-visualizer-option.rs",
+        "src/test/ui/invalid/invalid-debugger-visualizer-option.stderr",
+        "src/test/ui/invalid/invalid-debugger-visualizer-target.rs",
+        "src/tools/compiletest/src/runtest.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/97028",
+          "statement": "目标正文明确说明补全源 RFC 规定的调试器可视化支持。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

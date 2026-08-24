@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9460",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9460,
+      "change_id": "ethereum/EIPs#9460",
+      "url": "https://github.com/ethereum/EIPs/pull/9460",
+      "status": "MERGED",
+      "subject": "EIP-6110: Spec-out `parse_deposit_data`",
+      "branch": "master",
+      "created": "2025-03-06T14:27:30Z",
+      "submitted": "2025-03-27T04:18:13Z"
+    },
+    "base_commit": "05662960071dcd5610f147884aa75210a713d81c",
+    "candidate_commit": "85f70b7080e35695ac354e0eac01f8a0fd6b6647",
+    "changed_paths": [
+      "EIPS/eip-6110.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/05662960071dcd5610f147884aa75210a713d81c...85f70b7080e35695ac354e0eac01f8a0fd6b6647.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/8574"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/14741"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 8574,
+        "change_id": "besu-eth/besu#8574",
+        "url": "https://github.com/besu-eth/besu/pull/8574",
+        "status": "MERGED",
+        "subject": "fix(EIP-6110): validate deposit log layout",
+        "branch": "main",
+        "created": "2025-04-23T02:57:21Z",
+        "submitted": "2025-04-23T09:04:26Z"
+      },
+      "commit": "b6b35c87e9f2008331a6d47e4cab770e8d5e6f8a",
+      "changed_paths": [
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/core/encoding/DepositLogDecoder.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/requests/InvalidDepositLogLayoutException.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/core/encoding/DepositLogDecoderTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/8574",
+          "statement": "按源规范验证存款日志布局。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 14741,
+        "change_id": "erigontech/erigon#14741",
+        "url": "https://github.com/erigontech/erigon/pull/14741",
+        "status": "MERGED",
+        "subject": "consensus: validate fixed lengths in abi decoding EIP-6110 deposit requests",
+        "branch": "main",
+        "created": "2025-04-24T22:15:41Z",
+        "submitted": "2025-04-30T13:57:52Z"
+      },
+      "commit": "d69a396d00b8c6c0a9ec53d9ed9c86190e9d8b10",
+      "changed_paths": [
+        ".github/workflows/test-hive-eest.yml",
+        "Makefile",
+        "execution/consensus/misc/eip6110.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/14741",
+          "statement": "按源规范验证 ABI 解码固定长度。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

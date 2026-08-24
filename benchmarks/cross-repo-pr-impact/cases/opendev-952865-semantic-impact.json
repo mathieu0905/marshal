@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-952865-semantic-impact",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/update",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 952865,
+      "change_id": "Ida4d5c811b376018b2703ff0e89bb65697995b3f",
+      "url": "https://review.opendev.org/c/starlingx/update/+/952865",
+      "status": "MERGED",
+      "subject": "Create boot counter management service",
+      "branch": "master",
+      "created": "2025-06-18 20:46:43.000000000",
+      "submitted": "2025-07-02 13:19:54.000000000"
+    },
+    "base_commit": "fd05b3c6a740cee6bf975a236c2e7b8d3416c785",
+    "candidate_commit": "f176b631390b1493d5fe6a63697051984a60b7a2",
+    "changed_paths": [
+      "software/service-files/reset-boot-counter.service",
+      "software/service-files/reset-boot-counter.sh",
+      "software/software/utilities/utils.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/952865/revisions/f176b631390b1493d5fe6a63697051984a60b7a2/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/update",
+      "target_repository": "starlingx/integ",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/starlingx/integ/+/953118"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/integ",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 953118,
+        "change_id": "If8ad2c4c22917e426abc44efebb904d003b8aea8",
+        "url": "https://review.opendev.org/c/starlingx/integ/+/953118",
+        "status": "MERGED",
+        "subject": "Enable reset-boot-counter service",
+        "branch": "master",
+        "created": "2025-06-23 14:42:11.000000000",
+        "submitted": "2025-07-04 16:22:48.000000000"
+      },
+      "commit": "74dcd0d2123ec155cdc7ffa0d094e509f2da9837",
+      "changed_paths": [
+        "base/systemd-presets/source/stx/systemd/traits/aio.preset",
+        "base/systemd-presets/source/stx/systemd/traits/controller.preset",
+        "base/systemd-presets/source/stx/systemd/traits/lowlatency.preset",
+        "base/systemd-presets/source/stx/systemd/traits/storage.preset",
+        "base/systemd-presets/source/stx/systemd/traits/worker-lowlatency.preset",
+        "base/systemd-presets/source/stx/systemd/traits/worker.preset"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "deployment_configuration",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/starlingx/integ/+/953118",
+          "statement": "update 新增 reset-boot-counter 服务；integ 明确启用该服务并验证启动结果。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/update",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/update"
+    },
+    {
+      "repository": "starlingx/integ",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/integ"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

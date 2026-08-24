@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-988",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 988,
+      "change_id": "open-telemetry/opentelemetry-specification#988",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/988",
+      "status": "MERGED",
+      "subject": "Allow samplers to modify tracestate, fix #856",
+      "branch": "master",
+      "created": "2020-09-22T17:38:52Z",
+      "submitted": "2020-09-25T15:18:22Z"
+    },
+    "base_commit": "2088381f57004be1de4fa16e0c2adeea04cf2ce2",
+    "candidate_commit": "43bb201d083db08dc66ac514aca8b42e5a24c00d",
+    "changed_paths": [
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/2088381f57004be1de4fa16e0c2adeea04cf2ce2...43bb201d083db08dc66ac514aca8b42e5a24c00d.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-rust/pull/237"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 237,
+        "change_id": "open-telemetry/opentelemetry-rust#237",
+        "url": "https://github.com/open-telemetry/opentelemetry-rust/pull/237",
+        "status": "MERGED",
+        "subject": "[trace] Allow ShouldSample implementation to modify trace state.",
+        "branch": "master",
+        "created": "2020-10-02T01:52:00Z",
+        "submitted": "2020-10-02T03:39:34Z"
+      },
+      "commit": "08298a2ec359fd0070556463e609d7e0a5ad739c",
+      "changed_paths": [
+        "src/sdk/trace/sampler.rs",
+        "src/sdk/trace/tracer.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-rust/pull/237",
+          "statement": "明确按源规范扩展采样结果。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-rust",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-rust"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

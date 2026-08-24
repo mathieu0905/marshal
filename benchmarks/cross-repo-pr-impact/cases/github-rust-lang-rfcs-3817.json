@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3817",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3817,
+      "change_id": "rust-lang/rfcs#3817",
+      "url": "https://github.com/rust-lang/rfcs/pull/3817",
+      "status": "MERGED",
+      "subject": "RFC: Promote aarch64-pc-windows-msvc to Tier 1",
+      "branch": "master",
+      "created": "2025-05-22T19:55:27Z",
+      "submitted": "2025-08-20T16:52:27Z"
+    },
+    "base_commit": "3a355803f1bd567cc669658130e8152555d0b9d1",
+    "candidate_commit": "ffa9bb2dbd067c306efdac2a696640e8079fd593",
+    "changed_paths": [
+      "text/0000-promote-aarch64-pc-windows-msvc-to-tier-1.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/3a355803f1bd567cc669658130e8152555d0b9d1...ffa9bb2dbd067c306efdac2a696640e8079fd593.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/cargo",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/cargo/pull/15790"
+    },
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/miri",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/miri/pull/4347"
+    },
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/145682"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/cargo",
+      "pull_request": {
+        "provider": "github",
+        "number": 15790,
+        "change_id": "rust-lang/cargo#15790",
+        "url": "https://github.com/rust-lang/cargo/pull/15790",
+        "status": "MERGED",
+        "subject": "Add Arm64 Windows CI jobs",
+        "branch": "master",
+        "created": "2025-07-30T17:37:16Z",
+        "submitted": "2025-08-21T15:31:33Z"
+      },
+      "commit": "0aaa4cb00c219ef984084ec077b22ed771ddf330",
+      "changed_paths": [
+        ".github/workflows/main.yml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/cargo/pull/15790",
+          "statement": "为源 RFC 的 Tier 1 晋级增加 Windows ARM64 持续集成。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "rust-lang/miri",
+      "pull_request": {
+        "provider": "github",
+        "number": 4347,
+        "change_id": "rust-lang/miri#4347",
+        "url": "https://github.com/rust-lang/miri/pull/4347",
+        "status": "MERGED",
+        "subject": "test some aarch64 windows targets",
+        "branch": "master",
+        "created": "2025-05-23T09:43:27Z",
+        "submitted": "2025-05-23T10:50:08Z"
+      },
+      "commit": "69078f74a66c655467516c031820a7b861f26d27",
+      "changed_paths": [
+        "ci/ci.sh"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/miri/pull/4347",
+          "statement": "为晋级目标增加 Miri 平台测试。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 145682,
+        "change_id": "rust-lang/rust#145682",
+        "url": "https://github.com/rust-lang/rust/pull/145682",
+        "status": "MERGED",
+        "subject": "Promote aarch64-pc-windows-msvc to Tier 1",
+        "branch": "master",
+        "created": "2025-08-20T21:40:30Z",
+        "submitted": "2025-09-04T11:57:08Z"
+      },
+      "commit": "0a5383c35a56886a6638832862132eafb288f94b",
+      "changed_paths": [
+        "compiler/rustc_target/src/spec/targets/aarch64_pc_windows_msvc.rs",
+        "src/bootstrap/src/core/build_steps/llvm.rs",
+        "src/doc/rustc/src/platform-support.md",
+        "src/doc/rustc/src/platform-support/windows-msvc.md"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/145682",
+          "statement": "明确按源 RFC 完成 Tier 1 晋级。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/cargo",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/cargo"
+    },
+    {
+      "repository": "rust-lang/miri",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/miri"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

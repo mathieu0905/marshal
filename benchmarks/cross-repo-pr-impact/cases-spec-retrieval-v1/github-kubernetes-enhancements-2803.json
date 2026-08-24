@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-2803",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 2803,
+      "change_id": "kubernetes/enhancements#2803",
+      "url": "https://github.com/kubernetes/enhancements/pull/2803",
+      "status": "MERGED",
+      "subject": "Identify Windows Pods during API Server admission",
+      "branch": "master",
+      "created": "2021-06-28T17:27:28Z",
+      "submitted": "2021-09-08T21:41:57Z"
+    },
+    "base_commit": "2d01c7db3226fbb63597c036a6ca5769a09d4cfa",
+    "candidate_commit": "40455d02049d217e26c52b09c009ebfd7af37d42",
+    "changed_paths": [
+      "keps/prod-readiness/sig-auth/2784.yaml",
+      "keps/prod-readiness/sig-windows/2802.yaml",
+      "keps/sig-auth/2784-csr-duration/README.md",
+      "keps/sig-auth/2784-csr-duration/kep.yaml",
+      "keps/sig-windows/2802-identify-windows-pods-apiserver-admission/README.md",
+      "keps/sig-windows/2802-identify-windows-pods-apiserver-admission/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/2d01c7db3226fbb63597c036a6ca5769a09d4cfa...40455d02049d217e26c52b09c009ebfd7af37d42.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/105292"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 105292,
+        "change_id": "kubernetes/kubernetes#105292",
+        "url": "https://github.com/kubernetes/kubernetes/pull/105292",
+        "status": "MERGED",
+        "subject": "Pod os field kubelet",
+        "branch": "master",
+        "created": "2021-09-27T20:41:19Z",
+        "submitted": "2021-11-09T14:19:47Z"
+      },
+      "commit": "889d45d3fb55b847b1c7ed9286d1ea83d446178c",
+      "changed_paths": [
+        "pkg/kubelet/lifecycle/predicate.go",
+        "pkg/kubelet/lifecycle/predicate_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/105292",
+          "statement": "目标实现源 KEP 的 Pod 操作系统字段在节点侧的处理。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

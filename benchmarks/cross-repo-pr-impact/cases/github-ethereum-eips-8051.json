@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-8051",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 8051,
+      "change_id": "ethereum/EIPs#8051",
+      "url": "https://github.com/ethereum/EIPs/pull/8051",
+      "status": "MERGED",
+      "subject": "Add Testnet times",
+      "branch": "master",
+      "created": "2023-12-21T15:29:02Z",
+      "submitted": "2024-01-08T14:03:52Z"
+    },
+    "base_commit": "94237c2ad0cc622e11bb0c8584fb499e64e59ff4",
+    "candidate_commit": "92137ddbd7d56f19abfc56d578bcbf2771ccf012",
+    "changed_paths": [
+      "EIPS/eip-7569.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/94237c2ad0cc622e11bb0c8584fb499e64e59ff4...92137ddbd7d56f19abfc56d578bcbf2771ccf012.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ChainSafe/lodestar",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ChainSafe/lodestar/pull/6223"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/9116"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/9255"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ChainSafe/lodestar",
+      "pull_request": {
+        "provider": "github",
+        "number": 6223,
+        "change_id": "ChainSafe/lodestar#6223",
+        "url": "https://github.com/ChainSafe/lodestar/pull/6223",
+        "status": "MERGED",
+        "subject": "feat: schedule deneb fork on testnets",
+        "branch": "unstable",
+        "created": "2023-12-21T15:48:19Z",
+        "submitted": "2024-01-19T15:48:31Z"
+      },
+      "commit": "c1f4cced7a2fb70e2824298a6ca951b9500cbabe",
+      "changed_paths": [
+        "packages/config/src/chainConfig/networks/holesky.ts",
+        "packages/config/src/chainConfig/networks/sepolia.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ChainSafe/lodestar/pull/6223",
+          "statement": "按源规范安排测试网 Deneb 分叉。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 9116,
+        "change_id": "erigontech/erigon#9116",
+        "url": "https://github.com/erigontech/erigon/pull/9116",
+        "status": "MERGED",
+        "subject": "Schedule Dencun for Görli",
+        "branch": "devel",
+        "created": "2024-01-02T16:27:31Z",
+        "submitted": "2024-01-03T14:49:11Z"
+      },
+      "commit": "1871bd142f627a0a4d1cd722b0f5aa4288630d32",
+      "changed_paths": [
+        "cl/clparams/config.go",
+        "core/forkid/forkid_test.go",
+        "params/chainspecs/goerli.json"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/9116",
+          "statement": "按源规范安排 Görli Dencun。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 9255,
+        "change_id": "erigontech/erigon#9255",
+        "url": "https://github.com/erigontech/erigon/pull/9255",
+        "status": "MERGED",
+        "subject": "Schedule Dencun for Sepolia & Holešky",
+        "branch": "devel",
+        "created": "2024-01-17T14:39:57Z",
+        "submitted": "2024-01-18T08:27:04Z"
+      },
+      "commit": "f55b5c9871327f893c9b695c958cb3f8b565d342",
+      "changed_paths": [
+        "cl/clparams/config.go",
+        "core/forkid/forkid_test.go",
+        "params/chainspecs/holesky.json",
+        "params/chainspecs/sepolia.json"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/9255",
+          "statement": "按源规范安排 Sepolia 和 Holešky Dencun。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ChainSafe/lodestar",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ChainSafe/lodestar"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

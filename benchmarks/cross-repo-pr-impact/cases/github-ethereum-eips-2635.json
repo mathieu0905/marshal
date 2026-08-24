@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-2635",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2635,
+      "change_id": "ethereum/EIPs#2635",
+      "url": "https://github.com/ethereum/EIPs/pull/2635",
+      "status": "MERGED",
+      "subject": "Removes block size and transaction size riders from EIP 1559.",
+      "branch": "master",
+      "created": "2020-05-10T10:04:19Z",
+      "submitted": "2020-06-01T18:48:07Z"
+    },
+    "base_commit": "4e1a2ccec343aa58e6ce9c8c4b62f7112ca8bd57",
+    "candidate_commit": "60103ccc0f321f58a24079fdfa0a81e13a84c3b0",
+    "changed_paths": [
+      "EIPS/eip-1559.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/4e1a2ccec343aa58e6ce9c8c4b62f7112ca8bd57...60103ccc0f321f58a24079fdfa0a81e13a84c3b0.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/1147"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 1147,
+        "change_id": "besu-eth/besu#1147",
+        "url": "https://github.com/besu-eth/besu/pull/1147",
+        "status": "MERGED",
+        "subject": "Remove block size and transaction size riders from EIP 1559.",
+        "branch": "master",
+        "created": "2020-06-25T14:24:59Z",
+        "submitted": "2020-06-25T17:06:14Z"
+      },
+      "commit": "a6fa3d9afbc48b175e01e28da24f1dde5d33072e",
+      "changed_paths": [
+        "ethereum/blockcreation/src/main/java/org/hyperledger/besu/ethereum/blockcreation/AbstractBlockCreator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/core/fees/EIP1559.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/core/fees/FeeMarket.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/core/fees/FeeMarketConfig.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetBlockBodyValidator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetBlockHeaderValidator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetTransactionValidator.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/MainnetTransactionValidatorTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/1147",
+          "statement": "明确按源规范删除附加条件。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-8456",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 8456,
+      "change_id": "ethereum/EIPs#8456",
+      "url": "https://github.com/ethereum/EIPs/pull/8456",
+      "status": "MERGED",
+      "subject": "Update EIP-2537: Rephrased subgroup check part",
+      "branch": "master",
+      "created": "2024-04-18T11:56:17Z",
+      "submitted": "2024-04-22T09:39:09Z"
+    },
+    "base_commit": "0e0600ed164db7875be38548bfb26ec24ff78e01",
+    "candidate_commit": "aba26864b5ef413e9b0989f6c5224fd6731a85aa",
+    "changed_paths": [
+      "EIPS/eip-2537.md",
+      "assets/eip-2537/fast_subgroup_checks.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/0e0600ed164db7875be38548bfb26ec24ff78e01...aba26864b5ef413e9b0989f6c5224fd6731a85aa.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/29637"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 29637,
+        "change_id": "ethereum/go-ethereum#29637",
+        "url": "https://github.com/ethereum/go-ethereum/pull/29637",
+        "status": "MERGED",
+        "subject": "core/vm: add subgroup checks for mul/mulexp for G1/G2",
+        "branch": "master",
+        "created": "2024-04-24T08:08:35Z",
+        "submitted": "2024-04-30T12:35:48Z"
+      },
+      "commit": "3e296323b61daeea611b7153bcea8607743a9e02",
+      "changed_paths": [
+        "core/vm/contracts.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/29637",
+          "statement": "目标正文明确说明加入源规范要求的子群检查；源首提交修改规范资产，预筛路径规则误拒。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

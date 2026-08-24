@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-988899",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/magnum",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 988899,
+      "change_id": "I947cb043d8f36e5fd51fdd9c166a6a7c56d6d057",
+      "url": "https://review.opendev.org/c/openstack/magnum/+/988899",
+      "status": "MERGED",
+      "subject": "Add node_labels and node_taints to NodeGroup",
+      "branch": "master",
+      "created": "2026-05-18 03:02:23.000000000",
+      "submitted": "2026-07-17 06:52:50.000000000"
+    },
+    "base_commit": "0ecf4ab3bc46e3c825b829f3d04d286e4a9e10e6",
+    "candidate_commit": "34738d90ac6a0f8c84e5ff9f10ff063dc8fc8d93",
+    "changed_paths": [
+      "magnum/api/controllers/v1/nodegroup.py",
+      "magnum/api/controllers/versions.py",
+      "magnum/api/rest_api_version_history.rst",
+      "magnum/api/utils.py",
+      "magnum/db/sqlalchemy/alembic/versions/b3e1cf4a2d5e_add_node_labels_and_node_taints.py",
+      "magnum/db/sqlalchemy/models.py",
+      "magnum/objects/nodegroup.py",
+      "magnum/tests/unit/api/controllers/test_root.py",
+      "magnum/tests/unit/api/controllers/v1/test_nodegroup.py",
+      "magnum/tests/unit/db/utils.py",
+      "magnum/tests/unit/objects/test_objects.py",
+      "releasenotes/notes/nodegroup-node-labels-taints-7d62e1ab2e1c2415.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/988899/revisions/34738d90ac6a0f8c84e5ff9f10ff063dc8fc8d93/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/magnum",
+      "target_repository": "openstack/python-magnumclient",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/python-magnumclient/+/988900"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/python-magnumclient",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 988900,
+        "change_id": "Id5e9b6593e83b9ffe856e73823bf418b1a66321f",
+        "url": "https://review.opendev.org/c/openstack/python-magnumclient/+/988900",
+        "status": "MERGED",
+        "subject": "Add node label and taint support to nodegroups",
+        "branch": "master",
+        "created": "2026-05-18 03:08:52.000000000",
+        "submitted": "2026-07-17 06:52:52.000000000"
+      },
+      "commit": "e202ee5c6ffa669f2058e24a2e8e732ca1483435",
+      "changed_paths": [
+        "magnumclient/common/utils.py",
+        "magnumclient/osc/v1/nodegroups.py",
+        "magnumclient/tests/osc/unit/v1/fakes.py",
+        "magnumclient/tests/osc/unit/v1/test_nodegroups.py",
+        "magnumclient/tests/test_utils.py",
+        "magnumclient/v1/nodegroups.py",
+        "releasenotes/notes/nodegroup-update-labels-taints-0d8c4b6e2f1a3c5d.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/python-magnumclient/+/988900",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/magnum/+/988899",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/beee5c2643dc4cd4805bc941ac868b15"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/magnum",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/magnum/raw/commit/34738d90ac6a0f8c84e5ff9f10ff063dc8fc8d93/LICENSE"
+    },
+    {
+      "repository": "openstack/python-magnumclient",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/python-magnumclient/raw/commit/e202ee5c6ffa669f2058e24a2e8e732ca1483435/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

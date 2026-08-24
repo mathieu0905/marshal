@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-4684",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 4684,
+      "change_id": "kubernetes/enhancements#4684",
+      "url": "https://github.com/kubernetes/enhancements/pull/4684",
+      "status": "MERGED",
+      "subject": "KEP-4191: Split Image Filesystem graduation to Beta",
+      "branch": "master",
+      "created": "2024-06-03T08:18:51Z",
+      "submitted": "2024-06-12T17:52:08Z"
+    },
+    "base_commit": "64402bf5160a0b3a9fe5d4d4b1a840101cbe37ac",
+    "candidate_commit": "c21977c5aa612d924daa6df81d0abc2dc9bbab05",
+    "changed_paths": [
+      "keps/prod-readiness/sig-node/4191.yaml",
+      "keps/sig-node/4191-split-image-filesystem/README.md",
+      "keps/sig-node/4191-split-image-filesystem/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/64402bf5160a0b3a9fe5d4d4b1a840101cbe37ac...c21977c5aa612d924daa6df81d0abc2dc9bbab05.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/126205"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 126205,
+        "change_id": "kubernetes/kubernetes#126205",
+        "url": "https://github.com/kubernetes/kubernetes/pull/126205",
+        "status": "MERGED",
+        "subject": "KEP-4191: Split Image Filesystem promotion to Beta",
+        "branch": "master",
+        "created": "2024-07-18T17:06:04Z",
+        "submitted": "2024-07-23T16:21:29Z"
+      },
+      "commit": "030f28e125740671f0bf68a5eae7f2d1a3818b2b",
+      "changed_paths": [
+        "pkg/features/kube_features.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/126205",
+          "statement": "目标按源 KEP 将镜像文件系统拆分能力提升到测试阶段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

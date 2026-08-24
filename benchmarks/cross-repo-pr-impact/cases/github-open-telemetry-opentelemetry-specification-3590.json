@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-3590",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 3590,
+      "change_id": "open-telemetry/opentelemetry-specification#3590",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/3590",
+      "status": "MERGED",
+      "subject": "Prom compatibility: allow disabling the addition of _total suffixes on prometheus counters",
+      "branch": "main",
+      "created": "2023-07-11T14:00:39Z",
+      "submitted": "2023-07-13T15:09:35Z"
+    },
+    "base_commit": "bb1aa87ed221c16fc915a9fbfbfa262b989e1f79",
+    "candidate_commit": "98ac1acabe7c39973071d239c12b5aaf05fbd0e9",
+    "changed_paths": [
+      "specification/compatibility/prometheus_and_openmetrics.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/bb1aa87ed221c16fc915a9fbfbfa262b989e1f79...98ac1acabe7c39973071d239c12b5aaf05fbd0e9.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/4306"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-rust/pull/1158"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 4306,
+        "change_id": "open-telemetry/opentelemetry-go#4306",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/4306",
+        "status": "MERGED",
+        "subject": "Add WithoutCounterSuffixes option in the prometheus exporter",
+        "branch": "main",
+        "created": "2023-07-11T14:20:48Z",
+        "submitted": "2023-07-14T15:52:36Z"
+      },
+      "commit": "d481b7df9d1c3e4e29d7db0ed8cc4cc13a52f55d",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "exporters/prometheus/config.go",
+        "exporters/prometheus/exporter.go",
+        "exporters/prometheus/exporter_test.go",
+        "exporters/prometheus/testdata/counter_disabled_suffix.txt"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/4306",
+          "statement": "新增被源规范阻塞的关闭后缀选项。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 1158,
+        "change_id": "open-telemetry/opentelemetry-rust#1158",
+        "url": "https://github.com/open-telemetry/opentelemetry-rust/pull/1158",
+        "status": "MERGED",
+        "subject": "prometheus: add `without_counter_suffixes` option",
+        "branch": "main",
+        "created": "2023-07-19T01:26:13Z",
+        "submitted": "2023-07-19T19:32:47Z"
+      },
+      "commit": "cc8545dcb307bd781a4705faffc4e7dff4556496",
+      "changed_paths": [
+        "opentelemetry-prometheus/CHANGELOG.md",
+        "opentelemetry-prometheus/src/config.rs",
+        "opentelemetry-prometheus/src/lib.rs",
+        "opentelemetry-prometheus/tests/data/counter_disabled_suffix.txt",
+        "opentelemetry-prometheus/tests/integration_test.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-rust/pull/1158",
+          "statement": "明确按源规范增加关闭后缀配置。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-rust",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-rust"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

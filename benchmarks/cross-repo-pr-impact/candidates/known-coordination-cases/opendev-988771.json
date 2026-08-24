@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-988771",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/metapackages",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 988771,
+      "change_id": "I397c603c58e71d705a42b9ddf7796324b64223b5",
+      "url": "https://review.opendev.org/c/starlingx/metapackages/+/988771",
+      "status": "MERGED",
+      "subject": "grubby: remove dependency on unused package",
+      "branch": "master",
+      "created": "2026-05-15 13:58:40.000000000",
+      "submitted": "2026-05-22 13:01:32.000000000"
+    },
+    "base_commit": "47b754a87cedb24f929f6525aa1776c8fc189550",
+    "candidate_commit": "ce1f67d0b062ccd08c6b3c76bfaef63206bbcacc",
+    "changed_paths": [
+      "meta-base/debian/bullseye/deb_folder/control",
+      "meta-base/debian/trixie/deb_folder/control"
+    ],
+    "patch_url": "https://review.opendev.org/changes/988771/revisions/ce1f67d0b062ccd08c6b3c76bfaef63206bbcacc/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/metapackages",
+      "target_repository": "starlingx/integ",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/integ/+/987360"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/integ",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 987360,
+        "change_id": "Ic5be8a4843d3c64c19410ec321b492074caab3dd",
+        "url": "https://review.opendev.org/c/starlingx/integ/+/987360",
+        "status": "MERGED",
+        "subject": "grubby: remove package",
+        "branch": "master",
+        "created": "2026-05-05 13:30:38.000000000",
+        "submitted": "2026-07-06 13:14:43.000000000"
+      },
+      "commit": "a49e39e37d1588faba474b8dd5f219f06ee7603a",
+      "changed_paths": [
+        "debian_iso_image.inc",
+        "debian_pkg_dirs",
+        "debian_trixie_iso_image_std.inc",
+        "debian_trixie_pkg_dirs_std",
+        "grub/grubby/debian/bullseye/deb_folder/changelog",
+        "grub/grubby/debian/bullseye/deb_folder/control",
+        "grub/grubby/debian/bullseye/deb_folder/copyright",
+        "grub/grubby/debian/bullseye/deb_folder/rules",
+        "grub/grubby/debian/bullseye/deb_folder/source/format",
+        "grub/grubby/debian/bullseye/meta_data.yaml",
+        "grub/grubby/debian/trixie/deb_folder/changelog",
+        "grub/grubby/debian/trixie/deb_folder/control",
+        "grub/grubby/debian/trixie/deb_folder/copyright",
+        "grub/grubby/debian/trixie/deb_folder/rules",
+        "grub/grubby/debian/trixie/deb_folder/source/format",
+        "grub/grubby/debian/trixie/meta_data.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/integ/+/987360",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/metapackages/+/988771",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/b1a14b9359894ac9ab84090c7258f8a7"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/integ",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/integ/raw/commit/74dcd0d2123ec155cdc7ffa0d094e509f2da9837/LICENSE"
+    },
+    {
+      "repository": "starlingx/metapackages",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/metapackages/raw/commit/ce1f67d0b062ccd08c6b3c76bfaef63206bbcacc/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

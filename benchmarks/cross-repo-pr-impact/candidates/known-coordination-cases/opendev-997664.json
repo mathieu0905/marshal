@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-997664",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/integ",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 997664,
+      "change_id": "I417a80762495b2b45f340a2b8bbb9d5e716de6a8",
+      "url": "https://review.opendev.org/c/starlingx/integ/+/997664",
+      "status": "MERGED",
+      "subject": "dpll-mgr: add clock_class field to status.json",
+      "branch": "master",
+      "created": "2026-07-17 01:26:57.000000000",
+      "submitted": "2026-07-20 15:49:48.000000000"
+    },
+    "base_commit": "2d203c1327c40dcbc70fdf1d183cd48fcec15a1a",
+    "candidate_commit": "cb05b96c81cd8648ecf4519aeaba1de52b9ed641",
+    "changed_paths": [
+      "base/dpll-mgr/src/status_writer.c"
+    ],
+    "patch_url": "https://review.opendev.org/changes/997664/revisions/cb05b96c81cd8648ecf4519aeaba1de52b9ed641/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/integ",
+      "target_repository": "starlingx/monitoring",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/monitoring/+/997665"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/monitoring",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 997665,
+        "change_id": "Id9dcb6b2eff12db327d482c67c017091503e6526",
+        "url": "https://review.opendev.org/c/starlingx/monitoring/+/997665",
+        "status": "MERGED",
+        "subject": "collectd: add holdover severity escalation for dpll-mgr",
+        "branch": "master",
+        "created": "2026-07-17 01:29:17.000000000",
+        "submitted": "2026-07-20 15:56:31.000000000"
+      },
+      "commit": "19fb3b0996761fd679cbe5908308d7cfcf6bb422",
+      "changed_paths": [
+        "collectd-extensions/src/ptp.py",
+        "collectd-extensions/tests/test_ptp_dpll_mgr_status.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/monitoring/+/997665",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/integ/+/997664",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/dce3a7624de347869eceaa33adc6ee7d"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/integ",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/integ/raw/commit/74dcd0d2123ec155cdc7ffa0d094e509f2da9837/LICENSE"
+    },
+    {
+      "repository": "starlingx/monitoring",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/monitoring/src/commit/07eae7f0b44d6d589b6e0ef2f9ac6e52ea077aa6"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

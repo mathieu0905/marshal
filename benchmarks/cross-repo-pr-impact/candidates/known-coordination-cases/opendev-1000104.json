@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-1000104",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/nfv",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 1000104,
+      "change_id": "I5565414955344cdc338c67907a957280b89a09b8",
+      "url": "https://review.opendev.org/c/starlingx/nfv/+/1000104",
+      "status": "MERGED",
+      "subject": "Revert \"Add --algorithm and --key-size to kube-rootca-update strategy\"",
+      "branch": "master",
+      "created": "2026-08-07 14:29:35.000000000",
+      "submitted": "2026-08-14 14:58:07.000000000"
+    },
+    "base_commit": "3dcfb22e83b9c49ee07ee5b98805637f3713d0fc",
+    "candidate_commit": "72c5fe3f0937c893c338c7a3dc7c3c151ddcd453",
+    "changed_paths": [
+      "nfv/nfv-client/nfv_client/openstack/sw_update.py",
+      "nfv/nfv-client/nfv_client/shell.py",
+      "nfv/nfv-client/scripts/sw-manager.completion",
+      "nfv/nfv-common/nfv_common/validate.py",
+      "nfv/nfv-plugins/nfv_plugins/nfvi_plugins/nfvi_infrastructure_api.py",
+      "nfv/nfv-plugins/nfv_plugins/nfvi_plugins/openstack/sysinv.py",
+      "nfv/nfv-tests/nfv_unit_tests/tests/test_kube_rootca_update_strategy.py",
+      "nfv/nfv-vim/nfv_vim/api/controllers/v1/orchestration/sw_update/_sw_update_strategy.py",
+      "nfv/nfv-vim/nfv_vim/directors/_sw_mgmt_director.py",
+      "nfv/nfv-vim/nfv_vim/events/_vim_sw_update_api_events.py",
+      "nfv/nfv-vim/nfv_vim/nfvi/_nfvi_infrastructure_module.py",
+      "nfv/nfv-vim/nfv_vim/objects/_kube_rootca_update.py",
+      "nfv/nfv-vim/nfv_vim/rpc/_rpc_message_sw_update.py",
+      "nfv/nfv-vim/nfv_vim/strategy/_strategy.py",
+      "nfv/nfv-vim/nfv_vim/strategy/_strategy_steps.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/1000104/revisions/72c5fe3f0937c893c338c7a3dc7c3c151ddcd453/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/nfv",
+      "target_repository": "starlingx/config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/config/+/1000189"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 1000189,
+        "change_id": "I884d398eff7b692237b6c1748e443d6cdc998b72",
+        "url": "https://review.opendev.org/c/starlingx/config/+/1000189",
+        "status": "MERGED",
+        "subject": "Remove algorithm/key_size params from kube-rootca-update",
+        "branch": "master",
+        "created": "2026-08-08 10:08:01.000000000",
+        "submitted": "2026-08-18 13:37:27.000000000"
+      },
+      "commit": "7a6f548abd6588b955bd7015a122563a34175954",
+      "changed_paths": [
+        "api-ref/source/api-ref-sysinv-v1-config.rst",
+        "sysinv/cgts-client/cgts-client/cgtsclient/v1/kube_rootca_update.py",
+        "sysinv/cgts-client/cgts-client/cgtsclient/v1/kube_rootca_update_shell.py",
+        "sysinv/sysinv/sysinv/sysinv/api/controllers/v1/kube_rootca_update.py",
+        "sysinv/sysinv/sysinv/sysinv/conductor/manager.py",
+        "sysinv/sysinv/sysinv/sysinv/conductor/rpcapi.py",
+        "sysinv/sysinv/sysinv/sysinv/tests/api/test_kube_rootca_update.py",
+        "sysinv/sysinv/sysinv/sysinv/tests/conductor/test_manager.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/config/+/1000189",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/nfv/+/1000104",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/cfd4e866bfc941ad9d5ace8103a32244"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/nfv",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/nfv/raw/commit/72c5fe3f0937c893c338c7a3dc7c3c151ddcd453/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-2843",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2843,
+      "change_id": "rust-lang/rfcs#2843",
+      "url": "https://github.com/rust-lang/rfcs/pull/2843",
+      "status": "MERGED",
+      "subject": "Add llvm_asm! and deprecate asm!",
+      "branch": "master",
+      "created": "2020-01-04T13:02:21Z",
+      "submitted": "2020-03-20T07:14:24Z"
+    },
+    "base_commit": "6ad6edf3e8bfe0d8dd3bfa52e58c3e2ee3e58d99",
+    "candidate_commit": "d5fe87812fc95f2699e770993848179b6c071f2c",
+    "changed_paths": [
+      "text/0000-llvm-asm.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/6ad6edf3e8bfe0d8dd3bfa52e58c3e2ee3e58d99...d5fe87812fc95f2699e770993848179b6c071f2c.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/71007"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 71007,
+        "change_id": "rust-lang/rust#71007",
+        "url": "https://github.com/rust-lang/rust/pull/71007",
+        "status": "MERGED",
+        "subject": "Deprecate the asm! macro in favor of llvm_asm!",
+        "branch": "master",
+        "created": "2020-04-10T22:09:45Z",
+        "submitted": "2020-04-20T05:30:33Z"
+      },
+      "commit": "ce83b49d161b9375849345be722e86c5417dfdda",
+      "changed_paths": [
+        "Cargo.lock",
+        "src/libcore/macros/mod.rs",
+        "src/libcore/prelude/v1.rs",
+        "src/librustc_query_system/Cargo.toml",
+        "src/libstd/lib.rs",
+        "src/libstd/prelude/v1.rs",
+        "src/stdarch",
+        "src/test/ui/feature-gates/feature-gate-asm.rs",
+        "src/test/ui/feature-gates/feature-gate-asm.stderr",
+        "src/test/ui/feature-gates/feature-gate-asm2.rs",
+        "src/test/ui/feature-gates/feature-gate-asm2.stderr"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/71007",
+          "statement": "目标按源 RFC 废弃旧汇编宏并启用替代接口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

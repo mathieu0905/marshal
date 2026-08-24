@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-6087",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 6087,
+      "change_id": "kubernetes/enhancements#6087",
+      "url": "https://github.com/kubernetes/enhancements/pull/6087",
+      "status": "MERGED",
+      "subject": "KEP-4033: defer cgroup driver fallback removal",
+      "branch": "master",
+      "created": "2026-05-18T01:39:41Z",
+      "submitted": "2026-05-27T17:36:48Z"
+    },
+    "base_commit": "b176ada034185e4a36a4816c6beedfebd1777b1b",
+    "candidate_commit": "837b984fb21e6c755cdbbeac1812443bc08063b9",
+    "changed_paths": [
+      "keps/sig-node/4033-group-driver-detection-over-cri/README.md",
+      "keps/sig-node/4033-group-driver-detection-over-cri/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/b176ada034185e4a36a4816c6beedfebd1777b1b...837b984fb21e6c755cdbbeac1812443bc08063b9.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/139121"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 139121,
+        "change_id": "kubernetes/kubernetes#139121",
+        "url": "https://github.com/kubernetes/kubernetes/pull/139121",
+        "status": "MERGED",
+        "subject": "kubelet: defer CRI fallback removal to 1.38",
+        "branch": "master",
+        "created": "2026-05-18T01:56:21Z",
+        "submitted": "2026-05-22T17:41:00Z"
+      },
+      "commit": "f4d97c13f50c272a53b56885ebb0999e2c6277c3",
+      "changed_paths": [
+        "cmd/kubelet/app/server.go",
+        "test/e2e_node/cgroup_driver_from_cri_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/139121",
+          "statement": "源 KEP 推迟移除时间，目标同步推迟对应运行时回退移除。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

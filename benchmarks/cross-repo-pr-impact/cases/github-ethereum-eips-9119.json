@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9119",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9119,
+      "change_id": "ethereum/EIPs#9119",
+      "url": "https://github.com/ethereum/EIPs/pull/9119",
+      "status": "MERGED",
+      "subject": "EIP-7002: fix WITHDRAWAL_REQUEST_PREDEPLOY_ADDRESS",
+      "branch": "master",
+      "created": "2024-12-09T14:22:28Z",
+      "submitted": "2024-12-09T14:33:57Z"
+    },
+    "base_commit": "b72cd87b9d9ba88112fd20e6c91356e55bd96a47",
+    "candidate_commit": "b5c44e853a7c18101cfb72064c7f9813f243204b",
+    "changed_paths": [
+      "EIPS/eip-7002.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/b72cd87b9d9ba88112fd20e6c91356e55bd96a47...b5c44e853a7c18101cfb72064c7f9813f243204b.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "Consensys/teku",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/Consensys/teku/pull/8904"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "Consensys/teku",
+      "pull_request": {
+        "provider": "github",
+        "number": 8904,
+        "change_id": "Consensys/teku#8904",
+        "url": "https://github.com/Consensys/teku/pull/8904",
+        "status": "MERGED",
+        "subject": "update withdrawal request contract address",
+        "branch": "master",
+        "created": "2024-12-09T16:32:02Z",
+        "submitted": "2024-12-09T23:20:19Z"
+      },
+      "commit": "b0f8f68f49027ba821f120d50cf3e7ae6c247989",
+      "changed_paths": [
+        "acceptance-tests/src/testFixtures/java/tech/pegasys/teku/test/acceptance/dsl/BesuNode.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/Consensys/teku/pull/8904",
+          "statement": "明确按源规范更新提款请求合约地址。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "Consensys/teku",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/Consensys/teku"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-4813",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 4813,
+      "change_id": "kubernetes/enhancements#4813",
+      "url": "https://github.com/kubernetes/enhancements/pull/4813",
+      "status": "MERGED",
+      "subject": "Add KEP 4802 - windows node shutdown",
+      "branch": "master",
+      "created": "2024-08-28T22:29:08Z",
+      "submitted": "2024-10-10T02:00:25Z"
+    },
+    "base_commit": "62cad7da88a76ae416e749311a59a91ec4a0bab5",
+    "candidate_commit": "cba275c0e496e429f3b0b7913325a801d9891873",
+    "changed_paths": [
+      "keps/sig-windows/4802-windows-node-shutdown/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/62cad7da88a76ae416e749311a59a91ec4a0bab5...cba275c0e496e429f3b0b7913325a801d9891873.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/127404"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 127404,
+        "change_id": "kubernetes/kubernetes#127404",
+        "url": "https://github.com/kubernetes/kubernetes/pull/127404",
+        "status": "MERGED",
+        "subject": "Windows node graceful shutdown",
+        "branch": "master",
+        "created": "2024-09-16T18:28:39Z",
+        "submitted": "2024-11-05T23:21:42Z"
+      },
+      "commit": "459952a067d4b7669be512d7018e92ce7fd38b25",
+      "changed_paths": [
+        "cmd/kubelet/app/init_windows.go",
+        "pkg/features/kube_features.go",
+        "pkg/features/versioned_kube_features.go",
+        "pkg/kubelet/nodeshutdown/nodeshutdown_manager_others.go",
+        "pkg/kubelet/nodeshutdown/nodeshutdown_manager_windows.go",
+        "pkg/kubelet/nodeshutdown/nodeshutdown_manager_windows_test.go",
+        "pkg/windows/service/OWNERS",
+        "pkg/windows/service/service.go",
+        "test/e2e/windows/node_shutdown.go",
+        "test/featuregates_linter/test_data/versioned_feature_list.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/127404",
+          "statement": "目标正文明确声明实现源 KEP 提出的 Windows 节点优雅关机。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

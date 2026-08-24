@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-214",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 214,
+      "change_id": "ethereum/EIPs#214",
+      "url": "https://github.com/ethereum/EIPs/pull/214",
+      "status": "MERGED",
+      "subject": "New opcode: STATIC_CALL",
+      "branch": "master",
+      "created": "2017-02-13T13:52:30Z",
+      "submitted": "2017-12-04T13:08:17Z"
+    },
+    "base_commit": "237f16343f55ecc9ad4061278192236d83b949c6",
+    "candidate_commit": "d4a9172c7907f1788d61a58110be113650e258a3",
+    "changed_paths": [
+      "EIPS/static_call.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/237f16343f55ecc9ad4061278192236d83b949c6...d4a9172c7907f1788d61a58110be113650e258a3.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/14978"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 14978,
+        "change_id": "ethereum/go-ethereum#14978",
+        "url": "https://github.com/ethereum/go-ethereum/pull/14978",
+        "status": "MERGED",
+        "subject": "core/vm: implement metropolis static call opcode",
+        "branch": "master",
+        "created": "2017-08-15T09:57:37Z",
+        "submitted": "2017-08-16T09:39:32Z"
+      },
+      "commit": "3df7142b3e2804aa7ccf88cc0c2663861ebfa3b9",
+      "changed_paths": [
+        "core/vm/evm.go",
+        "core/vm/gas_table.go",
+        "core/vm/instructions.go",
+        "core/vm/interpreter.go",
+        "core/vm/jump_table.go",
+        "core/vm/memory_table.go",
+        "core/vm/opcodes.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/14978",
+          "statement": "目标正文明确声明实现源规范；源首提交修改旧式未编号规范路径，预筛路径规则误拒。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

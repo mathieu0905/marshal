@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-08-24",
+  "status": "single_consumer_four_arm_screening_only",
+  "evidence_class": "target_test_contract_adaptation",
+  "source": {
+    "repository": "indexzero/window-stream",
+    "a3_before_version": "0.5.1",
+    "a3_after_version": "0.5.2",
+    "before_version": "0.5.2",
+    "after_version": "0.5.3",
+    "behavior_commit": "c0a403fa497acff37c5d16194871001ceb7300bb",
+    "behavior": "TimeWindow 不再使用输入事件的 time 字段做淘汰，而是在写入时记录内部 _time"
+  },
+  "target": {
+    "repository": "nodejitsu/godot",
+    "baseline_commit": "c13aedb0fed7c49acc2988b9e06441d4a4aac33f",
+    "range_update_commit": "43878701c82ba1cf192b8b6c5b058ba8987229fd",
+    "repair_commit": "cd5cd9b34a2bdce3aac2395990b1dd96331b96ab",
+    "excluded_followup_dependency_commit": "0dbdcf21faca900c1502396f000379d95eecdf9a",
+    "repair_path": "test/reactor/window-test.js",
+    "repair_substantive_change": "把固定 1000 毫秒窗口的合成输入跨度从 2000 毫秒改为 1000 毫秒",
+    "temporal_note": "Godot 先把依赖范围从 ~0.4.0 更新到 ~0.5.0；约两小时后 window-stream 0.5.3 发布并进入该范围"
+  },
+  "environment": {
+    "runtime": "Node.js 6.17.1",
+    "historical_engine": "Node.js 0.10.x",
+    "dependency_input": "Godot 0.7.9 没有锁文件；2026 年重新解析一次依赖后复制为各臂共同种子，只替换 window-stream 的精确版本",
+    "installation": "npm 3.10.10，忽略生命周期脚本",
+    "command": "vows --spec test/reactor/window-test.js test/reactor/moving-average-test.js test/reactor/meta-test.js"
+  },
+  "arms": [
+    {
+      "arm": "A0",
+      "source_version": "0.5.2",
+      "target_repair_applied": false,
+      "result": "21 honored, 0 broken"
+    },
+    {
+      "arm": "A1",
+      "source_version": "0.5.3",
+      "target_repair_applied": false,
+      "result": "20 honored, 1 broken",
+      "failure_signature": "Godot timeWindow fixed-duration assertion expected metric 10 and observed 20"
+    },
+    {
+      "arm": "A2",
+      "source_version": "0.5.3",
+      "target_repair_applied": true,
+      "result": "21 honored, 0 broken",
+      "repair_scope": "只应用 repair_commit 中 window-test.js 的一处实质变化和文件末尾换行；没有应用同提交的网络测试修改，也没有更新依赖"
+    },
+    {
+      "arm": "A3_before",
+      "source_version": "0.5.1",
+      "target_repair_applied": false,
+      "result": "21 honored, 0 broken"
+    },
+    {
+      "arm": "A3_after",
+      "source_version": "0.5.2",
+      "target_repair_applied": false,
+      "result": "21 honored, 0 broken"
+    }
+  ],
+  "a3_boundary": "0.5.2 修改 MovingAverage 的克隆实现；命令执行 moving-average 和带现有 meta 的目标测试，但没有直接断言深层对象引用是否独立，因此只证明这些目标合同在两侧通过，不证明源修复语义被完整覆盖",
+  "decision": {
+    "accepted_for_reserve": true,
+    "reserve_tier": "single_positive_four_arm_anchor",
+    "formal_project_package": false,
+    "reason": "方向明确的破坏与恢复已经执行，但只有一个目标仓，没有可靠限定负例或完整多仓搜索框"
+  },
+  "remaining_requirements": [
+    "在独立目录中重复三次",
+    "独立复核源行为、目标一行修复抽取和 A3 结论边界",
+    "寻找实际执行相同 TimeWindow 表面的其他消费者；没有执行证据时保持未知",
+    "若找不到可靠干扰仓，则永久保留为单正例锚点而不是项目级闭集"
+  ]
+}

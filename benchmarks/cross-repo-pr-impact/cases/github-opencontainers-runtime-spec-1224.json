@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-opencontainers-runtime-spec-1224",
+  "project": "opencontainers-runtime",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "opencontainers/runtime-spec",
+    "pull_request": {
+      "provider": "github",
+      "number": 1224,
+      "change_id": "opencontainers/runtime-spec#1224",
+      "url": "https://github.com/opencontainers/runtime-spec/pull/1224",
+      "status": "MERGED",
+      "subject": "config.md: allow empty mappings for [r]idmap",
+      "branch": "main",
+      "created": "2023-09-05T20:06:42Z",
+      "submitted": "2023-11-16T14:49:43Z"
+    },
+    "base_commit": "305605aedde9a7170b22e4b99bc9e56810969ff8",
+    "candidate_commit": "5735b99b66ea2f6eb27967027d435ed0b954b018",
+    "changed_paths": [
+      "config.md"
+    ],
+    "patch_url": "https://github.com/opencontainers/runtime-spec/compare/305605aedde9a7170b22e4b99bc9e56810969ff8...5735b99b66ea2f6eb27967027d435ed0b954b018.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "containerd/containerd",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/containerd/containerd/pull/9461"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "containerd/containerd",
+      "pull_request": {
+        "provider": "github",
+        "number": 9461,
+        "change_id": "containerd/containerd#9461",
+        "url": "https://github.com/containerd/containerd/pull/9461",
+        "status": "MERGED",
+        "subject": "pkg/process: Check using idmap mount options too",
+        "branch": "main",
+        "created": "2023-12-04T11:59:16Z",
+        "submitted": "2023-12-05T16:18:50Z"
+      },
+      "commit": "8bbce8d37fe945820076ea1fc43c1180229794a9",
+      "changed_paths": [
+        "cmd/containerd-shim-runc-v2/process/init.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/containerd/containerd/pull/9461",
+          "statement": "正文明确在源规范合并后检查 ID 映射挂载选项。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opencontainers/runtime-spec",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runtime-spec"
+    },
+    {
+      "repository": "containerd/containerd",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/containerd/containerd"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

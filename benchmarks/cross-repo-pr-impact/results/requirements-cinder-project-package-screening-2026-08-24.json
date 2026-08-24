@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "assessed_at": "2026-08-24",
+  "package_id": "openstack-requirements-alembic-1.19.1",
+  "status": "minimum_three_arm_replay_supported_pending_a3_and_formal_repetition",
+  "source_repository": "openstack/requirements",
+  "source_change": 1001023,
+  "source_base_commit": "b8de3b00af9dd2ffc1a85bf836cf3c7ee9e8bac7",
+  "source_breaking_commit": "978799539e019141d8b0710d09bf91c956976079",
+  "source_change_summary": "upper-constraints.txt 中 Alembic 由 1.18.5 升到 1.19.1",
+  "historical_arms": [
+    {
+      "arm": "a0_proxy",
+      "build_uuid": "32f509fc21db43e4baa25a53770e0479",
+      "job": "cross-cinder-py313",
+      "source_change": 1000821,
+      "source_note": "同一 Cinder 提交和 Alembic 1.18.5，但 requirements 侧另含 neutron-lib 更新，因此不是受控 A0",
+      "target_repository": "openstack/cinder",
+      "target_commit": "b5b763129e2bde5077c0cf3a5eb434021abaa6e0",
+      "alembic_version": "1.18.5",
+      "passed": 18447,
+      "failed": 0,
+      "result": "pass",
+      "evidence_url": "https://zuul.opendev.org/t/openstack/build/32f509fc21db43e4baa25a53770e0479"
+    },
+    {
+      "arm": "a1_source_breaking",
+      "build_uuid": "a910bfbc663642c7b7bd5e3dab0c11c2",
+      "job": "cross-cinder-py313",
+      "source_commit": "978799539e019141d8b0710d09bf91c956976079",
+      "target_repository": "openstack/cinder",
+      "target_commit": "b5b763129e2bde5077c0cf3a5eb434021abaa6e0",
+      "alembic_version": "1.19.1",
+      "passed": 18446,
+      "failed": 1,
+      "failure_test": "cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync",
+      "result": "fail",
+      "evidence_url": "https://zuul.opendev.org/t/openstack/build/a910bfbc663642c7b7bd5e3dab0c11c2"
+    },
+    {
+      "arm": "a2_target_repaired",
+      "build_uuid": "6929808c35ff466080f9d39934e26125",
+      "job": "cross-cinder-py313",
+      "source_commit": "477af6b620bab5010fd8db17e5ae2d2b2a2817ad",
+      "source_code_tree_equal_to_a1": true,
+      "target_repository": "openstack/cinder",
+      "target_change": 1000516,
+      "target_commit": "913fa91a8eee20bf852387fe8c01a2d3d45cb87e",
+      "alembic_version": "1.19.1",
+      "passed": 18447,
+      "failed": 0,
+      "result": "pass",
+      "evidence_url": "https://zuul.opendev.org/t/openstack/build/6929808c35ff466080f9d39934e26125"
+    }
+  ],
+  "active_pilot": {
+    "result": "a0_pass_a1_expected_failure_a2_pass",
+    "repetitions": 1,
+    "retries": 0,
+    "evidence": "results/requirements-cinder-active-pilot-2026-08-24/summary.json"
+  },
+  "original_historical_successful_consumers": [
+    {
+      "repository": "openstack/glance",
+      "commit": "4f7a19df0cdad9cb50e92bc8a69be13543c4a3b5",
+      "job": "cross-glance-py313",
+      "build_uuid": "3da5b1aa078c409593c41a56f5e26952",
+      "alembic_version": "1.19.1",
+      "passed": 2413,
+      "failed": 0,
+      "coverage_reassessment": "downgraded_no_models_sync_test"
+    },
+    {
+      "repository": "openstack/keystone",
+      "commit": "16afc813b7e6de727d8a91e065d7824b06e32925",
+      "job": "cross-keystone-py313",
+      "build_uuid": "7c6e155e99b444a7a3f8b68329c091dd",
+      "alembic_version": "1.19.1",
+      "passed": 5240,
+      "failed": 0,
+      "coverage_reassessment": "retained_mysql_models_sync_passed"
+    },
+    {
+      "repository": "openstack/neutron",
+      "commit": "759dc67239650b0e1018ba24c564c65886abd61e",
+      "job": "cross-neutron-py313",
+      "build_uuid": "eeca29f9ef054806b79f857bb2db99e4",
+      "alembic_version": "1.19.1",
+      "passed": 20052,
+      "failed": 0,
+      "coverage_reassessment": "downgraded_no_models_sync_test"
+    },
+    {
+      "repository": "openstack/nova",
+      "commit": "fec26fb64baef2251bf547850ae71edfa6a7413d",
+      "job": "cross-nova-py313",
+      "build_uuid": "84975686f7c14b37ac155eb02c1ac49b",
+      "alembic_version": "1.19.1",
+      "passed": 17020,
+      "failed": 0,
+      "note": "日志分两组报告 17019 项和 1 项通过",
+      "coverage_reassessment": "retained_two_mysql_models_sync_tests_passed"
+    }
+  ],
+  "revised_candidate_package": {
+    "positive": "openstack/cinder",
+    "bounded_negative_candidates": [
+      "openstack/heat",
+      "openstack/ironic",
+      "openstack/keystone",
+      "openstack/nova",
+      "openstack/placement"
+    ],
+    "coverage_audit": "results/requirements-alembic-model-sync-coverage-audit-2026-08-24.json",
+    "label_status": "候选闭集；五个干扰仓有同轮相关历史执行，尚未完成主动重复"
+  },
+  "label_scope": "Cinder 三臂结论仅限固定源变化、固定提交、MariaDB 10.2 和已执行定向测试；干扰仓仍是候选而非正式负标签",
+  "missing_requirements": [
+    "兼容源变化 A3",
+    "A0 至 A3 每臂三次重复",
+    "五个干扰仓在主动协议下的重复执行",
+    "独立语义复核"
+  ]
+}

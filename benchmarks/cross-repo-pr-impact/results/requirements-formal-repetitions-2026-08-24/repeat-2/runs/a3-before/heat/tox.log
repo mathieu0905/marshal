@@ -1,0 +1,54 @@
+.pkg: remove tox env folder /tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-before/heat/.tox/.pkg
+py313: install_deps> python -I -m pip install -r /tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-before/heat/requirements.txt -r /tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-before/heat/test-requirements.txt -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a3-before/upper-constraints.txt
+.pkg: install_requires> python -I -m pip install 'pbr>=6.0.0' 'setuptools>=64.0.0'
+.pkg: _optional_hooks> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: get_requires_for_build_sdist> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: install_requires_for_build_sdist> python -I -m pip install 'pbr>=2.0.0'
+.pkg: get_requires_for_build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: install_requires_for_build_editable> python -I -m pip install 'pbr>=2.0.0'
+.pkg: build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+py313: install_package_deps> python -I -m pip install 'PasteDeploy>=1.5.0' 'PyYAML>=5.1' 'Routes>=2.3.1' 'SQLAlchemy>=1.4.0' 'WebOb>=1.7.1' 'alembic>=1.8.0' 'aodhclient>=0.9.0' 'croniter>=0.3.4' 'cryptography>=2.5' 'keystoneauth1>=3.18.0' 'keystonemiddleware>=5.1.0' 'lxml>=4.5.0' 'netaddr>=0.7.18' 'neutron-lib>=1.14.0' 'openstacksdk>=0.28.0' 'os-service-types>=1.2.0' 'oslo.cache>=1.26.0' 'oslo.concurrency>=3.26.0' 'oslo.config>=6.8.0' 'oslo.context>=2.22.0' 'oslo.db>=6.0.0' 'oslo.i18n>=3.20.0' 'oslo.log>=4.3.0' 'oslo.messaging>=14.1.0' 'oslo.middleware>=3.31.0' 'oslo.policy>=4.5.0' 'oslo.reports>=1.18.0' 'oslo.serialization>=2.25.0' 'oslo.service[threading]>=4.2.2' 'oslo.upgradecheck>=1.3.0' 'oslo.utils>=4.5.0' 'oslo.versionedobjects>=1.31.2' 'osprofiler>=1.4.0' 'pbr>=3.1.1' 'python-barbicanclient>=4.5.2' 'python-blazarclient>=1.0.1' 'python-cinderclient>=3.3.0' 'python-designateclient>=2.7.0' 'python-glanceclient>=2.8.0' 'python-heatclient>=1.10.0' 'python-ironicclient>=2.8.0' 'python-keystoneclient>=3.8.0' 'python-magnumclient>=2.3.0' 'python-manilaclient>=1.16.0' 'python-mistralclient>=3.1.0' 'python-neutronclient>=7.7.0' 'python-novaclient>=9.1.0' 'python-octaviaclient>=1.8.0' 'python-swiftclient>=3.2.0' 'python-troveclient>=2.2.0' 'python-zaqarclient>=1.3.0' 'python-zunclient>=3.4.0' 'requests>=2.23.0' 'stevedore>=3.1.0' 'tenacity>=6.1.0' 'yaql>=1.1.3' -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a3-before/upper-constraints.txt
+py313: install_package> python -I -m pip install --force-reinstall --no-deps /tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-before/heat/.tox/.tmp/package/1/openstack_heat-0.0.0-0.editable-py3-none-any.whl
+py313: commands[0]> stestr run heat.tests.db.test_migrations.ModelsMigrationsSyncMysql.test_models_sync
+/tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-before/heat/.tox/py313/lib/python3.13/site-packages/futurist/_utils.py:34: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet as _eventlet  # noqa
+/tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-before/heat/.tox/py313/lib/python3.13/site-packages/futurist/_utils.py:34: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet as _eventlet  # noqa
+{0} heat.tests.db.test_migrations.ModelsMigrationsSyncMysql.test_models_sync [1.008046s] ... ok
+
+======
+Totals
+======
+Ran: 1 tests in 1.0080 sec.
+ - Passed: 1
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 1.0080 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:01.008046
+py313: commands[1]> stestr slowest
+Test id                                                                   Runtime (s)
+------------------------------------------------------------------------  -----------
+heat.tests.db.test_migrations.ModelsMigrationsSyncMysql.test_models_sync  1.008
+.pkg: _exit> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+  py313: OK (55.56=setup[46.28]+cmd[8.76,0.52] seconds)
+  congratulations :) (55.66 seconds)

@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-2286",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 2286,
+      "change_id": "kubernetes/enhancements#2286",
+      "url": "https://github.com/kubernetes/enhancements/pull/2286",
+      "status": "MERGED",
+      "subject": "Update volume health KEP for beta",
+      "branch": "master",
+      "created": "2021-01-17T21:33:44Z",
+      "submitted": "2021-02-09T13:36:34Z"
+    },
+    "base_commit": "8d41e69c5fd54706f45469e6a7e112105c06f79c",
+    "candidate_commit": "94e31920dc5b9be2bbb2a91a3b2bf765b5ccbca0",
+    "changed_paths": [
+      "keps/sig-storage/1432-volume-health-monitor/README.md",
+      "keps/sig-storage/1432-volume-health-monitor/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/8d41e69c5fd54706f45469e6a7e112105c06f79c...94e31920dc5b9be2bbb2a91a3b2bf765b5ccbca0.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/99284"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 99284,
+        "change_id": "kubernetes/kubernetes#99284",
+        "url": "https://github.com/kubernetes/kubernetes/pull/99284",
+        "status": "MERGED",
+        "subject": "feature: add CSIVolumeHealth feature and gate",
+        "branch": "master",
+        "created": "2021-02-21T09:55:46Z",
+        "submitted": "2021-03-10T00:07:50Z"
+      },
+      "commit": "edc1c62471d710d246ca0647375fa62cf6f2cdb8",
+      "changed_paths": [
+        "pkg/features/kube_features.go",
+        "pkg/kubelet/kubelet.go",
+        "pkg/kubelet/kubelet_test.go",
+        "pkg/kubelet/runonce_test.go",
+        "pkg/kubelet/server/server_test.go",
+        "pkg/kubelet/server/stats/fs_resource_analyzer.go",
+        "pkg/kubelet/server/stats/resource_analyzer.go",
+        "pkg/kubelet/server/stats/volume_stat_calculator.go",
+        "pkg/kubelet/server/stats/volume_stat_calculator_test.go",
+        "pkg/volume/csi/csi_client.go",
+        "pkg/volume/csi/csi_client_test.go",
+        "pkg/volume/csi/fake/fake_client.go",
+        "pkg/volume/volume.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/99284",
+          "statement": "目标正文明确说明按源 KEP 的责任迁移更新卷健康实现。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

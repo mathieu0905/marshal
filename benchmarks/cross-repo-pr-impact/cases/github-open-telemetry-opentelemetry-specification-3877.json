@@ -1,0 +1,241 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-3877",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 3877,
+      "change_id": "open-telemetry/opentelemetry-specification#3877",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/3877",
+      "status": "MERGED",
+      "subject": "Add simple scope configuration to Tracer, Meter, Logger",
+      "branch": "main",
+      "created": "2024-02-15T00:27:08Z",
+      "submitted": "2024-04-08T17:33:33Z"
+    },
+    "base_commit": "fa5eca7aa9d1fc5e11d09e9aec1e67aa2c0afb1f",
+    "candidate_commit": "ea687543b1bd45a6516ad4950ed905b495de28c4",
+    "changed_paths": [
+      "specification/logs/sdk.md",
+      "specification/metrics/sdk.md",
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/fa5eca7aa9d1fc5e11d09e9aec1e67aa2c0afb1f...ea687543b1bd45a6516ad4950ed905b495de28c4.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/6375"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-php",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php/pull/1353"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 6375,
+        "change_id": "open-telemetry/opentelemetry-java#6375",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/6375",
+        "status": "MERGED",
+        "subject": "Scope config",
+        "branch": "main",
+        "created": "2024-04-10T20:51:59Z",
+        "submitted": "2024-04-18T21:36:40Z"
+      },
+      "commit": "171438702c56d89a8af1568d28885649bc547d03",
+      "changed_paths": [
+        "sdk/all/src/test/java/io/opentelemetry/sdk/ScopeConfiguratorTest.java",
+        "sdk/common/src/main/java/io/opentelemetry/sdk/internal/GlobUtil.java",
+        "sdk/common/src/main/java/io/opentelemetry/sdk/internal/ScopeConfigurator.java",
+        "sdk/common/src/main/java/io/opentelemetry/sdk/internal/ScopeConfiguratorBuilder.java",
+        "sdk/common/src/test/java/io/opentelemetry/sdk/internal/GlobUtilTest.java",
+        "sdk/logs/src/main/java/io/opentelemetry/sdk/logs/SdkLogger.java",
+        "sdk/logs/src/main/java/io/opentelemetry/sdk/logs/SdkLoggerProvider.java",
+        "sdk/logs/src/main/java/io/opentelemetry/sdk/logs/SdkLoggerProviderBuilder.java",
+        "sdk/logs/src/main/java/io/opentelemetry/sdk/logs/internal/LoggerConfig.java",
+        "sdk/logs/src/main/java/io/opentelemetry/sdk/logs/internal/SdkLoggerProviderUtil.java",
+        "sdk/logs/src/test/java/io/opentelemetry/sdk/logs/LoggerConfigTest.java",
+        "sdk/logs/src/test/java/io/opentelemetry/sdk/logs/SdkLoggerTest.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkMeter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkMeterProvider.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkMeterProviderBuilder.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/MeterConfig.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/SdkMeterProviderUtil.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/state/MeterProviderSharedState.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/view/ViewRegistry.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/MeterConfigTest.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/internal/view/ViewRegistryTest.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/SdkTracer.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/SdkTracerProvider.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/SdkTracerProviderBuilder.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/TracerSharedState.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/internal/SdkTracerProviderUtil.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/internal/TracerConfig.java",
+        "sdk/trace/src/test/java/io/opentelemetry/sdk/trace/TracerConfigTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/6375",
+          "statement": "正文明确实现源规范。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "pull_request": {
+        "provider": "github",
+        "number": 1353,
+        "change_id": "open-telemetry/opentelemetry-php#1353",
+        "url": "https://github.com/open-telemetry/opentelemetry-php/pull/1353",
+        "status": "MERGED",
+        "subject": "implement scope configuration",
+        "branch": "main",
+        "created": "2024-07-22T04:07:51Z",
+        "submitted": "2024-08-18T10:52:43Z"
+      },
+      "commit": "b2f89b6c9fd21eac0b622982c832b3434695091b",
+      "changed_paths": [
+        ".phan/config.php",
+        "phpstan.neon.dist",
+        "src/API/Logs/LateBindingLogger.php",
+        "src/API/Logs/LoggerInterface.php",
+        "src/API/Logs/NoopLogger.php",
+        "src/API/Metrics/GaugeInterface.php",
+        "src/API/Metrics/Instrument.php",
+        "src/API/Metrics/LateBindingMeter.php",
+        "src/API/Metrics/MeterInterface.php",
+        "src/API/Metrics/Noop/NoopCounter.php",
+        "src/API/Metrics/Noop/NoopGauge.php",
+        "src/API/Metrics/Noop/NoopHistogram.php",
+        "src/API/Metrics/Noop/NoopMeter.php",
+        "src/API/Metrics/Noop/NoopObservableCounter.php",
+        "src/API/Metrics/Noop/NoopObservableGauge.php",
+        "src/API/Metrics/Noop/NoopObservableUpDownCounter.php",
+        "src/API/Metrics/Noop/NoopUpDownCounter.php",
+        "src/API/Trace/LateBindingTracer.php",
+        "src/API/Trace/NoopTracer.php",
+        "src/API/Trace/TracerInterface.php",
+        "src/SDK/Common/InstrumentationScope/Config.php",
+        "src/SDK/Common/InstrumentationScope/ConfigTrait.php",
+        "src/SDK/Common/InstrumentationScope/Configurable.php",
+        "src/SDK/Common/InstrumentationScope/Configurator.php",
+        "src/SDK/Common/InstrumentationScope/ConfiguratorClosure.php",
+        "src/SDK/Logs/Logger.php",
+        "src/SDK/Logs/LoggerConfig.php",
+        "src/SDK/Logs/LoggerProvider.php",
+        "src/SDK/Logs/LoggerProviderBuilder.php",
+        "src/SDK/Logs/LoggerProviderInterface.php",
+        "src/SDK/Logs/NoopLoggerProvider.php",
+        "src/SDK/Metrics/Instrument.php",
+        "src/SDK/Metrics/Meter.php",
+        "src/SDK/Metrics/MeterConfig.php",
+        "src/SDK/Metrics/MeterProvider.php",
+        "src/SDK/Metrics/MeterProviderBuilder.php",
+        "src/SDK/Metrics/MeterProviderInterface.php",
+        "src/SDK/Metrics/MetricFactory/StreamMetricSource.php",
+        "src/SDK/Metrics/MetricReader/ExportingReader.php",
+        "src/SDK/Metrics/MetricRegistry/MetricRegistry.php",
+        "src/SDK/Metrics/MetricSourceInterface.php",
+        "src/SDK/Metrics/NoopMeterProvider.php",
+        "src/SDK/Metrics/ObservableInstrumentTrait.php",
+        "src/SDK/Metrics/SynchronousInstrumentTrait.php",
+        "src/SDK/Trace/NoopTracerProvider.php",
+        "src/SDK/Trace/Tracer.php",
+        "src/SDK/Trace/TracerConfig.php",
+        "src/SDK/Trace/TracerProvider.php",
+        "src/SDK/Trace/TracerProviderBuilder.php",
+        "src/SDK/Trace/TracerProviderInterface.php",
+        "tests/Benchmark/MetricBench.php",
+        "tests/Integration/SDK/Logs/LoggerConfigTest.php",
+        "tests/Integration/SDK/Metrics/MeterConfigTest.php",
+        "tests/Integration/SDK/Trace/TracerConfigTest.php",
+        "tests/Unit/API/Logs/NoopLoggerTest.php",
+        "tests/Unit/API/Trace/NoopTracerTest.php",
+        "tests/Unit/SDK/Common/InstrumentationScope/ConfigTest.php",
+        "tests/Unit/SDK/Common/InstrumentationScope/ConfiguratorTest.php",
+        "tests/Unit/SDK/Logs/LoggerProviderTest.php",
+        "tests/Unit/SDK/Logs/LoggerTest.php",
+        "tests/Unit/SDK/Metrics/InstrumentTest.php",
+        "tests/Unit/SDK/Metrics/MeterProviderTest.php",
+        "tests/Unit/SDK/Metrics/MeterTest.php",
+        "tests/Unit/SDK/Metrics/MetricReader/ExportingReaderTest.php",
+        "tests/Unit/SDK/Metrics/View/SelectionCriteriaTest.php",
+        "tests/Unit/SDK/Trace/TracerProviderTest.php",
+        "tests/Unit/SDK/Trace/TracerTest.php"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-php/pull/1353",
+          "statement": "明确实现源规范定义的作用域配置。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

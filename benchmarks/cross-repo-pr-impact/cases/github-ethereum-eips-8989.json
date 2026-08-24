@@ -1,0 +1,328 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-8989",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 8989,
+      "change_id": "ethereum/EIPs#8989",
+      "url": "https://github.com/ethereum/EIPs/pull/8989",
+      "status": "MERGED",
+      "subject": "EIP-7685: exclude empty requests data in commitment",
+      "branch": "master",
+      "created": "2024-10-22T08:48:22Z",
+      "submitted": "2024-11-26T13:42:51Z"
+    },
+    "base_commit": "279a7fa79308562e56987d2ba8195b1956d959b3",
+    "candidate_commit": "e9a73774c62e30f7552c0c769beb349b3900a948",
+    "changed_paths": [
+      "EIPS/eip-7685.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/279a7fa79308562e56987d2ba8195b1956d959b3...e9a73774c62e30f7552c0c769beb349b3900a948.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/7720"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/12985"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/execution-specs",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/execution-specs/pull/1046"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/30670"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "status-im/nimbus-eth2",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/status-im/nimbus-eth2/pull/6718"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 7720,
+        "change_id": "NethermindEth/nethermind#7720",
+        "url": "https://github.com/NethermindEth/nethermind/pull/7720",
+        "status": "MERGED",
+        "subject": "Exclude empty outputs in requests",
+        "branch": "master",
+        "created": "2024-11-05T14:20:18Z",
+        "submitted": "2024-12-15T15:35:40Z"
+      },
+      "commit": "6fd75942e59f033261fbbc8ffc5dd74fca720b0b",
+      "changed_paths": [
+        "src/Nethermind/Nethermind.Consensus/ExecutionRequests/ExecutionRequestProcessor.cs",
+        "src/Nethermind/Nethermind.Core.Test/Builders/TestExecutionRequest.cs",
+        "src/Nethermind/Nethermind.Core/ExecutionRequest/ExecutionRequestExtensions.cs",
+        "src/Nethermind/Nethermind.Merge.AuRa.Test/AuRaMergeEngineModuleTests.cs",
+        "src/Nethermind/Nethermind.Merge.Plugin.Test/EngineModuleTests.V4.cs",
+        "src/Nethermind/Nethermind.Merge.Plugin/Data/IExecutionPayloadParams.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/7720",
+          "statement": "明确排除空输出并引用源规范。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 12985,
+        "change_id": "erigontech/erigon#12985",
+        "url": "https://github.com/erigontech/erigon/pull/12985",
+        "status": "MERGED",
+        "subject": "Update Empty requests list behaviour for Pectra-5",
+        "branch": "main",
+        "created": "2024-12-03T21:15:56Z",
+        "submitted": "2025-01-14T14:14:49Z"
+      },
+      "commit": "071e3d7eb9e8540c5fc1c2b8ba0ec79ae5c0c83e",
+      "changed_paths": [
+        "consensus/merge/merge.go",
+        "consensus/misc/eip6110.go",
+        "consensus/misc/eip7002.go",
+        "consensus/misc/eip7251.go",
+        "core/blockchain.go",
+        "core/types/block.go",
+        "core/types/eip7685_requests.go",
+        "core/types/requests_test.go",
+        "turbo/builder/block_builder.go",
+        "turbo/engineapi/engine_server.go",
+        "turbo/execution/eth1/block_building.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/12985",
+          "statement": "正文复述源规范的新行为并修改实现。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "pull_request": {
+        "provider": "github",
+        "number": 1046,
+        "change_id": "ethereum/execution-specs#1046",
+        "url": "https://github.com/ethereum/execution-specs/pull/1046",
+        "status": "MERGED",
+        "subject": "EIP-7685: exclude empty requests in requests list",
+        "branch": "devnets/prague/5",
+        "created": "2024-12-04T00:02:15Z",
+        "submitted": "2024-12-06T11:42:27Z"
+      },
+      "commit": "d212a25b9c60284925227f8e15656a598524c873",
+      "changed_paths": [
+        "src/ethereum/prague/fork.py",
+        "src/ethereum_spec_tools/evm_tools/t8n/t8n_types.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/execution-specs/pull/1046",
+          "statement": "按源规范更新可执行规范。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 30670,
+        "change_id": "ethereum/go-ethereum#30670",
+        "url": "https://github.com/ethereum/go-ethereum/pull/30670",
+        "status": "MERGED",
+        "subject": "all: exclude empty outputs in requests commitment",
+        "branch": "master",
+        "created": "2024-10-24T20:24:36Z",
+        "submitted": "2024-11-28T10:48:50Z"
+      },
+      "commit": "41cd829d8c883cf06bb86670741037dddcaf8002",
+      "changed_paths": [
+        "beacon/engine/types.go",
+        "cmd/evm/internal/t8ntool/execution.go",
+        "core/chain_makers.go",
+        "core/genesis.go",
+        "core/state_processor.go",
+        "core/types/hashes.go",
+        "eth/tracers/internal/tracetest/supply_test.go",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-blob-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-contract-create-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-dynamic-fee-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-legacy-contract-call-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-legacy-transfer-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-tag-latest.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-blob-tx.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-create-contract-tx.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-create-contract-with-access-list.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-dynamic-tx-with-logs.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-normal-transfer-tx.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-with-logs.json",
+        "miner/worker.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/30670",
+          "statement": "按源规范调整请求承诺。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "status-im/nimbus-eth2",
+      "pull_request": {
+        "provider": "github",
+        "number": 6718,
+        "change_id": "status-im/nimbus-eth2#6718",
+        "url": "https://github.com/status-im/nimbus-eth2/pull/6718",
+        "status": "MERGED",
+        "subject": "Adopt latest changes to request hash computation",
+        "branch": "unstable",
+        "created": "2024-11-21T14:42:50Z",
+        "submitted": "2024-11-24T06:36:39Z"
+      },
+      "commit": "0660dc97118fa603e2885695f66ac3e997e7809a",
+      "changed_paths": [
+        "beacon_chain/spec/helpers.nim"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/status-im/nimbus-eth2/pull/6718",
+          "statement": "按源规范更新请求哈希计算。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/execution-specs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    },
+    {
+      "repository": "status-im/nimbus-eth2",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/status-im/nimbus-eth2"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

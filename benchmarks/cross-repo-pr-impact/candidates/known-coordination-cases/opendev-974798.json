@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-974798",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 974798,
+      "change_id": "I84684d77b07dacb239a3dcc9763dbdd9b74da01c",
+      "url": "https://review.opendev.org/c/starlingx/config/+/974798",
+      "status": "MERGED",
+      "subject": "Sysinv method to update etcd_version puppet hieradata config",
+      "branch": "master",
+      "created": "2026-01-27 02:28:43.000000000",
+      "submitted": "2026-01-27 18:17:28.000000000"
+    },
+    "base_commit": "5e0ec68e6556a708b6a004cec9d5e7e9d0485119",
+    "candidate_commit": "54c156f09c1d3894b965f162517e027efa1aad62",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/common/etcd.py",
+      "sysinv/sysinv/sysinv/sysinv/puppet/platform.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/974798/revisions/54c156f09c1d3894b965f162517e027efa1aad62/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/update",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/update/+/974390"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/update",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 974390,
+        "change_id": "Ia574d57f1caa637b080c45b7aeb5c66c72a63cae",
+        "url": "https://review.opendev.org/c/starlingx/update/+/974390",
+        "status": "MERGED",
+        "subject": "Update static.yaml hieradata with etcd_version",
+        "branch": "master",
+        "created": "2026-01-23 06:37:58.000000000",
+        "submitted": "2026-01-27 18:21:11.000000000"
+      },
+      "commit": "f628260f6e8c1ce81c56f7381fc44256a980d1d7",
+      "changed_paths": [
+        "software/upgrade-scripts/11-update-static-hieradata.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/update/+/974390",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config/+/974798",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/815d7be0e984461399189193e29906a6"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/update",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/update/raw/commit/3300839049da5d958b2572ec56eaacc9ae43f0f1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

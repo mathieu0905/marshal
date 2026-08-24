@@ -1,0 +1,264 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-539",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 539,
+      "change_id": "open-telemetry/opentelemetry-specification#539",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/539",
+      "status": "MERGED",
+      "subject": "normalize term for instrumentations",
+      "branch": "master",
+      "created": "2020-03-31T16:59:45Z",
+      "submitted": "2020-05-18T18:47:56Z"
+    },
+    "base_commit": "16e08012e11499c4dcfa133ff359ccd1ec45dd04",
+    "candidate_commit": "72d06d95252aee1261bfdb1c854622e4561413e1",
+    "changed_paths": [
+      "milestones.md",
+      "specification/api-metrics-user.md",
+      "specification/api-tracing.md",
+      "specification/error-handling.md",
+      "specification/glossary.md",
+      "specification/overview.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/16e08012e11499c4dcfa133ff359ccd1ec45dd04...72d06d95252aee1261bfdb1c854622e4561413e1.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/681"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/779"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 681,
+        "change_id": "open-telemetry/opentelemetry-dotnet#681",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/681",
+        "status": "MERGED",
+        "subject": "Rename Adapter to Instrumentation per latest spec",
+        "branch": "master",
+        "created": "2020-05-18T21:10:37Z",
+        "submitted": "2020-05-19T20:55:25Z"
+      },
+      "commit": "54d7380c144887df6c205b866ca71fd8544d813a",
+      "changed_paths": [
+        "OpenTelemetry.sln",
+        "samples/Exporters/AspNet/Global.asax.cs",
+        "samples/Exporters/AspNet/OpenTelemetry.Exporter.AspNet.Win.csproj",
+        "samples/Exporters/Console/Exporters.csproj",
+        "samples/Exporters/Console/TestHttpClient.cs",
+        "samples/Exporters/Console/TestRedis.cs",
+        "samples/Exporters/Web/OpenTelemetry.Exporter.Web.csproj",
+        "samples/Exporters/Web/Startup.cs",
+        "samples/LoggingTracer/LoggingTracer.Demo.AspNetCore/LoggingTracer.Demo.AspNetCore.csproj",
+        "samples/LoggingTracer/LoggingTracer.Demo.AspNetCore/Startup.cs",
+        "src/OpenTelemetry.Adapter.Dependencies/DependenciesAdapter.cs",
+        "src/OpenTelemetry.Extensions.Hosting/Implementation/TelemetryFactoryHostedService.cs",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/AspNetInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/AspNetInstrumentationOptions.cs",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/AssemblyInfo.cs",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/Implementation/HttpInListener.cs",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/Implementation/PropertyFetcher.cs",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/OpenTelemetry.Instrumentation.AspNet.Win.csproj",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/README.md",
+        "src/OpenTelemetry.Instrumentation.AspNet.Win/TracerBuilderExtensions.cs",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/AspNetCoreInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/AspNetCoreInstrumentationOptions.cs",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/AssemblyInfo.cs",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/Implementation/HttpInListener.cs",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/Implementation/PropertyFetcher.cs",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/OpenTelemetry.Instrumentation.AspNetCore.csproj",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/TracerBuilderExtensions.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/AssemblyInfo.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/AzureClientsInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/AzurePipelineInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/Constants.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/DependenciesInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/HttpClientInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/HttpClientInstrumentationOptions.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/HttpWebRequestInstrumentation.net461.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/Implementation/AzureSdkDiagnosticListener.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/Implementation/HttpHandlerDiagnosticListener.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/Implementation/HttpWebRequestDiagnosticListener.net461.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/Implementation/HttpWebRequestDiagnosticSource.net461.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/Implementation/PropertyFetcher.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/Implementation/SqlClientDiagnosticListener.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/OpenTelemetry.Instrumentation.Dependencies.csproj",
+        "src/OpenTelemetry.Instrumentation.Dependencies/SqlClientInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/SqlClientInstrumentationOptions.cs",
+        "src/OpenTelemetry.Instrumentation.Dependencies/TracerBuilderExtensions.cs",
+        "src/OpenTelemetry.Instrumentation.StackExchangeRedis/AssemblyInfo.cs",
+        "src/OpenTelemetry.Instrumentation.StackExchangeRedis/Implementation/RedisProfilerEntryToSpanConverter.cs",
+        "src/OpenTelemetry.Instrumentation.StackExchangeRedis/OpenTelemetry.Instrumentation.StackExchangeRedis.csproj",
+        "src/OpenTelemetry.Instrumentation.StackExchangeRedis/README.md",
+        "src/OpenTelemetry.Instrumentation.StackExchangeRedis/StackExchangeRedisCallsInstrumentation.cs",
+        "src/OpenTelemetry.Instrumentation.StackExchangeRedis/StackExchangeRedisCallsInstrumentationOptions.cs",
+        "src/OpenTelemetry.Shims.OpenTracing/ScopeManagerShim.cs",
+        "src/OpenTelemetry.Shims.OpenTracing/SpanBuilderShim.cs",
+        "src/OpenTelemetry.Shims.OpenTracing/TracerShim.cs",
+        "src/OpenTelemetry/Instrumentation/DiagnosticSourceListener.cs",
+        "src/OpenTelemetry/Instrumentation/DiagnosticSourceSubscriber.cs",
+        "src/OpenTelemetry/Instrumentation/InstrumentationEventSource.cs",
+        "src/OpenTelemetry/Instrumentation/ListenerHandler.cs",
+        "src/OpenTelemetry/Properties/AssemblyInfo.cs",
+        "src/OpenTelemetry/Trace/Configuration/TracerBuilder.cs",
+        "src/OpenTelemetry/Trace/Configuration/TracerFactory.cs",
+        "test/OpenTelemetry.Extensions.Hosting.Tests/HostingIntegrationTests.cs",
+        "test/OpenTelemetry.Instrumentation.AspNet.Tests.Win/BasicTests.cs",
+        "test/OpenTelemetry.Instrumentation.AspNet.Tests.Win/HttpInListenerTests.cs",
+        "test/OpenTelemetry.Instrumentation.AspNet.Tests.Win/OpenTelemetry.Instrumentation.AspNet.Tests.Win.csproj",
+        "test/OpenTelemetry.Instrumentation.AspNet.Tests.Win/xunit.runner.json",
+        "test/OpenTelemetry.Instrumentation.AspNetCore.Tests/AttributesExtensions.cs",
+        "test/OpenTelemetry.Instrumentation.AspNetCore.Tests/BasicTests.cs",
+        "test/OpenTelemetry.Instrumentation.AspNetCore.Tests/IncomingRequestsCollectionsIsAccordingToTheSpecTests.cs",
+        "test/OpenTelemetry.Instrumentation.AspNetCore.Tests/OpenTelemetry.Instrumentation.AspNetCore.Tests.csproj",
+        "test/OpenTelemetry.Instrumentation.AspNetCore.Tests/xunit.runner.json",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/HttpClientTests.Basic.netcore31.cs",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/HttpClientTests.netcore31.cs",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/HttpTestData.cs",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/HttpWebRequestDiagnosticSourceTests.net461.cs",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/HttpWebRequestTests.Basic.net461.cs",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/HttpWebRequestTests.net461.cs",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/OpenTelemetry.Instrumentation.Dependencies.Tests.csproj",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/SqlClientTests.cs",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/http-out-test-cases.json",
+        "test/OpenTelemetry.Instrumentation.Dependencies.Tests/xunit.runner.json",
+        "test/OpenTelemetry.Instrumentation.StackExchangeRedis.Tests/AttributesExtensions.cs",
+        "test/OpenTelemetry.Instrumentation.StackExchangeRedis.Tests/Implementation/RedisProfilerEntryToSpanConverterTests.cs",
+        "test/OpenTelemetry.Instrumentation.StackExchangeRedis.Tests/OpenTelemetry.Instrumentation.StackExchangeRedis.Tests.csproj",
+        "test/OpenTelemetry.Instrumentation.StackExchangeRedis.Tests/StackExchangeRedisCallsInstrumentationTests.cs",
+        "test/OpenTelemetry.Tests/Implementation/Trace/Config/TracerBuilderTests.cs",
+        "test/OpenTelemetry.Tests/Implementation/Trace/Config/TracerFactoryTest.cs",
+        "test/TestApp.AspNetCore.3.1/Startup.cs",
+        "test/TestApp.AspNetCore.3.1/TestApp.AspNetCore.3.1.csproj"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/681",
+          "statement": "明确按最新源规范重命名。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 779,
+        "change_id": "open-telemetry/opentelemetry-go#779",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/779",
+        "status": "MERGED",
+        "subject": "Rename plugin directory to instrumentation",
+        "branch": "master",
+        "created": "2020-05-29T22:59:03Z",
+        "submitted": "2020-05-30T21:53:33Z"
+      },
+      "commit": "bd9df3f62ee3937ea52925265a2d63a1760589ee",
+      "changed_paths": [
+        "example/grpc/client/main.go",
+        "example/grpc/server/main.go",
+        "example/http/client/client.go",
+        "example/http/server/server.go",
+        "instrumentation/grpctrace/grpctrace.go",
+        "instrumentation/grpctrace/interceptor.go",
+        "instrumentation/grpctrace/interceptor_test.go",
+        "instrumentation/httptrace/api.go",
+        "instrumentation/httptrace/clienttrace.go",
+        "instrumentation/httptrace/clienttrace_test.go",
+        "instrumentation/httptrace/httptrace.go",
+        "instrumentation/othttp/common.go",
+        "instrumentation/othttp/config.go",
+        "instrumentation/othttp/config_test.go",
+        "instrumentation/othttp/doc.go",
+        "instrumentation/othttp/filters/filters.go",
+        "instrumentation/othttp/filters/filters_test.go",
+        "instrumentation/othttp/filters/header_go14.go",
+        "instrumentation/othttp/filters/header_nongo14.go",
+        "instrumentation/othttp/handler.go",
+        "instrumentation/othttp/handler_example_test.go",
+        "instrumentation/othttp/handler_test.go",
+        "instrumentation/othttp/transport.go",
+        "instrumentation/othttp/transport_example_test.go",
+        "instrumentation/othttp/transport_test.go",
+        "instrumentation/othttp/wrap.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/779",
+          "statement": "明确按源规范重命名插件目录。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

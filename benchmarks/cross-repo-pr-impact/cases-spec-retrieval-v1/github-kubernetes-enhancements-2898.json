@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-2898",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 2898,
+      "change_id": "kubernetes/enhancements#2898",
+      "url": "https://github.com/kubernetes/enhancements/pull/2898",
+      "status": "MERGED",
+      "subject": "[WIP] KEP-2896: OpenAPI V3",
+      "branch": "master",
+      "created": "2021-08-25T16:00:00Z",
+      "submitted": "2021-09-09T17:16:18Z"
+    },
+    "base_commit": "1fd25ffbd2708678d05c97b6b92c596264db8da2",
+    "candidate_commit": "5e77c18ca46dd2359cf72c5402a697914e189c72",
+    "changed_paths": [
+      "keps/prod-readiness/sig-api-machinery/2896.yaml",
+      "keps/sig-api-machinery/2896-openapi-v3/README.md",
+      "keps/sig-api-machinery/2896-openapi-v3/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/1fd25ffbd2708678d05c97b6b92c596264db8da2...5e77c18ca46dd2359cf72c5402a697914e189c72.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/108895"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 108895,
+        "change_id": "kubernetes/kubernetes#108895",
+        "url": "https://github.com/kubernetes/kubernetes/pull/108895",
+        "status": "MERGED",
+        "subject": "Update kube-openapi",
+        "branch": "master",
+        "created": "2022-03-22T21:57:08Z",
+        "submitted": "2022-03-24T21:01:01Z"
+      },
+      "commit": "8b09e184dbde41542fd8f8263c5a0831b8ff735c",
+      "changed_paths": [
+        "go.mod",
+        "go.sum",
+        "hack/update-openapi-spec.sh",
+        "staging/src/k8s.io/api/go.sum",
+        "staging/src/k8s.io/apiextensions-apiserver/go.mod",
+        "staging/src/k8s.io/apiextensions-apiserver/go.sum",
+        "staging/src/k8s.io/apimachinery/go.mod",
+        "staging/src/k8s.io/apimachinery/go.sum",
+        "staging/src/k8s.io/apiserver/go.mod",
+        "staging/src/k8s.io/apiserver/go.sum",
+        "staging/src/k8s.io/cli-runtime/go.mod",
+        "staging/src/k8s.io/cli-runtime/go.sum",
+        "staging/src/k8s.io/client-go/go.mod",
+        "staging/src/k8s.io/client-go/go.sum",
+        "staging/src/k8s.io/cloud-provider/go.sum",
+        "staging/src/k8s.io/cluster-bootstrap/go.sum",
+        "staging/src/k8s.io/code-generator/examples/go.mod",
+        "staging/src/k8s.io/code-generator/examples/go.sum",
+        "staging/src/k8s.io/code-generator/go.mod",
+        "staging/src/k8s.io/code-generator/go.sum",
+        "staging/src/k8s.io/component-base/go.sum",
+        "staging/src/k8s.io/component-helpers/go.sum",
+        "staging/src/k8s.io/controller-manager/go.sum",
+        "staging/src/k8s.io/csi-translation-lib/go.sum",
+        "staging/src/k8s.io/kube-aggregator/go.mod",
+        "staging/src/k8s.io/kube-aggregator/go.sum",
+        "staging/src/k8s.io/kube-aggregator/pkg/controllers/openapiv3/aggregator/aggregator.go",
+        "staging/src/k8s.io/kube-aggregator/pkg/controllers/openapiv3/aggregator/downloader.go",
+        "staging/src/k8s.io/kube-aggregator/pkg/controllers/openapiv3/aggregator/downloader_test.go",
+        "staging/src/k8s.io/kube-controller-manager/go.sum",
+        "staging/src/k8s.io/kube-proxy/go.sum",
+        "staging/src/k8s.io/kube-scheduler/go.sum",
+        "staging/src/k8s.io/kubectl/go.mod",
+        "staging/src/k8s.io/kubectl/go.sum",
+        "staging/src/k8s.io/kubelet/go.sum",
+        "staging/src/k8s.io/legacy-cloud-providers/go.sum",
+        "staging/src/k8s.io/metrics/go.sum",
+        "staging/src/k8s.io/pod-security-admission/go.sum",
+        "staging/src/k8s.io/sample-apiserver/go.mod",
+        "staging/src/k8s.io/sample-apiserver/go.sum",
+        "staging/src/k8s.io/sample-cli-plugin/go.sum",
+        "staging/src/k8s.io/sample-controller/go.sum",
+        "test/integration/apiserver/openapiv3_test.go",
+        "vendor/k8s.io/kube-openapi/pkg/builder3/openapi.go",
+        "vendor/k8s.io/kube-openapi/pkg/common/common.go",
+        "vendor/k8s.io/kube-openapi/pkg/generators/openapi.go",
+        "vendor/k8s.io/kube-openapi/pkg/handler/handler.go",
+        "vendor/k8s.io/kube-openapi/pkg/handler3/handler.go",
+        "vendor/k8s.io/kube-openapi/pkg/internal/handler/handler_cache.go",
+        "vendor/k8s.io/kube-openapi/pkg/util/proto/document_v3.go",
+        "vendor/k8s.io/kube-openapi/pkg/util/proto/testing/openapi_v3.go",
+        "vendor/modules.txt"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/108895",
+          "statement": "目标更新开放接口实现依赖，改动主题与源 OpenAPI V3 KEP 一致。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

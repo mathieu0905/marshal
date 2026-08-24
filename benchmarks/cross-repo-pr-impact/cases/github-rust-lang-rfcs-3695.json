@@ -1,0 +1,290 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3695",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3695,
+      "change_id": "rust-lang/rfcs#3695",
+      "url": "https://github.com/rust-lang/rfcs/pull/3695",
+      "status": "MERGED",
+      "subject": "RFC: Allow boolean literals as `cfg` predicates",
+      "branch": "master",
+      "created": "2024-09-16T14:02:39Z",
+      "submitted": "2024-10-04T06:39:24Z"
+    },
+    "base_commit": "72d6e464033722cc7e8a1d5d39595822b230448e",
+    "candidate_commit": "d8e55c59a2d480fb062847e4608696d18b33d468",
+    "changed_paths": [
+      "text/3695-cfg_boolean_literals.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/72d6e464033722cc7e8a1d5d39595822b230448e...d8e55c59a2d480fb062847e4608696d18b33d468.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/cargo",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/cargo/pull/14649"
+    },
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/131034"
+    },
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/149791"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/cargo",
+      "pull_request": {
+        "provider": "github",
+        "number": 14649,
+        "change_id": "rust-lang/cargo#14649",
+        "url": "https://github.com/rust-lang/cargo/pull/14649",
+        "status": "MERGED",
+        "subject": "Implement RFC3695: Allow boolean literals as cfg predicates",
+        "branch": "master",
+        "created": "2024-10-06T14:50:01Z",
+        "submitted": "2025-04-22T18:29:09Z"
+      },
+      "commit": "9563738dff8e7688592e47b9436d420caf96c48e",
+      "changed_paths": [
+        "Cargo.lock",
+        "Cargo.toml",
+        "crates/cargo-platform/Cargo.toml",
+        "crates/cargo-platform/src/cfg.rs",
+        "crates/cargo-platform/src/lib.rs",
+        "crates/cargo-platform/tests/test_cfg.rs",
+        "tests/testsuite/cfg.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/cargo/pull/14649",
+          "statement": "正文明确实现源 RFC。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 131034,
+        "change_id": "rust-lang/rust#131034",
+        "url": "https://github.com/rust-lang/rust/pull/131034",
+        "status": "MERGED",
+        "subject": "Implement RFC3695 Allow boolean literals as cfg predicates",
+        "branch": "master",
+        "created": "2024-09-29T20:11:44Z",
+        "submitted": "2024-10-04T18:02:07Z"
+      },
+      "commit": "a3ffa1eae507809628decc6250b28db6ab167b11",
+      "changed_paths": [
+        "compiler/rustc_ast/src/attr/mod.rs",
+        "compiler/rustc_attr/messages.ftl",
+        "compiler/rustc_attr/src/builtin.rs",
+        "compiler/rustc_attr/src/session_diagnostics.rs",
+        "compiler/rustc_builtin_macros/src/cfg.rs",
+        "compiler/rustc_codegen_ssa/src/lib.rs",
+        "compiler/rustc_expand/src/config.rs",
+        "compiler/rustc_feature/src/unstable.rs",
+        "compiler/rustc_metadata/src/native_libs.rs",
+        "compiler/rustc_parse/src/lib.rs",
+        "compiler/rustc_parse/src/parser/attr.rs",
+        "compiler/rustc_session/src/cstore.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "compiler/rustc_trait_selection/src/error_reporting/traits/on_unimplemented.rs",
+        "src/doc/unstable-book/src/language-features/cfg-boolean-literals.md",
+        "src/librustdoc/clean/cfg.rs",
+        "src/librustdoc/clean/cfg/tests.rs",
+        "src/librustdoc/clean/types.rs",
+        "src/librustdoc/visit_ast.rs",
+        "tests/rustdoc-ui/cfg-boolean-literal.rs",
+        "tests/ui/cfg/raw-true-false.rs",
+        "tests/ui/cfg/true-false.rs",
+        "tests/ui/feature-gates/feature-gate-cfg-boolean-literals.rs",
+        "tests/ui/feature-gates/feature-gate-cfg-boolean-literals.stderr",
+        "tests/ui/macros/cfg.rs",
+        "tests/ui/macros/cfg.stderr"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/131034",
+          "statement": "正文明确实现源 RFC。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 149791,
+        "change_id": "rust-lang/rust#149791",
+        "url": "https://github.com/rust-lang/rust/pull/149791",
+        "status": "MERGED",
+        "subject": "Remove uses of `cfg({any()/all()})`",
+        "branch": "main",
+        "created": "2025-12-08T22:12:25Z",
+        "submitted": "2025-12-12T16:13:21Z"
+      },
+      "commit": "c96ff2d42944a2df715115ddeaa6b260695dcca9",
+      "changed_paths": [
+        "compiler/rustc_codegen_cranelift/src/base.rs",
+        "library/core/src/primitive_docs.rs",
+        "tests/ui/asm/naked-functions-inline.rs",
+        "tests/ui/asm/naked-functions-inline.stderr",
+        "tests/ui/attributes/unsafe/cfg-unsafe-attributes.rs",
+        "tests/ui/attributes/unsafe/extraneous-unsafe-attributes.rs",
+        "tests/ui/attributes/unsafe/extraneous-unsafe-attributes.stderr",
+        "tests/ui/attributes/unsafe/unsafe-attributes.rs",
+        "tests/ui/cfg/conditional-compilation-struct-11085.rs",
+        "tests/ui/cfg/conditional-compile.rs",
+        "tests/ui/cfg/nested-cfg-attr-conditional-compilation.rs",
+        "tests/ui/cfg/nested-cfg-attr-conditional-compilation.stderr",
+        "tests/ui/coherence/coherence-cow.rs",
+        "tests/ui/conditional-compilation/cfg-attr-multi-false.rs",
+        "tests/ui/conditional-compilation/cfg-attr-multi-true.rs",
+        "tests/ui/conditional-compilation/cfg-attr-parse.rs",
+        "tests/ui/conditional-compilation/cfg-attr-parse.stderr",
+        "tests/ui/conditional-compilation/cfg-attr-unknown-attribute-macro-expansion.rs",
+        "tests/ui/conditional-compilation/cfg-attr-unknown-attribute-macro-expansion.stderr",
+        "tests/ui/conditional-compilation/cfg-empty-any-all.rs",
+        "tests/ui/conditional-compilation/cfg-empty-any-all.stderr",
+        "tests/ui/conditional-compilation/cfg_attr_path.rs",
+        "tests/ui/conditional-compilation/issue-34028.rs",
+        "tests/ui/conditional-compilation/module_with_cfg.rs",
+        "tests/ui/coroutine/static-closure-unexpanded.rs",
+        "tests/ui/feature-gates/feature-gate-pin_ergonomics.rs",
+        "tests/ui/feature-gates/feature-gate-super-let.rs",
+        "tests/ui/feature-gates/feature-gate-unsafe-binders.rs",
+        "tests/ui/feature-gates/feature-gate-unsafe_fields.rs",
+        "tests/ui/feature-gates/feature-gate-where_clause_attrs.a.stderr",
+        "tests/ui/feature-gates/feature-gate-where_clause_attrs.b.stderr",
+        "tests/ui/feature-gates/feature-gate-where_clause_attrs.rs",
+        "tests/ui/issues/issue-24434.rs",
+        "tests/ui/lint/issue-97094.rs",
+        "tests/ui/lint/issue-97094.stderr",
+        "tests/ui/macros/issue-34171.rs",
+        "tests/ui/parser/attribute-on-empty.rs",
+        "tests/ui/parser/attribute-on-empty.stderr",
+        "tests/ui/parser/attribute-on-type.rs",
+        "tests/ui/parser/attribute-on-type.stderr",
+        "tests/ui/parser/attribute/attr-pat-struct-rest.rs",
+        "tests/ui/parser/attribute/attr-pat-struct-rest.stderr",
+        "tests/ui/parser/cfg-keyword-lifetime.rs",
+        "tests/ui/parser/issue-116781.rs",
+        "tests/ui/parser/raw/raw-idents.rs",
+        "tests/ui/parser/ty-path-followed-by-single-colon.rs",
+        "tests/ui/proc-macro/ambiguous-builtin-attrs.rs",
+        "tests/ui/proc-macro/ambiguous-builtin-attrs.stderr",
+        "tests/ui/proc-macro/auxiliary/derive-attr-cfg.rs",
+        "tests/ui/proc-macro/cfg-eval.rs",
+        "tests/ui/proc-macro/cfg-eval.stderr",
+        "tests/ui/proc-macro/cfg-eval.stdout",
+        "tests/ui/proc-macro/derive-attr-cfg.rs",
+        "tests/ui/proc-macro/derive-b.rs",
+        "tests/ui/proc-macro/derive-helper-configured.rs",
+        "tests/ui/resolve/suggestions/suggest-import-without-clobbering-attrs.fixed",
+        "tests/ui/resolve/suggestions/suggest-import-without-clobbering-attrs.rs",
+        "tests/ui/rust-2024/unsafe-attributes/unsafe-attributes-fix.fixed",
+        "tests/ui/rust-2024/unsafe-attributes/unsafe-attributes-fix.rs",
+        "tests/ui/rust-2024/unsafe-attributes/unsafe-attributes-fix.stderr",
+        "tests/ui/static/static-align.rs",
+        "tests/ui/structs/struct-field-cfg.rs",
+        "tests/ui/structs/struct-field-cfg.stderr",
+        "tests/ui/test-attrs/issue-34932.rs",
+        "tests/ui/typeck/issue-86721-return-expr-ice.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/149791",
+          "statement": "在新布尔谓词可用后移除旧空 any/all 写法。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/cargo",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/cargo"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

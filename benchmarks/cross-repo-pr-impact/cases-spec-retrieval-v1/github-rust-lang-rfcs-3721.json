@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3721",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3721,
+      "change_id": "rust-lang/rfcs#3721",
+      "url": "https://github.com/rust-lang/rfcs/pull/3721",
+      "status": "MERGED",
+      "subject": "Add `homogeneous_try_blocks` RFC",
+      "branch": "master",
+      "created": "2024-10-30T07:15:07Z",
+      "submitted": "2026-03-25T23:58:16Z"
+    },
+    "base_commit": "60a67587393599150e9dd696bf3ce339f03d34ef",
+    "candidate_commit": "c5f49c0c15872e89bd183c215c38c9a34d236ee3",
+    "changed_paths": [
+      "text/0000-homogeneous-try-blocks.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/60a67587393599150e9dd696bf3ce339f03d34ef...c5f49c0c15872e89bd183c215c38c9a34d236ee3.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/148725"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 148725,
+        "change_id": "rust-lang/rust#148725",
+        "url": "https://github.com/rust-lang/rust/pull/148725",
+        "status": "MERGED",
+        "subject": "Implement the alternative `try` block desugaring",
+        "branch": "main",
+        "created": "2025-11-09T03:50:23Z",
+        "submitted": "2025-11-14T12:15:06Z"
+      },
+      "commit": "e5803fceed33ce5bb2d0f29f8fd0db6a70496326",
+      "changed_paths": [
+        "compiler/rustc_ast_lowering/src/expr.rs",
+        "compiler/rustc_ast_lowering/src/lib.rs",
+        "compiler/rustc_hir/src/lang_items.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "library/core/src/ops/try_trait.rs",
+        "library/std/src/sys/pal/unix/kernel_copy/tests.rs",
+        "tests/mir-opt/pre-codegen/option_bubble_debug.option_traits.PreCodegen.after.panic-abort.mir",
+        "tests/mir-opt/pre-codegen/option_bubble_debug.option_traits.PreCodegen.after.panic-unwind.mir",
+        "tests/ui/try-block/try-block-bad-type.rs",
+        "tests/ui/try-block/try-block-bad-type.stderr",
+        "tests/ui/try-block/try-block-homogeneous.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/148725",
+          "statement": "目标按源 RFC 评审讨论实现替代的尝试块降级方案供实验。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

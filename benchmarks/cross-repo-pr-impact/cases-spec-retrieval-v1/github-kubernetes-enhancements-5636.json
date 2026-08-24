@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-5636",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 5636,
+      "change_id": "kubernetes/enhancements#5636",
+      "url": "https://github.com/kubernetes/enhancements/pull/5636",
+      "status": "MERGED",
+      "subject": "KEP-4762: Promote to beta stage",
+      "branch": "master",
+      "created": "2025-10-08T11:13:41Z",
+      "submitted": "2025-10-16T13:06:04Z"
+    },
+    "base_commit": "3f5d6a26b49cf28627836aec89b3e990bbde8f25",
+    "candidate_commit": "e8c9f20911bcb5b8f7ddcbf9cf0a61954b44a4b0",
+    "changed_paths": [
+      "keps/prod-readiness/sig-network/4762.yaml",
+      "keps/sig-network/4762-allow-arbitrary-fqdn-as-pod-hostname/README.md",
+      "keps/sig-network/4762-allow-arbitrary-fqdn-as-pod-hostname/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/3f5d6a26b49cf28627836aec89b3e990bbde8f25...e8c9f20911bcb5b8f7ddcbf9cf0a61954b44a4b0.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/134729"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 134729,
+        "change_id": "kubernetes/kubernetes#134729",
+        "url": "https://github.com/kubernetes/kubernetes/pull/134729",
+        "status": "MERGED",
+        "subject": "kep-4762: Promote HostnameOverride feature gate to beta stage",
+        "branch": "master",
+        "created": "2025-10-20T12:31:14Z",
+        "submitted": "2025-10-20T18:28:39Z"
+      },
+      "commit": "ba6074dd0b827848cb8d1bcb7e70c544a64231db",
+      "changed_paths": [
+        "pkg/features/kube_features.go",
+        "test/compatibility_lifecycle/reference/versioned_feature_list.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/134729",
+          "statement": "目标在源 KEP 合并后将主机名覆盖能力提升到测试阶段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

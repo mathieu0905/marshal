@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9249",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9249,
+      "change_id": "ethereum/EIPs#9249",
+      "url": "https://github.com/ethereum/EIPs/pull/9249",
+      "status": "MERGED",
+      "subject": "clarify parameter handling at the fork boundary",
+      "branch": "master",
+      "created": "2025-01-16T19:52:01Z",
+      "submitted": "2025-01-22T17:45:32Z"
+    },
+    "base_commit": "40ad571853554ad89172548129e41324552fe2d7",
+    "candidate_commit": "b99da2d8a3223e824beee0e845881ce006a3529c",
+    "changed_paths": [
+      "EIPS/eip-7691.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/40ad571853554ad89172548129e41324552fe2d7...b99da2d8a3223e824beee0e845881ce006a3529c.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/31101"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 31101,
+        "change_id": "ethereum/go-ethereum#31101",
+        "url": "https://github.com/ethereum/go-ethereum/pull/31101",
+        "status": "MERGED",
+        "subject": "consensus/misc/eip4844: use head's target blobs, not parent",
+        "branch": "master",
+        "created": "2025-01-30T16:15:13Z",
+        "submitted": "2025-02-04T20:43:18Z"
+      },
+      "commit": "a30d0f36b36785d95404707807ee216d23bc0a77",
+      "changed_paths": [
+        "cmd/evm/internal/t8ntool/execution.go",
+        "consensus/misc/eip4844/eip4844.go",
+        "consensus/misc/eip4844/eip4844_test.go",
+        "core/chain_makers.go",
+        "core/state_processor_test.go",
+        "eth/gasprice/feehistory.go",
+        "eth/tracers/internal/tracetest/util.go",
+        "internal/ethapi/simulate.go",
+        "miner/worker.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/31101",
+          "statement": "目标标题和实现内容对应源规范在分叉边界的参数澄清。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

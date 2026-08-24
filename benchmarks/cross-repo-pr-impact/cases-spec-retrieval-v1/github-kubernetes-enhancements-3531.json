@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3531",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3531,
+      "change_id": "kubernetes/enhancements#3531",
+      "url": "https://github.com/kubernetes/enhancements/pull/3531",
+      "status": "MERGED",
+      "subject": "KEP-3107: target csiNodeExpandSecret beta in 1.26",
+      "branch": "master",
+      "created": "2022-09-21T12:58:13Z",
+      "submitted": "2023-02-09T17:26:22Z"
+    },
+    "base_commit": "c8c159223daace43c53776d3d2e3e7543a4e8d52",
+    "candidate_commit": "c1cc67ca3e304fc35ed55d443aae2cdf5727a850",
+    "changed_paths": [
+      "keps/sig-storage/3107-csi-nodeexpandsecret/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/c8c159223daace43c53776d3d2e3e7543a4e8d52...c1cc67ca3e304fc35ed55d443aae2cdf5727a850.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/115621"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 115621,
+        "change_id": "kubernetes/kubernetes#115621",
+        "url": "https://github.com/kubernetes/kubernetes/pull/115621",
+        "status": "MERGED",
+        "subject": "promote CSINodeExpandSecret feature to Beta",
+        "branch": "master",
+        "created": "2023-02-08T15:42:15Z",
+        "submitted": "2023-03-14T00:51:24Z"
+      },
+      "commit": "732b6e305457fa318b965cf199122dbaac1740d1",
+      "changed_paths": [
+        "pkg/features/kube_features.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/115621",
+          "statement": "目标按源 KEP 里程碑将节点扩容密钥能力提升到测试阶段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

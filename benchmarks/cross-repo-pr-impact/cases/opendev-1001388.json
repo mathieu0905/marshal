@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-1001388",
+  "project": "wandertracks",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "wandertracks/wandertracks",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 1001388,
+      "change_id": "I8b2d4f6a9c1e3057a2b4c6d8e0f2a4b6c8d0e2f4",
+      "url": "https://review.opendev.org/c/wandertracks/wandertracks/+/1001388",
+      "status": "MERGED",
+      "subject": "Serve the basemap styles as vendored package data",
+      "branch": "master",
+      "created": "2026-08-18 17:19:20.000000000",
+      "submitted": "2026-08-18 17:48:41.000000000"
+    },
+    "base_commit": "c0976d4fcbf4b6b3fee44259be61811e7bb37e41",
+    "candidate_commit": "78030e484d568e65d2bcc98c3971efb6ee4b7fb2",
+    "changed_paths": [
+      "wandertracks/api/__init__.py",
+      "wandertracks/api/styles.py",
+      "wandertracks/mapstyles/__init__.py",
+      "wandertracks/mapstyles/opentopomap.json",
+      "wandertracks/mapstyles/osm.json",
+      "wandertracks/mapstyles/outdoors.json",
+      "wandertracks/mapstyles/satellite.json",
+      "wandertracks/mapstyles/wandertracks.json",
+      "wandertracks/tests/test_styles.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/1001388/revisions/78030e484d568e65d2bcc98c3971efb6ee4b7fb2/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "wandertracks/wandertracks",
+      "target_repository": "wandertracks/wandertracks-web",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001406"
+    },
+    {
+      "source_repository": "wandertracks/wandertracks",
+      "target_repository": "wandertracks/wandertracks-web",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001389"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "wandertracks/wandertracks-web",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 1001406,
+        "change_id": "I1d90a489fce8e04688f7ca85eeddef57d21c5688",
+        "url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001406",
+        "status": "MERGED",
+        "subject": "Consume the served basemap styles; delete the builders",
+        "branch": "master",
+        "created": "2026-08-18 18:55:40.000000000",
+        "submitted": "2026-08-18 20:17:58.000000000"
+      },
+      "commit": "7bc0d38a98b17d587206950857e0a0d802edb81b",
+      "changed_paths": [
+        "studio/tests/basemap-catalog.test.ts",
+        "studio/tests/esri-token.test.ts",
+        "studio/tests/mapstyle-parity.test.ts",
+        "studio/tests/mapstyle.test.ts",
+        "studio/website/src/lib/assets/layers.ts",
+        "studio/website/src/lib/wandertracks/api.ts",
+        "studio/website/src/lib/wandertracks/components/PublicTripMap.svelte",
+        "studio/website/src/lib/wandertracks/components/map/LiveTrackMap.svelte",
+        "studio/website/src/lib/wandertracks/components/trip/TripDetailMap.svelte",
+        "studio/website/src/lib/wandertracks/editor-basemap.ts",
+        "studio/website/src/lib/wandertracks/map/basemap-catalog.ts",
+        "studio/website/src/lib/wandertracks/map/detail-basemap.ts",
+        "studio/website/src/lib/wandertracks/map/labelLayers.ts",
+        "studio/website/src/lib/wandertracks/map/map-resources.svelte.ts",
+        "studio/website/src/lib/wandertracks/map/mapstyle.ts",
+        "studio/website/src/lib/wandertracks/map/parkLayers.ts",
+        "studio/website/src/lib/wandertracks/map/style-urls.ts",
+        "studio/website/src/lib/wandertracks/map/transportLayers.ts",
+        "studio/website/src/lib/wandertracks/map/waterLayers.ts",
+        "studio/website/src/routes/(wandertracks)/(app)/dives/[id]/DiveDetailView.svelte",
+        "studio/website/src/routes/(wandertracks)/(app)/tracks/[id]/repair-flight/RepairFlightView.svelte",
+        "studio/website/src/routes/(wandertracks)/(public)/u/[slug]/map/PublicProfileMapView.svelte"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001406",
+          "statement": "Depends-On: https://review.opendev.org/c/wandertracks/wandertracks/+/1001388",
+          "ci_url": "https://zuul.opendev.org/t/opendev/buildset/ee203c7605a84a8aa7dad640b9c8e5a4"
+        }
+      ]
+    },
+    {
+      "repository": "wandertracks/wandertracks-web",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 1001389,
+        "change_id": "Ie11157c1945895af512b6ecd8530e5df35f76c7f",
+        "url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001389",
+        "status": "MERGED",
+        "subject": "Pin the style builder to the API repo's vendored JSON",
+        "branch": "master",
+        "created": "2026-08-18 17:25:53.000000000",
+        "submitted": "2026-08-18 18:54:44.000000000"
+      },
+      "commit": "21ced27563422baead2cd1b5e82cb51a6af93d70",
+      "changed_paths": [
+        ".zuul.yaml",
+        "studio/tests/mapstyle-parity.test.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "specification_or_vector",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "executed",
+        "paths": [
+          "studio/tests/mapstyle-parity.test.ts"
+        ],
+        "symbols": [],
+        "tests": [
+          "studio/tests/mapstyle-parity.test.ts"
+        ],
+        "commands": [
+          [
+            "npm",
+            "exec",
+            "--workspace",
+            "wandertracks-studio-tests",
+            "--",
+            "vitest",
+            "run",
+            "mapstyle-parity.test.ts"
+          ]
+        ],
+        "expected_result": "not_exercised_without_source_pass_with_source"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001389",
+          "statement": "Depends-On: https://review.opendev.org/c/wandertracks/wandertracks/+/1001388",
+          "ci_url": "https://zuul.opendev.org/t/opendev/buildset/73e66827b4f54121831a989475de3fd4"
+        },
+        {
+          "level": "executed",
+          "kind": "candidate_source_tree_consumption",
+          "url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001389",
+          "statement": "With source candidate 78030e484d568e65d2bcc98c3971efb6ee4b7fb2, all 6 mapstyle parity tests executed and passed; with its parent, the same 6 tests were skipped.",
+          "ci_url": null,
+          "result_path": "results/executed-2026-08-22.jsonl"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "wandertracks/wandertracks",
+      "spdx": "GPL-3.0-only",
+      "evidence_url": "https://opendev.org/wandertracks/wandertracks/raw/commit/7c5067920d1ba9a9a80b18813734133c32238098/COPYING"
+    },
+    {
+      "repository": "wandertracks/wandertracks-web",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/wandertracks/wandertracks-web/src/commit/0ef0dce2d946399fa82006c64f177816a7adc6d0"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

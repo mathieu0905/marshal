@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-987328",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/freezer-tempest-plugin",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 987328,
+      "change_id": "I6010625423917f8f05b04b66a83b8300c79aa0e6",
+      "url": "https://review.opendev.org/c/openstack/freezer-tempest-plugin/+/987328",
+      "status": "MERGED",
+      "subject": "Use unique job id for tests",
+      "branch": "master",
+      "created": "2026-05-05 09:36:11.000000000",
+      "submitted": "2026-05-05 13:12:10.000000000"
+    },
+    "base_commit": "e0ebf00dce3bf11327dfbe867b28cd1bbdb002d6",
+    "candidate_commit": "ae9ea6dad7b8f6a0fcf5197b95e33d5e63c6a26e",
+    "changed_paths": [
+      "freezer_tempest_plugin/tests/freezer_api/api/test_api_jobs.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/987328/revisions/ae9ea6dad7b8f6a0fcf5197b95e33d5e63c6a26e/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/freezer-tempest-plugin",
+      "target_repository": "openstack/freezer-api",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/freezer-api/+/985956"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/freezer-api",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 985956,
+        "change_id": "Id329b1b76c433afeabb041bab4462b95357b18f6",
+        "url": "https://review.opendev.org/c/openstack/freezer-api/+/985956",
+        "status": "MERGED",
+        "subject": "Ensure API do not throw DB queries in response",
+        "branch": "master",
+        "created": "2026-04-23 13:20:17.000000000",
+        "submitted": "2026-05-05 14:40:01.000000000"
+      },
+      "commit": "0c4f44a8ac00d1d6f231d252e4cd7279d413e1fc",
+      "changed_paths": [
+        "freezer_api/common/elasticv2_utils.py",
+        "freezer_api/common/exceptions.py",
+        "freezer_api/db/sqlalchemy/api.py",
+        "freezer_api/tests/unit/sqlalchemy/test_security_sanitization.py",
+        "freezer_api/tests/unit/sqlalchemy/v1/test_action.py",
+        "freezer_api/tests/unit/sqlalchemy/v2/test_action.py",
+        "freezer_api/tests/unit/sqlalchemy/v2/test_api_common.py",
+        "freezer_api/tests/unit/test_elasticv2_utils.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/freezer-api/+/985956",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/freezer-tempest-plugin/+/987328",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/d4574579cf364c7e8ca8e68692259e63"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/freezer-api",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/freezer-api/raw/commit/0c4f44a8ac00d1d6f231d252e4cd7279d413e1fc/LICENSE"
+    },
+    {
+      "repository": "openstack/freezer-tempest-plugin",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/freezer-tempest-plugin/raw/commit/ae9ea6dad7b8f6a0fcf5197b95e33d5e63c6a26e/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

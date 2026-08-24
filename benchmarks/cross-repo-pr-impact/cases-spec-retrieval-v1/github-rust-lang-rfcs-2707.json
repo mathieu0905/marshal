@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-2707",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2707,
+      "change_id": "rust-lang/rfcs#2707",
+      "url": "https://github.com/rust-lang/rfcs/pull/2707",
+      "status": "MERGED",
+      "subject": "Mini-RFC: Make `..` a pattern syntactically",
+      "branch": "master",
+      "created": "2019-06-01T10:17:51Z",
+      "submitted": "2019-06-30T21:09:06Z"
+    },
+    "base_commit": "de0917dca549694fffbe30f7951a938417f27d27",
+    "candidate_commit": "ff2fc39b1affc0a9b47d7436df616eacae2b4cb0",
+    "changed_paths": [
+      "text/0000-dotdot-patterns.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/de0917dca549694fffbe30f7951a938417f27d27...ff2fc39b1affc0a9b47d7436df616eacae2b4cb0.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/62550"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 62550,
+        "change_id": "rust-lang/rust#62550",
+        "url": "https://github.com/rust-lang/rust/pull/62550",
+        "status": "MERGED",
+        "subject": "Implement RFC 2707 + Parser recovery for range patterns",
+        "branch": "master",
+        "created": "2019-07-10T00:02:13Z",
+        "submitted": "2019-07-28T12:50:52Z"
+      },
+      "commit": "d33696fcb413e6768443626e78c5c4f23e413fc2",
+      "changed_paths": [
+        "src/doc/unstable-book/src/language-features/slice-patterns.md",
+        "src/librustc/hir/lowering.rs",
+        "src/librustc_mir/hair/pattern/mod.rs",
+        "src/librustc_passes/ast_validation.rs",
+        "src/librustc_target/abi/mod.rs",
+        "src/librustc_typeck/check/_match.rs",
+        "src/librustc_typeck/check/mod.rs",
+        "src/librustc_typeck/error_codes.rs",
+        "src/libsyntax/ast.rs",
+        "src/libsyntax/ext/build.rs",
+        "src/libsyntax/feature_gate.rs",
+        "src/libsyntax/mut_visit.rs",
+        "src/libsyntax/parse/parser.rs",
+        "src/libsyntax/print/pprust.rs",
+        "src/libsyntax/visit.rs",
+        "src/test/mir-opt/uniform_array_move_out.rs",
+        "src/test/ui/array-slice-vec/vec-matching-fold.rs",
+        "src/test/ui/array-slice-vec/vec-matching-legal-tail-element-borrow.rs",
+        "src/test/ui/array-slice-vec/vec-matching.rs",
+        "src/test/ui/array-slice-vec/vec-tail-matching.rs",
+        "src/test/ui/associated-path-shl.rs",
+        "src/test/ui/associated-path-shl.stderr",
+        "src/test/ui/binding/irrefutable-slice-patterns.rs",
+        "src/test/ui/binding/zero_sized_subslice_match.rs",
+        "src/test/ui/borrowck/borrowck-describe-lvalue.nll.stderr",
+        "src/test/ui/borrowck/borrowck-describe-lvalue.rs",
+        "src/test/ui/borrowck/borrowck-describe-lvalue.stderr",
+        "src/test/ui/borrowck/borrowck-move-out-from-array.rs",
+        "src/test/ui/borrowck/borrowck-move-out-from-array.stderr",
+        "src/test/ui/borrowck/borrowck-move-out-of-vec-tail.rs",
+        "src/test/ui/borrowck/borrowck-slice-pattern-element-loan-rpass.rs",
+        "src/test/ui/borrowck/borrowck-slice-pattern-element-loan.rs",
+        "src/test/ui/borrowck/borrowck-slice-pattern-element-loan.stderr",
+        "src/test/ui/borrowck/borrowck-vec-pattern-element-loan.rs",
+        "src/test/ui/borrowck/borrowck-vec-pattern-loan-from-mut.rs",
+        "src/test/ui/borrowck/borrowck-vec-pattern-move-tail.rs",
+        "src/test/ui/borrowck/borrowck-vec-pattern-move-tail.stderr",
+        "src/test/ui/borrowck/borrowck-vec-pattern-nesting.rs",
+        "src/test/ui/borrowck/borrowck-vec-pattern-nesting.stderr",
+        "src/test/ui/borrowck/borrowck-vec-pattern-tail-element-loan.rs",
+        "src/test/ui/drop/dynamic-drop-async.rs",
+        "src/test/ui/drop/dynamic-drop.rs",
+        "src/test/ui/error-codes/E0528.rs",
+        "src/test/ui/error-codes/E0528.stderr",
+        "src/test/ui/exclusive-range/exclusive_range_pattern_syntax_collision.rs",
+        "src/test/ui/exclusive-range/exclusive_range_pattern_syntax_collision.stderr",
+        "src/test/ui/exclusive-range/exclusive_range_pattern_syntax_collision2.rs",
+        "src/test/ui/exclusive-range/exclusive_range_pattern_syntax_collision2.stderr",
+        "src/test/ui/exclusive-range/exclusive_range_pattern_syntax_collision3.rs",
+        "src/test/ui/exclusive-range/exclusive_range_pattern_syntax_collision3.stderr",
+        "src/test/ui/feature-gates/feature-gate-slice-patterns.rs",
+        "src/test/ui/feature-gates/feature-gate-slice-patterns.stderr",
+        "src/test/ui/issues/issue-12369.rs",
+        "src/test/ui/issues/issue-12369.stderr",
+        "src/test/ui/issues/issue-15080.rs",
+        "src/test/ui/issues/issue-15104.rs",
+        "src/test/ui/issues/issue-17877.rs",
+        "src/test/ui/issues/issue-26158.rs",
+        "src/test/ui/issues/issue-26158.stderr",
+        "src/test/ui/issues/issue-37598.rs",
+        "src/test/ui/issues/issue-7784.rs",
+        "src/test/ui/match/match-vec-mismatch.rs",
+        "src/test/ui/match/match-vec-mismatch.stderr",
+        "src/test/ui/match/match-vec-unreachable.rs",
+        "src/test/ui/non-exhaustive/non-exhaustive-match.rs",
+        "src/test/ui/non-exhaustive/non-exhaustive-pattern-witness.rs",
+        "src/test/ui/parser/match-vec-invalid.rs",
+        "src/test/ui/parser/match-vec-invalid.stderr",
+        "src/test/ui/parser/pat-lt-bracket-6.rs",
+        "src/test/ui/parser/pat-lt-bracket-6.stderr",
+        "src/test/ui/parser/pat-lt-bracket-7.rs",
+        "src/test/ui/parser/pat-lt-bracket-7.stderr",
+        "src/test/ui/parser/pat-tuple-2.rs",
+        "src/test/ui/parser/pat-tuple-2.stderr",
+        "src/test/ui/parser/pat-tuple-3.rs",
+        "src/test/ui/parser/pat-tuple-3.stderr",
+        "src/test/ui/parser/pat-tuple-4.rs",
+        "src/test/ui/parser/pat-tuple-4.stderr",
+        "src/test/ui/parser/pat-tuple-5.rs",
+        "src/test/ui/parser/pat-tuple-5.stderr",
+        "src/test/ui/parser/recover-range-pats.rs",
+        "src/test/ui/parser/recover-range-pats.stderr",
+        "src/test/ui/parser/recover-tuple-pat.rs",
+        "src/test/ui/parser/recover-tuple-pat.stderr",
+        "src/test/ui/rfc-2005-default-binding-mode/slice.rs",
+        "src/test/ui/rfcs/rfc-2005-default-binding-mode/slice.rs",
+        "src/test/ui/trailing-comma.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/62550",
+          "statement": "目标正文明确声明实现源 RFC 的范围模式语法。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

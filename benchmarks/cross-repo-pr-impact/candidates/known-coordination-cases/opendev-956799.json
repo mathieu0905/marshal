@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-956799",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/stx-puppet",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 956799,
+      "change_id": "I257cf13b3df768a740ca584acc8f50d84466f8c0",
+      "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/956799",
+      "status": "MERGED",
+      "subject": "K8s external requests with client certs (admin)",
+      "branch": "master",
+      "created": "2025-08-07 15:35:13.000000000",
+      "submitted": "2025-08-08 16:45:01.000000000"
+    },
+    "base_commit": "2aa499b22730dc467cfaab0b93e854105f69904c",
+    "candidate_commit": "a78a064f8acdd22f4a456266f83275347ce7391d",
+    "changed_paths": [
+      "puppet-manifests/src/modules/platform/files/parse_k8s_admin_client_credentials.py",
+      "puppet-manifests/src/modules/platform/manifests/haproxy.pp",
+      "puppet-manifests/src/modules/platform/manifests/kubernetes.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/956799/revisions/a78a064f8acdd22f4a456266f83275347ce7391d/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/stx-puppet",
+      "target_repository": "starlingx/config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/config/+/956800"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 956800,
+        "change_id": "I305c0179b4bf1870d1a60cfb321ea56be956df13",
+        "url": "https://review.opendev.org/c/starlingx/config/+/956800",
+        "status": "MERGED",
+        "subject": "K8s external requests with client certs (admin)",
+        "branch": "master",
+        "created": "2025-08-07 15:36:13.000000000",
+        "submitted": "2025-08-08 18:50:02.000000000"
+      },
+      "commit": "0c4085deea7d8b4a64af3d081feca0342e438e1e",
+      "changed_paths": [
+        "sysinv/sysinv/sysinv/scripts/kube-cert-rotation.sh",
+        "sysinv/sysinv/sysinv/sysinv/api/controllers/v1/kube_cluster.py",
+        "sysinv/sysinv/sysinv/sysinv/tests/api/test_kube_cluster.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/config/+/956800",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/stx-puppet/+/956799",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/02d85be60d674389945dde8211411988"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet/src/commit/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

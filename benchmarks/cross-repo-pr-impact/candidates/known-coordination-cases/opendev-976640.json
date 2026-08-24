@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-976640",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/requirements",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 976640,
+      "change_id": "I74176be6671fd0319950e61827d175ba6f77a47b",
+      "url": "https://review.opendev.org/c/openstack/requirements/+/976640",
+      "status": "MERGED",
+      "subject": "update constraint for os-traits to new release 3.6.0",
+      "branch": "master",
+      "created": "2026-02-12 15:26:38.000000000",
+      "submitted": "2026-02-16 22:48:07.000000000"
+    },
+    "base_commit": "a3bc8a52ae4767d5df609797e46c86ab633a044c",
+    "candidate_commit": "02db69ca02ec2bc8e0f565550b09ea0d8fc22c04",
+    "changed_paths": [
+      "upper-constraints.txt"
+    ],
+    "patch_url": "https://review.opendev.org/changes/976640/revisions/02db69ca02ec2bc8e0f565550b09ea0d8fc22c04/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/requirements",
+      "target_repository": "openstack/nova",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/nova/+/976390"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/nova",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 976390,
+        "change_id": "Ieaa2e1be9d3d3ae945ce28d778edc9729d2db9ba",
+        "url": "https://review.opendev.org/c/openstack/nova/+/976390",
+        "status": "MERGED",
+        "subject": "Make nova recognize amx-capabilities",
+        "branch": "master",
+        "created": "2026-02-11 13:42:01.000000000",
+        "submitted": "2026-02-18 17:22:49.000000000"
+      },
+      "commit": "bfaec08220b031198f238063ba7a00b9a6629231",
+      "changed_paths": [
+        "nova/virt/libvirt/utils.py",
+        "requirements.txt"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/nova/+/976390",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/requirements/+/976640",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/c65d46390b894c7e82ddd3a305e25592"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/nova",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/nova/raw/commit/7ce26377af1b6b1760a1c43903626a1686e18758/LICENSE"
+    },
+    {
+      "repository": "openstack/requirements",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/requirements/src/commit/fea2f5b9219eb644383022338bd0cb4fbf2784b8"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

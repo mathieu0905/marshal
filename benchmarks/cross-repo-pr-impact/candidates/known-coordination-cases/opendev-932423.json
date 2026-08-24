@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-932423",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/keystone",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 932423,
+      "change_id": "I0f34d90660a4a915c9c3f9512dc6d794b8415cd5",
+      "url": "https://review.opendev.org/c/openstack/keystone/+/932423",
+      "status": "MERGED",
+      "subject": "Support emitting partial hash of invalid password",
+      "branch": "master",
+      "created": "2024-10-15 15:01:18.000000000",
+      "submitted": "2025-03-28 16:08:03.000000000"
+    },
+    "base_commit": "edb4fb91d12e7c39de9272c0c8ee66188cb95021",
+    "candidate_commit": "7db8d5fe58cb719b15d63d3f74bfb8535eda179c",
+    "changed_paths": [
+      "keystone/common/password_hashing.py",
+      "keystone/conf/security_compliance.py",
+      "keystone/notifications.py",
+      "keystone/tests/unit/common/test_notifications.py",
+      "keystone/tests/unit/common/test_password_hashing.py",
+      "releasenotes/notes/pci-dss-invalid-password-reporting-975955d2d79c21b3.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/932423/revisions/7db8d5fe58cb719b15d63d3f74bfb8535eda179c/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/keystone",
+      "target_repository": "openstack/puppet-keystone",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-keystone/+/952644"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/puppet-keystone",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 952644,
+        "change_id": "Ie78944ed0f6bd5b18a93bb6c2fddf5b95083c4fd",
+        "url": "https://review.opendev.org/c/openstack/puppet-keystone/+/952644",
+        "status": "MERGED",
+        "subject": "security_compliance: Support password hash options",
+        "branch": "master",
+        "created": "2025-06-16 02:21:35.000000000",
+        "submitted": "2025-06-17 16:06:42.000000000"
+      },
+      "commit": "1baf68cf05889c33f6dd29b2c039829457fb9a9c",
+      "changed_paths": [
+        "manifests/security_compliance.pp",
+        "releasenotes/notes/report-invalid-password-hash-bd7d3393f67475c1.yaml",
+        "spec/classes/keystone_security_compliance_spec.rb"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-keystone/+/952644",
+          "statement": "Depends-On: https://review.opendev.org/932423",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/1e8cc44e68fa4081aeb55d1875887356"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/keystone",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/keystone/raw/commit/7db8d5fe58cb719b15d63d3f74bfb8535eda179c/LICENSE"
+    },
+    {
+      "repository": "openstack/puppet-keystone",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-keystone/raw/commit/1baf68cf05889c33f6dd29b2c039829457fb9a9c/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

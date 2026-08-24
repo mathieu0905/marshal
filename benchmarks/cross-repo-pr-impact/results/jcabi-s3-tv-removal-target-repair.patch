@@ -1,0 +1,43 @@
+diff --git a/src/test/java/com/jcabi/s3/AwsOcketITCase.java b/src/test/java/com/jcabi/s3/AwsOcketITCase.java
+--- a/src/test/java/com/jcabi/s3/AwsOcketITCase.java
++++ b/src/test/java/com/jcabi/s3/AwsOcketITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.s3;
+ 
+-import com.jcabi.aspects.Tv;
+ import org.apache.commons.lang3.RandomStringUtils;
+ import org.hamcrest.MatcherAssert;
+ import org.hamcrest.Matchers;
+@@ -80,7 +79,7 @@ public final class AwsOcketITCase {
+         final Bucket bucket = this.rule.bucket();
+         final String name = "test-44.txt";
+         final Ocket.Text ocket = new Ocket.Text(bucket.ocket(name));
+-        final String data = RandomStringUtils.random(Tv.HUNDRED * Tv.THOUSAND);
++        final String data = RandomStringUtils.random(100_000);
+         ocket.write(data);
+         try {
+             MatcherAssert.assertThat(ocket.read(), Matchers.equalTo(data));
+diff --git a/src/test/java/com/jcabi/s3/BucketRule.java b/src/test/java/com/jcabi/s3/BucketRule.java
+--- a/src/test/java/com/jcabi/s3/BucketRule.java
++++ b/src/test/java/com/jcabi/s3/BucketRule.java
+@@ -30,7 +30,6 @@
+ package com.jcabi.s3;
+ 
+ import com.amazonaws.services.s3.AmazonS3;
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.log.Logger;
+ import com.jcabi.s3.cached.CdRegion;
+ import com.jcabi.s3.retry.ReRegion;
+@@ -107,9 +106,10 @@ final class BucketRule implements TestRule {
+                 new Region.Simple(BucketRule.KEY, BucketRule.SECRET)
+             )
+         );
++        // @checkstyle MagicNumberCheck (3 line)
+         final String name = String.format(
+             "%s.s3.jcabi.com",
+-            RandomStringUtils.randomAlphabetic(Tv.FIVE)
++            RandomStringUtils.randomAlphabetic(5)
+                 .toLowerCase(Locale.ENGLISH)
+         );
+         this.subj = region.bucket(name);

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-11306",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 11306,
+      "change_id": "ethereum/EIPs#11306",
+      "url": "https://github.com/ethereum/EIPs/pull/11306",
+      "status": "MERGED",
+      "subject": "Update EIP-8024: Switch to branchless normalization",
+      "branch": "master",
+      "created": "2026-02-11T19:58:49Z",
+      "submitted": "2026-02-25T13:39:45Z"
+    },
+    "base_commit": "7f73d2f3521850ee81d5bd09483b2f7ec1bd5b29",
+    "candidate_commit": "1db8fbf81728183abf609bac00c372c3cb848c4f",
+    "changed_paths": [
+      "EIPS/eip-8024.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/7f73d2f3521850ee81d5bd09483b2f7ec1bd5b29...1db8fbf81728183abf609bac00c372c3cb848c4f.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/33869"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 33869,
+        "change_id": "ethereum/go-ethereum#33869",
+        "url": "https://github.com/ethereum/go-ethereum/pull/33869",
+        "status": "MERGED",
+        "subject": "core/vm: Switch to branchless normalization and extend EXCHANGE",
+        "branch": "master",
+        "created": "2026-02-18T22:54:46Z",
+        "submitted": "2026-03-04T09:34:28Z"
+      },
+      "commit": "70a7ec6a23e17a3a7bfadc16b24819f60e2e9cd3",
+      "changed_paths": [
+        "core/vm/instructions.go",
+        "core/vm/instructions_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/33869",
+          "statement": "目标正文明确说明为开发网适配源规范的最新变更。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

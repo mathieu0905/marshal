@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-948476",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/stx-puppet",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 948476,
+      "change_id": "I7458a93f3b2db2017dc8bbce629081a0c9229ec4",
+      "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/948476",
+      "status": "MERGED",
+      "subject": "systemd DropIn to disable top level utils.slice on systemcontroller",
+      "branch": "master",
+      "created": "2025-04-29 19:10:05.000000000",
+      "submitted": "2025-06-09 14:00:53.000000000"
+    },
+    "base_commit": "bcb9ab416c933d5c3485b38f08615c913d6a62f1",
+    "candidate_commit": "3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c",
+    "changed_paths": [
+      "puppet-manifests/src/modules/platform/manifests/dcmanager.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/948476/revisions/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/stx-puppet",
+      "target_repository": "starlingx/config-files",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/config-files/+/943982"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/config-files",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 943982,
+        "change_id": "I49082f2ff190dd05da55cedc399f128d5a26f16d",
+        "url": "https://review.opendev.org/c/starlingx/config-files/+/943982",
+        "status": "MERGED",
+        "subject": "Move utility services to new top level cgroup utils.slice",
+        "branch": "master",
+        "created": "2025-03-10 18:01:15.000000000",
+        "submitted": "2025-06-09 14:00:58.000000000"
+      },
+      "commit": "5df711b1fb9eff45219c1e65ff5f740093d8d741",
+      "changed_paths": [
+        "base-files-config/debian/deb_folder/changelog",
+        "base-files-config/debian/meta_data.yaml",
+        "base-files-config/source/cron-cpu-shares.conf",
+        "base-files-config/source/rsync-cpu-shares.conf",
+        "docker-config/debian/deb_folder/changelog",
+        "docker-config/debian/deb_folder/docker-config.install",
+        "docker-config/debian/meta_data.yaml",
+        "docker-config/source-debian/docker-cpu-shares.conf",
+        "docker-config/source-debian/docker-slice.conf",
+        "docker-config/source-debian/docker-stx-override.conf",
+        "openssh-config/debian/deb_folder/changelog",
+        "openssh-config/debian/deb_folder/openssh-config.dirs",
+        "openssh-config/debian/deb_folder/openssh-config.install",
+        "openssh-config/debian/deb_folder/postinst",
+        "openssh-config/debian/meta_data.yaml",
+        "openssh-config/source-debian/ssh-cpu-shares.conf",
+        "openssh-config/source-debian/ssh.service",
+        "systemd-config/debian/deb_folder/changelog",
+        "systemd-config/debian/deb_folder/systemd-config.install",
+        "systemd-config/debian/meta_data.yaml",
+        "systemd-config/source-debian/init.scope-cpu-shares.conf",
+        "systemd-config/source-debian/systemd-udevd-cpu-shares.conf",
+        "systemd-config/source-debian/utils.slice"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/config-files/+/943982",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/stx-puppet/+/948476",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/d2c385886d0e4c96aad22fa6fd7db252"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config-files",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/config-files/src/commit/5df711b1fb9eff45219c1e65ff5f740093d8d741"
+    },
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet/src/commit/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

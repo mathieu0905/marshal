@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-1294",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 1294,
+      "change_id": "open-telemetry/opentelemetry-specification#1294",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/1294",
+      "status": "MERGED",
+      "subject": "Clarify required required resource attributes.",
+      "branch": "master",
+      "created": "2020-12-16T20:43:03Z",
+      "submitted": "2021-01-21T14:50:05Z"
+    },
+    "base_commit": "418016dc4014f0c64acea74881774d34178bf15a",
+    "candidate_commit": "95b93c669522274b1bc1bb53c8c4c52b2fdbe48e",
+    "changed_paths": [
+      "specification/resource/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/418016dc4014f0c64acea74881774d34178bf15a...95b93c669522274b1bc1bb53c8c4c52b2fdbe48e.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/1507"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/2366"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 1507,
+        "change_id": "open-telemetry/opentelemetry-go#1507",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/1507",
+        "status": "MERGED",
+        "subject": "Create resource.Default() with required attributes/default values",
+        "branch": "main",
+        "created": "2021-01-31T21:02:09Z",
+        "submitted": "2021-02-15T20:28:37Z"
+      },
+      "commit": "9a805359c295825937b7418b4ba522a3ba8cb6c8",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "exporters/metric/prometheus/prometheus_test.go",
+        "sdk/metric/controller/basic/controller.go",
+        "sdk/metric/controller/basic/controller_test.go",
+        "sdk/metric/controller/basic/pull_test.go",
+        "sdk/resource/builtin.go",
+        "sdk/resource/resource.go",
+        "sdk/resource/resource_test.go",
+        "sdk/trace/provider.go",
+        "sdk/trace/trace_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/1507",
+          "statement": "明确按源规范提供默认资源。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 2366,
+        "change_id": "open-telemetry/opentelemetry-java#2366",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/2366",
+        "status": "MERGED",
+        "subject": "Create a MANDATORY Resource instance containing mandatory attributes. Merge that into the default resource.",
+        "branch": "master",
+        "created": "2020-12-18T22:22:13Z",
+        "submitted": "2021-01-21T17:01:17Z"
+      },
+      "commit": "5a86d3cb602329b4cd239141e6984a093a5a636c",
+      "changed_paths": [
+        "exporters/jaeger-thrift/src/test/java/io/opentelemetry/exporter/jaeger/thrift/JaegerThriftIntegrationTest.java",
+        "exporters/jaeger/src/test/java/io/opentelemetry/exporter/jaeger/JaegerIntegrationTest.java",
+        "integration-tests/src/main/java/io/opentelemetry/SendTraceToJaeger.java",
+        "sdk/all/src/test/java/io/opentelemetry/sdk/OpenTelemetrySdkTest.java",
+        "sdk/common/src/main/java/io/opentelemetry/sdk/resources/Resource.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/SdkMeterProviderBuilderTest.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/SdkMeterRegistryTest.java",
+        "sdk/trace/src/test/java/io/opentelemetry/sdk/trace/SdkTracerProviderTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/2366",
+          "statement": "按源规范建立必需属性资源并合入默认资源。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

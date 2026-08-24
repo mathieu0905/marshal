@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-2366",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 2366,
+      "change_id": "kubernetes/enhancements#2366",
+      "url": "https://github.com/kubernetes/enhancements/pull/2366",
+      "status": "MERGED",
+      "subject": "Adding KEP 2365: IngressClass Namespaced Params",
+      "branch": "master",
+      "created": "2021-01-29T02:43:46Z",
+      "submitted": "2021-02-06T00:47:12Z"
+    },
+    "base_commit": "0f5924859f15b4f54c682dc9d3f11553c584b65b",
+    "candidate_commit": "c11506e26e8171c9c49d41e687c7b5e4e6240700",
+    "changed_paths": [
+      "keps/prod-readiness/sig-network/2365.yaml",
+      "keps/sig-network/2365-ingressclass-namespaced-params/README.md",
+      "keps/sig-network/2365-ingressclass-namespaced-params/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/0f5924859f15b4f54c682dc9d3f11553c584b65b...c11506e26e8171c9c49d41e687c7b5e4e6240700.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes-sigs/gateway-api",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes-sigs/gateway-api/pull/543"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes-sigs/gateway-api",
+      "pull_request": {
+        "provider": "github",
+        "number": 543,
+        "change_id": "kubernetes-sigs/gateway-api#543",
+        "url": "https://github.com/kubernetes-sigs/gateway-api/pull/543",
+        "status": "MERGED",
+        "subject": "allow namespace-scoped parametersRef",
+        "branch": "master",
+        "created": "2021-02-11T09:42:34Z",
+        "submitted": "2021-02-12T17:49:09Z"
+      },
+      "commit": "266d0da1fe266568c9b153275d92221d8ce102b1",
+      "changed_paths": [
+        "apis/v1alpha1/gatewayclass_types.go",
+        "apis/v1alpha1/local_object_reference_types.go",
+        "apis/v1alpha1/zz_generated.deepcopy.go",
+        "config/crd/bases/networking.x-k8s.io_gatewayclasses.yaml",
+        "docs-src/spec.md",
+        "docs/spec/index.html"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes-sigs/gateway-api/pull/543",
+          "statement": "明确按源 KEP 讨论新增 Cluster 字段并允许命名空间参数引用。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/kubernetes/enhancements"
+    },
+    {
+      "repository": "kubernetes-sigs/gateway-api",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/kubernetes-sigs/gateway-api"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

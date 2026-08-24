@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3967",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3967,
+      "change_id": "kubernetes/enhancements#3967",
+      "url": "https://github.com/kubernetes/enhancements/pull/3967",
+      "status": "MERGED",
+      "subject": "Backoff limit per index",
+      "branch": "master",
+      "created": "2023-04-26T10:26:01Z",
+      "submitted": "2023-06-07T14:40:14Z"
+    },
+    "base_commit": "07272ad507da82d66c00302a12d2a0d3d1f9933d",
+    "candidate_commit": "a739ffcfe4889e7526e0e5b618ccb55b0c40eda4",
+    "changed_paths": [
+      "keps/sig-apps/3850-backoff-limits-per-index-for-indexed-jobs/README.md",
+      "keps/sig-apps/3850-backoff-limits-per-index-for-indexed-jobs/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/07272ad507da82d66c00302a12d2a0d3d1f9933d...a739ffcfe4889e7526e0e5b618ccb55b0c40eda4.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/118413"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 118413,
+        "change_id": "kubernetes/kubernetes#118413",
+        "url": "https://github.com/kubernetes/kubernetes/pull/118413",
+        "status": "MERGED",
+        "subject": "Adjust the algorithm for computing the pod finish time",
+        "branch": "master",
+        "created": "2023-06-02T16:59:04Z",
+        "submitted": "2023-06-05T14:31:27Z"
+      },
+      "commit": "71ab7dc791f816ccd06d10784e6160062a080f8f",
+      "changed_paths": [
+        "pkg/controller/job/backoff_utils.go",
+        "pkg/controller/job/backoff_utils_test.go",
+        "pkg/controller/job/job_controller.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/118413",
+          "statement": "目标正文明确说明该算法调整是实现源 KEP 所必需的准备步骤。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

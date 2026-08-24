@@ -1,0 +1,33 @@
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=/tmp/test-home
+
+Welcome to Gradle 7.5.1!
+
+Here are the highlights of this release:
+ - Support for Java 18
+ - Support for building with Groovy 4
+ - Much more responsive continuous builds
+ - Improved diagnostics for dependency resolution
+
+For more details see https://docs.gradle.org/7.5.1/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.5.1/userguide/gradle_daemon.html#sec:disabling_the_daemon.
+Daemon will be stopped at the end of the build 
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Could not resolve all files for configuration 'classpath'.
+> Could not download durian-collect-1.2.0.jar (com.diffplug.durian:durian-collect:1.2.0)
+   > Could not get resource 'https://plugins.gradle.org/m2/com/diffplug/durian/durian-collect/1.2.0/durian-collect-1.2.0.jar'.
+      > Could not GET 'https://plugins.gradle.org/m2/com/diffplug/durian/durian-collect/1.2.0/durian-collect-1.2.0.jar'.
+         > The server may not support the client's requested TLS protocol versions: (TLSv1.2, TLSv1.3). You may need to configure the client to allow other protocols to be used. See: https://docs.gradle.org/7.5.1/userguide/build_environment.html#gradle_system_properties
+            > Remote host terminated the handshake
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 57s

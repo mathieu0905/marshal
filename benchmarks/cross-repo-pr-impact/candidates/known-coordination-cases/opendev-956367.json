@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-956367",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 956367,
+      "change_id": "I364351150e9e8335880e91ba19a5a991fcba03f3",
+      "url": "https://review.opendev.org/c/starlingx/config/+/956367",
+      "status": "MERGED",
+      "subject": "Run k8s health audit after upgrade/rollback",
+      "branch": "master",
+      "created": "2025-08-01 13:25:44.000000000",
+      "submitted": "2025-08-05 19:12:29.000000000"
+    },
+    "base_commit": "56da3538a342511f8b84ae4592fa891bd80f2f6e",
+    "candidate_commit": "9452425cafed677765ad6bf7ddb16c45ce5d13a5",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/conductor/manager.py",
+      "sysinv/sysinv/sysinv/sysinv/conductor/rpcapi.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/956367/revisions/9452425cafed677765ad6bf7ddb16c45ce5d13a5/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/update",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/update/+/956368"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/update",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 956368,
+        "change_id": "Ib822831c843984040994ba82e27a3222b23ab33d",
+        "url": "https://review.opendev.org/c/starlingx/update/+/956368",
+        "status": "MERGED",
+        "subject": "Run k8s health audit after upgrade/rollback",
+        "branch": "master",
+        "created": "2025-08-01 13:29:54.000000000",
+        "submitted": "2025-08-05 19:27:18.000000000"
+      },
+      "commit": "d59d23c5c327284ce13fcbf29a5c27a2c4cfdb6c",
+      "changed_paths": [
+        "patch-scripts/start-scripts/24.09.300/pre-start.sh",
+        "software/upgrade-scripts/120-kubernetes-service-parameters-apply.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/update/+/956368",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config/+/956367",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/7803709eb54e41b9a09fcc6dc67d456c"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/update",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/update/raw/commit/3300839049da5d958b2572ec56eaacc9ae43f0f1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

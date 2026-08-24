@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-8173",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 8173,
+      "change_id": "ethereum/EIPs#8173",
+      "url": "https://github.com/ethereum/EIPs/pull/8173",
+      "status": "MERGED",
+      "subject": "Add Dencun mainnet epoch & time",
+      "branch": "master",
+      "created": "2024-02-08T14:40:29Z",
+      "submitted": "2024-02-08T14:50:03Z"
+    },
+    "base_commit": "aa5974b583058ec55d82f76a1e74ae10c6aabd0c",
+    "candidate_commit": "96841507543258fcbda52e39ad36c14059ba945a",
+    "changed_paths": [
+      "EIPS/eip-7569.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/aa5974b583058ec55d82f76a1e74ae10c6aabd0c...96841507543258fcbda52e39ad36c14059ba945a.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ChainSafe/lodestar",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ChainSafe/lodestar/pull/6411"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/9409"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ChainSafe/lodestar",
+      "pull_request": {
+        "provider": "github",
+        "number": 6411,
+        "change_id": "ChainSafe/lodestar#6411",
+        "url": "https://github.com/ChainSafe/lodestar/pull/6411",
+        "status": "MERGED",
+        "subject": "feat: schedule deneb on mainnet",
+        "branch": "unstable",
+        "created": "2024-02-08T14:43:36Z",
+        "submitted": "2024-02-08T16:44:42Z"
+      },
+      "commit": "8343dbefedec5779740c5af8b40418c5e503a9c3",
+      "changed_paths": [
+        "packages/config/src/chainConfig/configs/mainnet.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ChainSafe/lodestar/pull/6411",
+          "statement": "按源规范安排主网 Deneb。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 9409,
+        "change_id": "erigontech/erigon#9409",
+        "url": "https://github.com/erigontech/erigon/pull/9409",
+        "status": "MERGED",
+        "subject": "Schedule Dencun on mainnet",
+        "branch": "devel",
+        "created": "2024-02-08T17:07:25Z",
+        "submitted": "2024-02-08T19:20:20Z"
+      },
+      "commit": "82d5b69a75969b3604d8c2942a99a3e1c02c995e",
+      "changed_paths": [
+        "cl/clparams/config.go",
+        "core/forkid/forkid_test.go",
+        "params/chainspecs/mainnet.json"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/9409",
+          "statement": "按源规范安排主网 Dencun。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ChainSafe/lodestar",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ChainSafe/lodestar"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

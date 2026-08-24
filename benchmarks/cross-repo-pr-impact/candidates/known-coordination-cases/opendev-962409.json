@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-962409",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/cinder",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 962409,
+      "change_id": "Icea868bf6619f3ab0a00c4e72185f07e66e4a932",
+      "url": "https://review.opendev.org/c/openstack/cinder/+/962409",
+      "status": "MERGED",
+      "subject": "Show volume attachment host information for services",
+      "branch": "master",
+      "created": "2025-09-26 21:34:56.000000000",
+      "submitted": "2025-10-09 02:28:39.000000000"
+    },
+    "base_commit": "8064195521f9f511f630ff63b5dde1e88ff53e18",
+    "candidate_commit": "abfb2c6061ecb7480f8c1937230e382d238e7cd9",
+    "changed_paths": [
+      "cinder/api/v2/views/volumes.py",
+      "cinder/tests/unit/api/v3/test_volumes.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/962409/revisions/abfb2c6061ecb7480f8c1937230e382d238e7cd9/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/cinder",
+      "target_repository": "openstack/glance_store",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/glance_store/+/962408"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/glance_store",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 962408,
+        "change_id": "I32fce5aeebe3319f167affa954c681598f81ad74",
+        "url": "https://review.opendev.org/c/openstack/glance_store/+/962408",
+        "status": "MERGED",
+        "subject": "Cinder: Handle multiattach volumes in multi worker env",
+        "branch": "master",
+        "created": "2025-09-26 21:32:38.000000000",
+        "submitted": "2025-10-09 11:12:15.000000000"
+      },
+      "commit": "915dffabc19493e0116cd2bf79c8b4f4dd47c9a3",
+      "changed_paths": [
+        "glance_store/_drivers/cinder/store.py",
+        "glance_store/common/attachment_state_manager.py",
+        "glance_store/tests/unit/cinder/test_cinder_base.py",
+        "glance_store/tests/unit/common/test_attachment_state_manager.py",
+        "releasenotes/notes/fix-multiattach-multiprocessing-56120e9fa7c40cc8.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/glance_store/+/962408",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/cinder/+/962409",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/b82b9ddfcc1d41ef8d52bdc399b87897"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/cinder",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/cinder/raw/commit/abfb2c6061ecb7480f8c1937230e382d238e7cd9/LICENSE"
+    },
+    {
+      "repository": "openstack/glance_store",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/glance_store/raw/commit/ca10d42432ee0959a54addbb4688e3cca4fc8861/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

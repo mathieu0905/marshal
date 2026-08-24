@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-6161",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 6161,
+      "change_id": "kubernetes/enhancements#6161",
+      "url": "https://github.com/kubernetes/enhancements/pull/6161",
+      "status": "MERGED",
+      "subject": "KEP-5683: Node Lifecycle Conditions",
+      "branch": "master",
+      "created": "2026-06-05T01:54:26Z",
+      "submitted": "2026-06-16T23:07:25Z"
+    },
+    "base_commit": "cdbd5fe26cafbc8b5f5226b59586c16084ef603f",
+    "candidate_commit": "637ab9a9e6f17f654ae5a07aca0f9b89d3bac2fa",
+    "changed_paths": [
+      "keps/prod-readiness/sig-node/5683.yaml",
+      "keps/sig-node/5683-lifecycle-conditions/README.md",
+      "keps/sig-node/5683-lifecycle-conditions/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/cdbd5fe26cafbc8b5f5226b59586c16084ef603f...637ab9a9e6f17f654ae5a07aca0f9b89d3bac2fa.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/139993"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 139993,
+        "change_id": "kubernetes/kubernetes#139993",
+        "url": "https://github.com/kubernetes/kubernetes/pull/139993",
+        "status": "MERGED",
+        "subject": "Introduce Node Lifecycle Conditions",
+        "branch": "master",
+        "created": "2026-06-24T13:51:50Z",
+        "submitted": "2026-07-09T17:32:40Z"
+      },
+      "commit": "3d336bca5cf9f0d3916e086b09e6f873ec682fd6",
+      "changed_paths": [
+        "pkg/apis/core/types.go",
+        "pkg/features/kube_features.go",
+        "staging/src/k8s.io/api/core/v1/types.go",
+        "test/compatibility_lifecycle/reference/feature_list.md",
+        "test/compatibility_lifecycle/reference/versioned_feature_list.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/139993",
+          "statement": "目标正文和标题均明确实现源 KEP 定义的节点生命周期条件。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

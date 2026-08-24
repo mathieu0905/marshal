@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-953045",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/devstack",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 953045,
+      "change_id": "Idaee83d051d496e3f9e411c19c0ea7a51bbd76bf",
+      "url": "https://review.opendev.org/c/openstack/devstack/+/953045",
+      "status": "MERGED",
+      "subject": "Add support for Cinder replication",
+      "branch": "master",
+      "created": "2025-06-22 08:30:04.000000000",
+      "submitted": "2026-06-05 11:48:10.000000000"
+    },
+    "base_commit": "37d592c045cc765e19732b363de05cddd07b8ee7",
+    "candidate_commit": "5099676bf8482b64f3e9e939f1ea70ac9fbecd58",
+    "changed_paths": [
+      "lib/cinder"
+    ],
+    "patch_url": "https://review.opendev.org/changes/953045/revisions/5099676bf8482b64f3e9e939f1ea70ac9fbecd58/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/devstack",
+      "target_repository": "openstack/cinder-tempest-plugin",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/cinder-tempest-plugin/+/952882"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/cinder-tempest-plugin",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 952882,
+        "change_id": "If74dcdee9d2e1688fbef4d6d0ea7863dfb42ff25",
+        "url": "https://review.opendev.org/c/openstack/cinder-tempest-plugin/+/952882",
+        "status": "MERGED",
+        "subject": "Add support for volume replication",
+        "branch": "master",
+        "created": "2025-06-19 07:31:27.000000000",
+        "submitted": "2026-06-18 09:46:42.000000000"
+      },
+      "commit": "7353abcf3a36faa2a952245c33f59dfeb0e66888",
+      "changed_paths": [
+        ".zuul.yaml",
+        "cinder_tempest_plugin/api/volume/admin/test_volume_replication.py",
+        "cinder_tempest_plugin/api/volume/admin/test_volume_replication_negative.py",
+        "cinder_tempest_plugin/scenario/test_volume_replication.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/cinder-tempest-plugin/+/952882",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/devstack/+/953045",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/77d728e4af0e4cc88dd0ae7243325674"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/cinder-tempest-plugin",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/cinder-tempest-plugin/raw/commit/7353abcf3a36faa2a952245c33f59dfeb0e66888/LICENSE"
+    },
+    {
+      "repository": "openstack/devstack",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/devstack/raw/commit/7fa24750a676a44ab224206cc13096f904057d44/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

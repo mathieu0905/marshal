@@ -1,0 +1,136 @@
+{
+  "measured_at": "2026-08-23T22:14:03+08:00",
+  "track": "versioned_ecosystem_breakage",
+  "status": "causal_recovery_confirmed_with_unmerged_fix_and_host_environment",
+  "parent_question": "Can a Crater regression be completed into a controlled failure-to-recovery contrast when the linked downstream fix is still open but its exact patch is available?",
+  "source_change": {
+    "repository": "rust-lang/rust",
+    "pull_request": 154992,
+    "url": "https://github.com/rust-lang/rust/pull/154992",
+    "title": "Error on projection of dyn noncompat type in old trait solver",
+    "baseline_toolchain_commit": "1fe72d35998dea48aeecaf7fc07783b0b553f24f",
+    "target_toolchain_commit": "a611f2a14e38407ec6717a86a01424ee6fc80762"
+  },
+  "original_crater_experiment": {
+    "report": "https://crater-reports.s3.amazonaws.com/pr-154992-3/index.html",
+    "config": "https://crater-reports.s3.amazonaws.com/pr-154992-3/config.json",
+    "completed_at": "2026-05-06T17:36:01.311618738Z",
+    "mode": "check-only",
+    "cap_lints": "forbid",
+    "subject": "git-url-parse-0.6.0",
+    "baseline_result": "test-pass",
+    "baseline_log": "https://crater-reports.s3.amazonaws.com/pr-154992-3/master%231fe72d35998dea48aeecaf7fc07783b0b553f24f/reg/git-url-parse-0.6.0/log.txt",
+    "target_result": "build-fail:compiler-error(E0038, E0271, E0599, E0631)",
+    "target_log": "https://crater-reports.s3.amazonaws.com/pr-154992-3/try%23a611f2a14e38407ec6717a86a01424ee6fc80762/reg/git-url-parse-0.6.0/log.txt",
+    "command": "cargo check --frozen --all --all-targets --message-format=json",
+    "lockfile_source": "the Cargo.lock shipped inside git-url-parse-0.6.0; the original Crater log confirms it was not regenerated",
+    "environment": {
+      "CARGO_INCREMENTAL": "0",
+      "RUST_BACKTRACE": "full",
+      "RUSTFLAGS": "--cap-lints=forbid",
+      "RUSTDOCFLAGS": "--cap-lints=forbid",
+      "container": "ghcr.io/rust-lang/crates-build-env/linux@sha256:d429b63d4308055ea97f60fb1d3dfca48854a00942f1bd2ad806beaf015945ec",
+      "memory_bytes": 1610612736,
+      "network_during_check": "disabled"
+    }
+  },
+  "downstream_fix": {
+    "repository": "tjtelan/git-url-parse-rs",
+    "pull_request": 84,
+    "url": "https://github.com/tjtelan/git-url-parse-rs/pull/84",
+    "state_at_replay": "open",
+    "created_at": "2026-05-14T22:11:38Z",
+    "base_commit": "4ff69ac399466c72c01144db3bb4404861c45292",
+    "head_commit": "0c768bdda9f49199e34d95fba78cadea4cf31f82",
+    "changed_files": [
+      "src/types/spec.rs"
+    ],
+    "change_summary": "Four invalid projections through dyn Parser were replaced by their concrete output types; the pull request changes one file with 9 insertions and 33 deletions.",
+    "published_source_alignment": "The modified src/types/spec.rs in git-url-parse-0.6.0 exactly matched the fix PR base. The repository base also had one unrelated later change in src/types/mod.rs, so the replay applied only the reviewed spec.rs fix to the published package and did not import that unrelated difference."
+  },
+  "local_replay": {
+    "host": "Linux 6.8.0-137-generic x86_64",
+    "cargo": "cargo 1.96.0-nightly (101549ddd 2026-04-08)",
+    "baseline_rustc": "rustc 1.96.0-nightly (1fe72d359 2026-04-09)",
+    "target_rustc": "rustc 1.96.0-nightly (a611f2a14 2026-04-09)",
+    "subject": "the published git-url-parse-0.6.0 source",
+    "intervention": "replace only src/types/spec.rs with the exact downstream fix version",
+    "shared_conditions": {
+      "command": "cargo check --frozen --all --all-targets --message-format=json",
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "RUST_BACKTRACE": "full",
+        "RUSTFLAGS": "--cap-lints=forbid",
+        "RUSTDOCFLAGS": "--cap-lints=forbid"
+      },
+      "lockfile": "the unchanged lockfile shipped with the published package",
+      "lockfile_package_count": 74,
+      "fresh_target_directory_per_repetition": true,
+      "repetitions_per_arm": 3
+    },
+    "arms": [
+      {
+        "name": "baseline_compiler_with_published_source",
+        "toolchain_commit": "1fe72d35998dea48aeecaf7fc07783b0b553f24f",
+        "source_variant": "published",
+        "exit_codes": [0, 0, 0],
+        "result": "pass"
+      },
+      {
+        "name": "target_compiler_with_published_source",
+        "toolchain_commit": "a611f2a14e38407ec6717a86a01424ee6fc80762",
+        "source_variant": "published",
+        "exit_codes": [101, 101, 101],
+        "result": "fail",
+        "failure_codes": [
+          "E0038",
+          "E0271",
+          "E0599",
+          "E0631"
+        ],
+        "primary_failure": "E0038: Parser is not dyn compatible",
+        "matching_original_crater_signature": true
+      },
+      {
+        "name": "target_compiler_with_downstream_fix",
+        "toolchain_commit": "a611f2a14e38407ec6717a86a01424ee6fc80762",
+        "source_variant": "published_plus_exact_fix_file",
+        "exit_codes": [0, 0, 0],
+        "result": "pass"
+      }
+    ],
+    "excluded_pre_execution_attempts": [
+      {
+        "outcome": "failed_before_compilation",
+        "reason": "The first frozen invocation ran before the locked dependencies had been prefetched and could not find getset in the local registry cache.",
+        "correction": "Run cargo fetch --locked once, then repeat every arm with --frozen and fresh target directories."
+      },
+      {
+        "outcome": "invalid_command_before_compilation",
+        "reason": "Two recovery invocations used the misspelled option --all-targetS and exited with Cargo status 1.",
+        "correction": "Exclude them from repetitions and rerun with --all-targets in new target directories."
+      }
+    ]
+  },
+  "comparability": {
+    "verdict": "The valid local arms use the exact published package lockfile, original compiler commits, original command, and only the linked fix file as the recovery intervention. They confirm a causal recovery for the versioned package. The host environment and unmerged fix status remain explicit scope limits.",
+    "fixed": [
+      "published git-url-parse-0.6.0 source",
+      "the package's original 74-package lockfile",
+      "original baseline and target compiler commits",
+      "check command and lint flags",
+      "fresh build target for every valid repetition"
+    ],
+    "changed": [
+      "compiler commit between the first and second arms",
+      "only the exact src/types/spec.rs repair between the second and third arms"
+    ],
+    "limitations": [
+      "The replay ran on the host rather than inside the original Crater container digest.",
+      "The downstream pull request was still open at replay time, so the result proves that the proposed repair works but not that maintainers accepted or released it.",
+      "The result establishes breakage and repair for git-url-parse-0.6.0, not for the target repository's whole default branch at the source cutoff."
+    ]
+  },
+  "claim_update": "A second archived Crater regression can be completed into a stable three-arm recovery, and packaged lockfiles materially improve comparability. Fix merge status must remain separate from repair efficacy.",
+  "next_action": "Screen the remaining linked fixes for exact executed-version alignment before spending on more toolchain replays; prioritize cases with packaged lockfiles and direct source-level failure signatures."
+}

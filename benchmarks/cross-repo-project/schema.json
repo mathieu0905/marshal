@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/shawhanken/marshal/benchmarks/cross-repo-project/schema.json",
+  "title": "Marshal project-level cross-repository benchmark case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project_id", "title", "split", "scenario_kind", "source", "provider", "consumers"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "project_id": {"$ref": "#/$defs/id"},
+    "title": {"type": "string", "minLength": 1},
+    "split": {"enum": ["train", "development", "test"]},
+    "scenario_kind": {"enum": ["released_dependency_fanout", "candidate_version_coordination"]},
+    "source": {"$ref": "#/$defs/source"},
+    "provider": {"$ref": "#/$defs/provider"},
+    "consumers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/consumer"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"scenario_kind": {"const": "released_dependency_fanout"}}},
+      "then": {"properties": {"consumers": {"minItems": 2}}}
+    }
+  ],
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "git_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "command": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["full_name", "url", "license", "license_file", "prepare_commands"],
+      "properties": {
+        "full_name": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "url": {"type": "string", "format": "uri"},
+        "license": {"type": "string", "minLength": 1},
+        "license_file": {"type": "string", "minLength": 1},
+        "prepare_commands": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["clone", "checkout"],
+          "properties": {
+            "clone": {"$ref": "#/$defs/command"},
+            "checkout": {"$ref": "#/$defs/command"}
+          }
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variant_id", "version", "git_ref", "git_commit"],
+      "properties": {
+        "variant_id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "git_ref": {"type": "string", "minLength": 1},
+        "git_commit": {"$ref": "#/$defs/git_commit"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataset", "dataset_repository", "dataset_revision", "license"],
+      "properties": {
+        "dataset": {"type": "string", "minLength": 1},
+        "dataset_repository": {"type": "string", "format": "uri"},
+        "dataset_revision": {"$ref": "#/$defs/git_commit"},
+        "license": {"type": "string", "minLength": 1}
+      }
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "artifact", "variants", "change"],
+      "properties": {
+        "repository": {"$ref": "#/$defs/repository"},
+        "artifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ecosystem", "coordinate"],
+          "properties": {
+            "ecosystem": {"type": "string", "minLength": 1},
+            "coordinate": {"type": "string", "minLength": 1}
+          }
+        },
+        "variants": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/variant"}},
+        "change": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summary"],
+          "properties": {
+            "summary": {"type": "string", "minLength": 1},
+            "compare_url": {"type": "string", "format": "uri"},
+            "compare_urls": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "uri"}}
+          },
+          "anyOf": [{"required": ["compare_url"]}, {"required": ["compare_urls"]}]
+        }
+      }
+    },
+    "expectation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome"],
+      "properties": {
+        "outcome": {"enum": ["pass", "fail"]},
+        "failure_category": {"enum": ["compilation_failure", "test_failure", "dependency_lock_failure"]},
+        "output_contains": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"outcome": {"const": "fail"}}},
+          "then": {"required": ["failure_category"]}
+        }
+      ]
+    },
+    "consumer_variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["git_commit", "expected"],
+      "properties": {
+        "git_commit": {"$ref": "#/$defs/git_commit"},
+        "expected": {"$ref": "#/$defs/expectation"}
+      }
+    },
+    "consumer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "repository", "dependency", "change", "variants", "test", "source_record_url"],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/id"},
+        "repository": {"$ref": "#/$defs/repository"},
+        "dependency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["direction", "coordinate", "from_provider_variant", "to_provider_variant", "manifest_path"],
+          "properties": {
+            "direction": {"const": "provider_to_consumer"},
+            "coordinate": {"type": "string", "minLength": 1},
+            "from_provider_variant": {"type": "string", "minLength": 1},
+            "to_provider_variant": {"type": "string", "minLength": 1},
+            "manifest_path": {"type": "string", "minLength": 1}
+          }
+        },
+        "change": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summary", "files", "pull_request_url"],
+          "properties": {
+            "summary": {"type": "string", "minLength": 1},
+            "files": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+            "pull_request_url": {"type": "string", "format": "uri"}
+          }
+        },
+        "variants": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["before", "after"],
+          "properties": {
+            "before": {"$ref": "#/$defs/consumer_variant"},
+            "after": {"$ref": "#/$defs/consumer_variant"}
+          }
+        },
+        "test": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["working_directory", "command", "timeout_seconds", "environment"],
+          "properties": {
+            "working_directory": {"type": "string", "minLength": 1},
+            "prepare_command": {"$ref": "#/$defs/command"},
+            "command": {"$ref": "#/$defs/command"},
+            "timeout_seconds": {"type": "integer", "minimum": 1},
+            "environment": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "java_major": {"type": "string", "pattern": "^[0-9]+$"},
+                "node_major": {"type": "string", "pattern": "^[0-9]+$"},
+                "variables": {
+                  "type": "object",
+                  "additionalProperties": {"type": "string"}
+                }
+              },
+              "oneOf": [{"required": ["java_major"]}, {"required": ["node_major"]}]
+            }
+          }
+        },
+        "source_record_url": {"type": "string", "format": "uri"}
+      }
+    }
+  }
+}

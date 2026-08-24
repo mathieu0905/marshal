@@ -1,0 +1,196 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-960960",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/puppet-openstack-integration",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 960960,
+      "change_id": "I2e07ac135c5c903a70d72857daec2bf81c81cedc",
+      "url": "https://review.opendev.org/c/openstack/puppet-openstack-integration/+/960960",
+      "status": "MERGED",
+      "subject": "Run only lint job for puppet-lint.rc update",
+      "branch": "master",
+      "created": "2025-09-13 09:30:02.000000000",
+      "submitted": "2025-09-16 05:32:40.000000000"
+    },
+    "base_commit": "15658cc4f94606ab724e368b7a39b1f47cbc3e9b",
+    "candidate_commit": "b6435bb3bab77f0269d5bb4398f16e4acd11c6c2",
+    "changed_paths": [
+      "zuul.d/base.yaml",
+      "zuul.d/litmus.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/960960/revisions/b6435bb3bab77f0269d5bb4398f16e4acd11c6c2/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/puppet-openstack-integration",
+      "target_repository": "openstack/puppet-vswitch",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-vswitch/+/960929"
+    },
+    {
+      "source_repository": "openstack/puppet-openstack-integration",
+      "target_repository": "openstack/puppet-ovn",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-ovn/+/960952"
+    },
+    {
+      "source_repository": "openstack/puppet-openstack-integration",
+      "target_repository": "openstack/puppet-openstack_extras",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-openstack_extras/+/960970"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/puppet-vswitch",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 960929,
+        "change_id": "Ic3f0d885f53f726338f0a5da7c29f349448b5d52",
+        "url": "https://review.opendev.org/c/openstack/puppet-vswitch/+/960929",
+        "status": "MERGED",
+        "subject": "Override disabled lint checks",
+        "branch": "master",
+        "created": "2025-09-13 02:44:19.000000000",
+        "submitted": "2025-09-17 14:03:16.000000000"
+      },
+      "commit": "2fab891660cecea131468e61d8c9d41767ec25b7",
+      "changed_paths": [
+        ".puppet-lint.rc"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-vswitch/+/960929",
+          "statement": "Depends-On: https://review.opendev.org/960960",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/137029f4f5ee4e19930d9fdb0e6ea680"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/puppet-ovn",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 960952,
+        "change_id": "I0b1707c2bbe974d0fdf1b2cda5e44eff7276e4b3",
+        "url": "https://review.opendev.org/c/openstack/puppet-ovn/+/960952",
+        "status": "MERGED",
+        "subject": "Override disabled lint checks",
+        "branch": "master",
+        "created": "2025-09-13 08:04:04.000000000",
+        "submitted": "2025-09-17 14:01:47.000000000"
+      },
+      "commit": "00f54903b0640abf66cd5ec63d701d6aa01916d9",
+      "changed_paths": [
+        ".puppet-lint.rc"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-ovn/+/960952",
+          "statement": "Depends-On: https://review.opendev.org/960960",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/ee43ef4c22144ae7b6fd3772a2533331"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/puppet-openstack_extras",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 960970,
+        "change_id": "I811e0dbbf3279e53714a2331db1e683c0993777b",
+        "url": "https://review.opendev.org/c/openstack/puppet-openstack_extras/+/960970",
+        "status": "MERGED",
+        "subject": "Override disabled lint checks",
+        "branch": "master",
+        "created": "2025-09-13 10:33:44.000000000",
+        "submitted": "2025-09-16 07:45:33.000000000"
+      },
+      "commit": "f9ced056e323a2251c31bd589e41fd7f727058b1",
+      "changed_paths": [
+        ".puppet-lint.rc"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-openstack_extras/+/960970",
+          "statement": "Depends-On: https://review.opendev.org/960960",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/85b07ee453de499292effe6a13a8eb59"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/puppet-openstack-integration",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-openstack-integration/raw/commit/2fcfffeb2fb12243c14782ea467c8631e6661c45/LICENSE"
+    },
+    {
+      "repository": "openstack/puppet-openstack_extras",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-openstack_extras/raw/commit/f9ced056e323a2251c31bd589e41fd7f727058b1/LICENSE"
+    },
+    {
+      "repository": "openstack/puppet-ovn",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-ovn/raw/commit/00f54903b0640abf66cd5ec63d701d6aa01916d9/LICENSE"
+    },
+    {
+      "repository": "openstack/puppet-vswitch",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-vswitch/raw/commit/2fab891660cecea131468e61d8c9d41767ec25b7/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

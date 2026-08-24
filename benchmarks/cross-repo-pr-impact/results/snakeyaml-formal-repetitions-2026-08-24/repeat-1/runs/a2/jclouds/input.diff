@@ -1,0 +1,55 @@
+diff --git a/apis/byon/pom.xml b/apis/byon/pom.xml
+index 2f8a372e12..17b2183310 100644
+--- a/apis/byon/pom.xml
++++ b/apis/byon/pom.xml
+@@ -70,7 +70,7 @@
+     <dependency>
+       <groupId>org.yaml</groupId>
+       <artifactId>snakeyaml</artifactId>
+-      <version>1.32</version>
++      <version>2.0</version>
+     </dependency>
+     <dependency>
+       <groupId>com.google.auto.service</groupId>
+diff --git a/apis/byon/src/main/java/org/jclouds/byon/domain/YamlNode.java b/apis/byon/src/main/java/org/jclouds/byon/domain/YamlNode.java
+index 8cbbdc09da..5914dd63b1 100644
+--- a/apis/byon/src/main/java/org/jclouds/byon/domain/YamlNode.java
++++ b/apis/byon/src/main/java/org/jclouds/byon/domain/YamlNode.java
+@@ -25,6 +25,7 @@ import java.util.Map;
+ import org.jclouds.byon.Node;
+ import org.jclouds.util.Closeables2;
+ import org.yaml.snakeyaml.DumperOptions;
++import org.yaml.snakeyaml.LoaderOptions;
+ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.Constructor;
+ 
+@@ -111,7 +112,7 @@ public class YamlNode {
+          InputStream in = null;
+          try {
+             in = byteSource.openStream();
+-            return (YamlNode) new Yaml(new Constructor(YamlNode.class)).load(in);
++            return (YamlNode) new Yaml(new Constructor(YamlNode.class, new LoaderOptions())).load(in);
+          } catch (IOException ioe) {
+             throw Throwables.propagate(ioe);
+          } finally {
+diff --git a/apis/byon/src/main/java/org/jclouds/byon/functions/NodesFromYamlStream.java b/apis/byon/src/main/java/org/jclouds/byon/functions/NodesFromYamlStream.java
+index 18454e12f5..4176b87a3a 100644
+--- a/apis/byon/src/main/java/org/jclouds/byon/functions/NodesFromYamlStream.java
++++ b/apis/byon/src/main/java/org/jclouds/byon/functions/NodesFromYamlStream.java
+@@ -29,6 +29,7 @@ import javax.inject.Singleton;
+ 
+ import org.jclouds.byon.Node;
+ import org.jclouds.byon.domain.YamlNode;
++import org.yaml.snakeyaml.LoaderOptions;
+ import org.yaml.snakeyaml.TypeDescription;
+ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.Constructor;
+@@ -80,7 +81,7 @@ public class NodesFromYamlStream implements Function<ByteSource, LoadingCache<St
+    @Override
+    public LoadingCache<String, Node> apply(ByteSource source) {
+ 
+-      Constructor constructor = new Constructor(Config.class);
++      Constructor constructor = new Constructor(Config.class, new LoaderOptions());
+ 
+       TypeDescription nodeDesc = new TypeDescription(YamlNode.class);
+       nodeDesc.putListPropertyType("tags", String.class);

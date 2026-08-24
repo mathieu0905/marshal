@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-347",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 347,
+      "change_id": "open-telemetry/opentelemetry-specification#347",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/347",
+      "status": "MERGED",
+      "subject": "WIP: Metric SDK specification",
+      "branch": "master",
+      "created": "2019-11-12T08:28:55Z",
+      "submitted": "2020-08-20T18:37:26Z"
+    },
+    "base_commit": "724bb54694e1c23d70b514e41501add9fd457d8f",
+    "candidate_commit": "c10ba0e05c070961ba1b3bef82ba622282d3dc2e",
+    "changed_paths": [
+      "specification/sdk-metric.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/724bb54694e1c23d70b514e41501add9fd457d8f...c10ba0e05c070961ba1b3bef82ba622282d3dc2e.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/383"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/710"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-js",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/pull/1292"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 383,
+        "change_id": "open-telemetry/opentelemetry-dotnet#383",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/383",
+        "status": "MERGED",
+        "subject": "Metrics part 2 ",
+        "branch": "master",
+        "created": "2019-12-10T03:25:00Z",
+        "submitted": "2019-12-11T18:40:17Z"
+      },
+      "commit": "ae11f118d866470b5fe821fd8a801d1ac966cc75",
+      "changed_paths": [
+        "samples/Exporters/TestPrometheus.cs",
+        "src/OpenTelemetry.Api/Metrics/LabelSet.cs",
+        "src/OpenTelemetry.Api/Metrics/Meter.cs",
+        "src/OpenTelemetry.Api/Metrics/NoOpMeter.cs",
+        "src/OpenTelemetry.Exporter.Prometheus/Implementation/MetricsHttpServer.cs",
+        "src/OpenTelemetry.Exporter.Prometheus/PrometheusExporter.cs",
+        "src/OpenTelemetry/Metrics/Aggregators/Aggregator.cs",
+        "src/OpenTelemetry/Metrics/Aggregators/CounterSumAggregator.cs",
+        "src/OpenTelemetry/Metrics/Aggregators/GaugeAggregator.cs",
+        "src/OpenTelemetry/Metrics/Aggregators/MeasureExactAggregator.cs",
+        "src/OpenTelemetry/Metrics/Configuration/MeterFactory.cs",
+        "src/OpenTelemetry/Metrics/CounterHandleSDK.cs",
+        "src/OpenTelemetry/Metrics/CounterSDK.cs",
+        "src/OpenTelemetry/Metrics/Export/AggregatingMetricProcessor.cs",
+        "src/OpenTelemetry/Metrics/Export/MetricExporter.cs",
+        "src/OpenTelemetry/Metrics/Export/MetricProcessor.cs",
+        "src/OpenTelemetry/Metrics/Export/NoOpMetricProcessor.cs",
+        "src/OpenTelemetry/Metrics/Export/NoopMetricExporter.cs",
+        "src/OpenTelemetry/Metrics/Export/UngroupedBatcher.cs",
+        "src/OpenTelemetry/Metrics/GaugeHandleSDK.cs",
+        "src/OpenTelemetry/Metrics/GaugeSDK.cs",
+        "src/OpenTelemetry/Metrics/Implementation/Metric.cs",
+        "src/OpenTelemetry/Metrics/MeasureHandleSDK.cs",
+        "src/OpenTelemetry/Metrics/MeasureSDK.cs",
+        "src/OpenTelemetry/Metrics/MeterSDK.cs",
+        "test/OpenTelemetry.Exporter.Prometheus.Tests/OpenTelemetry.Exporter.Prometheus.Tests.csproj",
+        "test/OpenTelemetry.Exporter.Prometheus.Tests/PrometheusExporterTests.cs",
+        "test/OpenTelemetry.Tests/Impl/Metrics/MetricsTest.cs",
+        "test/OpenTelemetry.Tests/Impl/Metrics/TestMetricProcessor.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/383",
+          "statement": "明确实现源 PR 中的多项规范。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 710,
+        "change_id": "open-telemetry/opentelemetry-go#710",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/710",
+        "status": "MERGED",
+        "subject": "Metric SDK renames to align with draft SDK spec",
+        "branch": "master",
+        "created": "2020-05-09T07:02:17Z",
+        "submitted": "2020-05-11T17:23:07Z"
+      },
+      "commit": "75d95e789e9db7fdb5ffe162178fe70c388223bb",
+      "changed_paths": [
+        "api/global/internal/benchmark_test.go",
+        "exporters/metric/prometheus/prometheus.go",
+        "exporters/metric/stdout/stdout.go",
+        "exporters/otlp/otlp_integration_test.go",
+        "sdk/export/metric/metric.go",
+        "sdk/metric/benchmark_test.go",
+        "sdk/metric/controller/push/push.go",
+        "sdk/metric/controller/push/push_test.go",
+        "sdk/metric/correct_test.go",
+        "sdk/metric/doc.go",
+        "sdk/metric/integrator/simple/simple.go",
+        "sdk/metric/integrator/simple/simple_test.go",
+        "sdk/metric/integrator/test/test.go",
+        "sdk/metric/sdk.go",
+        "sdk/metric/stress_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/710",
+          "statement": "明确为对齐源规范草案进行重命名。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "pull_request": {
+        "provider": "github",
+        "number": 1292,
+        "change_id": "open-telemetry/opentelemetry-js#1292",
+        "url": "https://github.com/open-telemetry/opentelemetry-js/pull/1292",
+        "status": "MERGED",
+        "subject": "feat: remove HistogramAggregator.reset",
+        "branch": "master",
+        "created": "2020-07-09T10:16:03Z",
+        "submitted": "2020-07-21T12:29:39Z"
+      },
+      "commit": "b2ea823d5b34dea3d28978f0615e6a9295a8bfd8",
+      "changed_paths": [
+        "packages/opentelemetry-exporter-collector/test/common/transformMetrics.test.ts",
+        "packages/opentelemetry-exporter-collector/test/helper.ts",
+        "packages/opentelemetry-exporter-collector/test/node/CollectorMetricExporter.test.ts",
+        "packages/opentelemetry-exporter-collector/test/node/CollectorMetricExporterWithJson.test.ts",
+        "packages/opentelemetry-metrics/src/export/aggregators/Histogram.ts",
+        "packages/opentelemetry-metrics/src/export/aggregators/index.ts",
+        "packages/opentelemetry-metrics/test/export/aggregators/Histogram.test.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-js/pull/1292",
+          "statement": "按源规范草案快照删除接口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

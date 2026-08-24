@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-973466",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/app-rook-ceph",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 973466,
+      "change_id": "I977497debf098c13048420bbc304d0c345b82192",
+      "url": "https://review.opendev.org/c/starlingx/app-rook-ceph/+/973466",
+      "status": "MERGED",
+      "subject": "Prevents the crash module from changing the ceph status",
+      "branch": "master",
+      "created": "2026-01-15 12:23:30.000000000",
+      "submitted": "2026-01-22 19:42:22.000000000"
+    },
+    "base_commit": "18469e3c722a193c6a9caf8e8ad9ab246a2da85a",
+    "candidate_commit": "99db32d6fbf49ced4d8e13a3930a42aeb0cf71a8",
+    "changed_paths": [
+      "stx-rook-ceph-helm/stx-rook-ceph-helm/fluxcd-manifests/rook-ceph-cluster/rook-ceph-cluster-static-overrides.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/973466/revisions/99db32d6fbf49ced4d8e13a3930a42aeb0cf71a8/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/app-rook-ceph",
+      "target_repository": "starlingx/update",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/update/+/973524"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/update",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 973524,
+        "change_id": "I59e6e2f2fc50e951678f30707f88d0e0edb8ee61",
+        "url": "https://review.opendev.org/c/starlingx/update/+/973524",
+        "status": "MERGED",
+        "subject": "Keep the ceph crash warning disabled after upgrade",
+        "branch": "master",
+        "created": "2026-01-15 17:35:23.000000000",
+        "submitted": "2026-01-22 19:42:28.000000000"
+      },
+      "commit": "e2b4d1b21302e06b5b7e3c9cb2e21f217890d0cd",
+      "changed_paths": [
+        "software/scripts/prepare-data-migration",
+        "software/upgrade-scripts/32-enable-rook-ceph-crash-alarms.sh"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/update/+/973524",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/app-rook-ceph/+/973466",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/5de8cefdbe5d4e998e9834319ccc8c64"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/app-rook-ceph",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/app-rook-ceph/src/commit/99db32d6fbf49ced4d8e13a3930a42aeb0cf71a8"
+    },
+    {
+      "repository": "starlingx/update",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/update/raw/commit/3300839049da5d958b2572ec56eaacc9ae43f0f1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

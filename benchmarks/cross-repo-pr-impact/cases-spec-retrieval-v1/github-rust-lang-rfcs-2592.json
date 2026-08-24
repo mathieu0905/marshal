@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-2592",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2592,
+      "change_id": "rust-lang/rfcs#2592",
+      "url": "https://github.com/rust-lang/rfcs/pull/2592",
+      "status": "MERGED",
+      "subject": "RFC: stabilize `std::task` and `std::future::Future`",
+      "branch": "master",
+      "created": "2018-11-10T16:44:43Z",
+      "submitted": "2019-03-11T20:00:19Z"
+    },
+    "base_commit": "90a6f4e6901277e90f333e8228bef68a0db2e492",
+    "candidate_commit": "1c8961e6e61a94b15cbb06a3b62e598eff466d08",
+    "changed_paths": [
+      "text/0000-futures.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/90a6f4e6901277e90f333e8228bef68a0db2e492...1c8961e6e61a94b15cbb06a3b62e598eff466d08.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/57992"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 57992,
+        "change_id": "rust-lang/rust#57992",
+        "url": "https://github.com/rust-lang/rust/pull/57992",
+        "status": "MERGED",
+        "subject": "Update the future/task API",
+        "branch": "master",
+        "created": "2019-01-30T09:37:35Z",
+        "submitted": "2019-02-14T07:07:21Z"
+      },
+      "commit": "871338c3aed87cb84f02ebd7fd9b447966d5b05d",
+      "changed_paths": [
+        "src/liballoc/boxed.rs",
+        "src/liballoc/lib.rs",
+        "src/liballoc/task.rs",
+        "src/libcore/future/future.rs",
+        "src/libcore/task/mod.rs",
+        "src/libcore/task/wake.rs",
+        "src/libstd/future.rs",
+        "src/libstd/lib.rs",
+        "src/libstd/panic.rs",
+        "src/test/compile-fail/must_use-in-stdlib-traits.rs",
+        "src/test/run-pass/async-await.rs",
+        "src/test/run-pass/auxiliary/arc_wake.rs",
+        "src/test/run-pass/futures-api.rs",
+        "src/test/rustdoc-js/substring.js"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/57992",
+          "statement": "目标正文明确说明按源稳定化 RFC 更新异步任务接口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

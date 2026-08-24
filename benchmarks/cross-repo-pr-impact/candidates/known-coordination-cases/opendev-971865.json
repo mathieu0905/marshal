@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-971865",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/app-seaweedfs",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 971865,
+      "change_id": "I0cfe786fd4b73898b409a54ee4eb20c2f6265a43",
+      "url": "https://review.opendev.org/c/starlingx/app-seaweedfs/+/971865",
+      "status": "MERGED",
+      "subject": "Remove RBD lifecycle",
+      "branch": "master",
+      "created": "2025-12-26 23:09:16.000000000",
+      "submitted": "2025-12-30 13:51:07.000000000"
+    },
+    "base_commit": "27b22b54b513575ff9de0ee8bb0b10231f6c006b",
+    "candidate_commit": "31972c4ad2c50b478701701f90bca1c2a2eaca80",
+    "changed_paths": [
+      "python3-k8sapp-seaweedfs/k8sapp_seaweedfs/k8sapp_seaweedfs/lifecycle/lifecycle_seaweedfs.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/971865/revisions/31972c4ad2c50b478701701f90bca1c2a2eaca80/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/app-seaweedfs",
+      "target_repository": "starlingx/config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/config/+/971179"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 971179,
+        "change_id": "I71c0faee994224b972717b9c165ef7fae16ebca6",
+        "url": "https://review.opendev.org/c/starlingx/config/+/971179",
+        "status": "MERGED",
+        "subject": "Remove RBD lifecycle",
+        "branch": "master",
+        "created": "2025-12-16 12:44:03.000000000",
+        "submitted": "2026-01-07 20:08:31.000000000"
+      },
+      "commit": "a39fb1a65f4b651fdcb57a1a0a64d8d303445845",
+      "changed_paths": [
+        "sysinv/sysinv/sysinv/sysinv/common/constants.py",
+        "sysinv/sysinv/sysinv/sysinv/conductor/kube_app.py",
+        "sysinv/sysinv/sysinv/sysinv/helm/lifecycle_base.py",
+        "sysinv/sysinv/sysinv/sysinv/helm/lifecycle_hook.py",
+        "sysinv/sysinv/sysinv/sysinv/helm/lifecycle_utils.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/config/+/971179",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/app-seaweedfs/+/971865",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/ecc10dd27f79472285459e771c0200fc"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/app-seaweedfs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/app-seaweedfs/src/commit/31972c4ad2c50b478701701f90bca1c2a2eaca80"
+    },
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

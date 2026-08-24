@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-956219-semantic-impact",
+  "project": "zuul",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "zuul/zuul-jobs",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 956219,
+      "change_id": "I837b5d1571dce38801d6a0433e960734f573fedc",
+      "url": "https://review.opendev.org/c/zuul/zuul-jobs/+/956219",
+      "status": "MERGED",
+      "subject": "Add default for build diskimage image name",
+      "branch": "master",
+      "created": "2025-07-31 08:44:41.000000000",
+      "submitted": "2025-08-18 20:56:56.000000000"
+    },
+    "base_commit": "06098ab5521cdd0c5e9b206b03f4e6a0fb35f19c",
+    "candidate_commit": "54134b3da5be56af6cd5d53363df3f4f967b2ef2",
+    "changed_paths": [
+      "roles/build-diskimage/README.rst",
+      "roles/build-diskimage/defaults/main.yaml",
+      "zuul.d/dib-jobs.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/956219/revisions/54134b3da5be56af6cd5d53363df3f4f967b2ef2/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "zuul/zuul-jobs",
+      "target_repository": "opendev/zuul-providers",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/opendev/zuul-providers/+/956373"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "opendev/zuul-providers",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 956373,
+        "change_id": "I7c895ee1eed27bcffc4c98c886db30d9c3e28fee",
+        "url": "https://review.opendev.org/c/opendev/zuul-providers/+/956373",
+        "status": "MERGED",
+        "subject": "Remove build_diskimage_image_name variable",
+        "branch": "master",
+        "created": "2025-08-01 13:56:00.000000000",
+        "submitted": "2025-12-07 02:15:32.000000000"
+      },
+      "commit": "9bf7f4abd0786f39faf43180044847782ac598fb",
+      "changed_paths": [
+        "zuul.d/image-build-jobs.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "dependency_or_build_interface",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/opendev/zuul-providers/+/956373",
+          "statement": "zuul-jobs 为镜像名变量增加等价默认值；zuul-providers 因此删除冗余变量。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "zuul/zuul-jobs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/zuul/zuul-jobs"
+    },
+    {
+      "repository": "opendev/zuul-providers",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/opendev/zuul-providers"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

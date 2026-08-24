@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-6985",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 6985,
+      "change_id": "ethereum/EIPs#6985",
+      "url": "https://github.com/ethereum/EIPs/pull/6985",
+      "status": "MERGED",
+      "subject": "4844: de-sszify spec",
+      "branch": "master",
+      "created": "2023-05-03T23:16:59Z",
+      "submitted": "2023-05-16T10:56:27Z"
+    },
+    "base_commit": "b15ae162543b7aeb5fa6260c1722267c7f09fad4",
+    "candidate_commit": "0cd2101e72b6dd52da47aebcf7bf007ab6c13927",
+    "changed_paths": [
+      "EIPS/eip-4844.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/b15ae162543b7aeb5fa6260c1722267c7f09fad4...0cd2101e72b6dd52da47aebcf7bf007ab6c13927.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ChainSafe/lodestar",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ChainSafe/lodestar/pull/5569"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ChainSafe/lodestar",
+      "pull_request": {
+        "provider": "github",
+        "number": 5569,
+        "change_id": "ChainSafe/lodestar#5569",
+        "url": "https://github.com/ChainSafe/lodestar/pull/5569",
+        "status": "MERGED",
+        "subject": "feat: change the blob txs encoding assumption to be opaque rlp",
+        "branch": "unstable",
+        "created": "2023-05-29T12:32:29Z",
+        "submitted": "2023-06-03T18:16:04Z"
+      },
+      "commit": "210f5136c15e5c4551b026ad6f39b3d3813556e8",
+      "changed_paths": [
+        "packages/beacon-node/src/chain/blocks/verifyBlocksExecutionPayloads.ts",
+        "packages/beacon-node/src/chain/produceBlock/validateBlobsAndKzgCommitments.ts",
+        "packages/beacon-node/src/chain/validation/blobsSidecar.ts",
+        "packages/beacon-node/src/execution/engine/http.ts",
+        "packages/beacon-node/src/execution/engine/interface.ts",
+        "packages/beacon-node/src/execution/engine/mock.ts",
+        "packages/beacon-node/src/execution/engine/types.ts",
+        "packages/beacon-node/test/unit/util/kzg.test.ts",
+        "packages/state-transition/src/block/index.ts",
+        "packages/state-transition/src/block/processBlobKzgCommitments.ts",
+        "packages/state-transition/src/util/blobs.ts",
+        "packages/state-transition/test/unit/util/blobs.test.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ChainSafe/lodestar/pull/5569",
+          "statement": "明确按源规范把 blob 交易视为不透明 RLP。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ChainSafe/lodestar",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ChainSafe/lodestar"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

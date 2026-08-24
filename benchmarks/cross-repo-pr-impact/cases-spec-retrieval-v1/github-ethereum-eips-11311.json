@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-11311",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 11311,
+      "change_id": "ethereum/EIPs#11311",
+      "url": "https://github.com/ethereum/EIPs/pull/11311",
+      "status": "MERGED",
+      "subject": "✨ feat(EIP-7708): Add ETH burn logs and improve spec consistency",
+      "branch": "master",
+      "created": "2026-02-13T17:21:53Z",
+      "submitted": "2026-02-13T22:32:21Z"
+    },
+    "base_commit": "7f73d2f3521850ee81d5bd09483b2f7ec1bd5b29",
+    "candidate_commit": "5a88d17340d907ca1038883caf6138635f42b329",
+    "changed_paths": [
+      "EIPS/eip-7708.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/7f73d2f3521850ee81d5bd09483b2f7ec1bd5b29...5a88d17340d907ca1038883caf6138635f42b329.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/33851"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 33851,
+        "change_id": "ethereum/go-ethereum#33851",
+        "url": "https://github.com/ethereum/go-ethereum/pull/33851",
+        "status": "MERGED",
+        "subject": "core, core/vm:  Rename selfdestruct log to burn",
+        "branch": "bal-devnet-2",
+        "created": "2026-02-15T16:31:16Z",
+        "submitted": "2026-02-16T03:41:26Z"
+      },
+      "commit": "6b37ca6e906cd1a38131207742f4dda6c9fd2171",
+      "changed_paths": [
+        "core/state_processor.go",
+        "core/types/log.go",
+        "core/vm/instructions.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/33851",
+          "statement": "目标正文指出源规范重命名日志主题，并同步修改实现。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

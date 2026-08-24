@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-263",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 263,
+      "change_id": "open-telemetry/opentelemetry-specification#263",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/263",
+      "status": "MERGED",
+      "subject": "Enhance semantic conventions for HTTP",
+      "branch": "master",
+      "created": "2019-09-27T13:59:28Z",
+      "submitted": "2019-10-28T22:45:30Z"
+    },
+    "base_commit": "9d2edd2c465c6f16f78268e42655180890675730",
+    "candidate_commit": "6be7dc15151e01927f793f646556a4ab30a61931",
+    "changed_paths": [
+      "specification/data-semantic-conventions.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/9d2edd2c465c6f16f78268e42655180890675730...6be7dc15151e01927f793f646556a4ab30a61931.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/299"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 299,
+        "change_id": "open-telemetry/opentelemetry-python#299",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/299",
+        "status": "MERGED",
+        "subject": "Update WSGI & Flask integrations to follow new semantic conventions ",
+        "branch": "master",
+        "created": "2019-11-21T15:43:57Z",
+        "submitted": "2019-12-09T23:26:01Z"
+      },
+      "commit": "9c603cd7d85126ac807acd0950cc3358a0c51211",
+      "changed_paths": [
+        ".flake8",
+        "ext/opentelemetry-ext-flask/src/opentelemetry/ext/flask/__init__.py",
+        "ext/opentelemetry-ext-flask/tests/test_flask_integration.py",
+        "ext/opentelemetry-ext-wsgi/src/opentelemetry/ext/wsgi/__init__.py",
+        "ext/opentelemetry-ext-wsgi/tests/test_wsgi_middleware.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/299",
+          "statement": "明确按源规范更新 HTTP 集成。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

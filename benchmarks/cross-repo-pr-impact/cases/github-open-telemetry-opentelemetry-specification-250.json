@@ -1,0 +1,196 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-250",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 250,
+      "change_id": "open-telemetry/opentelemetry-specification#250",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/250",
+      "status": "MERGED",
+      "subject": "Metrics specification updates: Draft",
+      "branch": "master",
+      "created": "2019-09-20T18:34:53Z",
+      "submitted": "2019-10-10T18:49:22Z"
+    },
+    "base_commit": "4111799f0e61f891c38cb091f18367846e70c235",
+    "candidate_commit": "d8a94924cc12de7b5d66c6f3da5f40a678289ab6",
+    "changed_paths": [
+      "specification/api-metrics.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/4111799f0e61f891c38cb091f18367846e70c235...d8a94924cc12de7b5d66c6f3da5f40a678289ab6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/172"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-js",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/pull/415"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 172,
+        "change_id": "open-telemetry/opentelemetry-go#172",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/172",
+        "status": "MERGED",
+        "subject": "Metrics SDK work-in-progress",
+        "branch": "master",
+        "created": "2019-10-04T23:51:26Z",
+        "submitted": "2019-10-29T20:27:23Z"
+      },
+      "commit": "b18ccd19d1641387baed6b19643b863401fe7957",
+      "changed_paths": [
+        "Makefile",
+        "api/core/number.go",
+        "api/core/number_test.go",
+        "api/core/numberkind_string.go",
+        "api/metric/api.go",
+        "api/metric/api_test.go",
+        "api/metric/common.go",
+        "api/metric/counter.go",
+        "api/metric/gauge.go",
+        "api/metric/measure.go",
+        "api/metric/mock_test.go",
+        "api/metric/noop.go",
+        "api/metric/sdkhelpers.go",
+        "api/metric/value.go",
+        "api/metric/value_test.go",
+        "api/metric/valuekind_string.go",
+        "example/basic/go.sum",
+        "example/basic/main.go",
+        "example/http-stackdriver/go.sum",
+        "example/http/go.sum",
+        "example/jaeger/go.sum",
+        "example/namedtracer/go.sum",
+        "exporter/trace/jaeger/go.sum",
+        "exporter/trace/stackdriver/go.sum",
+        "go.mod",
+        "go.sum",
+        "sdk/export/exporter.go",
+        "sdk/export/metric.go",
+        "sdk/metric/aggregator/counter/counter.go",
+        "sdk/metric/aggregator/counter/counter_test.go",
+        "sdk/metric/aggregator/ddsketch/ddsketch.go",
+        "sdk/metric/aggregator/ddsketch/ddsketch_test.go",
+        "sdk/metric/aggregator/gauge/gauge.go",
+        "sdk/metric/aggregator/gauge/gauge_test.go",
+        "sdk/metric/aggregator/maxsumcount/msc.go",
+        "sdk/metric/aggregator/maxsumcount/msc_test.go",
+        "sdk/metric/aggregator/test/test.go",
+        "sdk/metric/benchmark_test.go",
+        "sdk/metric/doc.go",
+        "sdk/metric/list.go",
+        "sdk/metric/monotone_test.go",
+        "sdk/metric/sdk.go",
+        "sdk/metric/stress_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/172",
+          "statement": "指标 SDK 工作明确与源规范变化协同。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "pull_request": {
+        "provider": "github",
+        "number": 415,
+        "change_id": "open-telemetry/opentelemetry-js#415",
+        "url": "https://github.com/open-telemetry/opentelemetry-js/pull/415",
+        "status": "MERGED",
+        "subject": "feat: implement metrics sdk",
+        "branch": "master",
+        "created": "2019-10-09T00:24:15Z",
+        "submitted": "2019-10-16T22:42:02Z"
+      },
+      "commit": "6b3ee5ffc23bec5983025e19c1d1e563b45cd721",
+      "changed_paths": [
+        "packages/opentelemetry-metrics/src/Handle.ts",
+        "packages/opentelemetry-metrics/src/Meter.ts",
+        "packages/opentelemetry-metrics/src/Metric.ts",
+        "packages/opentelemetry-metrics/src/Utils.ts",
+        "packages/opentelemetry-metrics/src/index.ts",
+        "packages/opentelemetry-metrics/src/types.ts",
+        "packages/opentelemetry-metrics/test/Meter.test.ts",
+        "packages/opentelemetry-types/src/metrics/Meter.ts",
+        "packages/opentelemetry-types/src/metrics/Metric.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-js/pull/415",
+          "statement": "明确按源规范的单调性定义实现指标 SDK。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

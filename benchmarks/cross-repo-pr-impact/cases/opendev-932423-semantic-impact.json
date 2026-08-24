@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-932423-semantic-impact",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/keystone",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 932423,
+      "change_id": "I0f34d90660a4a915c9c3f9512dc6d794b8415cd5",
+      "url": "https://review.opendev.org/c/openstack/keystone/+/932423",
+      "status": "MERGED",
+      "subject": "Support emitting partial hash of invalid password",
+      "branch": "master",
+      "created": "2024-10-15 15:01:18.000000000",
+      "submitted": "2025-03-28 16:08:03.000000000"
+    },
+    "base_commit": "f7ffacb7ad2d09da01b00cf50192a5c2b2d899a1",
+    "candidate_commit": "55ac02d31342c046aac3dc891e805eb506b9bdb9",
+    "changed_paths": [
+      "keystone/common/password_hashing.py",
+      "keystone/conf/security_compliance.py",
+      "keystone/notifications.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/932423/revisions/55ac02d31342c046aac3dc891e805eb506b9bdb9/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/keystone",
+      "target_repository": "openstack/puppet-keystone",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-keystone/+/952644"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/puppet-keystone",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 952644,
+        "change_id": "Ie78944ed0f6bd5b18a93bb6c2fddf5b95083c4fd",
+        "url": "https://review.opendev.org/c/openstack/puppet-keystone/+/952644",
+        "status": "MERGED",
+        "subject": "security_compliance: Support password hash options",
+        "branch": "master",
+        "created": "2025-06-16 02:21:35.000000000",
+        "submitted": "2025-06-17 16:06:42.000000000"
+      },
+      "commit": "1baf68cf05889c33f6dd29b2c039829457fb9a9c",
+      "changed_paths": [
+        "manifests/security_compliance.pp",
+        "releasenotes/notes/report-invalid-password-hash-bd7d3393f67475c1.yaml",
+        "spec/classes/keystone_security_compliance_spec.rb"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "deployment_configuration",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/openstack/puppet-keystone/+/952644",
+          "statement": "Keystone 新增无效密码哈希配置项；puppet-keystone 明确暴露本周期新增的相同选项。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/keystone",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/keystone"
+    },
+    {
+      "repository": "openstack/puppet-keystone",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/puppet-keystone"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

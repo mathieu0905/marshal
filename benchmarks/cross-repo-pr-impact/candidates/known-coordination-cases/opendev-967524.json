@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-967524",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/puppet-openstack-integration",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 967524,
+      "change_id": "I9f9b905111d5d23cf4604fb58966a8f3e39b3183",
+      "url": "https://review.opendev.org/c/openstack/puppet-openstack-integration/+/967524",
+      "status": "MERGED",
+      "subject": "tempest: Cap share API version",
+      "branch": "stable/2025.2",
+      "created": "2025-11-18 13:18:17.000000000",
+      "submitted": "2025-11-18 23:50:35.000000000"
+    },
+    "base_commit": "a85ed1c0f98b9af49746c363b96a271da6e0234d",
+    "candidate_commit": "7dc4722383f315d244a937a4a3e9382e5561dd4b",
+    "changed_paths": [
+      "manifests/tempest.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/967524/revisions/7dc4722383f315d244a937a4a3e9382e5561dd4b/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/puppet-openstack-integration",
+      "target_repository": "openstack/puppet-openstacklib",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/puppet-openstacklib/+/967510"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/puppet-openstacklib",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 967510,
+        "change_id": "Ic4f9d7f7e8faf5ba5caaade49f10789aa8dba864",
+        "url": "https://review.opendev.org/c/openstack/puppet-openstacklib/+/967510",
+        "status": "MERGED",
+        "subject": "Replace Puppet::Util::withenv with custom version",
+        "branch": "stable/2025.2",
+        "created": "2025-11-18 11:30:35.000000000",
+        "submitted": "2025-11-25 11:42:22.000000000"
+      },
+      "commit": "2e85937d7503ad44156c7fd9f209d25aa0a8c8cb",
+      "changed_paths": [
+        "lib/puppet/provider/openstack.rb",
+        "releasenotes/notes/os-withenv-3ca466fde75f6441.yaml",
+        "spec/unit/provider/openstack_spec.rb"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/puppet-openstacklib/+/967510",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/puppet-openstack-integration/+/967524",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/baab94224ff946c3a07a846fef00d55d"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/puppet-openstack-integration",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-openstack-integration/raw/commit/2fcfffeb2fb12243c14782ea467c8631e6661c45/LICENSE"
+    },
+    {
+      "repository": "openstack/puppet-openstacklib",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/puppet-openstacklib/raw/commit/2e85937d7503ad44156c7fd9f209d25aa0a8c8cb/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

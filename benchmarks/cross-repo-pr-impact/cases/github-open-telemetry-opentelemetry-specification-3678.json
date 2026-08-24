@@ -1,0 +1,213 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-3678",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 3678,
+      "change_id": "open-telemetry/opentelemetry-specification#3678",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/3678",
+      "status": "MERGED",
+      "subject": "Add a new AddLink() operation to Span.",
+      "branch": "main",
+      "created": "2023-08-29T14:32:07Z",
+      "submitted": "2023-10-10T23:15:24Z"
+    },
+    "base_commit": "90eec0ffd8e52dddbd308e346cd5098f611164dd",
+    "candidate_commit": "630af80293cf0f673b5a140676982d8e63b96823",
+    "changed_paths": [
+      "specification/trace/api.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/90eec0ffd8e52dddbd308e346cd5098f611164dd...630af80293cf0f673b5a140676982d8e63b96823.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/5032"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/6084"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/3618"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 5032,
+        "change_id": "open-telemetry/opentelemetry-go#5032",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/5032",
+        "status": "MERGED",
+        "subject": "trace: Add Span.AddLink method",
+        "branch": "main",
+        "created": "2024-03-08T08:01:03Z",
+        "submitted": "2024-03-28T07:35:15Z"
+      },
+      "commit": "8e429fd34ede2c5e34c68c6ec97758ccaf67cfc4",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "bridge/opentracing/internal/mock.go",
+        "internal/global/trace.go",
+        "sdk/trace/span.go",
+        "sdk/trace/trace_test.go",
+        "sdk/trace/tracer.go",
+        "trace/noop.go",
+        "trace/noop/noop.go",
+        "trace/trace.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/5032",
+          "statement": "明确实现源规范定义的 Span.AddLink。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 6084,
+        "change_id": "open-telemetry/opentelemetry-java#6084",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/6084",
+        "status": "MERGED",
+        "subject": "Add Span#addLink, for adding link after span start",
+        "branch": "main",
+        "created": "2023-12-18T23:25:44Z",
+        "submitted": "2024-02-07T19:04:52Z"
+      },
+      "commit": "4588c3c0cffb98b246fec5135962f1d99ade6cdf",
+      "changed_paths": [
+        "extensions/incubator/src/main/java/io/opentelemetry/extension/incubator/trace/ExtendedSpan.java",
+        "opencensus-shim/src/test/java/io/opentelemetry/opencensusshim/DelegatingSpanTest.java",
+        "sdk/trace/build.gradle.kts",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/SdkSpan.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/SdkSpanBuilder.java",
+        "sdk/trace/src/main/java/io/opentelemetry/sdk/trace/SpanWrapper.java",
+        "sdk/trace/src/test/java/io/opentelemetry/sdk/trace/SdkSpanTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/6084",
+          "statement": "明确实现源规范的新要求。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 3618,
+        "change_id": "open-telemetry/opentelemetry-python#3618",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/3618",
+        "status": "MERGED",
+        "subject": "Add Span.add_link() method to add link after span start.",
+        "branch": "main",
+        "created": "2024-01-05T23:36:04Z",
+        "submitted": "2024-02-29T03:29:29Z"
+      },
+      "commit": "a95963e5dbdfec9aa69cf8f1ac1161ea6dec19d3",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "opentelemetry-api/src/opentelemetry/trace/__init__.py",
+        "opentelemetry-api/src/opentelemetry/trace/span.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py",
+        "opentelemetry-sdk/tests/trace/test_trace.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/3618",
+          "statement": "明确实现源规范定义的 Span.add_link。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

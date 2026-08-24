@@ -1,0 +1,191 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-5292",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 5292,
+      "change_id": "kubernetes/enhancements#5292",
+      "url": "https://github.com/kubernetes/enhancements/pull/5292",
+      "status": "MERGED",
+      "subject": "[KEP-5073] Update KEP with section of validation ratcheting",
+      "branch": "master",
+      "created": "2025-05-08T17:01:02Z",
+      "submitted": "2025-06-09T21:50:24Z"
+    },
+    "base_commit": "2dca8747cc53d0b6bade5338adfb3fd6a36064e4",
+    "candidate_commit": "34832d2720cd4521c7e41ce246cfd998bb5bfa20",
+    "changed_paths": [
+      "keps/sig-api-machinery/5073-declarative-validation-with-validation-gen/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/2dca8747cc53d0b6bade5338adfb3fd6a36064e4...34832d2720cd4521c7e41ce246cfd998bb5bfa20.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/132469"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 132469,
+        "change_id": "kubernetes/kubernetes#132469",
+        "url": "https://github.com/kubernetes/kubernetes/pull/132469",
+        "status": "MERGED",
+        "subject": "feat(validation-gen): Enhance validation with new rules and core refactoring",
+        "branch": "master",
+        "created": "2025-06-23T21:00:31Z",
+        "submitted": "2025-07-13T03:04:22Z"
+      },
+      "commit": "cf4912eb4e556f733512c8d3ac83245a3ab355d2",
+      "changed_paths": [
+        "pkg/apis/core/v1/zz_generated.validations.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/validate/content/errors.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/validate/each.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/validate/each_test.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/validate/equality.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/validate/item.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/validate/item_test.go",
+        "staging/src/k8s.io/apimachinery/pkg/api/validate/subfield.go",
+        "staging/src/k8s.io/apimachinery/pkg/util/validation/field/error_matcher.go",
+        "staging/src/k8s.io/apimachinery/pkg/util/validation/field/error_matcher_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/cross_pkg/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/maps/map_of_primitive/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/maps/map_of_struct/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/maps/multiple_validations/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/maps/typedef_to_map/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/default_behavior/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/list/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/list/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/list/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/maps/eachkey/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/maps/eachkey/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/maps/eachkey/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/maps/eachval/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/maps/eachval/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/maps/eachval/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/subfield/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/subfield/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/ratcheting/subfield/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/recursive/maps/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/recursive/slices/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/slices/multiple_validations/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/slices/slice_of_primitive/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/slices/slice_of_struct/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/slices/typedef_to_slice/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/map_of_primitive/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/map_of_struct/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/slice_of_primitive/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/slice_of_primitive/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/slice_of_struct/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/slice_of_struct/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/slice_of_struct/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/typedef_to_map/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/eachval/typedef_to_slice/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/immutable_transitions/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/immutable_transitions/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/immutable_transitions/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/multiple_keys/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/multiple_keys/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/multiple_keys/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/single_key/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/single_key/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/single_key/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/subfield/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/subfield/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/subfield/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/typedef/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/typedef/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/item/typedef/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listmap/multiple_keys/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listmap/multiple_keys/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listmap/multiple_keys/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listmap/single_key/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listmap/single_key/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listmap/single_key/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listset/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listset/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/listset/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neq/neqchained/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neq/neqchained/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neq/neqchained/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqbool/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqbool/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqbool/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqint/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqint/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqint/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqstring/doc.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqstring/doc_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/neq/neqstring/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/opaque/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/tags/subfield/deep/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/update_validations/lists/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/output_tests/update_validations/maps/zz_generated.validations.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/util/util.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validation.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validation_test.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/each.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/equality.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/immutable.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/item.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/limits.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/registry.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/required.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/subfield.go",
+        "staging/src/k8s.io/code-generator/cmd/validation-gen/validators/validators.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/132469",
+          "statement": "目标在源 KEP 合并后实现其中新增的声明式校验规则。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

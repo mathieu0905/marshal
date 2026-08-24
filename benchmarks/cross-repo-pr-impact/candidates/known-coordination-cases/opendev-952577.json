@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-952577",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config-files",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 952577,
+      "change_id": "Ia0fc953602b4495b1bb004f990814907084e761c",
+      "url": "https://review.opendev.org/c/starlingx/config-files/+/952577",
+      "status": "MERGED",
+      "subject": "Adding L3 routing protocol modules loading config file",
+      "branch": "master",
+      "created": "2025-06-13 13:56:01.000000000",
+      "submitted": "2025-06-25 18:52:32.000000000"
+    },
+    "base_commit": "5df711b1fb9eff45219c1e65ff5f740093d8d741",
+    "candidate_commit": "c14b1762d92dde6f6af45f1a2b4c7d447fb812c7",
+    "changed_paths": [
+      "debian_iso_image.inc",
+      "debian_pkg_dirs",
+      "l3-routing-modules-config/debian/deb_folder/changelog",
+      "l3-routing-modules-config/debian/deb_folder/control",
+      "l3-routing-modules-config/debian/deb_folder/copyright",
+      "l3-routing-modules-config/debian/deb_folder/l3-routing-modules-config.install",
+      "l3-routing-modules-config/debian/deb_folder/postinst",
+      "l3-routing-modules-config/debian/deb_folder/rules",
+      "l3-routing-modules-config/debian/deb_folder/source/format",
+      "l3-routing-modules-config/debian/meta_data.yaml",
+      "l3-routing-modules-config/source-debian/l3-routing-modules.conf"
+    ],
+    "patch_url": "https://review.opendev.org/changes/952577/revisions/c14b1762d92dde6f6af45f1a2b4c7d447fb812c7/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config-files",
+      "target_repository": "starlingx/apt-ostree",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/apt-ostree/+/952578"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/apt-ostree",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 952578,
+        "change_id": "I99075ae5e6738d329eb69fbbaf0a5e8fda81be28",
+        "url": "https://review.opendev.org/c/starlingx/apt-ostree/+/952578",
+        "status": "MERGED",
+        "subject": "add new package l3-routing-modules-config",
+        "branch": "master",
+        "created": "2025-06-13 13:57:32.000000000",
+        "submitted": "2025-06-26 13:24:39.000000000"
+      },
+      "commit": "2bd2f4efdd8f2a5caa202c52c0161b5eab97c0fb",
+      "changed_paths": [
+        "config/starlingx/bootstrap.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/apt-ostree/+/952578",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config-files/+/952577",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/4d0dace85cb944109bf31e155b709211"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/apt-ostree",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/apt-ostree/raw/commit/2bd2f4efdd8f2a5caa202c52c0161b5eab97c0fb/LICENSE"
+    },
+    {
+      "repository": "starlingx/config-files",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/config-files/src/commit/5df711b1fb9eff45219c1e65ff5f740093d8d741"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

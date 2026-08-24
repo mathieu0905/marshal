@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-985619",
+  "project": "opendev",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "opendev/zone-opendev.org",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 985619,
+      "change_id": "Ib7e9b785a8feeed3df509d98da1c6e76aea2786c",
+      "url": "https://review.opendev.org/c/opendev/zone-opendev.org/+/985619",
+      "status": "MERGED",
+      "subject": "Add zp03.opendev.org",
+      "branch": "master",
+      "created": "2026-04-21 05:43:27.000000000",
+      "submitted": "2026-04-22 17:11:21.000000000"
+    },
+    "base_commit": "91f0a9204609cfdb03d3bf867c553a29b16648d4",
+    "candidate_commit": "eb9cb2db5c00f947c97722a2086a08153fc199a0",
+    "changed_paths": [
+      "zones/opendev.org/zone.db"
+    ],
+    "patch_url": "https://review.opendev.org/changes/985619/revisions/eb9cb2db5c00f947c97722a2086a08153fc199a0/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opendev/zone-opendev.org",
+      "target_repository": "opendev/system-config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/opendev/system-config/+/985620"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "opendev/system-config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 985620,
+        "change_id": "Ia57baa30fed986bae496742bb2ea37d1066c749f",
+        "url": "https://review.opendev.org/c/opendev/system-config/+/985620",
+        "status": "MERGED",
+        "subject": "Add zp03.opendev.org",
+        "branch": "master",
+        "created": "2026-04-21 05:44:18.000000000",
+        "submitted": "2026-04-22 17:43:35.000000000"
+      },
+      "commit": "7c4733ee6ca1c3bd4964a047a06380bae6ccbb0d",
+      "changed_paths": [
+        "inventory/base/hosts.yaml",
+        "zuul.d/system-config-run.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/opendev/system-config/+/985620",
+          "statement": "Depends-On: https://review.opendev.org/c/opendev/zone-opendev.org/+/985619",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/5abf984ed48e4ed184252a8adde34edd"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opendev/system-config",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/opendev/system-config/src/commit/8e5b2a072ad6f6fd3730147cfe26f4bde8c9d575"
+    },
+    {
+      "repository": "opendev/zone-opendev.org",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/opendev/zone-opendev.org/raw/commit/e862b82363ea349e072c285e186d15f4a71e67c8/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

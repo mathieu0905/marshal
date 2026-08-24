@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-954192",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/glance_store",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 954192,
+      "change_id": "Ibadab54edde30f11f66cf2098b678ba75bb663be",
+      "url": "https://review.opendev.org/c/openstack/glance_store/+/954192",
+      "status": "MERGED",
+      "subject": "Fix missing dependency on retrying",
+      "branch": "master",
+      "created": "2025-07-06 15:11:54.000000000",
+      "submitted": "2025-09-01 17:33:07.000000000"
+    },
+    "base_commit": "9a5271ccddbe01256be0819c1a74fbfc93ab0a2d",
+    "candidate_commit": "ca10d42432ee0959a54addbb4688e3cca4fc8861",
+    "changed_paths": [
+      "requirements.txt",
+      "test-requirements.txt"
+    ],
+    "patch_url": "https://review.opendev.org/changes/954192/revisions/ca10d42432ee0959a54addbb4688e3cca4fc8861/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/glance_store",
+      "target_repository": "openstack/glance",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/glance/+/954191"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/glance",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 954191,
+        "change_id": "I8a59d609fadf5da5d549e1fc8008e44314c0177d",
+        "url": "https://review.opendev.org/c/openstack/glance/+/954191",
+        "status": "MERGED",
+        "subject": "Remove non-direct dependency",
+        "branch": "master",
+        "created": "2025-07-06 15:01:01.000000000",
+        "submitted": "2026-03-17 16:36:59.000000000"
+      },
+      "commit": "744ffe624dac5b37296f18b8188d585ebebad24f",
+      "changed_paths": [
+        "requirements.txt"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/glance/+/954191",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/glance_store/+/954192",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/f866623ade0a42858af4ace498049970"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/glance",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/glance/raw/commit/744ffe624dac5b37296f18b8188d585ebebad24f/LICENSE"
+    },
+    {
+      "repository": "openstack/glance_store",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/glance_store/raw/commit/ca10d42432ee0959a54addbb4688e3cca4fc8861/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

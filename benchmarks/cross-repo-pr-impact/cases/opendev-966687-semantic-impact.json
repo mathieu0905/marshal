@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-966687-semantic-impact",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/distcloud",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 966687,
+      "change_id": "I4a258bcb10a985768bcddeb5863630294baf0fa3",
+      "url": "https://review.opendev.org/c/starlingx/distcloud/+/966687",
+      "status": "MERGED",
+      "subject": "Add validation for sw-deploy-strategy parameters dependency",
+      "branch": "master",
+      "created": "2025-11-11 15:03:00.000000000",
+      "submitted": "2025-11-14 19:11:06.000000000"
+    },
+    "base_commit": "d21556aa108607313df538c6d98279cbd16a0a6a",
+    "candidate_commit": "816f1a02b905042f5d0fd6119629366ae9da41ce",
+    "changed_paths": [
+      "distributedcloud/dcmanager/common/utils.py",
+      "distributedcloud/dcmanager/tests/unit/api/controllers/v1/test_sw_update_strategy.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/966687/revisions/816f1a02b905042f5d0fd6119629366ae9da41ce/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/distcloud",
+      "target_repository": "starlingx/distcloud-client",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/starlingx/distcloud-client/+/966689"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/distcloud-client",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 966689,
+        "change_id": "I478e277a3f4b047a083f8326f9ba1de60351a4c1",
+        "url": "https://review.opendev.org/c/starlingx/distcloud-client/+/966689",
+        "status": "MERGED",
+        "subject": "Add validation for --with-prestage in sw-deploy-strategy",
+        "branch": "master",
+        "created": "2025-11-11 15:16:51.000000000",
+        "submitted": "2025-11-14 19:11:12.000000000"
+      },
+      "commit": "68f4cbcb5dcb27b17c9a490ba5837238d7b1dc01",
+      "changed_paths": [
+        "distributedcloud-client/dcmanagerclient/commands/v1/sw_deploy_manager.py",
+        "distributedcloud-client/dcmanagerclient/tests/v1/test_sw_deploy_manager.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "runtime_api_contract",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/starlingx/distcloud-client/+/966689",
+          "statement": "distcloud 服务端新增参数依赖校验；distcloud-client 在命令行实现相同约束和测试。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/distcloud",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/distcloud"
+    },
+    {
+      "repository": "starlingx/distcloud-client",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/distcloud-client"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-984310",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstack-ansible",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 984310,
+      "change_id": "I57b60df4674f5d7190ae6c66fbca8bdff29eaee8",
+      "url": "https://review.opendev.org/c/openstack/openstack-ansible/+/984310",
+      "status": "MERGED",
+      "subject": "Switch LB provider to amphora",
+      "branch": "master",
+      "created": "2026-04-13 07:32:17.000000000",
+      "submitted": "2026-04-20 16:33:44.000000000"
+    },
+    "base_commit": "004807b8faf180e278641691277eb2990f9d878b",
+    "candidate_commit": "7601c0aaf30f012b73c4a718f30b24a62cc25f14",
+    "changed_paths": [
+      "tests/roles/bootstrap-host/templates/user_variables_octavia.yml.j2"
+    ],
+    "patch_url": "https://review.opendev.org/changes/984310/revisions/7601c0aaf30f012b73c4a718f30b24a62cc25f14/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstack-ansible",
+      "target_repository": "openstack/openstack-ansible-os_octavia",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-os_octavia/+/978955"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-ansible-os_octavia",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 978955,
+        "change_id": "Iad13df71fa40c5216b7eea214d664d3c5430d4b6",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-os_octavia/+/978955",
+        "status": "MERGED",
+        "subject": "Remove amphorav1",
+        "branch": "master",
+        "created": "2026-03-04 18:43:02.000000000",
+        "submitted": "2026-04-20 20:22:11.000000000"
+      },
+      "commit": "c5e8a2ea34ae673c3987649975b6af03dac996dd",
+      "changed_paths": [
+        "defaults/main.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-os_octavia/+/978955",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstack-ansible/+/984310",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/be1622bb75c645339673e767ea051b3c"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-ansible",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible/raw/commit/f8552f00f77354653d0d31c982893b8bc58fb128/LICENSE.txt"
+    },
+    {
+      "repository": "openstack/openstack-ansible-os_octavia",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-os_octavia/raw/commit/c5e8a2ea34ae673c3987649975b6af03dac996dd/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

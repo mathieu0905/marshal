@@ -1,0 +1,511 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-7672",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 7672,
+      "change_id": "ethereum/EIPs#7672",
+      "url": "https://github.com/ethereum/EIPs/pull/7672",
+      "status": "MERGED",
+      "subject": "4788: post audit tweaks",
+      "branch": "master",
+      "created": "2023-09-08T17:43:48Z",
+      "submitted": "2023-09-26T13:57:33Z"
+    },
+    "base_commit": "0c7cca1e8204bcc1a1aacbe5fa7b11b208a16fce",
+    "candidate_commit": "87453eeae68c62a0d9c99aad7a33a8f98bdf249e",
+    "changed_paths": [
+      "EIPS/eip-4788.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/0c7cca1e8204bcc1a1aacbe5fa7b11b208a16fce...87453eeae68c62a0d9c99aad7a33a8f98bdf249e.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/5903"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/5941"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/8262"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/8294"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/28205"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 5903,
+        "change_id": "besu-eth/besu#5903",
+        "url": "https://github.com/besu-eth/besu/pull/5903",
+        "status": "MERGED",
+        "subject": "[4788] update beacon root address to latest - post audit tweaks",
+        "branch": "main",
+        "created": "2023-09-19T23:46:37Z",
+        "submitted": "2023-09-21T18:35:01Z"
+      },
+      "commit": "4a1f2a61577afdddcc8970721d94049347155bf6",
+      "changed_paths": [
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/ParentBeaconBlockRootHelper.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/5903",
+          "statement": "按源规范草案更新信标根地址。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 5941,
+        "change_id": "besu-eth/besu#5941",
+        "url": "https://github.com/besu-eth/besu/pull/5941",
+        "status": "MERGED",
+        "subject": "updated beacon root and modulus to match DRAFT eip",
+        "branch": "main",
+        "created": "2023-09-26T06:30:11Z",
+        "submitted": "2023-09-26T15:43:23Z"
+      },
+      "commit": "c28c6e17d9ca682c097fc42abf1adc5eca1fcc97",
+      "changed_paths": [
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/ParentBeaconBlockRootHelper.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/5941",
+          "statement": "源规范再次调整后继续更新地址和模数。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 8262,
+        "change_id": "erigontech/erigon#8262",
+        "url": "https://github.com/erigontech/erigon/pull/8262",
+        "status": "MERGED",
+        "subject": "Upgrade execution-spec-tests to Cancun Devnet 9 Release 2",
+        "branch": "devel",
+        "created": "2023-09-21T16:08:30Z",
+        "submitted": "2023-09-22T06:53:22Z"
+      },
+      "commit": "a24af129b0ca19029f499ef5b59067fae576244f",
+      "changed_paths": [
+        "params/protocol_params.go",
+        "tests/execution-spec-tests/berlin/eip2930_access_list/acl/access_list.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/gas_usage.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/tload_after_sstore.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/tload_after_tstore.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/tload_after_tstore_is_zero.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/transient_storage_unset_values.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_create_contexts/contract_creation.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_execution_contexts/subcall.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_reentrancy_contexts/reentrant_call.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_selfdestruct/reentrant_selfdestructing_call.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_contract_calls.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_contract_timestamps.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_equal_to_timestamp.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_selfdestruct.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/calldata_lengths.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/invalid_beacon_root_calldata_value.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/tx_to_beacon_root_contract.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/beacon_root_contract_deploy.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/beacon_root_transition.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/multi_block_beacon_root_timestamp_calls.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/no_beacon_root_contract_at_transition.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_calldata_opcodes.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_gasprice_opcode.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_opcodes.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_value_opcode.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_type_tx_pre_fork.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/insufficient_balance_blob_tx.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/insufficient_balance_blob_tx_combinations.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_blob_hash_versioning.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_block_blob_count.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_normal_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_tx_blob_count.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_tx_max_fee_per_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/valid_blob_tx_combinations.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs_full/reject_valid_full_blob_in_block_rlp.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_gas_cost.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_invalid_blob_index.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_multiple_txs_in_block.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_scenarios.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode_contexts/blobhash_opcode_contexts.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/correct_decreasing_blob_gas_costs.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/correct_excess_blob_gas_calculation.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/correct_increasing_blob_gas_costs.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_blob_gas_used_in_header.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_excess_blob_gas_above_target_change.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_excess_blob_gas_change.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_excess_blob_gas_target_blobs_increase_from_zero.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_negative_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_non_multiple_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_static_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_static_excess_blob_gas_from_zero_on_blobs_above_target.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_zero_excess_blob_gas_in_header.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas_fork_transition/fork_transition_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas_fork_transition/invalid_post_fork_block_without_blob_fields.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas_fork_transition/invalid_pre_fork_block_with_blob_fields.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/invalid_precompile_calls.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_before_fork.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_calls.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_external_vectors.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_gas_tx_to.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/valid_precompile_calls.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile_gas/point_evaluation_precompile_gas_usage.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy/mcopy_on_empty_memory.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy/valid_mcopy_operations.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy_contexts/no_memory_corruption_on_upper_call_stack_levels.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy_memory_expansion/mcopy_huge_memory_expansion.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy_memory_expansion/mcopy_memory_expansion.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/create_selfdestruct_same_tx.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/delegatecall_from_new_contract_to_pre_existing_contract.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/delegatecall_from_pre_existing_contract_to_new_contract.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/recreate_self_destructed_contract_different_txs.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/self_destructing_initcode.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/self_destructing_initcode_create_tx.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/selfdestruct_created_same_block_different_tx.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/selfdestruct_pre_existing.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct_revert/selfdestruct_created_in_same_tx_with_revert.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct_revert/selfdestruct_not_created_in_same_tx_with_revert.json",
+        "tests/execution-spec-tests/cancun/eip7516_blobgasfee/blobgasfee_opcode/blobbasefee_before_fork.json",
+        "tests/execution-spec-tests/cancun/eip7516_blobgasfee/blobgasfee_opcode/blobbasefee_out_of_gas.json",
+        "tests/execution-spec-tests/cancun/eip7516_blobgasfee/blobgasfee_opcode/blobbasefee_stack_overflow.json",
+        "tests/execution-spec-tests/frontier/opcodes/dup/dup.json",
+        "tests/execution-spec-tests/homestead/yul/yul_example/yul.json",
+        "tests/execution-spec-tests/istanbul/eip1344_chainid/chainid/chainid.json",
+        "tests/execution-spec-tests/merge/security/selfdestruct_balance_bug/tx_selfdestruct_balance_bug.json",
+        "tests/execution-spec-tests/shanghai/eip3651_warm_coinbase/warm_coinbase/warm_coinbase_call_out_of_gas.json",
+        "tests/execution-spec-tests/shanghai/eip3651_warm_coinbase/warm_coinbase/warm_coinbase_gas_usage.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_before_jumpdest.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_during_staticcall.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_fill_stack.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_gas_cost.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_key_sstore.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_stack_overflow.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_storage_overwrite.json",
+        "tests/execution-spec-tests/shanghai/eip3860_initcode/initcode/contract_creating_tx.json",
+        "tests/execution-spec-tests/shanghai/eip3860_initcode/initcode/create_opcode_initcode.json",
+        "tests/execution-spec-tests/shanghai/eip3860_initcode/initcode/gas_usage.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/balance_within_block.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/large_amount.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/many_withdrawals.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/multiple_withdrawals_same_address.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/newly_created_contract.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/no_evm_execution.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/self_destructing_account.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/use_value_in_contract.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/use_value_in_tx.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/withdrawing_to_precompiles.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/zero_amount.json"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/8262",
+          "statement": "按源规范更新测试与地址。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 8294,
+        "change_id": "erigontech/erigon#8294",
+        "url": "https://github.com/erigontech/erigon/pull/8294",
+        "status": "MERGED",
+        "subject": "Update BeaconRootsAddress",
+        "branch": "devel",
+        "created": "2023-09-26T15:11:30Z",
+        "submitted": "2023-09-26T15:44:36Z"
+      },
+      "commit": "a594b5f176a75f3bbadca413312d0cbce9846024",
+      "changed_paths": [
+        "params/protocol_params.go",
+        "tests/execution-spec-tests/berlin/eip2930_access_list/acl/access_list.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/gas_usage.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/tload_after_sstore.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/tload_after_tstore.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/tload_after_tstore_is_zero.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage/transient_storage_unset_values.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_create_contexts/contract_creation.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_execution_contexts/subcall.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_reentrancy_contexts/reentrant_call.json",
+        "tests/execution-spec-tests/cancun/eip1153_tstore/tstorage_selfdestruct/reentrant_selfdestructing_call.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_contract_calls.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_contract_timestamps.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_equal_to_timestamp.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/beacon_root_selfdestruct.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/calldata_lengths.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/invalid_beacon_root_calldata_value.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/beacon_root_contract/tx_to_beacon_root_contract.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/beacon_root_contract_deploy.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/beacon_root_transition.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/multi_block_beacon_root_timestamp_calls.json",
+        "tests/execution-spec-tests/cancun/eip4788_beacon_root/blocks_beacon_root_contract/no_beacon_root_contract_at_transition.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_calldata_opcodes.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_gasprice_opcode.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_opcodes.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_tx_attribute_value_opcode.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/blob_type_tx_pre_fork.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/insufficient_balance_blob_tx.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/insufficient_balance_blob_tx_combinations.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_blob_hash_versioning.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_block_blob_count.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_normal_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_tx_blob_count.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/invalid_tx_max_fee_per_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs/valid_blob_tx_combinations.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blob_txs_full/reject_valid_full_blob_in_block_rlp.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_gas_cost.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_invalid_blob_index.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_multiple_txs_in_block.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode/blobhash_scenarios.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/blobhash_opcode_contexts/blobhash_opcode_contexts.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/correct_decreasing_blob_gas_costs.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/correct_excess_blob_gas_calculation.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/correct_increasing_blob_gas_costs.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_blob_gas_used_in_header.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_excess_blob_gas_above_target_change.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_excess_blob_gas_change.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_excess_blob_gas_target_blobs_increase_from_zero.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_negative_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_non_multiple_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_static_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_static_excess_blob_gas_from_zero_on_blobs_above_target.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas/invalid_zero_excess_blob_gas_in_header.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas_fork_transition/fork_transition_excess_blob_gas.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas_fork_transition/invalid_post_fork_block_without_blob_fields.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/excess_blob_gas_fork_transition/invalid_pre_fork_block_with_blob_fields.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/invalid_precompile_calls.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_before_fork.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_calls.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_external_vectors.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/point_evaluation_precompile_gas_tx_to.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile/valid_precompile_calls.json",
+        "tests/execution-spec-tests/cancun/eip4844_blobs/point_evaluation_precompile_gas/point_evaluation_precompile_gas_usage.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy/mcopy_on_empty_memory.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy/valid_mcopy_operations.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy_contexts/no_memory_corruption_on_upper_call_stack_levels.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy_memory_expansion/mcopy_huge_memory_expansion.json",
+        "tests/execution-spec-tests/cancun/eip5656_mcopy/mcopy_memory_expansion/mcopy_memory_expansion.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/create_selfdestruct_same_tx.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/delegatecall_from_new_contract_to_pre_existing_contract.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/delegatecall_from_pre_existing_contract_to_new_contract.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/recreate_self_destructed_contract_different_txs.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/self_destructing_initcode.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/self_destructing_initcode_create_tx.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/selfdestruct_created_same_block_different_tx.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct/selfdestruct_pre_existing.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct_revert/selfdestruct_created_in_same_tx_with_revert.json",
+        "tests/execution-spec-tests/cancun/eip6780_selfdestruct/selfdestruct_revert/selfdestruct_not_created_in_same_tx_with_revert.json",
+        "tests/execution-spec-tests/cancun/eip7516_blobgasfee/blobgasfee_opcode/blobbasefee_before_fork.json",
+        "tests/execution-spec-tests/cancun/eip7516_blobgasfee/blobgasfee_opcode/blobbasefee_out_of_gas.json",
+        "tests/execution-spec-tests/cancun/eip7516_blobgasfee/blobgasfee_opcode/blobbasefee_stack_overflow.json",
+        "tests/execution-spec-tests/frontier/opcodes/dup/dup.json",
+        "tests/execution-spec-tests/homestead/yul/yul_example/yul.json",
+        "tests/execution-spec-tests/info.txt",
+        "tests/execution-spec-tests/istanbul/eip1344_chainid/chainid/chainid.json",
+        "tests/execution-spec-tests/merge/security/selfdestruct_balance_bug/tx_selfdestruct_balance_bug.json",
+        "tests/execution-spec-tests/shanghai/eip3651_warm_coinbase/warm_coinbase/warm_coinbase_call_out_of_gas.json",
+        "tests/execution-spec-tests/shanghai/eip3651_warm_coinbase/warm_coinbase/warm_coinbase_gas_usage.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_before_jumpdest.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_during_staticcall.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_fill_stack.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_gas_cost.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_key_sstore.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_stack_overflow.json",
+        "tests/execution-spec-tests/shanghai/eip3855_push0/push0/push0_storage_overwrite.json",
+        "tests/execution-spec-tests/shanghai/eip3860_initcode/initcode/contract_creating_tx.json",
+        "tests/execution-spec-tests/shanghai/eip3860_initcode/initcode/create_opcode_initcode.json",
+        "tests/execution-spec-tests/shanghai/eip3860_initcode/initcode/gas_usage.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/balance_within_block.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/large_amount.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/many_withdrawals.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/multiple_withdrawals_same_address.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/newly_created_contract.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/no_evm_execution.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/self_destructing_account.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/use_value_in_contract.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/use_value_in_tx.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/withdrawing_to_precompiles.json",
+        "tests/execution-spec-tests/shanghai/eip4895_withdrawals/withdrawals/zero_amount.json"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/8294",
+          "statement": "按源规范最终地址继续适配。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 28205,
+        "change_id": "ethereum/go-ethereum#28205",
+        "url": "https://github.com/ethereum/go-ethereum/pull/28205",
+        "status": "MERGED",
+        "subject": "params: update 4788 beacon roots contract addr",
+        "branch": "master",
+        "created": "2023-09-26T12:11:59Z",
+        "submitted": "2023-09-28T07:52:28Z"
+      },
+      "commit": "7c274596532b3626e59ad4c993269ff569db151b",
+      "changed_paths": [
+        "cmd/evm/testdata/29/alloc.json",
+        "cmd/evm/testdata/29/exp.json",
+        "cmd/evm/testdata/29/readme.md",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/28205",
+          "statement": "正文明确按源规范更新合约地址。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

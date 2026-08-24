@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-1452",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 1452,
+      "change_id": "open-telemetry/opentelemetry-specification#1452",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/1452",
+      "status": "MERGED",
+      "subject": "Add ForceFlush to Tracing SDK",
+      "branch": "main",
+      "created": "2021-02-19T09:58:40Z",
+      "submitted": "2021-02-22T15:58:27Z"
+    },
+    "base_commit": "c0334183f413b62edf1b5256adc561c8d10c11f0",
+    "candidate_commit": "8b33c5db9cdd4e0a7befba4e73286ddc33de74cf",
+    "changed_paths": [
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/c0334183f413b62edf1b5256adc561c8d10c11f0...8b33c5db9cdd4e0a7befba4e73286ddc33de74cf.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-cpp",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/588"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-cpp",
+      "pull_request": {
+        "provider": "github",
+        "number": 588,
+        "change_id": "open-telemetry/opentelemetry-cpp#588",
+        "url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/588",
+        "status": "MERGED",
+        "subject": "Add ForceFlush to TracerProvider in SDK",
+        "branch": "main",
+        "created": "2021-02-25T19:02:48Z",
+        "submitted": "2021-02-27T01:25:20Z"
+      },
+      "commit": "85c86fa6c4a1dc2748497a22a8627fc78527474e",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "sdk/include/opentelemetry/sdk/trace/tracer_provider.h",
+        "sdk/src/logs/logger.cc",
+        "sdk/src/trace/tracer_provider.cc",
+        "sdk/test/trace/tracer_provider_test.cc"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/588",
+          "statement": "明确按源规范增加 ForceFlush。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-cpp",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-cpp"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

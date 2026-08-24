@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-3648",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 3648,
+      "change_id": "open-telemetry/opentelemetry-specification#3648",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/3648",
+      "status": "MERGED",
+      "subject": "Increase metric name maximum length from 63 to 255 characters",
+      "branch": "main",
+      "created": "2023-08-08T23:40:13Z",
+      "submitted": "2023-08-10T17:55:25Z"
+    },
+    "base_commit": "ff5ea6145d2f51eb3dca4fffd33fbc460ea8c2a2",
+    "candidate_commit": "dd4145cef048615c63dcf92b52900cf9f824f259",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/metrics/api.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/ff5ea6145d2f51eb3dca4fffd33fbc460ea8c2a2...dd4145cef048615c63dcf92b52900cf9f824f259.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/4434"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/5697"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 4434,
+        "change_id": "open-telemetry/opentelemetry-go#4434",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/4434",
+        "status": "MERGED",
+        "subject": "Increase instrument name maximum length from 63 to 255 characters",
+        "branch": "main",
+        "created": "2023-08-10T18:54:35Z",
+        "submitted": "2023-08-11T07:49:47Z"
+      },
+      "commit": "c2b955742a11e449f5d881a7bc341bb8d8caf9a8",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "sdk/metric/meter.go",
+        "sdk/metric/meter_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/4434",
+          "statement": "明确实现源规范的长度变化。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 5697,
+        "change_id": "open-telemetry/opentelemetry-java#5697",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/5697",
+        "status": "MERGED",
+        "subject": "Increase metric name maximum length from 63 to 255 characters",
+        "branch": "main",
+        "created": "2023-08-09T19:50:51Z",
+        "submitted": "2023-08-31T15:24:24Z"
+      },
+      "commit": "f5523f2ef2f277792e99517387a86efbac323540",
+      "changed_paths": [
+        "api/all/src/main/java/io/opentelemetry/api/metrics/Meter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkMeter.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/SdkMeterTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/5697",
+          "statement": "明确按已合并规范提高长度上限。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

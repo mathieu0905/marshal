@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3016",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3016,
+      "change_id": "rust-lang/rfcs#3016",
+      "url": "https://github.com/rust-lang/rfcs/pull/3016",
+      "status": "MERGED",
+      "subject": "add const-ub RFC",
+      "branch": "master",
+      "created": "2020-11-10T08:50:51Z",
+      "submitted": "2021-05-04T21:34:31Z"
+    },
+    "base_commit": "af927e47b639f2cb8f06bb686861d934a48bd04b",
+    "candidate_commit": "bb47320806319df85be777d09550d1c01ce37ce3",
+    "changed_paths": [
+      "text/0000-const-ub.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/af927e47b639f2cb8f06bb686861d934a48bd04b...bb47320806319df85be777d09550d1c01ce37ce3.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/87910"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 87910,
+        "change_id": "rust-lang/rust#87910",
+        "url": "https://github.com/rust-lang/rust/pull/87910",
+        "status": "MERGED",
+        "subject": "Mark unsafe methods NonZero*::unchecked_(add|mul) as const.",
+        "branch": "master",
+        "created": "2021-08-10T07:37:16Z",
+        "submitted": "2021-10-04T10:09:17Z"
+      },
+      "commit": "74c4c0172ab1f5c19fef69a163349a0a3f9cd927",
+      "changed_paths": [
+        "library/core/src/num/nonzero.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/87910",
+          "statement": "目标在源 RFC 合并后将其中允许的非零整数操作标为常量。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-954006",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 954006,
+      "change_id": "I722d4cee38efcc9c8b33fdd2a0b537a4f45bf5e7",
+      "url": "https://review.opendev.org/c/starlingx/config/+/954006",
+      "status": "MERGED",
+      "subject": "K8s upgrade: refactor control plane upgrade",
+      "branch": "master",
+      "created": "2025-07-03 04:37:22.000000000",
+      "submitted": "2025-07-14 19:27:38.000000000"
+    },
+    "base_commit": "572bc34675c9378f76a9a1307130fef0020d1314",
+    "candidate_commit": "0ade8fe1358ad9319fb3630aa0585cf276fa3bf6",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/agent/kube_host.py",
+      "sysinv/sysinv/sysinv/sysinv/agent/manager.py",
+      "sysinv/sysinv/sysinv/sysinv/agent/rpcapi.py",
+      "sysinv/sysinv/sysinv/sysinv/common/kubernetes.py",
+      "sysinv/sysinv/sysinv/sysinv/conductor/manager.py",
+      "sysinv/sysinv/sysinv/sysinv/conductor/rpcapi.py",
+      "sysinv/sysinv/sysinv/sysinv/tests/conductor/test_manager.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/954006/revisions/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/stx-puppet",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/stx-puppet/+/953181"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/stx-puppet",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 953181,
+        "change_id": "I49ec23783fdfeafbde58430e98e957a0e654f834",
+        "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/953181",
+        "status": "MERGED",
+        "subject": "K8s upgrade refactor: remove unused code for control plane upgrade",
+        "branch": "master",
+        "created": "2025-06-24 04:49:55.000000000",
+        "submitted": "2025-08-01 19:19:08.000000000"
+      },
+      "commit": "5c6e47cf5268c7aef128fae5a8f46407b5d35c6c",
+      "changed_paths": [
+        "puppet-manifests/src/modules/platform/files/disable_image_gc.sh",
+        "puppet-manifests/src/modules/platform/manifests/kubernetes.pp"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/953181",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config/+/954006",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/f0960e5da14f41aebc3a1dc860e67a81"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet/src/commit/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

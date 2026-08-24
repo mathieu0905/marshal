@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-2276",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 2276,
+      "change_id": "open-telemetry/opentelemetry-specification#2276",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/2276",
+      "status": "MERGED",
+      "subject": "Clarify that Trace/Meter are associated with Instrumentation Scope",
+      "branch": "main",
+      "created": "2022-01-19T22:36:04Z",
+      "submitted": "2022-02-15T16:34:12Z"
+    },
+    "base_commit": "31b3f103242c2c6a8c403f94b24dca8241c49f75",
+    "candidate_commit": "de293ee9591839b487f1cbea6711fc86130f226b",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/glossary.md",
+      "specification/metrics/api.md",
+      "specification/trace/api.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/31b3f103242c2c6a8c403f94b24dca8241c49f75...de293ee9591839b487f1cbea6711fc86130f226b.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-erlang",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/405"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/2583"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "pull_request": {
+        "provider": "github",
+        "number": 405,
+        "change_id": "open-telemetry/opentelemetry-erlang#405",
+        "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/405",
+        "status": "MERGED",
+        "subject": "replace InstrumentationLibrary with InstrumentationScope",
+        "branch": "main",
+        "created": "2022-06-08T20:18:55Z",
+        "submitted": "2022-06-12T12:00:18Z"
+      },
+      "commit": "7dadcc23a0bf4e582ff5f967534f93d8a7661db2",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "apps/opentelemetry/include/otel_span.hrl",
+        "apps/opentelemetry/src/otel_batch_processor.erl",
+        "apps/opentelemetry/src/otel_simple_processor.erl",
+        "apps/opentelemetry/src/otel_span_ets.erl",
+        "apps/opentelemetry/src/otel_tracer.hrl",
+        "apps/opentelemetry/src/otel_tracer_default.erl",
+        "apps/opentelemetry/src/otel_tracer_server.erl",
+        "apps/opentelemetry/test/opentelemetry_SUITE.erl",
+        "apps/opentelemetry_api/include/opentelemetry.hrl",
+        "apps/opentelemetry_api/src/opentelemetry.erl",
+        "apps/opentelemetry_experimental/src/otel_meter.hrl",
+        "apps/opentelemetry_experimental/src/otel_meter_server.erl",
+        "apps/opentelemetry_exporter/opentelemetry-proto",
+        "apps/opentelemetry_exporter/src/opentelemetry_exporter.erl",
+        "apps/opentelemetry_exporter/src/opentelemetry_exporter_trace_service_pb.erl",
+        "apps/opentelemetry_exporter/src/opentelemetry_trace_service.erl",
+        "apps/opentelemetry_exporter/test/opentelemetry_exporter_SUITE.erl",
+        "docker-compose.yml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-erlang/pull/405",
+          "statement": "明确按源规范以 InstrumentationScope 替代旧类型。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 2583,
+        "change_id": "open-telemetry/opentelemetry-python#2583",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/2583",
+        "status": "MERGED",
+        "subject": "Add InstrumentationScope and deprecate InstrumentationLibraryInfo",
+        "branch": "main",
+        "created": "2022-04-02T11:13:08Z",
+        "submitted": "2022-04-21T06:50:25Z"
+      },
+      "commit": "e8cc2424717b038f7b4c3aaa4837d8ea2d04b078",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "exporter/opentelemetry-exporter-jaeger-proto-grpc/src/opentelemetry/exporter/jaeger/proto/grpc/translate/__init__.py",
+        "exporter/opentelemetry-exporter-jaeger-proto-grpc/tests/test_jaeger_exporter_protobuf.py",
+        "exporter/opentelemetry-exporter-jaeger-thrift/src/opentelemetry/exporter/jaeger/thrift/translate/__init__.py",
+        "exporter/opentelemetry-exporter-jaeger-thrift/tests/test_jaeger_exporter_thrift.py",
+        "exporter/opentelemetry-exporter-otlp-proto-grpc/src/opentelemetry/exporter/otlp/proto/grpc/_log_exporter/__init__.py",
+        "exporter/opentelemetry-exporter-otlp-proto-grpc/src/opentelemetry/exporter/otlp/proto/grpc/_metric_exporter/__init__.py",
+        "exporter/opentelemetry-exporter-otlp-proto-grpc/src/opentelemetry/exporter/otlp/proto/grpc/exporter.py",
+        "exporter/opentelemetry-exporter-otlp-proto-grpc/src/opentelemetry/exporter/otlp/proto/grpc/trace_exporter/__init__.py",
+        "exporter/opentelemetry-exporter-otlp-proto-grpc/tests/logs/test_otlp_logs_exporter.py",
+        "exporter/opentelemetry-exporter-otlp-proto-grpc/tests/metrics/test_otlp_metrics_exporter.py",
+        "exporter/opentelemetry-exporter-otlp-proto-grpc/tests/test_otlp_trace_exporter.py",
+        "exporter/opentelemetry-exporter-otlp-proto-http/src/opentelemetry/exporter/otlp/proto/http/trace_exporter/encoder/__init__.py",
+        "exporter/opentelemetry-exporter-otlp-proto-http/tests/test_protobuf_encoder.py",
+        "exporter/opentelemetry-exporter-zipkin-json/src/opentelemetry/exporter/zipkin/encoder/__init__.py",
+        "exporter/opentelemetry-exporter-zipkin-json/tests/encoder/common_tests.py",
+        "exporter/opentelemetry-exporter-zipkin-json/tests/encoder/test_v1_json.py",
+        "exporter/opentelemetry-exporter-zipkin-json/tests/encoder/test_v2_json.py",
+        "exporter/opentelemetry-exporter-zipkin-proto-http/tests/encoder/common_tests.py",
+        "exporter/opentelemetry-exporter-zipkin-proto-http/tests/encoder/test_v2_protobuf.py",
+        "opentelemetry-api/src/opentelemetry/trace/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/_logs/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/_metrics/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/_metrics/_view_instrument_match.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/_metrics/instrument.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/_metrics/point.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/_metrics/view.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/util/instrumentation.py",
+        "opentelemetry-sdk/tests/logs/test_export.py",
+        "opentelemetry-sdk/tests/metrics/test_in_memory_metric_reader.py",
+        "opentelemetry-sdk/tests/metrics/test_metrics.py",
+        "opentelemetry-sdk/tests/metrics/test_periodic_exporting_metric_reader.py",
+        "opentelemetry-sdk/tests/metrics/test_point.py",
+        "opentelemetry-sdk/tests/metrics/test_view.py",
+        "opentelemetry-sdk/tests/metrics/test_view_instrument_match.py",
+        "tests/opentelemetry-test-utils/src/opentelemetry/test/metrictestutil.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/2583",
+          "statement": "明确因源规范引入新类型并弃用旧类型。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-erlang",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-erlang"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

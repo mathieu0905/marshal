@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-968076",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/devstack",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 968076,
+      "change_id": "I8bd7b732c181f3abb015a57b4445332614f8c6c9",
+      "url": "https://review.opendev.org/c/openstack/devstack/+/968076",
+      "status": "MERGED",
+      "subject": "Revert \"Cap stable/2025.2 network, swift, volume api_extensions for tempest\"",
+      "branch": "master",
+      "created": "2025-11-21 20:40:07.000000000",
+      "submitted": "2025-11-25 14:01:50.000000000"
+    },
+    "base_commit": "093bc57518a72b63a59389df63491d476069fc5c",
+    "candidate_commit": "5d602fef2a7f3ac153c907304a8f43b38c0c1a50",
+    "changed_paths": [
+      "lib/tempest"
+    ],
+    "patch_url": "https://review.opendev.org/changes/968076/revisions/5d602fef2a7f3ac153c907304a8f43b38c0c1a50/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/devstack",
+      "target_repository": "openstack/tempest",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/tempest/+/959187"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/tempest",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 959187,
+        "change_id": "I7d028ef2e7167f4bb387700af263c4e29c496b68",
+        "url": "https://review.opendev.org/c/openstack/tempest/+/959187",
+        "status": "MERGED",
+        "subject": "Test create VM with unaddressed port",
+        "branch": "master",
+        "created": "2025-09-02 14:05:50.000000000",
+        "submitted": "2026-02-25 03:24:24.000000000"
+      },
+      "commit": "14db1e80741014dcab4733202d0d45388f77a741",
+      "changed_paths": [
+        "tempest/api/compute/servers/test_create_server.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/tempest/+/959187",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/devstack/+/968076",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/ea03647ec9834ca29189072c71148108"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/devstack",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/devstack/raw/commit/7fa24750a676a44ab224206cc13096f904057d44/LICENSE"
+    },
+    {
+      "repository": "openstack/tempest",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/tempest/raw/commit/2b2ac77728f8a9b42bab9f9de947c80dbb6353c3/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

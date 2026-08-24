@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9833",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9833,
+      "change_id": "ethereum/EIPs#9833",
+      "url": "https://github.com/ethereum/EIPs/pull/9833",
+      "status": "MERGED",
+      "subject": "Adds EIP for secp256r1",
+      "branch": "master",
+      "created": "2025-05-28T05:57:18Z",
+      "submitted": "2025-07-01T20:21:20Z"
+    },
+    "base_commit": "a2bc1f817cc66ceef951f0f8d61d2dbb04bdf5c0",
+    "candidate_commit": "73dfcb6a3cba117d288377066d73e815d9ee0ce4",
+    "changed_paths": [
+      "EIPS/eip-xxxx.md",
+      "assets/eip-xxxx/test-vectors.json"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/a2bc1f817cc66ceef951f0f8d61d2dbb04bdf5c0...73dfcb6a3cba117d288377066d73e815d9ee0ce4.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/15519"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/31991"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 15519,
+        "change_id": "erigontech/erigon#15519",
+        "url": "https://github.com/erigontech/erigon/pull/15519",
+        "status": "MERGED",
+        "subject": "Add P256Verify for osaka and implement EIP-7951",
+        "branch": "main",
+        "created": "2025-06-10T16:26:20Z",
+        "submitted": "2025-06-13T08:22:08Z"
+      },
+      "commit": "a304c5c2db9230230cb5c544b94848c544caeebe",
+      "changed_paths": [
+        "core/vm/contracts.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/15519",
+          "statement": "明确实现 EIP-7951 P256Verify。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 31991,
+        "change_id": "ethereum/go-ethereum#31991",
+        "url": "https://github.com/ethereum/go-ethereum/pull/31991",
+        "status": "MERGED",
+        "subject": "EIP-7951: Precompile for secp256r1 Curve Support",
+        "branch": "master",
+        "created": "2025-06-09T11:58:41Z",
+        "submitted": "2025-07-07T18:59:45Z"
+      },
+      "commit": "b103f0ef74867541e28271da3d3fe1ae52195640",
+      "changed_paths": [
+        "core/vm/contracts.go",
+        "core/vm/contracts_test.go",
+        "core/vm/testdata/precompiles/p256Verify.json",
+        "crypto/secp256r1/verifier.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/31991",
+          "statement": "明确实现源 EIP 预编译。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-994419",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstack-ansible",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 994419,
+      "change_id": "I994d3798a894ea12dbee27f46d0cdde9ee9405b0",
+      "url": "https://review.opendev.org/c/openstack/openstack-ansible/+/994419",
+      "status": "MERGED",
+      "subject": "Bump adriacloud.kubernetes version",
+      "branch": "master",
+      "created": "2026-06-23 10:41:34.000000000",
+      "submitted": "2026-06-23 18:35:08.000000000"
+    },
+    "base_commit": "213d78cf977834beefac696b2ce24c6f23207f1e",
+    "candidate_commit": "5c070e90fbfa064cc60944b1eff480023235b717",
+    "changed_paths": [
+      "ansible-collection-requirements.yml",
+      "inventory/group_vars/k8s_all/defaults.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/994419/revisions/5c070e90fbfa064cc60944b1eff480023235b717/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstack-ansible",
+      "target_repository": "openstack/openstack-ansible-plugins",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-plugins/+/994119"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-ansible-plugins",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 994119,
+        "change_id": "I25c368a5f2d50dd674f3d3b76f8b6b7ee6a7c0aa",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-plugins/+/994119",
+        "status": "MERGED",
+        "subject": "Add 26.04 to platform support descirption",
+        "branch": "master",
+        "created": "2026-06-19 14:20:55.000000000",
+        "submitted": "2026-06-24 10:29:55.000000000"
+      },
+      "commit": "18f8df08771314125d77a13525d0b728bf84db7e",
+      "changed_paths": [
+        "roles/platform_check/tasks/main.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-plugins/+/994119",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstack-ansible/+/994419",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/5c999e4cdba64d7583276f6f59d9523d"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-ansible",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible/raw/commit/f8552f00f77354653d0d31c982893b8bc58fb128/LICENSE.txt"
+    },
+    {
+      "repository": "openstack/openstack-ansible-plugins",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-plugins/raw/commit/1c0930ba13531e7fa94eaa277f23685ce3b9cc16/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

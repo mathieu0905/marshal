@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-11908",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 11908,
+      "change_id": "ethereum/EIPs#11908",
+      "url": "https://github.com/ethereum/EIPs/pull/11908",
+      "status": "MERGED",
+      "subject": "Update EIP-8037: apply the EIP-7976 calldata floor to block-level gas accounting",
+      "branch": "master",
+      "created": "2026-07-10T02:03:38Z",
+      "submitted": "2026-07-10T21:56:36Z"
+    },
+    "base_commit": "2e7e88bb8dc0ead4db7726ac6af89f576c221d93",
+    "candidate_commit": "bcce075bd3385307e8e3c05117a7ff7b78e26782",
+    "changed_paths": [
+      "EIPS/eip-8037.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/2e7e88bb8dc0ead4db7726ac6af89f576c221d93...bcce075bd3385307e8e3c05117a7ff7b78e26782.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/execution-specs",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/execution-specs/pull/3144"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/35342"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/execution-specs",
+      "pull_request": {
+        "provider": "github",
+        "number": 3144,
+        "change_id": "ethereum/execution-specs#3144",
+        "url": "https://github.com/ethereum/execution-specs/pull/3144",
+        "status": "MERGED",
+        "subject": "fix(spec-specs, tests): apply calldata floor to block-level regular gas",
+        "branch": "forks/amsterdam",
+        "created": "2026-07-10T06:37:17Z",
+        "submitted": "2026-07-10T10:49:51Z"
+      },
+      "commit": "2e0303110376e783435dfd322d88fc18cc195195",
+      "changed_paths": [
+        "src/ethereum/forks/amsterdam/fork.py",
+        "tests/amsterdam/eip7778_block_gas_accounting_without_refunds/test_gas_accounting.py",
+        "tests/amsterdam/eip8037_state_creation_gas_cost_increase/test_state_gas_calldata_floor.py",
+        "tests/amsterdam/eip8037_state_creation_gas_cost_increase/test_state_gas_create.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/execution-specs/pull/3144",
+          "statement": "明确实现源规范修正。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 35342,
+        "change_id": "ethereum/go-ethereum#35342",
+        "url": "https://github.com/ethereum/go-ethereum/pull/35342",
+        "status": "MERGED",
+        "subject": "core: charge floorDataGas if it exceeds regularGas",
+        "branch": "master",
+        "created": "2026-07-10T12:11:29Z",
+        "submitted": "2026-07-13T01:38:54Z"
+      },
+      "commit": "be1595f5420d8ed68a6dc9b1d6157181d1a7e471",
+      "changed_paths": [
+        "core/state_transition.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/35342",
+          "statement": "明确实现源规范变化。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/execution-specs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

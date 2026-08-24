@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-2951",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2951,
+      "change_id": "rust-lang/rfcs#2951",
+      "url": "https://github.com/rust-lang/rfcs/pull/2951",
+      "status": "MERGED",
+      "subject": "Linking modifiers for native libraries",
+      "branch": "master",
+      "created": "2020-06-27T18:41:31Z",
+      "submitted": "2021-03-05T20:22:49Z"
+    },
+    "base_commit": "b6fffdf18f8b867648de0d95657cc13a64cae4e2",
+    "candidate_commit": "4287dc2b670bf74139b6420a94a22fc3f8ce2737",
+    "changed_paths": [
+      "text/0000-native-link-modifiers.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/b6fffdf18f8b867648de0d95657cc13a64cae4e2...4287dc2b670bf74139b6420a94a22fc3f8ce2737.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/83507"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 83507,
+        "change_id": "rust-lang/rust#83507",
+        "url": "https://github.com/rust-lang/rust/pull/83507",
+        "status": "MERGED",
+        "subject": "Implement RFC 2951: Native link modifiers",
+        "branch": "master",
+        "created": "2021-03-26T04:32:10Z",
+        "submitted": "2021-05-06T17:42:37Z"
+      },
+      "commit": "db555e1284dd37f4f3c76474aabfca09140a7ab3",
+      "changed_paths": [
+        "compiler/rustc_ast_passes/src/feature_gate.rs",
+        "compiler/rustc_codegen_cranelift/src/archive.rs",
+        "compiler/rustc_codegen_llvm/src/back/archive.rs",
+        "compiler/rustc_codegen_ssa/src/back/archive.rs",
+        "compiler/rustc_codegen_ssa/src/back/link.rs",
+        "compiler/rustc_codegen_ssa/src/back/linker.rs",
+        "compiler/rustc_codegen_ssa/src/lib.rs",
+        "compiler/rustc_feature/src/active.rs",
+        "compiler/rustc_interface/src/tests.rs",
+        "compiler/rustc_metadata/src/native_libs.rs",
+        "compiler/rustc_metadata/src/rmeta/decoder/cstore_impl.rs",
+        "compiler/rustc_middle/src/middle/cstore.rs",
+        "compiler/rustc_session/src/config.rs",
+        "compiler/rustc_session/src/options.rs",
+        "compiler/rustc_session/src/utils.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "src/doc/unstable-book/src/language-features/native-link-modifiers-as-needed.md",
+        "src/doc/unstable-book/src/language-features/native-link-modifiers-bundle.md",
+        "src/doc/unstable-book/src/language-features/native-link-modifiers-verbatim.md",
+        "src/doc/unstable-book/src/language-features/native-link-modifiers-whole-archive.md",
+        "src/doc/unstable-book/src/language-features/native-link-modifiers.md",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers.rs",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers.stderr",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_as_needed.rs",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_as_needed.stderr",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_bundle.rs",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_bundle.stderr",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_verbatim.rs",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_verbatim.stderr",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_whole_archive.rs",
+        "src/test/ui/feature-gates/feature-gate-native_link_modifiers_whole_archive.stderr",
+        "src/test/ui/feature-gates/feature-gate-static-nobundle-2.stderr",
+        "src/test/ui/feature-gates/feature-gate-static-nobundle.rs",
+        "src/test/ui/feature-gates/feature-gate-static-nobundle.stderr",
+        "src/test/ui/native-library-link-flags/empty-kind-1.rs",
+        "src/test/ui/native-library-link-flags/empty-kind-1.stderr",
+        "src/test/ui/native-library-link-flags/empty-kind-2.rs",
+        "src/test/ui/native-library-link-flags/empty-kind-2.stderr"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/83507",
+          "statement": "目标正文明确将自身标为源 RFC 的首次实现。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

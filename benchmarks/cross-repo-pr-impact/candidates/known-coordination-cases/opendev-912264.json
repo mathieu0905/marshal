@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-912264",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/stx-puppet",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 912264,
+      "change_id": "Iac95366cf6c4ecb703f4714486d4ccabcb016b7d",
+      "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/912264",
+      "status": "MERGED",
+      "subject": "Additional schedtop and iotop daily logging",
+      "branch": "master",
+      "created": "2024-03-08 14:36:54.000000000",
+      "submitted": "2025-08-05 14:17:41.000000000"
+    },
+    "base_commit": "afbc586f86c327a64768fb6c44b8dfd33dc817ea",
+    "candidate_commit": "10bfa0e6cae4cc40699316160929394b66c8f7c2",
+    "changed_paths": [
+      "puppet-manifests/src/modules/platform/manifests/collectd.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/912264/revisions/10bfa0e6cae4cc40699316160929394b66c8f7c2/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/stx-puppet",
+      "target_repository": "starlingx/config-files",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/config-files/+/912267"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/config-files",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 912267,
+        "change_id": "I40340f63b4fe8b714ab284ee5494a7351e328561",
+        "url": "https://review.opendev.org/c/starlingx/config-files/+/912267",
+        "status": "MERGED",
+        "subject": "Additional logrotate config for new daily logs.",
+        "branch": "master",
+        "created": "2024-03-08 14:50:13.000000000",
+        "submitted": "2025-09-23 12:29:13.000000000"
+      },
+      "commit": "b26c0fa41098ab6b872aba64b22aa961ef732cd8",
+      "changed_paths": [
+        "syslog-ng-config/debian-source/syslog-ng.logrotate",
+        "syslog-ng-config/files/syslog-ng.logrotate"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/config-files/+/912267",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/stx-puppet/+/912264",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/2a4835bffa0c4f14a0f201187923ec0f"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config-files",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/config-files/src/commit/5df711b1fb9eff45219c1e65ff5f740093d8d741"
+    },
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet/src/commit/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-973634",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/root",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 973634,
+      "change_id": "I46d416343f71958a67c300db6ac6a5efc5a791e7",
+      "url": "https://review.opendev.org/c/starlingx/root/+/973634",
+      "status": "MERGED",
+      "subject": "Update stx-platformclients image to version stx.12.0-v1.0.1",
+      "branch": "master",
+      "created": "2026-01-16 14:42:10.000000000",
+      "submitted": "2026-01-19 18:16:01.000000000"
+    },
+    "base_commit": "5033022c4f574aa6eed4157ff3fddc00fccf5568",
+    "candidate_commit": "d04c1ef3d93277e36bed0ccdd81ab6f60be676ea",
+    "changed_paths": [
+      "build-tools/build-docker-images/tag-management/image-tags.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/973634/revisions/d04c1ef3d93277e36bed0ccdd81ab6f60be676ea/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/root",
+      "target_repository": "starlingx/clients",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/clients/+/973637"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/clients",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 973637,
+        "change_id": "I58a2c8c6631b5f600276dbba3e673797124c0877",
+        "url": "https://review.opendev.org/c/starlingx/clients/+/973637",
+        "status": "MERGED",
+        "subject": "Update stx-platformclients image to version stx.12.0-v1.0.1",
+        "branch": "master",
+        "created": "2026-01-16 14:58:07.000000000",
+        "submitted": "2026-01-19 21:02:17.000000000"
+      },
+      "commit": "6eb8d8bf0be8e626f0ac9011fcd586311ea24088",
+      "changed_paths": [
+        "remote_cli/docker_image_version.sh"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/clients/+/973637",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/root/+/973634",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/345738024c584664a598786215eb36f1"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/clients",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/clients/raw/commit/b8365f637c16870a25faa4a73ae38e6608dcd9e6/LICENSE"
+    },
+    {
+      "repository": "starlingx/root",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/root/raw/commit/19e373ccc0aef251009c8a6e1077f05001a3e6fd/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

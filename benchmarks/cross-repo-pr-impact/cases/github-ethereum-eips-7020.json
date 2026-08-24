@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-7020",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 7020,
+      "change_id": "ethereum/EIPs#7020",
+      "url": "https://github.com/ethereum/EIPs/pull/7020",
+      "status": "MERGED",
+      "subject": "Update EIP-4844: Specify precompile input's  z and y to be encoded as big endian",
+      "branch": "master",
+      "created": "2023-05-12T13:10:14Z",
+      "submitted": "2023-06-07T10:01:06Z"
+    },
+    "base_commit": "686c73cac47eee1d234216aceb88c047bde6ef27",
+    "candidate_commit": "be7d9571c6e99231fce343746829e784cda762f7",
+    "changed_paths": [
+      "EIPS/eip-4844.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/686c73cac47eee1d234216aceb88c047bde6ef27...be7d9571c6e99231fce343746829e784cda762f7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/5739"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/7680"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 5739,
+        "change_id": "NethermindEth/nethermind#5739",
+        "url": "https://github.com/NethermindEth/nethermind/pull/5739",
+        "status": "MERGED",
+        "subject": "Fix point evaluation precompile",
+        "branch": "master",
+        "created": "2023-05-29T07:40:57Z",
+        "submitted": "2023-05-31T14:14:27Z"
+      },
+      "commit": "3acf108c695836ea24e7c411e7e1d242c7754697",
+      "changed_paths": [
+        "src/Nethermind/Directory.Packages.props",
+        "src/Nethermind/Nethermind.Crypto/kzg_trusted_setup.txt",
+        "src/Nethermind/Nethermind.Evm.Test/PointEvaluationPrecompileTests.cs",
+        "src/Nethermind/Nethermind.Evm/Precompiles/PointEvaluationPrecompile.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/5739",
+          "statement": "按源规范把相应字段切换为大端。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 7680,
+        "change_id": "erigontech/erigon#7680",
+        "url": "https://github.com/erigontech/erigon/pull/7680",
+        "status": "MERGED",
+        "subject": "EIP-4844: switch precompile input's z and y to big endian ",
+        "branch": "devel",
+        "created": "2023-06-07T14:19:10Z",
+        "submitted": "2023-06-07T15:33:16Z"
+      },
+      "commit": "45268abb886d10d6078d2fbe6be5c126c0178d17",
+      "changed_paths": [
+        "core/vm/contracts.go",
+        "core/vm/contracts_test.go",
+        "core/vm/testdata/precompiles/pointEvaluation.json",
+        "go.mod",
+        "go.sum"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/7680",
+          "statement": "明确按源规范切换预编译输入编码。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

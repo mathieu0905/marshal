@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-982072",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstack-ansible",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 982072,
+      "change_id": "I79a581a96067fdecddc04504fe3c24c228c7f781",
+      "url": "https://review.opendev.org/c/openstack/openstack-ansible/+/982072",
+      "status": "MERGED",
+      "subject": "Respect global tox_environment for molecule",
+      "branch": "stable/2025.1",
+      "created": "2026-03-25 10:55:51.000000000",
+      "submitted": "2026-04-02 21:03:17.000000000"
+    },
+    "base_commit": "39cebe249bcb47b7224e3a4ae05b2c51bf96ebc2",
+    "candidate_commit": "b5a947e2fff98c4fee22dc7fbc16bb750835e1fe",
+    "changed_paths": [
+      "zuul.d/jobs.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/982072/revisions/b5a947e2fff98c4fee22dc7fbc16bb750835e1fe/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstack-ansible",
+      "target_repository": "openstack/openstack-ansible-plugins",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-plugins/+/976115"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-ansible-plugins",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 976115,
+        "change_id": "Iddcf6ed091862314f2d7e53465e6883311eafae6",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-plugins/+/976115",
+        "status": "MERGED",
+        "subject": "Pin setuptools via global-requirement-pins.txt",
+        "branch": "stable/2025.1",
+        "created": "2026-02-09 13:05:56.000000000",
+        "submitted": "2026-04-03 02:37:47.000000000"
+      },
+      "commit": "1c0930ba13531e7fa94eaa277f23685ce3b9cc16",
+      "changed_paths": [
+        "molecule/user_config/prepare.yml",
+        "requirements.yml",
+        "tox.ini"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-plugins/+/976115",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstack-ansible/+/982072",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/dea458274a3c44c9b03e5045375a9f60"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-ansible",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible/raw/commit/f8552f00f77354653d0d31c982893b8bc58fb128/LICENSE.txt"
+    },
+    {
+      "repository": "openstack/openstack-ansible-plugins",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-plugins/raw/commit/1c0930ba13531e7fa94eaa277f23685ce3b9cc16/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-831",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 831,
+      "change_id": "kubernetes/enhancements#831",
+      "url": "https://github.com/kubernetes/enhancements/pull/831",
+      "status": "MERGED",
+      "subject": "Fix some of the follow up comments",
+      "branch": "master",
+      "created": "2019-02-13T20:37:22Z",
+      "submitted": "2019-04-30T19:45:00Z"
+    },
+    "base_commit": "24977010d897617b4beeb85bf2881e2f38368980",
+    "candidate_commit": "7f8aca233277b69f2f993321436d8c7d77e92ef5",
+    "changed_paths": [
+      "keps/sig-storage/20190129-csi-volume-resizing.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/24977010d897617b4beeb85bf2881e2f38368980...7f8aca233277b69f2f993321436d8c7d77e92ef5.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/77516"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 77516,
+        "change_id": "kubernetes/kubernetes#77516",
+        "url": "https://github.com/kubernetes/kubernetes/pull/77516",
+        "status": "MERGED",
+        "subject": "Add a new field for storing volume expansion secrets",
+        "branch": "master",
+        "created": "2019-05-06T16:41:21Z",
+        "submitted": "2019-05-10T00:51:58Z"
+      },
+      "commit": "69393291b64a2281533cb2567f67edca478b4a93",
+      "changed_paths": [
+        "api/openapi-spec/swagger.json",
+        "pkg/api/persistentvolume/util.go",
+        "pkg/api/persistentvolume/util_test.go",
+        "pkg/api/v1/persistentvolume/util.go",
+        "pkg/api/v1/persistentvolume/util_test.go",
+        "pkg/apis/core/types.go",
+        "pkg/apis/core/v1/zz_generated.conversion.go",
+        "pkg/apis/core/validation/validation.go",
+        "pkg/apis/core/validation/validation_test.go",
+        "pkg/apis/core/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/api/core/v1/generated.pb.go",
+        "staging/src/k8s.io/api/core/v1/generated.proto",
+        "staging/src/k8s.io/api/core/v1/types.go",
+        "staging/src/k8s.io/api/core/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/api/core/v1/zz_generated.deepcopy.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/77516",
+          "statement": "目标新增卷扩容密钥字段，与源 KEP 的同版本更新一致并直接交叉引用。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

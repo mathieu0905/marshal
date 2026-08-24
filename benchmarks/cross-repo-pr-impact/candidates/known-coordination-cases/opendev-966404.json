@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-966404",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/ansible-role-python_venv_build",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 966404,
+      "change_id": "Ifcc328caa09a8394af59c295486ac3b86e072a98",
+      "url": "https://review.opendev.org/c/openstack/ansible-role-python_venv_build/+/966404",
+      "status": "MERGED",
+      "subject": "Define trusted host for wheels build",
+      "branch": "master",
+      "created": "2025-11-07 08:56:42.000000000",
+      "submitted": "2025-11-26 12:31:57.000000000"
+    },
+    "base_commit": "be9cbaa954c75066dd2b171677a3abb38064f768",
+    "candidate_commit": "6dbe437500ed0fa228459d1087c197b218e77071",
+    "changed_paths": [
+      "tasks/python_venv_wheel_build.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/966404/revisions/6dbe437500ed0fa228459d1087c197b218e77071/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/ansible-role-python_venv_build",
+      "target_repository": "openstack/openstack-ansible-rabbitmq_server",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/970127"
+    },
+    {
+      "source_repository": "openstack/ansible-role-python_venv_build",
+      "target_repository": "openstack/openstack-ansible-rabbitmq_server",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/968173"
+    },
+    {
+      "source_repository": "openstack/ansible-role-python_venv_build",
+      "target_repository": "openstack/openstack-ansible-galera_server",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-galera_server/+/960373"
+    },
+    {
+      "source_repository": "openstack/ansible-role-python_venv_build",
+      "target_repository": "openstack/openstack-ansible-os_keystone",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-os_keystone/+/967181"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-ansible-rabbitmq_server",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 970127,
+        "change_id": "I2fc5b3f757dcfca1f209dcb7026aeb4b40bb6f33",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/970127",
+        "status": "MERGED",
+        "subject": "Make jobs voting again",
+        "branch": "stable/2025.2",
+        "created": "2025-12-08 14:02:15.000000000",
+        "submitted": "2025-12-09 10:49:37.000000000"
+      },
+      "commit": "90ca063236bdb7c1c69d519fdb2de13874fc0d60",
+      "changed_paths": [
+        "zuul.d/project.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/970127",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/ansible-role-python_venv_build/+/966404",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/c7f07b58bc6e42028631f4e550461eb1"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/openstack-ansible-rabbitmq_server",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 968173,
+        "change_id": "I2fc5b3f757dcfca1f209dcb7026aeb4b40bb6f33",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/968173",
+        "status": "MERGED",
+        "subject": "Make jobs voting again",
+        "branch": "master",
+        "created": "2025-11-24 09:51:00.000000000",
+        "submitted": "2025-12-08 12:19:16.000000000"
+      },
+      "commit": "783244508baf2b46405e2bb834fe1d236f07dd81",
+      "changed_paths": [
+        "zuul.d/project.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/968173",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/ansible-role-python_venv_build/+/966404",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/61dbadb13d4945bcb69b81a3ee618b85"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/openstack-ansible-galera_server",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 960373,
+        "change_id": "I681125db8f94977baaf232c985703386ef7f673d",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-galera_server/+/960373",
+        "status": "MERGED",
+        "subject": "Copy mariabackup script instead of templating",
+        "branch": "master",
+        "created": "2025-09-10 13:07:22.000000000",
+        "submitted": "2025-12-01 13:39:07.000000000"
+      },
+      "commit": "b0f8a4033283ccfcc1c9f2fdb6db0b451787675f",
+      "changed_paths": [
+        "files/mariabackup_script.py",
+        "tasks/galera_server_backups.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-galera_server/+/960373",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/ansible-role-python_venv_build/+/966404",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/4385a07b96a54c09ab90417955b4c3b6"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/openstack-ansible-os_keystone",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 967181,
+        "change_id": "Iacd1ae95ff35e7af2c637f0316bbf5d0cf2eafa8",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-os_keystone/+/967181",
+        "status": "MERGED",
+        "subject": "Do not remove policy.yaml file",
+        "branch": "master",
+        "created": "2025-11-14 10:44:12.000000000",
+        "submitted": "2025-11-28 23:38:48.000000000"
+      },
+      "commit": "7e148007773541946e4787b687d251d6cc2507db",
+      "changed_paths": [
+        "tasks/keystone_post_install.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-os_keystone/+/967181",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/ansible-role-python_venv_build/+/966404",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/3371ca1b979d4bd08a8a84642d272a5f"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/ansible-role-python_venv_build",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/ansible-role-python_venv_build/raw/commit/6dbe437500ed0fa228459d1087c197b218e77071/LICENSE"
+    },
+    {
+      "repository": "openstack/openstack-ansible-galera_server",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-galera_server/raw/commit/b0f8a4033283ccfcc1c9f2fdb6db0b451787675f/LICENSE"
+    },
+    {
+      "repository": "openstack/openstack-ansible-os_keystone",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-os_keystone/raw/commit/7e148007773541946e4787b687d251d6cc2507db/LICENSE"
+    },
+    {
+      "repository": "openstack/openstack-ansible-rabbitmq_server",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-rabbitmq_server/raw/commit/90ca063236bdb7c1c69d519fdb2de13874fc0d60/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

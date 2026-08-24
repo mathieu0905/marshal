@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "project_id": "bump-jcabi-aspects-fanout",
+  "title": "jcabi-aspects 升级对两个消费仓的影响",
+  "split": "test",
+  "scenario_kind": "released_dependency_fanout",
+  "source": {
+    "dataset": "BUMP",
+    "dataset_repository": "https://github.com/chains-project/bump",
+    "dataset_revision": "324d5513aa5ca40b5cb32de5b816a58fa60bd7bb",
+    "license": "MIT"
+  },
+  "provider": {
+    "repository": {
+      "full_name": "jcabi/jcabi-aspects",
+      "url": "https://github.com/jcabi/jcabi-aspects.git",
+      "license": "BSD-3-Clause",
+      "license_file": "LICENSE.txt",
+      "prepare_commands": {
+        "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+        "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+      }
+    },
+    "artifact": {
+      "ecosystem": "Maven",
+      "coordinate": "com.jcabi:jcabi-aspects"
+    },
+    "variants": [
+      {
+        "variant_id": "0.24.1",
+        "version": "0.24.1",
+        "git_ref": "refs/tags/0.24.1",
+        "git_commit": "4a53c0fae11b80adb3b152e361cebd2193586245"
+      },
+      {
+        "variant_id": "0.25.1",
+        "version": "0.25.1",
+        "git_ref": "refs/tags/0.25.1",
+        "git_commit": "613e7005b469ad5e2ba61b69cf3397eee8c24bfb"
+      }
+    ],
+    "change": {
+      "summary": "将发布版本从 0.24.1 升级到 0.25.1；消费仓测试代码使用的 com.jcabi.aspects.Tv 在新版本中不可用。",
+      "compare_url": "https://github.com/jcabi/jcabi-aspects/compare/0.24.1...0.25.1"
+    }
+  },
+  "consumers": [
+    {
+      "case_id": "bump-jcabi-s3-24d4a90",
+      "repository": {
+        "full_name": "jcabi/jcabi-s3",
+        "url": "https://github.com/jcabi/jcabi-s3.git",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "prepare_commands": {
+          "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+          "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+        }
+      },
+      "dependency": {
+        "direction": "provider_to_consumer",
+        "coordinate": "com.jcabi:jcabi-aspects",
+        "from_provider_variant": "0.24.1",
+        "to_provider_variant": "0.25.1",
+        "manifest_path": "pom.xml"
+      },
+      "change": {
+        "summary": "pom.xml 中 jcabi-aspects 由 0.24.1 升级为 0.25.1。",
+        "files": ["pom.xml"],
+        "pull_request_url": "https://github.com/jcabi/jcabi-s3/pull/210"
+      },
+      "variants": {
+        "before": {
+          "git_commit": "0efa37ae2c431ae148e921dc3c1a9fcb8aa2bd3a",
+          "expected": {"outcome": "pass"}
+        },
+        "after": {
+          "git_commit": "24d4a90ec1b375751e71f33d18949405c9529d77",
+          "expected": {"outcome": "fail", "failure_category": "compilation_failure"}
+        }
+      },
+      "test": {
+        "working_directory": ".",
+        "command": ["mvn", "clean", "test", "-B"],
+        "timeout_seconds": 1800,
+        "environment": {"java_major": "11"}
+      },
+      "source_record_url": "https://github.com/chains-project/bump/blob/324d5513aa5ca40b5cb32de5b816a58fa60bd7bb/data/benchmark/24d4a90ec1b375751e71f33d18949405c9529d77.json"
+    },
+    {
+      "case_id": "bump-jcabi-simpledb-7d97e1c",
+      "repository": {
+        "full_name": "jcabi/jcabi-simpledb",
+        "url": "https://github.com/jcabi/jcabi-simpledb.git",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "prepare_commands": {
+          "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+          "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+        }
+      },
+      "dependency": {
+        "direction": "provider_to_consumer",
+        "coordinate": "com.jcabi:jcabi-aspects",
+        "from_provider_variant": "0.24.1",
+        "to_provider_variant": "0.25.1",
+        "manifest_path": "pom.xml"
+      },
+      "change": {
+        "summary": "pom.xml 中 jcabi-aspects 由 0.24.1 升级为 0.25.1。",
+        "files": ["pom.xml"],
+        "pull_request_url": "https://github.com/jcabi/jcabi-simpledb/pull/155"
+      },
+      "variants": {
+        "before": {
+          "git_commit": "4af3ea931691caa0a667852b626485b1b0cbffcf",
+          "expected": {"outcome": "pass"}
+        },
+        "after": {
+          "git_commit": "7d97e1c7331f6722eb1d8192bf0a2686f5a33798",
+          "expected": {"outcome": "fail", "failure_category": "compilation_failure"}
+        }
+      },
+      "test": {
+        "working_directory": ".",
+        "command": ["mvn", "clean", "test", "-B"],
+        "timeout_seconds": 1800,
+        "environment": {"java_major": "11"}
+      },
+      "source_record_url": "https://github.com/chains-project/bump/blob/324d5513aa5ca40b5cb32de5b816a58fa60bd7bb/data/benchmark/7d97e1c7331f6722eb1d8192bf0a2686f5a33798.json"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-669",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 669,
+      "change_id": "ethereum/EIPs#669",
+      "url": "https://github.com/ethereum/EIPs/pull/669",
+      "status": "MERGED",
+      "subject": "[WIP] Metropolis Difficulty Bomb Relay",
+      "branch": "master",
+      "created": "2017-07-11T14:00:19Z",
+      "submitted": "2017-11-19T00:57:39Z"
+    },
+    "base_commit": "3b2fae51335fcca1c022bf0e92820d9e1bb9e322",
+    "candidate_commit": "fc748cce51b8496141c87549cd69b1cba0bc1bc6",
+    "changed_paths": [
+      "EIPS/eip-649.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/3b2fae51335fcca1c022bf0e92820d9e1bb9e322...fc748cce51b8496141c87549cd69b1cba0bc1bc6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/15028"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 15028,
+        "change_id": "ethereum/go-ethereum#15028",
+        "url": "https://github.com/ethereum/go-ethereum/pull/15028",
+        "status": "MERGED",
+        "subject": "consensus, core, tests: implement Metropolis EIP 649",
+        "branch": "master",
+        "created": "2017-08-24T09:28:44Z",
+        "submitted": "2017-08-25T08:00:52Z"
+      },
+      "commit": "b872961ec82ec88a7ac6ef331cfb3eb685ce2c00",
+      "changed_paths": [
+        "consensus/ethash/consensus.go",
+        "core/chain_makers.go",
+        "core/vm/logger.go",
+        "tests/gen_stlog.go",
+        "tests/state_test_util.go",
+        "tests/testdata",
+        "tests/vm_test.go",
+        "tests/vm_test_util.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/15028",
+          "statement": "目标正文明确声明实现源 EIP，标题和共识代码改动与规范主题一致。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

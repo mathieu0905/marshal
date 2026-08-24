@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-08-24",
+  "status": "single_screening_complete",
+  "formal_label_accepted": false,
+  "project_package": {
+    "provider_repository": "snakeyaml/snakeyaml",
+    "breaking_change": "org.yaml:snakeyaml 1.32 to 2.0",
+    "compatible_change": "org.yaml:snakeyaml 1.31 to 1.32",
+    "candidate_set": [
+      "apache/jclouds",
+      "zio/zio-json",
+      "xlate/yaml-json",
+      "xvik/yaml-updater"
+    ]
+  },
+  "environment": {
+    "java": "OpenJDK 11.0.31",
+    "isolation": "每个仓库和试验臂使用独立工作树；本文件记录单次筛选，尚不是三次正式重复"
+  },
+  "positive_consumers": [
+    {
+      "repository": "apache/jclouds",
+      "baseline_commit": "788f75f9379287e70a2e2197297cb0efd45f96f7",
+      "maintainer_fix_commit": "dafa59d61fd0bafc17b941df8fb12159463ccf71",
+      "command": "mvn -B -ntp -pl apis/byon -am clean test -DskipTests=false",
+      "a0": {
+        "snakeyaml": "1.32",
+        "exit_code": 0,
+        "target_tests": 31,
+        "log": "jclouds-a0.log"
+      },
+      "a1": {
+        "snakeyaml": "2.0",
+        "exit_code": 1,
+        "failure_signature": "YamlNode 和 NodesFromYamlStream 仍向已改签名的构造器传入 Class，编译器报告 Class 不能转换为 LoaderOptions",
+        "log": "jclouds-a1.log"
+      },
+      "a2": {
+        "snakeyaml": "2.0",
+        "exit_code": 0,
+        "target_tests": 31,
+        "repair": "在两个消费点创建并传入 LoaderOptions",
+        "log": "jclouds-a2.log"
+      },
+      "repair_boundary": "修复提交的父提交就是基线；该提交只升级 SnakeYAML 并修改两个构造器调用点。"
+    },
+    {
+      "repository": "zio/zio-json",
+      "baseline_commit": "716a08ddb1c503f25cfd664cbc24502cbc46c09c",
+      "historical_fix_pr": "https://github.com/zio/zio-json/pull/974",
+      "maintainer_upgrade_commit": "8adbacb497a56da09a2683f2f60739ec412945da",
+      "maintainer_fix_head": "b895d3148e8ce3dded7c15de1bdc62eb3a3f2681",
+      "command": "./sbt -batch zioJsonYaml/clean zioJsonYaml/test",
+      "a0": {
+        "snakeyaml": "1.32",
+        "exit_code": 0,
+        "tests": 16,
+        "log": "zio-a0.log"
+      },
+      "a1": {
+        "snakeyaml": "2.0",
+        "exit_code": 1,
+        "failure_signature": "YamlValueConstruction 继承 SafeConstructor 时缺少 LoaderOptions 参数",
+        "log": "zio-a1.log"
+      },
+      "a2": {
+        "snakeyaml": "2.0",
+        "exit_code": 0,
+        "tests": 16,
+        "repair": "向 SafeConstructor 传入新的 LoaderOptions，并删除不再需要的告警抑制",
+        "log": "zio-a2.log"
+      },
+      "repair_boundary": "主动试验把历史升级前版本从 1.33 统一为 1.32；生产修复保持维护者改动。"
+    }
+  ],
+  "bounded_negative_consumers": [
+    {
+      "repository": "xlate/yaml-json",
+      "baseline_commit": "ce9f3933c975dd33ecd3d285ccb81898f5dcdf57",
+      "historical_upgrade_pr": "https://github.com/xlate/yaml-json/pull/73",
+      "command": "mvn -B -ntp clean test -DskipTests=false",
+      "a0": {
+        "snakeyaml": "1.32",
+        "exit_code": 0,
+        "default_tests": 78,
+        "yaml_1_1_tests": 60,
+        "yaml_1_2_tests": 60,
+        "log": "xlate-a0.log"
+      },
+      "a1": {
+        "snakeyaml": "2.0",
+        "exit_code": 0,
+        "default_tests": 78,
+        "yaml_1_1_tests": 60,
+        "yaml_1_2_tests": 60,
+        "log": "xlate-a1.log"
+      },
+      "label_boundary": "只说明该固定提交的原生解析、读取、写入和生成测试在同一输入下不需要消费者修改；不外推到未执行配置或任意 YAML 负载。"
+    },
+    {
+      "repository": "xvik/yaml-updater",
+      "baseline_commit": "bfa3fd754e97c58ea132f46ddc00d83811fd6724",
+      "historical_upgrade_pr": "https://github.com/xvik/yaml-updater/pull/95",
+      "command": "/tmp/gradle-7.2/bin/gradle :yaml-config-updater:clean :yaml-config-updater:test --no-daemon",
+      "a0": {
+        "snakeyaml": "1.32",
+        "exit_code": 0,
+        "test_suites": 33,
+        "tests": 146,
+        "log": "xvik-a0.log"
+      },
+      "a1": {
+        "snakeyaml": "2.0",
+        "exit_code": 0,
+        "test_suites": 33,
+        "tests": 146,
+        "log": "xvik-a1.log"
+      },
+      "label_boundary": "只说明 yaml-config-updater 模块的 146 项原生测试在同一输入下不需要消费者修改；不把其他模块或未执行输入判为无影响。"
+    }
+  ],
+  "compatible_change_screening": {
+    "from": "1.31",
+    "to": "1.32",
+    "source_change": "ScannerImpl.fetchMoreTokens 新增默认 3 MB 单文档输入上限判断。",
+    "results": [
+      {
+        "repository": "apache/jclouds",
+        "before": "通过，BYON 31 项测试",
+        "after": "通过，BYON 31 项测试",
+        "before_log": "jclouds-a3-131.log",
+        "after_log": "jclouds-a0.log",
+        "coverage": "jclouds-a3-132-coverage.xml"
+      },
+      {
+        "repository": "zio/zio-json",
+        "before": "通过，16 项测试",
+        "after": "通过，16 项测试",
+        "before_log": "zio-a3-131.log",
+        "after_log": "zio-a0.log",
+        "coverage": "zio-base-a3-132-coverage.xml"
+      },
+      {
+        "repository": "xlate/yaml-json",
+        "before": "通过，默认配置 78 项、YAML 1.1 与 1.2 配置各 60 项",
+        "after": "通过，默认配置 78 项、YAML 1.1 与 1.2 配置各 60 项",
+        "before_log": "xlate-a3-131.log",
+        "after_log": "xlate-a0.log",
+        "coverage": "xlate-a3-132-coverage.xml"
+      },
+      {
+        "repository": "xvik/yaml-updater",
+        "before": "通过，33 个测试套件共 146 项测试",
+        "after": "通过，33 个测试套件共 146 项测试",
+        "before_log": "xvik-a3-131.log",
+        "after_log": "xvik-a0.log",
+        "coverage": "xvik-a3-132-coverage.xml"
+      }
+    ],
+    "coverage_assertion": {
+      "source_file": "org/yaml/snakeyaml/scanner/ScannerImpl.java",
+      "line": 333,
+      "all_four_repositories": {
+        "missed_instructions": 0,
+        "covered_instructions": 7,
+        "missed_branches": 1,
+        "covered_branches": 1
+      },
+      "interpretation": "四仓测试都执行了新增上限判断并走过正常输入未超限分支；这不证明超限异常分支被覆盖。"
+    },
+    "zio_boundary": "ZIO 的 1.31 与 1.32 两臂都使用未应用 2.0 修复的基线代码。"
+  },
+  "rejected_consumer": {
+    "repository": "takari/polyglot-maven",
+    "baseline_commit": "81a1150318821666f2f459241185658de2d1fa24",
+    "later_fix_commit": "2a8ec4dd3f424a9ff273ebd8b3b4a484aab93328",
+    "reason": "真实未修改基线在 SnakeYAML 1.31 和 1.32 下都因 Representer.getProperties 的异常签名不兼容而无法编译；把面向 2.2 的后续维护者代码回退到 1.31 或 1.32 后虽然能够编译，但 33 项测试中仍有 4 项以 Scalar style must be provided 失败。因此无法形成 A0，也不能加入人工兼容改动制造合格案例。",
+    "logs": [
+      "polyglot-original-1.31.log",
+      "polyglot-original-1.32.log",
+      "polyglot-fixed-1.31.log",
+      "polyglot-fixed-1.32.log"
+    ]
+  },
+  "decision": {
+    "status": "advance_to_formal_repetition",
+    "reason": "两个消费者形成单次通过、破坏、精确恢复，两个消费者形成执行表面明确的限定负例，四仓都在真实兼容变化的新增判断处留下覆盖证据。",
+    "limitations": [
+      "当前只完成一次筛选，不能据此接受正式标签。",
+      "尚未完成三次隔离重复。",
+      "尚未完成独立语义复核。",
+      "四仓闭集只覆盖各自记录的原生命令与变化表面，不代表 SnakeYAML 2.0 的完整影响面。"
+    ]
+  },
+  "next_required_steps": [
+    "为四仓的 A0、A1 或同输入限定负例、正例 A2、A3 前后臂各执行三次隔离重复并逐次核验解析版本。",
+    "独立复核两个维护者修复的精确性、两个限定负例的结论上限，以及 1.31 到 1.32 是否足以作为共同兼容变化。",
+    "只有重复和独立复核均通过后，才进行关系隔离划分并考虑纳入正式或保留用途。"
+  ]
+}

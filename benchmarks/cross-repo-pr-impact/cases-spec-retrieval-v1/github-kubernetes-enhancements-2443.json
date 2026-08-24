@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-2443",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 2443,
+      "change_id": "kubernetes/enhancements#2443",
+      "url": "https://github.com/kubernetes/enhancements/pull/2443",
+      "status": "MERGED",
+      "subject": "[WIP] KEP-2395 Introduce feature gates DisableCloudProviderse and DisableCloudKubelet",
+      "branch": "master",
+      "created": "2021-02-06T19:40:08Z",
+      "submitted": "2021-02-09T19:15:00Z"
+    },
+    "base_commit": "d1044e63efb74883a42b3e31916ccb33aa8534fb",
+    "candidate_commit": "70372d4066e65138a1e74f5d020cfb60af136ff0",
+    "changed_paths": [
+      "keps/sig-cloud-provider/2395-removing-in-tree-cloud-providers/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/d1044e63efb74883a42b3e31916ccb33aa8534fb...70372d4066e65138a1e74f5d020cfb60af136ff0.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/100136"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 100136,
+        "change_id": "kubernetes/kubernetes#100136",
+        "url": "https://github.com/kubernetes/kubernetes/pull/100136",
+        "status": "MERGED",
+        "subject": "Add feature gate to disable all in-tree cloud providers",
+        "branch": "master",
+        "created": "2021-03-11T12:54:07Z",
+        "submitted": "2021-05-21T22:39:37Z"
+      },
+      "commit": "5d57b3794c1a08b707d8ac6857bcb93cdd4975f0",
+      "changed_paths": [
+        "cmd/kube-apiserver/app/server.go",
+        "cmd/kube-controller-manager/app/cloudproviders.go",
+        "pkg/features/kube_features.go",
+        "pkg/kubelet/kubelet.go",
+        "staging/src/k8s.io/cloud-provider/plugins.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/100136",
+          "statement": "目标正文明确声明按源提案加入禁用内置云提供者的特性开关。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

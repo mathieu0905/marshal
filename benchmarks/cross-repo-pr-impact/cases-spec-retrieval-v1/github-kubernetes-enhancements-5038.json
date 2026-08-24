@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-5038",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 5038,
+      "change_id": "kubernetes/enhancements#5038",
+      "url": "https://github.com/kubernetes/enhancements/pull/5038",
+      "status": "MERGED",
+      "subject": "KEP-4330: Change API availability to forward compatibility and add UnEmulatableFeatures",
+      "branch": "master",
+      "created": "2025-01-14T00:57:51Z",
+      "submitted": "2025-02-04T18:15:00Z"
+    },
+    "base_commit": "60dd2a9267dd931246a4d1532660b0ae32c38c0c",
+    "candidate_commit": "3c476b42ee79543ec7d39aab7ce099a010dee43b",
+    "changed_paths": [
+      "keps/sig-architecture/4330-compatibility-versions/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/60dd2a9267dd931246a4d1532660b0ae32c38c0c...3c476b42ee79543ec7d39aab7ce099a010dee43b.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/130354"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 130354,
+        "change_id": "kubernetes/kubernetes#130354",
+        "url": "https://github.com/kubernetes/kubernetes/pull/130354",
+        "status": "MERGED",
+        "subject": "KEP-4330: add forward compatibility for compatibility mode",
+        "branch": "master",
+        "created": "2025-02-21T22:01:27Z",
+        "submitted": "2025-03-14T01:55:58Z"
+      },
+      "commit": "3d2d8db83509eadcad0529fda1f8ef81e1682ca5",
+      "changed_paths": [
+        "cmd/kube-apiserver/app/options/options_test.go",
+        "pkg/controlplane/apiserver/apis.go",
+        "staging/src/k8s.io/apimachinery/pkg/runtime/interfaces.go",
+        "staging/src/k8s.io/apiserver/pkg/server/config.go",
+        "staging/src/k8s.io/apiserver/pkg/server/deleted_kinds.go",
+        "staging/src/k8s.io/apiserver/pkg/server/deleted_kinds_test.go",
+        "staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go",
+        "staging/src/k8s.io/apiserver/pkg/server/options/api_enablement.go",
+        "staging/src/k8s.io/apiserver/pkg/server/options/server_run_options.go",
+        "staging/src/k8s.io/apiserver/pkg/server/options/server_run_options_test.go",
+        "staging/src/k8s.io/apiserver/pkg/server/resourceconfig/helpers.go",
+        "staging/src/k8s.io/apiserver/pkg/server/resourceconfig/helpers_test.go",
+        "staging/src/k8s.io/apiserver/pkg/server/storage/resource_config.go",
+        "test/integration/apiserver/apiserver_test.go",
+        "test/integration/etcd/data.go",
+        "test/integration/etcd/etcd_storage_path_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/130354",
+          "statement": "目标正文明确声明实现源 KEP 提出的兼容模式前向兼容行为。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

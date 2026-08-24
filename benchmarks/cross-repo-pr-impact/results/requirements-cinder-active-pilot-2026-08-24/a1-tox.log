@@ -1,0 +1,234 @@
+.pkg: remove tox env folder /tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/.tox/.pkg
+py313: install_deps> python -I -m pip install -r /tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/test-requirements.txt -r /tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/requirements.txt -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a1/upper-constraints.txt
+.pkg: install_requires> python -I -m pip install 'pbr>=6.1.1'
+.pkg: _optional_hooks> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: get_requires_for_build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: install_requires_for_build_editable> python -I -m pip install 'pbr>=2.0.0'
+.pkg: build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+py313: install_package_deps> python -I -m pip install 'Paste>=3.4.3' 'PasteDeploy>=2.1.0' 'Routes>=2.4.1' 'SQLAlchemy>=1.4.23' 'WebOb>=1.8.6' 'boto3>=1.18.49' 'cachetools>=4.2.1' 'castellan>=3.7.0' 'cryptography>=3.1' 'cursive>=0.2.2' 'decorator>=4.4.2' 'distro>=1.8.0' 'eventlet!=0.32.0,>=0.30.1' 'futurist>=3.2.1' 'google-api-python-client>=1.11.0' 'greenlet>=0.4.16' 'iso8601>=0.1.12' 'jsonschema>=3.2.0' 'keystoneauth1>=4.2.1' 'keystonemiddleware>=9.1.0' 'lxml>=4.5.2' 'os-brick>=6.10.0' 'oslo.concurrency>=4.5.0' 'oslo.config>=8.3.2' 'oslo.context>=3.4.0' 'oslo.db>=11.0.0' 'oslo.i18n>=5.1.0' 'oslo.log>=4.6.1' 'oslo.messaging>=14.6.0' 'oslo.middleware>=4.1.1' 'oslo.policy>=5.0.0' 'oslo.privsep>=2.6.2' 'oslo.reports>=3.2.0' 'oslo.rootwrap>=6.2.0' 'oslo.serialization>=4.2.0' 'oslo.service>=4.5.0' 'oslo.service[threading]>=4.5.0' 'oslo.upgradecheck>=1.1.1' 'oslo.utils>=6.0.0' 'oslo.versionedobjects>=2.4.0' 'oslo.vmware>=3.10.0' 'osprofiler>=3.4.0' 'packaging>=20.9' 'paramiko>=2.7.2' 'pbr>=5.8.0' 'pyparsing>=3.0.0' 'python-barbicanclient>=5.0.1' 'python-glanceclient>=3.2.2' 'python-keystoneclient>=4.1.1' 'python-novaclient>=18.2.0' 'python-swiftclient>=3.10.1' 'requests>=2.25.1' 'rtslib-fb>=2.1.74' 'stevedore>=3.2.2' 'tabulate>=0.8.7' 'taskflow>=4.5.0' 'tenacity>=6.3.1' 'tooz>=2.8.0' 'tzdata>=2022.4' 'urllib3>=2.3.0' 'zstd>=1.5.0.0' -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a1/upper-constraints.txt
+py313: install_package> python -I -m pip install --force-reinstall --no-deps /tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/.tox/.tmp/package/1/cinder-0.0.0-0.editable-py3-none-any.whl
+py313: commands[0]> stestr run --random cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync
+/tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/cinder/__init__.py:21: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet  # noqa
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+/tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/cinder/__init__.py:21: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet  # noqa
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+DROP ALL OBJECTS, BACKEND mysql+pymysql://openstack_citest:***@127.0.0.1:33317/thbngytbgu
+DROP BACKEND Engine(mysql+pymysql://openstack_citest:***@127.0.0.1:33317/) TOKEN thbngytbgu
+DISPOSE ENGINE Engine(mysql+pymysql://openstack_citest:***@127.0.0.1:33317/)
+{0} cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync [25.634152s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/.tox/py313/lib/python3.13/site-packages/oslo_db/sqlalchemy/test_migrations.py", line 284, in test_models_sync
+    self.fail(
+    ~~~~~~~~~^
+        "Models and migration scripts aren't in sync:\n%s" % msg)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/data/zhihao/miniconda3/lib/python3.13/unittest/case.py", line 732, in fail
+    raise self.failureException(msg)
+
+    AssertionError: Models and migration scripts aren't in sync:
+[ ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394050>, name='CONSTRAINT_1', table=Table('backups', MetaData(), Column('x', Integer(), table=<backups>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394130>, name='CONSTRAINT_1', table=Table('cgsnapshots', MetaData(), Column('x', Integer(), table=<cgsnapshots>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394210>, name='CONSTRAINT_1', table=Table('consistencygroups', MetaData(), Column('x', Integer(), table=<consistencygroups>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513942f0>, name='CONSTRAINT_1', table=Table('default_volume_types', MetaData(), Column('x', Integer(), table=<default_volume_types>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513943d0>, name='CONSTRAINT_1', table=Table('encryption', MetaData(), Column('x', Integer(), table=<encryption>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513944b0>, name='CONSTRAINT_1', table=Table('group_snapshots', MetaData(), Column('x', Integer(), table=<group_snapshots>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394590>, name='CONSTRAINT_1', table=Table('group_type_projects', MetaData(), Column('x', Integer(), table=<group_type_projects>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394670>, name='CONSTRAINT_1', table=Table('quality_of_service_specs', MetaData(), Column('x', Integer(), table=<quality_of_service_specs>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394750>, name='CONSTRAINT_1', table=Table('quota_classes', MetaData(), Column('x', Integer(), table=<quota_classes>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394830>, name='CONSTRAINT_1', table=Table('quota_usages', MetaData(), Column('x', Integer(), table=<quota_usages>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394910>, name='CONSTRAINT_1', table=Table('reservations', MetaData(), Column('x', Integer(), table=<reservations>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513949f0>, name='CONSTRAINT_1', table=Table('volume_glance_metadata', MetaData(), Column('x', Integer(), table=<volume_glance_metadata>), schema=None)))]
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-24 03:29:40,449 INFO [cinder.db.migration] Applying migration(s)
+2026-08-24 03:29:40,450 INFO [alembic.runtime.migration] Context impl MySQLImpl.
+2026-08-24 03:29:40,451 INFO [alembic.runtime.migration] Will assume non-transactional DDL.
+2026-08-24 03:29:42,123 INFO [alembic.runtime.migration] Running upgrade  -> 921e1a36b076, Initial migration.
+2026-08-24 03:29:55,495 INFO [alembic.runtime.migration] Running upgrade 921e1a36b076 -> c92a3e68beed, Make shared_targets nullable
+2026-08-24 03:29:55,560 INFO [alembic.runtime.migration] Running upgrade c92a3e68beed -> daa98075b90d, Add resource indexes
+2026-08-24 03:29:56,313 INFO [alembic.runtime.migration] Running upgrade daa98075b90d -> 89aa6f9639f9, Drop legacy migrate_version table
+2026-08-24 03:29:56,316 INFO [alembic.runtime.migration] Running upgrade 89aa6f9639f9 -> b8660621f1b9, Update reservations resource
+2026-08-24 03:29:56,902 INFO [alembic.runtime.migration] Running upgrade b8660621f1b9 -> 9ab1b092a404, Make use_quota non nullable
+2026-08-24 03:29:58,773 INFO [alembic.runtime.migration] Running upgrade 9ab1b092a404 -> b7b88f50aab5, Remove quota consistencygroups
+2026-08-24 03:29:58,796 INFO [alembic.runtime.migration] Running upgrade b7b88f50aab5 -> 9c74c1c6971f, Quota: Add backup defaults in quota class
+2026-08-24 03:29:59,485 INFO [cinder.db.migration] Migration(s) applied
+2026-08-24 03:29:59,487 INFO [alembic.runtime.migration] Context impl MySQLImpl.
+2026-08-24 03:29:59,487 INFO [alembic.runtime.migration] Will assume non-transactional DDL.
+2026-08-24 03:29:59,487 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.schemas
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.tables
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.types
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.constraints
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.defaults
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.comments
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.checkconstraint_byname
+2026-08-24 03:29:59,586 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'backups'
+2026-08-24 03:29:59,587 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'cgsnapshots'
+2026-08-24 03:29:59,588 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'consistencygroups'
+2026-08-24 03:29:59,589 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'default_volume_types'
+2026-08-24 03:29:59,590 INFO [alembic.autogenerate.compare.constraints] Detected NULL on column 'encryption.encryption_id'
+2026-08-24 03:29:59,590 INFO [alembic.autogenerate.compare.constraints] Detected NULL on column 'encryption.provider'
+2026-08-24 03:29:59,590 INFO [alembic.autogenerate.compare.constraints] Detected NULL on column 'encryption.control_location'
+2026-08-24 03:29:59,591 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'encryption'
+2026-08-24 03:29:59,592 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'group_snapshots'
+2026-08-24 03:29:59,593 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'group_type_projects'
+2026-08-24 03:29:59,597 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'quality_of_service_specs'
+2026-08-24 03:29:59,597 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table
+     'quota_classes'
+2026-08-24 03:29:59,598 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'quota_usages'
+2026-08-24 03:29:59,599 INFO [alembic.autogenerate.compare.tables] Detected removed column 'quotas.allocated'
+2026-08-24 03:29:59,599 INFO [alembic.autogenerate.compare.constraints] Detected removed index 'ix_reservations_allocated_id' on 'reservations'
+2026-08-24 03:29:59,600 INFO [alembic.autogenerate.compare.constraints] Detected removed foreign key (allocated_id)(id) on table reservations
+2026-08-24 03:29:59,600 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'reservations'
+2026-08-24 03:29:59,600 INFO [alembic.autogenerate.compare.tables] Detected removed column 'reservations.allocated_id'
+2026-08-24 03:29:59,605 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'volume_glance_metadata'
+
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync
+-------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/tmp/marshal-cinder-pilot.XSm5CH/cinder-a1/.tox/py313/lib/python3.13/site-packages/oslo_db/sqlalchemy/test_migrations.py", line 284, in test_models_sync
+    self.fail(
+    ~~~~~~~~~^
+        "Models and migration scripts aren't in sync:\n%s" % msg)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/data/zhihao/miniconda3/lib/python3.13/unittest/case.py", line 732, in fail
+    raise self.failureException(msg)
+
+    AssertionError: Models and migration scripts aren't in sync:
+[ ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394050>, name='CONSTRAINT_1', table=Table('backups', MetaData(), Column('x', Integer(), table=<backups>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394130>, name='CONSTRAINT_1', table=Table('cgsnapshots', MetaData(), Column('x', Integer(), table=<cgsnapshots>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394210>, name='CONSTRAINT_1', table=Table('consistencygroups', MetaData(), Column('x', Integer(), table=<consistencygroups>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513942f0>, name='CONSTRAINT_1', table=Table('default_volume_types', MetaData(), Column('x', Integer(), table=<default_volume_types>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513943d0>, name='CONSTRAINT_1', table=Table('encryption', MetaData(), Column('x', Integer(), table=<encryption>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513944b0>, name='CONSTRAINT_1', table=Table('group_snapshots', MetaData(), Column('x', Integer(), table=<group_snapshots>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394590>, name='CONSTRAINT_1', table=Table('group_type_projects', MetaData(), Column('x', Integer(), table=<group_type_projects>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394670>, name='CONSTRAINT_1', table=Table('quality_of_service_specs', MetaData(), Column('x', Integer(), table=<quality_of_service_specs>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394750>, name='CONSTRAINT_1', table=Table('quota_classes', MetaData(), Column('x', Integer(), table=<quota_classes>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394830>, name='CONSTRAINT_1', table=Table('quota_usages', MetaData(), Column('x', Integer(), table=<quota_usages>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x798851394910>, name='CONSTRAINT_1', table=Table('reservations', MetaData(), Column('x', Integer(), table=<reservations>), schema=None))),
+  ( 'remove_constraint',
+    CheckConstraint(<sqlalchemy.sql.elements.TextClause object at 0x7988513949f0>, name='CONSTRAINT_1', table=Table('volume_glance_metadata', MetaData(), Column('x', Integer(), table=<volume_glance_metadata>), schema=None)))]
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-24 03:29:40,449 INFO [cinder.db.migration] Applying migration(s)
+2026-08-24 03:29:40,450 INFO [alembic.runtime.migration] Context impl MySQLImpl.
+2026-08-24 03:29:40,451 INFO [alembic.runtime.migration] Will assume non-transactional DDL.
+2026-08-24 03:29:42,123 INFO [alembic.runtime.migration] Running upgrade  -> 921e1a36b076, Initial migration.
+2026-08-24 03:29:55,495 INFO [alembic.runtime.migration] Running upgrade 921e1a36b076 -> c92a3e68beed, Make shared_targets nullable
+2026-08-24 03:29:55,560 INFO [alembic.runtime.migration] Running upgrade c92a3e68beed -> daa98075b90d, Add resource indexes
+2026-08-24 03:29:56,313 INFO [alembic.runtime.migration] Running upgrade daa98075b90d -> 89aa6f9639f9, Drop legacy migrate_version table
+2026-08-24 03:29:56,316 INFO [alembic.runtime.migration] Running upgrade 89aa6f9639f9 -> b8660621f1b9, Update reservations resource
+2026-08-24 03:29:56,902 INFO [alembic.runtime.migration] Running upgrade b8660621f1b9 -> 9ab1b092a404, Make use_quota non nullable
+2026-08-24 03:29:58,773 INFO [alembic.runtime.migration] Running upgrade 9ab1b092a404 -> b7b88f50aab5, Remove quota consistencygroups
+2026-08-24 03:29:58,796 INFO [alembic.runtime.migration] Running upgrade b7b88f50aab5 -> 9c74c1c6971f, Quota: Add backup defaults in quota class
+2026-08-24 03:29:59,485 INFO [cinder.db.migration] Migration(s) applied
+2026-08-24 03:29:59,487 INFO [alembic.runtime.migration] Context impl MySQLImpl.
+2026-08-24 03:29:59,487 INFO [alembic.runtime.migration] Will assume non-transactional DDL.
+2026-08-24 03:29:59,487 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.schemas
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.tables
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.types
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.constraints
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.defaults
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.comments
+2026-08-24 03:29:59,488 INFO [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.checkconstraint_byname
+2026-08-24 03:29:59,586 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'backups'
+2026-08-24 03:29:59,587 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'cgsnapshots'
+2026-08-24 03:29:59,588 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'consistencygroups'
+2026-08-24 03:29:59,589 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'default_volume_types'
+2026-08-24 03:29:59,590 INFO [alembic.autogenerate.compare.constraints] Detected NULL on column 'encryption.encryption_id'
+2026-08-24 03:29:59,590 INFO [alembic.autogenerate.compare.constraints] Detected NULL on column 'encryption.provider'
+2026-08-24 03:29:59,590 INFO [alembic.autogenerate.compare.constraints] Detected NULL on column 'encryption.control_location'
+2026-08-24 03:29:59,591 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'encryption'
+2026-08-24 03:29:59,592 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'group_snapshots'
+2026-08-24 03:29:59,593 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'group_type_projects'
+2026-08-24 03:29:59,597 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'quality_of_service_specs'
+2026-08-24 03:29:59,597 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table
+     'quota_classes'
+2026-08-24 03:29:59,598 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'quota_usages'
+2026-08-24 03:29:59,599 INFO [alembic.autogenerate.compare.tables] Detected removed column 'quotas.allocated'
+2026-08-24 03:29:59,599 INFO [alembic.autogenerate.compare.constraints] Detected removed index 'ix_reservations_allocated_id' on 'reservations'
+2026-08-24 03:29:59,600 INFO [alembic.autogenerate.compare.constraints] Detected removed foreign key (allocated_id)(id) on table reservations
+2026-08-24 03:29:59,600 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'reservations'
+2026-08-24 03:29:59,600 INFO [alembic.autogenerate.compare.tables] Detected removed column 'reservations.allocated_id'
+2026-08-24 03:29:59,605 INFO [alembic.autogenerate.compare.check_constraints] Detected removed check constraint 'CONSTRAINT_1' on table 'volume_glance_metadata'
+
+
+No tests were successful during the run
+
+
+======
+Totals
+======
+Ran: 1 tests in 25.6342 sec.
+ - Passed: 0
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 25.6342 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:25.634152
+py313: exit 1 (44.71 seconds) /tmp/marshal-cinder-pilot.XSm5CH/cinder-a1> stestr run --random cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync pid=2926977
+.pkg: _exit> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+  py313: FAIL code 1 (92.05=setup[47.35]+cmd[44.71] seconds)
+  evaluation failed :( (92.49 seconds)

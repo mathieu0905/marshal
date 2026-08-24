@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-611",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 611,
+      "change_id": "open-telemetry/opentelemetry-specification#611",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/611",
+      "status": "MERGED",
+      "subject": "Add requirements for probability sampler",
+      "branch": "master",
+      "created": "2020-05-18T23:11:39Z",
+      "submitted": "2020-08-21T16:01:03Z"
+    },
+    "base_commit": "f9aabe2cb1cd6b329cf61375447d97a87113a84f",
+    "candidate_commit": "d77b56efb11a8be097baae13c7b6f031f381169e",
+    "changed_paths": [
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/f9aabe2cb1cd6b329cf61375447d97a87113a84f...d77b56efb11a8be097baae13c7b6f031f381169e.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-php",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php/pull/179"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "pull_request": {
+        "provider": "github",
+        "number": 179,
+        "change_id": "open-telemetry/opentelemetry-php#179",
+        "url": "https://github.com/open-telemetry/opentelemetry-php/pull/179",
+        "status": "MERGED",
+        "subject": "change instances of probabilitysampler to traceidratiobasedsampler",
+        "branch": "master",
+        "created": "2020-09-19T04:15:24Z",
+        "submitted": "2020-09-21T14:57:33Z"
+      },
+      "commit": "1f1a1d4f3b0a221cc6c23498e461258cf86093e3",
+      "changed_paths": [
+        "sdk/Trace/Sampler.php",
+        "sdk/Trace/Sampler/TraceIdRatioBasedSampler.php",
+        "tests/Sdk/Integration/TraceIdRatioBasedSamplerTest.php"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-php/pull/179",
+          "statement": "明确参考源规范完成重命名。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-php",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-php"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

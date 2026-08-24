@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3667",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3667,
+      "change_id": "kubernetes/enhancements#3667",
+      "url": "https://github.com/kubernetes/enhancements/pull/3667",
+      "status": "MERGED",
+      "subject": "Update API proposal for KEP 3157",
+      "branch": "master",
+      "created": "2022-11-24T11:10:58Z",
+      "submitted": "2023-01-20T00:12:15Z"
+    },
+    "base_commit": "b59791f67a306740aaf7e15ac5ea29fac047abd9",
+    "candidate_commit": "2fc23ccf7d251d5b866ed416c7b666e5b5933ed6",
+    "changed_paths": [
+      "keps/sig-api-machinery/3157-watch-list/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/b59791f67a306740aaf7e15ac5ea29fac047abd9...2fc23ccf7d251d5b866ed416c7b666e5b5933ed6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/115402"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 115402,
+        "change_id": "kubernetes/kubernetes#115402",
+        "url": "https://github.com/kubernetes/kubernetes/pull/115402",
+        "status": "MERGED",
+        "subject": "Add API for watch list",
+        "branch": "master",
+        "created": "2023-01-30T17:12:08Z",
+        "submitted": "2023-03-02T09:58:55Z"
+      },
+      "commit": "b5ecc658ab2c07959fe1b6268bdd4a4d8cad08ab",
+      "changed_paths": [
+        "api/openapi-spec/swagger.json",
+        "api/openapi-spec/v3/api__v1_openapi.json",
+        "api/openapi-spec/v3/apis__admissionregistration.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__admissionregistration.k8s.io__v1alpha1_openapi.json",
+        "api/openapi-spec/v3/apis__apiextensions.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__apps__v1_openapi.json",
+        "api/openapi-spec/v3/apis__autoscaling__v1_openapi.json",
+        "api/openapi-spec/v3/apis__autoscaling__v2_openapi.json",
+        "api/openapi-spec/v3/apis__batch__v1_openapi.json",
+        "api/openapi-spec/v3/apis__certificates.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__coordination.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__discovery.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__events.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__flowcontrol.apiserver.k8s.io__v1beta2_openapi.json",
+        "api/openapi-spec/v3/apis__flowcontrol.apiserver.k8s.io__v1beta3_openapi.json",
+        "api/openapi-spec/v3/apis__internal.apiserver.k8s.io__v1alpha1_openapi.json",
+        "api/openapi-spec/v3/apis__networking.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__networking.k8s.io__v1alpha1_openapi.json",
+        "api/openapi-spec/v3/apis__node.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__policy__v1_openapi.json",
+        "api/openapi-spec/v3/apis__rbac.authorization.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__resource.k8s.io__v1alpha1_openapi.json",
+        "api/openapi-spec/v3/apis__scheduling.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__storage.k8s.io__v1_openapi.json",
+        "api/openapi-spec/v3/apis__storage.k8s.io__v1beta1_openapi.json",
+        "pkg/generated/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.ListOptions.json",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.ListOptions.pb",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.ListOptions.yaml",
+        "staging/src/k8s.io/api/testdata/v1.25.0/core.v1.ListOptions.after_roundtrip.pb",
+        "staging/src/k8s.io/api/testdata/v1.26.0/core.v1.ListOptions.after_roundtrip.pb",
+        "staging/src/k8s.io/apiextensions-apiserver/pkg/generated/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/internalversion/defaults.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/internalversion/defaults_test.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/internalversion/types.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/internalversion/validation/validation.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/internalversion/validation/validation_test.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/internalversion/zz_generated.conversion.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/internalversion/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/generated.pb.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/generated.proto",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/zz_generated.conversion.go",
+        "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/apiserver/pkg/endpoints/handlers/delete.go",
+        "staging/src/k8s.io/apiserver/pkg/endpoints/handlers/get.go",
+        "staging/src/k8s.io/apiserver/pkg/features/kube_features.go",
+        "staging/src/k8s.io/apiserver/pkg/registry/generic/registry/store.go",
+        "staging/src/k8s.io/apiserver/pkg/registry/generic/registry/store_test.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/interfaces.go",
+        "staging/src/k8s.io/code-generator/examples/apiserver/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/kube-aggregator/pkg/generated/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/sample-apiserver/pkg/generated/openapi/zz_generated.openapi.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/115402",
+          "statement": "源 PR 更新接口提案，目标新增该提案定义的监视列表接口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

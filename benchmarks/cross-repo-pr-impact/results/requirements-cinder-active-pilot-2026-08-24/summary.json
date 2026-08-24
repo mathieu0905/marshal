@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "completed_at": "2026-08-24T03:41:22+08:00",
+  "package_id": "openstack-requirements-alembic-1.19.1",
+  "experiment_tier": "development_pilot",
+  "status": "minimum_three_arm_path_supported_pending_a3_and_formal_repetition",
+  "research_question": "固定 Cinder 提交、完整 requirements 约束、数据库和测试命令后，Alembic 1.18.5 到 1.19.1 是否复现历史破坏，维护者 Cinder 修复是否消除同一失败",
+  "contract": "RUN_CONTRACT.md",
+  "source_repository": "openstack/requirements",
+  "source_base_commit": "b8de3b00af9dd2ffc1a85bf836cf3c7ee9e8bac7",
+  "source_breaking_commit": "978799539e019141d8b0710d09bf91c956976079",
+  "source_diff": "upper-constraints.txt 仅把 alembic===1.18.5 改为 alembic===1.19.1",
+  "target_repository": "openstack/cinder",
+  "target_base_commit": "b5b763129e2bde5077c0cf3a5eb434021abaa6e0",
+  "target_repair_source_commit": "913fa91a8eee20bf852387fe8c01a2d3d45cb87e",
+  "target_repair": "a2-maintainer.patch",
+  "test": "cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync",
+  "repetitions": 1,
+  "retries": 0,
+  "environment": {
+    "python": "3.13.11",
+    "tox": "4.60.0",
+    "sqlalchemy": "2.0.51",
+    "pymysql": "2.2.8",
+    "database": "MariaDB 10.2.44-MariaDB-1:10.2.44+maria~bionic",
+    "operating_system": "Linux 6.8.0-137-generic x86_64",
+    "database_isolation": "临时 Docker 容器，127.0.0.1:33317",
+    "consumer_isolation": "每个臂使用新的 Cinder 副本和新的 Tox 环境",
+    "dependency_input": "每个臂使用对应 requirements 提交的完整 upper-constraints.txt"
+  },
+  "arms": {
+    "a0": {
+      "alembic": "1.18.5",
+      "target_repair": false,
+      "exit_status": 0,
+      "result": "pass",
+      "tests_run": 1,
+      "tests_passed": 1,
+      "test_seconds": 23.771843,
+      "wall_seconds": 133.16,
+      "log": "a0-tox.log"
+    },
+    "a1": {
+      "alembic": "1.19.1",
+      "target_repair": false,
+      "exit_status": 1,
+      "result": "expected_failure",
+      "tests_run": 1,
+      "tests_failed": 1,
+      "test_seconds": 25.634152,
+      "wall_seconds": 92.8,
+      "failure_kind": "models_and_migration_scripts_not_in_sync",
+      "failure_directive": "remove_constraint",
+      "affected_check_constraint_tables": [
+        "backups",
+        "cgsnapshots",
+        "consistencygroups",
+        "default_volume_types",
+        "encryption",
+        "group_snapshots",
+        "group_type_projects",
+        "quality_of_service_specs",
+        "quota_classes",
+        "quota_usages",
+        "reservations",
+        "volume_glance_metadata"
+      ],
+      "log": "a1-tox.log"
+    },
+    "a2": {
+      "alembic": "1.19.1",
+      "target_repair": true,
+      "repair_scope": "只向固定 Cinder 基线应用维护者提交的 44 行 test_migrations.py 补丁",
+      "exit_status": 0,
+      "result": "pass",
+      "tests_run": 1,
+      "tests_passed": 1,
+      "test_seconds": 6.181267,
+      "wall_seconds": 71.28,
+      "a1_failure_signature_present": false,
+      "log": "a2-tox.log"
+    }
+  },
+  "claim_update": {
+    "supported": [
+      "在固定 Cinder 提交和完整约束输入下，Alembic 1.18.5 的定向 MySQL 模型同步测试通过",
+      "只把 Alembic 改为 1.19.1 后，同一测试复现历史上的 12 个检查约束 remove_constraint 差异",
+      "只应用维护者 Cinder 修复后，同一 Alembic 1.19.1 测试恢复通过"
+    ],
+    "not_yet_supported": [
+      "本轮只有一次可行性试验，不是三次正式重复",
+      "A3 兼容源变化尚未选定和执行",
+      "干扰仓尚未在主动重复协议下执行，因此不产生正式限定负标签",
+      "单个项目包不能支持跨项目精度、误报率、停止能力或产品比较结论"
+    ]
+  },
+  "evaluation_summary": {
+    "outcome": "最小 A0/A1/A2 路径按预先合同得到通过、同签名失败、恢复通过",
+    "metrics": "3/3 个臂符合预期；3/3 核对实际 Alembic 版本；A1 含 12 个目标检查约束差异；无重试",
+    "claim_update": "requirements 到 Cinder 已从历史对照提升为本地可执行的三臂因果试验路径，但尚未成为完整四臂正式项目包",
+    "baseline_relation": "A0 与 A1 使用同一 Cinder 提交和仅差 Alembic 一行的完整约束；A2 保持 A1 约束，只应用维护者目标修复",
+    "failure_mode": "没有基础设施失败；A1 的非零退出是设计内的模型同步断言失败",
+    "next_action": "用覆盖审计后的候选闭集筛选真实 Alembic A3，再制定六仓三次正式重复合同"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-08-24",
+  "project_package": {
+    "provider_repository": "qos-ch/slf4j",
+    "breaking_change": "org.slf4j:slf4j-api 1.7.36 to 2.0.0",
+    "compatible_change": "org.slf4j:slf4j-api 1.7.29 to 1.7.30"
+  },
+  "decision": {
+    "status": "advance_to_formal_repetition",
+    "formal_label_accepted": false,
+    "reason": "One consumer has an executed pass-fail-pass intervention, three consumers have bounded no-repair pass evidence, and all four pass both arms of a source-code-changing compatible release. Independent semantic review and three isolated repetitions remain required."
+  },
+  "positive_consumer": {
+    "repository": "jadler-mocking/jadler",
+    "baseline_commit": "b7e3737ce8056f9abc70011d2158ecc55f453a87",
+    "source_upgrade_commit": "8e1f764e628fbcd6813c9dc0329854ac46375c83",
+    "command": ["mvn", "clean", "test", "-B"],
+    "environment": "Maven 3.9.9, Eclipse Temurin 8 container",
+    "arms": {
+      "a0": {
+        "slf4j": "1.7.36",
+        "logback": "1.2.11",
+        "outcome": "pass",
+        "tests": 389,
+        "log": "jadler-a0.log"
+      },
+      "a1": {
+        "slf4j": "2.0.0",
+        "logback": "1.2.11",
+        "outcome": "fail",
+        "tests_started": 235,
+        "errors": 5,
+        "failure_signature": "SLF4J 2 ignores the 1.2.11 binding, falls back to NOPLoggerFactory, and JadlerMockerTest cannot cast it to LoggerContext.",
+        "log": "jadler-a1.log"
+      },
+      "a2": {
+        "slf4j": "2.0.0",
+        "logback": "1.3.4",
+        "outcome": "pass",
+        "tests": 389,
+        "log": "jadler-a2.log"
+      }
+    },
+    "repair_evidence": {
+      "maintainer_pull_request": "https://github.com/jadler-mocking/jadler/pull/276",
+      "maintainer_repair_commit": "af3b6358f17551c47b49eba83a572ffb59765278",
+      "extracted_change": "logback-classic 1.2.11 to 1.3.4",
+      "boundary": "The maintainer pull request used SLF4J 2.0.3 and also changed Logback. The intervention keeps SLF4J at 2.0.0 and extracts only the stated Logback compatibility repair."
+    }
+  },
+  "bounded_negative_consumers": [
+    {
+      "repository": "Password4j/password4j",
+      "baseline_commit": "f26a1493b97c21b3c7110fd240956f5901a70349",
+      "source_upgrade_commit": "be2619402d2a3acfcd45d5c76921d9cbde12401d",
+      "command": ["mvn", "clean", "test", "-B"],
+      "a0": {"slf4j": "1.7.36", "outcome": "pass", "tests": 206, "log": "password-a0.log"},
+      "a1": {"slf4j": "2.0.0", "outcome": "pass", "tests": 206, "log": "password-a1.log"},
+      "label_boundary": "The suite executes PropertyReader and AlgorithmFinder paths that call SLF4J, but neither arm has a logging provider. This is only a no-provider, native-command negative."
+    },
+    {
+      "repository": "diffplug/spotless",
+      "baseline_commit": "24b8d3a687d6af5742b7d4d856ced09fc635909d",
+      "source_upgrade_commit": "a5332a6df3166cd1085092419b4f341a4dab3fa9",
+      "command": ["gradle", ":testlib:test", "--no-daemon", "--rerun-tasks"],
+      "a0": {"slf4j": "1.7.36 and 1.7.35 compile-only inputs", "outcome": "pass", "tests": 155, "skipped": 7, "log": "spotless-a0-testlib-fixed-home.log"},
+      "a1": {"slf4j": "2.0.0 for both compile-only inputs", "outcome": "pass", "tests": 155, "skipped": 7, "log": "spotless-a1-testlib.log"},
+      "coverage": "The suite executes FreshMarkStepTest and SortPomTest, whose production paths use LoggerFactory.",
+      "label_boundary": "Spotless-lib intentionally has no runtime dependency. The result covers compilation and the testlib formatting paths, not arbitrary consumer logging-provider combinations."
+    },
+    {
+      "repository": "rabbitmq/rabbitmq-jms-client",
+      "baseline_commit": "41b2abf72827e123c8c472d3f07b30ac3bc24be0",
+      "source_upgrade_commit": "4fa8b7fea9971db148c98a5a3816a3c850332a92",
+      "command": ["mvn", "clean", "test", "-B"],
+      "environment": "Maven 3.9.8, OpenJDK 11",
+      "a0": {"slf4j": "1.7.36", "logback": "1.2.11", "outcome": "pass", "tests": 114, "log": "rabbit-a0.log"},
+      "a1": {"slf4j": "2.0.0", "logback": "1.2.11", "outcome": "pass", "tests": 114, "log": "rabbit-a1.log"},
+      "coverage": "The suite instantiates production logger-bearing classes including RMQConnectionFactory and RMQObjectFactory and exercises message producer paths.",
+      "label_boundary": "SLF4J 2 explicitly ignores Logback 1.2.11 and falls back to a no-operation provider. The result only shows that the native unit-test command does not require a consumer repair after logging output is disabled; it does not show provider compatibility or cover broker-backed integration tests."
+    }
+  ],
+  "rejected_consumer": {
+    "repository": "project-ncl/pnc-common",
+    "reason": "Both Java 11 arms pass 15 tests, but none of those tests enters the two production logging paths. The result is compilation evidence, not a bounded behavioral negative.",
+    "logs": ["pnc-a0-java11.log", "pnc-a1-java11.log"]
+  },
+  "compatible_change_screening": {
+    "selected": {
+      "from": "1.7.29",
+      "to": "1.7.30",
+      "source_change": "SLF4J 1.7.30 moves substitute-logger repair, event replay, and substitute-factory clearing into a finally-based post-bind cleanup so initialization failure and no-binding paths are cleaned up as well.",
+      "results": [
+        {"repository": "jadler-mocking/jadler", "before": "pass 389", "after": "pass 389", "logs": ["jadler-a3-1.7.29.log", "jadler-a3-1.7.30.log"]},
+        {"repository": "Password4j/password4j", "before": "pass 206", "after": "pass 206", "logs": ["password-a3-1.7.29.log", "password-a3-1.7.30.log"]},
+        {"repository": "diffplug/spotless", "before": "pass 155 with 7 skipped", "after": "pass 155 with 7 skipped", "logs": ["spotless-a3-1.7.29.log", "spotless-a3-1.7.30.log"]},
+        {"repository": "rabbitmq/rabbitmq-jms-client", "before": "pass 114", "after": "pass 114", "logs": ["rabbit-a3-1.7.29.log", "rabbit-a3-1.7.30.log"]}
+      ],
+      "boundary": "The native suites exercise LoggerFactory initialization and ordinary logging calls, but do not deliberately force the initialization-failure concurrency paths changed by 1.7.30."
+    },
+    "rejected": [
+      {
+        "from": "1.7.35",
+        "to": "1.7.36",
+        "reason": "The release changes build and manifest metadata but no slf4j-api Java source, so green consumers would provide too little semantic evidence for A3.",
+        "retained_logs": ["jadler-a3-before.log", "password-a3-before.log", "password-a3-after.log", "spotless-a3-before.log", "spotless-a3-after.log"]
+      },
+      {
+        "from": "1.7.14",
+        "to": "1.7.15",
+        "reason": "The original three consumers passed both releases, but rabbitmq-jms-client failed its 1.7.14 arm because Logback 1.2.11 requires org.slf4j.event.LoggingEvent and passed with 1.7.15. It is a repair contrast for this consumer, not a four-consumer no-impact control.",
+        "retained_logs": ["jadler-a3-1.7.14.log", "jadler-a3-1.7.15.log", "password-a3-1.7.14.log", "password-a3-1.7.15.log", "spotless-a3-1.7.14.log", "spotless-a3-1.7.15.log", "rabbit-a3-1.7.14.log", "rabbit-a3-1.7.15.log"]
+      }
+    ]
+  },
+  "environment_notes": [
+    "Spotless's embedded Gradle ProjectBuilder derived user.home as '?' in an unmapped container user and intermittently failed while writing a dependency cache. Setting the Java user.home to a writable mounted directory made the unchanged A0 command pass all 155 tests.",
+    "Spotless also exposed unrelated first-run dependency-cache failures in Palantir and Flexmark tests. Those failures were retained and were not counted as SLF4J outcomes.",
+    "PNC Common initially failed during Java 8 build preparation because its formatting plugin requires Java 11; only the Java 11 runs are compatibility observations.",
+    "RabbitMQ JMS integration tests require a broker and are not part of the repository's native unit-test command used here."
+  ],
+  "next_required_steps": [
+    "Run three isolated repetitions of A0, A1, A2, A3-before, and A3-after for all four accepted consumers.",
+    "Independently review the extracted Jadler repair, the three bounded negative-label ceilings, and whether 1.7.29 to 1.7.30 is an adequate compatible source change.",
+    "Do not include this project package in precision or stopping claims until both steps are complete."
+  ]
+}

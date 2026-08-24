@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3469",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3469,
+      "change_id": "kubernetes/enhancements#3469",
+      "url": "https://github.com/kubernetes/enhancements/pull/3469",
+      "status": "MERGED",
+      "subject": "KEP:4200: Add KEP for healthcheck metrics for Kubernetes components",
+      "branch": "master",
+      "created": "2022-08-22T14:52:15Z",
+      "submitted": "2022-09-23T07:00:39Z"
+    },
+    "base_commit": "9e8fca179cbb4bccc14b80a9f303015baa33a158",
+    "candidate_commit": "22ab51ef4773119902946661da2c4934b69e7481",
+    "changed_paths": [
+      "keps/sig-instrumentation/4200-healthcheck-metrics/README.md",
+      "keps/sig-instrumentation/4200-healthcheck-metrics/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/9e8fca179cbb4bccc14b80a9f303015baa33a158...22ab51ef4773119902946661da2c4934b69e7481.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/112881"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 112881,
+        "change_id": "kubernetes/kubernetes#112881",
+        "url": "https://github.com/kubernetes/kubernetes/pull/112881",
+        "status": "MERGED",
+        "subject": "put component slis endpoint behind a feature gate",
+        "branch": "master",
+        "created": "2022-10-05T16:46:57Z",
+        "submitted": "2022-10-05T19:53:46Z"
+      },
+      "commit": "f043544cb59cb8e44401524e07a8bcca326a8f8e",
+      "changed_paths": [
+        "staging/src/k8s.io/component-base/metrics/features/kube_features.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/112881",
+          "statement": "目标为源 KEP 描述的组件健康指标加入特性开关。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

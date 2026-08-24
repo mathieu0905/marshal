@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-5864",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 5864,
+      "change_id": "ethereum/EIPs#5864",
+      "url": "https://github.com/ethereum/EIPs/pull/5864",
+      "status": "MERGED",
+      "subject": "[EIP-4844] Return Modulus From Precompile",
+      "branch": "master",
+      "created": "2022-11-01T05:33:26Z",
+      "submitted": "2022-11-22T04:01:17Z"
+    },
+    "base_commit": "7e8d2629508c4d571f0124e4fc67a9ac13ee8b9a",
+    "candidate_commit": "dae771e3b6be49fcfe6b2ec1f58640e491ca0f44",
+    "changed_paths": [
+      "EIPS/eip-4844.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/7e8d2629508c4d571f0124e4fc67a9ac13ee8b9a...dae771e3b6be49fcfe6b2ec1f58640e491ca0f44.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/4890"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 4890,
+        "change_id": "NethermindEth/nethermind#4890",
+        "url": "https://github.com/NethermindEth/nethermind/pull/4890",
+        "status": "MERGED",
+        "subject": "Add point evaluation precompile",
+        "branch": "master",
+        "created": "2022-11-11T09:01:59Z",
+        "submitted": "2023-02-02T08:38:17Z"
+      },
+      "commit": "7ca80dfe8807911f7e85e7a2050072c98c3a72a9",
+      "changed_paths": [
+        "src/Nethermind/Nethermind.Core.Test/AddressTests.cs",
+        "src/Nethermind/Nethermind.Core/Specs/ISpecProvider.cs",
+        "src/Nethermind/Nethermind.Crypto/KzgPolynomialCommitments.cs",
+        "src/Nethermind/Nethermind.Crypto/Nethermind.Crypto.csproj",
+        "src/Nethermind/Nethermind.Crypto/kzg_trusted_setup.txt",
+        "src/Nethermind/Nethermind.Evm.Test/PointEvaluationPrecompileTests.cs",
+        "src/Nethermind/Nethermind.Evm/Metrics.cs",
+        "src/Nethermind/Nethermind.Evm/Precompiles/AddressExtensions.cs",
+        "src/Nethermind/Nethermind.Evm/Precompiles/PointEvaluationPrecompile.cs",
+        "src/Nethermind/Nethermind.Evm/VirtualMachine.cs",
+        "src/Nethermind/Nethermind.Init/Steps/InitPrecompiles.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/4890",
+          "statement": "明确按源规范实现点求值预编译。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

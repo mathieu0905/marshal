@@ -1,0 +1,362 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.5.1/userguide/gradle_daemon.html#sec:disabling_the_daemon.
+Daemon will be stopped at the end of the build 
+
+> Configure project :plugin-gradle
+Signing plugin detected. Will automatically sign the published artifacts.
+
+> Task :lib:compileJava UP-TO-DATE
+> Task :lib:processResources UP-TO-DATE
+> Task :lib:classes UP-TO-DATE
+> Task :lib:compileDiktatJava
+> Task :lib:processDiktatResources NO-SOURCE
+> Task :lib:diktatClasses
+> Task :lib:compileFlexmarkJava
+> Task :lib:processFlexmarkResources NO-SOURCE
+> Task :lib:flexmarkClasses
+> Task :lib:compileKtfmtJava
+> Task :lib:processKtfmtResources NO-SOURCE
+> Task :lib:ktfmtClasses
+> Task :lib:compileKtlintJava
+> Task :lib:processKtlintResources NO-SOURCE
+> Task :lib:ktlintClasses
+> Task :lib:compilePalantirJavaFormatJava
+> Task :lib:processPalantirJavaFormatResources NO-SOURCE
+> Task :lib:palantirJavaFormatClasses
+> Task :lib:compileScalafmtJava
+> Task :lib:processScalafmtResources NO-SOURCE
+> Task :lib:scalafmtClasses
+> Task :lib:compileSortPomJava
+> Task :lib:processSortPomResources NO-SOURCE
+> Task :lib:sortPomClasses
+> Task :lib:jar
+> Task :testlib:compileJava
+> Task :testlib:processResources
+> Task :testlib:classes
+> Task :testlib:compileTestJava
+> Task :testlib:processTestResources NO-SOURCE
+> Task :testlib:testClasses
+
+> Task :testlib:test
+
+com.diffplug.spotless.EncodingErrorMsgTest
+
+  Test canUseUnrepresentableOnPurpose() PASSED
+  Test utf8asCP1252() PASSED
+  Test cp1252asUtf8() PASSED
+
+com.diffplug.spotless.FileSignatureTest
+
+  Test testFromDirectory() PASSED
+  Test testFromSet() PASSED
+  Test testFromList() PASSED
+  Test testFromFilesAndDirectory() PASSED
+  Test windowsRoot() SKIPPED
+  Test testSubpath() PASSED
+
+com.diffplug.spotless.FilterByFileFormatterStepTest
+
+  Test equality() PASSED
+  Test behavior() PASSED
+
+com.diffplug.spotless.FormatterPropertiesTest
+
+  Test invalidPropertyFiles() PASSED
+  Test multiplePropertyFiles() PASSED
+  Test nonExistingFile() PASSED
+  Test differentPropertyFileTypes() PASSED
+
+com.diffplug.spotless.FormatterTest
+
+  Test toUnix() PASSED
+  Test equality() PASSED
+
+com.diffplug.spotless.JvmTest
+
+  Test supportProposesJvmUpgrade() PASSED
+  Test supportEmptyConfiguration() PASSED
+  Test supportAdd() PASSED
+  Test supportProposesFormatterUpgrade() PASSED
+  Test supportAllowsExperimentalVersions() PASSED
+
+  supportAddFailsFor(Consumer, String)
+
+    Test 1 Non-semantic version PASSED
+    Test 2 Duplicated JVM version PASSED
+    Test 3 Duplicated formatter version PASSED
+    Test 4 Higher JVM for lower formatter version PASSED
+    Test 5 Lower JVM for higher formatter version PASSED
+
+  Test supportListsMinimumJvmIfOnlyHigherJvmSupported() PASSED
+
+com.diffplug.spotless.LazyForwardingEqualityTest
+
+  Test testEquality() PASSED
+
+com.diffplug.spotless.PaddedCellTest
+
+  Test diverging() PASSED
+  Test cycleOrder() PASSED
+  Test pingPong() PASSED
+  Test fourState() PASSED
+  Test wellBehaved() PASSED
+  Test converging() PASSED
+
+com.diffplug.spotless.ProvisionerTest
+
+  Test testManipulation() PASSED
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access using Lookup on org.gradle.internal.classloader.ClassLoaderUtils$AbstractClassLoaderLookuper (file:/tmp/gradle-home/caches/7.5.1/generated-gradle-jars/gradle-api-7.5.1.jar) to class java.lang.ClassLoader
+WARNING: Please consider reporting this to the maintainers of org.gradle.internal.classloader.ClassLoaderUtils$AbstractClassLoaderLookuper
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+com.diffplug.spotless.antlr4.Antlr4FormatterStepTest
+
+  Test formatGrammar() PASSED (6.1s)
+
+com.diffplug.spotless.cpp.CppDefaultsTest
+
+  Test testDelimiterExpr() PASSED
+
+com.diffplug.spotless.generic.EndWithNewlineStepTest
+
+  Test equality() PASSED
+  Test behavior() PASSED
+
+com.diffplug.spotless.generic.IndentStepTest
+
+  Test spaceToSpace() PASSED
+  Test tabToSpace() PASSED
+  Test tabToTab() PASSED
+  Test spaceToTab() PASSED
+  Test equality() PASSED
+  Test allowLeadingSpaceIfMultiLineComment() PASSED
+  Test doesntClipNewlines() PASSED
+
+com.diffplug.spotless.generic.LicenseHeaderStepTest
+
+  Test should_apply_license_containing_YEAR_token_with_custom_separator() PASSED
+  Test parseExistingYear() PASSED
+  Test updateYearWithLatest() PASSED
+  Test should_apply_license_containing_YEAR_token_with_non_default_year_separator() PASSED
+  Test should_remove_header_when_empty() PASSED
+  Test efficient() PASSED
+  Test should_update_year_for_license_with_address() PASSED
+  Test sanitizerDoesntGoTooFar() PASSED
+  Test should_apply_license_containing_YEAR_token_in_range() PASSED
+  Test equality() PASSED
+  Test should_preserve_year_for_license_with_address() PASSED
+  Test should_apply_license_containing_YEAR_token_with_special_character_in_year_separator() PASSED
+  Test should_apply_license_containing_YEAR_token() PASSED
+  Test sanitized() PASSED
+  Test fromHeader() PASSED
+
+com.diffplug.spotless.generic.PipeStepPairTest
+
+  Test broken() PASSED
+  Test andApply() PASSED
+  Test single() PASSED
+  Test multiple() PASSED
+
+com.diffplug.spotless.generic.TrimTrailingWhitespaceStepTest
+
+  Test trimTrailingWhitespace() PASSED
+  Test equality() PASSED
+
+com.diffplug.spotless.java.GoogleJavaFormatStepTest
+
+  Test behaviorWithAospStyle() PASSED (4.1s)
+  Test fixWindowsBugForGfj1Point1() PASSED
+  Test behaviorWithCustomGroupArtifact() PASSED
+  Test jvm13Features() SKIPPED
+  Test behaviorWithReflowLongStrings() PASSED (3.6s)
+  Test behavior18() PASSED (3.7s)
+  Test equalityGroupArtifact() PASSED (5s)
+  Test equality() PASSED (4.4s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.java.ImportOrderStepTest
+
+  Test sortImportsFromFile() PASSED
+  Test sortImportsWildcardsLast() PASSED
+  Test sortImportsDefault() PASSED
+  Test misplacedImports() PASSED
+  Test sortImportsUnmatched() PASSED
+  Test removeDuplicates() PASSED
+  Test empty() PASSED
+  Test doesntThrowIfImportOrderIsntSerializable() PASSED
+  Test equality() PASSED
+  Test groovyImports() PASSED
+  Test sortImportsFromArray() PASSED
+  Test removeComments() PASSED
+
+com.diffplug.spotless.java.PalantirJavaFormatStepTest
+
+  Test behavior2() FAILED (3.4s)
+
+  org.gradle.api.artifacts.ResolveException: Could not resolve all dependencies for [com.palantir.javaformat:palantir-java-format:2.10.0].
+      at com.diffplug.spotless.java.PalantirJavaFormatStepTest.behavior2(PalantirJavaFormatStepTest.java:45)
+  Caused by: org.gradle.api.internal.artifacts.ivyservice.DefaultLenientConfiguration$ArtifactResolveException: Could not resolve all files for configuration ':detachedConfiguration1'.
+      at app//com.diffplug.spotless.java.PalantirJavaFormatStepTest.behavior2(PalantirJavaFormatStepTest.java:45)
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.1.
+  Required by:
+      project : > com.palantir.javaformat:palantir-java-format:2.10.0
+      project : > com.palantir.javaformat:palantir-java-format:2.10.0 > com.palantir.javaformat:palantir-java-format-spi:2.10.0
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.1.
+
+  Caused by: org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.MetaDataParseException: Could not parse POM https://repo.maven.apache.org/maven2/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.11.1/jackson-datatype-jdk8-2.11.1.pom
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson.module:jackson-modules-java8:2.11.1.
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson.module:jackson-modules-java8:2.11.1.
+
+  Caused by: org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.MetaDataParseException: Could not parse POM https://repo.maven.apache.org/maven2/com/fasterxml/jackson/module/jackson-modules-java8/2.11.1/jackson-modules-java8-2.11.1.pom
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson:jackson-base:2.11.1.
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson:jackson-base:2.11.1.
+
+  Caused by: org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.MetaDataParseException: Could not parse POM https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-base/2.11.1/jackson-base-2.11.1.pom
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson:jackson-bom:2.11.1.
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson:jackson-bom:2.11.1.
+
+  Caused by: org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.MetaDataParseException: Could not parse POM https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-bom/2.11.1/jackson-bom-2.11.1.pom
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson:jackson-parent:2.11.
+
+  Caused by: org.gradle.internal.resolve.ModuleVersionResolveException: Could not resolve com.fasterxml.jackson:jackson-parent:2.11.
+
+  Caused by: org.gradle.internal.resource.local.FileStoreException: Failed to add into filestore '/workspace/testlib/?/.gradle/caches/modules-2/metadata-2.99/descriptors' at 'com.fasterxml.jackson/jackson-parent/2.11/a8be1fe3b3911d3d3425fe720cf42835/descriptor.bin'
+
+  Caused by: org.gradle.api.UncheckedIOException: Could not update timestamp for /workspace/testlib/?/.gradle/caches/modules-2/metadata-2.99/descriptors/com.fasterxml.jackson/jackson-parent/2.11/a8be1fe3b3911d3d3425fe720cf42835/descriptor.bin.fslck
+
+  Caused by: java.nio.file.NoSuchFileException: /workspace/testlib/?/.gradle/caches/modules-2/metadata-2.99/descriptors/com.fasterxml.jackson/jackson-parent/2.11/a8be1fe3b3911d3d3425fe720cf42835/descriptor.bin.fslck
+
+
+  Test jvm13Features() SKIPPED
+  Test equality() PASSED (6.5s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.java.RemoveUnusedImportsStepTest
+
+  Test equality() PASSED
+  Test behavior() PASSED
+
+com.diffplug.spotless.json.JsonSimpleStepTest
+
+  Test canSetIndentationLevelTo0() PASSED
+  Test handlesEmptyFile() PASSED
+  Test cannotProvideNullProvisioner() PASSED
+  Test handlesSingletonArray() PASSED
+  Test equality() PASSED
+  Test handlesNestedObject() PASSED
+  Test canSetCustomIndentationLevel() PASSED
+  Test handlesSingletonObjectWithArray() PASSED
+  Test handlesNotJson() PASSED
+  Test handlesObjectWithNull() PASSED
+  Test handlesComplexNestedObject() PASSED
+  Test handlesSingletonObject() PASSED
+  Test handlesInvalidJson() PASSED
+
+com.diffplug.spotless.json.gson.GsonStepTest
+
+  Test canSetIndentationLevelTo0() PASSED
+  Test handlesEmptyFile() PASSED
+  Test cannotProvideNullProvisioner() PASSED
+  Test handlesSingletonArray() PASSED
+  Test equality() PASSED
+  Test handlesNestedObject() PASSED
+  Test canSetCustomIndentationLevel() PASSED
+  Test handlesNotJson() PASSED
+  Test handlesHtmlEscapeWhenEnabled() PASSED
+  Test handlesObjectWithNull() PASSED
+  Test handlesComplexNestedObject() PASSED
+  Test handlesVersionIncompatibility() PASSED
+  Test writesRawHtmlWhenHtmlEscapeDisabled() PASSED
+  Test doesNoSortingWhenSortByKeyDisabled() PASSED
+  Test handlesInvalidJson() PASSED
+  Test handlesSortingWhenSortByKeyEnabled() PASSED
+
+com.diffplug.spotless.kotlin.DiktatStepTest
+
+  Test behavior() PASSED (13.4s)
+  Test notSupportedVersion() PASSED
+  Test behaviorConf() PASSED (4.1s)
+
+com.diffplug.spotless.kotlin.KtLintStepTest
+
+  Test worksPre0_46_1() PASSED (6.5s)
+  Test equality() PASSED (2.7s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.kotlin.KtfmtStepTest
+
+  Test dropboxStyle_0_18() SKIPPED
+  Test dropboxStyle_0_19() SKIPPED
+  Test equality() SKIPPED
+  Test behavior() SKIPPED
+
+com.diffplug.spotless.markdown.FlexmarkStepTest
+
+  Test behavior() PASSED (6.5s)
+
+com.diffplug.spotless.markdown.FreshMarkStepTest
+
+  Test equality() PASSED (4.4s)
+  Test behavior() PASSED
+
+com.diffplug.spotless.npm.SimpleJsonWriterTest
+
+  Test itFailsOnUnsupportedObject() PASSED
+  Test itWritesABooleanProperty() PASSED
+  Test itWritesAValidEmptyObject() PASSED
+  Test itHandlesSeveralOptionsSimultaneously() PASSED
+  Test itWritesAnInteger() PASSED
+  Test itWritesToFile() PASSED
+  Test itWritesAStringProperty() PASSED
+
+com.diffplug.spotless.pom.SortPomTest
+
+  Test testSortPomWithDefaultConfig() PASSED (2.3s)
+
+com.diffplug.spotless.scala.ScalaFmtStepTest
+
+  Test behaviorDefaultConfig() PASSED (6.7s)
+  Test behaviorCustomConfigVersion_3_0_0() PASSED
+  Test equality() PASSED (10.8s)
+  Test behaviorDefaultConfigVersion_3_0_0() PASSED
+  Test behaviorCustomConfig() PASSED
+  Test invalidConfiguration() PASSED
+
+com.diffplug.spotless.sql.DBeaverSQLFormatterStepTest
+
+  Test equality() PASSED
+  Test behaviorWithConfigFile() PASSED
+  Test behavior() PASSED
+  Test behaviorWithAlternativeConfigFile() PASSED
+
+FAILURE: Executed 155 tests in 1m 43s (1 failed, 7 skipped)
+
+
+155 tests completed, 1 failed, 7 skipped
+
+> Task :testlib:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':testlib:test'.
+> There were failing tests. See the report at: file:///workspace/testlib/build/reports/tests/test/index.html
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 3m 33s
+14 actionable tasks: 12 executed, 2 up-to-date

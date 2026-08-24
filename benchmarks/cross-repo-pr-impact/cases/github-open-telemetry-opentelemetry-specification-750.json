@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-750",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 750,
+      "change_id": "open-telemetry/opentelemetry-specification#750",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/750",
+      "status": "MERGED",
+      "subject": "Change the default sampler to ParentOrElse(AlwaysOn)",
+      "branch": "master",
+      "created": "2020-07-28T21:41:18Z",
+      "submitted": "2020-07-29T00:35:00Z"
+    },
+    "base_commit": "c33919ea1265081967287a3c3160ba823797bbce",
+    "candidate_commit": "1ce0aad68ac74c82847f3a1b3c0f4e225df46392",
+    "changed_paths": [
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/c33919ea1265081967287a3c3160ba823797bbce...1ce0aad68ac74c82847f3a1b3c0f4e225df46392.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1013"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/989"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/960"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 1013,
+        "change_id": "open-telemetry/opentelemetry-dotnet#1013",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1013",
+        "status": "MERGED",
+        "subject": "Default Sampler update + ParentOrElse fix",
+        "branch": "master",
+        "created": "2020-08-05T18:23:36Z",
+        "submitted": "2020-08-05T22:35:12Z"
+      },
+      "commit": "b6d58326b6fa8e53674a966edd3e4463fd7b3c98",
+      "changed_paths": [
+        "src/OpenTelemetry.Instrumentation.AspNet/Implementation/HttpInListener.cs",
+        "src/OpenTelemetry.Instrumentation.AspNetCore/Implementation/HttpInListener.cs",
+        "src/OpenTelemetry/CHANGELOG.md",
+        "src/OpenTelemetry/Sdk.cs",
+        "src/OpenTelemetry/Trace/ActivitySourceAdapter.cs",
+        "src/OpenTelemetry/Trace/Samplers/ParentOrElseSampler.cs",
+        "test/OpenTelemetry.Instrumentation.Grpc.Tests/GrpcTests.client.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1013",
+          "statement": "明确按源规范更新默认采样器。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 989,
+        "change_id": "open-telemetry/opentelemetry-go#989",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/989",
+        "status": "MERGED",
+        "subject": "Change default Sampler to ParentOrElse(AlwaysOn)",
+        "branch": "master",
+        "created": "2020-07-29T23:02:39Z",
+        "submitted": "2020-07-30T02:10:13Z"
+      },
+      "commit": "e93ab662da5c37f2d2814a29132f00d97dc89460",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "sdk/trace/provider.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/989",
+          "statement": "明确按源规范更新默认采样器。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 960,
+        "change_id": "open-telemetry/opentelemetry-python#960",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/960",
+        "status": "MERGED",
+        "subject": "Change default Sampler to ParentOrElse(AlwaysOn)",
+        "branch": "master",
+        "created": "2020-07-29T23:57:15Z",
+        "submitted": "2020-08-04T01:53:16Z"
+      },
+      "commit": "3df1e8694ab1909796851bfaa4ff41d29aad9e6e",
+      "changed_paths": [
+        "opentelemetry-sdk/CHANGELOG.md",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py",
+        "opentelemetry-sdk/tests/trace/test_trace.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/960",
+          "statement": "明确按源规范更新默认采样器。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

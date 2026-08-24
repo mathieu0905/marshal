@@ -1,0 +1,117 @@
+{
+  "measured_at": "2026-08-23T21:55:57+08:00",
+  "track": "versioned_ecosystem_breakage",
+  "status": "causal_recovery_confirmed_with_declared_environment_difference",
+  "parent_question": "Can an archived Crater regression with a linked downstream fix be completed into a failure-to-recovery causal contrast by replaying the fix under the original target compiler?",
+  "source_change": {
+    "repository": "rust-lang/rust",
+    "pull_request": 155193,
+    "url": "https://github.com/rust-lang/rust/pull/155193",
+    "title": "Check arguments of attributes where no arguments are expected",
+    "baseline_toolchain_commit": "540f43a224317d894a9a0710a8d67704f179a33c",
+    "target_toolchain_commit": "b98202ad067d72e45cec8be3d5c15d86ef0fd086"
+  },
+  "original_crater_experiment": {
+    "report": "https://crater-reports.s3.amazonaws.com/pr-155193/index.html",
+    "config": "https://crater-reports.s3.amazonaws.com/pr-155193/config.json",
+    "completed_at": "2026-04-29T12:15:09.767464934Z",
+    "mode": "check-only",
+    "cap_lints": "forbid",
+    "subject": "spectest-0.1.2",
+    "baseline_result": "test-pass",
+    "baseline_log": "https://crater-reports.s3.amazonaws.com/pr-155193/master%23540f43a224317d894a9a0710a8d67704f179a33c/reg/spectest-0.1.2/log.txt",
+    "target_result": "build-fail:compiler-error(E0539)",
+    "target_log": "https://crater-reports.s3.amazonaws.com/pr-155193/try%23b98202ad067d72e45cec8be3d5c15d86ef0fd086/reg/spectest-0.1.2/log.txt",
+    "command": "cargo check --frozen --all --all-targets --message-format=json",
+    "environment": {
+      "CARGO_INCREMENTAL": "0",
+      "RUST_BACKTRACE": "full",
+      "RUSTFLAGS": "--cap-lints=forbid",
+      "RUSTDOCFLAGS": "--cap-lints=forbid",
+      "container": "ghcr.io/rust-lang/crates-build-env/linux@sha256:d429b63d4308055ea97f60fb1d3dfca48854a00942f1bd2ad806beaf015945ec",
+      "memory_bytes": 1610612736,
+      "network_during_check": "disabled"
+    }
+  },
+  "downstream_fix": {
+    "repository": "aalexandrov/spectest",
+    "pull_request": 1,
+    "url": "https://github.com/aalexandrov/spectest/pull/1",
+    "created_at": "2026-04-29T19:56:44Z",
+    "merged_at": "2026-06-08T04:43:52Z",
+    "base_commit": "a94736a698976be563ceb73bc34d21a7dad140ac",
+    "head_commit": "a9e58783a54bb4b75c99bea2a8a4f1def9401fc2",
+    "changed_files": [
+      "src/spectest/src/lib.rs"
+    ],
+    "change_summary": "Two occurrences of #[inline(always = true)] were changed to #[inline(always)]; no other repository content changed between the reviewed base and head commits.",
+    "published_source_alignment": "The Rust source files in spectest-0.1.2 matched the fix PR base package source. Packaging metadata, the normalized Cargo.toml, Cargo.toml.orig and README placement were the only package-layout differences observed."
+  },
+  "local_replay": {
+    "host": "Linux 6.8.0-137-generic x86_64",
+    "cargo": "cargo 1.97.0-nightly (eb94155a9 2026-04-09)",
+    "baseline_rustc": "rustc 1.97.0-nightly (540f43a22 2026-04-12)",
+    "target_rustc": "rustc 1.97.0-nightly (b98202ad0 2026-04-12)",
+    "subject": "the published spectest-0.1.2 source",
+    "intervention": "apply only the two-line downstream fix to the published source",
+    "shared_conditions": {
+      "command": "cargo check --frozen --all --all-targets --message-format=json",
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "RUST_BACKTRACE": "full",
+        "RUSTFLAGS": "--cap-lints=forbid",
+        "RUSTDOCFLAGS": "--cap-lints=forbid"
+      },
+      "lockfile": "one lockfile generated with the target Cargo and copied unchanged to all arms",
+      "lockfile_package_count": 56,
+      "fresh_target_directory_per_repetition": true,
+      "repetitions_per_arm": 3
+    },
+    "arms": [
+      {
+        "name": "baseline_compiler_with_published_source",
+        "toolchain_commit": "540f43a224317d894a9a0710a8d67704f179a33c",
+        "source_variant": "published",
+        "exit_codes": [0, 0, 0],
+        "result": "pass"
+      },
+      {
+        "name": "target_compiler_with_published_source",
+        "toolchain_commit": "b98202ad067d72e45cec8be3d5c15d86ef0fd086",
+        "source_variant": "published",
+        "exit_codes": [101, 101, 101],
+        "result": "fail",
+        "failure_signature": "E0539: malformed inline attribute input at src/lib.rs lines 104 and 110",
+        "matching_original_crater_signature": true
+      },
+      {
+        "name": "target_compiler_with_downstream_fix",
+        "toolchain_commit": "b98202ad067d72e45cec8be3d5c15d86ef0fd086",
+        "source_variant": "published_plus_exact_fix",
+        "exit_codes": [0, 0, 0],
+        "result": "pass"
+      }
+    ]
+  },
+  "comparability": {
+    "verdict": "The three local arms isolate the compiler change and the exact downstream repair, reproduce the archived failure signature, and confirm recovery. This is a complete causal contrast for the versioned package subject, but not a byte-for-byte rerun of the original Crater environment.",
+    "fixed": [
+      "published spectest-0.1.2 source",
+      "original baseline and target compiler commits",
+      "check command and lint flags",
+      "one shared dependency lockfile across all local arms",
+      "fresh build target for every repetition"
+    ],
+    "changed": [
+      "compiler commit between the first and second arms",
+      "only the two-line downstream repair between the second and third arms"
+    ],
+    "limitations": [
+      "The archived experiment resolved 84 packages in April; the replay resolved 56 packages in August, so the dependency closure is not identical to the original run even though it is held constant across all replay arms.",
+      "The exact archived container image did not finish pulling during the bounded attempt, so the replay ran on the host rather than inside the original container digest.",
+      "The result establishes versioned package breakage and repair. It does not imply that the target repository default branch at the source PR cutoff was broken."
+    ]
+  },
+  "claim_update": "Crater can yield high-quality causal recovery cases when the executed package version aligns with a linked downstream fix and both compiler artifacts remain available. One such case is now complete; this does not yet establish source-wide yield.",
+  "next_action": "Apply the same alignment and replay protocol to the remaining four linked downstream fixes, retaining all negative and non-comparable outcomes."
+}

@@ -1,0 +1,39 @@
+{
+  "status": "rejected_as_bounded_negative",
+  "date": "2026-08-24",
+  "source": {
+    "repository": "terser/terser",
+    "before_version": "4.2.1",
+    "after_version": "4.3.0",
+    "behavior_commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "behavior": "wrap_func_args defaults to true and adds parentheses around anonymous function arguments"
+  },
+  "candidate": {
+    "repository": "fisker/fis3-plugins",
+    "baseline_commit": "7efee8c134b446ce2e8a84ddf64d3a3f86e5ed88",
+    "dependency_update_commit": "ce37a16f94020c0bd49ee968002ce80d55978c3c",
+    "merge_commit": "92b047f5b67053f818468b610c2b422a554b23d1",
+    "pull_request": "https://github.com/fisker/fis3-plugins/pull/688",
+    "dependency_change": "terser 4.2.1 to 4.3.0",
+    "changed_paths": [
+      "package.json",
+      "packages/fis3-optimizer-terser/package.json"
+    ]
+  },
+  "native_contract_inspection": {
+    "terser_adapter": "src/packages/optimizer/terser/index.js forwards arbitrary input to terser.minify and returns generated code.",
+    "test_script": null,
+    "test_files": [],
+    "release_checks": [
+      "build",
+      "lint",
+      "format"
+    ],
+    "surface": "The historical repository contains no executable fixture or assertion for the optimizer's generated output or runtime behavior."
+  },
+  "decision": {
+    "accepted_as_negative": false,
+    "reason": "The dependency-only pull request was merged, but the repository has no native executable contract that covers the changed output surface. Build and static checks can show adapter compatibility, not that a consumer exercising anonymous function arguments needs no target change.",
+    "next_action": "Retain the rejection in the terser search frame and prioritize candidates with executable optimized-bundle behavior."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-998023",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/oidc-auth-armada-app",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 998023,
+      "change_id": "I5f0b0598b923adb3c3907f6749b0f5787882d2ae",
+      "url": "https://review.opendev.org/c/starlingx/oidc-auth-armada-app/+/998023",
+      "status": "MERGED",
+      "subject": "Upgrade OIDC components to version stx.13.0-v1.0.12",
+      "branch": "master",
+      "created": "2026-07-20 16:21:38.000000000",
+      "submitted": "2026-07-23 19:40:55.000000000"
+    },
+    "base_commit": "675da623dc2bfb840914fa983df49d8f7a665897",
+    "candidate_commit": "be31bc8f154c61e1800b1340bf60e9fa5f913763",
+    "changed_paths": [
+      "helm-charts/custom/oidc-client-helm/debian/all/deb_folder/control",
+      "helm-charts/custom/oidc-client-helm/debian/all/deb_folder/rules",
+      "helm-charts/custom/oidc-client-helm/oidc-client-helm/oidc-client/values.yaml",
+      "helm-charts/upstream/dexidp-helm/debian/all/deb_folder/changelog",
+      "helm-charts/upstream/dexidp-helm/debian/all/meta_data.yaml",
+      "stx-oidc-auth-helm/stx-oidc-auth-helm/fluxcd-manifests/dex/dex-static-overrides.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/998023/revisions/be31bc8f154c61e1800b1340bf60e9fa5f913763/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/oidc-auth-armada-app",
+      "target_repository": "starlingx/ansible-playbooks",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/998027"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 998027,
+        "change_id": "I2716fb755430323c2b80ae470fffdad6272a888a",
+        "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/998027",
+        "status": "MERGED",
+        "subject": "Update oidc-auth system images for upversion",
+        "branch": "master",
+        "created": "2026-07-20 16:46:08.000000000",
+        "submitted": "2026-07-23 19:41:01.000000000"
+      },
+      "commit": "1f3ad0d3a09821322fa8c9dbf581666b7b16491c",
+      "changed_paths": [
+        "playbookconfig/debian/all/deb_folder/control",
+        "playbookconfig/debian/all/deb_folder/rules",
+        "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.32.2/system-images.yml",
+        "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.34.1/system-images.yml",
+        "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.35.2/system-images.yml",
+        "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.36.0/system-images.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/998027",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/oidc-auth-armada-app/+/998023",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/5124fca015a54d269abfcd2aaf315c34"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/ansible-playbooks/raw/commit/0219d566f0810743658a2cf504cd5eba2b8523fb/LICENSE"
+    },
+    {
+      "repository": "starlingx/oidc-auth-armada-app",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/oidc-auth-armada-app/src/commit/be31bc8f154c61e1800b1340bf60e9fa5f913763"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

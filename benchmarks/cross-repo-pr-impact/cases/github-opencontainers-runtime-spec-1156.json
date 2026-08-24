@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-opencontainers-runtime-spec-1156",
+  "project": "opencontainers-runtime",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "opencontainers/runtime-spec",
+    "pull_request": {
+      "provider": "github",
+      "number": 1156,
+      "change_id": "opencontainers/runtime-spec#1156",
+      "url": "https://github.com/opencontainers/runtime-spec/pull/1156",
+      "status": "MERGED",
+      "subject": "add domainname spec entity",
+      "branch": "main",
+      "created": "2022-08-07T18:43:11Z",
+      "submitted": "2022-08-25T21:28:26Z"
+    },
+    "base_commit": "a8106e99982b569f592aac94298b24712c5e9ebf",
+    "candidate_commit": "5c5358f2a67706ab6a9347e21a334c26f122eb77",
+    "changed_paths": [
+      "config.md",
+      "schema/test/config/good/spec-example.json",
+      "specs-go/config.go"
+    ],
+    "patch_url": "https://github.com/opencontainers/runtime-spec/compare/a8106e99982b569f592aac94298b24712c5e9ebf...5c5358f2a67706ab6a9347e21a334c26f122eb77.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "containers/crun",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/containers/crun/pull/1017"
+    },
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "opencontainers/runc",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/opencontainers/runc/pull/3600"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "containers/crun",
+      "pull_request": {
+        "provider": "github",
+        "number": 1017,
+        "change_id": "containers/crun#1017",
+        "url": "https://github.com/containers/crun/pull/1017",
+        "status": "MERGED",
+        "subject": "linux: reject sysctl `kernel.domainname` when OCI knob `domainname` is set",
+        "branch": "main",
+        "created": "2022-10-01T11:45:06Z",
+        "submitted": "2022-10-04T07:25:28Z"
+      },
+      "commit": "391df454d1713a8e61098231422151165f3e01ea",
+      "changed_paths": [
+        "src/libcrun/linux.c",
+        "tests/test_domainname.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/containers/crun/pull/1017",
+          "statement": "针对源规范新增字段处理 sysctl 冲突。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "opencontainers/runc",
+      "pull_request": {
+        "provider": "github",
+        "number": 3600,
+        "change_id": "opencontainers/runc#3600",
+        "url": "https://github.com/opencontainers/runc/pull/3600",
+        "status": "MERGED",
+        "subject": "Implement to set a domainname",
+        "branch": "main",
+        "created": "2022-09-11T00:49:43Z",
+        "submitted": "2023-04-19T17:16:35Z"
+      },
+      "commit": "d9230602e9cc011dc6c2d3e628d02fb4812ead38",
+      "changed_paths": [
+        "libcontainer/configs/config.go",
+        "libcontainer/configs/validate/validator.go",
+        "libcontainer/configs/validate/validator_test.go",
+        "libcontainer/integration/template_test.go",
+        "libcontainer/specconv/spec_linux.go",
+        "libcontainer/standard_init_linux.go",
+        "tests/integration/run.bats"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/opencontainers/runc/pull/3600",
+          "statement": "明确实现源规范的 domainname 设置。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opencontainers/runtime-spec",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runtime-spec"
+    },
+    {
+      "repository": "containers/crun",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/containers/crun"
+    },
+    {
+      "repository": "opencontainers/runc",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runc"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

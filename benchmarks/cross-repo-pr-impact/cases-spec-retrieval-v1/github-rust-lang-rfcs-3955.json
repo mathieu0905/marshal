@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3955",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3955,
+      "change_id": "rust-lang/rfcs#3955",
+      "url": "https://github.com/rust-lang/rfcs/pull/3955",
+      "status": "MERGED",
+      "subject": "Initial named fn trait arguments RFC",
+      "branch": "master",
+      "created": "2026-04-24T14:05:13Z",
+      "submitted": "2026-07-08T20:49:56Z"
+    },
+    "base_commit": "f63771800b506c3874b760c28acc8fbeb32f7824",
+    "candidate_commit": "58f80f2cfc72d44dfb418cdae57127641f4653fd",
+    "changed_paths": [
+      "text/0000-named-fn-trait-arguments.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/f63771800b506c3874b760c28acc8fbeb32f7824...58f80f2cfc72d44dfb418cdae57127641f4653fd.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/158517"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 158517,
+        "change_id": "rust-lang/rust#158517",
+        "url": "https://github.com/rust-lang/rust/pull/158517",
+        "status": "MERGED",
+        "subject": "Initial implementation of named `Fn` trait parameters",
+        "branch": "main",
+        "created": "2026-06-28T09:01:08Z",
+        "submitted": "2026-08-09T08:26:00Z"
+      },
+      "commit": "6c901cee795a9ba7fc29b7e4792e87bc58b13e02",
+      "changed_paths": [
+        "compiler/rustc_ast_passes/src/feature_gate.rs",
+        "compiler/rustc_feature/src/unstable.rs",
+        "compiler/rustc_parse/src/diagnostics.rs",
+        "compiler/rustc_parse/src/parser/path.rs",
+        "compiler/rustc_session/src/parse.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "tests/ui/feature-gates/feature-gate-named-fn-trait-parameters.rs",
+        "tests/ui/feature-gates/feature-gate-named-fn-trait-parameters.stderr",
+        "tests/ui/fn/fn-trait-use-named-params-issue-140169.rs",
+        "tests/ui/fn/fn-trait-use-named-params-issue-140169.stderr",
+        "tests/ui/fn/named-fn-trait-parameters.rs",
+        "tests/ui/fn/named-fn-trait-parameters.stderr",
+        "tests/ui/parser/diagnostics-parenthesized-type-arguments-ice-issue-122345.rs",
+        "tests/ui/parser/diagnostics-parenthesized-type-arguments-ice-issue-122345.stderr"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/158517",
+          "statement": "目标实现源 RFC 定义的具名函数特征参数并直接引用已接受 RFC。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

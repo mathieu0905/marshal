@@ -1,0 +1,246 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9144",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9144,
+      "change_id": "ethereum/EIPs#9144",
+      "url": "https://github.com/ethereum/EIPs/pull/9144",
+      "status": "MERGED",
+      "subject": "2935: bring up to date with sys contract impl",
+      "branch": "master",
+      "created": "2024-12-16T16:19:14Z",
+      "submitted": "2025-01-09T14:27:33Z"
+    },
+    "base_commit": "ca581e38eec22c10a48bf3663070d95e982f850e",
+    "candidate_commit": "41be7c305ac337f8e05be34b7ee76b381d253f3c",
+    "changed_paths": [
+      "EIPS/eip-2935.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/ca581e38eec22c10a48bf3663070d95e982f850e...41be7c305ac337f8e05be34b7ee76b381d253f3c.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/7982"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/8018"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/13349"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/execution-specs",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/execution-specs/pull/1074"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 7982,
+        "change_id": "NethermindEth/nethermind#7982",
+        "url": "https://github.com/NethermindEth/nethermind/pull/7982",
+        "status": "MERGED",
+        "subject": "New sys address for eip 2935",
+        "branch": "master",
+        "created": "2024-12-30T18:00:39Z",
+        "submitted": "2025-01-02T15:38:11Z"
+      },
+      "commit": "f76036414acd14f7bbf0693276c9079d6fabf874",
+      "changed_paths": [
+        "src/Nethermind/Nethermind.Core/Eip2935Constants.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/7982",
+          "statement": "按尚在合并中的源规范更新系统地址。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 8018,
+        "change_id": "NethermindEth/nethermind#8018",
+        "url": "https://github.com/NethermindEth/nethermind/pull/8018",
+        "status": "MERGED",
+        "subject": "update ring buffer size for eip-2935",
+        "branch": "master",
+        "created": "2025-01-07T12:08:03Z",
+        "submitted": "2025-01-07T12:17:36Z"
+      },
+      "commit": "400806b84f6aecc4f508bfbbc756b26ffe5cce5b",
+      "changed_paths": [
+        "src/Nethermind/Nethermind.Core/Eip2935Constants.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/8018",
+          "statement": "按源规范更新环形缓冲区大小。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 13349,
+        "change_id": "erigontech/erigon#13349",
+        "url": "https://github.com/erigontech/erigon/pull/13349",
+        "status": "MERGED",
+        "subject": "BlockHash EIP-2935 changes for pectra-devnet-5 ",
+        "branch": "main",
+        "created": "2025-01-08T15:57:19Z",
+        "submitted": "2025-01-09T12:43:29Z"
+      },
+      "commit": "bc082979bb6b76a02376f00cfe751ca4c44eb961",
+      "changed_paths": [
+        "params/protocol_params.go",
+        "tests/exec_spec_test.go",
+        "tests/execution-spec-tests"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/13349",
+          "statement": "按源规范更新 EIP-2935 实现。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "pull_request": {
+        "provider": "github",
+        "number": 1074,
+        "change_id": "ethereum/execution-specs#1074",
+        "url": "https://github.com/ethereum/execution-specs/pull/1074",
+        "status": "MERGED",
+        "subject": "Update EIP-2935 Contract Address",
+        "branch": "devnets/prague/5",
+        "created": "2025-01-09T16:49:43Z",
+        "submitted": "2025-01-09T17:00:58Z"
+      },
+      "commit": "3e74efd8b8651e6ce6afc4f9c434d6096b019014",
+      "changed_paths": [
+        "src/ethereum/prague/fork.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/execution-specs/pull/1074",
+          "statement": "按源规范更新系统合约地址。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/execution-specs"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

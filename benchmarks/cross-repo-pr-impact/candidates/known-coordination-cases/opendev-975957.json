@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-975957",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 975957,
+      "change_id": "I6144585b5aa6e04a67b07f9c98edc710da89b294",
+      "url": "https://review.opendev.org/c/starlingx/config/+/975957",
+      "status": "MERGED",
+      "subject": "Restore RPC method to update apiserver cert SANs",
+      "branch": "master",
+      "created": "2026-02-06 19:51:00.000000000",
+      "submitted": "2026-02-11 19:47:12.000000000"
+    },
+    "base_commit": "871678300afb44a35ec3a79ebf19c335bd629067",
+    "candidate_commit": "484c0e5aefda7368db092e90dde327c17c195fb5",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/conductor/manager.py",
+      "sysinv/sysinv/sysinv/sysinv/conductor/rpcapi.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/975957/revisions/484c0e5aefda7368db092e90dde327c17c195fb5/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/update",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/update/+/975958"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/update",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 975958,
+        "change_id": "Ib88cf0bafd111c1d7071757ba337942e44e6411c",
+        "url": "https://review.opendev.org/c/starlingx/update/+/975958",
+        "status": "MERGED",
+        "subject": "Add cluster-host IPs to apiserver cert on upgrade",
+        "branch": "master",
+        "created": "2026-02-06 19:53:29.000000000",
+        "submitted": "2026-02-11 19:48:04.000000000"
+      },
+      "commit": "c3ff5c6fbd5cbe3fd22f9944830ca46a792c992d",
+      "changed_paths": [
+        "software/upgrade-scripts/10-add-cluster-host-ip-to-kube-apiserver-cert.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/update/+/975958",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config/+/975957",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/dc82e60a308041df845dc22ffae33a15"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/update",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/update/raw/commit/3300839049da5d958b2572ec56eaacc9ae43f0f1/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

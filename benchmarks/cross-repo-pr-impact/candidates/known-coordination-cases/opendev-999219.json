@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-999219",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/audit-armada-app",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 999219,
+      "change_id": "I06b1a46c0ae6a6022d26a5dcdfa22e61fb089a53",
+      "url": "https://review.opendev.org/c/starlingx/audit-armada-app/+/999219",
+      "status": "MERGED",
+      "subject": "Add configurable extraHostPathMounts to auditd daemonset",
+      "branch": "master",
+      "created": "2026-07-30 06:43:14.000000000",
+      "submitted": "2026-08-10 13:22:52.000000000"
+    },
+    "base_commit": "d0f782fbdb8d9411954a342d5d5149f01a5f3d84",
+    "candidate_commit": "ba434f0d332af9d8b64fbdf1e0a950b233b91c0c",
+    "changed_paths": [
+      "helm-charts/custom/audit-helm/audit-helm/audit/Chart.yaml",
+      "helm-charts/custom/audit-helm/audit-helm/audit/templates/daemonset.yaml",
+      "helm-charts/custom/audit-helm/audit-helm/audit/values.yaml",
+      "helm-charts/custom/audit-helm/debian/all/deb_folder/changelog",
+      "helm-charts/custom/audit-helm/debian/all/meta_data.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/999219/revisions/ba434f0d332af9d8b64fbdf1e0a950b233b91c0c/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/audit-armada-app",
+      "target_repository": "starlingx/docs",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/docs/+/999535"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/docs",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 999535,
+        "change_id": "Ibfa4413ea1f338dff77ba81605fdce5b37be3276",
+        "url": "https://review.opendev.org/c/starlingx/docs/+/999535",
+        "status": "MERGED",
+        "subject": "Document extraHostPathMounts for auditd file watch rules",
+        "branch": "master",
+        "created": "2026-08-03 04:36:50.000000000",
+        "submitted": "2026-08-10 17:19:36.000000000"
+      },
+      "commit": "bfb8dc6e319c93a9991c261a66b45de821eec355",
+      "changed_paths": [
+        "doc/source/security/kubernetes/auditd-support-339a51d8ce16.rst"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/docs/+/999535",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/audit-armada-app/+/999219",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/bf0961b75b8548c3abdcfe1de23477d4"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/audit-armada-app",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/audit-armada-app/src/commit/ba434f0d332af9d8b64fbdf1e0a950b233b91c0c"
+    },
+    {
+      "repository": "starlingx/docs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/docs/src/commit/bfb8dc6e319c93a9991c261a66b45de821eec355"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

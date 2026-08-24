@@ -1,0 +1,68 @@
+{
+  "date": "2026-08-24",
+  "escope_babel_eslint": {
+    "decision": "retain_as_three_arm_anchor",
+    "a3_status": "rejected",
+    "bounded_negative_status": "not_available",
+    "reason": "No source-version pair and independent consumer satisfied the same pre-repair target contract on both sides."
+  },
+  "test_machinepack_mocha": {
+    "decision": "reject_target_repair_causality",
+    "source": {
+      "repository": "node-machine/test-machinepack",
+      "before_version": "2.1.18",
+      "breaking_version": "2.1.19",
+      "self_repair_version": "2.1.22",
+      "self_repair_commit": "845d9bd3d25c161e23be4632ddeb34b0deae37a8",
+      "self_repair_change": "run-test-suite.js and test-machine.js pass argins instead of inputValues"
+    },
+    "claimed_target": {
+      "repository": "node-machine/test-machinepack-mocha",
+      "repair_commit": "dd6f50410d1307c749a0755b815330cb55613b11",
+      "repair_change": "test-machine-with-mocha.js uses switch instead of exec and package.json requests unpublished ^2.1.23",
+      "followup_commit": "cb8f330b199ec4fc5ad5987cd49d9d4cf6ebc123",
+      "followup_change": "dependency range changes to ^3.0.1"
+    },
+    "real_client": {
+      "repository": "mikermcneil/machinepack-npm",
+      "commit": "0a1e1474310efd4eedb9e77e916ee56996f1ffaf",
+      "version": "6.4.0",
+      "contract": "six offline arrayify-dependencies and unarrayify-dependencies tests",
+      "execution_path": "test-machinepack-mocha command-line entry and raw test runner; test-machine-with-mocha.js is not loaded"
+    },
+    "environment": {
+      "runtime": "Node.js 6 container",
+      "machine_version_for_2_1_19": "15.0.0-2"
+    },
+    "observations": [
+      {
+        "source_version": "2.1.18",
+        "target_repair_applied": false,
+        "result": "6 passing"
+      },
+      {
+        "source_version": "2.1.19",
+        "target_repair_applied": false,
+        "result": "0 passing, 6 failing",
+        "failure_signature": "dependencies is a required input but it was not defined"
+      },
+      {
+        "source_version": "2.1.19",
+        "target_repair_applied": true,
+        "result": "0 passing, 6 failing",
+        "failure_signature": "same missing required input"
+      },
+      {
+        "source_version": "2.1.22",
+        "target_repair_applied": false,
+        "result": "6 passing"
+      },
+      {
+        "source_version": "2.1.22",
+        "target_repair_applied": true,
+        "result": "6 passing"
+      }
+    ],
+    "conclusion": "The observed client failure is repaired by the source repository itself. The claimed target patch neither repairs 2.1.19 nor lies on the real client's executed path, so it is not a valid cross-repository target-repair case."
+  }
+}

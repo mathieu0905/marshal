@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3722",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3722,
+      "change_id": "rust-lang/rfcs#3722",
+      "url": "https://github.com/rust-lang/rfcs/pull/3722",
+      "status": "MERGED",
+      "subject": "[RFC] Explicit ABI in `extern`",
+      "branch": "master",
+      "created": "2024-10-30T10:46:06Z",
+      "submitted": "2024-12-31T22:14:54Z"
+    },
+    "base_commit": "60a67587393599150e9dd696bf3ce339f03d34ef",
+    "candidate_commit": "11625fcc457c6f68e07954d1689c0da36909f2f0",
+    "changed_paths": [
+      "text/0000-explicit-abi.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/60a67587393599150e9dd696bf3ce339f03d34ef...11625fcc457c6f68e07954d1689c0da36909f2f0.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/132397"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 132397,
+        "change_id": "rust-lang/rust#132397",
+        "url": "https://github.com/rust-lang/rust/pull/132397",
+        "status": "MERGED",
+        "subject": "Make missing_abi lint warn-by-default.",
+        "branch": "master",
+        "created": "2024-10-31T10:43:52Z",
+        "submitted": "2025-01-15T12:04:43Z"
+      },
+      "commit": "585c9765a203df7cc7b497d848aae4ba979fcb39",
+      "changed_paths": [
+        "compiler/rustc_codegen_gcc/example/mini_core.rs",
+        "compiler/rustc_codegen_gcc/example/mini_core_hello_world.rs",
+        "compiler/rustc_codegen_gcc/example/mod_bench.rs",
+        "compiler/rustc_codegen_gcc/example/std_example.rs",
+        "compiler/rustc_lint_defs/src/builtin.rs",
+        "src/tools/clippy/tests/ui/boxed_local.rs",
+        "src/tools/clippy/tests/ui/boxed_local.stderr",
+        "src/tools/clippy/tests/ui/doc/doc-fixable.fixed",
+        "src/tools/clippy/tests/ui/doc/doc-fixable.rs",
+        "src/tools/clippy/tests/ui/missing_const_for_fn/could_be_const.fixed",
+        "src/tools/clippy/tests/ui/missing_const_for_fn/could_be_const.rs",
+        "src/tools/clippy/tests/ui/missing_const_for_fn/could_be_const.stderr",
+        "tests/ui/associated-types/issue-91231.rs",
+        "tests/ui/attributes/key-value-expansion.rs",
+        "tests/ui/borrowck/issue-92157.rs",
+        "tests/ui/coherence/coherence-negative-impls-copy.rs",
+        "tests/ui/conditional-compilation/cfg_accessible-not_sure.rs",
+        "tests/ui/consts/const-eval/validation-ice-extern-type-field.rs",
+        "tests/ui/delegation/glob-non-impl.rs",
+        "tests/ui/extern/extern-type-diag-not-similar.rs",
+        "tests/ui/extern/issue-10025.rs",
+        "tests/ui/extern/issue-95829.rs",
+        "tests/ui/extern/issue-95829.stderr",
+        "tests/ui/extern/not-in-block.rs",
+        "tests/ui/extern/not-in-block.stderr",
+        "tests/ui/foreign/issue-91370-foreign-fn-block-impl.rs",
+        "tests/ui/foreign/issue-91370-foreign-fn-block-impl.stderr",
+        "tests/ui/invalid/invalid-rustc_legacy_const_generics-arguments.rs",
+        "tests/ui/link-native-libs/issue-109144.rs",
+        "tests/ui/link-native-libs/suggest-libname-only-1.stderr",
+        "tests/ui/link-native-libs/suggest-libname-only-2.stderr",
+        "tests/ui/lint/function-item-references.rs",
+        "tests/ui/lint/lint-ctypes.rs",
+        "tests/ui/lint/lint-ctypes.stderr",
+        "tests/ui/offset-of/offset-of-dst-field.rs",
+        "tests/ui/parser/bad-fn-ptr-qualifier.fixed",
+        "tests/ui/parser/bad-fn-ptr-qualifier.rs",
+        "tests/ui/parser/bad-fn-ptr-qualifier.stderr",
+        "tests/ui/parser/bad-lit-suffixes.rs",
+        "tests/ui/parser/bad-lit-suffixes.stderr",
+        "tests/ui/parser/issues/issue-87217-keyword-order/wrong-unsafe.rs",
+        "tests/ui/parser/issues/issue-87217-keyword-order/wrong-unsafe.stderr",
+        "tests/ui/parser/item-kw-case-mismatch.fixed",
+        "tests/ui/parser/item-kw-case-mismatch.rs",
+        "tests/ui/parser/item-kw-case-mismatch.stderr",
+        "tests/ui/parser/lit-err-in-macro.rs",
+        "tests/ui/parser/lit-err-in-macro.stderr",
+        "tests/ui/parser/recover/recover-const-async-fn-ptr.rs",
+        "tests/ui/parser/recover/recover-const-async-fn-ptr.stderr",
+        "tests/ui/parser/recover/recover-fn-ptr-with-generics.rs",
+        "tests/ui/parser/recover/recover-fn-ptr-with-generics.stderr",
+        "tests/ui/parser/recover/recover-missing-semi-before-item.fixed",
+        "tests/ui/parser/recover/recover-missing-semi-before-item.rs",
+        "tests/ui/parser/recover/recover-missing-semi-before-item.stderr",
+        "tests/ui/proc-macro/inner-attrs.stderr",
+        "tests/ui/proc-macro/issue-66286.rs",
+        "tests/ui/proc-macro/issue-66286.stderr",
+        "tests/ui/rfcs/rfc-2627-raw-dylib/link-ordinal-not-foreign-fn.rs",
+        "tests/ui/rust-2024/unsafe-attributes/unsafe-attributes-fix.fixed",
+        "tests/ui/rust-2024/unsafe-attributes/unsafe-attributes-fix.rs",
+        "tests/ui/simd/type-generic-monomorphisation-extern-nonnull-ptr.rs",
+        "tests/ui/statics/uninhabited-static.rs",
+        "tests/ui/unpretty/expanded-exhaustive.rs",
+        "tests/ui/unpretty/expanded-exhaustive.stdout"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/132397",
+          "statement": "目标正文明确说明按源 RFC 评审建议提升缺失调用约定检查。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

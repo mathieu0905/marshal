@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-971114",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 971114,
+      "change_id": "I84c0cdcc7da0d8b97746aa333fc7cd0f4d315656",
+      "url": "https://review.opendev.org/c/starlingx/config/+/971114",
+      "status": "MERGED",
+      "subject": "Dev: Modify PTP monitoring parameters support to puppet hieradata",
+      "branch": "master",
+      "created": "2025-12-15 19:10:42.000000000",
+      "submitted": "2025-12-16 19:31:21.000000000"
+    },
+    "base_commit": "258b59835fadd7215600925af0de1db48c018a57",
+    "candidate_commit": "a3c9fb389aa54686ac73cda3bf590a11681112bc",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/common/constants.py",
+      "sysinv/sysinv/sysinv/sysinv/puppet/networking.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/971114/revisions/a3c9fb389aa54686ac73cda3bf590a11681112bc/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/monitoring",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/monitoring/+/969855"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/monitoring",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 969855,
+        "change_id": "Idf85526ec105e788f618c572abdfe6bdd8927b53",
+        "url": "https://review.opendev.org/c/starlingx/monitoring/+/969855",
+        "status": "MERGED",
+        "subject": "DEV: Handle per instance holdover and offset values in PTP collectd",
+        "branch": "master",
+        "created": "2025-12-04 21:20:36.000000000",
+        "submitted": "2025-12-18 20:48:45.000000000"
+      },
+      "commit": "07eae7f0b44d6d589b6e0ef2f9ac6e52ea077aa6",
+      "changed_paths": [
+        "collectd-extensions/src/ptp.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/monitoring/+/969855",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config/+/971114",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/c23c82798e8f43d38dffe768f4b88c10"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/monitoring",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/monitoring/src/commit/07eae7f0b44d6d589b6e0ef2f9ac6e52ea077aa6"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

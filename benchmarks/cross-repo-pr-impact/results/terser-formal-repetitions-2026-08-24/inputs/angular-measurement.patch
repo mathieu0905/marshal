@@ -1,0 +1,31 @@
+diff --git a/packages/angular_devkit/architect/testing/test-project-host.ts b/packages/angular_devkit/architect/testing/test-project-host.ts
+--- a/packages/angular_devkit/architect/testing/test-project-host.ts
++++ b/packages/angular_devkit/architect/testing/test-project-host.ts
+@@ -144,8 +144,7 @@ export class TestProjectHost extends NodeJsSyncHost {
+   }
+ 
+   private findUniqueFolderPath(): Observable<Path> {
+-    // 11 character alphanumeric string.
+-    const randomString = Math.random().toString(36).slice(2);
++    const randomString = 'terser-formal-probe';
+     const newFolderName = `test-project-host-${basename(this._templateRoot)}-${randomString}`;
+     const newFolderPath = join(dirname(this._templateRoot), newFolderName);
+ 
+diff --git a/packages/angular_devkit/build_angular/test/browser/differential_loading_spec_large.ts b/packages/angular_devkit/build_angular/test/browser/differential_loading_spec_large.ts
+--- a/packages/angular_devkit/build_angular/test/browser/differential_loading_spec_large.ts
++++ b/packages/angular_devkit/build_angular/test/browser/differential_loading_spec_large.ts
+@@ -97,6 +97,14 @@ describe('Browser Builder with differential loading', () => {
+     const { files } = await browserBuild(architect, host, target, { optimization: true });
+     expect(await files['main-es5.js']).not.toContain('class');
+     expect(await files['main-es2015.js']).toContain('class');
++    const probeOutput = process.env['TERSER_PROBE_OUTPUT'];
++    if (probeOutput) {
++      const generated: { [name: string]: string } = {};
++      for (const name of Object.keys(files).filter(name => name.endsWith('.js'))) {
++        generated[name] = await files[name];
++      }
++      require('fs').writeFileSync(probeOutput, JSON.stringify(generated));
++    }
+   });
+ 
+   it('uses the right zone.js variant', async () => {

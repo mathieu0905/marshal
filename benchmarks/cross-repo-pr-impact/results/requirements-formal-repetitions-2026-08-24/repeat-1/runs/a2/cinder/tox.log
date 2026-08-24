@@ -1,0 +1,57 @@
+.pkg: remove tox env folder /tmp/marshal-requirements-formal-r1.l533yr/consumers/a2/cinder/.tox/.pkg
+py313: install_deps> python -I -m pip install -r /tmp/marshal-requirements-formal-r1.l533yr/consumers/a2/cinder/test-requirements.txt -r /tmp/marshal-requirements-formal-r1.l533yr/consumers/a2/cinder/requirements.txt -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a1/upper-constraints.txt
+.pkg: install_requires> python -I -m pip install 'pbr>=6.1.1'
+.pkg: _optional_hooks> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: get_requires_for_build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: install_requires_for_build_editable> python -I -m pip install 'pbr>=2.0.0'
+.pkg: build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+py313: install_package_deps> python -I -m pip install 'Paste>=3.4.3' 'PasteDeploy>=2.1.0' 'Routes>=2.4.1' 'SQLAlchemy>=1.4.23' 'WebOb>=1.8.6' 'boto3>=1.18.49' 'cachetools>=4.2.1' 'castellan>=3.7.0' 'cryptography>=3.1' 'cursive>=0.2.2' 'decorator>=4.4.2' 'distro>=1.8.0' 'eventlet!=0.32.0,>=0.30.1' 'futurist>=3.2.1' 'google-api-python-client>=1.11.0' 'greenlet>=0.4.16' 'iso8601>=0.1.12' 'jsonschema>=3.2.0' 'keystoneauth1>=4.2.1' 'keystonemiddleware>=9.1.0' 'lxml>=4.5.2' 'os-brick>=6.10.0' 'oslo.concurrency>=4.5.0' 'oslo.config>=8.3.2' 'oslo.context>=3.4.0' 'oslo.db>=11.0.0' 'oslo.i18n>=5.1.0' 'oslo.log>=4.6.1' 'oslo.messaging>=14.6.0' 'oslo.middleware>=4.1.1' 'oslo.policy>=5.0.0' 'oslo.privsep>=2.6.2' 'oslo.reports>=3.2.0' 'oslo.rootwrap>=6.2.0' 'oslo.serialization>=4.2.0' 'oslo.service>=4.5.0' 'oslo.service[threading]>=4.5.0' 'oslo.upgradecheck>=1.1.1' 'oslo.utils>=6.0.0' 'oslo.versionedobjects>=2.4.0' 'oslo.vmware>=3.10.0' 'osprofiler>=3.4.0' 'packaging>=20.9' 'paramiko>=2.7.2' 'pbr>=5.8.0' 'pyparsing>=3.0.0' 'python-barbicanclient>=5.0.1' 'python-glanceclient>=3.2.2' 'python-keystoneclient>=4.1.1' 'python-novaclient>=18.2.0' 'python-swiftclient>=3.10.1' 'requests>=2.25.1' 'rtslib-fb>=2.1.74' 'stevedore>=3.2.2' 'tabulate>=0.8.7' 'taskflow>=4.5.0' 'tenacity>=6.3.1' 'tooz>=2.8.0' 'tzdata>=2022.4' 'urllib3>=2.3.0' 'zstd>=1.5.0.0' -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a1/upper-constraints.txt
+py313: install_package> python -I -m pip install --force-reinstall --no-deps /tmp/marshal-requirements-formal-r1.l533yr/consumers/a2/cinder/.tox/.tmp/package/1/cinder-0.0.0-0.editable-py3-none-any.whl
+py313: commands[0]> stestr run --random cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync
+/tmp/marshal-requirements-formal-r1.l533yr/consumers/a2/cinder/cinder/__init__.py:21: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet  # noqa
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+/tmp/marshal-requirements-formal-r1.l533yr/consumers/a2/cinder/cinder/__init__.py:21: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet  # noqa
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+DROP ALL OBJECTS, BACKEND mysql+pymysql://openstack_citest:***@127.0.0.1:33317/tqmwvabykk
+DROP BACKEND Engine(mysql+pymysql://openstack_citest:***@127.0.0.1:33317/) TOKEN tqmwvabykk
+DISPOSE ENGINE Engine(mysql+pymysql://openstack_citest:***@127.0.0.1:33317/)
+{0} cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync [1.913351s] ... ok
+
+======
+Totals
+======
+Ran: 1 tests in 1.9134 sec.
+ - Passed: 1
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 1.9134 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:01.913351
+py313: commands[1]> stestr slowest
+Test id                                                                    Runtime (s)
+-------------------------------------------------------------------------  -----------
+cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync  1.913
+.pkg: _exit> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+  py313: OK (70.79=setup[48.86]+cmd[21.55,0.38] seconds)
+  congratulations :) (71.22 seconds)

@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3310",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3310,
+      "change_id": "kubernetes/enhancements#3310",
+      "url": "https://github.com/kubernetes/enhancements/pull/3310",
+      "status": "MERGED",
+      "subject": "KEP-2579: Pod Security GA plan",
+      "branch": "master",
+      "created": "2022-05-11T18:22:26Z",
+      "submitted": "2022-05-18T15:30:53Z"
+    },
+    "base_commit": "da76cd07fa2958895ed28376a0c920b266b6529b",
+    "candidate_commit": "7f5d72de12e542a62450ef2b496902c708c3bfd7",
+    "changed_paths": [
+      "keps/sig-auth/2579-psp-replacement/README.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/da76cd07fa2958895ed28376a0c920b266b6529b...7f5d72de12e542a62450ef2b496902c708c3bfd7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/110459"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 110459,
+        "change_id": "kubernetes/kubernetes#110459",
+        "url": "https://github.com/kubernetes/kubernetes/pull/110459",
+        "status": "MERGED",
+        "subject": "PodSecurity: promote config and feature gate to GA",
+        "branch": "master",
+        "created": "2022-06-08T15:25:17Z",
+        "submitted": "2022-06-15T21:41:22Z"
+      },
+      "commit": "ab66a381940a8183a5e344902d7254ee4bb15b19",
+      "changed_paths": [
+        "pkg/features/kube_features.go",
+        "plugin/pkg/admission/security/podsecurity/admission.go",
+        "plugin/pkg/admission/security/podsecurity/admission_test.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/load/load.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/load/load_test.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/scheme/scheme.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/defaults.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/defaults_test.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/doc.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/register.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/types.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/zz_generated.conversion.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/pod-security-admission/admission/api/v1/zz_generated.defaults.go",
+        "test/integration/auth/podsecurity_test.go",
+        "vendor/modules.txt"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/110459",
+          "statement": "目标按源 KEP 的稳定版计划提升 Pod 安全配置和特性开关。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

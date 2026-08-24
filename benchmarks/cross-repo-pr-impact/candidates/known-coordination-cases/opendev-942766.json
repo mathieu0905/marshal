@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-942766",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/nova",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 942766,
+      "change_id": "I09f4f76fff30f9cccf35f4832b9c870095c380ad",
+      "url": "https://review.opendev.org/c/openstack/nova/+/942766",
+      "status": "MERGED",
+      "subject": "Add image meta to libvirt XML metadata",
+      "branch": "master",
+      "created": "2025-02-26 09:34:48.000000000",
+      "submitted": "2025-08-09 12:46:15.000000000"
+    },
+    "base_commit": "619cd0a9c733125d8c2bac10c8b0b40e00bd2594",
+    "candidate_commit": "7ce26377af1b6b1760a1c43903626a1686e18758",
+    "changed_paths": [
+      "nova/tests/unit/virt/ironic/utils.py",
+      "nova/tests/unit/virt/libvirt/test_config.py",
+      "nova/tests/unit/virt/libvirt/test_driver.py",
+      "nova/virt/driver.py",
+      "nova/virt/libvirt/config.py",
+      "nova/virt/libvirt/driver.py",
+      "releasenotes/notes/bp-xml-image-meta-037f4eba59f0121e.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/942766/revisions/7ce26377af1b6b1760a1c43903626a1686e18758/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/nova",
+      "target_repository": "openstack/ceilometer",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/ceilometer/+/942879"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/ceilometer",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 942879,
+        "change_id": "I7d8164f80322a9914b15d9a6991b2bc91b158ff3",
+        "url": "https://review.opendev.org/c/openstack/ceilometer/+/942879",
+        "status": "MERGED",
+        "subject": "Publish image meta from notifications and pollsters (if available)",
+        "branch": "master",
+        "created": "2025-02-27 06:09:10.000000000",
+        "submitted": "2025-08-25 11:01:06.000000000"
+      },
+      "commit": "a00f7cf695f2a8d4b526e175b5341427cd0c8e4e",
+      "changed_paths": [
+        "ceilometer/compute/discovery.py",
+        "ceilometer/compute/pollsters/util.py",
+        "ceilometer/data/meters.d/meters.yaml",
+        "ceilometer/nova_client.py",
+        "ceilometer/tests/unit/compute/pollsters/base.py",
+        "ceilometer/tests/unit/compute/pollsters/test_cpu.py",
+        "ceilometer/tests/unit/compute/pollsters/test_location_metadata.py",
+        "ceilometer/tests/unit/compute/test_discovery.py",
+        "ceilometer/tests/unit/test_novaclient.py",
+        "releasenotes/notes/add-image-meta-to-samples-72d62016f5ab0043.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/ceilometer/+/942879",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/nova/+/942766",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/0b2a852fde8c4659bb5af33c95cbbac2"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/ceilometer",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/ceilometer/raw/commit/a00f7cf695f2a8d4b526e175b5341427cd0c8e4e/LICENSE"
+    },
+    {
+      "repository": "openstack/nova",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/nova/raw/commit/7ce26377af1b6b1760a1c43903626a1686e18758/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "run_id": "requirements-formal-repetitions-2026-08-24",
+  "experiment_tier": "main_execution_pending_independent_review",
+  "project_package": {
+    "source_repository": "openstack/requirements",
+    "candidate_repositories": [
+      "openstack/cinder",
+      "openstack/heat",
+      "openstack/ironic",
+      "openstack/keystone",
+      "openstack/nova",
+      "openstack/placement"
+    ],
+    "positive_candidate": "openstack/cinder",
+    "bounded_negative_candidates": [
+      "openstack/heat",
+      "openstack/ironic",
+      "openstack/keystone",
+      "openstack/nova",
+      "openstack/placement"
+    ]
+  },
+  "repetitions": 3,
+  "configurations": [
+    {
+      "name": "a0",
+      "alembic": "1.18.5",
+      "commands": 18,
+      "direction_correct": 18,
+      "version_correct": 18,
+      "outcome": "all_pass"
+    },
+    {
+      "name": "a1",
+      "alembic": "1.19.1",
+      "commands": 18,
+      "direction_correct": 18,
+      "version_correct": 18,
+      "outcome": "cinder_failed_with_remove_constraint_signature_in_all_repetitions; five_interferers_passed"
+    },
+    {
+      "name": "a2",
+      "alembic": "1.19.1",
+      "commands": 18,
+      "direction_correct": 18,
+      "version_correct": 18,
+      "outcome": "all_pass_after_applying_maintainer_repair_to_cinder_only"
+    },
+    {
+      "name": "a3-before",
+      "alembic": "1.17.2",
+      "commands": 18,
+      "direction_correct": 18,
+      "version_correct": 18,
+      "outcome": "all_pass"
+    },
+    {
+      "name": "a3-after",
+      "alembic": "1.18.0",
+      "commands": 18,
+      "direction_correct": 18,
+      "version_correct": 18,
+      "outcome": "all_pass"
+    }
+  ],
+  "counts": {
+    "repository_commands": 90,
+    "commands_matching_expected_direction": 90,
+    "commands_with_expected_alembic_version": 90,
+    "commands_with_target_test_executed": 90,
+    "exit_zero": 87,
+    "exit_nonzero_expected": 3,
+    "exit_nonzero_unexpected": 0,
+    "timeouts": 0,
+    "retries": 0,
+    "cinder_a1_failures": 3,
+    "cinder_a2_recoveries": 3,
+    "aggregate_command_duration_seconds": 5803
+  },
+  "failure_signature": {
+    "repository": "openstack/cinder",
+    "configuration": "a1",
+    "test": "cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync",
+    "type": "remove_constraint",
+    "check_constraints_per_repetition": 12,
+    "same_table_set_across_repetitions": true,
+    "repetitions_observed": 3
+  },
+  "repair_scope": {
+    "source": "Cinder change 1000516 patch set 3",
+    "artifact": "../requirements-cinder-active-pilot-2026-08-24/a2-maintainer.patch",
+    "repositories_modified_in_a2": ["openstack/cinder"],
+    "repositories_unmodified_in_a2": [
+      "openstack/heat",
+      "openstack/ironic",
+      "openstack/keystone",
+      "openstack/nova",
+      "openstack/placement"
+    ]
+  },
+  "statistical_unit": {
+    "unit": "project_package_and_candidate_repository",
+    "warning": "The 90 commands are repeated measurements, not 90 independent samples.",
+    "duplicate_input_note": "For the five interferer repositories, A1 and A2 have identical code and constraints. Their A2 executions confirm run stability and are not additional bounded-negative examples."
+  },
+  "evaluation_summary": {
+    "outcome": "三轮 90 条仓库命令全部符合预期方向、版本和测试执行要求。",
+    "claim_update": "requirements 项目包的主动执行已达到三次重复标准；Cinder 是执行正例候选，五个干扰仓具备命令范围内的限定负证据候选。",
+    "baseline_relation": "相较单次准备试验，本轮在新工作树与新 Tox 环境中复现三次 Cinder 破坏和恢复，并把同一协议扩展到五个干扰仓及 A3 两臂。",
+    "failure_mode": "无意外运行失败；三次非零退出均是合同预期的 Cinder A1 约束差异。",
+    "conclusion": "执行证据支持备择假设，但正式标签仍取决于独立语义复核。",
+    "next_action": "独立盲复核 Cinder 维护者修复抽取边界、A3 语义边界和五个限定负标签的命令范围；并推进第三个不同项目包。"
+  },
+  "claim_status": "supported_by_execution_pending_independent_semantic_review",
+  "limitations": [
+    "所有运行共享同一个 MariaDB 10.2.44 实例，但消费者工作树和 Tox 环境逐配置逐重复新建。",
+    "限定负证据只覆盖记录的 MySQL 模型同步命令，不代表仓库的所有运行时行为。",
+    "A3 覆盖自动生成元数据比较路径，但不覆盖 Alembic 1.18.0 的全部数据库专有分支。",
+    "同一数据集构造者不能替代独立复核者。"
+  ]
+}

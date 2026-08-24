@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-723",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 723,
+      "change_id": "kubernetes/enhancements#723",
+      "url": "https://github.com/kubernetes/enhancements/pull/723",
+      "status": "MERGED",
+      "subject": "Revisit RuntimeClass upgrade story",
+      "branch": "master",
+      "created": "2019-01-24T21:11:44Z",
+      "submitted": "2019-04-01T23:52:35Z"
+    },
+    "base_commit": "6a28f4a8ab41798ce5f5305be229b657b9fa9401",
+    "candidate_commit": "0cbf1e05242be5fd83bfdad6913c216f3a84e2f7",
+    "changed_paths": [
+      "keps/sig-node/runtime-class.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/6a28f4a8ab41798ce5f5305be229b657b9fa9401...0cbf1e05242be5fd83bfdad6913c216f3a84e2f7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/75003"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 75003,
+        "change_id": "kubernetes/kubernetes#75003",
+        "url": "https://github.com/kubernetes/kubernetes/pull/75003",
+        "status": "MERGED",
+        "subject": "Promote RuntimeClass to beta",
+        "branch": "master",
+        "created": "2019-03-05T22:56:26Z",
+        "submitted": "2019-03-09T02:02:12Z"
+      },
+      "commit": "0604256d6c009b581971471d5ba98441a088a4fb",
+      "changed_paths": [
+        "pkg/features/kube_features.go",
+        "plugin/pkg/auth/authorizer/rbac/bootstrappolicy/testdata/cluster-roles.yaml",
+        "test/e2e/node/runtimeclass.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/75003",
+          "statement": "源 KEP 修订升级方案，目标按该方案把运行时类提升到测试阶段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

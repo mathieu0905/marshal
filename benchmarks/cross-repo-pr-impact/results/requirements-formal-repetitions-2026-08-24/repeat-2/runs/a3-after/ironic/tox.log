@@ -1,0 +1,151 @@
+.pkg: remove tox env folder /tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-after/ironic/.tox/.pkg
+py313: install_deps> python -I -m pip install -r /tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-after/ironic/test-requirements.txt -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a3-after/upper-constraints.txt
+.pkg: install_requires> python -I -m pip install 'pbr>=6.1.1'
+.pkg: _optional_hooks> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: get_requires_for_build_sdist> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: install_requires_for_build_sdist> python -I -m pip install 'pbr>=6.0.0'
+.pkg: get_requires_for_build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+.pkg: install_requires_for_build_editable> python -I -m pip install 'pbr>=6.0.0'
+.pkg: build_editable> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+py313: install_package_deps> python -I -m pip install 'Jinja2>=3.1.6' 'PyYAML>=6.0.2' 'SQLAlchemy>=1.4.0' 'WebOb>=1.7.1' 'alembic>=1.4.2' 'automaton>=1.9.0' 'bcrypt>=3.1.3' 'cheroot>=10.0.1' 'construct>=2.9.39' 'cotyledon>=2.0.0' 'futurist>=3.2.0' 'jsonpatch>=1.16' 'jsonschema>=4.0.0' 'keystoneauth1>=4.2.0' 'keystonemiddleware>=9.5.0' 'lark>=1.2.2' 'microversion-parse>=1.0.1' 'netaddr>=0.9.0' 'openstacksdk>=4.9.0' 'os-service-types>=1.7.0' 'os-traits>=0.4.0' 'oslo.concurrency>=4.2.0' 'oslo.config>=6.8.0' 'oslo.context>=2.22.0' 'oslo.db>=9.1.0' 'oslo.log>=4.3.0' 'oslo.messaging>=14.1.0' 'oslo.middleware>=3.31.0' 'oslo.policy>=6.0.0' 'oslo.serialization>=2.25.0' 'oslo.service>=4.2.1' 'oslo.upgradecheck>=1.3.0' 'oslo.utils>=8.0.0' 'oslo.versionedobjects>=3.10.0' 'osprofiler>=1.5.0' 'pbr>=6.0.0' 'pecan>=1.0.0' 'psutil>=3.2.2' 'pycdlib>=1.11.0' 'requests>=2.18.0' 'rfc3986>=1.2.0' 'stevedore>=1.29.0' 'sushy>=5.11.0' 'tenacity>=6.3.1' 'tooz>=2.7.0' 'websockify>=0.9.0' 'zeroconf>=0.24.0' -c /tmp/marshal-cinder-pilot.XSm5CH/requirements-a3-after/upper-constraints.txt
+py313: install_package> python -I -m pip install --force-reinstall --no-deps /tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-after/ironic/.tox/.tmp/package/1/ironic-0.0.0-0.editable-py3-none-any.whl
+py313: commands[0]> stestr run --slowest --parallel-class --exclude-regex TestMigrationsMySQL ironic.tests.unit.db.sqlalchemy.test_migrations.ModelsMigrationsSyncMysql.test_models_sync
+/tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-after/ironic/.tox/py313/lib/python3.13/site-packages/futurist/_utils.py:34: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet as _eventlet  # noqa
+/tmp/marshal-requirements-formal-r2.V6lP6A/consumers/a3-after/ironic/.tox/py313/lib/python3.13/site-packages/futurist/_utils.py:34: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet as _eventlet  # noqa
+2026-08-24 05:27:53.938 3694591 INFO __name__ [-] setup plugin alembic.autogenerate.schemas
+2026-08-24 05:27:53.938 3694591 INFO __name__ [-] setup plugin alembic.autogenerate.tables
+2026-08-24 05:27:53.938 3694591 INFO __name__ [-] setup plugin alembic.autogenerate.types
+2026-08-24 05:27:53.938 3694591 INFO __name__ [-] setup plugin alembic.autogenerate.constraints
+2026-08-24 05:27:53.938 3694591 INFO __name__ [-] setup plugin alembic.autogenerate.defaults
+2026-08-24 05:27:53.938 3694591 INFO __name__ [-] setup plugin alembic.autogenerate.comments
+2026-08-24 05:27:56.215 3694591 INFO oslo_db.sqlalchemy.provision [-] CREATE BACKEND mysql+pymysql://openstack_citest:***@127.0.0.1:33317/ TOKEN eoducwrqjf
+{0} ironic.tests.unit.db.sqlalchemy.test_migrations.ModelsMigrationsSyncMysql.test_models_sync [31.420733s] ... ok
+
+Captured stderr:
+~~~~~~~~~~~~~~~~
+    INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 2581ebaf0cb2, initial migration
+INFO  [alembic.runtime.migration] Running upgrade 2581ebaf0cb2 -> 21b331f883ef, Add provision_updated_at
+INFO  [alembic.runtime.migration] Running upgrade 21b331f883ef -> 3cb628139ea4, Nodes add console enabled
+INFO  [alembic.runtime.migration] Running upgrade 3cb628139ea4 -> 31baaf680d2b, Add Node instance info
+INFO  [alembic.runtime.migration] Running upgrade 31baaf680d2b -> 3bea56f25597, add unique constraint to instance_uuid
+INFO  [alembic.runtime.migration] Running upgrade 3bea56f25597 -> 487deb87cc9d, add conductor_affinity and online
+INFO  [alembic.runtime.migration] Running upgrade 487deb87cc9d -> 242cc6a923b3, Add Node.maintenance_reason
+INFO  [alembic.runtime.migration] Running upgrade 242cc6a923b3 -> 5674c57409b9, replace NOSTATE with AVAILABLE
+INFO  [alembic.runtime.migration] Running upgrade 5674c57409b9 -> bb59b63f55a, add_node_driver_internal_info
+INFO  [alembic.runtime.migration] Running upgrade bb59b63f55a -> 3ae36a5f5131, add_logical_name
+INFO  [alembic.runtime.migration] Running upgrade 3ae36a5f5131 -> 1e1d5ace7dc6, add inspection_started_at and inspection_finished_at
+INFO  [alembic.runtime.migration] Running upgrade 1e1d5ace7dc6 -> 4f399b21ae71, Add node.clean_step
+INFO  [alembic.runtime.migration] Running upgrade 4f399b21ae71 -> 2fb93ffd2af1, increase-node-name-length
+INFO  [alembic.runtime.migration] Running upgrade 2fb93ffd2af1 -> 789acc877671, Add node.raid_config and node.target_raid_config
+INFO  [alembic.runtime.migration] Running upgrade 789acc877671 -> 516faf1bb9b1, Resizing column nodes.driver
+INFO  [alembic.runtime.migration] Running upgrade 516faf1bb9b1 -> 48d6c242bb9b, add node tags
+INFO  [alembic.runtime.migration] Running upgrade 48d6c242bb9b -> 5ea1b0d310e, Added portgroups table and altered ports
+INFO  [alembic.runtime.migration] Running upgrade 5ea1b0d310e -> f6fdb920c182, Set Port.pxe_enabled to True if NULL
+INFO  [alembic.runtime.migration] Running upgrade f6fdb920c182 -> e294876e8028, add-node-network-interface
+INFO  [alembic.runtime.migration] Running upgrade e294876e8028 -> 10b163d4481e, add port portgroup internal info
+INFO  [alembic.runtime.migration] Running upgrade 10b163d4481e -> dd34e1f1303b, add resource_class to node
+INFO  [alembic.runtime.migration] Running upgrade dd34e1f1303b -> c14cef6dfedf, Populate node.network_interface
+INFO  [alembic.runtime.migration] Running upgrade c14cef6dfedf -> 60cf717201bc, add_standalone_ports_supported_to_portgroup
+INFO  [alembic.runtime.migration] Running upgrade 60cf717201bc -> bcdd431ba0bf, Add fields for all interfaces
+INFO  [alembic.runtime.migration] Running upgrade bcdd431ba0bf -> daa1ba02d98, Add volume_connectors table
+INFO  [alembic.runtime.migration] Running upgrade daa1ba02d98 -> 1a59178ebdf6, Add volume_targets table
+INFO  [alembic.runtime.migration] Running upgrade 1a59178ebdf6 -> 493d8f27f235, add portgroup configuration fields
+INFO  [alembic.runtime.migration] Running upgrade 493d8f27f235 -> 1d6951876d68, Add storage_interface DB field and object
+INFO  [alembic.runtime.migration] Running upgrade 1d6951876d68 -> 2353895ecfae, Add conductor_hardware_interfaces table
+INFO  [alembic.runtime.migration] Running upgrade 2353895ecfae -> dbefd6bdaa2c, Add default column to ConductorHardwareInterfaces
+INFO  [alembic.runtime.migration] Running upgrade dbefd6bdaa2c -> 3d86a077a3f2, add port physical network
+INFO  [alembic.runtime.migration] Running upgrade 3d86a077a3f2 -> 868cb606a74a, add version field in base class
+INFO  [alembic.runtime.migration] Running upgrade 868cb606a74a -> 405cfe08f18d, add rescue interface to nodes
+INFO  [alembic.runtime.migration] Running upgrade 405cfe08f18d -> b4130a7fc904, Create node_traits table
+INFO  [alembic.runtime.migration] Running upgrade b4130a7fc904 -> e918ff30eb42, resize column nodes instance_info
+INFO  [alembic.runtime.migration] Running upgrade e918ff30eb42 -> 82c315d60161, add bio
+    s settings
+INFO  [alembic.runtime.migration] Running upgrade 82c315d60161 -> 2d13bc3d6bba, add bios interface
+INFO  [alembic.runtime.migration] Running upgrade 2d13bc3d6bba -> fb3f10dd262e, add fault to node table
+INFO  [alembic.runtime.migration] Running upgrade fb3f10dd262e -> b9117ac17882, add deploy_step to node
+INFO  [alembic.runtime.migration] Running upgrade b9117ac17882 -> 664f85c2f622, add conductor_group to nodes/conductors
+INFO  [alembic.runtime.migration] Running upgrade 664f85c2f622 -> d2b036ae9378, Add automated_clean field
+INFO  [alembic.runtime.migration] Running upgrade d2b036ae9378 -> 93706939026c, Add Node.protected field
+INFO  [alembic.runtime.migration] Running upgrade 93706939026c -> f190f9d00a11, add_node_owner
+INFO  [alembic.runtime.migration] Running upgrade f190f9d00a11 -> dd67b91a1981, Add Allocations table
+INFO  [alembic.runtime.migration] Running upgrade dd67b91a1981 -> 9cbeefa3763f, add is_smartnic port attribute
+INFO  [alembic.runtime.migration] Running upgrade 9cbeefa3763f -> 28c44432c9c3, add node description
+INFO  [alembic.runtime.migration] Running upgrade 28c44432c9c3 -> 2aac7e0872f6, Create deploy_templates and deploy_template_steps tables.
+INFO  [alembic.runtime.migration] Running upgrade 2aac7e0872f6 -> 1e15e7122cc9, add extra column to deploy_templates
+INFO  [alembic.runtime.migration] Running upgrade 1e15e7122cc9 -> ce6c4b3cf5a2, add allocation owner
+INFO  [alembic.runtime.migration] Running upgrade ce6c4b3cf5a2 -> cd2c80feb331, add nodes.retired field
+INFO  [alembic.runtime.migration] Running upgrade cd2c80feb331 -> b2ad35726bb0, add node lessee
+INFO  [alembic.runtime.migration] Running upgrade b2ad35726bb0 -> cf1a80fdb352, Add nodes.network_data field
+INFO  [alembic.runtime.migration] Running upgrade cf1a80fdb352 -> c0455649680c, port-name
+INFO  [alembic.runtime.migration] Running upgrade c0455649680c -> ac00b586ab95, Adds indexes to important and commonly matched columns.
+INFO  [alembic.runtime.migration] Running upgrade ac00b586ab95 -> 2bbd96b6ccb9, Add fields from BIOS registry
+INFO  [alembic.runtime.migration] Running upgrade 2bbd96b6ccb9 -> c1846a214450, add boot_mode and secure_boot
+INFO  [alembic.runtime.migration] Running upgrade c1846a214450 -> 9ef41f07cb58, add_node_history_table
+INFO  [alembic.runtime.migration] Running upgrade 9ef41f07cb58 -> 0ac0f39bc5aa, add node inventory table
+INFO  [alembic.runtime.migration] Running upgrade 0ac0f39bc5aa -> 4dbec778866e, create node.shard
+INFO  [alembic.runtime.migration] Running upgrade 4dbec778866e -> fe222f476baf
+INFO  [alembic.runtime.migration] Running upgrade fe222f476baf -> 163040c5513f, add firmware information
+INFO  [alembic.runtime.migration] Running upgrade 163040c5513f -> d163df1bab88, remove_extra_fk_constraint in allocations
+INFO  [alembic.runtime.migration] Running upgrade d163df1bab88 -> aa2384fee727, Add service_steps
+INFO  [alembic.runtime.migration] Running upgrade aa2384fee727 -> 01f21d5e5195, increase-length-of-user-column
+INFO  [alembic.runtime.migration] Running upgrade 01f21d5e5195 -> 66bd9c5604d5, Create runbooks and runbook_steps tables
+INFO  [alembic.runtime.migration] Running upgrade 66bd9c5604d5 -> 6e9cf6acce0b, node disable_power_off
+INFO  [alembic.runtime.migration] Running upgrade 6e9cf6acce0b -> 21c48150dea9, Add inspection rules
+INFO  [alembic.runtime.migration] Running upgrade 21c48150dea9 -> 1c14278d6e33, port description
+INFO  [alembic.runtime.migration] Running upgrade 1c14278d6e33 -> e4827561979d, Add vendor attribute to Port object
+INFO  [alembic.runtime.migration] Running upgrade e4827561979d -> 3ef27505c9fb, add category attribute to port object
+INFO  [alembic.runtime.migration] Running upgrade 3ef27505c9fb -> d0821744f9e2, add physical_network attribute to portgroup object
+INFO  [alembic.runtime.migration] Running upgrade d0821744f9e2 -> 763b2f62d215, add category attribute to portgroup object
+INFO  [alembic.runtime.migration] Running upgrade 763b2f62d215 -> 15e9d00367b0, add instance_name field to nodes
+INFO  [alembic.runtime.migration] Running upgrade 15e9d00367b0 -> 9f8c7d6e5b4a, add
+     node health field
+INFO  [alembic.runtime.migration] Running upgrade 9f8c7d6e5b4a -> 9c0446cb6bc3
+INFO  [alembic.runtime.migration] Running upgrade 9c0446cb6bc3 -> c1fd28861bb9, Migrate to UTF8MB4 character encoding
+INFO  [alembic.runtime.migration] Running upgrade c1fd28861bb9 -> 2a3b4c5d6e7f, add dynamic portgroup fields
+INFO  [alembic.runtime.migration] Running upgrade 2a3b4c5d6e7f -> e2d316b60d9e, Add runbook_traits table and description column to runbooks
+INFO  [alembic.runtime.migration] Running upgrade e2d316b60d9e -> 16990309ad9d, add project to node_history table
+INFO  [alembic.runtime.migration] Running upgrade 16990309ad9d -> 772c0e7e8299, add firmware identity fields
+INFO  [alembic.runtime.migration] Running upgrade 772c0e7e8299 -> 9fb44677ef15
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+
+
+======
+Totals
+======
+Ran: 1 tests in 31.4207 sec.
+ - Passed: 1
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 31.4207 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:31.420733
+Test id                                                                                     Runtime (s)
+------------------------------------------------------------------------------------------  -----------
+ironic.tests.unit.db.sqlalchemy.test_migrations.ModelsMigrationsSyncMysql.test_models_sync  31.421
+.pkg: _exit> python /tmp/marshal-cinder-pilot.XSm5CH/runner-venv/lib/python3.13/site-packages/pyproject_api/_backend.py True pbr.build
+  py313: OK (79.71=setup[39.13]+cmd[40.59] seconds)
+  congratulations :) (79.85 seconds)

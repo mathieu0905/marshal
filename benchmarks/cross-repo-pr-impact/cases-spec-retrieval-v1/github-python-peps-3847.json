@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-python-peps-3847",
+  "project": "python",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "python/peps",
+    "pull_request": {
+      "provider": "github",
+      "number": 3847,
+      "change_id": "python/peps#3847",
+      "url": "https://github.com/python/peps/pull/3847",
+      "status": "MERGED",
+      "subject": "PEP 749: Add section on metaclasses",
+      "branch": "main",
+      "created": "2024-06-19T05:08:39Z",
+      "submitted": "2024-07-23T20:49:18Z"
+    },
+    "base_commit": "25419bd3d36a345d6ae1317b2585fc1a8b7a68c2",
+    "candidate_commit": "bc211ee3bd4a926377ae0b6dde84dce35c415222",
+    "changed_paths": [
+      "peps/pep-0749.rst"
+    ],
+    "patch_url": "https://github.com/python/peps/compare/25419bd3d36a345d6ae1317b2585fc1a8b7a68c2...bc211ee3bd4a926377ae0b6dde84dce35c415222.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "python/peps",
+      "target_repository": "python/cpython",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/python/cpython/pull/122074"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "python/cpython",
+      "pull_request": {
+        "provider": "github",
+        "number": 122074,
+        "change_id": "python/cpython#122074",
+        "url": "https://github.com/python/cpython/pull/122074",
+        "status": "MERGED",
+        "subject": "gh-119180: Use type descriptors to access annotations (PEP 749)",
+        "branch": "main",
+        "created": "2024-07-21T04:00:06Z",
+        "submitted": "2024-07-27T16:36:06Z"
+      },
+      "commit": "0c8bf2e7f479879af0cd3bf75cb96c2a612447d1",
+      "changed_paths": [
+        "Lib/annotationlib.py",
+        "Lib/test/test_annotationlib.py",
+        "Misc/NEWS.d/next/Library/2024-07-23-17-13-10.gh-issue-119180.5PZELo.rst"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/python/cpython/pull/122074",
+          "statement": "目标实现 PEP 749 的注解访问方案，并明确引用源 PR 中决定该方案的讨论。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "python/peps",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/peps"
+    },
+    {
+      "repository": "python/cpython",
+      "spdx": "PSF-2.0",
+      "evidence_url": "https://github.com/python/cpython/blob/main/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

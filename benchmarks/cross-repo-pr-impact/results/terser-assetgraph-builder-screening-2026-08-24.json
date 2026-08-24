@@ -1,0 +1,75 @@
+{
+  "status": "four_arm_screening_only",
+  "date": "2026-08-24",
+  "evidence_class": "output_contract_test_adaptation",
+  "source": {
+    "repository": "terser/terser",
+    "a3_before_version": "4.2.0",
+    "a3_before_commit": "4f2a9861b2f0fcb078a8f04133938ae7ed885c0c",
+    "before_version": "4.2.1",
+    "before_commit": "c761dadf927cf71599c8cf5ff269cd778b65cb4b",
+    "after_version": "4.3.9",
+    "after_commit": "e7e420898061c42954848e74d67b268284a04871",
+    "behavior_commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "behavior": "wrap_func_args defaults to true and adds parentheses around anonymous function arguments"
+  },
+  "target": {
+    "repository": "assetgraph/assetgraph-builder",
+    "baseline_commit": "ef5be8d4aa37786b6b8529868fcf4b21a614b99c",
+    "repair_commit": "e4140416e7feaa3d088cf3ad0229fd677ff36dbc",
+    "indirect_dependency": "assetgraph 6.0.0 depends on terser ^4.0.0",
+    "contract": "the issue #69 test in test/transforms/buildProduction.js"
+  },
+  "environment": {
+    "runtime": "Node.js 10 container",
+    "fixed_direct_versions": [
+      "assetgraph 6.0.0",
+      "terser per arm"
+    ],
+    "dependency_limitation": "Other semver-compatible transitive dependencies were resolved in 2026; canvas 2.11.2 was built after the first script-disabled install. All main arms use copies of the same resolved dependency tree."
+  },
+  "arms": [
+    {
+      "arm": "A0",
+      "source_version": "4.2.1",
+      "target_repair_applied": false,
+      "result": "1 passing"
+    },
+    {
+      "arm": "A1",
+      "source_version": "4.3.9",
+      "target_repair_applied": false,
+      "result": "0 passing, 1 failing",
+      "failure_signature": "strict output regex does not accept define(\"main\",(function(){}));"
+    },
+    {
+      "arm": "A2",
+      "source_version": "4.3.9",
+      "target_repair_applied": true,
+      "result": "1 passing"
+    },
+    {
+      "arm": "A3_before",
+      "source_version": "4.2.0",
+      "target_repair_applied": false,
+      "result": "1 passing"
+    },
+    {
+      "arm": "A3_after",
+      "source_version": "4.2.1",
+      "target_repair_applied": false,
+      "result": "1 passing"
+    }
+  ],
+  "repair_ablation": {
+    "relaxed_output_regex_only": "1 passing",
+    "compressJavaScript_false_only": "0 passing, 1 failing",
+    "interpretation": "The recovery is caused by accepting the changed output syntax in the test; the production implementation is unchanged."
+  },
+  "remaining_requirements": [
+    "restore a closer approximation of the 2019 transitive dependency set",
+    "identify and execute related consumers whose tests cover the same minified-output surface",
+    "repeat accepted arms three times in isolated dependency directories",
+    "obtain independent semantic review"
+  ]
+}

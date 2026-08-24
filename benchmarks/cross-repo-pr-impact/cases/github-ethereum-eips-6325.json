@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-6325",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 6325,
+      "change_id": "ethereum/EIPs#6325",
+      "url": "https://github.com/ethereum/EIPs/pull/6325",
+      "status": "MERGED",
+      "subject": "EIP-4895: CL-EL withdrawals harmonization: using units of Gwei",
+      "branch": "master",
+      "created": "2023-01-12T17:49:30Z",
+      "submitted": "2023-01-16T18:17:11Z"
+    },
+    "base_commit": "e120ebad090f2a06008ea7913ca2f1920adfad37",
+    "candidate_commit": "05361fd2a98a1446f61bdd7e02b6d52b336fdc9e",
+    "changed_paths": [
+      "EIPS/eip-4895.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/e120ebad090f2a06008ea7913ca2f1920adfad37...05361fd2a98a1446f61bdd7e02b6d52b336fdc9e.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/5139"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "erigontech/erigon",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/erigontech/erigon/pull/6578"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "status-im/nimbus-eth2",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/status-im/nimbus-eth2/pull/4509"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 5139,
+        "change_id": "NethermindEth/nethermind#5139",
+        "url": "https://github.com/NethermindEth/nethermind/pull/5139",
+        "status": "MERGED",
+        "subject": "Withdrawals wei -> gwei",
+        "branch": "master",
+        "created": "2023-01-13T09:05:37Z",
+        "submitted": "2023-01-17T10:04:07Z"
+      },
+      "commit": "1eac7f4bafeda68440136fea2212a048b78647eb",
+      "changed_paths": [
+        "src/Nethermind/Nethermind.Consensus/Withdrawals/WithdrawalProcessor.cs",
+        "src/Nethermind/Nethermind.Core.Test/Builders/TestItem.cs",
+        "src/Nethermind/Nethermind.Core.Test/Builders/WithdrawalBuilder.cs",
+        "src/Nethermind/Nethermind.Core.Test/Encoding/WithdrawalDecoderTests.cs",
+        "src/Nethermind/Nethermind.Core/Nethermind.Core.csproj",
+        "src/Nethermind/Nethermind.Core/Withdrawal.cs",
+        "src/Nethermind/Nethermind.Merge.Plugin.Test/EngineModuleTests.V2.cs",
+        "src/Nethermind/Nethermind.Serialization.Rlp/WithdrawalDecoder.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/5139",
+          "statement": "明确把提款单位从 wei 改为 gwei。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "erigontech/erigon",
+      "pull_request": {
+        "provider": "github",
+        "number": 6578,
+        "change_id": "erigontech/erigon#6578",
+        "url": "https://github.com/erigontech/erigon/pull/6578",
+        "status": "MERGED",
+        "subject": "Withdrawal amount in GWei",
+        "branch": "devel",
+        "created": "2023-01-13T14:28:05Z",
+        "submitted": "2023-01-17T10:22:08Z"
+      },
+      "commit": "5b3b5ba0de4fba506f25236c6bd7d50c4206d206",
+      "changed_paths": [
+        "cmd/erigon-el/eth1/execution.go",
+        "consensus/serenity/serenity.go",
+        "core/rawdb/accessors_chain_test.go",
+        "core/types/block_test.go",
+        "core/types/gen_withdrawal_json.go",
+        "core/types/withdrawal.go",
+        "core/types/withdrawal_test.go",
+        "ethdb/privateapi/ethbackend.go",
+        "go.mod",
+        "go.sum",
+        "tests/block_test.go",
+        "tests/exec_spec_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/erigontech/erigon/pull/6578",
+          "statement": "明确按源规范修改提款单位。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "status-im/nimbus-eth2",
+      "pull_request": {
+        "provider": "github",
+        "number": 4509,
+        "change_id": "status-im/nimbus-eth2#4509",
+        "url": "https://github.com/status-im/nimbus-eth2/pull/4509",
+        "status": "MERGED",
+        "subject": "execution/engine withdrawals amount in uint64 gwei",
+        "branch": "unstable",
+        "created": "2023-01-14T14:43:05Z",
+        "submitted": "2023-01-14T17:26:58Z"
+      },
+      "commit": "0019fe4214887853ea74abb9686fc170322da154",
+      "changed_paths": [
+        "beacon_chain/eth1/eth1_monitor.nim",
+        "beacon_chain/spec/helpers.nim",
+        "vendor/nim-eth",
+        "vendor/nim-web3"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/status-im/nimbus-eth2/pull/4509",
+          "statement": "明确按源规范把执行层提款金额改为 gwei。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    },
+    {
+      "repository": "erigontech/erigon",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/erigontech/erigon"
+    },
+    {
+      "repository": "status-im/nimbus-eth2",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/status-im/nimbus-eth2"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

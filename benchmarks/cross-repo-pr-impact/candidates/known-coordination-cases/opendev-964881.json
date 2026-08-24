@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-964881",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/integ",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 964881,
+      "change_id": "I870ba8446591027955b94c01f6cd33e0fede6ce3",
+      "url": "https://review.opendev.org/c/starlingx/integ/+/964881",
+      "status": "MERGED",
+      "subject": "Revert K8s change to install 1.34.1 with the etcd 3.4",
+      "branch": "master",
+      "created": "2025-10-27 14:33:56.000000000",
+      "submitted": "2025-10-27 16:48:25.000000000"
+    },
+    "base_commit": "612a95144742de1307284547ea5c2e1fe9590ba6",
+    "candidate_commit": "193c7bee875d8a3dac5dfb75df626feae3e5f6da",
+    "changed_paths": [
+      "kubernetes/kubernetes-1.34.1/debian/deb_folder/patches/Revert-kubeadm-use-new-etcd-livez-and-readyz-endpoint.patch",
+      "kubernetes/kubernetes-1.34.1/debian/deb_folder/patches/series"
+    ],
+    "patch_url": "https://review.opendev.org/changes/964881/revisions/193c7bee875d8a3dac5dfb75df626feae3e5f6da/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/integ",
+      "target_repository": "starlingx/ansible-playbooks",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/964882"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 964882,
+        "change_id": "I6f476835b29d5ca1c84ed38c95adad3343acd2c6",
+        "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/964882",
+        "status": "MERGED",
+        "subject": "Add support for Kubernetes 1.34.1",
+        "branch": "master",
+        "created": "2025-10-27 14:42:42.000000000",
+        "submitted": "2025-10-31 16:51:43.000000000"
+      },
+      "commit": "0219d566f0810743658a2cf504cd5eba2b8523fb",
+      "changed_paths": [
+        "playbookconfig/src/playbooks/roles/bootstrap/prepare-env/vars/k8s-v1.34.1",
+        "playbookconfig/src/playbooks/roles/common/bringup-kubemaster/templates/k8s-v1.34.1",
+        "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.34.1",
+        "playbookconfig/src/playbooks/roles/k8s-storage-backends/snapshot-controller/files/k8s-v1.34.1",
+        "playbookconfig/src/playbooks/roles/k8s-storage-backends/snapshot-controller/templates/k8s-v1.34.1"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/964882",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/integ/+/964881",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/8790f6067a7c4813884d883bb754137c"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/ansible-playbooks/raw/commit/0219d566f0810743658a2cf504cd5eba2b8523fb/LICENSE"
+    },
+    {
+      "repository": "starlingx/integ",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/integ/raw/commit/74dcd0d2123ec155cdc7ffa0d094e509f2da9837/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

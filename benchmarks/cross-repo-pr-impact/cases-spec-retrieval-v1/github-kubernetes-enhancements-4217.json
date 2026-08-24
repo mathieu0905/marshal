@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-4217",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 4217,
+      "change_id": "kubernetes/enhancements#4217",
+      "url": "https://github.com/kubernetes/enhancements/pull/4217",
+      "status": "MERGED",
+      "subject": "4216: Image pull per runtime class KEP",
+      "branch": "master",
+      "created": "2023-09-15T22:20:00Z",
+      "submitted": "2023-10-05T21:16:00Z"
+    },
+    "base_commit": "f15cd5b4534162626bf58c2580aa0b82959530fc",
+    "candidate_commit": "2c5c4b61ce3b91ffe187527b5c3cd5a796003963",
+    "changed_paths": [
+      "keps/sig-node/4216-image-pull-per-runtime-class/README.md",
+      "keps/sig-node/4216-image-pull-per-runtime-class/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/f15cd5b4534162626bf58c2580aa0b82959530fc...2c5c4b61ce3b91ffe187527b5c3cd5a796003963.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/121121"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 121121,
+        "change_id": "kubernetes/kubernetes#121121",
+        "url": "https://github.com/kubernetes/kubernetes/pull/121121",
+        "status": "MERGED",
+        "subject": "Add runtime handler field to ImageSpec struct",
+        "branch": "master",
+        "created": "2023-10-10T19:43:00Z",
+        "submitted": "2023-10-17T15:21:14Z"
+      },
+      "commit": "d1a6c0ae7dfb934b4558d5957af7ce6e09b08003",
+      "changed_paths": [
+        "staging/src/k8s.io/cri-api/README.md",
+        "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.pb.go",
+        "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.proto"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/121121",
+          "statement": "目标新增源 KEP 所需的按运行时类拉取镜像接口字段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

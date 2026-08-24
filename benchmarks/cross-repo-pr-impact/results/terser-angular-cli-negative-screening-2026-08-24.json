@@ -1,0 +1,118 @@
+{
+  "status": "bounded_negative_screening_only",
+  "date": "2026-08-24",
+  "evidence_class": "native_differential_build_output",
+  "source": {
+    "repository": "terser/terser",
+    "before_version": "4.2.1",
+    "after_version": "4.3.1",
+    "behavior_introduced_in": "4.3.0",
+    "behavior_commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "behavior": "wrap_func_args defaults to true and adds parentheses around anonymous function arguments"
+  },
+  "candidate": {
+    "repository": "angular/angular-cli",
+    "baseline_commit": "f6fa3d74675027ef5666b80e65956edfe2ef5c4f",
+    "dependency_update_commit": "c48649239859577fa2a881ba66d26c1091ca2879",
+    "merge_commit": "c2d544520d14965f490cc7aa2d69e55b3a3b2b2c",
+    "pull_request": "https://github.com/angular/angular-cli/pull/15555",
+    "dependency_change": "terser 4.2.1 to 4.3.1",
+    "changed_paths": [
+      "packages/angular_devkit/build_angular/package.json",
+      "yarn.lock"
+    ]
+  },
+  "environment": {
+    "runtime": "Node.js 12.22.12",
+    "package_manager": "Yarn 1.22.19",
+    "dependency_input": "historical yarn.lock",
+    "resolved_source_map_version": "0.6.1 under the controlled terser package in both arms",
+    "cache_isolation": "terser-webpack-plugin cache was empty and separate for each arm",
+    "measurement_only_instrumentation": [
+      "fixed TestProjectHost's random temporary directory suffix so source-map paths were identical across arms",
+      "wrote the JavaScript outputs already returned by the native test to a temporary JSON file",
+      "did not change the test input, production path, or assertions"
+    ]
+  },
+  "native_contract": {
+    "file": "packages/angular_devkit/build_angular/test/browser/differential_loading_spec_large.ts",
+    "spec": "Browser Builder with differential loading emits the right ES formats",
+    "command": "NG_BUILD_FULL_DIFFERENTIAL=1 node ./bin/devkit-admin test --large --full --glob=packages/angular_devkit/build_angular/test/browser/differential_loading_spec_large.ts --filter=emits the right ES formats",
+    "assertions": [
+      "the ES5 main bundle does not contain class syntax",
+      "the ES2015 main bundle retains class syntax"
+    ]
+  },
+  "screening_funnel": [
+    {
+      "contract": "optimization-level works",
+      "result": "both arms passed, but all ten JavaScript outputs were identical after fixing the temporary path"
+    },
+    {
+      "contract": "web-worker minimizes and hashes worker",
+      "result": "both arms passed, but the worker output was identical because the native arrow callback was preserved"
+    },
+    {
+      "contract": "full differential build emits the right ES formats",
+      "result": "both arms passed and generated outputs exercised the changed anonymous-function-argument surface"
+    }
+  ],
+  "arms": [
+    {
+      "arm": "A0",
+      "source_version": "4.2.1",
+      "target_change_applied": false,
+      "result": "1 selected native spec passed",
+      "generated_javascript_files": 10,
+      "generated_bytes": 1536655,
+      "double_parenthesized_function_arguments": 0
+    },
+    {
+      "arm": "A1",
+      "source_version": "4.3.1",
+      "target_change_applied": false,
+      "result": "1 selected native spec passed",
+      "generated_javascript_files": 10,
+      "generated_bytes": 1538773,
+      "double_parenthesized_function_arguments": 531
+    }
+  ],
+  "output_comparison": {
+    "changed_files": [
+      "main-es2015.js",
+      "main-es5.js",
+      "polyfills-es2015.js",
+      "polyfills-es5.js",
+      "styles-es2015.js",
+      "styles-es5.js",
+      "vendor-es2015.js",
+      "vendor-es5.js"
+    ],
+    "unchanged_files": [
+      "runtime-es2015.js",
+      "runtime-es5.js"
+    ],
+    "byte_delta": 2118,
+    "representative_before": "Promise.resolve().then(function(){var t=new Error(...)})",
+    "representative_after": "Promise.resolve().then((function(){var t=new Error(...)}))"
+  },
+  "discarded_environment_failure": {
+    "observation": "A preliminary 4.3.1 run failed inside terser source-map handling.",
+    "cause": "The temporary package replacement initially omitted terser's nested source-map 0.6.1 dependency and resolved Angular's incompatible root source-map 0.7.3.",
+    "treatment": "The run was discarded. The final A1 used the same lockfile-resolved nested dependency versions as A0 and passed."
+  },
+  "decision": {
+    "accepted_as_bounded_negative_screening": true,
+    "scope": "At this historical Angular CLI baseline, the selected native full-differential-build contract naturally exercises terser 4.3.1's changed output surface and requires no target repository modification.",
+    "unsupported_claims": [
+      "all Angular CLI workflows are unaffected",
+      "the generated bundles have identical runtime or performance behavior in every browser",
+      "Angular CLI is a formal negative label before isolated repetition and independent review"
+    ]
+  },
+  "remaining_requirements": [
+    "repeat both arms three times in isolated dependency directories",
+    "independently review the contract boundary and target-change interpretation",
+    "retain the broader terser candidate search frame rather than treating one negative as a complete impact universe"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "review_id": "terser-wrap-func-args-project-package",
+  "prepared_at": "2026-08-24",
+  "review_status": "awaiting_independent_reviewer",
+  "blinding": "本材料不提供数据集作者对四个候选仓的最终接受决定。复核者应根据源变化、目标变化和逐臂执行记录独立判断。",
+  "source_change": {
+    "repository": "terser/terser",
+    "pull_request": "https://github.com/terser/terser/pull/433",
+    "commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "before_version": "4.2.1",
+    "after_version": "4.3.0",
+    "question": "该变化是否足以解释四个候选仓 A0 与 A1 之间观察到的输出差异"
+  },
+  "shared_evidence": {
+    "run_script": "../../run_terser_formal_repetition.sh",
+    "repetitions": ["repeat-1", "repeat-2", "repeat-3"],
+    "per_repetition_table": "run-results.tsv",
+    "historical_version_comparison": "../terser-formal-repetitions-2026-08-24/README.md"
+  },
+  "candidates": [
+    {
+      "repository": "assetgraph/assetgraph-builder",
+      "baseline_commit": "ef5be8d4aa37786b6b8529868fcf4b21a614b99c",
+      "target_change": "e4140416e7feaa3d088cf3ad0229fd677ff36dbc",
+      "extracted_change": "../terser-formal-repetitions-2026-08-24/inputs/assetgraph-repair.patch",
+      "command_evidence": "repeat-N/runs/assetgraph/{a0,a1,a2,a3-before,a3-after}/",
+      "questions": [
+        "A1 失败是否由源变化触发而不是实验环境差异",
+        "抽取片段是否准确恢复相关合同且没有带入无关目标变化",
+        "该关系应被归类为生产代码影响、测试期望适配还是拒绝项"
+      ]
+    },
+    {
+      "repository": "SAP/ui5-builder",
+      "baseline_commit": "b0b9470b23e1e56a68077517f7549ecd16e90198",
+      "target_pull_request": "https://github.com/SAP/ui5-builder/pull/331",
+      "target_change": "90592f3aec986f44f38fd6c8f9576656ca3fa45f",
+      "extracted_change": "../terser-formal-repetitions-2026-08-24/inputs/ui5-repair.patch",
+      "command_evidence": "repeat-N/runs/ui5/{a0,a1,a2,a3-before,a3-after}/",
+      "questions": [
+        "A1 的六项失败是否确实覆盖 PR 433 的输出表面",
+        "三处生产配置变化是否构成准确且充分的目标修复抽取",
+        "执行结果能够支持到何种合同边界"
+      ]
+    },
+    {
+      "repository": "preconstruct/preconstruct",
+      "baseline_commit": "15caef21f49eaa85334af2cf022fd78ad0b27b71",
+      "target_pull_request": "https://github.com/preconstruct/preconstruct/pull/119",
+      "target_changes": [
+        "c6df9cde959fe2f6c7df1fa66f1c279430997964",
+        "5ff97b1adb77ebf6f3429a28013c69cc55328c38"
+      ],
+      "extracted_change": "../terser-formal-repetitions-2026-08-24/inputs/preconstruct-repair.patch",
+      "command_evidence": "repeat-N/runs/preconstruct/{a0,a1,a2,a3-before,a3-after}/",
+      "questions": [
+        "三个选中用例和 35 个快照是否足以覆盖历史目标变化",
+        "非零进程退出和 39 个未选中快照过期是否要求拒绝该关系，还是只要求收窄结论",
+        "两个快照片段是否准确且充分"
+      ]
+    },
+    {
+      "repository": "angular/angular-cli",
+      "baseline_commit": "f6fa3d74675027ef5666b80e65956edfe2ef5c4f",
+      "historical_update_pull_request": "https://github.com/angular/angular-cli/pull/15555",
+      "historical_update_commit": "c48649239859577fa2a881ba66d26c1091ca2879",
+      "measurement_change": "../terser-formal-repetitions-2026-08-24/inputs/angular-measurement.patch",
+      "command_evidence": "repeat-N/runs/angular/{a0,a1}/",
+      "comparison_evidence": "repeat-N/angular-output-comparison.json",
+      "questions": [
+        "A1 产物中的 531 处新括号是否证明源变化进入了原生合同覆盖的表面",
+        "两臂同一原生用例通过且目标代码不变，能够支持的无影响结论上限是什么",
+        "测量补丁是否只观测既有产物而没有改变输入、生产路径或断言"
+      ]
+    }
+  ],
+  "package_level_questions": [
+    "四个候选仓是否由同一个源行为连接，足以作为一个项目包统计单位",
+    "三个需要目标变化的仓库和一个无需目标变化的仓库分别应如何分层",
+    "现有搜索框不完备时，项目包能够支持哪些仓库定位、精度或停止能力结论",
+    "4.2.0 到 4.2.1 是否是三个正例仓上合理的独立兼容变化对照"
+  ],
+  "required_response": {
+    "reviewer_independence": "说明是否参与过采集、执行或初次标签判断",
+    "per_candidate": "接受、拒绝或信息不足，并给出证据路径和结论上限",
+    "package_decision": "接受为同一项目包、拆分或拒绝",
+    "disagreements": "逐项记录与材料中任何隐含前提的分歧"
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-1221",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 1221,
+      "change_id": "open-telemetry/opentelemetry-specification#1221",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/1221",
+      "status": "MERGED",
+      "subject": "Change default OTLP port number",
+      "branch": "master",
+      "created": "2020-11-10T17:17:20Z",
+      "submitted": "2020-11-16T19:33:01Z"
+    },
+    "base_commit": "394e38e2be08efc53e753d1f23c07fddc44de199",
+    "candidate_commit": "cb01c3fc989dfb287b4ebd4ef9a0650e935742f7",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/protocol/otlp.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/394e38e2be08efc53e753d1f23c07fddc44de199...cb01c3fc989dfb287b4ebd4ef9a0650e935742f7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-cpp",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/522"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1775"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-js",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/pull/1725"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-cpp",
+      "pull_request": {
+        "provider": "github",
+        "number": 522,
+        "change_id": "open-telemetry/opentelemetry-cpp#522",
+        "url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/522",
+        "status": "MERGED",
+        "subject": "OTLP change default port number",
+        "branch": "master",
+        "created": "2021-01-19T23:31:55Z",
+        "submitted": "2021-01-20T05:27:33Z"
+      },
+      "commit": "0884e23a757ec58d860b6dcd83b6827c4812176e",
+      "changed_paths": [
+        "examples/otlp/README.md",
+        "exporters/otlp/README.md",
+        "exporters/otlp/include/opentelemetry/exporters/otlp/otlp_exporter.h"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/522",
+          "statement": "明确按源规范修改默认端口。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 1775,
+        "change_id": "open-telemetry/opentelemetry-dotnet#1775",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1775",
+        "status": "MERGED",
+        "subject": "Changed default port for OTLP Exporter from 55680 to 4317",
+        "branch": "main",
+        "created": "2021-02-02T19:56:35Z",
+        "submitted": "2021-02-02T20:08:00Z"
+      },
+      "commit": "a6e67c77575479bc5460d404797a151d85b6cf15",
+      "changed_paths": [
+        "examples/AspNetCore/appsettings.json",
+        "examples/Console/Program.cs",
+        "examples/Console/TestOtlpExporter.cs",
+        "src/OpenTelemetry.Exporter.OpenTelemetryProtocol/CHANGELOG.md",
+        "src/OpenTelemetry.Exporter.OpenTelemetryProtocol/OtlpExporterOptions.cs",
+        "src/OpenTelemetry.Exporter.OpenTelemetryProtocol/OtlpTraceExporterHelperExtensions.cs",
+        "test/OpenTelemetry.Exporter.OpenTelemetryProtocol.Tests/docker-compose.yml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/1775",
+          "statement": "明确按源规范把默认端口改为 4317。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "pull_request": {
+        "provider": "github",
+        "number": 1725,
+        "change_id": "open-telemetry/opentelemetry-js#1725",
+        "url": "https://github.com/open-telemetry/opentelemetry-js/pull/1725",
+        "status": "MERGED",
+        "subject": "Use new gRPC default port",
+        "branch": "master",
+        "created": "2020-12-04T22:31:40Z",
+        "submitted": "2020-12-21T19:38:13Z"
+      },
+      "commit": "42ed3917fd620eb2a2d4472b97901966e9f61bb7",
+      "changed_paths": [
+        "examples/collector-exporter-node/docker/docker-compose.yaml",
+        "packages/opentelemetry-exporter-collector-grpc/README.md",
+        "packages/opentelemetry-exporter-collector-grpc/src/CollectorMetricExporter.ts",
+        "packages/opentelemetry-exporter-collector-grpc/src/CollectorTraceExporter.ts",
+        "packages/opentelemetry-exporter-collector-grpc/test/CollectorMetricExporter.test.ts",
+        "packages/opentelemetry-exporter-collector-grpc/test/CollectorTraceExporter.test.ts",
+        "packages/opentelemetry-exporter-collector-proto/README.md"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-js/pull/1725",
+          "statement": "明确按源规范更新 gRPC 默认端口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-cpp",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-cpp"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

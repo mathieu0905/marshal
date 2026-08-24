@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3514",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3514,
+      "change_id": "rust-lang/rfcs#3514",
+      "url": "https://github.com/rust-lang/rfcs/pull/3514",
+      "status": "MERGED",
+      "subject": "add float semantics RFC",
+      "branch": "master",
+      "created": "2023-10-14T07:52:34Z",
+      "submitted": "2024-07-27T21:24:08Z"
+    },
+    "base_commit": "e49fd468436315a7db561e261ff95044685b1e16",
+    "candidate_commit": "f1306fcfef6704859340a062acbe17195e888e0a",
+    "changed_paths": [
+      "text/0000-float-semantics.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/e49fd468436315a7db561e261ff95044685b1e16...f1306fcfef6704859340a062acbe17195e888e0a.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/128598"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 128598,
+        "change_id": "rust-lang/rust#128598",
+        "url": "https://github.com/rust-lang/rust/pull/128598",
+        "status": "MERGED",
+        "subject": "float to/from bits and classify: update for float semantics RFC",
+        "branch": "master",
+        "created": "2024-08-03T09:54:17Z",
+        "submitted": "2024-08-17T11:38:02Z"
+      },
+      "commit": "5f33085a7f574b95609da59b2d4164238d7782f0",
+      "changed_paths": [
+        "library/core/src/num/f128.rs",
+        "library/core/src/num/f16.rs",
+        "library/core/src/num/f32.rs",
+        "library/core/src/num/f64.rs",
+        "tests/ui/consts/const-float-bits-conv.rs",
+        "tests/ui/consts/const-float-bits-reject-conv.rs",
+        "tests/ui/consts/const-float-bits-reject-conv.stderr"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/128598",
+          "statement": "目标明确说明源 RFC 被接受后需同步修改浮点语义实现注释和测试。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

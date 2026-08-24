@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-2696",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2696,
+      "change_id": "rust-lang/rfcs#2696",
+      "url": "https://github.com/rust-lang/rfcs/pull/2696",
+      "status": "MERGED",
+      "subject": "Add key and value methods to DebugMap",
+      "branch": "master",
+      "created": "2019-05-01T18:23:57Z",
+      "submitted": "2019-07-07T23:44:58Z"
+    },
+    "base_commit": "26ed27bdae8cd02e327a04bdf27f158abb4fb749",
+    "candidate_commit": "7b8549c8c68b1272476baebf946f72f4a1bb1650",
+    "changed_paths": [
+      "text/0000-debug-map-key-value.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/26ed27bdae8cd02e327a04bdf27f158abb4fb749...7b8549c8c68b1272476baebf946f72f4a1bb1650.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/60458"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 60458,
+        "change_id": "rust-lang/rust#60458",
+        "url": "https://github.com/rust-lang/rust/pull/60458",
+        "status": "MERGED",
+        "subject": "Add key and value methods to DebugMap",
+        "branch": "master",
+        "created": "2019-05-01T22:26:53Z",
+        "submitted": "2019-07-09T06:20:12Z"
+      },
+      "commit": "70d630fd5a57d436b6a5064840b69920b10a110c",
+      "changed_paths": [
+        "src/doc/unstable-book/src/library-features/debug-map-key-value.md",
+        "src/libcore/fmt/builders.rs",
+        "src/libcore/tests/fmt/builders.rs",
+        "src/libcore/tests/lib.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/60458",
+          "statement": "目标正文明确将自身标为源 RFC 的实现 PR。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-838782",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/devstack",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 838782,
+      "change_id": "I3ad7e5e80f1141c3d94f7ce7c8b8f8fdb9fb7c3c",
+      "url": "https://review.opendev.org/c/openstack/devstack/+/838782",
+      "status": "MERGED",
+      "subject": "ovn: use bundled ovs",
+      "branch": "master",
+      "created": "2022-04-20 19:43:57.000000000",
+      "submitted": "2024-08-29 11:37:57.000000000"
+    },
+    "base_commit": "d380858b2de619d7712ebd84c7d9c5114a4405fe",
+    "candidate_commit": "7fa24750a676a44ab224206cc13096f904057d44",
+    "changed_paths": [
+      "lib/neutron_plugins/ovn_agent"
+    ],
+    "patch_url": "https://review.opendev.org/changes/838782/revisions/7fa24750a676a44ab224206cc13096f904057d44/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/devstack",
+      "target_repository": "openstack/ovn-octavia-provider",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/ovn-octavia-provider/+/950784"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/ovn-octavia-provider",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 950784,
+        "change_id": "I3d0b2231072523fc4e54c194541926972df3bbed",
+        "url": "https://review.opendev.org/c/openstack/ovn-octavia-provider/+/950784",
+        "status": "MERGED",
+        "subject": "Use main branch for ovs in master job",
+        "branch": "master",
+        "created": "2025-05-23 16:58:25.000000000",
+        "submitted": "2025-09-10 15:52:02.000000000"
+      },
+      "commit": "032837c726cffe8af298cff2fcd8bb890db53b1b",
+      "changed_paths": [
+        "zuul.d/base.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/ovn-octavia-provider/+/950784",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/devstack/+/838782",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/7218fe34fe6e4949adbc2fb69e906194"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/devstack",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/devstack/raw/commit/7fa24750a676a44ab224206cc13096f904057d44/LICENSE"
+    },
+    {
+      "repository": "openstack/ovn-octavia-provider",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/ovn-octavia-provider/raw/commit/032837c726cffe8af298cff2fcd8bb890db53b1b/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

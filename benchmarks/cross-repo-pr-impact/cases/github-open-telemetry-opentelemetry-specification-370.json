@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-370",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 370,
+      "change_id": "open-telemetry/opentelemetry-specification#370",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/370",
+      "status": "MERGED",
+      "subject": "Add flush interface to span processor",
+      "branch": "master",
+      "created": "2019-12-04T15:05:49Z",
+      "submitted": "2020-01-23T00:06:31Z"
+    },
+    "base_commit": "a6a22409a2d242a6af097d72fd1241dd64e97219",
+    "candidate_commit": "b4e9b84e51c23cd491cc8382959747ababd5b4b0",
+    "changed_paths": [
+      "specification/sdk-tracing.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/a6a22409a2d242a6af097d72fd1241dd64e97219...b4e9b84e51c23cd491cc8382959747ababd5b4b0.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/882"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/389"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 882,
+        "change_id": "open-telemetry/opentelemetry-java#882",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/882",
+        "status": "MERGED",
+        "subject": "Implementing ForceFlush for SpanProcessor",
+        "branch": "master",
+        "created": "2020-02-19T10:37:12Z",
+        "submitted": "2020-02-21T19:27:20Z"
+      },
+      "commit": "a61e5810a78d3c9d259aeb832d7627186a69eee8",
+      "changed_paths": [
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/MultiSpanProcessor.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/NoopSpanProcessor.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/SpanProcessor.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/export/BatchSpansProcessor.java",
+        "sdk/src/main/java/io/opentelemetry/sdk/trace/export/SimpleSpansProcessor.java",
+        "sdk/src/test/java/io/opentelemetry/sdk/trace/export/BatchSpansProcessorTest.java",
+        "sdk_contrib/async_processor/src/main/java/io/opentelemetry/sdk/contrib/trace/export/DisruptorAsyncSpanProcessor.java",
+        "sdk_contrib/async_processor/src/main/java/io/opentelemetry/sdk/contrib/trace/export/DisruptorEventQueue.java",
+        "sdk_contrib/async_processor/src/test/java/io/opentelemetry/sdk/contrib/trace/export/DisruptorAsyncSpanProcessorTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/882",
+          "statement": "明确因源规范接口变化实现 ForceFlush。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 389,
+        "change_id": "open-telemetry/opentelemetry-python#389",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/389",
+        "status": "MERGED",
+        "subject": "sdk: Implement force_flush for span processors",
+        "branch": "master",
+        "created": "2020-01-29T16:44:52Z",
+        "submitted": "2020-02-04T20:06:58Z"
+      },
+      "commit": "7612e6e484a274112c9ebc9504a42ac4bbafd832",
+      "changed_paths": [
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py",
+        "opentelemetry-sdk/src/opentelemetry/sdk/trace/export/__init__.py",
+        "opentelemetry-sdk/tests/trace/export/test_export.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/389",
+          "statement": "明确按源规范增加 force_flush。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

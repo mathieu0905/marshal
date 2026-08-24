@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "project_id": "opendev-wandertracks-mapstyle-coordination",
+  "title": "WanderTracks 两个未合并候选提交的地图样式一致性",
+  "split": "test",
+  "scenario_kind": "candidate_version_coordination",
+  "source": {
+    "dataset": "OpenDev Gerrit",
+    "dataset_repository": "https://review.opendev.org",
+    "dataset_revision": "78030e484d568e65d2bcc98c3971efb6ee4b7fb2",
+    "license": "GPL-3.0-or-later"
+  },
+  "provider": {
+    "repository": {
+      "full_name": "wandertracks/wandertracks",
+      "url": "https://opendev.org/wandertracks/wandertracks.git",
+      "license": "GPL-3.0-or-later",
+      "license_file": "COPYING",
+      "prepare_commands": {
+        "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+        "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+      }
+    },
+    "artifact": {
+      "ecosystem": "source-tree",
+      "coordinate": "wandertracks/mapstyles"
+    },
+    "variants": [
+      {
+        "variant_id": "parent",
+        "version": "change-1001388-parent",
+        "git_ref": "c0976d4fcbf4b6b3fee44259be61811e7bb37e41",
+        "git_commit": "c0976d4fcbf4b6b3fee44259be61811e7bb37e41"
+      },
+      {
+        "variant_id": "candidate",
+        "version": "change-1001388-patchset-1",
+        "git_ref": "refs/changes/88/1001388/1",
+        "git_commit": "78030e484d568e65d2bcc98c3971efb6ee4b7fb2"
+      }
+    ],
+    "change": {
+      "summary": "候选提交把前端生成的五份地图样式作为 JSON 纳入 API 仓，并由 API 提供样式接口。",
+      "compare_url": "https://review.opendev.org/c/wandertracks/wandertracks/+/1001388"
+    }
+  },
+  "consumers": [
+    {
+      "case_id": "opendev-wandertracks-web-mapstyle-parity",
+      "repository": {
+        "full_name": "wandertracks/wandertracks-web",
+        "url": "https://opendev.org/wandertracks/wandertracks-web.git",
+        "license": "GPL-3.0-or-later",
+        "license_file": "studio/tests/mapstyle-parity.test.ts",
+        "prepare_commands": {
+          "clone": ["git", "clone", "--filter=blob:none", "--no-checkout", "{url}", "{source_dir}"],
+          "checkout": ["git", "-C", "{source_dir}", "worktree", "add", "--detach", "{checkout_dir}", "{git_commit}"]
+        }
+      },
+      "dependency": {
+        "direction": "provider_to_consumer",
+        "coordinate": "wandertracks/mapstyles",
+        "from_provider_variant": "parent",
+        "to_provider_variant": "candidate",
+        "manifest_path": ".zuul.yaml"
+      },
+      "change": {
+        "summary": "候选提交增加跨仓样式一致性测试，并把 API 仓声明为 Zuul 必备项目；同一消费仓候选分别与上游父提交和候选提交组合。",
+        "files": [".zuul.yaml", "studio/tests/mapstyle-parity.test.ts"],
+        "pull_request_url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001389"
+      },
+      "variants": {
+        "before": {
+          "git_commit": "21ced27563422baead2cd1b5e82cb51a6af93d70",
+          "expected": {
+            "outcome": "pass",
+            "output_contains": ["Tests  6 skipped (6)"]
+          }
+        },
+        "after": {
+          "git_commit": "21ced27563422baead2cd1b5e82cb51a6af93d70",
+          "expected": {
+            "outcome": "pass",
+            "output_contains": ["Tests  6 passed (6)"]
+          }
+        }
+      },
+      "test": {
+        "working_directory": ".",
+        "prepare_command": ["npm", "ci", "--no-audit", "--no-fund"],
+        "command": ["npm", "exec", "--workspace", "wandertracks-studio-tests", "--", "vitest", "run", "mapstyle-parity.test.ts"],
+        "timeout_seconds": 1800,
+        "environment": {
+          "node_major": "22",
+          "variables": {"WANDERTRACKS_API_SRC": "{provider_checkout}"}
+        }
+      },
+      "source_record_url": "https://review.opendev.org/c/wandertracks/wandertracks-web/+/1001389"
+    }
+  ]
+}

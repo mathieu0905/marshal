@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-986579-semantic-impact",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/neutron-lib",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 986579,
+      "change_id": "I9755da5ff7912b35e78f782a6d2edb8992279682",
+      "url": "https://review.opendev.org/c/openstack/neutron-lib/+/986579",
+      "status": "MERGED",
+      "subject": "evpn: Add EVPN API definitions",
+      "branch": "master",
+      "created": "2026-04-28 20:39:16.000000000",
+      "submitted": "2026-05-02 01:05:43.000000000"
+    },
+    "base_commit": "37721a879f2a6ed6f5184487310f1ceb28991afc",
+    "candidate_commit": "da830e15004bf39d91607110478ce483cb92e46f",
+    "changed_paths": [
+      "neutron_lib/api/definitions/__init__.py",
+      "neutron_lib/api/definitions/evpn.py",
+      "neutron_lib/plugins/constants.py",
+      "neutron_lib/tests/unit/api/definitions/test_evpn.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/986579/revisions/da830e15004bf39d91607110478ce483cb92e46f/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/neutron-lib",
+      "target_repository": "openstack/neutron",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/openstack/neutron/+/986581"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/neutron",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 986581,
+        "change_id": "Ie38b4f0a07f7af23c03d5aa3d45a52cc3d33082a",
+        "url": "https://review.opendev.org/c/openstack/neutron/+/986581",
+        "status": "MERGED",
+        "subject": "evpn: API and service plugin implementation",
+        "branch": "master",
+        "created": "2026-04-28 20:40:41.000000000",
+        "submitted": "2026-05-21 02:05:07.000000000"
+      },
+      "commit": "b7a5e077ed0abbe678159ad1e2ba4d5ed2e67bbc",
+      "changed_paths": [
+        "neutron/conf/policies/__init__.py",
+        "neutron/conf/policies/evpn.py",
+        "neutron/extensions/evpn.py",
+        "neutron/services/evpn/plugin.py",
+        "neutron/tests/unit/conf/policies/test_evpn.py",
+        "neutron/tests/unit/extensions/test_l3.py",
+        "neutron/tests/unit/services/evpn/__init__.py",
+        "neutron/tests/unit/services/evpn/test_plugin.py",
+        "pyproject.toml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "runtime_api_contract",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/openstack/neutron/+/986581",
+          "statement": "neutron-lib 新增 EVPN API 定义；Neutron 明确注册并实现该 API 与服务插件。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/neutron-lib",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/neutron-lib"
+    },
+    {
+      "repository": "openstack/neutron",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/neutron"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

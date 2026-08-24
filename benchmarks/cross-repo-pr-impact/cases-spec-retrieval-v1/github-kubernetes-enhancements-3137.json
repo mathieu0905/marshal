@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3137",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3137,
+      "change_id": "kubernetes/enhancements#3137",
+      "url": "https://github.com/kubernetes/enhancements/pull/3137",
+      "status": "MERGED",
+      "subject": "3136: beta apis off by default",
+      "branch": "master",
+      "created": "2022-01-13T18:36:04Z",
+      "submitted": "2022-02-03T06:49:45Z"
+    },
+    "base_commit": "c1323be2ba90ef6d94ed5cc12486f110b039ca32",
+    "candidate_commit": "29c9c94369d990b24c9652d96570eb9d2b174879",
+    "changed_paths": [
+      "keps/prod-readiness/sig-architecture/3136.yaml",
+      "keps/sig-architecture/3136-beta-apis-off-by-default/README.md",
+      "keps/sig-architecture/3136-beta-apis-off-by-default/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/c1323be2ba90ef6d94ed5cc12486f110b039ca32...29c9c94369d990b24c9652d96570eb9d2b174879.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/107993"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 107993,
+        "change_id": "kubernetes/kubernetes#107993",
+        "url": "https://github.com/kubernetes/kubernetes/pull/107993",
+        "status": "MERGED",
+        "subject": "prevent enabling beta by default for new api groups",
+        "branch": "master",
+        "created": "2022-02-07T18:59:05Z",
+        "submitted": "2022-02-24T00:03:36Z"
+      },
+      "commit": "1afcc31b1bb927d6f7cf9c49cf75610ee6a9cebf",
+      "changed_paths": [
+        "cmd/kube-apiserver/app/aggregator.go",
+        "pkg/controlplane/instance.go",
+        "pkg/controlplane/instance_test.go",
+        "pkg/registry/admissionregistration/rest/storage_apiserver.go",
+        "pkg/registry/apiserverinternal/rest/storage.go",
+        "pkg/registry/apps/rest/storage_apps.go",
+        "pkg/registry/authentication/rest/storage_authentication.go",
+        "pkg/registry/authorization/rest/storage_authorization.go",
+        "pkg/registry/autoscaling/rest/storage_autoscaling.go",
+        "pkg/registry/batch/rest/storage_batch.go",
+        "pkg/registry/certificates/rest/storage_certificates.go",
+        "pkg/registry/coordination/rest/storage_coordination.go",
+        "pkg/registry/discovery/rest/storage_discovery.go",
+        "pkg/registry/events/rest/storage_events.go",
+        "pkg/registry/flowcontrol/rest/storage_flowcontrol.go",
+        "pkg/registry/networking/rest/storage_settings.go",
+        "pkg/registry/node/rest/runtime_class.go",
+        "pkg/registry/policy/rest/storage_policy.go",
+        "pkg/registry/rbac/rest/storage_rbac.go",
+        "pkg/registry/scheduling/rest/storage_scheduling.go",
+        "pkg/registry/storage/rest/storage_storage.go",
+        "staging/src/k8s.io/apiserver/pkg/server/resourceconfig/helpers.go",
+        "staging/src/k8s.io/apiserver/pkg/server/resourceconfig/helpers_test.go",
+        "staging/src/k8s.io/apiserver/pkg/server/storage/resource_config.go",
+        "staging/src/k8s.io/apiserver/pkg/server/storage/resource_config_test.go",
+        "staging/src/k8s.io/apiserver/pkg/server/storage/storage_factory.go",
+        "test/integration/apiserver/no_new_betas_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/107993",
+          "statement": "目标实现源 KEP 的新接口组默认不启用测试版接口规则。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

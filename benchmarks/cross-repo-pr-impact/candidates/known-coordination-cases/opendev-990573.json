@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-990573",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/ansible-playbooks",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 990573,
+      "change_id": "I8afc609bc8c2b976b8e58a78967270a5368b495a",
+      "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/990573",
+      "status": "MERGED",
+      "subject": "Add resume_mode to onsite_restore_subcloud.yaml",
+      "branch": "master",
+      "created": "2026-05-28 21:07:48.000000000",
+      "submitted": "2026-06-08 18:32:29.000000000"
+    },
+    "base_commit": "7ce4efadcc2a1bba1f0d16633b2bfdf7d3c6b6c1",
+    "candidate_commit": "8ad6153cd4604430b136f58cfbcdf50fc64dd40d",
+    "changed_paths": [
+      "playbookconfig/src/playbooks/onsite_restore_subcloud.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/990573/revisions/8ad6153cd4604430b136f58cfbcdf50fc64dd40d/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/ansible-playbooks",
+      "target_repository": "starlingx/distcloud",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/distcloud/+/989618"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/distcloud",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 989618,
+        "change_id": "Ia3c4568b664d3e9c263647e49593be3f558cf1f6",
+        "url": "https://review.opendev.org/c/starlingx/distcloud/+/989618",
+        "status": "MERGED",
+        "subject": "Update DC API for synchronous subcloud onsite restore request",
+        "branch": "master",
+        "created": "2026-05-21 20:28:24.000000000",
+        "submitted": "2026-06-08 18:43:52.000000000"
+      },
+      "commit": "741273f81f0084d04e716d5dedd0d2fa2374f97b",
+      "changed_paths": [
+        "distributedcloud/dccommon/subprocess_cleanup.py",
+        "distributedcloud/dcmanager/api/controllers/v1/subcloud_backup.py",
+        "distributedcloud/dcmanager/common/consts.py",
+        "distributedcloud/dcmanager/manager/service.py",
+        "distributedcloud/dcmanager/manager/subcloud_manager.py",
+        "distributedcloud/dcmanager/rpc/client.py",
+        "distributedcloud/dcmanager/tests/unit/api/controllers/v1/test_subcloud_backup.py",
+        "distributedcloud/dcmanager/tests/unit/manager/test_subcloud_manager.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/distcloud/+/989618",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/ansible-playbooks/+/990573",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/ad8fac27fc8f4b69a0c2e57c8cd7deb8"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/ansible-playbooks/raw/commit/0219d566f0810743658a2cf504cd5eba2b8523fb/LICENSE"
+    },
+    {
+      "repository": "starlingx/distcloud",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/distcloud/src/commit/593fde9d4fbbc9332666e5b80fdf11721776c662"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9227",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9227,
+      "change_id": "ethereum/EIPs#9227",
+      "url": "https://github.com/ethereum/EIPs/pull/9227",
+      "status": "MERGED",
+      "subject": "Update EIP-7623: Clarify the gas refunds handling",
+      "branch": "master",
+      "created": "2025-01-09T09:35:14Z",
+      "submitted": "2025-01-09T10:51:55Z"
+    },
+    "base_commit": "c63e59dae8f9f06949b6de1317b9be9c4571beb3",
+    "candidate_commit": "5102f88f577ca840e2edc572a175999363535749",
+    "changed_paths": [
+      "EIPS/eip-7623.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/c63e59dae8f9f06949b6de1317b9be9c4571beb3...5102f88f577ca840e2edc572a175999363535749.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/8038"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/execution-specs",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/execution-specs/pull/1076"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 8038,
+        "change_id": "NethermindEth/nethermind#8038",
+        "url": "https://github.com/NethermindEth/nethermind/pull/8038",
+        "status": "MERGED",
+        "subject": "EIP7623 - account for floor gas after substracting refunds",
+        "branch": "master",
+        "created": "2025-01-10T05:27:14Z",
+        "submitted": "2025-01-15T05:36:57Z"
+      },
+      "commit": "634280143804433e9ee4bd9675d00564e43051dd",
+      "changed_paths": [
+        "src/Nethermind/Nethermind.Evm/TransactionProcessing/TransactionProcessor.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/8038",
+          "statement": "按源规范在扣除退款后计算燃料下限。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "pull_request": {
+        "provider": "github",
+        "number": 1076,
+        "change_id": "ethereum/execution-specs#1076",
+        "url": "https://github.com/ethereum/execution-specs/pull/1076",
+        "status": "MERGED",
+        "subject": "EELS Update EIP-7623: Apply floor gas cost after refund",
+        "branch": "devnets/prague/5",
+        "created": "2025-01-10T00:10:37Z",
+        "submitted": "2025-01-10T15:55:37Z"
+      },
+      "commit": "19ba733ad1b204d24312d9b77593c7785ae10de4",
+      "changed_paths": [
+        "src/ethereum/prague/fork.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/execution-specs/pull/1076",
+          "statement": "按源规范更新可执行语义。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    },
+    {
+      "repository": "ethereum/execution-specs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/execution-specs"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

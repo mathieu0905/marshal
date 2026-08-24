@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3927",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3927,
+      "change_id": "kubernetes/enhancements#3927",
+      "url": "https://github.com/kubernetes/enhancements/pull/3927",
+      "status": "MERGED",
+      "subject": "KEP-3926: handling undecryptable resources",
+      "branch": "master",
+      "created": "2023-03-27T10:45:09Z",
+      "submitted": "2023-10-05T18:40:02Z"
+    },
+    "base_commit": "5b258a990adabc2ffdc9d84581ea6ed696f7ce6c",
+    "candidate_commit": "512970f50c1aa82392b522de0b28b2c8518b4248",
+    "changed_paths": [
+      "keps/sig-auth/3926-handling-undecryptable-resources/README.md",
+      "keps/sig-auth/3926-handling-undecryptable-resources/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/5b258a990adabc2ffdc9d84581ea6ed696f7ce6c...512970f50c1aa82392b522de0b28b2c8518b4248.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/127777"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 127777,
+        "change_id": "kubernetes/kubernetes#127777",
+        "url": "https://github.com/kubernetes/kubernetes/pull/127777",
+        "status": "MERGED",
+        "subject": "KEP-3926: refactor: add delete options for Delete method in storage interface",
+        "branch": "master",
+        "created": "2024-10-01T13:07:24Z",
+        "submitted": "2024-10-10T15:36:28Z"
+      },
+      "commit": "bc0ea34bc380e073a7278216fe6690a1b9aee48c",
+      "changed_paths": [
+        "pkg/controlplane/reconcilers/lease.go",
+        "pkg/registry/core/pod/storage/storage_test.go",
+        "staging/src/k8s.io/apiserver/pkg/reconcilers/peer_endpoint_lease.go",
+        "staging/src/k8s.io/apiserver/pkg/registry/generic/registry/dryrun.go",
+        "staging/src/k8s.io/apiserver/pkg/registry/generic/registry/dryrun_test.go",
+        "staging/src/k8s.io/apiserver/pkg/registry/generic/registry/store.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store_test.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/interfaces.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/testing/utils.go",
+        "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/127777",
+          "statement": "目标为源 KEP 的不可解密资源处理增加删除选项，是正文明确关联的实现步骤。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

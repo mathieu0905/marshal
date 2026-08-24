@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-2985",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2985,
+      "change_id": "ethereum/EIPs#2985",
+      "url": "https://github.com/ethereum/EIPs/pull/2985",
+      "status": "MERGED",
+      "subject": "Update hkdf_mod_r to reflect BLS specs v4",
+      "branch": "master",
+      "created": "2020-09-17T14:37:04Z",
+      "submitted": "2020-09-17T15:07:43Z"
+    },
+    "base_commit": "5f8278e1c7b76cc42a337eedfb903a737f0ae13e",
+    "candidate_commit": "0667fcba9098242fd08d06de3367af9c80b4313d",
+    "changed_paths": [
+      "EIPS/eip-2333.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/5f8278e1c7b76cc42a337eedfb903a737f0ae13e...0667fcba9098242fd08d06de3367af9c80b4313d.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "status-im/nimbus-eth2",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/status-im/nimbus-eth2/pull/1742"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "status-im/nimbus-eth2",
+      "pull_request": {
+        "provider": "github",
+        "number": 1742,
+        "change_id": "status-im/nimbus-eth2#1742",
+        "url": "https://github.com/status-im/nimbus-eth2/pull/1742",
+        "status": "MERGED",
+        "subject": "BLSCurve EIP2333 updates for Spadina (breaks old keystore recovery)",
+        "branch": "devel",
+        "created": "2020-09-24T16:37:16Z",
+        "submitted": "2020-09-25T17:52:03Z"
+      },
+      "commit": "9b21e936067335eda86e0f5da54e30d4666292b4",
+      "changed_paths": [
+        "vendor/nim-blscurve"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/status-im/nimbus-eth2/pull/1742",
+          "statement": "正文明确源规范改变派生方式并更新实现。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "status-im/nimbus-eth2",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/status-im/nimbus-eth2"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

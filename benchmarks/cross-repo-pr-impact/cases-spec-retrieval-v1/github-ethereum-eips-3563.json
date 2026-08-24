@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-3563",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3563,
+      "change_id": "ethereum/EIPs#3563",
+      "url": "https://github.com/ethereum/EIPs/pull/3563",
+      "status": "MERGED",
+      "subject": "Updated months to be more accurate for the iceage",
+      "branch": "master",
+      "created": "2021-05-10T10:44:56Z",
+      "submitted": "2021-05-13T14:01:11Z"
+    },
+    "base_commit": "0a9a9dbf6f8f2eee3067349ff9aa5bae7bd33658",
+    "candidate_commit": "b372e0cbfd3ceeeb3fddb366f4463cc72ff8ecd2",
+    "changed_paths": [
+      "EIPS/eip-3554.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/0a9a9dbf6f8f2eee3067349ff9aa5bae7bd33658...b372e0cbfd3ceeeb3fddb366f4463cc72ff8ecd2.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/22870"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 22870,
+        "change_id": "ethereum/go-ethereum#22870",
+        "url": "https://github.com/ethereum/go-ethereum/pull/22870",
+        "status": "MERGED",
+        "subject": "consensus/ethash: change eip3554 from 9.5M to 9.7M",
+        "branch": "master",
+        "created": "2021-05-12T17:36:01Z",
+        "submitted": "2021-05-17T08:49:23Z"
+      },
+      "commit": "9d65a93897e6e4605665257c9f38d3187d6c3918",
+      "changed_paths": [
+        "consensus/ethash/consensus.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/22870",
+          "statement": "目标变更明确等待源规范合并，并同步修改规范中的区块参数。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>TestNG:  BindAsHostPrefixTest</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>BindAsHostPrefixTest</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>2/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Mon Aug 24 18:40:58 CST 2026</td>
+</tr>
+<tr><td>Total time:</td><td>0 seconds (1 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest.testPrefixInvalidHostname()'><b>testPrefixInvalidHostname</b><br>Test class: org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest (BindAsHostPrefixTest)</td>
+<td><div><pre>java.lang.IllegalArgumentException: java.net.URISyntaxException: Expected authority at index 8: https://
+	at org.jclouds.http.Uris$UriBuilder.build(Uris.java:312)
+	at org.jclouds.http.Uris$UriBuilder.build(Uris.java:293)
+	at org.jclouds.http.HttpRequest$Builder.replacePath(HttpRequest.java:149)
+	at org.jclouds.rest.binders.BindAsHostPrefix.bindToRequest(BindAsHostPrefix.java:44)
+	at org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest.testPrefixInvalidHostname(BindAsHostPrefixIfConfiguredTest.java:46)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.net.URISyntaxException: Expected authority at index 8: https://
+	at java.base/java.net.URI$Parser.fail(URI.java:2913)
+	at java.base/java.net.URI$Parser.failExpecting(URI.java:2919)
+	at java.base/java.net.URI$Parser.parseHierarchical(URI.java:3163)
+	at java.base/java.net.URI$Parser.parse(URI.java:3114)
+	at java.base/java.net.URI.&lt;init&gt;(URI.java:600)
+	at org.jclouds.http.Uris$UriBuilder.build(Uris.java:310)
+	... 19 more
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1299990682", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1299990682'><pre>java.lang.IllegalArgumentException: java.net.URISyntaxException: Expected authority at index 8: https://
+	at org.jclouds.http.Uris$UriBuilder.build(Uris.java:312)
+	at org.jclouds.http.Uris$UriBuilder.build(Uris.java:293)
+	at org.jclouds.http.HttpRequest$Builder.replacePath(HttpRequest.java:149)
+	at org.jclouds.rest.binders.BindAsHostPrefix.bindToRequest(BindAsHostPrefix.java:44)
+	at org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest.testPrefixInvalidHostname(BindAsHostPrefixIfConfiguredTest.java:46)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.net.URISyntaxException: Expected authority at index 8: https://
+	at java.base/java.net.URI$Parser.fail(URI.java:2913)
+	at java.base/java.net.URI$Parser.failExpecting(URI.java:2919)
+	at java.base/java.net.URI$Parser.parseHierarchical(URI.java:3163)
+	at java.base/java.net.URI$Parser.parse(URI.java:3114)
+	at java.base/java.net.URI.&lt;init&gt;(URI.java:600)
+	at org.jclouds.http.Uris$UriBuilder.build(Uris.java:310)
+	... 19 more
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest@5dc3fcb7</td></tr>
+<tr>
+<td title='org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest.testPrefixValid()'><b>testPrefixValid</b><br>Test class: org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest (BindAsHostPrefixTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.rest.binders.BindAsHostPrefixIfConfiguredTest@5dc3fcb7</td></tr>
+</table><p>
+</body>
+</html>

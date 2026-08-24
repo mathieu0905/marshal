@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3484",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3484,
+      "change_id": "rust-lang/rfcs#3484",
+      "url": "https://github.com/rust-lang/rfcs/pull/3484",
+      "status": "MERGED",
+      "subject": "Unsafe Extern Blocks",
+      "branch": "master",
+      "created": "2023-09-07T01:15:50Z",
+      "submitted": "2024-05-20T07:25:48Z"
+    },
+    "base_commit": "b423b2bfff110ba9872c6fd85fa0ccae471cc2f7",
+    "candidate_commit": "abb8aeb75217a85d451333a77fb2795cc018c833",
+    "changed_paths": [
+      "text/0000-unsafe-extern-blocks.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/b423b2bfff110ba9872c6fd85fa0ccae471cc2f7...abb8aeb75217a85d451333a77fb2795cc018c833.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/124482"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 124482,
+        "change_id": "rust-lang/rust#124482",
+        "url": "https://github.com/rust-lang/rust/pull/124482",
+        "status": "MERGED",
+        "subject": "Unsafe extern blocks",
+        "branch": "master",
+        "created": "2024-04-28T17:07:50Z",
+        "submitted": "2024-06-06T10:23:23Z"
+      },
+      "commit": "525828d5ee9baca7f7e651918df966f6bc38596a",
+      "changed_paths": [
+        "compiler/rustc_ast/src/ast.rs",
+        "compiler/rustc_ast/src/mut_visit.rs",
+        "compiler/rustc_ast/src/token.rs",
+        "compiler/rustc_ast/src/visit.rs",
+        "compiler/rustc_ast_lowering/src/item.rs",
+        "compiler/rustc_ast_lowering/src/lib.rs",
+        "compiler/rustc_ast_passes/messages.ftl",
+        "compiler/rustc_ast_passes/src/ast_validation.rs",
+        "compiler/rustc_ast_passes/src/errors.rs",
+        "compiler/rustc_ast_pretty/src/pprust/state.rs",
+        "compiler/rustc_ast_pretty/src/pprust/state/item.rs",
+        "compiler/rustc_const_eval/src/interpret/intern.rs",
+        "compiler/rustc_const_eval/src/interpret/validity.rs",
+        "compiler/rustc_expand/src/build.rs",
+        "compiler/rustc_feature/src/unstable.rs",
+        "compiler/rustc_hir/src/def.rs",
+        "compiler/rustc_hir/src/hir.rs",
+        "compiler/rustc_hir/src/intravisit.rs",
+        "compiler/rustc_hir_analysis/src/check/check.rs",
+        "compiler/rustc_hir_analysis/src/check/errs.rs",
+        "compiler/rustc_hir_analysis/src/check/intrinsic.rs",
+        "compiler/rustc_hir_analysis/src/collect.rs",
+        "compiler/rustc_hir_analysis/src/collect/resolve_bound_vars.rs",
+        "compiler/rustc_hir_analysis/src/collect/type_of.rs",
+        "compiler/rustc_hir_analysis/src/hir_wf_check.rs",
+        "compiler/rustc_hir_pretty/src/lib.rs",
+        "compiler/rustc_lint/messages.ftl",
+        "compiler/rustc_lint/src/context/diagnostics.rs",
+        "compiler/rustc_lint/src/lints.rs",
+        "compiler/rustc_lint/src/types.rs",
+        "compiler/rustc_lint_defs/src/builtin.rs",
+        "compiler/rustc_lint_defs/src/lib.rs",
+        "compiler/rustc_metadata/src/rmeta/table.rs",
+        "compiler/rustc_middle/src/hir/map/mod.rs",
+        "compiler/rustc_middle/src/hir/mod.rs",
+        "compiler/rustc_middle/src/mir/pretty.rs",
+        "compiler/rustc_mir_build/src/check_unsafety.rs",
+        "compiler/rustc_parse/src/parser/item.rs",
+        "compiler/rustc_parse/src/parser/mod.rs",
+        "compiler/rustc_resolve/src/def_collector.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "src/librustdoc/clean/mod.rs",
+        "src/librustdoc/passes/collect_intra_doc_links.rs",
+        "src/tools/clippy/clippy_utils/src/ast_utils.rs",
+        "src/tools/rustfmt/src/utils.rs",
+        "tests/pretty/hir-fn-variadic.pp",
+        "tests/ui/async-await/no-async-const.rs",
+        "tests/ui/async-await/no-async-const.stderr",
+        "tests/ui/coroutine/async_gen_fn.none.stderr",
+        "tests/ui/coroutine/async_gen_fn.rs",
+        "tests/ui/coroutine/gen_fn.none.stderr",
+        "tests/ui/coroutine/gen_fn.rs",
+        "tests/ui/feature-gates/feature-gate-unsafe-extern-blocks.rs",
+        "tests/ui/feature-gates/feature-gate-unsafe-extern-blocks.stderr",
+        "tests/ui/parser/duplicate-visibility.rs",
+        "tests/ui/parser/duplicate-visibility.stderr",
+        "tests/ui/parser/fn-header-semantic-fail.rs",
+        "tests/ui/parser/fn-header-semantic-fail.stderr",
+        "tests/ui/parser/issues/issue-76437-async.rs",
+        "tests/ui/parser/issues/issue-76437-async.stderr",
+        "tests/ui/parser/issues/issue-76437-const-async.rs",
+        "tests/ui/parser/issues/issue-76437-const-async.stderr",
+        "tests/ui/parser/issues/issue-76437-const.rs",
+        "tests/ui/parser/issues/issue-76437-const.stderr",
+        "tests/ui/parser/issues/issue-86895.rs",
+        "tests/ui/parser/issues/issue-86895.stderr",
+        "tests/ui/parser/issues/issue-87217-keyword-order/const-async-const.rs",
+        "tests/ui/parser/issues/issue-87217-keyword-order/const-async-const.stderr",
+        "tests/ui/parser/issues/issue-87694-duplicated-pub.rs",
+        "tests/ui/parser/issues/issue-87694-duplicated-pub.stderr",
+        "tests/ui/parser/issues/issue-87694-misplaced-pub.rs",
+        "tests/ui/parser/issues/issue-87694-misplaced-pub.stderr",
+        "tests/ui/parser/no-const-fn-in-extern-block.rs",
+        "tests/ui/parser/no-const-fn-in-extern-block.stderr",
+        "tests/ui/parser/unsafe-foreign-mod-2.rs",
+        "tests/ui/parser/unsafe-foreign-mod-2.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/extern-items-unsafe.edition2021.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/extern-items-unsafe.edition2024.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/extern-items-unsafe.rs",
+        "tests/ui/rust-2024/unsafe-extern-blocks/extern-items.edition2024.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/extern-items.rs",
+        "tests/ui/rust-2024/unsafe-extern-blocks/safe-items.rs",
+        "tests/ui/rust-2024/unsafe-extern-blocks/safe-unsafe-on-unadorned-extern-block.edition2021.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/safe-unsafe-on-unadorned-extern-block.edition2024.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/safe-unsafe-on-unadorned-extern-block.rs",
+        "tests/ui/rust-2024/unsafe-extern-blocks/unsafe-extern-suggestion.fixed",
+        "tests/ui/rust-2024/unsafe-extern-blocks/unsafe-extern-suggestion.rs",
+        "tests/ui/rust-2024/unsafe-extern-blocks/unsafe-extern-suggestion.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/unsafe-items.edition2021.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/unsafe-items.edition2024.stderr",
+        "tests/ui/rust-2024/unsafe-extern-blocks/unsafe-items.rs",
+        "tests/ui/unpretty/expanded-exhaustive.rs",
+        "tests/ui/unpretty/expanded-exhaustive.stdout"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/124482",
+          "statement": "目标实现源 RFC 定义的不安全外部块语法并直接引用该 RFC。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

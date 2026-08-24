@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-956716",
+  "project": "opendev",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "opendev/statusbot",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 956716,
+      "change_id": "Ie46708fd07829a58ddde25000a682e9fda55e106",
+      "url": "https://review.opendev.org/c/opendev/statusbot/+/956716",
+      "status": "MERGED",
+      "subject": "Reapply \"Move statusbot to quay.io\"",
+      "branch": "master",
+      "created": "2025-08-06 17:43:00.000000000",
+      "submitted": "2025-08-06 21:35:19.000000000"
+    },
+    "base_commit": "9e9f9fa108f7b7dfedeaca4d10857cc99e55011c",
+    "candidate_commit": "3580287086e547f486113a81934e27179a71103f",
+    "changed_paths": [
+      ".zuul.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/956716/revisions/3580287086e547f486113a81934e27179a71103f/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opendev/statusbot",
+      "target_repository": "opendev/system-config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/opendev/system-config/+/956717"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "opendev/system-config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 956717,
+        "change_id": "Ibcba0e168c40ee55f45a67e833089b519fda4844",
+        "url": "https://review.opendev.org/c/opendev/system-config/+/956717",
+        "status": "MERGED",
+        "subject": "Fetch statusbot from quay",
+        "branch": "master",
+        "created": "2025-08-06 17:44:36.000000000",
+        "submitted": "2025-08-06 22:40:10.000000000"
+      },
+      "commit": "8eaaca50f59a4e535b6a4951b28f73745cfc0232",
+      "changed_paths": [
+        "playbooks/roles/statusbot/files/docker-compose.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/opendev/system-config/+/956717",
+          "statement": "Depends-On: https://review.opendev.org/c/opendev/statusbot/+/956716",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/65e899e4e69b4a5697e4ebdd7b22c0c6"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opendev/statusbot",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/opendev/statusbot/raw/commit/3580287086e547f486113a81934e27179a71103f/LICENSE"
+    },
+    {
+      "repository": "opendev/system-config",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/opendev/system-config/src/commit/8e5b2a072ad6f6fd3730147cfe26f4bde8c9d575"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

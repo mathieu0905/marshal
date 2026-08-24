@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-989461",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/ovsdbapp",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 989461,
+      "change_id": "Iee83f5e412391c091d15c5fff16a81a01ed66b2b",
+      "url": "https://review.opendev.org/c/openstack/ovsdbapp/+/989461",
+      "status": "MERGED",
+      "subject": "Fix row2str crash on dangling UUID refs in deleted rows",
+      "branch": "master",
+      "created": "2026-05-20 21:57:17.000000000",
+      "submitted": "2026-05-21 18:40:37.000000000"
+    },
+    "base_commit": "e5fe03382e59c8b1df0442f4432d1b2bf22bb53d",
+    "candidate_commit": "5394565bc7cdd37982536fad5f53ebd6c58b5414",
+    "changed_paths": [
+      "ovsdbapp/backend/ovs_idl/idlutils.py",
+      "ovsdbapp/tests/functional/backend/ovs_idl/test_idlutils.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/989461/revisions/5394565bc7cdd37982536fad5f53ebd6c58b5414/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/ovsdbapp",
+      "target_repository": "openstack/neutron",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/neutron/+/989471"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/neutron",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 989471,
+        "change_id": "I8ce11f9f671b7797fddfa762ec61c875a5b2e104",
+        "url": "https://review.opendev.org/c/openstack/neutron/+/989471",
+        "status": "MERGED",
+        "subject": "evpn: Add port_binding events for OVN agent EVPN extension",
+        "branch": "master",
+        "created": "2026-05-21 01:19:13.000000000",
+        "submitted": "2026-06-01 18:06:10.000000000"
+      },
+      "commit": "72202190ae4eefb14410a9142301da7326e2e643",
+      "changed_paths": [
+        "neutron/agent/ovn/extensions/evpn/__init__.py",
+        "neutron/agent/ovn/extensions/evpn/constants.py",
+        "neutron/agent/ovn/extensions/evpn/events.py",
+        "neutron/services/evpn/constants.py",
+        "neutron/tests/functional/agent/ovn/extensions/evpn/__init__.py",
+        "neutron/tests/functional/agent/ovn/extensions/evpn/test_events.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/neutron/+/989471",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/ovsdbapp/+/989461",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/060d41b261f146148ac2431126ad8c21"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/neutron",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/neutron/raw/commit/5b9b84bf7b5c9e601bc17f0f7a7408c3fc439ce0/LICENSE"
+    },
+    {
+      "repository": "openstack/ovsdbapp",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/ovsdbapp/raw/commit/5394565bc7cdd37982536fad5f53ebd6c58b5414/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

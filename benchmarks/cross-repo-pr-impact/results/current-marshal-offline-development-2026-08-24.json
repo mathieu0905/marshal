@@ -1,0 +1,94 @@
+{
+  "run_id": "current-marshal-offline-development-2026-08-24",
+  "run_date": "2026-08-24",
+  "marshal_revision": "71d91c1",
+  "case_id": "causal-opendev-1000668",
+  "track": "cross_repository_breakage_discovery_causal_pilot_development_run",
+  "input": {
+    "source_repository": "openstack/ironic-python-agent",
+    "source_paths": [
+      "plugin-requirements.txt",
+      "pyproject.toml"
+    ],
+    "source_patch_bytes": 1048,
+    "candidate_repository_count": 14,
+    "candidate_repository_file_count": 24614,
+    "expanded_input_size_mib": 223,
+    "network_during_marshal_run": "not_used_by_the_three_deterministic_commands",
+    "filesystem_isolation": "not_applied_for_this_native_cli_interface_diagnostic",
+    "materialized_case_input": [
+      "source.patch",
+      "input.json",
+      "repository-snapshots.json",
+      "repositories/"
+    ],
+    "hidden_artifacts_not_passed_to_commands": [
+      "causal-pilot/labels.jsonl",
+      "candidates/",
+      "results/",
+      "target repair",
+      "failure and success build evidence"
+    ]
+  },
+  "commands": [
+    {
+      "command": "marshal classify --repo openstack/ironic-python-agent --paths plugin-requirements.txt pyproject.toml --diff-text <source.patch>",
+      "exit_code": 0,
+      "output": {
+        "tier": "mid",
+        "reasons": [
+          "default mid (ordinary actor / RPC handler)"
+        ],
+        "contracts_hit": [],
+        "security_hazards": [],
+        "review_dimensions": [
+          "correctness",
+          "spec",
+          "cross-repo"
+        ]
+      }
+    },
+    {
+      "command": "marshal invariants --repo openstack/ironic-python-agent --paths plugin-requirements.txt pyproject.toml",
+      "exit_code": 0,
+      "output": []
+    },
+    {
+      "command": "marshal review-lenses --repo openstack/ironic-python-agent --paths plugin-requirements.txt pyproject.toml",
+      "exit_code": 0,
+      "output": {
+        "base_lenses": [
+          {
+            "name": "correctness",
+            "prompt": "找出这个改动会怎样产生错误结果或破坏现有行为。",
+            "project_fit": "domain_general"
+          },
+          {
+            "name": "spec",
+            "prompt": "实现是否偏离它所引用 CIP 的真实意图?指出语义漂移。",
+            "project_fit": "cowboy_specific_not_applicable_to_this_openstack_change"
+          },
+          {
+            "name": "cross-repo",
+            "prompt": "这个改动是否破坏跨 repo 契约(编码/类型序列化字节兼容)?",
+            "project_fit": "cowboy_specific_and_too_narrow_for_this_dependency_metadata_change"
+          }
+        ],
+        "hazard_lenses": [],
+        "ratchet_lenses": []
+      }
+    }
+  ],
+  "observed_capability": {
+    "configuration_match": false,
+    "cross_repository_invariant_count": 0,
+    "domain_general_review_lens_count": 1,
+    "cowboy_specific_review_lens_count": 2,
+    "candidate_repository_directory_accepted_by_native_command": false,
+    "candidate_repository_code_read_count": 0,
+    "ranked_repository_output_available": false,
+    "native_multi_repository_score_available": false
+  },
+  "failure_class": "native_interface_has_no_multi_repository_candidate_input_or_repository_ranking_output",
+  "interpretation": "Marshal classified the source change, but two of its three emitted review prompts were Cowboy-specific: one asks about CIP intent and one narrows cross-repository contracts to encoding and type serialization. No native command consumed the fourteen candidate repositories or produced a repository ranking. This is an interface-level unsupported result with a domain-adaptation gap, not a no-impact prediction and not a zero retrieval score."
+}

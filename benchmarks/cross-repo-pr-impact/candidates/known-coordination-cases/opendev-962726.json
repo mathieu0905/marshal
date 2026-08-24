@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-962726",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/castellan",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 962726,
+      "change_id": "I6c5100abd927009de1f6b31f96096ce1296c86c3",
+      "url": "https://review.opendev.org/c/openstack/castellan/+/962726",
+      "status": "MERGED",
+      "subject": "Fix hardcoded context string in _config_driver.py",
+      "branch": "master",
+      "created": "2025-10-01 21:00:01.000000000",
+      "submitted": "2025-12-03 13:59:44.000000000"
+    },
+    "base_commit": "5d9989cbe01304994e83b7dc9b8fce8b88959321",
+    "candidate_commit": "6e7a055deeb6ab786c91ae7f1006834d7aff5d71",
+    "changed_paths": [
+      "castellan/_config_driver.py",
+      "castellan/tests/unit/test_config_driver.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/962726/revisions/6e7a055deeb6ab786c91ae7f1006834d7aff5d71/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/castellan",
+      "target_repository": "openstack/charm-cinder",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/charm-cinder/+/964254"
+    },
+    {
+      "source_repository": "openstack/castellan",
+      "target_repository": "openstack/charm-cinder",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/charm-cinder/+/969101"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/charm-cinder",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 964254,
+        "change_id": "Ib6d2ae305158430e3be6833ce1cd0aa5c6605f46",
+        "url": "https://review.opendev.org/c/openstack/charm-cinder/+/964254",
+        "status": "MERGED",
+        "subject": "Resolve subordinate charm config with Castellan",
+        "branch": "stable/2024.1",
+        "created": "2025-10-16 20:35:45.000000000",
+        "submitted": "2026-05-26 18:22:22.000000000"
+      },
+      "commit": "59347117d1cb9634cfa09f4078d8b83a5d718d37",
+      "changed_paths": [
+        "README.md",
+        "hooks/cinder_contexts.py",
+        "hooks/cinder_hooks.py",
+        "hooks/cinder_utils.py",
+        "hooks/secrets-storage-relation-broken",
+        "hooks/secrets-storage-relation-changed",
+        "hooks/secrets-storage-relation-joined",
+        "metadata.yaml",
+        "templates/caracal/castellan.conf",
+        "templates/caracal/override.conf",
+        "templates/caracal/secret_map.conf",
+        "unit_tests/test_cinder_contexts.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/charm-cinder/+/964254",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/castellan/+/962726",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/1caf97549d8348f6a77ae0732e41158c"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/charm-cinder",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 969101,
+        "change_id": "Ib6d2ae305158430e3be6833ce1cd0aa5c6605f46",
+        "url": "https://review.opendev.org/c/openstack/charm-cinder/+/969101",
+        "status": "MERGED",
+        "subject": "Resolve subordinate charm config with Castellan",
+        "branch": "master",
+        "created": "2025-12-01 15:17:52.000000000",
+        "submitted": "2026-03-04 15:31:22.000000000"
+      },
+      "commit": "5078eb9dbe8ebda12ccefc20208c78b221e8d424",
+      "changed_paths": [
+        "README.md",
+        "hooks/cinder_contexts.py",
+        "hooks/cinder_hooks.py",
+        "hooks/cinder_utils.py",
+        "hooks/secrets-storage-relation-broken",
+        "hooks/secrets-storage-relation-changed",
+        "hooks/secrets-storage-relation-joined",
+        "metadata.yaml",
+        "templates/caracal/castellan.conf",
+        "templates/caracal/override.conf",
+        "templates/caracal/secret_map.conf",
+        "unit_tests/test_cinder_contexts.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/charm-cinder/+/969101",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/castellan/+/962726",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/f209e710c04146f9a9abf9336e8d6d43"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/castellan",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/castellan/raw/commit/6e7a055deeb6ab786c91ae7f1006834d7aff5d71/LICENSE"
+    },
+    {
+      "repository": "openstack/charm-cinder",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/charm-cinder/raw/commit/59347117d1cb9634cfa09f4078d8b83a5d718d37/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

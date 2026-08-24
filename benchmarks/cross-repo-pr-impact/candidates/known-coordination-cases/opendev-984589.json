@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-984589",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/distcloud",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 984589,
+      "change_id": "Ibafc9252328b45d7763657083f74aa6657d4fa79",
+      "url": "https://review.opendev.org/c/starlingx/distcloud/+/984589",
+      "status": "MERGED",
+      "subject": "Change skip_enroll_init option to on_site",
+      "branch": "master",
+      "created": "2026-04-14 15:37:56.000000000",
+      "submitted": "2026-04-15 13:33:37.000000000"
+    },
+    "base_commit": "29e247b5ca4e74212e49d7057ef43493bc72c265",
+    "candidate_commit": "a9bae00aa3dbe7c6f1a540b7183cc7f9a61f18e7",
+    "changed_paths": [
+      "api-ref/source/api-ref-dcmanager-v1.rst",
+      "api-ref/source/parameters.yaml",
+      "distributedcloud/dcmanager/api/controllers/v1/subclouds.py",
+      "distributedcloud/dcmanager/common/phased_subcloud_deploy.py",
+      "distributedcloud/dcmanager/manager/subcloud_manager.py",
+      "distributedcloud/dcmanager/tests/unit/common/test_phased_subcloud_deploy.py",
+      "distributedcloud/dcmanager/tests/unit/manager/test_subcloud_manager.py",
+      "openapi/dc-openapi.yaml",
+      "tox.ini"
+    ],
+    "patch_url": "https://review.opendev.org/changes/984589/revisions/a9bae00aa3dbe7c6f1a540b7183cc7f9a61f18e7/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/distcloud",
+      "target_repository": "starlingx/utilities",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/utilities/+/984639"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/utilities",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 984639,
+        "change_id": "Icfa1903cc103ca70a249666b606fc69c9c496aac",
+        "url": "https://review.opendev.org/c/starlingx/utilities/+/984639",
+        "status": "MERGED",
+        "subject": "Update Cloud-Init data for local enrollment",
+        "branch": "master",
+        "created": "2026-04-14 20:33:54.000000000",
+        "submitted": "2026-04-15 14:40:58.000000000"
+      },
+      "commit": "9449ac2a6019d10610c606614674255524913430",
+      "changed_paths": [
+        ".zuul.yaml",
+        "test-requirements.txt",
+        "tools/nocloud-factory-install/cloud-init-config/scripts/10-platform-reconfig",
+        "tools/nocloud-factory-install/cloud-init-config/scripts/20-vcsr-config",
+        "tools/nocloud-factory-install/config/enrollment/bootstrap-values.yaml",
+        "tools/nocloud-factory-install/config/enrollment/install-values.yaml",
+        "tools/nocloud-factory-install/factory-install/systemd/utils/send-factory-sel-event",
+        "tools/nocloud-factory-install/meta-data",
+        "tools/nocloud-factory-install/nocloud_utils/__init__.py",
+        "tools/nocloud-factory-install/nocloud_utils/utils.py",
+        "tools/nocloud-factory-install/onsite-enrollment/scripts/90-enroll-subcloud",
+        "tools/nocloud-factory-install/seed-config/cloud.cfg",
+        "tools/nocloud-factory-install/tests/test_10_platform_reconfig.py",
+        "tools/nocloud-factory-install/tests/test_90_enroll_subcloud.py",
+        "tools/nocloud-factory-install/tox.ini",
+        "tools/nocloud-factory-install/user-data",
+        "utilities/platform-util/debian/all/deb_folder/control",
+        "utilities/platform-util/scripts/enroll-init-reconfigure"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/utilities/+/984639",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/distcloud/+/984589",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/2d17e87c8a7449ef87c17c40ae064214"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/distcloud",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/distcloud/src/commit/593fde9d4fbbc9332666e5b80fdf11721776c662"
+    },
+    {
+      "repository": "starlingx/utilities",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/utilities/src/commit/9449ac2a6019d10610c606614674255524913430"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

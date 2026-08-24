@@ -1,0 +1,53 @@
+{
+  "measured_at": "2026-08-23",
+  "source": "Kubernetes Prow public job history and kubernetes-ci-logs",
+  "scope": {
+    "job_selection": "104 job names that were multi-repository presubmits in the current Prow window",
+    "earliest_run": "2026-05-26T18:34:39Z",
+    "latest_run": "2026-08-23T12:45:38Z",
+    "directory_entries": 35811,
+    "parsed_runs": 35805,
+    "state_counts": {
+      "success": 22717,
+      "failure": 5387,
+      "aborted": 7617,
+      "pending": 35,
+      "unknown": 49
+    }
+  },
+  "funnel": {
+    "runs_with_primary_pull_request": 35755,
+    "job_pull_request_groups": 9635,
+    "groups_with_success_and_failure": 1960,
+    "success_failure_success_windows": 1090,
+    "source_pull_head_changed_then_stable": 299,
+    "source_pull_head_changed_then_stable_with_fixed_base": 58,
+    "clone_records_requested": 174,
+    "clone_records_available": 174,
+    "structural_cross_repository_three_arm_windows": 11,
+    "independent_source_pull_requests_in_structural_windows": 6,
+    "semantically_accepted_causal_cases": 0
+  },
+  "structural_window_change_patterns": {
+    "only_source_changed_then_no_repository_changed": 31,
+    "two_repositories_changed_then_no_repository_changed": 11,
+    "two_repositories_changed_then_one_changed": 3,
+    "only_source_changed_then_only_one_other_repository_changed": 11,
+    "two_repositories_changed_then_two_changed": 1,
+    "three_repositories_changed_then_one_changed": 1
+  },
+  "semantic_rejection_counts": {
+    "source_commit_changed_but_source_tree_was_identical": 8,
+    "failure_was_an_external_network_error": 1,
+    "failure_signature_and_target_delta_were_not_semantically_aligned": 1,
+    "suite_timeout_and_target_delta_were_not_semantically_aligned": 1
+  },
+  "decision": "Do not use generic Prow presubmit history as the main source for the flagship causal track. Keep Prow as a targeted rolling lead source, and require code-tree identity plus failure-to-target semantic alignment before admission.",
+  "limitations": [
+    "The scan starts from job names visible as multi-repository presubmits on 2026-08-23, so retired or renamed jobs are outside the frame.",
+    "The public directory covered roughly the preceding 90 days; this is not an all-time Prow census.",
+    "A successful recovery after a target branch advance remains only a structural lead until the target delta explains the failure signature."
+  ],
+  "candidate_file": "candidates/prow-three-arm-structural-candidates.jsonl",
+  "review_file": "candidates/prow-three-arm-semantic-review.jsonl"
+}

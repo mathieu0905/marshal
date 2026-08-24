@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "audited_at": "2026-08-24T03:41:22+08:00",
+  "source_change": 1001023,
+  "source_patchset": 1,
+  "source_commit": "978799539e019141d8b0710d09bf91c956976079",
+  "alembic_version": "1.19.1",
+  "search_frame": {
+    "source": "results/opendev-rolling-2026-08-01-to-2026-08-23/search-frame.jsonl 中变更 1001023 补丁集 1 的成功 cross-*-py313 任务",
+    "jobs_screened": 20,
+    "unit_reports_available": 17,
+    "unit_reports_missing": 3
+  },
+  "method": "逐项读取 Zuul 单元测试报告，检索完整 test_models_sync 标识；对入选项再从 job-output.txt 核对 Alembic 1.19.1 安装和 MySQL 测试实际通过，并从 workspace-repos.json 读取目标提交",
+  "bounded_negative_candidates": [
+    {
+      "repository": "openstack/heat",
+      "commit": "79feefc60e12fab1f40e53e40318091169696a72",
+      "job": "cross-heat-py313",
+      "build_uuid": "44817cc52e11454e867c52328a3cbde5",
+      "test": "heat.tests.db.test_migrations.ModelsMigrationsSyncMysql.test_models_sync",
+      "test_result": "pass",
+      "test_seconds": 0.543323,
+      "version_verified": true
+    },
+    {
+      "repository": "openstack/ironic",
+      "commit": "72d6dea279cf493d855953a404868fce1b39fbf1",
+      "job": "cross-ironic-py313",
+      "build_uuid": "1958f8e3486d4c2e8c09055b050c2052",
+      "test": "ironic.tests.unit.db.sqlalchemy.test_migrations.ModelsMigrationsSyncMysql.test_models_sync",
+      "test_result": "pass",
+      "test_seconds": 4.190517,
+      "version_verified": true
+    },
+    {
+      "repository": "openstack/keystone",
+      "commit": "16afc813b7e6de727d8a91e065d7824b06e32925",
+      "job": "cross-keystone-py313",
+      "build_uuid": "7c6e155e99b444a7a3f8b68329c091dd",
+      "test": "keystone.tests.unit.common.sql.test_upgrades.TestModelsSyncMySQL.test_models_sync",
+      "test_result": "pass",
+      "test_seconds": 1.784526,
+      "version_verified": true
+    },
+    {
+      "repository": "openstack/nova",
+      "commit": "fec26fb64baef2251bf547850ae71edfa6a7413d",
+      "job": "cross-nova-py313",
+      "build_uuid": "84975686f7c14b37ac155eb02c1ac49b",
+      "tests": [
+        "nova.tests.unit.db.api.test_migrations.TestModelsSyncMySQL.test_models_sync",
+        "nova.tests.unit.db.main.test_migrations.TestModelsSyncMySQL.test_models_sync"
+      ],
+      "test_result": "pass",
+      "test_seconds": [0.61643, 1.866035],
+      "version_verified": true
+    },
+    {
+      "repository": "openstack/placement",
+      "commit": "0d503c6df70aa3049c29d4c2d8672703e068463e",
+      "job": "cross-placement-functional-py313",
+      "build_uuid": "3294f1a315c942d29cbbbc4c3e318077",
+      "test": "placement.tests.functional.db.test_migrations.ModelsMigrationsSyncMysql.test_models_sync",
+      "test_result": "pass",
+      "test_seconds": 0.756057,
+      "version_verified": true
+    }
+  ],
+  "downgraded_original_candidates": [
+    {
+      "repository": "openstack/glance",
+      "job": "cross-glance-py313",
+      "build_uuid": "3da5b1aa078c409593c41a56f5e26952",
+      "reason": "任务成功且执行了若干迁移测试，但单元报告中没有 test_models_sync；不能证明触及 Alembic 元数据比较表面"
+    },
+    {
+      "repository": "openstack/neutron",
+      "job": "cross-neutron-py313",
+      "build_uuid": "eeca29f9ef054806b79f857bb2db99e4",
+      "reason": "任务成功且执行了迁移命令单元测试，但单元报告中没有 test_models_sync；不能与 Cinder 的失败表面按同强度比较"
+    }
+  ],
+  "other_screening_outcomes": {
+    "sqlite_only_or_backend_unverified_models_sync": [
+      "cross-aodh-py313"
+    ],
+    "no_models_sync_test_in_report": [
+      "cross-barbican-py313",
+      "cross-ceilometer-py313",
+      "cross-designate-py313",
+      "cross-glance-py313",
+      "cross-manila-py313",
+      "cross-magnum-py313",
+      "cross-masakari-py313",
+      "cross-mistral-py313",
+      "cross-neutron-py313",
+      "cross-placement-py313",
+      "cross-octavia-py313"
+    ],
+    "unit_report_missing": [
+      "cross-horizon-py313",
+      "cross-kuryr-py313",
+      "cross-swift-py313"
+    ]
+  },
+  "revised_candidate_package": {
+    "positive_repository": "openstack/cinder",
+    "bounded_negative_candidate_repositories": [
+      "openstack/heat",
+      "openstack/ironic",
+      "openstack/keystone",
+      "openstack/nova",
+      "openstack/placement"
+    ],
+    "repositories": 6,
+    "label_status": "候选闭集；历史执行具备相关覆盖，但正式限定负标签仍需主动重复"
+  }
+}

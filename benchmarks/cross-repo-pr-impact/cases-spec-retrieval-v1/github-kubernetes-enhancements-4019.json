@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-4019",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 4019,
+      "change_id": "kubernetes/enhancements#4019",
+      "url": "https://github.com/kubernetes/enhancements/pull/4019",
+      "status": "MERGED",
+      "subject": "KEP-4017: Pod Index Label for StatefulSets and Indexed Jobs",
+      "branch": "master",
+      "created": "2023-05-17T18:24:04Z",
+      "submitted": "2023-06-13T19:31:59Z"
+    },
+    "base_commit": "a21801f12760e04cf8c16de6b02786e05ecdafd5",
+    "candidate_commit": "e729f84da7b2b606ce11671aa448556a043fcf96",
+    "changed_paths": [
+      "keps/sig-apps/4017-pod-index-label/README.md",
+      "keps/sig-apps/4017-pod-index-label/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/a21801f12760e04cf8c16de6b02786e05ecdafd5...e729f84da7b2b606ce11671aa448556a043fcf96.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/119232"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 119232,
+        "change_id": "kubernetes/kubernetes#119232",
+        "url": "https://github.com/kubernetes/kubernetes/pull/119232",
+        "status": "MERGED",
+        "subject": "Add StatefulSet pod index as pod label",
+        "branch": "master",
+        "created": "2023-07-11T18:08:58Z",
+        "submitted": "2023-07-17T19:47:10Z"
+      },
+      "commit": "e2df80dc5ccc75c9d702378b020d6136a3aa19d4",
+      "changed_paths": [
+        "pkg/controller/statefulset/stateful_set_control_test.go",
+        "pkg/controller/statefulset/stateful_set_utils.go",
+        "staging/src/k8s.io/api/apps/v1/types.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/119232",
+          "statement": "目标正文明确声明实现源 KEP 的有状态工作负载索引标签。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

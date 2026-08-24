@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-216",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 216,
+      "change_id": "open-telemetry/opentelemetry-specification#216",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/216",
+      "status": "MERGED",
+      "subject": "add IsRemote field to SpanContext, set by propagators",
+      "branch": "master",
+      "created": "2019-08-15T15:01:46Z",
+      "submitted": "2019-10-03T03:23:56Z"
+    },
+    "base_commit": "41014a5a8329256eff10a19b602537c8dcec3331",
+    "candidate_commit": "5ecac48fae020fee629cd36058e090b4a4074b0f",
+    "changed_paths": [
+      "specification/api-propagators.md",
+      "specification/api-sampling.md",
+      "specification/api-tracing.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/41014a5a8329256eff10a19b602537c8dcec3331...5ecac48fae020fee629cd36058e090b4a4074b0f.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/626"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 626,
+        "change_id": "open-telemetry/opentelemetry-java#626",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/626",
+        "status": "MERGED",
+        "subject": "Add isRemote to the SpanContext",
+        "branch": "master",
+        "created": "2019-10-24T00:20:10Z",
+        "submitted": "2019-10-24T15:22:56Z"
+      },
+      "commit": "cf60d707d97e2b15d5301e0e5fd73a714449c73e",
+      "changed_paths": [
+        "api/src/main/java/io/opentelemetry/trace/SpanContext.java",
+        "api/src/main/java/io/opentelemetry/trace/propagation/BinaryTraceContext.java",
+        "api/src/main/java/io/opentelemetry/trace/propagation/HttpTraceContext.java",
+        "api/src/test/java/io/opentelemetry/trace/SpanContextTest.java",
+        "api/src/test/java/io/opentelemetry/trace/propagation/BinaryTraceContextTest.java",
+        "api/src/test/java/io/opentelemetry/trace/propagation/HttpTraceContextTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/626",
+          "statement": "正文明确实现源规范。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-976259",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/requirements",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 976259,
+      "change_id": "Ib97eea1037fac541c8ebadc526ae9c3bb160f685",
+      "url": "https://review.opendev.org/c/openstack/requirements/+/976259",
+      "status": "MERGED",
+      "subject": "[stable-only] remove pkg_resouces from reqiurements-check",
+      "branch": "stable/2025.2",
+      "created": "2026-02-10 14:15:23.000000000",
+      "submitted": "2026-02-13 20:18:51.000000000"
+    },
+    "base_commit": "3d40384730d72e0be170e3bcad584e1f10eceabb",
+    "candidate_commit": "ed0f971305bee6b48fb803e479c62ab0118c15be",
+    "changed_paths": [
+      "detail.py",
+      "global-requirements.txt",
+      "openstack_requirements/cmds/check_conflicts.py",
+      "openstack_requirements/constraints.py",
+      "openstack_requirements/requirement.py",
+      "openstack_requirements/tests/test_requirement.py",
+      "setup.cfg",
+      "setup.py",
+      "tools/cap.py",
+      "tools/what-broke.py",
+      "tox.ini"
+    ],
+    "patch_url": "https://review.opendev.org/changes/976259/revisions/ed0f971305bee6b48fb803e479c62ab0118c15be/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/requirements",
+      "target_repository": "openstack/cyborg",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/cyborg/+/976224"
+    },
+    {
+      "source_repository": "openstack/requirements",
+      "target_repository": "openstack/cyborg",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/cyborg/+/976223"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/cyborg",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 976224,
+        "change_id": "I25595fe1beeeb216053464ec1d36887896557fa3",
+        "url": "https://review.opendev.org/c/openstack/cyborg/+/976224",
+        "status": "MERGED",
+        "subject": "Use the correct package name for microversion-parse",
+        "branch": "stable/2025.1",
+        "created": "2026-02-10 10:57:52.000000000",
+        "submitted": "2026-04-25 10:25:53.000000000"
+      },
+      "commit": "a301cccc4c11d8750ae88fb172c9bbf4f13b59f0",
+      "changed_paths": [
+        "requirements.txt"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/cyborg/+/976224",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/requirements/+/976259",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/f9bc7e5ece674f33b3e6859680bd040f"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/cyborg",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 976223,
+        "change_id": "I25595fe1beeeb216053464ec1d36887896557fa3",
+        "url": "https://review.opendev.org/c/openstack/cyborg/+/976223",
+        "status": "MERGED",
+        "subject": "Use the correct package name for microversion-parse",
+        "branch": "stable/2025.2",
+        "created": "2026-02-10 10:56:53.000000000",
+        "submitted": "2026-02-17 13:03:27.000000000"
+      },
+      "commit": "0ea86d3cb14d8c6cf400ca004170b6ac7e410ce8",
+      "changed_paths": [
+        "requirements.txt"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/cyborg/+/976223",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/requirements/+/976259",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/e5050403fa704fe9a876325ab5b07ed6"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/cyborg",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/cyborg/raw/commit/a301cccc4c11d8750ae88fb172c9bbf4f13b59f0/LICENSE"
+    },
+    {
+      "repository": "openstack/requirements",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/requirements/src/commit/fea2f5b9219eb644383022338bd0cb4fbf2784b8"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

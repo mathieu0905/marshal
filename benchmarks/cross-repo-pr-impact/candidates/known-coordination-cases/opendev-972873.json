@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-972873",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstack-ansible-rabbitmq_server",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 972873,
+      "change_id": "I247d140aeeb705f8ab284090d3f6a7ff0f680fd2",
+      "url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/972873",
+      "status": "MERGED",
+      "subject": "Update RPM path for GPG keys",
+      "branch": "stable/2025.2",
+      "created": "2026-01-09 13:47:00.000000000",
+      "submitted": "2026-01-21 16:44:43.000000000"
+    },
+    "base_commit": "9bd0d00f64cdace97425cbf8d0a42d28213047d1",
+    "candidate_commit": "69fec095db6b400dff0b15245cf554347e8742dc",
+    "changed_paths": [
+      "releasenotes/notes/rpm_gpg_url-ae026bf0b47b845c.yaml",
+      "vars/redhat.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/972873/revisions/69fec095db6b400dff0b15245cf554347e8742dc/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstack-ansible-rabbitmq_server",
+      "target_repository": "openstack/openstack-ansible-lxc_hosts",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible-lxc_hosts/+/973887"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-ansible-lxc_hosts",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 973887,
+        "change_id": "Ib1c557950c45276b26a8584bcae4891fed2aaa71",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible-lxc_hosts/+/973887",
+        "status": "MERGED",
+        "subject": "Revert \"Temporary disable RHEL jobs\"",
+        "branch": "stable/2025.2",
+        "created": "2026-01-19 18:43:11.000000000",
+        "submitted": "2026-01-21 23:44:09.000000000"
+      },
+      "commit": "f549598cf0d3f5977ae5f0413ff0266b0d953eee",
+      "changed_paths": [
+        "zuul.d/project.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible-lxc_hosts/+/973887",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/972873",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/f45d9ecca5174563b3562590ca324492"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-ansible-lxc_hosts",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-lxc_hosts/raw/commit/52a68de3f3daa1f5954b1d78520aa395a1fd30cd/LICENSE"
+    },
+    {
+      "repository": "openstack/openstack-ansible-rabbitmq_server",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-rabbitmq_server/raw/commit/90ca063236bdb7c1c69d519fdb2de13874fc0d60/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

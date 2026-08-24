@@ -1,0 +1,368 @@
+FAIL packages/preconstruct/src/build/__tests__/build.ts (11.781s)
+  ● umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `umd with dep on other module: umd-with-dep.umd.min.js.map 1`
+
+    Snapshot: "{\"version\":3,\"file\":\"umd-with-dep.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"div\\\", null);\\n\"],\"names\":[],\"mappings\":\"sNAEc,MAAO\"}"
+    Received: "{\"version\":3,\"file\":\"umd-with-dep.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"div\\\", null);\\n\"],\"names\":[],\"mappings\":\"uNAEc,MAAO\"}"
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 4)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:105:3)
+
+  ● umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `umd with dep on other module: umd-with-dep.umd.min.js 1`
+
+    - Snapshot
+    + Received
+
+    - !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,function(e){"use strict";e.createElement("div",null)});
+    + !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,(function(e){"use strict";e.createElement("div",null)}));
+      //# sourceMappingURL=umd-with-dep.umd.min.js.map
+      ↵
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 3)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:105:3)
+
+  ● monorepo umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `monorepo umd with dep on other module: package-one-umd-with-dep.umd.min.js 1`
+
+    - Snapshot
+    + Received
+
+    - !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,function(e){"use strict";e.createElement("div",null)});
+    + !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,(function(e){"use strict";e.createElement("div",null)}));
+      //# sourceMappingURL=package-one-umd-with-dep.umd.min.js.map
+      ↵
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 3)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:146:3)
+
+  ● monorepo umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `monorepo umd with dep on other module: package-one-umd-with-dep.umd.min.js.map 1`
+
+    Snapshot: "{\"version\":3,\"file\":\"package-one-umd-with-dep.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"div\\\", null);\\n\"],\"names\":[],\"mappings\":\"sNAEc,MAAO\"}"
+    Received: "{\"version\":3,\"file\":\"package-one-umd-with-dep.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"div\\\", null);\\n\"],\"names\":[],\"mappings\":\"uNAEc,MAAO\"}"
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 4)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:146:3)
+
+  ● monorepo umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `monorepo umd with dep on other module: package-two-umd-with-dep.umd.min.js 1`
+
+    - Snapshot
+    + Received
+
+    - !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,function(e){"use strict";e.createElement("h1",null)});
+    + !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,(function(e){"use strict";e.createElement("h1",null)}));
+      //# sourceMappingURL=package-two-umd-with-dep.umd.min.js.map
+      ↵
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 3)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:147:3)
+
+  ● monorepo umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `monorepo umd with dep on other module: package-two-umd-with-dep.umd.min.js.map 1`
+
+    Snapshot: "{\"version\":3,\"file\":\"package-two-umd-with-dep.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"h1\\\", null);\\n\"],\"names\":[],\"mappings\":\"sNAEc,KAAM\"}"
+    Received: "{\"version\":3,\"file\":\"package-two-umd-with-dep.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"h1\\\", null);\\n\"],\"names\":[],\"mappings\":\"uNAEc,KAAM\"}"
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 4)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:147:3)
+
+  ● monorepo umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `monorepo umd with dep on other module: package-three-umd-with-dep.umd.min.js 1`
+
+    - Snapshot
+    + Received
+
+    - !function(e){"function"==typeof define&&define.amd?define(["@some-scope/package-one-umd-with-dep"],e):e()}(function(){});
+    + !function(e){"function"==typeof define&&define.amd?define(["@some-scope/package-one-umd-with-dep"],e):e()}((function(){}));
+      //# sourceMappingURL=package-three-umd-with-dep.umd.min.js.map
+      ↵
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 3)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:148:3)
+
+  ● monorepo umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `monorepo umd with dep on other module: package-four-umd-with-dep.umd.min.js 1`
+
+    - Snapshot
+    + Received
+
+    - !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,function(e){"use strict";e.createElement("div",null)});
+    + !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("react")):"function"==typeof define&&define.amd?define(["react"],t):t((e=e||self).React)}(this,(function(e){"use strict";e.createElement("div",null)}));
+      //# sourceMappingURL=package-four-umd-with-dep.umd.min.js.map
+      ↵
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 3)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:149:3)
+
+  ● monorepo umd with dep on other module
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `monorepo umd with dep on other module: package-four-umd-with-dep.umd.min.js.map 1`
+
+    Snapshot: "{\"version\":3,\"file\":\"package-four-umd-with-dep.umd.min.js\",\"sources\":[\"../../package-one/src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"div\\\", null);\\n\"],\"names\":[],\"mappings\":\"sNAEc,MAAO\"}"
+    Received: "{\"version\":3,\"file\":\"package-four-umd-with-dep.umd.min.js\",\"sources\":[\"../../package-one/src/index.js\"],\"sourcesContent\":[\"import { createElement } from \\\"react\\\";\\n\\ncreateElement(\\\"div\\\", null);\\n\"],\"names\":[],\"mappings\":\"uNAEc,MAAO\"}"
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 4)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/build.ts:149:3)
+
+ › 9 snapshots failed.
+ › 39 snapshots obsolete.
+   • @babel/runtime installed: babel-runtime-installed.cjs.dev.js 1
+   • @babel/runtime installed: babel-runtime-installed.cjs.js 1
+   • @babel/runtime installed: babel-runtime-installed.cjs.prod.js 1
+   • @babel/runtime installed: babel-runtime-installed.esm.js 1
+   • clears dist folder: already-has-things-in-dist.cjs.dev.js 1
+   • clears dist folder: already-has-things-in-dist.cjs.js 1
+   • clears dist folder: already-has-things-in-dist.cjs.prod.js 1
+   • flow: flow.cjs.dev.js 1
+   • flow: flow.cjs.js 1
+   • flow: flow.cjs.js.flow 1
+   • flow: flow.cjs.prod.js 1
+   • flow: flow.esm.js 1
+   • flow: flow-export-default.cjs.dev.js 1
+   • flow: flow-export-default.cjs.js 1
+   • flow: flow-export-default.cjs.js.flow 1
+   • flow: flow-export-default.cjs.prod.js 1
+   • flow: flow-export-default.esm.js 1
+   • json: json-package.cjs.dev.js 1
+   • json: json-package.cjs.js 1
+   • json: json-package.cjs.prod.js 1
+   • json: json-package.esm.js 1
+   • monorepo single package: package-two-single-package.cjs.dev.js 1
+   • monorepo single package: package-two-single-package.cjs.js 1
+   • monorepo single package: package-two-single-package.cjs.prod.js 1
+   • monorepo single package: package-two-single-package.esm.js 1
+   • monorepo: package-one.cjs.dev.js 1
+   • monorepo: package-one.cjs.js 1
+   • monorepo: package-one.cjs.prod.js 1
+   • monorepo: package-one.esm.js 1
+   • monorepo: package-two.cjs.dev.js 1
+   • monorepo: package-two.cjs.js 1
+   • monorepo: package-two.cjs.prod.js 1
+   • monorepo: package-two.esm.js 1
+   • no module: no-module.cjs.dev.js 1
+   • no module: no-module.cjs.js 1
+   • no module: no-module.cjs.prod.js 1
+   • prod checks: prod-checks.cjs.dev.js 1
+   • prod checks: prod-checks.cjs.js 1
+   • prod checks: prod-checks.cjs.prod.js 1
+FAIL packages/preconstruct/src/build/__tests__/basic.ts
+  ● basic
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `basic: valid-package.umd.min.js 1`
+
+    - Snapshot
+    + Received
+
+    - !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e=e||self).validPackage=t()}(this,function(){"use strict";return"something"});
+    + !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e=e||self).validPackage=t()}(this,(function(){"use strict";return"something"}));
+      //# sourceMappingURL=valid-package.umd.min.js.map
+      ↵
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 4)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/basic.ts:16:3)
+
+  ● basic
+
+    expect(received).toMatchSnapshot(hint)
+
+    Snapshot name: `basic: valid-package.umd.min.js.map 1`
+
+    Snapshot: "{\"version\":3,\"file\":\"valid-package.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"export default \\\"something\\\";\\n\"],\"names\":[],\"mappings\":\"wMAAe\"}"
+    Received: "{\"version\":3,\"file\":\"valid-package.umd.min.js\",\"sources\":[\"../src/index.js\"],\"sourcesContent\":[\"export default \\\"something\\\";\\n\"],\"names\":[],\"mappings\":\"yMAAe\"}"
+
+      151 |       expect(
+      152 |         await fs.readFile(path.join(distPath, x), "utf-8")
+    > 153 |       ).toMatchSnapshot(x);
+          |         ^
+      154 |     })
+      155 |   );
+      156 | }
+
+      at toMatchSnapshot (packages/preconstruct/test-utils/index.ts:153:9)
+          at async Promise.all (index 5)
+      at snapshotDistFiles (packages/preconstruct/test-utils/index.ts:149:3)
+      at Object.<anonymous> (packages/preconstruct/src/build/__tests__/basic.ts:16:3)
+
+ › 2 snapshots failed.
+Snapshot Summary
+ › 11 snapshots failed from 2 test suites. Inspect your code changes or re-run jest with `-u` to update them.
+ › 39 snapshots obsolete from 1 test suite. To remove them all, re-run jest with `-u`.
+   ↳ packages/preconstruct/src/build/__tests__/build.ts
+       • @babel/runtime installed: babel-runtime-installed.cjs.dev.js 1
+       • @babel/runtime installed: babel-runtime-installed.cjs.js 1
+       • @babel/runtime installed: babel-runtime-installed.cjs.prod.js 1
+       • @babel/runtime installed: babel-runtime-installed.esm.js 1
+       • clears dist folder: already-has-things-in-dist.cjs.dev.js 1
+       • clears dist folder: already-has-things-in-dist.cjs.js 1
+       • clears dist folder: already-has-things-in-dist.cjs.prod.js 1
+       • flow: flow.cjs.dev.js 1
+       • flow: flow.cjs.js 1
+       • flow: flow.cjs.js.flow 1
+       • flow: flow.cjs.prod.js 1
+       • flow: flow.esm.js 1
+       • flow: flow-export-default.cjs.dev.js 1
+       • flow: flow-export-default.cjs.js 1
+       • flow: flow-export-default.cjs.js.flow 1
+       • flow: flow-export-default.cjs.prod.js 1
+       • flow: flow-export-default.esm.js 1
+       • json: json-package.cjs.dev.js 1
+       • json: json-package.cjs.js 1
+       • json: json-package.cjs.prod.js 1
+       • json: json-package.esm.js 1
+       • monorepo single package: package-two-single-package.cjs.dev.js 1
+       • monorepo single package: package-two-single-package.cjs.js 1
+       • monorepo single package: package-two-single-package.cjs.prod.js 1
+       • monorepo single package: package-two-single-package.esm.js 1
+       • monorepo: package-one.cjs.dev.js 1
+       • monorepo: package-one.cjs.js 1
+       • monorepo: package-one.cjs.prod.js 1
+       • monorepo: package-one.esm.js 1
+       • monorepo: package-two.cjs.dev.js 1
+       • monorepo: package-two.cjs.js 1
+       • monorepo: package-two.cjs.prod.js 1
+       • monorepo: package-two.esm.js 1
+       • no module: no-module.cjs.dev.js 1
+       • no module: no-module.cjs.js 1
+       • no module: no-module.cjs.prod.js 1
+       • prod checks: prod-checks.cjs.dev.js 1
+       • prod checks: prod-checks.cjs.js 1
+       • prod checks: prod-checks.cjs.prod.js 1
+
+Test Suites: 2 failed, 2 total
+Tests:       3 failed, 10 skipped, 13 total
+Snapshots:   11 failed, 39 obsolete, 24 passed, 35 total
+Time:        15.737s
+Ran all test suites matching /packages\/preconstruct\/src\/build\/__tests__\/basic.ts|packages\/preconstruct\/src\/build\/__tests__\/build.ts/i with tests matching "^(basic|umd with dep on other module|monorepo umd with dep on other module)$".
+Jest did not exit one second after the test run has completed.
+
+This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.

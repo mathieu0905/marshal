@@ -1,0 +1,255 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-5163",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 5163,
+      "change_id": "open-telemetry/opentelemetry-specification#5163",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/5163",
+      "status": "MERGED",
+      "subject": "Specify empty environment propagation name normalization",
+      "branch": "main",
+      "created": "2026-06-18T06:08:15Z",
+      "submitted": "2026-06-22T14:26:33Z"
+    },
+    "base_commit": "9838594395f4a202825fe28a6f0c4dd315072067",
+    "candidate_commit": "038cdd2cbeed47f608b6de33a8827e56623117a6",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/context/env-carriers.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/9838594395f4a202825fe28a6f0c4dd315072067...038cdd2cbeed47f608b6de33a8827e56623117a6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/7424"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/8481"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-js",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/pull/6827"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/5328"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 7424,
+        "change_id": "open-telemetry/opentelemetry-dotnet#7424",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/7424",
+        "status": "MERGED",
+        "subject": "[API] Normalize empty environment variable names",
+        "branch": "main",
+        "created": "2026-06-18T08:16:43Z",
+        "submitted": "2026-06-23T05:17:57Z"
+      },
+      "commit": "dc9906eb0d4536472f54a0638a0226a009525367",
+      "changed_paths": [
+        "src/OpenTelemetry.Api/CHANGELOG.md",
+        "src/OpenTelemetry.Api/Context/Propagation/EnvironmentVariableCarrier.cs",
+        "test/OpenTelemetry.Api.Tests/Context/Propagation/EnvironmentVariableCarrierTests.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/7424",
+          "statement": "按源规范规范化空名称。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 8481,
+        "change_id": "open-telemetry/opentelemetry-java#8481",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/8481",
+        "status": "MERGED",
+        "subject": "EnvironmentGetter and EnvironmentSetter empty name normalization",
+        "branch": "main",
+        "created": "2026-06-18T20:13:20Z",
+        "submitted": "2026-06-25T20:56:43Z"
+      },
+      "commit": "d8b7ed81951abf1c8fc5c5e348cf1340697e9746",
+      "changed_paths": [
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/propagation/EnvironmentGetter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/propagation/EnvironmentSetter.java",
+        "api/incubator/src/test/java/io/opentelemetry/api/incubator/propagation/EnvironmentGetterTest.java",
+        "api/incubator/src/test/java/io/opentelemetry/api/incubator/propagation/EnvironmentSetterTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/8481",
+          "statement": "明确跟随源规范实现空名称规则。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "pull_request": {
+        "provider": "github",
+        "number": 6827,
+        "change_id": "open-telemetry/opentelemetry-js#6827",
+        "url": "https://github.com/open-telemetry/opentelemetry-js/pull/6827",
+        "status": "MERGED",
+        "subject": "feat(propagator-env-carrier): empty name normalization",
+        "branch": "main",
+        "created": "2026-06-18T19:35:08Z",
+        "submitted": "2026-06-18T21:48:34Z"
+      },
+      "commit": "b4711e029f2ed552ad1c337302ed4ecad8c35061",
+      "changed_paths": [
+        "experimental/CHANGELOG.md",
+        "experimental/packages/opentelemetry-propagator-env-carrier/README.md",
+        "experimental/packages/opentelemetry-propagator-env-carrier/src/env-carrier.ts",
+        "experimental/packages/opentelemetry-propagator-env-carrier/test/env-carrier.test.ts"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-js/pull/6827",
+          "statement": "明确跟随源规范实现空名称规则。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 5328,
+        "change_id": "open-telemetry/opentelemetry-python#5328",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/5328",
+        "status": "MERGED",
+        "subject": "opentelemetry-api: normalize empty environment propagation names to \"_\" in EnvironmentSetter and EnvironmentGetter",
+        "branch": "main",
+        "created": "2026-06-18T19:16:40Z",
+        "submitted": "2026-06-19T14:39:00Z"
+      },
+      "commit": "9b6cf462dbf9cebb55cccedc5188a6295d3efd81",
+      "changed_paths": [
+        ".changelog/5328.changed",
+        "opentelemetry-api/src/opentelemetry/propagators/_envcarrier.py",
+        "opentelemetry-api/tests/propagators/test__envcarrier.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/5328",
+          "statement": "明确跟随源规范实现空名称规则。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-js",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-js"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

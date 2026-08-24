@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-5347",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 5347,
+      "change_id": "kubernetes/enhancements#5347",
+      "url": "https://github.com/kubernetes/enhancements/pull/5347",
+      "status": "MERGED",
+      "subject": "KEP-5328: Node Capability Aware Scheduling",
+      "branch": "master",
+      "created": "2025-05-28T00:45:56Z",
+      "submitted": "2025-10-09T07:23:01Z"
+    },
+    "base_commit": "54d8e48c179963dff377f234dc2c9b3e5f133cb3",
+    "candidate_commit": "30e4282197fcfbdaa39714f5f198572884877533",
+    "changed_paths": [
+      "keps/sig-node/5328-node-capabilities/README.md",
+      "keps/sig-node/5328-node-capabilities/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/54d8e48c179963dff377f234dc2c9b3e5f133cb3...30e4282197fcfbdaa39714f5f198572884877533.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/133389"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 133389,
+        "change_id": "kubernetes/kubernetes#133389",
+        "url": "https://github.com/kubernetes/kubernetes/pull/133389",
+        "status": "MERGED",
+        "subject": "Introduce node declared features framework",
+        "branch": "master",
+        "created": "2025-08-05T18:56:44Z",
+        "submitted": "2025-11-06T09:32:54Z"
+      },
+      "commit": "6b949e799317d8f0ae6c8a6f4f01ce0304cc1dc7",
+      "changed_paths": [
+        "api/openapi-spec/swagger.json",
+        "api/openapi-spec/v3/api__v1_openapi.json",
+        "pkg/apis/core/types.go",
+        "pkg/apis/core/v1/zz_generated.conversion.go",
+        "pkg/apis/core/validation/validation.go",
+        "pkg/apis/core/validation/validation_test.go",
+        "pkg/apis/core/zz_generated.deepcopy.go",
+        "pkg/controlplane/apiserver/samples/generic/server/admission_test.go",
+        "pkg/features/kube_features.go",
+        "pkg/generated/openapi/zz_generated.openapi.go",
+        "pkg/kubeapiserver/options/plugins.go",
+        "pkg/kubelet/events/event.go",
+        "pkg/kubelet/kubelet.go",
+        "pkg/kubelet/kubelet_node_declared_features.go",
+        "pkg/kubelet/kubelet_node_declared_features_test.go",
+        "pkg/kubelet/kubelet_node_status.go",
+        "pkg/kubelet/kubelet_node_status_test.go",
+        "pkg/kubelet/kubelet_test.go",
+        "pkg/kubelet/lifecycle/handlers.go",
+        "pkg/kubelet/lifecycle/handlers_test.go",
+        "pkg/registry/core/node/strategy.go",
+        "pkg/registry/core/node/strategy_test.go",
+        "pkg/scheduler/apis/config/v1/default_plugins.go",
+        "pkg/scheduler/apis/config/v1/default_plugins_test.go",
+        "pkg/scheduler/framework/events.go",
+        "pkg/scheduler/framework/events_test.go",
+        "pkg/scheduler/framework/plugins/feature/feature.go",
+        "pkg/scheduler/framework/plugins/names/names.go",
+        "pkg/scheduler/framework/plugins/nodedeclaredfeatures/nodedeclaredfeatures.go",
+        "pkg/scheduler/framework/plugins/nodedeclaredfeatures/nodedeclaredfeatures_test.go",
+        "pkg/scheduler/framework/plugins/registry.go",
+        "pkg/scheduler/framework/types.go",
+        "pkg/scheduler/framework/types_test.go",
+        "pkg/scheduler/scheduler_test.go",
+        "pkg/scheduler/testing/wrappers.go",
+        "plugin/pkg/admission/nodedeclaredfeatures/admission.go",
+        "plugin/pkg/admission/nodedeclaredfeatures/admission_test.go",
+        "staging/publishing/import-restrictions.yaml",
+        "staging/src/k8s.io/api/core/v1/generated.pb.go",
+        "staging/src/k8s.io/api/core/v1/generated.proto",
+        "staging/src/k8s.io/api/core/v1/types.go",
+        "staging/src/k8s.io/api/core/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/api/core/v1/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.Node.json",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.Node.pb",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.Node.yaml",
+        "staging/src/k8s.io/client-go/applyconfigurations/core/v1/nodestatus.go",
+        "staging/src/k8s.io/client-go/applyconfigurations/internal/internal.go",
+        "staging/src/k8s.io/component-helpers/go.mod",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/.mockery.yaml",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/features/inplacepodresize/guaranteed_cpu_resize.go",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/features/inplacepodresize/guaranteed_cpu_resize_test.go",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/features/registry.go",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/framework.go",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/framework_test.go",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/testing/mocks.go",
+        "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/types.go",
+        "staging/src/k8s.io/kube-scheduler/framework/types.go",
+        "staging/src/k8s.io/kube-scheduler/go.mod",
+        "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+        "test/integration/pods/pods_test.go",
+        "test/integration/scheduler/filters/filters_test.go",
+        "test/integration/scheduler/queueing/queue.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/133389",
+          "statement": "目标正文明确声明引入源 KEP 定义的节点声明特性框架。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

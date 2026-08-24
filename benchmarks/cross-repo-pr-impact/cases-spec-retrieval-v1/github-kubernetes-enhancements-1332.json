@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-1332",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 1332,
+      "change_id": "kubernetes/enhancements#1332",
+      "url": "https://github.com/kubernetes/enhancements/pull/1332",
+      "status": "MERGED",
+      "subject": "Enable conformance without beta REST APIs or features",
+      "branch": "master",
+      "created": "2019-10-23T15:11:06Z",
+      "submitted": "2019-10-26T00:35:24Z"
+    },
+    "base_commit": "ac738ac78ec2e425c54354119526bac916baeb7e",
+    "candidate_commit": "b7a541e876e3f59f75c79417ddf38d9d29d5e0b1",
+    "changed_paths": [
+      "keps/sig-architecture/20191023-conformance-without-beta.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/ac738ac78ec2e425c54354119526bac916baeb7e...b7a541e876e3f59f75c79417ddf38d9d29d5e0b1.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/84304"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 84304,
+        "change_id": "kubernetes/kubernetes#84304",
+        "url": "https://github.com/kubernetes/kubernetes/pull/84304",
+        "status": "MERGED",
+        "subject": "Add support for --runtime-config=api/beta=false, --feature-gates=AllBeta=false",
+        "branch": "master",
+        "created": "2019-10-24T17:11:25Z",
+        "submitted": "2019-11-15T00:38:03Z"
+      },
+      "commit": "a5760dee812d280e4de203fccf58214051d0d62a",
+      "changed_paths": [
+        "cmd/kube-apiserver/app/options/options.go",
+        "staging/src/k8s.io/apiserver/pkg/server/options/api_enablement.go",
+        "staging/src/k8s.io/apiserver/pkg/server/resourceconfig/helpers.go",
+        "staging/src/k8s.io/apiserver/pkg/server/resourceconfig/helpers_test.go",
+        "staging/src/k8s.io/apiserver/pkg/server/storage/resource_config.go",
+        "staging/src/k8s.io/component-base/featuregate/feature_gate.go",
+        "staging/src/k8s.io/component-base/featuregate/feature_gate_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/84304",
+          "statement": "目标实现源 KEP 指定的关闭测试版接口和特性能力。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

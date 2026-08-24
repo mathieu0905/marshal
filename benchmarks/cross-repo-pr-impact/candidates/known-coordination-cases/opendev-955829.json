@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-955829",
+  "project": "opendev",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "opendev/system-config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 955829,
+      "change_id": "I1da5aac21fa7cfa9883bb983f84740ab003bc264",
+      "url": "https://review.opendev.org/c/opendev/system-config/+/955829",
+      "status": "MERGED",
+      "subject": "Drop gitea-lb02 from our inventory",
+      "branch": "master",
+      "created": "2025-07-24 20:24:27.000000000",
+      "submitted": "2025-07-25 17:04:22.000000000"
+    },
+    "base_commit": "83000bfe8858cff5b4311ef64dad9588188339d3",
+    "candidate_commit": "7bf3d1fe167b1ddae4b3e0f2247cc51777334aed",
+    "changed_paths": [
+      "inventory/base/hosts.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/955829/revisions/7bf3d1fe167b1ddae4b3e0f2247cc51777334aed/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opendev/system-config",
+      "target_repository": "opendev/zone-opendev.org",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/opendev/zone-opendev.org/+/955830"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "opendev/zone-opendev.org",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 955830,
+        "change_id": "Id6aad299b644d39e4fa061adfba131df73c18f89",
+        "url": "https://review.opendev.org/c/opendev/zone-opendev.org/+/955830",
+        "status": "MERGED",
+        "subject": "Reset opendev.org TTLS and drop gitea-lb02 records",
+        "branch": "master",
+        "created": "2025-07-24 20:25:23.000000000",
+        "submitted": "2025-07-25 17:43:45.000000000"
+      },
+      "commit": "e862b82363ea349e072c285e186d15f4a71e67c8",
+      "changed_paths": [
+        "zones/opendev.org/zone.db"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/opendev/zone-opendev.org/+/955830",
+          "statement": "Depends-On: https://review.opendev.org/c/opendev/system-config/+/955829",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/929f84b88d214ae28b564be10057c867"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opendev/system-config",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/opendev/system-config/src/commit/8e5b2a072ad6f6fd3730147cfe26f4bde8c9d575"
+    },
+    {
+      "repository": "opendev/zone-opendev.org",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/opendev/zone-opendev.org/raw/commit/e862b82363ea349e072c285e186d15f4a71e67c8/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-980",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 980,
+      "change_id": "rust-lang/rfcs#980",
+      "url": "https://github.com/rust-lang/rfcs/pull/980",
+      "status": "MERGED",
+      "subject": "RFC for read_all",
+      "branch": "master",
+      "created": "2015-03-15T19:53:43Z",
+      "submitted": "2015-08-07T16:33:54Z"
+    },
+    "base_commit": "1e457ade4b98336f6d29a437ffc8856343793516",
+    "candidate_commit": "acd01bccc6afc4821f45c8d45ebcb2f047d6ae40",
+    "changed_paths": [
+      "text/0000-read-all.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/1e457ade4b98336f6d29a437ffc8856343793516...acd01bccc6afc4821f45c8d45ebcb2f047d6ae40.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/27588"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 27588,
+        "change_id": "rust-lang/rust#27588",
+        "url": "https://github.com/rust-lang/rust/pull/27588",
+        "status": "MERGED",
+        "subject": "Implement read_exact for the Read trait",
+        "branch": "master",
+        "created": "2015-08-07T22:41:56Z",
+        "submitted": "2015-08-30T07:50:12Z"
+      },
+      "commit": "73e7a7269553f661501d54c1fe8c57aa12b126fa",
+      "changed_paths": [
+        "src/libstd/io/error.rs",
+        "src/libstd/io/impls.rs",
+        "src/libstd/io/mod.rs",
+        "src/libstd/io/stdio.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/27588",
+          "statement": "目标正文明确声明实现源 RFC 的精确读取接口。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

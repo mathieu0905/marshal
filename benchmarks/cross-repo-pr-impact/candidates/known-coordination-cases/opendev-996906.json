@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-996906",
+  "project": "drizzle",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "drizzle/drizzle-test",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 996906,
+      "change_id": "I794fb398d8ec2f53ef2ac9838537d6e4e385796d",
+      "url": "https://review.opendev.org/c/drizzle/drizzle-test/+/996906",
+      "status": "MERGED",
+      "subject": "Make perf job more resilient",
+      "branch": "main",
+      "created": "2026-07-11 23:04:36.000000000",
+      "submitted": "2026-07-12 17:12:02.000000000"
+    },
+    "base_commit": "4f4d9e148960a82fc5fcc278d4eeba00773c6dca",
+    "candidate_commit": "7d72b2cb41093c7327bab32ba4a9ff3cfa0ae6aa",
+    "changed_paths": [
+      "perf/compose.callgrind.yaml",
+      "perf/metrics.py",
+      "perf/tests/test_metrics.py",
+      "playbooks/roles/perf/defaults/main.yaml",
+      "playbooks/roles/perf/tasks/pass.yaml",
+      "sysbench/entrypoint.sh"
+    ],
+    "patch_url": "https://review.opendev.org/changes/996906/revisions/7d72b2cb41093c7327bab32ba4a9ff3cfa0ae6aa/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "drizzle/drizzle-test",
+      "target_repository": "drizzle/drizzle",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/drizzle/drizzle/+/996847"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "drizzle/drizzle",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 996847,
+        "change_id": "If8c4e426156c4a93a39974232f3d99d5172b263f",
+        "url": "https://review.opendev.org/c/drizzle/drizzle/+/996847",
+        "status": "MERGED",
+        "subject": "Start building wiredtiger upstream in a container",
+        "branch": "main",
+        "created": "2026-07-10 19:35:53.000000000",
+        "submitted": "2026-07-12 17:15:12.000000000"
+      },
+      "commit": "a254eba078ceac6cabcca897d679f3b237dbfeaa",
+      "changed_paths": [
+        ".zuul.yaml",
+        "Containerfile",
+        "Justfile",
+        "bindep.txt",
+        "plugin/wiredtiger/PLAN.md",
+        "plugin/wiredtiger/container/Containerfile",
+        "plugin/wiredtiger/tests/r/create_options.result",
+        "plugin/wiredtiger/tests/r/lsm.result",
+        "plugin/wiredtiger/tests/r/transaction.result",
+        "plugin/wiredtiger/tests/r/trx_isolation_read_uncommitted.result",
+        "plugin/wiredtiger/tests/t/create_options.test",
+        "plugin/wiredtiger/tests/t/lsm.test",
+        "plugin/wiredtiger/wiredtiger_drizzle.h",
+        "plugin/wiredtiger/wiredtiger_engine.cc",
+        "plugin/wiredtiger/wt_to_drizzle_error.cc"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/drizzle/drizzle/+/996847",
+          "statement": "Depends-On: https://review.opendev.org/c/drizzle/drizzle-test/+/996906",
+          "ci_url": "https://zuul.opendev.org/t/opendev/buildset/50f518e4815a4f0084131cf0b962f5ab"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "drizzle/drizzle",
+      "spdx": "GPL-2.0-only",
+      "evidence_url": "https://opendev.org/drizzle/drizzle/raw/commit/46e607180e342ad73278258c4a964fc2c9f26f00/COPYING"
+    },
+    {
+      "repository": "drizzle/drizzle-test",
+      "spdx": "GPL-2.0-only",
+      "evidence_url": "https://opendev.org/drizzle/drizzle-test/raw/commit/0347234747c1ec7bf9b5e1a9a8affc60e74b66ef/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

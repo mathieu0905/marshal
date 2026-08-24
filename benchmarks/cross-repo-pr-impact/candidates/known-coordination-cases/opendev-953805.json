@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-953805",
+  "project": "zuul",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "zuul/zuul",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 953805,
+      "change_id": "Ifb002fdd6e0d797fe191b3d031236eff53f80db5",
+      "url": "https://review.opendev.org/c/zuul/zuul/+/953805",
+      "status": "MERGED",
+      "subject": "Add nodeset_requests state gauge",
+      "branch": "master",
+      "created": "2025-06-30 16:22:03.000000000",
+      "submitted": "2025-07-01 18:57:05.000000000"
+    },
+    "base_commit": "f11df375522becfc68ee85d0762e54f7a104b373",
+    "candidate_commit": "5d59245bce623f46130d891a2b630689f235e0a5",
+    "changed_paths": [
+      "zuul/launcher/server.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/953805/revisions/5d59245bce623f46130d891a2b630689f235e0a5/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "zuul/zuul",
+      "target_repository": "openstack/project-config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/project-config/+/953823"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/project-config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 953823,
+        "change_id": "Ic869938c17713382a8d83d8d865e9028fd75e104",
+        "url": "https://review.opendev.org/c/openstack/project-config/+/953823",
+        "status": "MERGED",
+        "subject": "Grafana: update zuul status page for NIZ",
+        "branch": "master",
+        "created": "2025-06-30 18:09:06.000000000",
+        "submitted": "2025-07-01 22:28:59.000000000"
+      },
+      "commit": "074e0c73e8d48ab9a7377ea31eb61ca74e7bcc42",
+      "changed_paths": [
+        "grafana/zuul-status.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/project-config/+/953823",
+          "statement": "Depends-On: https://review.opendev.org/953805",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/d8c52708b50b4adcad3c49a7c26851b3"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/project-config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/project-config/raw/commit/6558ee2add3d439d76edcc044e8f26718c955847/LICENSE"
+    },
+    {
+      "repository": "zuul/zuul",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/zuul/zuul/raw/commit/5d59245bce623f46130d891a2b630689f235e0a5/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

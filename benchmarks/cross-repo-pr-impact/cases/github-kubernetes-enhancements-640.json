@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-640",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 640,
+      "change_id": "kubernetes/enhancements#640",
+      "url": "https://github.com/kubernetes/enhancements/pull/640",
+      "status": "MERGED",
+      "subject": "KEP: Topology-aware service routing",
+      "branch": "master",
+      "created": "2018-12-03T09:13:52Z",
+      "submitted": "2018-12-08T07:12:54Z"
+    },
+    "base_commit": "c7ab5663d31b6e3ce848d3929f33a9d6df2eebd1",
+    "candidate_commit": "141db30163f76de50a9ff0835608f34dc38eb7a5",
+    "changed_paths": [
+      "keps/NEXT_KEP_NUMBER",
+      "keps/sig-network/0033-service-topology.md"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/c7ab5663d31b6e3ce848d3929f33a9d6df2eebd1...141db30163f76de50a9ff0835608f34dc38eb7a5.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/72046"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 72046,
+        "change_id": "kubernetes/kubernetes#72046",
+        "url": "https://github.com/kubernetes/kubernetes/pull/72046",
+        "status": "MERGED",
+        "subject": "Service Topology implementation for Kubernetes",
+        "branch": "master",
+        "created": "2018-12-14T08:01:13Z",
+        "submitted": "2019-11-15T10:57:43Z"
+      },
+      "commit": "31d623b4d74ceadfad101d36a4710d4406fcf144",
+      "changed_paths": [
+        "api/api-rules/violation_exceptions.list",
+        "api/openapi-spec/swagger.json",
+        "cmd/kube-proxy/app/BUILD",
+        "cmd/kube-proxy/app/server.go",
+        "pkg/apis/core/types.go",
+        "pkg/apis/core/v1/zz_generated.conversion.go",
+        "pkg/apis/core/validation/validation.go",
+        "pkg/apis/core/validation/validation_test.go",
+        "pkg/apis/core/zz_generated.deepcopy.go",
+        "pkg/features/kube_features.go",
+        "pkg/kubemark/hollow_proxy.go",
+        "pkg/proxy/BUILD",
+        "pkg/proxy/config/config.go",
+        "pkg/proxy/endpoints.go",
+        "pkg/proxy/endpoints_test.go",
+        "pkg/proxy/endpointslicecache.go",
+        "pkg/proxy/endpointslicecache_test.go",
+        "pkg/proxy/iptables/proxier.go",
+        "pkg/proxy/ipvs/BUILD",
+        "pkg/proxy/ipvs/meta_proxier.go",
+        "pkg/proxy/ipvs/proxier.go",
+        "pkg/proxy/ipvs/proxier_test.go",
+        "pkg/proxy/service.go",
+        "pkg/proxy/topology.go",
+        "pkg/proxy/topology_test.go",
+        "pkg/proxy/types.go",
+        "pkg/proxy/userspace/proxier.go",
+        "pkg/proxy/winkernel/proxier.go",
+        "pkg/proxy/winuserspace/proxier.go",
+        "pkg/registry/core/service/strategy.go",
+        "plugin/pkg/auth/authorizer/rbac/bootstrappolicy/policy.go",
+        "plugin/pkg/auth/authorizer/rbac/bootstrappolicy/testdata/cluster-roles.yaml",
+        "staging/src/k8s.io/api/core/v1/generated.pb.go",
+        "staging/src/k8s.io/api/core/v1/generated.proto",
+        "staging/src/k8s.io/api/core/v1/types.go",
+        "staging/src/k8s.io/api/core/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/api/core/v1/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.Service.json",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.Service.pb",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.Service.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/72046",
+          "statement": "正文把源 KEP 列为功能设计文档并实现服务拓扑。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/kubernetes/enhancements"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/kubernetes/kubernetes"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,329 @@
+<html>
+<head>
+<title>TestNG:  DeserializationConstructorTypeAdapterFactoryTest</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>DeserializationConstructorTypeAdapterFactoryTest</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>13/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Mon Aug 24 18:37:26 CST 2026</td>
+</tr>
+<tr><td>Total time:</td><td>0 seconds (5 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testRenamedFields()'><b>testRenamedFields</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testSerializedNameRequiredOnAllParameters()'><b>testSerializedNameRequiredOnAllParameters</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td><div><pre>java.lang.IllegalArgumentException: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$WithDeserializationConstructorButWithoutSerializedName(int) parameter 0 failed to be named by AnnotationBasedNamingStrategy requiring one of javax.inject.Named
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.getParameterReaders(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:303)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.create(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:143)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testSerializedNameRequiredOnAllParameters(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:104)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace970630650", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace970630650'><pre>java.lang.IllegalArgumentException: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$WithDeserializationConstructorButWithoutSerializedName(int) parameter 0 failed to be named by AnnotationBasedNamingStrategy requiring one of javax.inject.Named
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.getParameterReaders(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:303)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.create(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:143)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testSerializedNameRequiredOnAllParameters(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:104)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testBuilderOnAbstractValueType()'><b>testBuilderOnAbstractValueType</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testNullWhenPrimitive()'><b>testNullWhenPrimitive</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testGenericParamsCopiedIn()'><b>testGenericParamsCopiedIn</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.checkSimpleComposedObject()'><b>checkSimpleComposedObject</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testValidatedConstructor()'><b>testValidatedConstructor</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td><div><pre>java.lang.IllegalArgumentException: absent!
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValidatedConstructor.&lt;init&gt;(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:131)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.newInstance(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:227)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.read(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:207)
+	at com.google.gson.Gson.fromJson(Gson.java:963)
+	at com.google.gson.Gson.fromJson(Gson.java:928)
+	at com.google.gson.Gson.fromJson(Gson.java:877)
+	at com.google.gson.Gson.fromJson(Gson.java:848)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testValidatedConstructor(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:155)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 18 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1217952959", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1217952959'><pre>java.lang.IllegalArgumentException: absent!
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValidatedConstructor.&lt;init&gt;(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:131)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+	at com.google.common.reflect.Invokable$ConstructorInvokable.invokeInternal(Invokable.java:433)
+	at com.google.common.reflect.Invokable.invoke(Invokable.java:261)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.newInstance(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:227)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.read(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:207)
+	at com.google.gson.Gson.fromJson(Gson.java:963)
+	at com.google.gson.Gson.fromJson(Gson.java:928)
+	at com.google.gson.Gson.fromJson(Gson.java:877)
+	at com.google.gson.Gson.fromJson(Gson.java:848)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testValidatedConstructor(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:155)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testRejectsIfNoConstuctorMarked()'><b>testRejectsIfNoConstuctorMarked</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testSerializedNamesMustHaveCorrectCountOfNames()'><b>testSerializedNamesMustHaveCorrectCountOfNames</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td><div><pre>java.lang.IllegalArgumentException: Incorrect count of names on annotation of org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames.static org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames.create(java.util.List,java.util.Map). Class: [org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames]. Annotation config: [foo]. Parameters; [com.google.common.reflect.Parameter,com.google.common.reflect.Parameter]
+	at org.jclouds.json.internal.NamingStrategies$AnnotationConstructorNamingStrategy.translateName(NamingStrategies.java:294)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.getParameterReaders(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:302)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.create(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:143)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testSerializedNamesMustHaveCorrectCountOfNames(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:210)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace477133466", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace477133466'><pre>java.lang.IllegalArgumentException: Incorrect count of names on annotation of org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames.static org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames.create(java.util.List,java.util.Map). Class: [org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ValueTypeWithFactoryMissingSerializedNames]. Annotation config: [foo]. Parameters; [com.google.common.reflect.Parameter,com.google.common.reflect.Parameter]
+	at org.jclouds.json.internal.NamingStrategies$AnnotationConstructorNamingStrategy.translateName(NamingStrategies.java:294)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.getParameterReaders(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:302)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.create(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:143)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testSerializedNamesMustHaveCorrectCountOfNames(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:210)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testPartialObjectStillThrows()'><b>testPartialObjectStillThrows</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td><div><pre>java.lang.NullPointerException
+	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:889)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ComposedObjects.&lt;init&gt;(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:272)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.newInstance(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:227)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.read(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:207)
+	at com.google.gson.TypeAdapter.fromJson(TypeAdapter.java:260)
+	at com.google.gson.TypeAdapter.fromJson(TypeAdapter.java:273)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testPartialObjectStillThrows(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:306)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 18 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace228258664", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace228258664'><pre>java.lang.NullPointerException
+	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:889)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest$ComposedObjects.&lt;init&gt;(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:272)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+	at com.google.common.reflect.Invokable$ConstructorInvokable.invokeInternal(Invokable.java:433)
+	at com.google.common.reflect.Invokable.invoke(Invokable.java:261)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.newInstance(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:227)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory$DeserializeIntoParameterizedConstructor.read(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:207)
+	at com.google.gson.TypeAdapter.fromJson(TypeAdapter.java:260)
+	at com.google.gson.TypeAdapter.fromJson(TypeAdapter.java:273)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testPartialObjectStillThrows(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:306)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testEmptyObjectIsNull()'><b>testEmptyObjectIsNull</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testCanOverrideDefault()'><b>testCanOverrideDefault</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+<tr>
+<td title='org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testNoDuplicateSerializedNamesRequiredOnAllParameters()'><b>testNoDuplicateSerializedNamesRequiredOnAllParameters</b><br>Test class: org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest (DeserializationConstructorTypeAdapterFactoryTest)</td>
+<td><div><pre>java.lang.IllegalArgumentException: Multiple entries with same key: foo=com.google.gson.internal.bind.TypeAdapters$7@528a994 arg1 and foo=com.google.gson.internal.bind.TypeAdapters$7@528a994 arg0
+	at com.google.common.collect.ImmutableMap.conflictException(ImmutableMap.java:377)
+	at com.google.common.collect.ImmutableMap.checkNoConflict(ImmutableMap.java:371)
+	at com.google.common.collect.RegularImmutableMap.checkNoConflictInKeyBucket(RegularImmutableMap.java:241)
+	at com.google.common.collect.RegularImmutableMap.fromEntryArrayCheckingBucketOverflow(RegularImmutableMap.java:132)
+	at com.google.common.collect.RegularImmutableMap.fromEntryArray(RegularImmutableMap.java:94)
+	at com.google.common.collect.ImmutableMap$Builder.build(ImmutableMap.java:573)
+	at com.google.common.collect.ImmutableMap$Builder.buildOrThrow(ImmutableMap.java:601)
+	at com.google.common.collect.ImmutableMap$Builder.build(ImmutableMap.java:588)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.getParameterReaders(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:309)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.create(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:143)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testNoDuplicateSerializedNamesRequiredOnAllParameters(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:121)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+... Removed 12 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1076508501", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1076508501'><pre>java.lang.IllegalArgumentException: Multiple entries with same key: foo=com.google.gson.internal.bind.TypeAdapters$7@528a994 arg1 and foo=com.google.gson.internal.bind.TypeAdapters$7@528a994 arg0
+	at com.google.common.collect.ImmutableMap.conflictException(ImmutableMap.java:377)
+	at com.google.common.collect.ImmutableMap.checkNoConflict(ImmutableMap.java:371)
+	at com.google.common.collect.RegularImmutableMap.checkNoConflictInKeyBucket(RegularImmutableMap.java:241)
+	at com.google.common.collect.RegularImmutableMap.fromEntryArrayCheckingBucketOverflow(RegularImmutableMap.java:132)
+	at com.google.common.collect.RegularImmutableMap.fromEntryArray(RegularImmutableMap.java:94)
+	at com.google.common.collect.ImmutableMap$Builder.build(ImmutableMap.java:573)
+	at com.google.common.collect.ImmutableMap$Builder.buildOrThrow(ImmutableMap.java:601)
+	at com.google.common.collect.ImmutableMap$Builder.build(ImmutableMap.java:588)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.getParameterReaders(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:309)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactory.create(DeserializationConstructorAndReflectiveTypeAdapterFactory.java:143)
+	at org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.testNoDuplicateSerializedNamesRequiredOnAllParameters(DeserializationConstructorAndReflectiveTypeAdapterFactoryTest.java:121)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:673)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:220)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:945)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:193)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre></div></td>
+<td>0</td>
+<td>org.jclouds.json.internal.DeserializationConstructorAndReflectiveTypeAdapterFactoryTest@28cb9120</td></tr>
+</table><p>
+</body>
+</html>

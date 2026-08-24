@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-1001344",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstack-ansible-openstack_hosts",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 1001344,
+      "change_id": "I3b615d88c76c4d7effc5ae3a77d039d1374e9c58",
+      "url": "https://review.opendev.org/c/openstack/openstack-ansible-openstack_hosts/+/1001344",
+      "status": "MERGED",
+      "subject": "Remove Rocky release PQC GPG key",
+      "branch": "master",
+      "created": "2026-08-18 13:56:40.000000000",
+      "submitted": "2026-08-19 20:29:08.000000000"
+    },
+    "base_commit": "138eeda84dd7965aea27d6c14a6541fe25f7716b",
+    "candidate_commit": "42e7f263f962327d773ca20be6d3f675c0569bd3",
+    "changed_paths": [
+      "files/gpg/682AE1A9",
+      "releasenotes/notes/rocky_linux_gpg_key_pqc-ff27e26a238e7346.yaml",
+      "tasks/openstack_hosts_configure_dnf.yml",
+      "vars/redhat.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/1001344/revisions/42e7f263f962327d773ca20be6d3f675c0569bd3/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstack-ansible-openstack_hosts",
+      "target_repository": "openstack/openstack-ansible",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible/+/1001103"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-ansible",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 1001103,
+        "change_id": "I46f5a41665536259be9d4baaf66d6d048ceeb51e",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible/+/1001103",
+        "status": "MERGED",
+        "subject": "Switch ceph release to Umbrella",
+        "branch": "master",
+        "created": "2026-08-17 09:32:24.000000000",
+        "submitted": "2026-08-20 10:26:23.000000000"
+      },
+      "commit": "5d0a17d2aa365baa680405c7f26e8bf971dc0883",
+      "changed_paths": [
+        "inventory/group_vars/all/ceph.yml",
+        "releasenotes/notes/ceph_release_umbrella-bca8eaa6666f29f5.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible/+/1001103",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstack-ansible-openstack_hosts/+/1001344",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/b5aec066323043f882f84ecad663958f"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-ansible",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible/raw/commit/f8552f00f77354653d0d31c982893b8bc58fb128/LICENSE.txt"
+    },
+    {
+      "repository": "openstack/openstack-ansible-openstack_hosts",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-openstack_hosts/raw/commit/42e7f263f962327d773ca20be6d3f675c0569bd3/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

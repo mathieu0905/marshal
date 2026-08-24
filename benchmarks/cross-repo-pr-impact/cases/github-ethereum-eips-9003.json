@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9003",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9003,
+      "change_id": "ethereum/EIPs#9003",
+      "url": "https://github.com/ethereum/EIPs/pull/9003",
+      "status": "MERGED",
+      "subject": "Update EIP-7708: Provide more details and add fee payments",
+      "branch": "master",
+      "created": "2024-10-29T13:25:07Z",
+      "submitted": "2026-01-20T13:05:18Z"
+    },
+    "base_commit": "e6d9cfae0843689c49807fa93b4ea33db119ae79",
+    "candidate_commit": "2d0af4a68c9a7ff52f295f0c895e4145aaaa7c48",
+    "changed_paths": [
+      "EIPS/eip-7708.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/e6d9cfae0843689c49807fa93b4ea33db119ae79...2d0af4a68c9a7ff52f295f0c895e4145aaaa7c48.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/9654"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/33645"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 9654,
+        "change_id": "besu-eth/besu#9654",
+        "url": "https://github.com/besu-eth/besu/pull/9654",
+        "status": "MERGED",
+        "subject": "EIP-7708",
+        "branch": "main",
+        "created": "2026-01-20T10:57:43Z",
+        "submitted": "2026-01-21T07:17:18Z"
+      },
+      "commit": "3529843b3864f60febd7cd09a3ccaa04e22dbcf9",
+      "changed_paths": [
+        "acceptance-tests/tests/src/test/java/org/hyperledger/besu/tests/acceptance/ethereum/AmsterdamAcceptanceTestHelper.java",
+        "acceptance-tests/tests/src/test/java/org/hyperledger/besu/tests/acceptance/ethereum/EIP7708TransferLogAcceptanceTest.java",
+        "acceptance-tests/tests/src/test/resources/dev/dev_amsterdam.json",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetProtocolSpecs.java",
+        "evm/src/main/java/org/hyperledger/besu/evm/MainnetEVMs.java",
+        "evm/src/main/java/org/hyperledger/besu/evm/log/EIP7708TransferLogEmitter.java",
+        "evm/src/main/java/org/hyperledger/besu/evm/log/TransferLogEmitter.java",
+        "evm/src/main/java/org/hyperledger/besu/evm/operation/SelfDestructOperation.java",
+        "evm/src/main/java/org/hyperledger/besu/evm/processor/ContractCreationProcessor.java",
+        "evm/src/main/java/org/hyperledger/besu/evm/processor/MessageCallProcessor.java",
+        "evm/src/test/java/org/hyperledger/besu/evm/log/EIP7708TransferLogEmitterTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/9654",
+          "statement": "正文明确按源 PR 的规范实现 EIP-7708。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 33645,
+        "change_id": "ethereum/go-ethereum#33645",
+        "url": "https://github.com/ethereum/go-ethereum/pull/33645",
+        "status": "MERGED",
+        "subject": "core, core/vm: implement EIP-7708",
+        "branch": "master",
+        "created": "2026-01-19T18:08:57Z",
+        "submitted": "2026-03-23T14:29:54Z"
+      },
+      "commit": "ffbe46464ecf313892a1a707701fcfa2c6a1342a",
+      "changed_paths": [
+        "core/eth_transfer_logs_test.go",
+        "core/evm.go",
+        "core/state/statedb.go",
+        "core/state/statedb_hooked.go",
+        "core/state_transition.go",
+        "core/types/log.go",
+        "core/vm/evm.go",
+        "core/vm/gas_table_test.go",
+        "core/vm/instructions.go",
+        "core/vm/interface.go",
+        "core/vm/interpreter_test.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/33645",
+          "statement": "正文明确按源 PR 实现 EIP-7708。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

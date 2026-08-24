@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-994805",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/stx-puppet",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 994805,
+      "change_id": "I4cc3a73b6c65c37e42750522190827e9ba024f0d",
+      "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/994805",
+      "status": "MERGED",
+      "subject": "Add DPLL pin priority and state enforcement script",
+      "branch": "master",
+      "created": "2026-06-24 18:27:59.000000000",
+      "submitted": "2026-08-06 17:46:49.000000000"
+    },
+    "base_commit": "07cd71da2c8525e0f1f7b6934927d11f305e0117",
+    "candidate_commit": "9ade7ce2d8b9bd5116d2404841a36345d2c14acb",
+    "changed_paths": [
+      "puppet-manifests/debian/trixie/src/modules/platform/files/change_network_card_pin_config.py",
+      "puppet-manifests/debian/trixie/src/modules/platform/manifests/ptpinstance.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/994805/revisions/9ade7ce2d8b9bd5116d2404841a36345d2c14acb/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/stx-puppet",
+      "target_repository": "starlingx/config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/config/+/994806"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 994806,
+        "change_id": "I4f6d2f5b32e9e00c354632c576deddda25d9e47b",
+        "url": "https://review.opendev.org/c/starlingx/config/+/994806",
+        "status": "MERGED",
+        "subject": "Add DPLL pin priority/state parameters",
+        "branch": "master",
+        "created": "2026-06-24 18:34:00.000000000",
+        "submitted": "2026-08-06 17:46:55.000000000"
+      },
+      "commit": "1df50d93ebfdc77c90bb7b93e3c24e47d8f598f8",
+      "changed_paths": [
+        "sysinv/cgts-client/cgts-client/cgtsclient/common/constants.py",
+        "sysinv/cgts-client/cgts-client/cgtsclient/v1/ptp_instance_shell.py",
+        "sysinv/sysinv/sysinv/sysinv/puppet/networking.py",
+        "sysinv/sysinv/sysinv/sysinv/tests/puppet/test_networking.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/config/+/994806",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/stx-puppet/+/994805",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/7dc4ff41f41641c5a9ad260a879997cd"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    },
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet/src/commit/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

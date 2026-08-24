@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-991667",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/neutron-tempest-plugin",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 991667,
+      "change_id": "I808eeb3d2f8171226a99cb9102d5c2600530e18d",
+      "url": "https://review.opendev.org/c/openstack/neutron-tempest-plugin/+/991667",
+      "status": "MERGED",
+      "subject": "[CI][unmaintained] Pin designate tempest plugin",
+      "branch": "master",
+      "created": "2026-06-04 14:28:22.000000000",
+      "submitted": "2026-06-05 09:18:02.000000000"
+    },
+    "base_commit": "67cb69b49c72de84de556dadd21eaea6764d7a4f",
+    "candidate_commit": "349a4fad2cd8f7993ef37dde8bda0dc67ecf3719",
+    "changed_paths": [
+      "zuul.d/2023_1_jobs.yaml",
+      "zuul.d/2024_1_jobs.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/991667/revisions/349a4fad2cd8f7993ef37dde8bda0dc67ecf3719/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/neutron-tempest-plugin",
+      "target_repository": "openstack/neutron",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/neutron/+/991541"
+    },
+    {
+      "source_repository": "openstack/neutron-tempest-plugin",
+      "target_repository": "openstack/neutron",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/neutron/+/991540"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/neutron",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 991541,
+        "change_id": "I9d88f4e6d780c320bacd476bffb9a0ed6f13454b",
+        "url": "https://review.opendev.org/c/openstack/neutron/+/991541",
+        "status": "MERGED",
+        "subject": "[unmaintained only] Drop fullstack fips job",
+        "branch": "unmaintained/2023.1",
+        "created": "2026-06-04 07:39:48.000000000",
+        "submitted": "2026-06-05 10:20:52.000000000"
+      },
+      "commit": "98f01b3f2f7ede2cf5bcf4f0a3e50d2ec2a4e268",
+      "changed_paths": [
+        "zuul.d/base.yaml",
+        "zuul.d/job-templates.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/neutron/+/991541",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/neutron-tempest-plugin/+/991667",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/e039d5d780294e76a8fd3a6eba028049"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/neutron",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 991540,
+        "change_id": "I9d88f4e6d780c320bacd476bffb9a0ed6f13454b",
+        "url": "https://review.opendev.org/c/openstack/neutron/+/991540",
+        "status": "MERGED",
+        "subject": "[unmaintained only] Drop fullstack fips job",
+        "branch": "unmaintained/2024.1",
+        "created": "2026-06-04 07:10:44.000000000",
+        "submitted": "2026-06-05 09:41:30.000000000"
+      },
+      "commit": "87eb45399b457e74c085ddf72250306031127142",
+      "changed_paths": [
+        "zuul.d/base.yaml",
+        "zuul.d/job-templates.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/neutron/+/991540",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/neutron-tempest-plugin/+/991667",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/7d58db65eeac42d990f4739033e5cce7"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/neutron",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/neutron/raw/commit/5b9b84bf7b5c9e601bc17f0f7a7408c3fc439ce0/LICENSE"
+    },
+    {
+      "repository": "openstack/neutron-tempest-plugin",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/neutron-tempest-plugin/raw/commit/349a4fad2cd8f7993ef37dde8bda0dc67ecf3719/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

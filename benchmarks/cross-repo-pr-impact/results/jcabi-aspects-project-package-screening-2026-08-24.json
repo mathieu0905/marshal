@@ -1,0 +1,261 @@
+{
+  "schema_version": "1.0",
+  "assessed_at": "2026-08-24",
+  "package_id": "jcabi-aspects-tv-removal",
+  "status": "formal_repetition_completed_pending_independent_semantic_review",
+  "source_repository": "jcabi/jcabi-aspects",
+  "source_artifact": "com.jcabi:jcabi-aspects",
+  "source_variants": {
+    "a0": {
+      "version": "0.24.1",
+      "git_commit": "4a53c0fae11b80adb3b152e361cebd2193586245",
+      "artifact_url": "https://repo.maven.apache.org/maven2/com/jcabi/jcabi-aspects/0.24.1/jcabi-aspects-0.24.1.jar",
+      "contains_class": "com.jcabi.aspects.Tv"
+    },
+    "a1": {
+      "version": "0.25.1",
+      "git_commit": "613e7005b469ad5e2ba61b69cf3397eee8c24bfb",
+      "artifact_url": "https://repo.maven.apache.org/maven2/com/jcabi/jcabi-aspects/0.25.1/jcabi-aspects-0.25.1.jar",
+      "missing_class": "com.jcabi.aspects.Tv"
+    },
+    "a3": {
+      "before_version": "0.22.2",
+      "before_git_commit": "b3b3809c20259eb32042ba526828bdd00af32ef7",
+      "after_version": "0.22.3",
+      "after_git_commit": "eb12ab237be39c9baefa62becf480780d4d4bb6a",
+      "behavior_commit": "4eb18e3e3ceed355e5ebf2fbaad3dd70bcf1d4f8",
+      "scope": "2016 年真实发布在 2023 年固定消费者快照上的主动反事实，不是历史同期案例",
+      "screening_record": "results/jcabi-a3-screening-2026-08-24/summary.json"
+    }
+  },
+  "environment": {
+    "java": "OpenJDK 11.0.31",
+    "maven": "Apache Maven 3.9.8",
+    "operating_system": "Linux",
+    "dependency_isolation": "冷启动复核为每个干预臂使用独立 Maven 本地仓；另做同一缓存下的 A0、A1、A2 顺序复核并核对直接依赖版本；A3 前后两版还使用独立消费者副本、独立 Maven 本地仓和独立嵌套构建仓"
+  },
+  "a3_screening": {
+    "status": "selected_and_formally_repeated",
+    "source_versions": ["0.22.2", "0.22.3"],
+    "quick_result": "四个候选仓的前后两臂全部通过",
+    "cold_result": "jcabi-maven-plugin 的两个独立冷依赖臂均通过 5 个集成场景；ajc 场景各运行 2 项测试且明确解析对应版本",
+    "evidence": "results/jcabi-a3-screening-2026-08-24/summary.json",
+    "boundary": "完整发布含行为、打包、依赖和内部重构变化；测试执行 MethodValidator 相邻路径但不直接触发 HV000151 分支"
+  },
+  "formal_repetition": {
+    "evidence": "results/jcabi-formal-repetitions-2026-08-24/summary.json",
+    "repetitions": 3,
+    "project_package_runs": 15,
+    "repository_commands": 60,
+    "expected_outcome_matches": 60,
+    "resolved_version_evidence": 60,
+    "retries": 0,
+    "status": "execution_supported_pending_independent_semantic_review"
+  },
+  "included_candidates": [
+    {
+      "repository": "jcabi/jcabi-s3",
+      "label": "positive",
+      "base_commit": "0efa37ae2c431ae148e921dc3c1a9fcb8aa2bd3a",
+      "historical_breaking_commit": "24d4a90ec1b375751e71f33d18949405c9529d77",
+      "historical_source": "https://github.com/chains-project/bump/blob/324d5513aa5ca40b5cb32de5b816a58fa60bd7bb/data/benchmark/24d4a90ec1b375751e71f33d18949405c9529d77.json",
+      "reconstruction_note": "旧 Renovate 分支后来被强推复用，当前远程不再提供历史 breaking commit；A1 由 base_commit 加唯一的 0.24.1 到 0.25.1 POM 变化重建",
+      "maintainer_repair": {
+        "pull_request": "https://github.com/jcabi/jcabi-s3/pull/372",
+        "commit": "f0910c3004636284a43b60196a1a6cafa3e16477",
+        "merged_at": "2024-02-18T04:02:47Z",
+        "extracted_patch": "results/jcabi-s3-tv-removal-target-repair.patch",
+        "note": "真实提交同时更新多个依赖；A2 只抽取两处 Tv 迁移，不带入其他版本和格式变化"
+      },
+      "same_cache_sequence": [
+        {
+          "arm": "a0",
+          "dependency_version": "0.24.1",
+          "command": ["mvn", "clean", "test", "-B"],
+          "exit_code": 0,
+          "duration_seconds": 9,
+          "tests": 12,
+          "failures": 0
+        },
+        {
+          "arm": "a1",
+          "dependency_version": "0.25.1",
+          "command": ["mvn", "clean", "test", "-B"],
+          "exit_code": 1,
+          "duration_seconds": 4,
+          "failure_phase": "testCompile",
+          "failure_symbol": "com.jcabi.aspects.Tv",
+          "failure_locations": [
+            "src/test/java/com/jcabi/s3/AwsOcketITCase.java",
+            "src/test/java/com/jcabi/s3/BucketRule.java"
+          ]
+        },
+        {
+          "arm": "a2",
+          "dependency_version": "0.25.1",
+          "target_patch": "results/jcabi-s3-tv-removal-target-repair.patch",
+          "command": ["mvn", "clean", "test", "-B"],
+          "exit_code": 0,
+          "duration_seconds": 6,
+          "tests": 12,
+          "failures": 0
+        }
+      ],
+      "fresh_dependency_runs": {
+        "a1": {
+          "exit_code": 1,
+          "duration_seconds": 663,
+          "failure_symbol": "com.jcabi.aspects.Tv"
+        },
+        "a2": {
+          "exit_code": 0,
+          "duration_seconds": 503,
+          "tests": 12,
+          "failures": 0
+        }
+      },
+      "scope": "证明相同测试编译命令下，源升级导致 Tv 缺失，维护者适配片段使编译和 12 项单元测试恢复；需要 AWS 凭据的集成行为未执行"
+    },
+    {
+      "repository": "jcabi/jcabi-simpledb",
+      "label": "positive",
+      "base_commit": "4af3ea931691caa0a667852b626485b1b0cbffcf",
+      "breaking_commit": "7d97e1c7331f6722eb1d8192bf0a2686f5a33798",
+      "breaking_pull_request": "https://github.com/jcabi/jcabi-simpledb/pull/155",
+      "maintainer_repair": {
+        "commit": "e532ee69c9f3ac770088e10224bd1cc167ae5cb3",
+        "committed_at": "2023-08-07T16:13:11Z",
+        "extracted_patch": "results/jcabi-simpledb-tv-removal-target-repair.patch",
+        "note": "提交说明直接引用失败的 PR 155，并在该 PR 关闭前 14 秒落库；提交只更新 jcabi-aspects 并移除 RegionITCase 的 Tv 用法"
+      },
+      "same_cache_sequence": [
+        {
+          "arm": "a0",
+          "dependency_version": "0.24.1",
+          "command": ["mvn", "clean", "test", "-B"],
+          "exit_code": 0,
+          "duration_seconds": 11,
+          "tests": 5,
+          "failures": 0
+        },
+        {
+          "arm": "a1",
+          "dependency_version": "0.25.1",
+          "command": ["mvn", "clean", "test", "-B"],
+          "exit_code": 1,
+          "duration_seconds": 7,
+          "failure_phase": "testCompile",
+          "failure_symbol": "com.jcabi.aspects.Tv",
+          "failure_locations": ["src/test/java/com/jcabi/simpledb/RegionITCase.java"]
+        },
+        {
+          "arm": "a2",
+          "dependency_version": "0.25.1",
+          "target_patch": "results/jcabi-simpledb-tv-removal-target-repair.patch",
+          "command": ["mvn", "clean", "test", "-B"],
+          "exit_code": 0,
+          "duration_seconds": 10,
+          "tests": 5,
+          "failures": 0
+        }
+      ],
+      "fresh_dependency_runs": {
+        "a2": {
+          "exit_code": 0,
+          "duration_seconds": 611,
+          "tests": 5,
+          "failures": 0
+        }
+      },
+      "scope": "证明相同测试编译命令下，源升级导致 RegionITCase 的 Tv 引用失败，维护者真实修复片段使编译和 5 项单元测试恢复；需要外部 SimpleDB 的集成行为未执行"
+    },
+    {
+      "repository": "jcabi/jcabi-w3c",
+      "label": "bounded_negative",
+      "pull_request": "https://github.com/jcabi/jcabi-w3c/pull/78",
+      "base_commit": "4054d4ad3c26607ec1bd8221b2bb1faa70ee78b0",
+      "candidate_commit": "01dca81be5ddc1c335e48bbb71519b606102009b",
+      "change_scope": "pom.xml 中 jcabi-aspects 0.24.1 到 0.25.1",
+      "consumption_evidence": "主代码和测试代码直接使用 Immutable 与 RetryOnFailure；两个独立 Maven 本地仓分别取得 0.24.1 和 0.25.1 JAR",
+      "runs": [
+        {
+          "arm": "a0",
+          "exit_code": 0,
+          "duration_seconds": 791,
+          "tests": 9,
+          "failures": 0
+        },
+        {
+          "arm": "a1",
+          "exit_code": 0,
+          "duration_seconds": 708,
+          "tests": 9,
+          "failures": 0
+        }
+      ],
+      "scope": "限定为 clean test 覆盖的主代码、全部测试代码编译和 9 项单元测试；外部 W3C 集成测试只编译未执行"
+    },
+    {
+      "repository": "jcabi/jcabi-maven-plugin",
+      "label": "bounded_negative",
+      "pull_request": "https://github.com/jcabi/jcabi-maven-plugin/pull/147",
+      "base_commit": "c6d7c3d883b5176a0532516af477f77f96884ebb",
+      "candidate_commit": "1256b8e9bfd00359cab180015a2885a05d9dd695",
+      "change_scope": "三个 AspectJ 集成夹具的 jcabi-aspects 版本由 0.24.1 升到 0.25.1",
+      "consumption_evidence": "候选臂 ajc 构建日志明确下载 0.25.1 JAR；夹具执行约束校验切面并断言 ConstraintViolationException",
+      "runs": [
+        {
+          "arm": "a0",
+          "exit_code": 0,
+          "duration_seconds": 1374,
+          "unit_tests": 4,
+          "unit_skipped": 2,
+          "integration_scenarios_passed": 5,
+          "version_sensitive_integration_tests": 6
+        },
+        {
+          "arm": "a1",
+          "exit_code": 0,
+          "duration_seconds": 1220,
+          "unit_tests": 4,
+          "unit_skipped": 2,
+          "integration_scenarios_passed": 5,
+          "version_sensitive_integration_tests": 6
+        }
+      ],
+      "scope": "限定为 clean verify 覆盖的编译、4 项单元检查和 5 个集成场景，其中 3 个版本敏感场景各运行 2 项测试"
+    }
+  ],
+  "reserves_pending_active_replay": [
+    {
+      "repository": "jcabi/jcabi-ssh",
+      "breaking_commit": "54abbbde6a1233e1523a9b5f811ea100efb5dead",
+      "historical_result": "BUMP compilation failure",
+      "maintainer_repair_commit": "efdb3b600e78101fa89b34149dfb5e285c932f4c"
+    },
+    {
+      "repository": "jcabi/jcabi-github",
+      "breaking_commit": "9717e34bcda74bd9ad94f6a52ddfd3fd179ea15b",
+      "historical_result": "BUMP compilation failure"
+    }
+  ],
+  "excluded_candidates": [
+    {
+      "repository": "jcabi/jcabi-parent",
+      "reason": "仓库只在 dependencyManagement 中声明版本，没有消费代码；mvn clean test 虽退出 0，但测试数为 0，不能形成限定负例",
+      "screening_run": {
+        "base_exit_code": 0,
+        "base_duration_seconds": 259,
+        "base_tests": 0,
+        "candidate_run_completed": false,
+        "candidate_termination_reason": "确认无相关执行覆盖后主动停止"
+      }
+    }
+  ],
+  "label_scope": "A1/A2 标签只对固定的 Tv 移除变化、固定仓库提交和已执行命令成立；A3 只支持这四个固定消费者在已执行范围内无需修改的主动反事实结论；未执行仓库保持未知",
+  "missing_requirements": [
+    "两个维护者修复抽取片段的独立语义复核",
+    "需要外部服务凭据的集成行为覆盖",
+    "决定是否把 jcabi-ssh 或 jcabi-github 从储备纳入正式候选闭集"
+  ]
+}

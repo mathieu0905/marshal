@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "completed_at": "2026-08-24T03:06:18+08:00",
+  "package_id": "jcabi-aspects-tv-removal",
+  "experiment_tier": "main_development_project_package",
+  "status": "execution_supported_pending_independent_semantic_review",
+  "research_question": "在四个固定消费者提交和固定原生命令上，真实破坏性发布、维护者修复及独立兼容发布是否在三个隔离重复中保持预期方向",
+  "contract": "RUN_CONTRACT.md",
+  "source_repository": "jcabi/jcabi-aspects",
+  "repetitions": 3,
+  "configurations_per_repetition": 5,
+  "project_package_runs": 15,
+  "repository_commands": 60,
+  "expected_outcome_matches": 60,
+  "expected_outcome_agreement": 1.0,
+  "resolved_version_evidence": 60,
+  "retries": 0,
+  "repository_command_seconds": 1968,
+  "wall_clock": {
+    "started_at": "2026-08-24T02:31:59+08:00",
+    "finished_at": "2026-08-24T03:06:18+08:00"
+  },
+  "environment": {
+    "java": "OpenJDK 11.0.31",
+    "maven": "Apache Maven 3.9.8",
+    "operating_system": "Linux 6.8.0-137-generic x86_64",
+    "consumer_isolation": "每个配置、重复和仓库使用新的 Git 副本并检出固定提交",
+    "dependency_isolation": "每个配置与重复组合使用独立可写 Maven 本地仓；目录从同一只读种子复制，筛选阶段另有空目录远程下载复核",
+    "fixed_repository_order": [
+      "jcabi-s3",
+      "jcabi-simpledb",
+      "jcabi-w3c",
+      "jcabi-maven-plugin"
+    ]
+  },
+  "configurations": {
+    "a0": {
+      "source_version": "0.24.1",
+      "repository_commands": 12,
+      "passed": 12,
+      "failed": 0,
+      "tests_reported_per_repetition": {
+        "jcabi-s3": 12,
+        "jcabi-simpledb": 5,
+        "jcabi-w3c": 9,
+        "jcabi-maven-plugin": 10
+      },
+      "plugin_skipped_tests_per_repetition": 2,
+      "plugin_integration_scenarios_passed_per_repetition": 5
+    },
+    "a1": {
+      "source_version": "0.25.1",
+      "repository_commands": 12,
+      "expected_target_failures": 6,
+      "expected_bounded_negative_passes": 6,
+      "unexpected_outcomes": 0,
+      "target_failure_signatures": {
+        "jcabi-s3": "testCompile 找不到 com.jcabi.aspects.Tv；位置为 AwsOcketITCase.java 和 BucketRule.java",
+        "jcabi-simpledb": "testCompile 找不到 com.jcabi.aspects.Tv；位置为 RegionITCase.java"
+      },
+      "bounded_negative_tests_reported_per_repetition": {
+        "jcabi-w3c": 9,
+        "jcabi-maven-plugin": 10
+      },
+      "plugin_skipped_tests_per_repetition": 2,
+      "plugin_integration_scenarios_passed_per_repetition": 5
+    },
+    "a2": {
+      "source_version": "0.25.1",
+      "target_repairs": [
+        "../jcabi-s3-tv-removal-target-repair.patch",
+        "../jcabi-simpledb-tv-removal-target-repair.patch"
+      ],
+      "repository_commands": 12,
+      "passed": 12,
+      "failed": 0,
+      "tests_reported_per_repetition": {
+        "jcabi-s3": 12,
+        "jcabi-simpledb": 5,
+        "jcabi-w3c": 9,
+        "jcabi-maven-plugin": 10
+      },
+      "plugin_skipped_tests_per_repetition": 2,
+      "plugin_integration_scenarios_passed_per_repetition": 5
+    },
+    "a3_before": {
+      "source_version": "0.22.2",
+      "repository_commands": 12,
+      "passed": 12,
+      "failed": 0,
+      "tests_reported_per_repetition": {
+        "jcabi-s3": 12,
+        "jcabi-simpledb": 5,
+        "jcabi-w3c": 9,
+        "jcabi-maven-plugin": 10
+      },
+      "plugin_skipped_tests_per_repetition": 2,
+      "plugin_integration_scenarios_passed_per_repetition": 5
+    },
+    "a3_after": {
+      "source_version": "0.22.3",
+      "repository_commands": 12,
+      "passed": 12,
+      "failed": 0,
+      "tests_reported_per_repetition": {
+        "jcabi-s3": 12,
+        "jcabi-simpledb": 5,
+        "jcabi-w3c": 9,
+        "jcabi-maven-plugin": 10
+      },
+      "plugin_skipped_tests_per_repetition": 2,
+      "plugin_integration_scenarios_passed_per_repetition": 5
+    }
+  },
+  "run_directories": [
+    "repeat-1",
+    "repeat-2",
+    "repeat-3"
+  ],
+  "claim_update": {
+    "supported": [
+      "0.24.1 到 0.25.1 在固定范围内稳定破坏 jcabi-s3 与 jcabi-simpledb",
+      "两个维护者修复片段在固定范围内稳定消除对应失败",
+      "jcabi-w3c 与 jcabi-maven-plugin 在 0.25.1 下的已执行范围内稳定无需修改",
+      "0.22.2 与 0.22.3 的四仓固定任务均稳定通过，可作为后续消费者上的主动兼容反事实"
+    ],
+    "not_yet_supported": [
+      "独立复核者尚未确认两个修复片段的语义完备性和 A3 完整发布的兼容性质",
+      "外部 AWS、SimpleDB 和 W3C 服务行为未执行",
+      "现有 A3 测试没有直接触发 HV000151 分支",
+      "一个项目包不能支持跨项目的精度、误报率、停止能力或 Marshal 产品优劣结论"
+    ]
+  },
+  "evaluation_summary": {
+    "outcome": "三次隔离重复的全部 60 个仓库命令均符合预先规定的方向，且每项都找到指定版本发布物",
+    "metrics": "预期方向一致率 1.0；版本解析证据覆盖率 1.0；6 次目标破坏均为相同 Tv 缺失签名；无重试",
+    "claim_update": "执行层证据已从单次筛选提升为稳定四臂项目包证据，但标签接受仍等待独立语义复核",
+    "baseline_relation": "A0 是破坏性变化的 0.24.1 基线；A3 另以 0.22.2 为前臂，二者没有混用",
+    "failure_mode": "没有实验基础设施失败；A1 的六次非零退出均是设计内的目标测试编译失败",
+    "next_action": "独立复核两个维护者修复片段和 A3 完整发布边界，同时筛选不同语言或契约类型的第二个主动项目包"
+  }
+}

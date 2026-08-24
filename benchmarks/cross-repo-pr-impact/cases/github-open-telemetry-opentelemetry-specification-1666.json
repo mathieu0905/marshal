@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-1666",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 1666,
+      "change_id": "open-telemetry/opentelemetry-specification#1666",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/1666",
+      "status": "MERGED",
+      "subject": "Introduce Schema URL in Tracer and Meter API and SDK",
+      "branch": "main",
+      "created": "2021-04-30T20:44:15Z",
+      "submitted": "2021-05-18T13:57:49Z"
+    },
+    "base_commit": "2a712f7626cb62b21ae210ef3175612e7744f285",
+    "candidate_commit": "0fad19615be379bdf7ef42b23dea4545a42bc9be",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/metrics/api.md",
+      "specification/metrics/new_api.md",
+      "specification/trace/api.md",
+      "specification/trace/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/2a712f7626cb62b21ae210ef3175612e7744f285...0fad19615be379bdf7ef42b23dea4545a42bc9be.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/6736"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-go",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go/pull/1889"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 6736,
+        "change_id": "open-telemetry/opentelemetry-dotnet#6736",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/6736",
+        "status": "MERGED",
+        "subject": "[Api] GetTracer supports schema URL",
+        "branch": "main",
+        "created": "2025-12-01T09:28:55Z",
+        "submitted": "2025-12-01T21:08:36Z"
+      },
+      "commit": "294e65e345b6f91dffaf724f67a570552bd300cd",
+      "changed_paths": [
+        "src/OpenTelemetry.Api/.publicApi/Stable/PublicAPI.Unshipped.txt",
+        "src/OpenTelemetry.Api/CHANGELOG.md",
+        "src/OpenTelemetry.Api/Trace/TracerProvider.cs",
+        "test/OpenTelemetry.Api.Tests/Trace/TracerTests.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/6736",
+          "statement": "明确为满足源规范增加公开 API 参数。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "pull_request": {
+        "provider": "github",
+        "number": 1889,
+        "change_id": "open-telemetry/opentelemetry-go#1889",
+        "url": "https://github.com/open-telemetry/opentelemetry-go/pull/1889",
+        "status": "MERGED",
+        "subject": "Add schema URL support to Tracer",
+        "branch": "main",
+        "created": "2021-05-07T15:43:14Z",
+        "submitted": "2021-05-27T19:22:38Z"
+      },
+      "commit": "faa7c69c8716bfac537481f445845756bebeca83",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "exporters/otlp/internal/transform/span.go",
+        "exporters/otlp/internal/transform/span_test.go",
+        "exporters/stdout/example_test.go",
+        "exporters/stdout/trace_test.go",
+        "sdk/instrumentation/library.go",
+        "sdk/trace/provider.go",
+        "sdk/trace/provider_test.go",
+        "sdk/trace/trace_test.go",
+        "trace/config.go",
+        "trace/config_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-go/pull/1889",
+          "statement": "明确按源规范增加 Tracer Schema URL。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-go",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-go"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

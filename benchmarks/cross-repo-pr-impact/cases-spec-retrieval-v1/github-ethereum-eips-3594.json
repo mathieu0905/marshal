@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-3594",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3594,
+      "change_id": "ethereum/EIPs#3594",
+      "url": "https://github.com/ethereum/EIPs/pull/3594",
+      "status": "MERGED",
+      "subject": "eip-1559: add more constraints to the tx validation",
+      "branch": "master",
+      "created": "2021-05-28T14:49:16Z",
+      "submitted": "2021-05-28T15:47:19Z"
+    },
+    "base_commit": "a697e669ec4e88e1ec198101cebb5f0014c808ed",
+    "candidate_commit": "5708916d67e833b4d3fd3ab67ed4349924d2bd50",
+    "changed_paths": [
+      "EIPS/eip-1559.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/a697e669ec4e88e1ec198101cebb5f0014c808ed...5708916d67e833b4d3fd3ab67ed4349924d2bd50.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/22970"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 22970,
+        "change_id": "ethereum/go-ethereum#22970",
+        "url": "https://github.com/ethereum/go-ethereum/pull/22970",
+        "status": "MERGED",
+        "subject": "core: add new eip-1559 tx constraints",
+        "branch": "master",
+        "created": "2021-05-30T01:57:22Z",
+        "submitted": "2021-05-30T17:37:52Z"
+      },
+      "commit": "8b2b3fb9f187003ea2260f641301bec0776c550a",
+      "changed_paths": [
+        "core/error.go",
+        "core/state_processor_test.go",
+        "core/state_transition.go",
+        "core/tx_pool.go",
+        "core/tx_pool_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/22970",
+          "statement": "目标正文明确说明加入源规范新增的交易约束。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-5380",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 5380,
+      "change_id": "kubernetes/enhancements#5380",
+      "url": "https://github.com/kubernetes/enhancements/pull/5380",
+      "status": "MERGED",
+      "subject": "Graduate 4802 from alpha to beta",
+      "branch": "master",
+      "created": "2025-06-05T22:44:06Z",
+      "submitted": "2025-06-18T20:32:52Z"
+    },
+    "base_commit": "c0886bbc0d5dafc151a6a3952084c57d2e27a6f5",
+    "candidate_commit": "6107202d6c737595bbdbad8b493548ff7259733d",
+    "changed_paths": [
+      "keps/prod-readiness/sig-windows/4802.yaml",
+      "keps/sig-windows/4802-windows-node-shutdown/README.md",
+      "keps/sig-windows/4802-windows-node-shutdown/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/c0886bbc0d5dafc151a6a3952084c57d2e27a6f5...6107202d6c737595bbdbad8b493548ff7259733d.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/133062"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 133062,
+        "change_id": "kubernetes/kubernetes#133062",
+        "url": "https://github.com/kubernetes/kubernetes/pull/133062",
+        "status": "MERGED",
+        "subject": "Promote windows graceful shutdown to Beta",
+        "branch": "master",
+        "created": "2025-07-18T16:33:16Z",
+        "submitted": "2025-07-25T00:59:14Z"
+      },
+      "commit": "e9492239b24341ced29bc0bed66c17856833c33e",
+      "changed_paths": [
+        "pkg/features/kube_features.go",
+        "test/compatibility_lifecycle/reference/versioned_feature_list.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/133062",
+          "statement": "目标按源 KEP 将 Windows 节点优雅关机提升到测试阶段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

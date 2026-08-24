@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-978291",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/root",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 978291,
+      "change_id": "I6253d2bb909051dff353fed1a2e2323ff2fb0679",
+      "url": "https://review.opendev.org/c/starlingx/root/+/978291",
+      "status": "MERGED",
+      "subject": "Add metapackages repo to .gitignore",
+      "branch": "master",
+      "created": "2026-02-28 00:49:48.000000000",
+      "submitted": "2026-04-10 20:37:10.000000000"
+    },
+    "base_commit": "1e9f0cac4e939f47da8a5fe59aaba2fe2200d819",
+    "candidate_commit": "4f140b986ffe8613c169f09e2881477bef7ba649",
+    "changed_paths": [
+      "stx/.gitignore"
+    ],
+    "patch_url": "https://review.opendev.org/changes/978291/revisions/4f140b986ffe8613c169f09e2881477bef7ba649/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/root",
+      "target_repository": "starlingx/manifest",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/manifest/+/978245"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/manifest",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 978245,
+        "change_id": "I35eeb21ebb43cde748684da265a79d8a53707aa5",
+        "url": "https://review.opendev.org/c/starlingx/manifest/+/978245",
+        "status": "MERGED",
+        "subject": "Add metapackages repo",
+        "branch": "master",
+        "created": "2026-02-27 17:59:24.000000000",
+        "submitted": "2026-04-10 21:37:20.000000000"
+      },
+      "commit": "5856bc265de98a283da75486b408788b4b32af6f",
+      "changed_paths": [
+        "default.xml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/manifest/+/978245",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/root/+/978291",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/23e8a13fd3f04bf29d8e01b2c478b4b7"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/manifest",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/manifest/src/commit/5856bc265de98a283da75486b408788b4b32af6f"
+    },
+    {
+      "repository": "starlingx/root",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/root/raw/commit/19e373ccc0aef251009c8a6e1077f05001a3e6fd/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

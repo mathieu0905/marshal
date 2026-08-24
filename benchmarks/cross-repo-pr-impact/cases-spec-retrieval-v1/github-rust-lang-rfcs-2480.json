@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-2480",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2480,
+      "change_id": "rust-lang/rfcs#2480",
+      "url": "https://github.com/rust-lang/rfcs/pull/2480",
+      "status": "MERGED",
+      "subject": "RFC: Stabilize the alloc crate",
+      "branch": "master",
+      "created": "2018-06-19T16:48:50Z",
+      "submitted": "2019-04-03T18:14:31Z"
+    },
+    "base_commit": "74d4623c0c75b974e796cd1e111c80354c1c5d55",
+    "candidate_commit": "be2819359cf6049460c0e79b9c95c77dfc77ac9c",
+    "changed_paths": [
+      "text/0000-liballoc.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/74d4623c0c75b974e796cd1e111c80354c1c5d55...be2819359cf6049460c0e79b9c95c77dfc77ac9c.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/52159"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 52159,
+        "change_id": "rust-lang/rust#52159",
+        "url": "https://github.com/rust-lang/rust/pull/52159",
+        "status": "MERGED",
+        "subject": "Add the `alloc::prelude` module",
+        "branch": "master",
+        "created": "2018-07-08T19:18:23Z",
+        "submitted": "2018-07-09T16:41:39Z"
+      },
+      "commit": "5b795cf57e42aa31da7cb175d8ff27633085b5d7",
+      "changed_paths": [
+        "src/liballoc/lib.rs",
+        "src/liballoc/prelude.rs",
+        "src/libstd/prelude/v1.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/52159",
+          "statement": "目标新增的分配库预导入模块与源 RFC 的稳定化方案共同发布。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

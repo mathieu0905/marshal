@@ -1,0 +1,113 @@
+{
+  "measured_at": "2026-08-23T22:23:00+08:00",
+  "track": "versioned_ecosystem_breakage",
+  "status": "causal_recovery_confirmed_from_single_fix_commit",
+  "parent_question": "Can the exact one-commit repair from a stale downstream pull-request branch recover the Crater-executed package without importing unrelated branch differences?",
+  "source_change": {
+    "repository": "rust-lang/rust",
+    "pull_request": 156776,
+    "url": "https://github.com/rust-lang/rust/pull/156776",
+    "title": "Minor unsoundness fix with FnDef lifetimes",
+    "baseline_toolchain_commit": "b52edc25bfbaa955b4b83c10f998e5224c3478b2",
+    "target_toolchain_commit": "e622d8d7bed4f2668d446e06c6c1436ecae15796"
+  },
+  "original_crater_experiment": {
+    "report": "https://crater-reports.s3.amazonaws.com/pr-156776/index.html",
+    "config": "https://crater-reports.s3.amazonaws.com/pr-156776/config.json",
+    "completed_at": "2026-06-09T13:47:47.000050556Z",
+    "mode": "check-only",
+    "cap_lints": "forbid",
+    "subject": "id3-1.16.4",
+    "baseline_result": "test-pass",
+    "baseline_log": "https://crater-reports.s3.amazonaws.com/pr-156776/master%23b52edc25bfbaa955b4b83c10f998e5224c3478b2/reg/id3-1.16.4/log.txt",
+    "target_result": "build-fail:compiler-error(E0521)",
+    "target_log": "https://crater-reports.s3.amazonaws.com/pr-156776/try%23e622d8d7bed4f2668d446e06c6c1436ecae15796/reg/id3-1.16.4/log.txt",
+    "command": "cargo check --frozen --all --all-targets --message-format=json",
+    "lockfile_source": "the Cargo.lock shipped inside id3-1.16.4; the original Crater log confirms it was not regenerated"
+  },
+  "downstream_fix": {
+    "repository": "polyfloyd/rust-id3",
+    "pull_request": 162,
+    "url": "https://codeberg.org/polyfloyd/rust-id3/pulls/162",
+    "state_at_replay": "open",
+    "created_at": "2026-06-10T17:33:10+02:00",
+    "head_parent_commit": "2326e0b80768d4ec2f50f26cb71424675b69ede4",
+    "head_commit": "78efdd34bb59df7cfa84ca9da91de6324046d2a0",
+    "current_base_commit_at_replay": "690dfb7ba524e764d5d163376e1527d9aa4998e9",
+    "commit_changed_files": [
+      "src/tcon.rs"
+    ],
+    "commit_change_summary": "Add a lifetime parameter and bound to ParseFunc; one insertion and one deletion in one file.",
+    "branch_state_warning": "The pull-request head was based on an older 1.17.0-era parent while the current base had advanced to 1.17.1. Comparing the current base to the head showed unrelated workflow, changelog, version and source reversions. The replay therefore used the single fix commit relative to its own parent, not the current aggregate pull-request diff.",
+    "published_source_alignment": "The affected type alias and surrounding logic in id3-1.16.4 matched the fix commit parent. A later formatting-only difference existed near the end of src/tcon.rs, outside the fix hunk."
+  },
+  "local_replay": {
+    "host": "Linux 6.8.0-137-generic x86_64",
+    "cargo": "cargo 1.98.0-nightly (4d1f98451 2026-05-15)",
+    "baseline_rustc": "rustc 1.98.0-nightly (b52edc25b 2026-05-22)",
+    "target_rustc": "rustc 1.98.0-nightly (e622d8d7b 2026-05-22)",
+    "subject": "the published id3-1.16.4 source",
+    "intervention": "apply only the one-hunk src/tcon.rs diff from the fix commit relative to its parent",
+    "shared_conditions": {
+      "command": "cargo check --frozen --all --all-targets --message-format=json",
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "RUST_BACKTRACE": "full",
+        "RUSTFLAGS": "--cap-lints=forbid",
+        "RUSTDOCFLAGS": "--cap-lints=forbid"
+      },
+      "lockfile": "the unchanged lockfile shipped with the published package",
+      "lockfile_package_count": 58,
+      "fresh_target_directory_per_repetition": true,
+      "repetitions_per_arm": 3
+    },
+    "arms": [
+      {
+        "name": "baseline_compiler_with_published_source",
+        "toolchain_commit": "b52edc25bfbaa955b4b83c10f998e5224c3478b2",
+        "source_variant": "published",
+        "exit_codes": [0, 0, 0],
+        "result": "pass"
+      },
+      {
+        "name": "target_compiler_with_published_source",
+        "toolchain_commit": "e622d8d7bed4f2668d446e06c6c1436ecae15796",
+        "source_variant": "published",
+        "exit_codes": [101, 101, 101],
+        "result": "fail",
+        "failure_code": "E0521",
+        "failure_signature": "borrowed data escapes because ParseFunc implicitly requires the parser lifetime to outlive static",
+        "matching_original_crater_signature": true
+      },
+      {
+        "name": "target_compiler_with_single_fix_commit",
+        "toolchain_commit": "e622d8d7bed4f2668d446e06c6c1436ecae15796",
+        "source_variant": "published_plus_exact_fix_hunk",
+        "exit_codes": [0, 0, 0],
+        "result": "pass"
+      }
+    ],
+    "operational_note": "The first toolchain installation request ended during a TLS handshake. A second request succeeded before any replay arm was launched."
+  },
+  "comparability": {
+    "verdict": "The valid arms retain the executed package, packaged lockfile, compiler commits and command, while changing only the compiler and then the exact one-line repair. They confirm causal recovery for id3-1.16.4. The stale pull-request branch must not be treated as the repair diff.",
+    "fixed": [
+      "published id3-1.16.4 source",
+      "the package's original 58-package lockfile",
+      "original baseline and target compiler commits",
+      "check command and lint flags",
+      "fresh build target for every repetition"
+    ],
+    "changed": [
+      "compiler commit between the first and second arms",
+      "only the one-line ParseFunc lifetime repair between the second and third arms"
+    ],
+    "limitations": [
+      "The replay ran on the host rather than inside the original Crater container digest.",
+      "The downstream pull request was open and its branch was stale; repair efficacy is established for the isolated commit, not for the current aggregate pull-request diff or maintainer acceptance.",
+      "The result establishes breakage and repair for id3-1.16.4, not for every affected id3 release or the repository default branch."
+    ]
+  },
+  "claim_update": "Three Crater repair links now survive controlled replay. Commit-relative review is necessary because a moving target branch can make a valid one-line repair appear as a multi-file reversal.",
+  "next_action": "Use a dependent crate as the execution subject for the remaining bevy_channel_trigger lead, because the root package itself failed in both archived arms for unrelated dependencies."
+}

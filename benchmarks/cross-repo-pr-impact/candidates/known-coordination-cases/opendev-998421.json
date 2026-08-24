@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-998421",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/neutron",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 998421,
+      "change_id": "Ie183f7e0ca8ebd8118469555f27ebc6d52c43836",
+      "url": "https://review.opendev.org/c/openstack/neutron/+/998421",
+      "status": "MERGED",
+      "subject": "ml2: Add retry decorator to network segment range functional tests",
+      "branch": "master",
+      "created": "2026-07-23 08:59:12.000000000",
+      "submitted": "2026-07-30 16:21:20.000000000"
+    },
+    "base_commit": "f004042141a366a0e5646065f86862052dfd8f84",
+    "candidate_commit": "7c0ac337b4430dbef810184830df550c05620025",
+    "changed_paths": [
+      "neutron/tests/functional/plugins/ml2/drivers/test_type_tunnel.py",
+      "neutron/tests/functional/plugins/ml2/drivers/test_type_vlan.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/998421/revisions/7c0ac337b4430dbef810184830df550c05620025/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/neutron",
+      "target_repository": "openstack/neutron-lib",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/neutron-lib/+/996435"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/neutron-lib",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 996435,
+        "change_id": "Ic8ebe7a0de21acefc2d38b6cba5b260f619f10f8",
+        "url": "https://review.opendev.org/c/openstack/neutron-lib/+/996435",
+        "status": "MERGED",
+        "subject": "Revert \"Set confirm_deleted_rows=False to StandardAttribute obj\"",
+        "branch": "master",
+        "created": "2026-07-08 10:08:48.000000000",
+        "submitted": "2026-07-31 11:11:26.000000000"
+      },
+      "commit": "b45adc9c943b90485f0326549034c9ab5bf9f9cd",
+      "changed_paths": [
+        "neutron_lib/db/standard_attr.py"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/neutron-lib/+/996435",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/neutron/+/998421",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/72370a8f10c84bfa9bbbd45ce998b6f1"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/neutron",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/neutron/raw/commit/5b9b84bf7b5c9e601bc17f0f7a7408c3fc439ce0/LICENSE"
+    },
+    {
+      "repository": "openstack/neutron-lib",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/neutron-lib/raw/commit/283fa85e189dd22c5839a5b7c38f4cb313333374/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

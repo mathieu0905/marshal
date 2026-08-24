@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-opencontainers-image-spec-788",
+  "project": "opencontainers-image",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "opencontainers/image-spec",
+    "pull_request": {
+      "provider": "github",
+      "number": 788,
+      "change_id": "opencontainers/image-spec#788",
+      "url": "https://github.com/opencontainers/image-spec/pull/788",
+      "status": "MERGED",
+      "subject": "media-types: Define layer media types suffix '+zstd'",
+      "branch": "master",
+      "created": "2019-08-21T11:52:43Z",
+      "submitted": "2019-08-21T14:41:23Z"
+    },
+    "base_commit": "da296dcb1e473a9b4e2d148941d7faa9ac8fea3f",
+    "candidate_commit": "05eb49e2661aafd29e7ef75d07794cc1b7a080ae",
+    "changed_paths": [
+      "layer.md",
+      "media-types.md"
+    ],
+    "patch_url": "https://github.com/opencontainers/image-spec/compare/da296dcb1e473a9b4e2d148941d7faa9ac8fea3f...05eb49e2661aafd29e7ef75d07794cc1b7a080ae.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opencontainers/image-spec",
+      "target_repository": "containerd/containerd",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/containerd/containerd/pull/4809"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "containerd/containerd",
+      "pull_request": {
+        "provider": "github",
+        "number": 4809,
+        "change_id": "containerd/containerd#4809",
+        "url": "https://github.com/containerd/containerd/pull/4809",
+        "status": "MERGED",
+        "subject": "compression: add support for the zstd algorithm",
+        "branch": "master",
+        "created": "2020-12-04T21:54:49Z",
+        "submitted": "2020-12-07T17:43:33Z"
+      },
+      "commit": "30802fac7303648863b7f18b7d6ab4f5336390ec",
+      "changed_paths": [
+        "archive/compression/compression.go",
+        "go.mod",
+        "go.sum",
+        "images/mediatypes.go",
+        "vendor/github.com/klauspost/compress/LICENSE",
+        "vendor/github.com/klauspost/compress/fse/README.md",
+        "vendor/github.com/klauspost/compress/fse/bitreader.go",
+        "vendor/github.com/klauspost/compress/fse/bitwriter.go",
+        "vendor/github.com/klauspost/compress/fse/bytereader.go",
+        "vendor/github.com/klauspost/compress/fse/compress.go",
+        "vendor/github.com/klauspost/compress/fse/decompress.go",
+        "vendor/github.com/klauspost/compress/fse/fse.go",
+        "vendor/github.com/klauspost/compress/huff0/.gitignore",
+        "vendor/github.com/klauspost/compress/huff0/README.md",
+        "vendor/github.com/klauspost/compress/huff0/bitreader.go",
+        "vendor/github.com/klauspost/compress/huff0/bitwriter.go",
+        "vendor/github.com/klauspost/compress/huff0/bytereader.go",
+        "vendor/github.com/klauspost/compress/huff0/compress.go",
+        "vendor/github.com/klauspost/compress/huff0/decompress.go",
+        "vendor/github.com/klauspost/compress/huff0/huff0.go",
+        "vendor/github.com/klauspost/compress/snappy/.gitignore",
+        "vendor/github.com/klauspost/compress/snappy/AUTHORS",
+        "vendor/github.com/klauspost/compress/snappy/CONTRIBUTORS",
+        "vendor/github.com/klauspost/compress/snappy/LICENSE",
+        "vendor/github.com/klauspost/compress/snappy/README",
+        "vendor/github.com/klauspost/compress/snappy/decode.go",
+        "vendor/github.com/klauspost/compress/snappy/decode_amd64.go",
+        "vendor/github.com/klauspost/compress/snappy/decode_amd64.s",
+        "vendor/github.com/klauspost/compress/snappy/decode_other.go",
+        "vendor/github.com/klauspost/compress/snappy/encode.go",
+        "vendor/github.com/klauspost/compress/snappy/encode_amd64.go",
+        "vendor/github.com/klauspost/compress/snappy/encode_amd64.s",
+        "vendor/github.com/klauspost/compress/snappy/encode_other.go",
+        "vendor/github.com/klauspost/compress/snappy/runbench.cmd",
+        "vendor/github.com/klauspost/compress/snappy/snappy.go",
+        "vendor/github.com/klauspost/compress/zstd/README.md",
+        "vendor/github.com/klauspost/compress/zstd/bitreader.go",
+        "vendor/github.com/klauspost/compress/zstd/bitwriter.go",
+        "vendor/github.com/klauspost/compress/zstd/blockdec.go",
+        "vendor/github.com/klauspost/compress/zstd/blockenc.go",
+        "vendor/github.com/klauspost/compress/zstd/blocktype_string.go",
+        "vendor/github.com/klauspost/compress/zstd/bytebuf.go",
+        "vendor/github.com/klauspost/compress/zstd/bytereader.go",
+        "vendor/github.com/klauspost/compress/zstd/decoder.go",
+        "vendor/github.com/klauspost/compress/zstd/decoder_options.go",
+        "vendor/github.com/klauspost/compress/zstd/dict.go",
+        "vendor/github.com/klauspost/compress/zstd/enc_base.go",
+        "vendor/github.com/klauspost/compress/zstd/enc_better.go",
+        "vendor/github.com/klauspost/compress/zstd/enc_dfast.go",
+        "vendor/github.com/klauspost/compress/zstd/enc_fast.go",
+        "vendor/github.com/klauspost/compress/zstd/encoder.go",
+        "vendor/github.com/klauspost/compress/zstd/encoder_options.go",
+        "vendor/github.com/klauspost/compress/zstd/framedec.go",
+        "vendor/github.com/klauspost/compress/zstd/frameenc.go",
+        "vendor/github.com/klauspost/compress/zstd/fse_decoder.go",
+        "vendor/github.com/klauspost/compress/zstd/fse_encoder.go",
+        "vendor/github.com/klauspost/compress/zstd/fse_predefined.go",
+        "vendor/github.com/klauspost/compress/zstd/hash.go",
+        "vendor/github.com/klauspost/compress/zstd/history.go",
+        "vendor/github.com/klauspost/compress/zstd/internal/xxhash/LICENSE.txt",
+        "vendor/github.com/klauspost/compress/zstd/internal/xxhash/README.md",
+        "vendor/github.com/klauspost/compress/zstd/internal/xxhash/xxhash.go",
+        "vendor/github.com/klauspost/compress/zstd/internal/xxhash/xxhash_amd64.go",
+        "vendor/github.com/klauspost/compress/zstd/internal/xxhash/xxhash_amd64.s",
+        "vendor/github.com/klauspost/compress/zstd/internal/xxhash/xxhash_other.go",
+        "vendor/github.com/klauspost/compress/zstd/internal/xxhash/xxhash_safe.go",
+        "vendor/github.com/klauspost/compress/zstd/seqdec.go",
+        "vendor/github.com/klauspost/compress/zstd/seqenc.go",
+        "vendor/github.com/klauspost/compress/zstd/snappy.go",
+        "vendor/github.com/klauspost/compress/zstd/zstd.go",
+        "vendor/modules.txt"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/containerd/containerd/pull/4809",
+          "statement": "明确因源规范增加 zstd 支持。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opencontainers/image-spec",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/image-spec"
+    },
+    {
+      "repository": "containerd/containerd",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/containerd/containerd"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

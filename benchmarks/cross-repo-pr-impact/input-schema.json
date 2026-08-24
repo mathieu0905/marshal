@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://marshal.local/schemas/cross-repo-pr-impact-input-v1.json",
+  "title": "Cross-repository evaluation input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "observation_cutoff", "source", "candidate_repository_catalog", "candidate_repository_snapshots"],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "observation_cutoff": {"type": "string", "minLength": 1},
+    "candidate_repository_catalog": {"type": "string", "pattern": "^candidate-repositories\\.json#[a-z0-9-]+$"},
+    "candidate_repository_snapshots": {"type": "string", "pattern": "^repository-snapshots\\.jsonl#[a-z0-9-]+$"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "repository", "pull_request_number", "subject", "base_commit", "candidate_commit", "changed_paths", "patch_url"],
+      "properties": {
+        "host": {"type": "string", "minLength": 1},
+        "repository": {"type": "string", "minLength": 3},
+        "pull_request_number": {"type": "integer", "minimum": 1},
+        "subject": {"type": "string", "minLength": 1},
+        "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "changed_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "patch_url": {"type": "string", "format": "uri"}
+      }
+    }
+  }
+}

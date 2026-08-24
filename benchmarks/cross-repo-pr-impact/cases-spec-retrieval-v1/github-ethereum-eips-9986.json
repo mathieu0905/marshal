@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9986",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9986,
+      "change_id": "ethereum/EIPs#9986",
+      "url": "https://github.com/ethereum/EIPs/pull/9986",
+      "status": "MERGED",
+      "subject": "Modify EIP-7825: Lower Gas Limit Cap",
+      "branch": "master",
+      "created": "2025-07-07T15:12:24Z",
+      "submitted": "2025-07-13T16:41:19Z"
+    },
+    "base_commit": "18ee7c33e53469fcff70b1186a1d7459d6389aac",
+    "candidate_commit": "797eef97d9dce48b99561833108065b76f22a978",
+    "changed_paths": [
+      "EIPS/eip-7825.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/18ee7c33e53469fcff70b1186a1d7459d6389aac...797eef97d9dce48b99561833108065b76f22a978.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/32230"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 32230,
+        "change_id": "ethereum/go-ethereum#32230",
+        "url": "https://github.com/ethereum/go-ethereum/pull/32230",
+        "status": "MERGED",
+        "subject": "params: update tx gas limit cap",
+        "branch": "master",
+        "created": "2025-07-17T09:05:12Z",
+        "submitted": "2025-07-18T05:22:59Z"
+      },
+      "commit": "7c562994b2527829b15083fa59af809fdc22035b",
+      "changed_paths": [
+        "core/state_processor_test.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/32230",
+          "statement": "目标正文明确按源规范的新参数更新交易燃料上限。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

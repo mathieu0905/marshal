@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-994946",
+  "project": "zuul",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "zuul/zuul-jobs",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 994946,
+      "change_id": "I22797b037e265ad457294cdb215e23a9afec850e",
+      "url": "https://review.opendev.org/c/zuul/zuul-jobs/+/994946",
+      "status": "MERGED",
+      "subject": "Add a flag to ensure-tox to allow upgrading pip",
+      "branch": "master",
+      "created": "2026-06-25 17:57:25.000000000",
+      "submitted": "2026-06-25 20:29:32.000000000"
+    },
+    "base_commit": "4765e223a5b8a7bee320bf5a6b8eddfdb44342e7",
+    "candidate_commit": "ed0f095ba6ab599b5ceb065cc98b92655c20b45f",
+    "changed_paths": [
+      "roles/ensure-tox/README.rst",
+      "roles/ensure-tox/defaults/main.yaml",
+      "roles/ensure-tox/tasks/main.yaml",
+      "test-playbooks/ensure-tox.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/994946/revisions/ed0f095ba6ab599b5ceb065cc98b92655c20b45f/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "zuul/zuul-jobs",
+      "target_repository": "openstack/pbr",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/pbr/+/994828"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/pbr",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 994828,
+        "change_id": "I1573163edadc77b1bd9a3c431df2524f88ca58ab",
+        "url": "https://review.opendev.org/c/openstack/pbr/+/994828",
+        "status": "MERGED",
+        "subject": "Fix tests",
+        "branch": "master",
+        "created": "2026-06-24 22:22:27.000000000",
+        "submitted": "2026-06-26 15:40:58.000000000"
+      },
+      "commit": "a040b7b21dab43c75d807427f2b6d46bb1731ba7",
+      "changed_paths": [
+        ".zuul.yaml",
+        "pyproject.toml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/pbr/+/994828",
+          "statement": "Depends-On: https://review.opendev.org/c/zuul/zuul-jobs/+/994946",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/210c9e29bbfb40648db0502aad0cca26"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/pbr",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/pbr/raw/commit/963722ab86c9fa55a4e29d840f45ffd516c509b1/LICENSE"
+    },
+    {
+      "repository": "zuul/zuul-jobs",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/zuul/zuul-jobs/raw/commit/eeac9fb67195dd59fcde606fa50c523270b8f806/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

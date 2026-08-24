@@ -1,0 +1,40 @@
+{
+  "schema_version": "2.0",
+  "collected_at": "2026-08-23",
+  "sources": [
+    {
+      "id": "github-multi-implementation-frame",
+      "url": "https://github.com/",
+      "role": "提供七个规范仓、三十个实现仓及其直接引用关系",
+      "query": "已合并目标 PR 正文直接链接源规范 PR",
+      "search_observed_at": "2026-08-23",
+      "search_metadata": "candidates/github-multi-target-search-metadata.json",
+      "search_limitations": "只匹配正文完整链接，不覆盖裸编号、提交说明或间接引用；43 次查询均未截断。"
+    },
+    {
+      "id": "github-pull-timeline-and-commit-api",
+      "url": "https://docs.github.com/en/rest",
+      "role": "提供 PR 元数据、最终文件、强推事件、改名事件以及观察截止前候选仓提交"
+    },
+    {
+      "id": "opendev-gerrit",
+      "url": "https://review.opendev.org/",
+      "role": "提供十三条非规范语义案例、Cinder 对照、WanderTracks 执行案例和完整协调候选框"
+    },
+    {
+      "id": "opendev-gitea",
+      "url": "https://opendev.org/",
+      "role": "提供 OpenDev 候选仓在观察截止前的提交和源码归档"
+    },
+    {
+      "id": "cinder-ci-contrast",
+      "url": "https://zuul.opendev.org/t/openstack/build/a910bfbc663642c7b7bd5e3dab0c11c2",
+      "role": "提供 Requirements 1001023 缺少 Cinder 修复时的失败任务，并与后续同任务成功组成对照"
+    }
+  ],
+  "label_policy": {
+    "independent": true,
+    "reason": "规范目标和非规范目标均经过逐项语义复核；Cinder 与 WanderTracks 来自持续集成对照或固定版本执行。标签不读取 Marshal 配置。",
+    "limitations": "标签只构成已知影响下界，不保证列出全部目标仓；绝大多数案例没有独立文件、测试或命令真值。"
+  }
+}

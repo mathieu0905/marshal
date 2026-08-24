@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-opencontainers-runtime-spec-1289",
+  "project": "opencontainers-runtime",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "opencontainers/runtime-spec",
+    "pull_request": {
+      "provider": "github",
+      "number": 1289,
+      "change_id": "opencontainers/runtime-spec#1289",
+      "url": "https://github.com/opencontainers/runtime-spec/pull/1289",
+      "status": "MERGED",
+      "subject": "config-linux: define default clos for linux.intelRdt",
+      "branch": "main",
+      "created": "2025-08-04T05:50:14Z",
+      "submitted": "2025-08-27T05:58:32Z"
+    },
+    "base_commit": "34a39b90707d979c56f834071c77ef60941d7688",
+    "candidate_commit": "aa75def8239367269e73f5ef54eb75f2a1fea3b9",
+    "changed_paths": [
+      "config-linux.md",
+      "features-linux.md",
+      "features.md"
+    ],
+    "patch_url": "https://github.com/opencontainers/runtime-spec/compare/34a39b90707d979c56f834071c77ef60941d7688...aa75def8239367269e73f5ef54eb75f2a1fea3b9.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "containers/crun",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/containers/crun/pull/1858"
+    },
+    {
+      "source_repository": "opencontainers/runtime-spec",
+      "target_repository": "opencontainers/runc",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/opencontainers/runc/pull/4854"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "containers/crun",
+      "pull_request": {
+        "provider": "github",
+        "number": 1858,
+        "change_id": "containers/crun#1858",
+        "url": "https://github.com/containers/crun/pull/1858",
+        "status": "MERGED",
+        "subject": "intelrdt: honor default closID",
+        "branch": "main",
+        "created": "2025-08-27T07:35:48Z",
+        "submitted": "2025-09-15T20:50:07Z"
+      },
+      "commit": "275305f8c01b7875705e6bbb8d44c6e72d6926a5",
+      "changed_paths": [
+        "src/libcrun/intelrdt.c"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/containers/crun/pull/1858",
+          "statement": "按源规范遵循默认 CLOS 标识。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "opencontainers/runc",
+      "pull_request": {
+        "provider": "github",
+        "number": 4854,
+        "change_id": "opencontainers/runc#4854",
+        "url": "https://github.com/opencontainers/runc/pull/4854",
+        "status": "MERGED",
+        "subject": "libcontainer/intelrdt: support explicit assignment to root CLOS",
+        "branch": "main",
+        "created": "2025-08-15T12:13:21Z",
+        "submitted": "2025-08-29T10:17:43Z"
+      },
+      "commit": "762819496e97a785136631bd8fc1272db8d27e96",
+      "changed_paths": [
+        "libcontainer/configs/validate/doc.go",
+        "libcontainer/configs/validate/intelrdt.go",
+        "libcontainer/configs/validate/intelrdt_test.go",
+        "libcontainer/configs/validate/validator.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/opencontainers/runc/pull/4854",
+          "statement": "明确实现根 CLOS 分配。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opencontainers/runtime-spec",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runtime-spec"
+    },
+    {
+      "repository": "containers/crun",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/containers/crun"
+    },
+    {
+      "repository": "opencontainers/runc",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/opencontainers/runc"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

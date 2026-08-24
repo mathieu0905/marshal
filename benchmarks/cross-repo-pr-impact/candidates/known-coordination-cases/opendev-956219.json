@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-956219",
+  "project": "zuul",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "zuul/zuul-jobs",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 956219,
+      "change_id": "I837b5d1571dce38801d6a0433e960734f573fedc",
+      "url": "https://review.opendev.org/c/zuul/zuul-jobs/+/956219",
+      "status": "MERGED",
+      "subject": "Add default for build diskimage image name",
+      "branch": "master",
+      "created": "2025-07-31 08:44:41.000000000",
+      "submitted": "2025-08-18 20:56:56.000000000"
+    },
+    "base_commit": "06098ab5521cdd0c5e9b206b03f4e6a0fb35f19c",
+    "candidate_commit": "eeac9fb67195dd59fcde606fa50c523270b8f806",
+    "changed_paths": [
+      "roles/build-diskimage/README.rst",
+      "roles/build-diskimage/defaults/main.yaml",
+      "zuul.d/dib-jobs.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/956219/revisions/eeac9fb67195dd59fcde606fa50c523270b8f806/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "zuul/zuul-jobs",
+      "target_repository": "opendev/zuul-providers",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/opendev/zuul-providers/+/956373"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "opendev/zuul-providers",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 956373,
+        "change_id": "I7c895ee1eed27bcffc4c98c886db30d9c3e28fee",
+        "url": "https://review.opendev.org/c/opendev/zuul-providers/+/956373",
+        "status": "MERGED",
+        "subject": "Remove build_diskimage_image_name variable",
+        "branch": "master",
+        "created": "2025-08-01 13:56:00.000000000",
+        "submitted": "2025-12-07 02:15:32.000000000"
+      },
+      "commit": "9bf7f4abd0786f39faf43180044847782ac598fb",
+      "changed_paths": [
+        "zuul.d/image-build-jobs.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/opendev/zuul-providers/+/956373",
+          "statement": "Depends-On: https://review.opendev.org/956219",
+          "ci_url": "https://zuul.opendev.org/t/opendev/buildset/df5f15c9c0024277973f8e41d86beace"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opendev/zuul-providers",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/opendev/zuul-providers/src/commit/9bf7f4abd0786f39faf43180044847782ac598fb"
+    },
+    {
+      "repository": "zuul/zuul-jobs",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/zuul/zuul-jobs/raw/commit/eeac9fb67195dd59fcde606fa50c523270b8f806/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

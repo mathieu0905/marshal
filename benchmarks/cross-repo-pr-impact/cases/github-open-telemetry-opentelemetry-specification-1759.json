@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-1759",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 1759,
+      "change_id": "open-telemetry/opentelemetry-specification#1759",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/1759",
+      "status": "MERGED",
+      "subject": "Mobile spec additions",
+      "branch": "main",
+      "created": "2021-06-14T17:50:51Z",
+      "submitted": "2021-07-12T16:32:33Z"
+    },
+    "base_commit": "cfd77a8479ca544e56dfd285a397a6698cf9cbca",
+    "candidate_commit": "6eefaa6edcd8c2075159053e40d1bcb494ae7f9d",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "semantic_conventions/trace/general.yaml",
+      "specification/trace/semantic_conventions/span-general.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/cfd77a8479ca544e56dfd285a397a6698cf9cbca...6eefaa6edcd8c2075159053e40d1bcb494ae7f9d.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-swift",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-swift/pull/217"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-swift",
+      "pull_request": {
+        "provider": "github",
+        "number": 217,
+        "change_id": "open-telemetry/opentelemetry-swift#217",
+        "url": "https://github.com/open-telemetry/opentelemetry-swift/pull/217",
+        "status": "MERGED",
+        "subject": "added NetworkStatus package & injected it into network instrumentation",
+        "branch": "main",
+        "created": "2021-07-16T20:25:21Z",
+        "submitted": "2021-08-09T16:00:11Z"
+      },
+      "commit": "fa753872e72657634df55fbe89fbec354053c205",
+      "changed_paths": [
+        "Package.resolved",
+        "Package.swift",
+        "Sources/Instrumentation/NetworkStatus/NetworkMonitor.swift",
+        "Sources/Instrumentation/NetworkStatus/NetworkMonitorProtocol.swift",
+        "Sources/Instrumentation/NetworkStatus/NetworkStatus.swift",
+        "Sources/Instrumentation/NetworkStatus/NetworkStatusInjector.swift",
+        "Sources/Instrumentation/NetworkStatus/NetworkStatusProtocol.swift",
+        "Sources/Instrumentation/URLSession/URLSessionLogger.swift",
+        "Tests/InstrumentationTests/NetworkStatusTests/NetworkStatusTests.swift"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-swift/pull/217",
+          "statement": "正文明确实现源规范定义的属性。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-swift",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-swift"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

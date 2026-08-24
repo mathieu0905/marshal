@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-695",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 695,
+      "change_id": "ethereum/EIPs#695",
+      "url": "https://github.com/ethereum/EIPs/pull/695",
+      "status": "MERGED",
+      "subject": "EIP: Implement `eth_chainId` method in JSON-RPC",
+      "branch": "master",
+      "created": "2017-08-21T16:20:43Z",
+      "submitted": "2018-01-26T10:39:40Z"
+    },
+    "base_commit": "465c4d655045a404eca23014a0850e5f245dbcc0",
+    "candidate_commit": "b54a4e3d84ff1ea79c7475f3e65245b2601a4c0b",
+    "changed_paths": [
+      "EIPS/eip-rpc_eth_chain_id.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/465c4d655045a404eca23014a0850e5f245dbcc0...b54a4e3d84ff1ea79c7475f3e65245b2601a4c0b.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/17617"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 17617,
+        "change_id": "ethereum/go-ethereum#17617",
+        "url": "https://github.com/ethereum/go-ethereum/pull/17617",
+        "status": "MERGED",
+        "subject": "add eth_chainId method",
+        "branch": "master",
+        "created": "2018-09-09T12:17:45Z",
+        "submitted": "2018-09-29T20:07:03Z"
+      },
+      "commit": "a68236fb172db9ee4e9d79b832e74b8fc154a33e",
+      "changed_paths": [
+        "eth/api.go",
+        "internal/web3ext/web3ext.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/17617",
+          "statement": "目标正文引用已接受的源 EIP，新增的链标识接口与规范主题一致；预筛只因旧式文件名误拒。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

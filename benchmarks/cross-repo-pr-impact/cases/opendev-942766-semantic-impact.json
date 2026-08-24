@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-942766-semantic-impact",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/nova",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 942766,
+      "change_id": "I09f4f76fff30f9cccf35f4832b9c870095c380ad",
+      "url": "https://review.opendev.org/c/openstack/nova/+/942766",
+      "status": "MERGED",
+      "subject": "Add image meta to libvirt XML metadata",
+      "branch": "master",
+      "created": "2025-02-26 09:34:48.000000000",
+      "submitted": "2025-08-09 12:46:15.000000000"
+    },
+    "base_commit": "2ca87d538395ddadf1ccb2600c3f6239cb8283d0",
+    "candidate_commit": "084929b4615237440e915c747a679b2a6d6d6459",
+    "changed_paths": [
+      "nova/objects/image_meta.py",
+      "nova/tests/unit/virt/ironic/utils.py",
+      "nova/tests/unit/virt/libvirt/test_config.py",
+      "nova/virt/driver.py",
+      "nova/virt/libvirt/config.py",
+      "nova/virt/libvirt/driver.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/942766/revisions/084929b4615237440e915c747a679b2a6d6d6459/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/nova",
+      "target_repository": "openstack/ceilometer",
+      "relation_kind": "semantic_companion_change",
+      "evidence_url": "https://review.opendev.org/c/openstack/ceilometer/+/942879"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/ceilometer",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 942879,
+        "change_id": "I7d8164f80322a9914b15d9a6991b2bc91b158ff3",
+        "url": "https://review.opendev.org/c/openstack/ceilometer/+/942879",
+        "status": "MERGED",
+        "subject": "Publish image meta from notifications and pollsters (if available)",
+        "branch": "master",
+        "created": "2025-02-27 06:09:10.000000000",
+        "submitted": "2025-08-25 11:01:06.000000000"
+      },
+      "commit": "a00f7cf695f2a8d4b526e175b5341427cd0c8e4e",
+      "changed_paths": [
+        "ceilometer/compute/discovery.py",
+        "ceilometer/compute/pollsters/util.py",
+        "ceilometer/data/meters.d/meters.yaml",
+        "ceilometer/nova_client.py",
+        "ceilometer/tests/unit/compute/pollsters/base.py",
+        "ceilometer/tests/unit/compute/pollsters/test_cpu.py",
+        "ceilometer/tests/unit/compute/pollsters/test_location_metadata.py",
+        "ceilometer/tests/unit/compute/test_discovery.py",
+        "ceilometer/tests/unit/test_novaclient.py",
+        "releasenotes/notes/add-image-meta-to-samples-72d62016f5ab0043.yaml"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "data_schema",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "implementation_proven",
+          "kind": "companion_change_explains_cross_repository_semantics",
+          "url": "https://review.opendev.org/c/openstack/ceilometer/+/942879",
+          "statement": "Nova 明确新增供 Ceilometer 消费的 libvirt image_meta；Ceilometer 目标说明读取该新元数据并写入样本。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/nova",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/nova"
+    },
+    {
+      "repository": "openstack/ceilometer",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/openstack/ceilometer"
+    }
+  ],
+  "provenance": {
+    "collector": "OpenDev semantic companion review and opening revision audit",
+    "collected_at": "2026-08-23",
+    "query": "merged companion changes with explicit cross-repository semantic rationale"
+  }
+}

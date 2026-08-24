@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-8989",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 8989,
+      "change_id": "ethereum/EIPs#8989",
+      "url": "https://github.com/ethereum/EIPs/pull/8989",
+      "status": "MERGED",
+      "subject": "EIP-7685: exclude empty requests data in commitment",
+      "branch": "master",
+      "created": "2024-10-22T08:48:22Z",
+      "submitted": "2024-11-26T13:42:51Z"
+    },
+    "base_commit": "279a7fa79308562e56987d2ba8195b1956d959b3",
+    "candidate_commit": "e9a73774c62e30f7552c0c769beb349b3900a948",
+    "changed_paths": [
+      "EIPS/eip-7685.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/279a7fa79308562e56987d2ba8195b1956d959b3...e9a73774c62e30f7552c0c769beb349b3900a948.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/30670"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 30670,
+        "change_id": "ethereum/go-ethereum#30670",
+        "url": "https://github.com/ethereum/go-ethereum/pull/30670",
+        "status": "MERGED",
+        "subject": "all: exclude empty outputs in requests commitment",
+        "branch": "master",
+        "created": "2024-10-24T20:24:36Z",
+        "submitted": "2024-11-28T10:48:50Z"
+      },
+      "commit": "41cd829d8c883cf06bb86670741037dddcaf8002",
+      "changed_paths": [
+        "beacon/engine/types.go",
+        "cmd/evm/internal/t8ntool/execution.go",
+        "core/chain_makers.go",
+        "core/genesis.go",
+        "core/state_processor.go",
+        "core/types/hashes.go",
+        "eth/tracers/internal/tracetest/supply_test.go",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-blob-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-contract-create-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-dynamic-fee-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-legacy-contract-call-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-block-with-legacy-transfer-tx.json",
+        "internal/ethapi/testdata/eth_getBlockReceipts-tag-latest.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-blob-tx.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-create-contract-tx.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-create-contract-with-access-list.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-dynamic-tx-with-logs.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-normal-transfer-tx.json",
+        "internal/ethapi/testdata/eth_getTransactionReceipt-with-logs.json",
+        "miner/worker.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/30670",
+          "statement": "目标实现排除空请求输出，标题与源规范变更一致，正文直接引用该源 PR。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

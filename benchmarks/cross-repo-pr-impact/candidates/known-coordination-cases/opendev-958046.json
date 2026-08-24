@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-958046",
+  "project": "x",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "x/devstack-plugin-tobiko",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 958046,
+      "change_id": "Ie3a40efed5e132aee53dce3db6522c551897b5f7",
+      "url": "https://review.opendev.org/c/x/devstack-plugin-tobiko/+/958046",
+      "status": "MERGED",
+      "subject": "[CI] Use ovs-vsctl to ensure bridges",
+      "branch": "master",
+      "created": "2025-08-20 10:28:49.000000000",
+      "submitted": "2025-08-21 08:22:22.000000000"
+    },
+    "base_commit": "814d654963f303c57a7b6e316af4dd211993a787",
+    "candidate_commit": "ff5353e7339d75384df657da31b3b130ccb5a40a",
+    "changed_paths": [
+      ".pre-commit-config.yaml",
+      "roles/multi-node-setup/tasks/main.yaml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/958046/revisions/ff5353e7339d75384df657da31b3b130ccb5a40a/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "x/devstack-plugin-tobiko",
+      "target_repository": "x/tobiko",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/x/tobiko/+/958047"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "x/tobiko",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 958047,
+        "change_id": "I87372ad19f3b9c054e2a047ba9925a3ba0d6e503",
+        "url": "https://review.opendev.org/c/x/tobiko/+/958047",
+        "status": "MERGED",
+        "subject": "[CI] Use ovs-vsctl to ensure bridges",
+        "branch": "master",
+        "created": "2025-08-20 10:35:18.000000000",
+        "submitted": "2025-08-21 16:05:34.000000000"
+      },
+      "commit": "0453fad7ed5dfd731d7ed2df979f51918fc08408",
+      "changed_paths": [
+        "roles/multi-node-setup/tasks/main.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/x/tobiko/+/958047",
+          "statement": "Depends-On: https://review.opendev.org/c/x/devstack-plugin-tobiko/+/958046",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/7ffcd004be7049df9ed691a5ed56980c"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "x/devstack-plugin-tobiko",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/x/devstack-plugin-tobiko/src/commit/ff5353e7339d75384df657da31b3b130ccb5a40a"
+    },
+    {
+      "repository": "x/tobiko",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/x/tobiko/raw/commit/0453fad7ed5dfd731d7ed2df979f51918fc08408/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

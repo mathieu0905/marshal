@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-990969",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/ansible-playbooks",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 990969,
+      "change_id": "I42577266f0621a7f7b0790fa64d83f7c79036e09",
+      "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/990969",
+      "status": "MERGED",
+      "subject": "Replace deprecated kubernetes-entrypoint image",
+      "branch": "master",
+      "created": "2026-06-01 17:53:36.000000000",
+      "submitted": "2026-06-02 20:27:14.000000000"
+    },
+    "base_commit": "38f5c3e9ee18ecbb0242c4f0cd712ebf303f48bc",
+    "candidate_commit": "40b55fe3f56f07c2983cccefc59380e0d8ffb615",
+    "changed_paths": [
+      "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.32.2/system-images.yml",
+      "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.34.1/system-images.yml",
+      "playbookconfig/src/playbooks/roles/common/load-images-information/vars/k8s-v1.35.2/system-images.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/990969/revisions/40b55fe3f56f07c2983cccefc59380e0d8ffb615/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/ansible-playbooks",
+      "target_repository": "starlingx/app-distributed-cloud",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/app-distributed-cloud/+/990975"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/app-distributed-cloud",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 990975,
+        "change_id": "I4841b578b3041ec27ba7fea306e75599cce00eae",
+        "url": "https://review.opendev.org/c/starlingx/app-distributed-cloud/+/990975",
+        "status": "MERGED",
+        "subject": "Replace deprecated kubernetes-entrypoint image",
+        "branch": "master",
+        "created": "2026-06-01 18:07:24.000000000",
+        "submitted": "2026-06-02 20:27:16.000000000"
+      },
+      "commit": "e21be662320898d04ddfa012fe18a72016541d9b",
+      "changed_paths": [
+        "stx-distributed-cloud-helm/stx-distributed-cloud-helm/helm-charts/dcagent/values.yaml",
+        "stx-distributed-cloud-helm/stx-distributed-cloud-helm/helm-charts/dcdbsync/values.yaml",
+        "stx-distributed-cloud-helm/stx-distributed-cloud-helm/helm-charts/dcmanager/values.yaml",
+        "stx-distributed-cloud-helm/stx-distributed-cloud-helm/helm-charts/dcorch/values.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/app-distributed-cloud/+/990975",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/ansible-playbooks/+/990969",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/c31013c98a504e3ba4a9853d121ba203"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/ansible-playbooks/raw/commit/0219d566f0810743658a2cf504cd5eba2b8523fb/LICENSE"
+    },
+    {
+      "repository": "starlingx/app-distributed-cloud",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/app-distributed-cloud/src/commit/e21be662320898d04ddfa012fe18a72016541d9b"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

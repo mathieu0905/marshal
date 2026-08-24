@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-778",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 778,
+      "change_id": "ethereum/EIPs#778",
+      "url": "https://github.com/ethereum/EIPs/pull/778",
+      "status": "MERGED",
+      "subject": "EIP-778: Ethereum Node Records",
+      "branch": "master",
+      "created": "2017-11-23T10:58:18Z",
+      "submitted": "2018-03-23T16:29:54Z"
+    },
+    "base_commit": "5843a29215e796e42752c1cb9f5159eddf999436",
+    "candidate_commit": "e6dd298ab7a178e568915c10dd3ee0edd1077810",
+    "changed_paths": [
+      "EIPS/eip-778.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/5843a29215e796e42752c1cb9f5159eddf999436...e6dd298ab7a178e568915c10dd3ee0edd1077810.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/15585"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 15585,
+        "change_id": "ethereum/go-ethereum#15585",
+        "url": "https://github.com/ethereum/go-ethereum/pull/15585",
+        "status": "MERGED",
+        "subject": "p2p/enr: initial implementation",
+        "branch": "master",
+        "created": "2017-11-30T14:58:04Z",
+        "submitted": "2017-12-29T20:18:52Z"
+      },
+      "commit": "607b91fede330a2c32e7acaa27f2a7237c4740ae",
+      "changed_paths": [
+        "p2p/enr/enr.go",
+        "p2p/enr/enr_test.go",
+        "p2p/enr/entries.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/15585",
+          "statement": "目标正文明确说明按源 EIP 初次实现节点记录。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

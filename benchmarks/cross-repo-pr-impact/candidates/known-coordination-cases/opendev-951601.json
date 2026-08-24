@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-951601",
+  "project": "opendev",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "opendev/system-config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 951601,
+      "change_id": "I51519ee26609c03cc3a614e1e9cad9a21b6690f9",
+      "url": "https://review.opendev.org/c/opendev/system-config/+/951601",
+      "status": "MERGED",
+      "subject": "Allow any gerrit user to edit hashtags",
+      "branch": "master",
+      "created": "2025-06-02 23:41:02.000000000",
+      "submitted": "2025-06-03 20:06:36.000000000"
+    },
+    "base_commit": "03b19d3f042f8657e9611bba202779c92e20b96e",
+    "candidate_commit": "8e5b2a072ad6f6fd3730147cfe26f4bde8c9d575",
+    "changed_paths": [
+      "doc/source/gerrit.rst"
+    ],
+    "patch_url": "https://review.opendev.org/changes/951601/revisions/8e5b2a072ad6f6fd3730147cfe26f4bde8c9d575/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "opendev/system-config",
+      "target_repository": "openstack/project-config",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/project-config/+/951603"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/project-config",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 951603,
+        "change_id": "I53842b4d12baabc4a372776249ff9d80785b1f8d",
+        "url": "https://review.opendev.org/c/openstack/project-config/+/951603",
+        "status": "MERGED",
+        "subject": "Remove redundant editHashtags config",
+        "branch": "master",
+        "created": "2025-06-03 00:36:24.000000000",
+        "submitted": "2025-06-04 20:54:45.000000000"
+      },
+      "commit": "6558ee2add3d439d76edcc044e8f26718c955847",
+      "changed_paths": [
+        "gerrit/acls/openstack/bifrost.config",
+        "gerrit/acls/openstack/ironic.config",
+        "gerrit/acls/openstack/tenks.config",
+        "gerrit/acls/zuul/nodepool.config",
+        "gerrit/acls/zuul/project-config.config",
+        "gerrit/acls/zuul/zuul-base-jobs.config",
+        "gerrit/acls/zuul/zuul-jobs.config",
+        "gerrit/acls/zuul/zuul-website.config",
+        "gerrit/acls/zuul/zuul.config"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/project-config/+/951603",
+          "statement": "Depends-On: https://review.opendev.org/c/opendev/system-config/+/951601",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/f130bd6db5f3464a9ad600beed1bb5e4"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "opendev/system-config",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/opendev/system-config/src/commit/8e5b2a072ad6f6fd3730147cfe26f4bde8c9d575"
+    },
+    {
+      "repository": "openstack/project-config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/project-config/raw/commit/6558ee2add3d439d76edcc044e8f26718c955847/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

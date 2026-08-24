@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-968205",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/stx-puppet",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 968205,
+      "change_id": "Ia133e853f232d25a61842729d7e834417c1131f7",
+      "url": "https://review.opendev.org/c/starlingx/stx-puppet/+/968205",
+      "status": "MERGED",
+      "subject": "Disable NFS on AIO-SX systems",
+      "branch": "master",
+      "created": "2025-11-24 15:01:56.000000000",
+      "submitted": "2025-12-23 22:08:46.000000000"
+    },
+    "base_commit": "4d56d440cbfde16225d14265e13cd9096a3f4fbe",
+    "candidate_commit": "5927f55593a4003e8233e01b66e58de98369cc02",
+    "changed_paths": [
+      "puppet-manifests/src/modules/platform/manifests/sm.pp"
+    ],
+    "patch_url": "https://review.opendev.org/changes/968205/revisions/5927f55593a4003e8233e01b66e58de98369cc02/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/stx-puppet",
+      "target_repository": "starlingx/config-files",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/config-files/+/968893"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/config-files",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 968893,
+        "change_id": "Id0adc403cb5297147aab8f3d5fc166e446b02954",
+        "url": "https://review.opendev.org/c/starlingx/config-files/+/968893",
+        "status": "MERGED",
+        "subject": "Disable NFS on AIO-SX systems",
+        "branch": "master",
+        "created": "2025-11-28 19:09:26.000000000",
+        "submitted": "2025-12-23 22:08:52.000000000"
+      },
+      "commit": "9ed487920596c28483ab032da8626a6a6e5a26de",
+      "changed_paths": [
+        "nfs-utils-config/source-debian/nfs-common.service",
+        "nfs-utils-config/source-debian/nfs-server.service"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/config-files/+/968893",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/stx-puppet/+/968205",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/8b01c3e2dce94a50844b9d05baa4a815"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/config-files",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/config-files/src/commit/5df711b1fb9eff45219c1e65ff5f740093d8d741"
+    },
+    {
+      "repository": "starlingx/stx-puppet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://opendev.org/starlingx/stx-puppet/src/commit/3f159d3bb6ffbbbaf06410c91ab5c8d612c4540c"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

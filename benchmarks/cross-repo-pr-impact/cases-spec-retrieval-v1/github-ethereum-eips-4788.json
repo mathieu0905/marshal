@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.1",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "case_id": "github-ethereum-eips-4788",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 4788,
+      "change_id": "ethereum/EIPs#4788",
+      "url": "https://github.com/ethereum/EIPs/pull/4788",
+      "status": "MERGED",
+      "subject": "EIP-4788: Beacon state root in EVM",
+      "branch": "master",
+      "created": "2022-02-11T01:34:59Z",
+      "submitted": "2022-02-17T15:28:16Z"
+    },
+    "base_commit": "10c298cb1f4b19db1a09573c502cfb7109867e1c",
+    "candidate_commit": "711f7b20de2ab3a568ec40cc42b1c81347aa88a4",
+    "changed_paths": [
+      "EIPS/eip-4788.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/pull/4788.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "linked_companion_change",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/27849"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 27849,
+        "change_id": "ethereum/go-ethereum#27849",
+        "url": "https://github.com/ethereum/go-ethereum/pull/27849",
+        "status": "MERGED",
+        "subject": "core, params, beacon/engine: implement EIP 4788 BeaconRoot",
+        "branch": "master",
+        "created": "2023-08-03T19:35:51Z",
+        "submitted": "2023-08-22T12:33:39Z"
+      },
+      "commit": "9e578a514998453f345204498cfd85c33ff3437c",
+      "changed_paths": [
+        "beacon/engine/types.go",
+        "cmd/evm/internal/t8ntool/execution.go",
+        "cmd/evm/internal/t8ntool/gen_stenv.go",
+        "cmd/evm/internal/t8ntool/transition.go",
+        "cmd/evm/t8n_test.go",
+        "cmd/evm/testdata/28/env.json",
+        "cmd/evm/testdata/29/alloc.json",
+        "cmd/evm/testdata/29/env.json",
+        "cmd/evm/testdata/29/exp.json",
+        "cmd/evm/testdata/29/readme.md",
+        "cmd/evm/testdata/29/txs.json",
+        "consensus/beacon/consensus.go",
+        "core/genesis.go",
+        "core/state_processor.go",
+        "core/state_processor_test.go",
+        "core/types/block.go",
+        "core/types/gen_header_json.go",
+        "core/types/gen_header_rlp.go",
+        "params/protocol_params.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "identifier_or_address_allocation",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "manually_curated",
+        "paths": [
+          "beacon/engine/types.go",
+          "consensus/beacon/consensus.go",
+          "core/state_processor.go",
+          "core/state_processor_test.go",
+          "core/types/block.go",
+          "params/protocol_params.go"
+        ],
+        "symbols": [
+          "BeaconRootsStorageAddress",
+          "ProcessBeaconBlockRoot"
+        ],
+        "tests": [
+          "cmd/evm/t8n_test.go",
+          "core/state_processor_test.go"
+        ],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "implementation_references_published_spec",
+          "url": "https://github.com/ethereum/go-ethereum/pull/27849",
+          "statement": "The merged implementation PR identifies and links EIP-4788; the originating spec PR defines HISTORY_STORAGE_ADDRESS and OPCODE_VALUE.",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/9e578a514998453f345204498cfd85c33ff3437c/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "curated_ethereum_cases",
+    "collected_at": "2026-08-22",
+    "query": "EIP-4788 implementation reference"
+  }
+}

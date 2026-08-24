@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9623",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9623,
+      "change_id": "ethereum/EIPs#9623",
+      "url": "https://github.com/ethereum/EIPs/pull/9623",
+      "status": "MERGED",
+      "subject": "Update EIP-7594: Add blob count per tx limit via blobSchedule",
+      "branch": "master",
+      "created": "2025-04-10T18:16:53Z",
+      "submitted": "2025-06-11T17:08:03Z"
+    },
+    "base_commit": "3b6d8bf25e475aa77531328c69f79b72a8cdcc7f",
+    "candidate_commit": "20993c1d3ef6124084743dca866e0edd630b17e9",
+    "changed_paths": [
+      "EIPS/eip-7594.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/3b6d8bf25e475aa77531328c69f79b72a8cdcc7f...20993c1d3ef6124084743dca866e0edd630b17e9.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "NethermindEth/nethermind",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/NethermindEth/nethermind/pull/8754"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/8761"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "NethermindEth/nethermind",
+      "pull_request": {
+        "provider": "github",
+        "number": 8754,
+        "change_id": "NethermindEth/nethermind#8754",
+        "url": "https://github.com/NethermindEth/nethermind/pull/8754",
+        "status": "MERGED",
+        "subject": "Add max blobs per tx limit taken from blob schedule",
+        "branch": "master",
+        "created": "2025-06-10T10:33:11Z",
+        "submitted": "2025-06-12T07:20:50Z"
+      },
+      "commit": "daf46e8318356653f6fa7a87aebcb98d16d7df40",
+      "changed_paths": [
+        "src/Nethermind/Nethermind.Consensus/Validators/TxValidator.cs",
+        "src/Nethermind/Nethermind.Core/Specs/IReleaseSpec.cs",
+        "src/Nethermind/Nethermind.Core/Specs/ReleaseSpecDecorator.cs",
+        "src/Nethermind/Nethermind.Evm/ReleaseSpecExtensions.cs",
+        "src/Nethermind/Nethermind.Specs.Test/OverridableReleaseSpec.cs",
+        "src/Nethermind/Nethermind.Specs/ChainSpecStyle/ChainSpecBasedSpecProvider.cs",
+        "src/Nethermind/Nethermind.Specs/ChainSpecStyle/Json/BlobScheduleSettings.cs",
+        "src/Nethermind/Nethermind.Specs/ReleaseSpec.cs",
+        "src/Nethermind/Nethermind.TxPool.Test/TxPoolTests.Blobs.cs",
+        "src/Nethermind/Nethermind.TxPool/TxPool.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/NethermindEth/nethermind/pull/8754",
+          "statement": "明确实现从 blobSchedule 读取上限。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 8761,
+        "change_id": "besu-eth/besu#8761",
+        "url": "https://github.com/besu-eth/besu/pull/8761",
+        "status": "MERGED",
+        "subject": "feat(peerDAS): add max number of blob per transaction",
+        "branch": "main",
+        "created": "2025-06-07T09:43:24Z",
+        "submitted": "2025-06-18T02:05:47Z"
+      },
+      "commit": "5522fdeeed1582ca0c4c4c3b00de2b44c7c1c51e",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "config/src/main/java/org/hyperledger/besu/config/BlobSchedule.java",
+        "config/src/main/java/org/hyperledger/besu/config/BlobScheduleOptions.java",
+        "config/src/test/java/org/hyperledger/besu/config/BlobScheduleOptionsTest.java",
+        "config/src/test/resources/mainnet_with_blob_schedule.json",
+        "ethereum/api/src/main/java/org/hyperledger/besu/ethereum/api/jsonrpc/internal/methods/engine/AbstractEngineNewPayload.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/GasLimitCalculator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/CancunTargetingGasLimitCalculator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetBlobsValidator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetProtocolSpecs.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetTransactionValidator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/OsakaTargetingGasLimitCalculator.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/transaction/TransactionInvalidReason.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/CancunTargetingGasLimitCalculatorTest.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/MainnetBlobsValidatorTest.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/MainnetTransactionValidatorTest.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/OsakaTargetingGasLimitCalculatorTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/8761",
+          "statement": "正文明确实现源规范。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "NethermindEth/nethermind",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/NethermindEth/nethermind"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

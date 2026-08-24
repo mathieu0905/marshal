@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-988690",
+  "project": "starlingx",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "starlingx/config",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 988690,
+      "change_id": "I87ad36b99ef145d82cb28bb8c7ae37a5ce2e318e",
+      "url": "https://review.opendev.org/c/starlingx/config/+/988690",
+      "status": "MERGED",
+      "subject": "Move FluxCD deployment logic to FluxDeploymentManager",
+      "branch": "master",
+      "created": "2026-05-14 19:59:25.000000000",
+      "submitted": "2026-05-25 14:18:41.000000000"
+    },
+    "base_commit": "cb87ac74462d7de4527ccdeef0176e6708481d7f",
+    "candidate_commit": "27fd48b51f2f5de3177d34209bf98950f0ebad18",
+    "changed_paths": [
+      "sysinv/sysinv/sysinv/sysinv/cmd/flux.py",
+      "sysinv/sysinv/sysinv/sysinv/common/kubernetes.py",
+      "sysinv/sysinv/sysinv/sysinv/helm/flux.py",
+      "sysinv/sysinv/sysinv/sysinv/tests/common/test_kubernetes.py"
+    ],
+    "patch_url": "https://review.opendev.org/changes/988690/revisions/27fd48b51f2f5de3177d34209bf98950f0ebad18/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "starlingx/config",
+      "target_repository": "starlingx/ansible-playbooks",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/988692"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 988692,
+        "change_id": "I42a561525f5148cad3b7eb3f9d22db06f9ad373b",
+        "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/988692",
+        "status": "MERGED",
+        "subject": "Move FluxCD deployment logic to FluxDeploymentManager",
+        "branch": "master",
+        "created": "2026-05-14 20:05:19.000000000",
+        "submitted": "2026-05-27 14:12:18.000000000"
+      },
+      "commit": "34660d4443b1573a166e8b0d9607358d22e79a33",
+      "changed_paths": [
+        "playbookconfig/src/playbooks/roles/common/fluxcd-controllers/tasks/main.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/starlingx/ansible-playbooks/+/988692",
+          "statement": "Depends-On: https://review.opendev.org/c/starlingx/config/+/988690",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/ea0071cfe2764a6fbcf095f26880e365"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "starlingx/ansible-playbooks",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/ansible-playbooks/raw/commit/0219d566f0810743658a2cf504cd5eba2b8523fb/LICENSE"
+    },
+    {
+      "repository": "starlingx/config",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/starlingx/config/raw/commit/0ade8fe1358ad9319fb3630aa0585cf276fa3bf6/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-5050",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 5050,
+      "change_id": "open-telemetry/opentelemetry-specification#5050",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/5050",
+      "status": "MERGED",
+      "subject": "Bound instruments",
+      "branch": "main",
+      "created": "2026-04-24T17:37:04Z",
+      "submitted": "2026-05-08T14:25:08Z"
+    },
+    "base_commit": "e6284fc198de7bd986511e5769a9c04745e1feef",
+    "candidate_commit": "b7b0bf77290fc5ac969c23fc8b21b592a44705d6",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "spec-compliance-matrix.md",
+      "spec-compliance-matrix/cpp.yaml",
+      "spec-compliance-matrix/dotnet.yaml",
+      "spec-compliance-matrix/erlang.yaml",
+      "spec-compliance-matrix/go.yaml",
+      "spec-compliance-matrix/java.yaml",
+      "spec-compliance-matrix/js.yaml",
+      "spec-compliance-matrix/kotlin.yaml",
+      "spec-compliance-matrix/php.yaml",
+      "spec-compliance-matrix/python.yaml",
+      "spec-compliance-matrix/ruby.yaml",
+      "spec-compliance-matrix/rust.yaml",
+      "spec-compliance-matrix/swift.yaml",
+      "spec-compliance-matrix/template.yaml",
+      "specification/metrics/api.md",
+      "specification/metrics/sdk.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/e6284fc198de7bd986511e5769a9c04745e1feef...b7b0bf77290fc5ac969c23fc8b21b592a44705d6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-cpp",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/4042"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/8527"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-cpp",
+      "pull_request": {
+        "provider": "github",
+        "number": 4042,
+        "change_id": "open-telemetry/opentelemetry-cpp#4042",
+        "url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/4042",
+        "status": "MERGED",
+        "subject": "Add preview support for bound  instruments ",
+        "branch": "main",
+        "created": "2026-05-02T05:54:03Z",
+        "submitted": "2026-06-20T10:54:17Z"
+      },
+      "commit": "69b85a368b78af1c5800d5f5bb25e9d933a40d0b",
+      "changed_paths": [
+        "CMakeLists.txt",
+        "api/BUILD",
+        "api/CMakeLists.txt",
+        "api/include/opentelemetry/metrics/noop.h",
+        "api/include/opentelemetry/metrics/sync_instruments.h",
+        "api/include/opentelemetry/version.h",
+        "sdk/include/opentelemetry/sdk/metrics/state/metric_storage.h",
+        "sdk/include/opentelemetry/sdk/metrics/state/multi_metric_storage.h",
+        "sdk/include/opentelemetry/sdk/metrics/state/sync_metric_storage.h",
+        "sdk/include/opentelemetry/sdk/metrics/sync_instruments.h",
+        "sdk/src/metrics/state/sync_metric_storage.cc",
+        "sdk/src/metrics/sync_instruments.cc",
+        "sdk/test/metrics/CMakeLists.txt",
+        "sdk/test/metrics/bound_sync_instruments_test.cc",
+        "sdk/test/metrics/measurements_benchmark.cc",
+        "test_common/cmake/preview-options.cmake"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-cpp/pull/4042",
+          "statement": "提供与源规范对应的绑定仪器预览实现。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 8527,
+        "change_id": "open-telemetry/opentelemetry-java#8527",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/8527",
+        "status": "MERGED",
+        "subject": "Bound instruments",
+        "branch": "main",
+        "created": "2026-06-23T20:11:55Z",
+        "submitted": "2026-07-23T14:30:35Z"
+      },
+      "commit": "0d4ee9f1f26da8f2ea0a206d37e5a9381e966906",
+      "changed_paths": [
+        "api/incubator/README.md",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundDoubleCounter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundDoubleGauge.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundDoubleHistogram.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundDoubleUpDownCounter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundLongCounter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundLongGauge.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundLongHistogram.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/BoundLongUpDownCounter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedDefaultMeter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedDoubleCounter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedDoubleGauge.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedDoubleHistogram.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedDoubleUpDownCounter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedLongCounter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedLongGauge.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedLongHistogram.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/metrics/ExtendedLongUpDownCounter.java",
+        "api/incubator/src/test/java/io/opentelemetry/api/incubator/metrics/BoundInstrumentUsageTest.java",
+        "sdk/all/src/jmh/java/io/opentelemetry/sdk/MetricRecordBenchmark.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkDoubleCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkDoubleGauge.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkDoubleHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkDoubleUpDownCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkLongCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkLongGauge.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkLongHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ExtendedSdkLongUpDownCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkDoubleCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkDoubleHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkLongCounter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkLongHistogram.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/SdkMeter.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/state/BoundStorageHandle.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/state/CumulativeSynchronousMetricStorage.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/state/DefaultSynchronousMetricStorage.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/state/DeltaSynchronousMetricStorage.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/state/EmptyMetricStorage.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/internal/state/WriteableMetricStorage.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/internal/state/MetricStorageRegistryTest.java",
+        "sdk/metrics/src/testIncubating/java/io/opentelemetry/sdk/metrics/BoundInstrumentExemplarTest.java",
+        "sdk/metrics/src/testIncubating/java/io/opentelemetry/sdk/metrics/SynchronousInstrumentStressTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/8527",
+          "statement": "正文明确为源规范的 Java 实现。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-cpp",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-cpp"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

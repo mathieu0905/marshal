@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-2091",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2091,
+      "change_id": "rust-lang/rfcs#2091",
+      "url": "https://github.com/rust-lang/rfcs/pull/2091",
+      "status": "MERGED",
+      "subject": "RFC: Semantic inlining (another try to the unwrap/expect line info problem)",
+      "branch": "master",
+      "created": "2017-07-31T16:49:11Z",
+      "submitted": "2018-01-27T17:46:59Z"
+    },
+    "base_commit": "a4828f62f7651d85a535b9c0b03c7ecf473d9590",
+    "candidate_commit": "fa0a2950cf71488753c06bf9308a776a71437cc6",
+    "changed_paths": [
+      "text/0000-inline-semantic.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/a4828f62f7651d85a535b9c0b03c7ecf473d9590...fa0a2950cf71488753c06bf9308a776a71437cc6.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/89920"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 89920,
+        "change_id": "rust-lang/rust#89920",
+        "url": "https://github.com/rust-lang/rust/pull/89920",
+        "status": "MERGED",
+        "subject": "Implement -Z location-detail flag",
+        "branch": "master",
+        "created": "2021-10-15T17:19:40Z",
+        "submitted": "2021-10-23T09:21:44Z"
+      },
+      "commit": "b802629311ee9873978e91f185657fd6ae3cba28",
+      "changed_paths": [
+        "compiler/rustc_const_eval/src/interpret/intrinsics/caller_location.rs",
+        "compiler/rustc_interface/src/tests.rs",
+        "compiler/rustc_session/src/config.rs",
+        "compiler/rustc_session/src/options.rs",
+        "src/doc/unstable-book/src/compiler-flags/location-detail.md",
+        "src/test/ui/panics/location-detail-panic-no-column.rs",
+        "src/test/ui/panics/location-detail-panic-no-column.run.stderr",
+        "src/test/ui/panics/location-detail-panic-no-file.rs",
+        "src/test/ui/panics/location-detail-panic-no-file.run.stderr",
+        "src/test/ui/panics/location-detail-panic-no-line.rs",
+        "src/test/ui/panics/location-detail-panic-no-line.run.stderr",
+        "src/test/ui/panics/location-detail-unwrap-no-file.rs",
+        "src/test/ui/panics/location-detail-unwrap-no-file.run.stderr"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/89920",
+          "statement": "目标正文明确声明实现源 RFC 描述的位置细节开关。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-984",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 984,
+      "change_id": "open-telemetry/opentelemetry-specification#984",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/984",
+      "status": "MERGED",
+      "subject": "Specify LastValue for ValueObserver, TBD for ValueRecorder",
+      "branch": "master",
+      "created": "2020-09-22T07:23:15Z",
+      "submitted": "2020-09-23T13:37:01Z"
+    },
+    "base_commit": "3e66e6fcc3bb8070db7ccbdd30005ae9f35ac29c",
+    "candidate_commit": "a5c458000926cf3bb633d332dc319b07f9544441",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/metrics/api.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/3e66e6fcc3bb8070db7ccbdd30005ae9f35ac29c...a5c458000926cf3bb633d332dc319b07f9544441.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/1689"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-rust/pull/241"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 1689,
+        "change_id": "open-telemetry/opentelemetry-java#1689",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1689",
+        "status": "MERGED",
+        "subject": "Convert the ValueObserver instruments to use the LastValue aggegration.",
+        "branch": "master",
+        "created": "2020-09-23T17:44:33Z",
+        "submitted": "2020-10-12T22:19:55Z"
+      },
+      "commit": "c468f401f2bd73fce140e61b660d3920c27fb793",
+      "changed_paths": [
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/ViewRegistry.java",
+        "sdk/metrics/src/main/java/io/opentelemetry/sdk/metrics/view/Aggregations.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/DoubleValueObserverSdkTest.java",
+        "sdk/metrics/src/test/java/io/opentelemetry/sdk/metrics/LongValueObserverSdkTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/1689",
+          "statement": "明确按源规范改用 LastValue 聚合。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 241,
+        "change_id": "open-telemetry/opentelemetry-rust#241",
+        "url": "https://github.com/open-telemetry/opentelemetry-rust/pull/241",
+        "status": "MERGED",
+        "subject": "Use last value aggregator for value observers",
+        "branch": "master",
+        "created": "2020-10-03T20:05:38Z",
+        "submitted": "2020-10-03T21:02:45Z"
+      },
+      "commit": "afa8bce9c0f21599ff005fd85e4e55c0e79e954a",
+      "changed_paths": [
+        "benches/ddsketch.rs",
+        "src/sdk/export/metrics/aggregation.rs",
+        "src/sdk/metrics/aggregators/ddsketch.rs",
+        "src/sdk/metrics/aggregators/histogram.rs",
+        "src/sdk/metrics/aggregators/mod.rs",
+        "src/sdk/metrics/selectors/simple.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-rust/pull/241",
+          "statement": "明确按源规范切换 LastValue 聚合。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-rust",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-rust"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

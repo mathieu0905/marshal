@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-994212",
+  "project": "drizzle",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "drizzle/drizzle",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 994212,
+      "change_id": "Ibfada663383b19f1c842e382b7bdc3f1c7e78a7f",
+      "url": "https://review.opendev.org/c/drizzle/drizzle/+/994212",
+      "status": "MERGED",
+      "subject": "Remove an extra drizzle from the include path",
+      "branch": "main",
+      "created": "2026-06-21 16:19:16.000000000",
+      "submitted": "2026-06-21 17:33:28.000000000"
+    },
+    "base_commit": "2c3c426efdf6c9403637f80103551ce565d3e1aa",
+    "candidate_commit": "d69155f536907b0d9c4cad15ca4196416322c086",
+    "changed_paths": [
+      "Makefile.am",
+      "drizzled/algorithm/include.am",
+      "drizzled/include.am",
+      "drizzled/message/include.am",
+      "drizzled/util/include.am"
+    ],
+    "patch_url": "https://review.opendev.org/changes/994212/revisions/d69155f536907b0d9c4cad15ca4196416322c086/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "drizzle/drizzle",
+      "target_repository": "drizzle/drizzle-test",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/drizzle/drizzle-test/+/994198"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "drizzle/drizzle-test",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 994198,
+        "change_id": "Id2735b4101ef78f692af153a1a59a4abde0750f4",
+        "url": "https://review.opendev.org/c/drizzle/drizzle-test/+/994198",
+        "status": "MERGED",
+        "subject": "Add sysbench runs against instrumented server",
+        "branch": "main",
+        "created": "2026-06-20 22:43:32.000000000",
+        "submitted": "2026-06-22 14:53:40.000000000"
+      },
+      "commit": "c3ccc617680b5563c813aed1ca8e67b155af2db5",
+      "changed_paths": [
+        ".gitignore",
+        ".zuul.yaml",
+        "perf/Containerfile.sysbench",
+        "perf/compose.callgrind.yaml",
+        "perf/compose.massif.yaml",
+        "perf/metrics.py",
+        "perf/sysbench-entrypoint.sh",
+        "perf/tests/test_metrics.py",
+        "playbooks/perf-local.yaml",
+        "playbooks/perf.yaml",
+        "playbooks/pydtr-unit.yaml",
+        "playbooks/roles/perf/defaults/main.yaml",
+        "playbooks/roles/perf/tasks/main.yaml",
+        "playbooks/roles/perf/tasks/pass.yaml",
+        "playbooks/roles/podman/defaults/main.yaml",
+        "playbooks/ruff.yaml",
+        "pyproject.toml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/drizzle/drizzle-test/+/994198",
+          "statement": "Depends-On: https://review.opendev.org/c/drizzle/drizzle/+/994212",
+          "ci_url": "https://zuul.opendev.org/t/opendev/buildset/c546dba263954db19fe0cdd26c15bbc1"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "drizzle/drizzle",
+      "spdx": "GPL-2.0-only",
+      "evidence_url": "https://opendev.org/drizzle/drizzle/raw/commit/46e607180e342ad73278258c4a964fc2c9f26f00/COPYING"
+    },
+    {
+      "repository": "drizzle/drizzle-test",
+      "spdx": "GPL-2.0-only",
+      "evidence_url": "https://opendev.org/drizzle/drizzle-test/raw/commit/0347234747c1ec7bf9b5e1a9a8affc60e74b66ef/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

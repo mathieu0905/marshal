@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-978007",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/openstack-ansible-rabbitmq_server",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 978007,
+      "change_id": "I9ee5c698c2104652e7d319ad74cb2ba2b11d69d6",
+      "url": "https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/978007",
+      "status": "MERGED",
+      "subject": "Ensure python3-requests is installed",
+      "branch": "master",
+      "created": "2026-02-25 17:58:42.000000000",
+      "submitted": "2026-03-10 20:06:23.000000000"
+    },
+    "base_commit": "a61ddd22c5a9e563eafccabffcafa88ad4e2196c",
+    "candidate_commit": "fce022563c5a583547845e446a2ff62afd9d2e35",
+    "changed_paths": [
+      "vars/debian.yml",
+      "vars/redhat.yml"
+    ],
+    "patch_url": "https://review.opendev.org/changes/978007/revisions/fce022563c5a583547845e446a2ff62afd9d2e35/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/openstack-ansible-rabbitmq_server",
+      "target_repository": "openstack/openstack-ansible",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/openstack-ansible/+/977917"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/openstack-ansible",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 977917,
+        "change_id": "I46b381de4be0ca3d37a84dc040d98ca6748a0f4a",
+        "url": "https://review.opendev.org/c/openstack/openstack-ansible/+/977917",
+        "status": "MERGED",
+        "subject": "Bump SHAs for master",
+        "branch": "master",
+        "created": "2026-02-25 08:30:22.000000000",
+        "submitted": "2026-03-16 16:25:07.000000000"
+      },
+      "commit": "980dd68d4f1f8ccb76fa9e7efef087b0e2263a88",
+      "changed_paths": [
+        "ansible-collection-requirements.yml",
+        "global-requirement-pins.txt",
+        "inventory/group_vars/all/source_git.yml",
+        "inventory/group_vars/aodh_all/source_git.yml",
+        "inventory/group_vars/barbican_all/source_git.yml",
+        "inventory/group_vars/blazar_all/source_git.yml",
+        "inventory/group_vars/ceilometer_all/source_git.yml",
+        "inventory/group_vars/cinder_all/source_git.yml",
+        "inventory/group_vars/cloudkitty_all/source_git.yml",
+        "inventory/group_vars/designate_all/source_git.yml",
+        "inventory/group_vars/glance_all/source_git.yml",
+        "inventory/group_vars/heat_all/source_git.yml",
+        "inventory/group_vars/horizon_all/source_git.yml",
+        "inventory/group_vars/ironic_all/source_git.yml",
+        "inventory/group_vars/keystone_all/source_git.yml",
+        "inventory/group_vars/magnum_all/source_git.yml",
+        "inventory/group_vars/manila_all/source_git.yml",
+        "inventory/group_vars/masakari_all/source_git.yml",
+        "inventory/group_vars/mistral_all/source_git.yml",
+        "inventory/group_vars/neutron_all/source_git.yml",
+        "inventory/group_vars/nova_all/source_git.yml",
+        "inventory/group_vars/octavia_all/source_git.yml",
+        "inventory/group_vars/placement_all/source_git.yml",
+        "inventory/group_vars/skyline_all/source_git.yml",
+        "inventory/group_vars/swift_all/source_git.yml",
+        "inventory/group_vars/trove_all/source_git.yml",
+        "inventory/group_vars/utility_all/source_git.yml",
+        "inventory/group_vars/zun_all/source_git.yml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/openstack-ansible/+/977917",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/openstack-ansible-rabbitmq_server/+/978007",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/2abecf998bf9489282847f7afc6d9b6d"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/openstack-ansible",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible/raw/commit/f8552f00f77354653d0d31c982893b8bc58fb128/LICENSE.txt"
+    },
+    {
+      "repository": "openstack/openstack-ansible-rabbitmq_server",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/openstack-ansible-rabbitmq_server/raw/commit/90ca063236bdb7c1c69d519fdb2de13874fc0d60/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

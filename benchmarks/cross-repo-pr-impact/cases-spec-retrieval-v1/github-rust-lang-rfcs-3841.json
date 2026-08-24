@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3841",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3841,
+      "change_id": "rust-lang/rfcs#3841",
+      "url": "https://github.com/rust-lang/rfcs/pull/3841",
+      "status": "MERGED",
+      "subject": "Demote `x86_64-apple-darwin` from Tier 1 to Tier 2 with host tools",
+      "branch": "master",
+      "created": "2025-07-23T13:31:31Z",
+      "submitted": "2025-08-11T14:54:48Z"
+    },
+    "base_commit": "192c533633bb81aa3010b30e49f828d6cde36807",
+    "candidate_commit": "74515b9ff64c82c9e0dd440c961b791190d73ed2",
+    "changed_paths": [
+      "text/0000-demote-x86_64-apple-darwin.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/192c533633bb81aa3010b30e49f828d6cde36807...74515b9ff64c82c9e0dd440c961b791190d73ed2.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/145252"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 145252,
+        "change_id": "rust-lang/rust#145252",
+        "url": "https://github.com/rust-lang/rust/pull/145252",
+        "status": "MERGED",
+        "subject": "Demote x86_64-apple-darwin to Tier 2 with host tools",
+        "branch": "master",
+        "created": "2025-08-11T13:55:06Z",
+        "submitted": "2025-08-20T08:25:46Z"
+      },
+      "commit": "c574c91e5739519b2fd3fdb5f07fa6e102705703",
+      "changed_paths": [
+        "compiler/rustc_target/src/spec/targets/x86_64_apple_darwin.rs",
+        "src/ci/github-actions/jobs.yml",
+        "src/doc/rustc/src/platform-support.md",
+        "src/doc/rustc/src/platform-support/apple-darwin.md",
+        "src/tools/build-manifest/src/main.rs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/145252",
+          "statement": "目标正文明确声明实施源 RFC 的平台级别调整决定。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

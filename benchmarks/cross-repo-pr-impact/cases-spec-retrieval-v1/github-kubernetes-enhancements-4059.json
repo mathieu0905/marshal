@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-4059",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 4059,
+      "change_id": "kubernetes/enhancements#4059",
+      "url": "https://github.com/kubernetes/enhancements/pull/4059",
+      "status": "MERGED",
+      "subject": "[WIP] KEP-3716: add beta milestone for AdmissionWebhookMatchConditions",
+      "branch": "master",
+      "created": "2023-06-06T02:46:46Z",
+      "submitted": "2023-06-08T02:50:16Z"
+    },
+    "base_commit": "26c0a72b9b216dc86a6e02bcdf96eb9f6afce0d3",
+    "candidate_commit": "04a3a543806793bcc79bd73f9b34af4546989dc7",
+    "changed_paths": [
+      "keps/sig-api-machinery/3716-admission-webhook-match-conditions/README.md",
+      "keps/sig-api-machinery/3716-admission-webhook-match-conditions/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/26c0a72b9b216dc86a6e02bcdf96eb9f6afce0d3...04a3a543806793bcc79bd73f9b34af4546989dc7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/119380"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 119380,
+        "change_id": "kubernetes/kubernetes#119380",
+        "url": "https://github.com/kubernetes/kubernetes/pull/119380",
+        "status": "MERGED",
+        "subject": "Graduate `AdmissionWebhookMatchCondition` to beta",
+        "branch": "master",
+        "created": "2023-07-17T17:31:38Z",
+        "submitted": "2023-07-17T23:55:07Z"
+      },
+      "commit": "94c8ad289bb83c6457d1711a94c8a2cce9a7e8bc",
+      "changed_paths": [
+        "api/openapi-spec/swagger.json",
+        "api/openapi-spec/v3/apis__admissionregistration.k8s.io__v1_openapi.json",
+        "pkg/apis/admissionregistration/types.go",
+        "pkg/features/kube_features.go",
+        "pkg/generated/openapi/zz_generated.openapi.go",
+        "staging/src/k8s.io/api/admissionregistration/v1/generated.proto",
+        "staging/src/k8s.io/api/admissionregistration/v1/types.go",
+        "staging/src/k8s.io/api/admissionregistration/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/api/admissionregistration/v1beta1/generated.proto",
+        "staging/src/k8s.io/api/admissionregistration/v1beta1/types.go",
+        "staging/src/k8s.io/api/admissionregistration/v1beta1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/apiserver/pkg/features/kube_features.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/119380",
+          "statement": "目标按源 KEP 的里程碑将准入匹配条件提升到测试阶段。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

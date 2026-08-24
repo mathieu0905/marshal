@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.1",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "case_id": "github-ethereum-eips-2718",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2718,
+      "change_id": "ethereum/EIPs#2718",
+      "url": "https://github.com/ethereum/EIPs/pull/2718",
+      "status": "MERGED",
+      "subject": "Creates EIP-2718: Typed Transaction Envelope",
+      "branch": "master",
+      "created": "2020-06-13T02:35:03Z",
+      "submitted": "2020-06-13T02:57:57Z"
+    },
+    "base_commit": "db7281b5d06adce27ae2e35afce7b785b7f1981f",
+    "candidate_commit": "35d61f1882ee499cd40758e3988d5928edc60aed",
+    "changed_paths": [
+      "EIPS/eip-2718.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/pull/2718.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "linked_companion_change",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/21502"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 21502,
+        "change_id": "ethereum/go-ethereum#21502",
+        "url": "https://github.com/ethereum/go-ethereum/pull/21502",
+        "status": "MERGED",
+        "subject": "EIP-2718: Typed Transaction Envelope + EIP-2930",
+        "branch": "master",
+        "created": "2020-08-29T21:35:22Z",
+        "submitted": "2021-02-25T14:26:58Z"
+      },
+      "commit": "9750e9b2469978e4b9a7546ff09ce052015ace8c",
+      "changed_paths": [
+        "accounts/abi/bind/auth.go",
+        "accounts/abi/bind/backends/simulated.go",
+        "accounts/keystore/keystore.go",
+        "accounts/scwallet/wallet.go",
+        "accounts/usbwallet/trezor.go",
+        "cmd/clef/main.go",
+        "cmd/evm/README.md",
+        "cmd/evm/internal/t8ntool/execution.go",
+        "cmd/evm/internal/t8ntool/flags.go",
+        "cmd/evm/internal/t8ntool/transition.go",
+        "cmd/evm/main.go",
+        "cmd/evm/testdata/8/alloc.json",
+        "cmd/evm/testdata/8/env.json",
+        "cmd/evm/testdata/8/readme.md",
+        "cmd/evm/testdata/8/txs.json",
+        "cmd/geth/main.go",
+        "cmd/geth/usage.go",
+        "cmd/utils/flags.go",
+        "core/bench_test.go",
+        "core/blockchain_test.go",
+        "core/error.go",
+        "core/genesis.go",
+        "core/genesis_alloc.go",
+        "core/state/statedb.go",
+        "core/state_prefetcher.go",
+        "core/state_processor.go",
+        "core/state_transition.go",
+        "core/tx_pool.go",
+        "core/types/access_list_tx.go",
+        "core/types/block.go",
+        "core/types/block_test.go",
+        "core/types/derive_sha.go",
+        "core/types/gen_access_tuple.go",
+        "core/types/gen_receipt_json.go",
+        "core/types/gen_tx_json.go",
+        "core/types/hashing.go",
+        "core/types/hashing_test.go",
+        "core/types/legacy_tx.go",
+        "core/types/receipt.go",
+        "core/types/receipt_test.go",
+        "core/types/transaction.go",
+        "core/types/transaction_marshalling.go",
+        "core/types/transaction_signing.go",
+        "core/types/transaction_test.go",
+        "core/vm/interface.go",
+        "core/vm/runtime/runtime.go",
+        "eth/downloader/downloader.go",
+        "eth/gasprice/gasprice_test.go",
+        "eth/tracers/api.go",
+        "eth/tracers/tracer.go",
+        "ethclient/ethclient.go",
+        "ethclient/ethclient_test.go",
+        "ethclient/signer.go",
+        "graphql/graphql.go",
+        "interfaces.go",
+        "internal/ethapi/api.go",
+        "internal/guide/guide_test.go",
+        "les/benchmark.go",
+        "les/odr_test.go",
+        "light/odr_test.go",
+        "light/txpool.go",
+        "miner/worker.go",
+        "miner/worker_test.go",
+        "params/config.go",
+        "params/protocol_params.go",
+        "signer/core/api.go",
+        "tests/state_test_util.go",
+        "tests/transaction_test_util.go",
+        "trie/stacktrie_test.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "transaction_encoding",
+      "impact_kind_source": "manual",
+      "expected_checks": {
+        "label_kind": "manually_curated",
+        "paths": [
+          "core/types/access_list_tx.go",
+          "core/types/legacy_tx.go",
+          "core/types/transaction.go",
+          "core/types/transaction_marshalling.go",
+          "core/types/transaction_test.go",
+          "core/types/receipt.go",
+          "core/types/receipt_test.go",
+          "tests/transaction_test_util.go"
+        ],
+        "symbols": [
+          "Transaction.MarshalBinary",
+          "Transaction.UnmarshalBinary",
+          "Transaction.Type"
+        ],
+        "tests": [
+          "core/types/transaction_test.go",
+          "core/types/receipt_test.go",
+          "core/blockchain_test.go",
+          "tests/transaction_test_util.go"
+        ],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "implementation_references_published_spec",
+          "url": "https://github.com/ethereum/go-ethereum/pull/21502",
+          "statement": "The merged implementation PR identifies EIP-2718 in its title and links the published EIP created by ethereum/EIPs#2718.",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/9750e9b2469978e4b9a7546ff09ce052015ace8c/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "curated_ethereum_cases",
+    "collected_at": "2026-08-22",
+    "query": "EIP-2718 implementation reference"
+  }
+}

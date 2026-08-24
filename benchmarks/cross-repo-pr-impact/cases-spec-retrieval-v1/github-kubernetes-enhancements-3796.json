@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-kubernetes-enhancements-3796",
+  "project": "kubernetes",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "kubernetes/enhancements",
+    "pull_request": {
+      "provider": "github",
+      "number": 3796,
+      "change_id": "kubernetes/enhancements#3796",
+      "url": "https://github.com/kubernetes/enhancements/pull/3796",
+      "status": "MERGED",
+      "subject": "KEP-3762: PersistentVolume last phase transition time",
+      "branch": "master",
+      "created": "2023-01-30T11:21:55Z",
+      "submitted": "2023-02-08T20:30:44Z"
+    },
+    "base_commit": "48599d1cc4391c5d176606490ed6f766677855d9",
+    "candidate_commit": "d56fd5cc27eb62bbf06a6f48349579941f0460e4",
+    "changed_paths": [
+      "keps/sig-storage/3762-persistent-volume-last-phase-transition-time/README.md",
+      "keps/sig-storage/3762-persistent-volume-last-phase-transition-time/kep.yaml"
+    ],
+    "patch_url": "https://github.com/kubernetes/enhancements/compare/48599d1cc4391c5d176606490ed6f766677855d9...d56fd5cc27eb62bbf06a6f48349579941f0460e4.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "kubernetes/enhancements",
+      "target_repository": "kubernetes/kubernetes",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/pull/116469"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "kubernetes/kubernetes",
+      "pull_request": {
+        "provider": "github",
+        "number": 116469,
+        "change_id": "kubernetes/kubernetes#116469",
+        "url": "https://github.com/kubernetes/kubernetes/pull/116469",
+        "status": "MERGED",
+        "subject": "PersistentVolume last phase transition time",
+        "branch": "master",
+        "created": "2023-03-10T13:47:12Z",
+        "submitted": "2023-07-21T23:10:08Z"
+      },
+      "commit": "294f5c9a42fead4a4cc75340a6b9171c9c657b3e",
+      "changed_paths": [
+        "api/openapi-spec/swagger.json",
+        "api/openapi-spec/v3/api__v1_openapi.json",
+        "pkg/api/persistentvolume/util.go",
+        "pkg/api/persistentvolume/util_test.go",
+        "pkg/apis/core/types.go",
+        "pkg/apis/core/v1/zz_generated.conversion.go",
+        "pkg/apis/core/zz_generated.deepcopy.go",
+        "pkg/features/kube_features.go",
+        "pkg/generated/openapi/zz_generated.openapi.go",
+        "pkg/registry/core/persistentvolume/strategy.go",
+        "pkg/registry/core/persistentvolume/strategy_test.go",
+        "staging/src/k8s.io/api/core/v1/generated.pb.go",
+        "staging/src/k8s.io/api/core/v1/generated.proto",
+        "staging/src/k8s.io/api/core/v1/types.go",
+        "staging/src/k8s.io/api/core/v1/types_swagger_doc_generated.go",
+        "staging/src/k8s.io/api/core/v1/zz_generated.deepcopy.go",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.PersistentVolume.json",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.PersistentVolume.pb",
+        "staging/src/k8s.io/api/testdata/HEAD/core.v1.PersistentVolume.yaml",
+        "staging/src/k8s.io/client-go/applyconfigurations/core/v1/persistentvolumestatus.go",
+        "staging/src/k8s.io/client-go/applyconfigurations/internal/internal.go",
+        "test/e2e/storage/persistent_volumes.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/kubernetes/kubernetes/pull/116469",
+          "statement": "目标实现源 KEP 定义的持久卷阶段转换时间。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "kubernetes/enhancements",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/enhancements/blob/master/LICENSE"
+    },
+    {
+      "repository": "kubernetes/kubernetes",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://github.com/kubernetes/kubernetes/blob/master/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

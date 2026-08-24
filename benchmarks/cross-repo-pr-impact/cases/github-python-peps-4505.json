@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-python-peps-4505",
+  "project": "python",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "python/peps",
+    "pull_request": {
+      "provider": "github",
+      "number": 4505,
+      "change_id": "python/peps#4505",
+      "url": "https://github.com/python/peps/pull/4505",
+      "status": "MERGED",
+      "subject": "PEP 800: Solid bases in the type system",
+      "branch": "main",
+      "created": "2025-07-22T01:07:24Z",
+      "submitted": "2025-07-24T00:30:02Z"
+    },
+    "base_commit": "914a826b0dccfbf23142b4a0442b9d525084c33d",
+    "candidate_commit": "b8996ec9f2afbe301d7a5b03bee9ca5b9f35e5b7",
+    "changed_paths": [
+      ".github/CODEOWNERS",
+      "peps/pep-0800.rst"
+    ],
+    "patch_url": "https://github.com/python/peps/compare/914a826b0dccfbf23142b4a0442b9d525084c33d...b8996ec9f2afbe301d7a5b03bee9ca5b9f35e5b7.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "python/peps",
+      "target_repository": "python/typing_extensions",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/python/typing_extensions/pull/634"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "python/typing_extensions",
+      "pull_request": {
+        "provider": "github",
+        "number": 634,
+        "change_id": "python/typing_extensions#634",
+        "url": "https://github.com/python/typing_extensions/pull/634",
+        "status": "MERGED",
+        "subject": "Add `@disjoint_base` (PEP 800)",
+        "branch": "main",
+        "created": "2025-07-22T01:49:30Z",
+        "submitted": "2025-08-18T13:44:20Z"
+      },
+      "commit": "d38ef9084417f7467a718650be736290c824ae55",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "doc/index.rst",
+        "src/test_typing_extensions.py",
+        "src/typing_extensions.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/python/typing_extensions/pull/634",
+          "statement": "正文明确实现 PEP 800 的装饰器。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "python/peps",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/peps"
+    },
+    {
+      "repository": "python/typing_extensions",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/python/typing_extensions"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

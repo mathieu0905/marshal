@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.1",
+  "case_id": "opendev-952566",
+  "project": "openstack",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "review.opendev.org",
+    "repository": "openstack/kolla",
+    "pull_request": {
+      "provider": "gerrit",
+      "number": 952566,
+      "change_id": "Icb0e47cf95a67cb4585c71f863e542bc59ff5009",
+      "url": "https://review.opendev.org/c/openstack/kolla/+/952566",
+      "status": "MERGED",
+      "subject": "ovn: Fix log permissions",
+      "branch": "master",
+      "created": "2025-06-13 10:12:09.000000000",
+      "submitted": "2025-07-10 14:31:08.000000000"
+    },
+    "base_commit": "2319d121451167c2519938c234de2c65e7d3a797",
+    "candidate_commit": "5121ff7679f416844ef74774c825b6be1382c74b",
+    "changed_paths": [
+      "docker/ovn/ovn-base/extend_start.sh",
+      "docker/ovn/ovn-controller/Dockerfile.j2",
+      "docker/ovn/ovn-controller/extend_start.sh",
+      "docker/ovn/ovn-nb-db-server/Dockerfile.j2",
+      "docker/ovn/ovn-nb-db-server/extend_start.sh",
+      "docker/ovn/ovn-northd/Dockerfile.j2",
+      "docker/ovn/ovn-northd/extend_start.sh",
+      "docker/ovn/ovn-sb-db-relay/Dockerfile.j2",
+      "docker/ovn/ovn-sb-db-relay/extend_start.sh",
+      "docker/ovn/ovn-sb-db-server/Dockerfile.j2",
+      "docker/ovn/ovn-sb-db-server/extend_start.sh"
+    ],
+    "patch_url": "https://review.opendev.org/changes/952566/revisions/5121ff7679f416844ef74774c825b6be1382c74b/patch"
+  },
+  "relations": [
+    {
+      "source_repository": "openstack/kolla",
+      "target_repository": "openstack/kolla-ansible",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954925"
+    },
+    {
+      "source_repository": "openstack/kolla",
+      "target_repository": "openstack/kolla-ansible",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954924"
+    },
+    {
+      "source_repository": "openstack/kolla",
+      "target_repository": "openstack/kolla-ansible",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954926"
+    },
+    {
+      "source_repository": "openstack/kolla",
+      "target_repository": "openstack/kolla-ansible",
+      "relation_kind": "explicit_depends_on",
+      "evidence_url": "https://review.opendev.org/c/openstack/kolla-ansible/+/942467"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "openstack/kolla-ansible",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 954925,
+        "change_id": "I75bab5ee1491a94ee4eee5da1e0be34b619d9975",
+        "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954925",
+        "status": "MERGED",
+        "subject": "fluentd: Add ovn logs to input",
+        "branch": "stable/2024.2",
+        "created": "2025-07-14 11:36:24.000000000",
+        "submitted": "2025-07-18 10:17:58.000000000"
+      },
+      "commit": "87d3868632ca765285d64f6ca6df2806746fc892",
+      "changed_paths": [
+        "ansible/roles/common/templates/conf/input/10-openvswitch.conf.j2",
+        "zuul.d/base.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954925",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/kolla/+/952566",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/fba97dd67f874972819e03a0aa426497"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/kolla-ansible",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 954924,
+        "change_id": "I75bab5ee1491a94ee4eee5da1e0be34b619d9975",
+        "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954924",
+        "status": "MERGED",
+        "subject": "fluentd: Add ovn logs to input",
+        "branch": "stable/2025.1",
+        "created": "2025-07-14 11:24:34.000000000",
+        "submitted": "2025-07-18 10:17:53.000000000"
+      },
+      "commit": "62cedab46264c85e0f9cfdb2330a39103b177931",
+      "changed_paths": [
+        "ansible/roles/common/templates/conf/input/10-openvswitch.conf.j2",
+        "zuul.d/base.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954924",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/kolla/+/952566",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/8267446fb89340d7bf489ebe75fc7e1f"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/kolla-ansible",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 954926,
+        "change_id": "I75bab5ee1491a94ee4eee5da1e0be34b619d9975",
+        "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954926",
+        "status": "MERGED",
+        "subject": "fluentd: Add ovn logs to input",
+        "branch": "stable/2024.1",
+        "created": "2025-07-14 11:37:54.000000000",
+        "submitted": "2025-07-18 09:28:25.000000000"
+      },
+      "commit": "f18a8057f9d27597f6b84d74957065d034222cce",
+      "changed_paths": [
+        "ansible/roles/common/templates/conf/input/10-openvswitch.conf.j2",
+        "zuul.d/base.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/954926",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/kolla/+/952566",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/6af558d7fc96450faf4839a0e116b0da"
+        }
+      ]
+    },
+    {
+      "repository": "openstack/kolla-ansible",
+      "pull_request": {
+        "provider": "gerrit",
+        "number": 942467,
+        "change_id": "I75bab5ee1491a94ee4eee5da1e0be34b619d9975",
+        "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/942467",
+        "status": "MERGED",
+        "subject": "fluentd: Add ovn logs to input",
+        "branch": "master",
+        "created": "2025-02-21 15:59:18.000000000",
+        "submitted": "2025-07-10 18:07:39.000000000"
+      },
+      "commit": "ad29adf0e5d196c869821fad5c0ed85025aa174e",
+      "changed_paths": [
+        "ansible/roles/common/templates/conf/input/10-openvswitch.conf.j2",
+        "zuul.d/base.yaml"
+      ],
+      "label_scope": "known_coordination",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordination_observed"
+      },
+      "evidence": [
+        {
+          "level": "coordination_proven",
+          "kind": "depends_on_trailer_and_merged_change",
+          "url": "https://review.opendev.org/c/openstack/kolla-ansible/+/942467",
+          "statement": "Depends-On: https://review.opendev.org/c/openstack/kolla/+/952566",
+          "ci_url": "https://zuul.opendev.org/t/openstack/buildset/577b9b06a1274af38583ec3e55d013a4"
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "openstack/kolla",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/kolla/raw/commit/5121ff7679f416844ef74774c825b6be1382c74b/LICENSE"
+    },
+    {
+      "repository": "openstack/kolla-ansible",
+      "spdx": "Apache-2.0",
+      "evidence_url": "https://opendev.org/openstack/kolla-ansible/raw/commit/87d3868632ca765285d64f6ca6df2806746fc892/LICENSE"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_opendev.py",
+    "collected_at": "2026-08-22",
+    "query": "message:\"Depends-On:\" status:merged"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-2384",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2384,
+      "change_id": "ethereum/EIPs#2384",
+      "url": "https://github.com/ethereum/EIPs/pull/2384",
+      "status": "MERGED",
+      "subject": "EIP-2019 - Difficulty Bomb Delay",
+      "branch": "master",
+      "created": "2019-11-20T18:50:45Z",
+      "submitted": "2019-11-22T20:33:07Z"
+    },
+    "base_commit": "14134bbaa6e18d4ea52530c908bfef5de743fdf0",
+    "candidate_commit": "8046f2609e64be1f675ef2baee7ddf5ea735996f",
+    "changed_paths": [
+      "EIPS/eip-2019.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/14134bbaa6e18d4ea52530c908bfef5de743fdf0...8046f2609e64be1f675ef2baee7ddf5ea735996f.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "besu-eth/besu",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/besu-eth/besu/pull/211"
+    },
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/20347"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "besu-eth/besu",
+      "pull_request": {
+        "provider": "github",
+        "number": 211,
+        "change_id": "besu-eth/besu#211",
+        "url": "https://github.com/besu-eth/besu/pull/211",
+        "status": "MERGED",
+        "subject": "EIP2384 - Ice Age Adustment around Istanbul",
+        "branch": "master",
+        "created": "2019-11-21T23:12:05Z",
+        "submitted": "2019-12-04T21:44:42Z"
+      },
+      "commit": "33bf65b994e01aa073c89c8ef676b075ed1f1cdd",
+      "changed_paths": [
+        ".circleci/config.yml",
+        "config/src/main/java/org/hyperledger/besu/config/GenesisConfigOptions.java",
+        "config/src/main/java/org/hyperledger/besu/config/JsonGenesisConfigOptions.java",
+        "config/src/main/resources/mainnet.json",
+        "config/src/main/resources/ropsten.json",
+        "config/src/test-support/java/org/hyperledger/besu/config/StubGenesisConfigOptions.java",
+        "config/src/test/java/org/hyperledger/besu/config/GenesisConfigOptionsTest.java",
+        "ethereum/core/build.gradle",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetDifficultyCalculators.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/MainnetProtocolSpecs.java",
+        "ethereum/core/src/main/java/org/hyperledger/besu/ethereum/mainnet/ProtocolScheduleBuilder.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/DifficultyCalculatorTests.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/mainnet/MainnetProtocolScheduleTest.java",
+        "ethereum/core/src/test/java/org/hyperledger/besu/ethereum/vm/ReferenceTestProtocolSchedules.java",
+        "ethereum/referencetests/src/test/resources",
+        "ethereum/retesteth/src/main/java/org/hyperledger/besu/ethereum/retesteth/methods/TestSetChainParams.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/besu-eth/besu/pull/211",
+          "statement": "实现 EIP-2384 冰河期调整。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 20347,
+        "change_id": "ethereum/go-ethereum#20347",
+        "url": "https://github.com/ethereum/go-ethereum/pull/20347",
+        "status": "MERGED",
+        "subject": "consensus/ethash, params: implement eip-2384: bump difficulty bomb",
+        "branch": "master",
+        "created": "2019-11-21T09:14:15Z",
+        "submitted": "2019-12-06T09:36:41Z"
+      },
+      "commit": "b7261254a1ed077bed2cdefa6f456954b2b84099",
+      "changed_paths": [
+        "cmd/geth/config.go",
+        "cmd/geth/main.go",
+        "cmd/utils/flags.go",
+        "consensus/ethash/consensus.go",
+        "core/forkid/forkid_test.go",
+        "core/genesis.go",
+        "eth/backend.go",
+        "eth/config.go",
+        "les/client.go",
+        "params/config.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/20347",
+          "statement": "正文明确实现源 EIP 并推迟难度炸弹。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "besu-eth/besu",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/besu-eth/besu"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/go-ethereum"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

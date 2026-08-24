@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-rust-lang-rfcs-3391",
+  "project": "rust",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "rust-lang/rfcs",
+    "pull_request": {
+      "provider": "github",
+      "number": 3391,
+      "change_id": "rust-lang/rfcs#3391",
+      "url": "https://github.com/rust-lang/rfcs/pull/3391",
+      "status": "MERGED",
+      "subject": "RFC: result_ffi_guarantees",
+      "branch": "master",
+      "created": "2023-02-21T15:55:16Z",
+      "submitted": "2023-04-18T19:46:47Z"
+    },
+    "base_commit": "c0a2cefda372726d17a9750621c23132b8dd8519",
+    "candidate_commit": "4b5a891141ed98b8ff85d8deef04950d80a62ec8",
+    "changed_paths": [
+      "text/0000-result_ffi_guarantees.md"
+    ],
+    "patch_url": "https://github.com/rust-lang/rfcs/compare/c0a2cefda372726d17a9750621c23132b8dd8519...4b5a891141ed98b8ff85d8deef04950d80a62ec8.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "rust-lang/rfcs",
+      "target_repository": "rust-lang/rust",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/rust-lang/rust/pull/122253"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "rust-lang/rust",
+      "pull_request": {
+        "provider": "github",
+        "number": 122253,
+        "change_id": "rust-lang/rust#122253",
+        "url": "https://github.com/rust-lang/rust/pull/122253",
+        "status": "MERGED",
+        "subject": "Support Result<T, E> across FFI when niche optimization can be used",
+        "branch": "master",
+        "created": "2024-03-09T20:13:08Z",
+        "submitted": "2024-05-05T04:37:01Z"
+      },
+      "commit": "ed532cc186a651a3e4b848ffbef8c080018f1732",
+      "changed_paths": [
+        "compiler/rustc_feature/src/unstable.rs",
+        "compiler/rustc_lint/src/types.rs",
+        "compiler/rustc_span/src/symbol.rs",
+        "src/doc/unstable-book/src/language-features/result-ffi-guarantees.md",
+        "tests/ui/feature-gates/feature-gate-result_ffi_guarantees.rs",
+        "tests/ui/feature-gates/feature-gate-result_ffi_guarantees.stderr",
+        "tests/ui/lint/lint-ctypes-enum.rs",
+        "tests/ui/lint/lint-ctypes-enum.stderr"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/rust-lang/rust/pull/122253",
+          "statement": "目标正文明确声明实现源 RFC 的跨语言接口结果类型保证。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "rust-lang/rfcs",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rfcs"
+    },
+    {
+      "repository": "rust-lang/rust",
+      "spdx": "Apache-2.0 OR MIT",
+      "evidence_url": "https://github.com/rust-lang/rust"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

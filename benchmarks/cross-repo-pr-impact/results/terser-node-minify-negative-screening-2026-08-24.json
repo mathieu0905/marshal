@@ -1,0 +1,59 @@
+{
+  "status": "rejected_as_bounded_negative",
+  "date": "2026-08-24",
+  "source": {
+    "repository": "terser/terser",
+    "before_version": "4.2.1",
+    "after_version": "4.3.9",
+    "behavior_commit": "a102fdbe18aa89588efaf7bcb814f7a576233145",
+    "behavior": "wrap_func_args defaults to true and adds parentheses around anonymous function arguments"
+  },
+  "candidate": {
+    "repository": "srod/node-minify",
+    "baseline_commit": "831b3e07dd81e02d010ae96c006459138e862cee",
+    "dependency_update_commit": "67bfb9407f2ad79079df675dc0346326dba5458a",
+    "pull_request": "https://github.com/srod/node-minify/pull/776",
+    "dependency_change": "terser 4.2.1 to 4.3.1",
+    "changed_paths": [
+      "packages/terser/package.json",
+      "yarn.lock"
+    ]
+  },
+  "native_contract_inspection": {
+    "test_file": "packages/terser/__tests__/terser.test.js",
+    "fixtures": [
+      "tests/fixtures/es5/fixture-1.js",
+      "tests/fixtures/es5/fixture-2.js",
+      "tests/fixtures/es5/fixture-3.js"
+    ],
+    "assertions": "The native tests assert only that minification returns no error and a non-null result; they do not assert generated output.",
+    "surface": "The JavaScript fixtures contain function expressions assigned to object properties, but no anonymous function passed as a call or constructor argument."
+  },
+  "controlled_output_probe": {
+    "method": "Run terser.minify directly on each unchanged native JavaScript fixture under both versions.",
+    "results": [
+      {
+        "fixture": "tests/fixtures/es5/fixture-1.js",
+        "output_relation": "byte-identical"
+      },
+      {
+        "fixture": "tests/fixtures/es5/fixture-2.js",
+        "output_relation": "byte-identical"
+      },
+      {
+        "fixture": "tests/fixtures/es5/fixture-3.js",
+        "output_relation": "byte-identical"
+      }
+    ],
+    "positive_control": {
+      "input": "foo(function () { return 1; });",
+      "terser_4_2_1": "foo(function(){return 1});",
+      "terser_4_3_9": "foo((function(){return 1}));"
+    }
+  },
+  "decision": {
+    "accepted_as_negative": false,
+    "reason": "The version probe confirms the source behavior, but node-minify's native JavaScript contract does not execute the changed anonymous-function-argument surface. A passing dependency-only pull request would therefore be ordinary green evidence, not a bounded no-impact label.",
+    "next_action": "Retain the rejection in the terser search frame and inspect the next candidate with native generated-output coverage."
+  }
+}

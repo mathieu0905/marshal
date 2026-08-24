@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-9248",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 9248,
+      "change_id": "ethereum/EIPs#9248",
+      "url": "https://github.com/ethereum/EIPs/pull/9248",
+      "status": "MERGED",
+      "subject": "Update EIP-7702: update `EXTCODE*` opcodes to act on full \"delegation designator\"",
+      "branch": "master",
+      "created": "2025-01-16T16:38:11Z",
+      "submitted": "2025-01-23T14:15:21Z"
+    },
+    "base_commit": "40ad571853554ad89172548129e41324552fe2d7",
+    "candidate_commit": "4f002d8a973ea8f6392ab67f9ccd9d609d3da9c9",
+    "changed_paths": [
+      "EIPS/eip-7702.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/40ad571853554ad89172548129e41324552fe2d7...4f002d8a973ea8f6392ab67f9ccd9d609d3da9c9.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/31089"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 31089,
+        "change_id": "ethereum/go-ethereum#31089",
+        "url": "https://github.com/ethereum/go-ethereum/pull/31089",
+        "status": "MERGED",
+        "subject": "core/vm: EXTCODE* return delegation designator for 7702",
+        "branch": "master",
+        "created": "2025-01-29T12:07:48Z",
+        "submitted": "2025-01-30T16:08:42Z"
+      },
+      "commit": "50d2e2fe89f9eabe422ea937f1bcb53cf26559c3",
+      "changed_paths": [
+        "core/vm/eips.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/31089",
+          "statement": "目标正文明确声明实现源规范对 EXTCODE 行为的更新。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}

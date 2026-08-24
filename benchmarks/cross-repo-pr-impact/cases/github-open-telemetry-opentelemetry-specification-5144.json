@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-open-telemetry-opentelemetry-specification-5144",
+  "project": "opentelemetry",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "open-telemetry/opentelemetry-specification",
+    "pull_request": {
+      "provider": "github",
+      "number": 5144,
+      "change_id": "open-telemetry/opentelemetry-specification#5144",
+      "url": "https://github.com/open-telemetry/opentelemetry-specification/pull/5144",
+      "status": "MERGED",
+      "subject": "env var carriers to only read and return normalized names",
+      "branch": "main",
+      "created": "2026-06-09T10:08:17Z",
+      "submitted": "2026-06-12T15:29:02Z"
+    },
+    "base_commit": "0b64046096b486fe819f43fea0185d05ace016cc",
+    "candidate_commit": "ed065ef72a53d67b0c0c10e5512133a255a2b77f",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "specification/context/env-carriers.md"
+    ],
+    "patch_url": "https://github.com/open-telemetry/opentelemetry-specification/compare/0b64046096b486fe819f43fea0185d05ace016cc...ed065ef72a53d67b0c0c10e5512133a255a2b77f.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-dotnet",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/7410"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-java",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java/pull/8474"
+    },
+    {
+      "source_repository": "open-telemetry/opentelemetry-specification",
+      "target_repository": "open-telemetry/opentelemetry-python",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python/pull/5289"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "pull_request": {
+        "provider": "github",
+        "number": 7410,
+        "change_id": "open-telemetry/opentelemetry-dotnet#7410",
+        "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/7410",
+        "status": "MERGED",
+        "subject": "[API] Update environment variable carrier",
+        "branch": "main",
+        "created": "2026-06-16T11:06:27Z",
+        "submitted": "2026-06-17T09:52:44Z"
+      },
+      "commit": "c5437f9b087128a4becc53d91ee025a7ca9db263",
+      "changed_paths": [
+        "docs/diagnostics/experimental-apis/OTEL1005.md",
+        "src/OpenTelemetry.Api/CHANGELOG.md",
+        "src/OpenTelemetry.Api/Context/Propagation/EnvironmentVariableCarrier.cs",
+        "test/OpenTelemetry.Api.Tests/Context/Propagation/EnvironmentVariableCarrierTests.cs"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-dotnet/pull/7410",
+          "statement": "明确为源规范变化更新环境变量载体。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "pull_request": {
+        "provider": "github",
+        "number": 8474,
+        "change_id": "open-telemetry/opentelemetry-java#8474",
+        "url": "https://github.com/open-telemetry/opentelemetry-java/pull/8474",
+        "status": "MERGED",
+        "subject": "Do not attempt to enumerate or normalize entries from carrier",
+        "branch": "main",
+        "created": "2026-06-10T22:06:57Z",
+        "submitted": "2026-06-16T14:42:52Z"
+      },
+      "commit": "e796c9fbbf41bb138053b33b3517c4550194b5fb",
+      "changed_paths": [
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/propagation/EnvironmentGetter.java",
+        "api/incubator/src/main/java/io/opentelemetry/api/incubator/propagation/EnvironmentSetter.java",
+        "api/incubator/src/test/java/io/opentelemetry/api/incubator/propagation/EnvironmentGetterTest.java",
+        "api/incubator/src/test/java/io/opentelemetry/api/incubator/propagation/EnvironmentSetterTest.java"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-java/pull/8474",
+          "statement": "按源规范停止枚举或规范化载体条目。",
+          "ci_url": null
+        }
+      ]
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "pull_request": {
+        "provider": "github",
+        "number": 5289,
+        "change_id": "open-telemetry/opentelemetry-python#5289",
+        "url": "https://github.com/open-telemetry/opentelemetry-python/pull/5289",
+        "status": "MERGED",
+        "subject": "opentelemetry-api: update EnvironmentGetter to ignore non-normalized environment variable names",
+        "branch": "main",
+        "created": "2026-06-11T09:55:46Z",
+        "submitted": "2026-06-17T13:34:17Z"
+      },
+      "commit": "52ca1a9ee915df1a7694d9f46175950c4aaece3b",
+      "changed_paths": [
+        ".changelog/5289.changed",
+        "opentelemetry-api/src/opentelemetry/propagators/_envcarrier.py",
+        "opentelemetry-api/tests/propagators/test__envcarrier.py"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/open-telemetry/opentelemetry-python/pull/5289",
+          "statement": "明确跟随源规范忽略非规范化名称。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "open-telemetry/opentelemetry-specification",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-specification"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-dotnet",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-dotnet"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-java",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-java"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-python",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/open-telemetry/opentelemetry-python"
+    }
+  ],
+  "provenance": {
+    "collector": "multi-target GitHub search, manual review, and opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged implementation PR directly linking a source specification PR"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.1",
+  "case_id": "github-ethereum-eips-2097",
+  "project": "ethereum",
+  "split": "test",
+  "case_kind": "independent_positive",
+  "source": {
+    "host": "github.com",
+    "repository": "ethereum/EIPs",
+    "pull_request": {
+      "provider": "github",
+      "number": 2097,
+      "change_id": "ethereum/EIPs#2097",
+      "url": "https://github.com/ethereum/EIPs/pull/2097",
+      "status": "MERGED",
+      "subject": "EIP-778: final update to IPv6 keys, use URL-safe base64",
+      "branch": "master",
+      "created": "2019-06-04T18:44:15Z",
+      "submitted": "2019-06-04T18:47:15Z"
+    },
+    "base_commit": "f1df38707b6c8b3779fcf7a2789c38e88121ac22",
+    "candidate_commit": "0acb5939555cbd0efcdd04da0d3acb0cc81d049a",
+    "changed_paths": [
+      "EIPS/eip-778.md"
+    ],
+    "patch_url": "https://github.com/ethereum/EIPs/compare/f1df38707b6c8b3779fcf7a2789c38e88121ac22...0acb5939555cbd0efcdd04da0d3acb0cc81d049a.patch"
+  },
+  "relations": [
+    {
+      "source_repository": "ethereum/EIPs",
+      "target_repository": "ethereum/go-ethereum",
+      "relation_kind": "specification_implementation",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/pull/19663"
+    }
+  ],
+  "targets": [
+    {
+      "repository": "ethereum/go-ethereum",
+      "pull_request": {
+        "provider": "github",
+        "number": 19663,
+        "change_id": "ethereum/go-ethereum#19663",
+        "url": "https://github.com/ethereum/go-ethereum/pull/19663",
+        "status": "MERGED",
+        "subject": "p2p/enode: improve IPv6 support, add ENR text representation",
+        "branch": "master",
+        "created": "2019-06-04T18:53:01Z",
+        "submitted": "2019-06-07T13:31:01Z"
+      },
+      "commit": "0324ece23e09fe0ea2372fca7a4839a84876ed35",
+      "changed_paths": [
+        "cmd/bootnode/main.go",
+        "cmd/faucet/faucet.go",
+        "cmd/utils/flags.go",
+        "cmd/wnode/main.go",
+        "les/serverpool.go",
+        "les/ulc.go",
+        "node/api.go",
+        "node/config.go",
+        "p2p/discover/v4_udp_test.go",
+        "p2p/enode/localnode.go",
+        "p2p/enode/localnode_test.go",
+        "p2p/enode/node.go",
+        "p2p/enode/node_test.go",
+        "p2p/enode/urlv4.go",
+        "p2p/enode/urlv4_test.go",
+        "p2p/enr/enr.go",
+        "p2p/enr/enr_test.go",
+        "p2p/enr/entries.go",
+        "p2p/server.go",
+        "whisper/whisperv6/api.go"
+      ],
+      "label_scope": "causal_impact",
+      "impact_kind": "unclassified",
+      "impact_kind_source": "unclassified",
+      "expected_checks": {
+        "label_kind": "unavailable",
+        "paths": [],
+        "symbols": [],
+        "tests": [],
+        "commands": [],
+        "expected_result": "coordinated_change_required"
+      },
+      "evidence": [
+        {
+          "level": "specification_proven",
+          "kind": "explicit_specification_to_implementation_reference",
+          "url": "https://github.com/ethereum/go-ethereum/pull/19663",
+          "statement": "目标正文明确说明适配源 EIP 的最终版本，改动包含对应 IPv6 和文本表示。",
+          "ci_url": null
+        }
+      ]
+    }
+  ],
+  "label_source": {
+    "kind": "independent_project_evidence",
+    "derived_from_marshal_config": false
+  },
+  "licenses": [
+    {
+      "repository": "ethereum/EIPs",
+      "spdx": "NOASSERTION",
+      "evidence_url": "https://github.com/ethereum/EIPs"
+    },
+    {
+      "repository": "ethereum/go-ethereum",
+      "spdx": "LGPL-3.0-only",
+      "evidence_url": "https://github.com/ethereum/go-ethereum/blob/master/COPYING"
+    }
+  ],
+  "provenance": {
+    "collector": "collect_github_spec_candidates.py + manual review + opening snapshot recovery",
+    "collected_at": "2026-08-23",
+    "query": "merged target PR explicitly linking a source specification PR"
+  }
+}
