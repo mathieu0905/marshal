@@ -1,0 +1,41 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_dependency": "junit:junit",
+  "source_transition": {
+    "before": "4.13.1",
+    "after": "4.13.2"
+  },
+  "source_frame": "FSE 2024 behavioral breakage replication package",
+  "counts": {
+    "raw_candidate_records": 3,
+    "published_failure_observations": 3,
+    "unique_root_repositories": 3,
+    "unique_source_inputs": 1,
+    "historical_isolated_version_transition_candidates": 1,
+    "exact_artifact_identity_mechanisms": 1,
+    "exact_client_repairs_under_4_13_2": 1,
+    "matching_source_mechanism_and_exact_a2": 0,
+    "replayed_candidates": 0,
+    "accepted_relations": 0
+  },
+  "root_decisions": [
+    {
+      "repository": "j-easy/easy-props",
+      "decision": "rejected_before_replay",
+      "reason": "The artifact-name mechanism is exact, but the repository never adopts 4.13.2 and has no maintainer A2."
+    },
+    {
+      "repository": "SonarSource/sonar-ldap",
+      "decision": "rejected_before_replay",
+      "reason": "The same signed-JAR failure appears under unrelated dependency replacements, and the repository never adopts 4.13.2."
+    },
+    {
+      "repository": "awslabs/amazon-kinesis-client",
+      "decision": "rejected_before_replay",
+      "reason": "A precise isolated version transition and a precise client race repair exist, but no JUnit 4.13.2 source change reaches the failing plain test; the maintainer identifies it as flaky."
+    }
+  ],
+  "decision": "rejected_before_replay",
+  "reason": "None of the three independent roots has both a candidate-specific JUnit source mechanism and an exact maintainer recovery for that upstream mechanism.",
+  "label_boundary": "Executed dependency-update failures remain leads until source attribution and target recovery align. A hard-coded artifact name without maintainer adoption, a dependency-independent signature error, and an acknowledged client race are not interchangeable JUnit impact labels."
+}

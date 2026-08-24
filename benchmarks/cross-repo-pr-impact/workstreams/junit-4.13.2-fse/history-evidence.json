@@ -1,0 +1,138 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0265",
+      "fse2024-behavioral-0266",
+      "fse2024-behavioral-0267"
+    ],
+    "raw_candidate_records": 3,
+    "failure_observations": 3,
+    "unique_root_repositories": 3,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "junit-team/junit4",
+    "before_tag": {
+      "name": "r4.13.1",
+      "commit": "1b683f4ec07bcfa40149f086d32240f805487e66",
+      "committed_at": "2020-10-11T17:18:49+02:00"
+    },
+    "after_tag": {
+      "name": "r4.13.2",
+      "commit": "05fe2a64f59127c02135be22f416e91260d6ede6",
+      "committed_at": "2021-02-13T17:30:49+01:00"
+    },
+    "triaged_behavioral_changes": [
+      {
+        "commit": "1254795902e56eb545e1fe696827924bc5e82b66",
+        "subject": "Mark ThreadGroups created by FailOnTimeout as daemon groups (#1687)"
+      },
+      {
+        "commit": "de77f666b6bcc640425dbbca559c9d62ea64a815",
+        "subject": "Only create ThreadGroups if FailOnTimeout.lookForStuckThread is true. (#1691)"
+      },
+      {
+        "commit": "f8ee412316b1a94d3dc35498359cc2f0ca273216",
+        "subject": "Fix serialization of AssumptionViolatedException (#1654)"
+      }
+    ],
+    "release_identity_commit": "05fe2a64f59127c02135be22f416e91260d6ede6",
+    "boundary": "The tag-to-tag delta contains multiple source changes. A release-wide replacement is not a single Marshal source change unless a candidate failure can be tied to one of them."
+  },
+  "target_repositories": [
+    {
+      "repository": "j-easy/easy-props",
+      "aliases": [
+        "benas/adp4j"
+      ],
+      "github_repository_id": 10227959,
+      "archived": true,
+      "default_branch": "master",
+      "remote_head": "d61854d94b89928d3c9ed9dc7b1fce022c0c51dc",
+      "remote_head_date": "2020-11-15T23:10:36+01:00",
+      "history_first_commit": "07554799523ab77b6eaef041568e01ac2f356481",
+      "history_first_commit_date": "2013-05-22T21:28:40+02:00",
+      "reachable_commit_count": 248,
+      "unique_pom_blob_count": 62,
+      "pom_blobs_declaring_junit": 62,
+      "pom_blobs_with_4_13_1": 8,
+      "pom_blobs_with_4_13_2": 0,
+      "historical_isolated_4_13_2_transition": null,
+      "exact_maintainer_repair": null
+    },
+    {
+      "repository": "SonarSource/sonar-ldap",
+      "aliases": [
+        "SonarCommunity/sonar-ldap"
+      ],
+      "github_repository_id": 4673630,
+      "archived": true,
+      "default_branch": "master",
+      "remote_head": "144a492b0669bf5bc56dbbcdead6a527d8e4f2ff",
+      "remote_head_date": "2021-04-28T07:10:18+02:00",
+      "history_first_commit": "392395a60f0057c20b328ac26bc5720d52fdd414",
+      "history_first_commit_date": "2009-12-22T21:12:16+00:00",
+      "reachable_commit_count": 369,
+      "unique_pom_blob_count": 153,
+      "pom_blobs_declaring_junit": 115,
+      "pom_blobs_with_4_13_1": 3,
+      "pom_blobs_with_4_13_2": 0,
+      "same_signature_other_dependency_candidates": [
+        "fse2024-behavioral-0061",
+        "fse2024-behavioral-0241",
+        "fse2024-behavioral-0323"
+      ],
+      "historical_isolated_4_13_2_transition": null,
+      "exact_maintainer_repair": null
+    },
+    {
+      "repository": "awslabs/amazon-kinesis-client",
+      "aliases": [],
+      "github_repository_id": 14212940,
+      "archived": false,
+      "default_branch": "master",
+      "remote_head": "f19bc3bdaafd125a646953d6279ffc99bf6e9c8e",
+      "remote_head_date": "2026-07-28T13:21:12-07:00",
+      "history_first_commit": "12646f1f3ba3fcdc44fda7873e82edda4180ce06",
+      "history_first_commit_date": "2013-11-07T11:02:44-08:00",
+      "reachable_commit_count": 3753,
+      "unique_pom_blob_count": 1416,
+      "pom_blobs_declaring_junit": 1122,
+      "pom_blobs_with_4_13_1": 55,
+      "pom_blobs_with_4_13_2": 799,
+      "historical_isolated_4_13_2_transition": {
+        "before": "c872cab02ba58bb0c9d1981d45d0f5aadc7420f3",
+        "after": "8084281e1bee18158f23f97b1f5dce1901a16d46",
+        "pull_request": 879,
+        "changed_paths": [
+          "amazon-kinesis-client-multilang/pom.xml",
+          "amazon-kinesis-client/pom.xml"
+        ],
+        "mainline_adoption_commit": "9c53c0ce59c112d26628a504984411f1f0f2350b",
+        "mainline_adoption_note": "The merged commit also updates other dependencies and build plugins; only the intermediate pull-request commit isolates JUnit."
+      },
+      "exact_maintainer_repair": {
+        "pull_request": 1084,
+        "commit": "b8d3390bf35c6847218b55063dec9197c6ccaaaa",
+        "changed_paths": [
+          "amazon-kinesis-client/src/test/java/software/amazon/kinesis/lifecycle/ShardConsumerSubscriberTest.java"
+        ],
+        "junit_before": "4.13.2",
+        "junit_after": "4.13.2",
+        "repair_contract": "Wait for subscriptions to start before the restartAfterRequestTimerExpires verifications.",
+        "semantic_boundary": "The maintainer describes the tests as flaky. This is an exact client race repair, not evidence that JUnit 4.13.2 caused the race."
+      }
+    }
+  ],
+  "admission_result": {
+    "historical_isolated_version_transition_candidates": 1,
+    "exact_artifact_identity_mechanisms": 1,
+    "exact_client_repairs_under_4_13_2": 1,
+    "candidates_with_matching_junit_source_mechanism_and_exact_a2": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0
+  }
+}
