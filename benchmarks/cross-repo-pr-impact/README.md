@@ -49,6 +49,8 @@ Maven Plugin Testing Harness 3.2.0 到 3.3.0 的 2 条记录来自 Dropwizard De
 
 Liquibase 4.2.2 到 4.3.0 的 2 条记录来自 Score 与 Datasafe 两个根仓，公开执行都命中 `HubUpdater.register:306` 的同一空指针。源变化是有效前向提交，LB-1212 的行为起点和上游后续修复都能精确定位；但两仓完整历史都从 3.x 直接跳到已含上游修复的 4.8.0，从未采用固定 4.3.0，也无消费仓维护者 A2。因此保留为双根仓机制锚点，不重放并接纳 0 条。
 
+Jackson Core 2.11.0 的 5 条记录按仓库迁移和模块去重为 4 个根仓。Logback Elasticsearch Appender 的连续维护链形成 1 条执行正关系：2.8.0 下原生 8 项通过，升级 2.11.0 后 8 项因字段级方法变为可覆写而全部失败，只应用维护者测试适配后 8 项恢复；A0 代码只改 Jackson 版本的反事实也 8 项失败，排除了 A1 其他依赖升级的混杂。其余三仓无固定 2.11.0 的可分离 A2；本族无限定负例和 A3，不计完整项目包。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。

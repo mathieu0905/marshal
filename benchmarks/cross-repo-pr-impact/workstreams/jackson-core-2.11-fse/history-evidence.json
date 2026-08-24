@@ -1,0 +1,25 @@
+{
+  "dependency": "com.fasterxml.jackson.core:jackson-core",
+  "breaking_version": "2.11.0",
+  "source": {
+    "repository": "FasterXML/jackson-core",
+    "before_tag": "jackson-core-2.10.5",
+    "after_tag": "jackson-core-2.11.0",
+    "mechanism_commit": "4ca96e5f7752102cc38d89e2c43eea021a79ada0",
+    "mechanism_in_after": true,
+    "mechanism_in_before": false,
+    "changed_path": "src/main/java/com/fasterxml/jackson/core/JsonGenerator.java",
+    "mechanism": "writeXxxField 方法由 final 改为可覆写；Mockito 对抽象类的模拟因此从执行真实包装方法变为直接拦截字段级调用。"
+  },
+  "accepted_target": {
+    "repository": "internetitem/logback-elasticsearch-appender",
+    "github_repository_id": 33607449,
+    "a0": "c708131107e56570674b1a59f241a8b782cfa60f",
+    "a1": "20de83750d38118433e27efd47ebced8f37a1c21",
+    "a2": "19890dee0d3ec4839658c3973a8c1aa2dba7eb8e",
+    "a1_jackson_before": "2.8.0",
+    "a1_jackson_after": "2.11.0",
+    "a2_changed_path": "src/test/java/com/internetitem/logback/elasticsearch/PropertySerializerTest.java",
+    "a2_keeps_jackson": "2.11.0"
+  }
+}
