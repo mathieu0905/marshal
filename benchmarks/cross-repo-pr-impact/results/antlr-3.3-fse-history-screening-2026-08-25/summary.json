@@ -1,0 +1,40 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_dependency": "org.antlr:antlr-runtime",
+  "source_transition": {
+    "before": "3.2",
+    "after": "3.3"
+  },
+  "source_frame": "FSE 2024 behavioral breakage replication package",
+  "counts": {
+    "raw_candidate_records": 4,
+    "published_failure_observations": 14,
+    "unique_root_repositories": 1,
+    "unique_source_inputs": 1,
+    "fixed_historical_a1_candidates": 0,
+    "exact_maintainer_a2_candidates": 0,
+    "replayed_candidates": 0,
+    "accepted_relations": 0
+  },
+  "root_repository": {
+    "repository": "owlcs/OPPL2",
+    "modules": [
+      "oppl2",
+      "oppl2patterns",
+      "oppl2templates",
+      "oppl2testcase"
+    ],
+    "history_commit_count": 545,
+    "history_span": {
+      "from": "2010-03-15T16:56:29Z",
+      "to": "2020-10-27T20:36:22Z"
+    },
+    "unique_pom_blobs": 134,
+    "pom_blobs_declaring_antlr_runtime": 26,
+    "pom_blobs_using_3_2": 26,
+    "pom_blobs_using_3_3": 0
+  },
+  "decision": "rejected_before_replay",
+  "reason": "The four records are modules of one root repository. The FSE artifact omits the target revision, and the complete remote history never adopts ANTLR Runtime 3.3, so no fixed historical A1 or maintainer-authored A2 exists.",
+  "label_boundary": "The published failures remain executed breakage leads. They are not four independent relations and do not become a causal positive without a precise maintainer recovery under the same source input."
+}
