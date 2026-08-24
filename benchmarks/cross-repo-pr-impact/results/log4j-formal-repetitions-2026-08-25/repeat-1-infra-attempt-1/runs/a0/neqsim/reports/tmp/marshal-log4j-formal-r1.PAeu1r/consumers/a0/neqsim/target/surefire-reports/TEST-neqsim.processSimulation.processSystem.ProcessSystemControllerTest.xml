@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="neqsim.processSimulation.processSystem.ProcessSystemControllerTest" time="0.508" tests="4" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="sun.cpu.isalist" value=""/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim/target/test-classes:/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim/target/classes:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/logging/log4j/log4j-api/2.17.2/log4j-api-2.17.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/logging/log4j/log4j-core/2.17.2/log4j-core-2.17.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter/5.8.2/junit-jupiter-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter-api/5.8.2/junit-jupiter-api-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/platform/junit-platform-commons/1.8.2/junit-platform-commons-1.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter-params/5.8.2/junit-jupiter-params-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter-engine/5.8.2/junit-jupiter-engine-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/platform/junit-platform-engine/1.8.2/junit-platform-engine-1.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/colt/colt/1.2.0/colt-1.2.0.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/concurrent/concurrent/1.3.4/concurrent-1.3.4.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-all/0.41/ejml-all-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-core/0.41/ejml-core-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-fdense/0.41/ejml-fdense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-ddense/0.41/ejml-ddense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-cdense/0.41/ejml-cdense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-zdense/0.41/ejml-zdense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-dsparse/0.41/ejml-dsparse-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-simple/0.41/ejml-simple-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-fsparse/0.41/ejml-fsparse-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/gov/nist/math/jama/1.0.3/jama-1.0.3.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/jfree/jcommon/1.0.24/jcommon-1.0.24.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/jfree/jfreechart/1.5.3/jfreechart-1.5.3.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/googlecode/matrix-toolkits-java/mtj/1.0.4/mtj-1.0.4.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/net/sourceforge/f2j/arpack_combined_all/0.1/arpack_combined_all-0.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/core/1.1.2/core-1.1.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-osx-x86_64/1.1/netlib-native_ref-osx-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/native_ref-java/1.1/native_ref-java-1.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/jniloader/1.1/jniloader-1.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-linux-x86_64/1.1/netlib-native_ref-linux-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-linux-i686/1.1/netlib-native_ref-linux-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-win-x86_64/1.1/netlib-native_ref-win-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-win-i686/1.1/netlib-native_ref-win-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-linux-armhf/1.1/netlib-native_ref-linux-armhf-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-osx-x86_64/1.1/netlib-native_system-osx-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/native_system-java/1.1/native_system-java-1.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-linux-x86_64/1.1/netlib-native_system-linux-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-linux-i686/1.1/netlib-native_system-linux-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-linux-armhf/1.1/netlib-native_system-linux-armhf-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-win-x86_64/1.1/netlib-native_system-win-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-win-i686/1.1/netlib-native_system-win-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ojalgo/ojalgo/48.4.2/ojalgo-48.4.2.jar:"/>
+    <property name="java.vm.vendor" value="Ubuntu"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://ubuntu.com/"/>
+    <property name="user.timezone" value="Asia/Shanghai"/>
+    <property name="java.vm.specification.version" value="11"/>
+    <property name="os.name" value="Linux"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim/target/surefire/surefirebooter8377460981392071357.jar /tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim/target/surefire 2026-08-25T01-16-35_534-jvmRun1 surefire12861981288518011286tmp surefire_09030959472263887793tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim/target/test-classes:/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim/target/classes:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/logging/log4j/log4j-api/2.17.2/log4j-api-2.17.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/logging/log4j/log4j-core/2.17.2/log4j-core-2.17.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter/5.8.2/junit-jupiter-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter-api/5.8.2/junit-jupiter-api-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/platform/junit-platform-commons/1.8.2/junit-platform-commons-1.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter-params/5.8.2/junit-jupiter-params-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/jupiter/junit-jupiter-engine/5.8.2/junit-jupiter-engine-5.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/junit/platform/junit-platform-engine/1.8.2/junit-platform-engine-1.8.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/colt/colt/1.2.0/colt-1.2.0.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/concurrent/concurrent/1.3.4/concurrent-1.3.4.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-all/0.41/ejml-all-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-core/0.41/ejml-core-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-fdense/0.41/ejml-fdense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-ddense/0.41/ejml-ddense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-cdense/0.41/ejml-cdense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-zdense/0.41/ejml-zdense-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-dsparse/0.41/ejml-dsparse-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-simple/0.41/ejml-simple-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ejml/ejml-fsparse/0.41/ejml-fsparse-0.41.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/gov/nist/math/jama/1.0.3/jama-1.0.3.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/jfree/jcommon/1.0.24/jcommon-1.0.24.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/jfree/jfreechart/1.5.3/jfreechart-1.5.3.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/googlecode/matrix-toolkits-java/mtj/1.0.4/mtj-1.0.4.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/net/sourceforge/f2j/arpack_combined_all/0.1/arpack_combined_all-0.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/core/1.1.2/core-1.1.2.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-osx-x86_64/1.1/netlib-native_ref-osx-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/native_ref-java/1.1/native_ref-java-1.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/jniloader/1.1/jniloader-1.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-linux-x86_64/1.1/netlib-native_ref-linux-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-linux-i686/1.1/netlib-native_ref-linux-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-win-x86_64/1.1/netlib-native_ref-win-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-win-i686/1.1/netlib-native_ref-win-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_ref-linux-armhf/1.1/netlib-native_ref-linux-armhf-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-osx-x86_64/1.1/netlib-native_system-osx-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/native_system-java/1.1/native_system-java-1.1.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-linux-x86_64/1.1/netlib-native_system-linux-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-linux-i686/1.1/netlib-native_system-linux-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-linux-armhf/1.1/netlib-native_system-linux-armhf-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-win-x86_64/1.1/netlib-native_system-win-x86_64-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/com/github/fommil/netlib/netlib-native_system-win-i686/1.1/netlib-native_system-win-i686-1.1-natives.jar:/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0/org/ojalgo/ojalgo/48.4.2/ojalgo-48.4.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/zhihao"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-04-21"/>
+    <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="surefire.real.class.path" value="/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim/target/surefire/surefirebooter8377460981392071357.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="11.0.31+11-post-1ubuntu1-24.04.2-Ubuntu"/>
+    <property name="user.name" value="zhihao"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.8.0-137-generic"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="skipTests" value="false"/>
+    <property name="localRepository" value="/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0"/>
+    <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-lts"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="11.0.31"/>
+    <property name="user.dir" value="/tmp/marshal-log4j-formal-r1.PAeu1r/consumers/a0/neqsim"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.library.path" value="/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64::/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Ubuntu"/>
+    <property name="java.vm.version" value="11.0.31+11-post-1ubuntu1-24.04.2-Ubuntu"/>
+    <property name="java.specification.maintenance.version" value="3"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="maven.repo.local" value="/tmp/marshal-log4j-formal-r1.PAeu1r/m2/a0"/>
+    <property name="java.class.version" value="55.0"/>
+  </properties>
+  <testcase name="testStaticSimulationWithController" classname="neqsim.processSimulation.processSystem.ProcessSystemControllerTest" time="0.504">
+    <system-out><![CDATA[flow rate 68.71394982704736 controller response 102.23159104631654 valve opening 100.0 pressure 5.0
+flow rate 66.58951211877147 controller response 99.0708842678169 valve opening 100.0 pressure 5.0
+flow rate 65.92903594359358 controller response 98.08823765229589 valve opening 100.0 pressure 5.0
+flow rate 65.1800329370194 controller response 96.97388213564642 valve opening 100.0 pressure 5.0
+flow rate 66.0602889673681 controller response 98.2835139460308 valve opening 100.0 pressure 5.0
+flow rate 65.76649671617918 controller response 97.84641421079913 valve opening 100.0 pressure 5.0
+flow rate 64.32915051134881 controller response 95.70795193677708 valve opening 100.0 pressure 5.0
+flow rate 63.226457558968775 controller response 94.06738178703138 valve opening 100.0 pressure 5.0
+flow rate 63.5929693610824 controller response 94.6126725869584 valve opening 100.0 pressure 5.0
+flow rate 64.3597704596328 controller response 95.75350783974446 valve opening 100.0 pressure 5.0
+flow rate 64.22148807996672 controller response 95.54777337501758 valve opening 100.0 pressure 5.0
+flow rate 63.38852484574616 controller response 94.30850308227805 valve opening 100.0 pressure 5.0
+flow rate 63.96202718769896 controller response 95.16175132421718 valve opening 100.0 pressure 5.0
+flow rate 64.16029941214344 controller response 95.45673778644613 valve opening 100.0 pressure 5.0
+flow rate 65.04033446394642 controller response 96.76604082824176 valve opening 100.0 pressure 5.0
+flow rate 65.95866278758358 controller response 98.13231602948717 valve opening 100.0 pressure 5.0
+flow rate 64.48180663002225 controller response 95.93507143629962 valve opening 100.0 pressure 5.0
+flow rate 65.77320331428162 controller response 97.85639218756002 valve opening 100.0 pressure 5.0
+flow rate 64.34025516870825 controller response 95.72447328059064 valve opening 100.0 pressure 5.0
+flow rate 63.72577415304202 controller response 94.81025757828512 valve opening 100.0 pressure 5.0
+flow rate 63.98200513278364 controller response 95.19147421333922 valve opening 100.0 pressure 5.0
+flow rate 64.66406537600548 controller response 96.20623328379746 valve opening 100.0 pressure 5.0
+flow rate 65.91534324089504 controller response 98.06786585317636 valve opening 100.0 pressure 5.0
+flow rate 65.90625471905801 controller response 98.0543440857623 valve opening 100.0 pressure 5.0
+flow rate 66.86936523153373 controller response 99.48724556052329 valve opening 100.0 pressure 5.0
+flow rate 66.15409983447492 controller response 98.42308435678298 valve opening 100.0 pressure 5.0
+flow rate 65.84781629590836 controller response 97.96740027025086 valve opening 100.0 pressure 5.0
+flow rate 66.0979192412705 controller response 98.3394997070333 valve opening 100.0 pressure 5.0
+flow rate 66.77504451106483 controller response 99.34691659753332 valve opening 100.0 pressure 5.0
+flow rate 66.32516898739557 controller response 98.67759849439317 valve opening 100.0 pressure 5.0
+flow rate 65.98010820545946 controller response 98.16422220276971 valve opening 100.0 pressure 5.0
+flow rate 66.92776952903557 controller response 99.57413860440423 valve opening 100.0 pressure 5.0
+flow rate 65.47327906912633 controller response 97.41016936304241 valve opening 100.0 pressure 5.0
+flow rate 65.32700422920382 controller response 97.19254383499513 valve opening 100.0 pressure 5.0
+flow rate 65.94240287196553 controller response 98.10812476922497 valve opening 100.0 pressure 5.0
+flow rate 65.20276872649913 controller response 97.00770810458081 valve opening 100.0 pressure 5.0
+flow rate 65.12029757620945 controller response 96.885008755602 valve opening 100.0 pressure 5.0
+flow rate 64.32999074931868 controller response 95.70920203031304 valve opening 100.0 pressure 5.0
+flow rate 65.42094645935195 controller response 97.33230968572352 valve opening 100.0 pressure 5.0
+flow rate 65.2888086323535 controller response 97.13571699493134 valve opening 100.0 pressure 5.0
+flow rate 63.975457247381556 controller response 95.18173236696985 valve opening 100.0 pressure 5.0
+flow rate 65.39232365643511 controller response 97.28972510588548 valve opening 100.0 pressure 5.0
+flow rate 64.54053587476623 controller response 96.0224479318473 valve opening 100.0 pressure 5.0
+flow rate 64.85691983354009 controller response 96.49315927311626 valve opening 100.0 pressure 5.0
+flow rate 66.0698895605901 controller response 98.29779756562398 valve opening 100.0 pressure 5.0
+flow rate 65.5464218908242 controller response 97.51899016368937 valve opening 100.0 pressure 5.0
+flow rate 66.11469669612634 controller response 98.36446095446465 valve opening 100.0 pressure 5.0
+flow rate 65.82373387535073 controller response 97.93157080365701 valve opening 100.0 pressure 5.0
+flow rate 66.08553755186331 controller response 98.32107841396075 valve opening 100.0 pressure 5.0
+flow rate 64.58955130636691 controller response 96.09537236088937 valve opening 100.0 pressure 5.0
+flow rate 65.62370356720017 controller response 97.63396869067738 valve opening 100.0 pressure 5.0
+flow rate 65.93280799016104 controller response 98.09384964699377 valve opening 100.0 pressure 5.0
+flow rate 66.89761551571945 controller response 99.52927591254189 valve opening 100.0 pressure 5.0
+flow rate 65.94112388573033 controller response 98.1062219125551 valve opening 100.0 pressure 5.0
+flow rate 65.93452937609051 controller response 98.09641069933933 valve opening 100.0 pressure 5.0
+flow rate 63.747641705776395 controller response 94.84279179752235 valve opening 100.0 pressure 5.0
+flow rate 61.584638687400314 controller response 91.62470812509267 valve opening 100.0 pressure 5.0
+flow rate 60.65241836200029 controller response 90.23776461054817 valve opening 100.0 pressure 5.0
+flow rate 60.42251304402765 controller response 89.8957149029486 valve opening 100.0 pressure 5.0
+flow rate 58.30719822753968 controller response 86.74858102696399 valve opening 100.0 pressure 5.0
+flow rate 56.44209135674616 controller response 83.97370280569213 valve opening 100.0 pressure 5.0
+flow rate 55.49654901449049 controller response 82.56693899290356 valve opening 100.0 pressure 5.0
+flow rate 55.9842378135302 controller response 83.29251512390442 valve opening 100.0 pressure 5.0
+flow rate 56.11724277515218 controller response 83.49039792467337 valve opening 100.0 pressure 5.0
+flow rate 56.46288496485205 controller response 84.00463922610766 valve opening 100.0 pressure 5.0
+flow rate 54.78965684866844 controller response 81.5152353578766 valve opening 100.0 pressure 5.0
+flow rate 54.23394549599248 controller response 80.68845628478365 valve opening 100.0 pressure 5.0
+flow rate 54.2935698039074 controller response 80.77716444198495 valve opening 100.0 pressure 5.0
+flow rate 54.34057538679178 controller response 80.84709864804385 valve opening 100.0 pressure 5.0
+flow rate 53.408086122138734 controller response 79.45975500968461 valve opening 100.0 pressure 5.0
+flow rate 52.69366609565591 controller response 78.3968515356954 valve opening 100.0 pressure 5.0
+flow rate 53.11647355630585 controller response 79.02589817785888 valve opening 100.0 pressure 5.0
+flow rate 54.41209548638545 controller response 80.95350518691484 valve opening 100.0 pressure 5.0
+flow rate 55.4077055987774 controller response 82.4347590823439 valve opening 100.0 pressure 5.0
+flow rate 54.960693509620846 controller response 81.76970115442056 valve opening 100.0 pressure 5.0
+flow rate 53.64889032047851 controller response 79.81801990915363 valve opening 100.0 pressure 5.0
+flow rate 53.855475767242 controller response 80.12537465972184 valve opening 100.0 pressure 5.0
+flow rate 54.985007581261904 controller response 81.80587526804565 valve opening 100.0 pressure 5.0
+flow rate 55.368127351166954 controller response 82.3758751550741 valve opening 100.0 pressure 5.0
+flow rate 55.66319260666781 controller response 82.8148688471594 valve opening 100.0 pressure 5.0
+flow rate 56.61797763255855 controller response 84.23538378698878 valve opening 100.0 pressure 5.0
+flow rate 55.89698813535885 controller response 83.16270635232043 valve opening 100.0 pressure 5.0
+flow rate 56.314315539898466 controller response 83.78359984862941 valve opening 100.0 pressure 5.0
+flow rate 56.63550593257959 controller response 84.26146213067297 valve opening 100.0 pressure 5.0
+flow rate 56.15552236576106 controller response 83.54734972939998 valve opening 100.0 pressure 5.0
+flow rate 56.27288406904336 controller response 83.72195872342019 valve opening 100.0 pressure 5.0
+flow rate 55.39402426676309 controller response 82.41440420035892 valve opening 100.0 pressure 5.0
+flow rate 53.99304927772004 controller response 80.33005447942939 valve opening 100.0 pressure 5.0
+flow rate 52.91880263483549 controller response 78.73180632523845 valve opening 100.0 pressure 5.0
+flow rate 52.82277373516836 controller response 78.58893595868098 valve opening 100.0 pressure 5.0
+flow rate 52.75022158231714 controller response 78.4809939463461 valve opening 100.0 pressure 5.0
+flow rate 53.180580831821764 controller response 79.12127602748237 valve opening 100.0 pressure 5.0
+flow rate 52.784651091489074 controller response 78.53221765725846 valve opening 100.0 pressure 5.0
+flow rate 52.23943449229207 controller response 77.72105252207028 valve opening 100.0 pressure 5.0
+flow rate 52.30702112463785 controller response 77.8216069069596 valve opening 100.0 pressure 5.0
+flow rate 53.57228607263034 controller response 79.70404925023894 valve opening 100.0 pressure 5.0
+flow rate 54.05954598215126 controller response 80.4289872858021 valve opening 100.0 pressure 5.0
+flow rate 53.94959628160661 controller response 80.26540575905189 valve opening 100.0 pressure 5.0
+flow rate 53.381264621291876 controller response 79.41985038023559 valve opening 100.0 pressure 5.0
+flow rate 52.70360044774655 controller response 78.41163171676187 valve opening 100.0 pressure 5.0
+flow rate 54.36655734871641 controller response 80.88575422398938 valve opening 100.0 pressure 5.0
+flow rate 53.21934965992442 controller response 79.17895571246493 valve opening 100.0 pressure 5.0
+flow rate 54.27939392756498 controller response 80.75607378431478 valve opening 100.0 pressure 5.0
+flow rate 54.36655253914905 controller response 80.88574706838679 valve opening 100.0 pressure 5.0
+flow rate 55.16165218797546 controller response 82.06868448276161 valve opening 100.0 pressure 5.0
+flow rate 54.318006005922726 controller response 80.81352025936171 valve opening 100.0 pressure 5.0
+flow rate 54.883558953361074 controller response 81.65494151054993 valve opening 100.0 pressure 5.0
+flow rate 56.04577073413867 controller response 83.38406288664206 valve opening 100.0 pressure 5.0
+flow rate 54.998891142160446 controller response 81.8265310231524 valve opening 100.0 pressure 5.0
+flow rate 56.135708426146245 controller response 83.51787084517316 valve opening 100.0 pressure 5.0
+flow rate 54.826866476379294 controller response 81.5705952877408 valve opening 100.0 pressure 5.0
+flow rate 54.79282738100725 controller response 81.51995242866471 valve opening 100.0 pressure 5.0
+flow rate 55.25235245437816 controller response 82.20362698811913 valve opening 100.0 pressure 5.0
+flow rate 55.1208632962755 controller response 82.00799937724813 valve opening 100.0 pressure 5.0
+flow rate 54.535752010006064 controller response 81.13747952087192 valve opening 100.0 pressure 5.0
+flow rate 53.360069421843065 controller response 79.38831647820186 valve opening 100.0 pressure 5.0
+flow rate 54.39813673015588 controller response 80.9327375573146 valve opening 100.0 pressure 5.0
+flow rate 54.22586106385026 controller response 80.67642838706145 valve opening 100.0 pressure 5.0
+flow rate 53.12460601465662 controller response 79.0379975282588 valve opening 100.0 pressure 5.0
+flow rate 52.280214147139404 controller response 77.781723885132 valve opening 100.0 pressure 5.0
+flow rate 52.1179466469533 controller response 77.540304715358 valve opening 100.0 pressure 5.0
+flow rate 52.47924487854634 controller response 78.07783884272146 valve opening 100.0 pressure 5.0
+flow rate 53.969701039975696 controller response 80.29531731908943 valve opening 100.0 pressure 5.0
+flow rate 53.65974754254207 controller response 79.83417312241956 valve opening 100.0 pressure 5.0
+flow rate 53.907512510856925 controller response 80.20279415177565 valve opening 100.0 pressure 5.0
+flow rate 54.09842138804672 controller response 80.48682553563732 valve opening 100.0 pressure 5.0
+flow rate 54.73056092323433 controller response 81.42731332025986 valve opening 100.0 pressure 5.0
+flow rate 54.24660516803177 controller response 80.70729115627564 valve opening 100.0 pressure 5.0
+flow rate 53.148489126471375 controller response 79.07353046627361 valve opening 100.0 pressure 5.0
+flow rate 53.276217997194 controller response 79.26356357759073 valve opening 100.0 pressure 5.0
+flow rate 53.375021252033655 controller response 79.41056158844927 valve opening 100.0 pressure 5.0
+flow rate 53.45160554561238 controller response 79.52450255969926 valve opening 100.0 pressure 5.0
+flow rate 54.480913406879154 controller response 81.05589146397034 valve opening 100.0 pressure 5.0
+flow rate 54.786678753923944 controller response 81.51080459287508 valve opening 100.0 pressure 5.0
+flow rate 54.5370585271495 controller response 81.13942333761716 valve opening 100.0 pressure 5.0
+flow rate 55.80076050718662 controller response 83.01954032045322 valve opening 100.0 pressure 5.0
+flow rate 54.58914781787597 controller response 81.21692100848085 valve opening 100.0 pressure 5.0
+flow rate 55.356912562546036 controller response 82.35918995961008 valve opening 100.0 pressure 5.0
+flow rate 56.18916188287187 controller response 83.59739810189096 valve opening 100.0 pressure 5.0
+flow rate 56.34347414517051 controller response 83.82698158723059 valve opening 100.0 pressure 5.0
+flow rate 55.250077506032255 controller response 82.20024235385586 valve opening 100.0 pressure 5.0
+flow rate 54.16890861264777 controller response 80.59169537847923 valve opening 100.0 pressure 5.0
+flow rate 53.582123107409224 controller response 79.71868464405854 valve opening 100.0 pressure 5.0
+flow rate 52.88995325576961 controller response 78.68888464878079 valve opening 100.0 pressure 5.0
+flow rate 52.35940649586325 controller response 77.89954508197938 valve opening 100.0 pressure 5.0
+flow rate 53.892542552465414 controller response 80.18052207066093 valve opening 100.0 pressure 5.0
+flow rate 53.85765680498554 controller response 80.12861957518972 valve opening 100.0 pressure 5.0
+flow rate 53.831486735717064 controller response 80.08968413593992 valve opening 100.0 pressure 5.0
+flow rate 53.3271066425446 controller response 79.33927494614805 valve opening 100.0 pressure 5.0
+flow rate 54.39530925331755 controller response 80.92853087939034 valve opening 100.0 pressure 5.0
+flow rate 53.276149166207645 controller response 79.2634611718745 valve opening 100.0 pressure 5.0
+flow rate 54.8422682587317 controller response 81.59350983011251 valve opening 100.0 pressure 5.0
+flow rate 55.80236105496879 controller response 83.02192159160306 valve opening 100.0 pressure 5.0
+flow rate 55.32741115830868 controller response 82.31529820981436 valve opening 100.0 pressure 5.0
+flow rate 55.933082254005186 controller response 83.21640664441418 valve opening 100.0 pressure 5.0
+flow rate 61.00483315295094 controller response 90.76208208724425 valve opening 100.0 pressure 5.0
+flow rate 63.20033123116947 controller response 94.0285114256879 valve opening 100.0 pressure 5.0
+flow rate 67.06713941133698 controller response 99.78149103935331 valve opening 100.0 pressure 5.0
+flow rate 68.82209574132287 controller response 102.39248892672322 valve opening 100.0 pressure 5.0
+flow rate 70.16819189740914 controller response 104.39519073740945 valve opening 100.0 pressure 5.0
+flow rate 71.20034669994982 controller response 105.93081527850222 valve opening 100.0 pressure 5.0
+flow rate 71.26410217447655 controller response 106.02566972385408 valve opening 100.0 pressure 5.0
+flow rate 71.31191980151034 controller response 106.09681207710301 valve opening 100.0 pressure 5.0
+flow rate 73.28709583748734 controller response 109.0354495628352 valve opening 100.0 pressure 5.0
+flow rate 74.80183093725506 controller response 111.28904988202399 valve opening 100.0 pressure 5.0
+flow rate 74.75078081669496 controller response 111.21309827305518 valve opening 100.0 pressure 5.0
+flow rate 75.19508109173537 controller response 111.87412160432959 valve opening 100.0 pressure 5.0
+flow rate 75.77710548168999 controller response 112.74004882234841 valve opening 100.0 pressure 5.0
+flow rate 75.7374512643255 controller response 112.6810518684101 valve opening 100.0 pressure 5.0
+flow rate 75.70554755948993 controller response 112.63358601156706 valve opening 100.0 pressure 5.0
+flow rate 76.89185101929958 controller response 114.39855062887324 valve opening 100.0 pressure 5.0
+flow rate 77.07349156565648 controller response 114.66879272817516 valve opening 100.0 pressure 5.0
+flow rate 76.72645679154861 controller response 114.15247956040135 valve opening 100.0 pressure 5.0
+flow rate 75.73124311241175 controller response 112.67181547246432 valve opening 100.0 pressure 5.0
+flow rate 76.17822325780106 controller response 113.33682587492686 valve opening 100.0 pressure 5.0
+flow rate 75.06518772562079 controller response 111.68086818900892 valve opening 100.0 pressure 5.0
+flow rate 74.45203580024534 controller response 110.768629887441 valve opening 100.0 pressure 5.0
+flow rate 75.43487956518848 controller response 112.2308902012928 valve opening 100.0 pressure 5.0
+flow rate 74.49080616071095 controller response 110.82631185225036 valve opening 100.0 pressure 5.0
+flow rate 74.97722694873804 controller response 111.55000145535395 valve opening 100.0 pressure 5.0
+flow rate 76.31912765053983 controller response 113.54646133164776 valve opening 100.0 pressure 5.0
+flow rate 76.13549150383096 controller response 113.27325020786702 valve opening 100.0 pressure 5.0
+flow rate 75.26586980204091 controller response 111.97943999311194 valve opening 100.0 pressure 5.0
+flow rate 74.3547207943278 controller response 110.62384607116103 valve opening 100.0 pressure 5.0
+flow rate 73.6542481688178 controller response 109.58169333259015 valve opening 100.0 pressure 5.0
+flow rate 73.60045512065695 controller response 109.5016608367934 valve opening 100.0 pressure 5.0
+flow rate 73.31568701160977 controller response 109.07798708582415 valve opening 100.0 pressure 5.0
+flow rate 74.30836299794792 controller response 110.55487563221467 valve opening 100.0 pressure 5.0
+flow rate 73.6145131203988 controller response 109.52257611941297 valve opening 100.0 pressure 5.0
+flow rate 73.32340018716164 controller response 109.08946263352104 valve opening 100.0 pressure 5.0
+flow rate 72.85654714212296 controller response 108.39488562697076 valve opening 100.0 pressure 5.0
+flow rate 72.49730999419602 controller response 107.86041794918548 valve opening 100.0 pressure 5.0
+flow rate 74.16030207882109 controller response 110.33459280213123 valve opening 100.0 pressure 5.0
+flow rate 73.98101017049713 controller response 110.06784497151126 valve opening 100.0 pressure 5.0
+flow rate 74.08485285818759 controller response 110.22234057550217 valve opening 100.0 pressure 5.0
+flow rate 73.92111648898563 controller response 109.9787360442854 valve opening 100.0 pressure 5.0
+flow rate 74.76426863206994 controller response 111.23316524386685 valve opening 100.0 pressure 5.0
+flow rate 75.89527985308065 controller response 112.9158668918756 valve opening 100.0 pressure 5.0
+flow rate 75.06510031783472 controller response 111.68073814500688 valve opening 100.0 pressure 5.0
+flow rate 73.94195871828735 controller response 110.00974480259188 valve opening 100.0 pressure 5.0
+flow rate 75.50345538120723 controller response 112.33291627891671 valve opening 100.0 pressure 5.0
+flow rate 76.21600163701082 controller response 113.39303198479955 valve opening 100.0 pressure 5.0
+flow rate 75.54953869948932 controller response 112.40147835343762 valve opening 100.0 pressure 5.0
+flow rate 74.55204989312399 controller response 110.91742936509846 valve opening 100.0 pressure 5.0
+flow rate 73.78549012476496 controller response 109.77695315977641 valve opening 100.0 pressure 5.0
+flow rate 73.68115942267276 controller response 109.62173149522782 valve opening 100.0 pressure 5.0
+flow rate 73.35779168780896 controller response 109.14062979591668 valve opening 100.0 pressure 5.0
+flow rate 74.07858478739487 controller response 110.21301503314065 valve opening 100.0 pressure 5.0
+flow rate 73.17627044731071 controller response 108.87056519809423 valve opening 100.0 pressure 5.0
+flow rate 74.4225247166222 controller response 110.72472373679943 valve opening 100.0 pressure 5.0
+]]></system-out>
+  </testcase>
+  <testcase name="testGetTimeStep" classname="neqsim.processSimulation.processSystem.ProcessSystemControllerTest" time="0.001"/>
+  <testcase name="testGetName" classname="neqsim.processSimulation.processSystem.ProcessSystemControllerTest" time="0"/>
+  <testcase name="testGetTime" classname="neqsim.processSimulation.processSystem.ProcessSystemControllerTest" time="0"/>
+</testsuite>
