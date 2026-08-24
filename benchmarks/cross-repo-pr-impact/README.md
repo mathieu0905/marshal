@@ -43,6 +43,8 @@ Bootstrap WebJar 3.4.1 到 4.0.0 的 3 条记录按仓库别名折叠为 Ninja �
 
 Swagger Models 2.1.6 到 2.1.10 的 2 条记录对应 Javalin 与 Jooby 两个根仓。Javalin 固定维护者修复父提交后，原生 53 项在 2.1.6 下全部通过，只升级 `swagger-models` 到 2.1.10 后 14 项因输出泄漏 `exampleSetFlag` 失败，只应用维护者 PR 1381 后 53 项恢复；因此接纳 1 条执行正关系。Jooby 后来直接升级到 2.1.13，没有固定 2.1.10 的维护者 A2，故拒绝。本关系族没有限定负例或 A3，不计完整旗舰项目包。
 
+Mockito 3.12.4 到 4.0.0 的 6 条记录按模块和仓库迁移折叠为 Error Prone、Hazelcast Kubernetes、Google Ads Java Library 与 Open RAO 四个根仓。Mockito 删除旧运行器包名的提交能精确解释 Error Prone 的编译失败，但其余五条不能从 203 文件的宽清理提交中隔离机制。Hazelcast 只有未合并的纯升级分支，其余仓也都没有保持 4.0.0 的维护者恢复；因此不重放并接纳 0 条。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。
