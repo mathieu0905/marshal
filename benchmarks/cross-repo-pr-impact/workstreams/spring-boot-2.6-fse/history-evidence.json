@@ -1,0 +1,102 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0643",
+      "fse2024-behavioral-0644",
+      "fse2024-behavioral-0645"
+    ],
+    "raw_candidate_records": 3,
+    "failure_observations": 3,
+    "unique_coordinates": 1,
+    "unique_modules": 3,
+    "unique_root_repositories": 1,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "spring-projects/spring-boot",
+    "before_tag": {
+      "name": "v2.5.3",
+      "commit": "043e02ce988c43b880156626b6f4300878e7c93c",
+      "committed_at": "2021-07-22T13:48:08Z"
+    },
+    "after_tag": {
+      "name": "v2.6.0",
+      "commit": "44047f322d50c365941b59ff782e15b605a457ea",
+      "committed_at": "2021-11-19T06:38:09Z"
+    },
+    "circular_reference_commit": {
+      "commit": "01e741d7039b626054911e0797872776ce28c120",
+      "subject": "Prohibit circular references by default",
+      "committed_at": "2021-07-15T10:51:24Z",
+      "ancestor_of_before_tag": false,
+      "ancestor_of_after_tag": true,
+      "mechanism_paths": [
+        "spring-boot-project/spring-boot/src/main/java/org/springframework/boot/SpringApplication.java",
+        "spring-boot-project/spring-boot/src/main/resources/META-INF/additional-spring-configuration-metadata.json",
+        "spring-boot-project/spring-boot/src/main/java/org/springframework/boot/diagnostics/analyzer/BeanCurrentlyInCreationFailureAnalyzer.java"
+      ],
+      "mechanism": "SpringApplication passes allowCircularReferences=false to the bean factory by default. Circular bean graphs therefore fail with BeanCurrentlyInCreationException; spring.main.allow-circular-references=true is documented as a last-resort escape setting."
+    },
+    "boundary": "The 2.5.3 to 2.6.0 release delta is broad. The isolated commit establishes the exact behavior behind the published failure signature, but it does not supply a target-side maintainer recovery."
+  },
+  "target_repository": {
+    "repository": "fonimus/ssh-shell-spring-boot",
+    "github_repository_id": 124578706,
+    "archived": true,
+    "default_branch": "main",
+    "remote_head": "5c7fc58b87bfdef8c46a81cec49ce08ce728c2e5",
+    "remote_head_date": "2025-05-12T19:03:32+02:00",
+    "history_first_commit": "4c0b332369132c57927b7ab78dd3ac41c6034b1b",
+    "history_first_commit_date": "2018-03-09T19:31:56+01:00",
+    "reachable_commit_count": 947,
+    "default_branch_commit_count": 641,
+    "unique_pom_blob_count": 722,
+    "pom_blobs_declaring_spring_boot_version": 389,
+    "pom_blobs_with_2_5_3": 6,
+    "pom_blobs_with_2_5_6": 20,
+    "pom_blobs_with_2_6_0": 1,
+    "pom_blobs_with_2_7_2": 5,
+    "unmerged_2_6_0_adoption": {
+      "pull_request": 167,
+      "commit": "3572a32442361b5c6ae956063245ca9709c6a515",
+      "committed_at": "2021-11-22T04:15:11Z",
+      "parent": "efd953ff2122e8016fc1af4f53fc8492a7efa4ee",
+      "changed_paths": [
+        "pom.xml"
+      ],
+      "change": "spring-boot.version 2.5.6 to 2.6.0",
+      "merged": false,
+      "superseded_by_pull_request": 169
+    },
+    "later_combined_migration": {
+      "pull_request": 230,
+      "commit": "164d03a6cf7d522750032f7f4ff7a89be8588216",
+      "committed_at": "2022-08-16T15:14:45+02:00",
+      "spring_boot_change": "2.5.6 to 2.7.2",
+      "spring_shell_change": "2.0.1.RELEASE to 2.1.0",
+      "files_changed": 82,
+      "insertions": 1711,
+      "deletions": 1573,
+      "exact_for_fixed_2_6_0_input": false
+    },
+    "escape_setting_adoption_commits": 0,
+    "exact_maintainer_repair": null
+  },
+  "related_upstream_evidence": {
+    "repository": "spring-projects/spring-shell",
+    "commit": "e30edf2446a8ad190253b0a4154f0c0554dd4d8e",
+    "committed_at": "2021-12-11T12:57:34Z",
+    "subject": "Update boot 2.6.1",
+    "evidence": "Spring Shell added spring.main.allow-circular-references=true and explicitly described it as temporary while cycles were removed. This corroborates the mechanism but is not a maintainer repair in the target repository."
+  },
+  "admission_result": {
+    "exact_source_mechanisms": 1,
+    "published_failure_observations": 3,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0
+  }
+}

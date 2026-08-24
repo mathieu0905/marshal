@@ -1,0 +1,33 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_dependency_family": "Spring Boot",
+  "source_transition": {
+    "before": "2.5.3",
+    "after": "2.6.0",
+    "coordinates": [
+      "org.springframework.boot:spring-boot-starter-test"
+    ]
+  },
+  "source_frame": "FSE 2024 behavioral breakage replication package",
+  "counts": {
+    "raw_candidate_records": 3,
+    "published_failure_observations": 3,
+    "unique_modules": 3,
+    "unique_root_repositories": 1,
+    "unique_source_inputs": 1,
+    "exact_source_mechanisms": 1,
+    "exact_maintainer_repairs": 0,
+    "replayed_candidates": 0,
+    "accepted_relations": 0
+  },
+  "root_decisions": [
+    {
+      "repository": "fonimus/ssh-shell-spring-boot",
+      "decision": "rejected_before_replay",
+      "reason": "The circular-reference source mechanism and an unmerged dependency-only A1 lead are exact, but the complete target history contains no maintainer-authored recovery for the fixed Spring Boot 2.6.0 input."
+    }
+  ],
+  "decision": "rejected_before_replay",
+  "reason": "Three module-level observations collapse to one repository relation, and that relation has no exact historical A2.",
+  "label_boundary": "Published dependency-update failures and unmerged PR 167 are retained as strong leads. The later Boot 2.7.2 plus Spring Shell 2.1.0 migration is too broad to serve as the exact recovery arm."
+}
