@@ -4,10 +4,11 @@ set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 benchmark_root=$(cd "$script_dir/../.." && pwd)
+repo_root=$(cd "$benchmark_root/../.." && pwd)
 result_root="$benchmark_root/results/log4j-formal-repetitions-2026-08-25"
-
-export JAVA_HOME=${LOG4J_FORMAL_JAVA_HOME:-/usr/lib/jvm/java-11-openjdk-amd64}
-export PATH="$JAVA_HOME/bin:$PATH"
+mkdir -p "$repo_root/.work"
+verification_work=$(mktemp -d "$repo_root/.work/log4j-formal-verification.XXXXXX")
+trap 'rm -rf -- "$verification_work"' EXIT
 
 repos=(neqsim archifacts elimu powertools)
 configs=(a0 a1 a2 a3-before a3-after)
@@ -97,29 +98,11 @@ for repeat in 1 2 3; do
     exit 9
   fi
 
-  work_root=$(sed -n 's/^work_root=//p' "$environment")
-  maven_settings="$work_root/settings.xml"
-  mkdir -p "$work_root/tmp" "$work_root/java-tmp"
   full_graph_parity=true
   for repo in "${negative_repos[@]}"; do
     for config in a1 a2; do
       run_dir="$repeat_dir/runs/$config/$repo"
-      consumer="$work_root/consumers/$config/$repo"
-      local_repo="$work_root/m2/$config"
-      extra_args=()
-      module_args=()
-      if [[ $repo == powertools ]]; then
-        module_args=(-pl powertools-logging)
-        extra_args=(-Dlog4j.version=2.18.0 -Daws.sdk.version=2.17.223)
-      fi
-      (
-        cd "$consumer" || exit 125
-        export TMPDIR="$work_root/tmp"
-        export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$work_root/java-tmp"
-        timeout --signal=TERM 30m mvn -s "$maven_settings" "-Dmaven.repo.local=$local_repo" \
-          -Dstyle.color=never -B -ntp "${module_args[@]}" dependency:tree \
-          -Dincludes=org.apache.logging.log4j "${extra_args[@]}"
-      ) >"$run_dir/log4j-dependency-tree.log" 2>&1
+      parsed="$verification_work/repeat-${repeat}-${config}-${repo}.txt"
       sed $'s/\\033\\[[0-9;]*m//g' "$run_dir/log4j-dependency-tree.log" | \
         awk '
           match($0, /org\.apache\.logging\.log4j:[^[:space:]]+/) {
@@ -127,8 +110,8 @@ for repeat in 1 2 3; do
             sub(/,$/, "", coordinate)
             print coordinate
           }
-        ' | sort -u >"$run_dir/log4j-resolved-coordinates.txt"
-      if [[ ! -s $run_dir/log4j-resolved-coordinates.txt ]]; then
+        ' | sort -u >"$parsed"
+      if [[ ! -s $parsed ]] || ! cmp -s "$parsed" "$run_dir/log4j-resolved-coordinates.txt"; then
         full_graph_parity=false
       fi
     done
