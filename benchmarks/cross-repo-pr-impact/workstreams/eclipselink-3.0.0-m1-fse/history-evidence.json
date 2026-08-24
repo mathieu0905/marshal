@@ -1,0 +1,125 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0419",
+      "fse2024-behavioral-0420",
+      "fse2024-behavioral-0421",
+      "fse2024-behavioral-0422"
+    ],
+    "raw_candidate_records": 4,
+    "failure_observations": 12,
+    "unique_root_repositories": 4,
+    "exact_target_revisions_recorded": 0,
+    "target_declared_versions": {
+      "fse2024-behavioral-0419": "2.5.2",
+      "fse2024-behavioral-0420": "2.5.2",
+      "fse2024-behavioral-0421": "2.6.0-M3",
+      "fse2024-behavioral-0422": "2.6.4"
+    }
+  },
+  "source_repository": {
+    "repository": "eclipse-ee4j/eclipselink",
+    "last_passing_probe": {
+      "version": "2.7.10",
+      "tag_commit": "fe64cd39c33aec4bb8d736e560205171474a6f21",
+      "provider_interface": "javax.persistence.spi.PersistenceProvider",
+      "service_registration": "jpa/org.eclipse.persistence.jpa/resource/META-INF/services/javax.persistence.spi.PersistenceProvider"
+    },
+    "breaking_probe": {
+      "version": "3.0.0-M1",
+      "tag_commit": "bc2a312a83bcb28718e4545b75cc92e1305de583",
+      "tag_commit_date": "2020-04-30T13:28:25+02:00",
+      "provider_interface": "jakarta.persistence.spi.PersistenceProvider",
+      "service_registration": "jpa/org.eclipse.persistence.jpa/src/main/resources/META-INF/services/jakarta.persistence.spi.PersistenceProvider"
+    },
+    "boundary": "The probes cross the javax.persistence to jakarta.persistence provider interface and service-registration boundary. This is a release-line mechanism, not one isolated source commit, and the 2.7.10 maintenance tag was created after 3.0.0-M1."
+  },
+  "target_repositories": [
+    {
+      "repository": "rmpestano/dbunit-rules",
+      "default_branch": "master",
+      "remote_head": "e3ecd6e586d25e8c4806485532339c5efd124e1d",
+      "remote_head_date": "2016-09-16T17:43:13-03:00",
+      "reachable_ref_count": 29,
+      "reachable_commit_count": 646,
+      "commits_declaring_3_0_0_m1": 0,
+      "jakarta_migration": null,
+      "exact_maintainer_repair_under_3_0_0_m1": null
+    },
+    {
+      "repository": "cellux-git/fluent-jdbc",
+      "former_repository": "zsoltherpai/fluent-jdbc",
+      "default_branch": "master",
+      "remote_head": "c1eb2a9b1ce3e2e699cc110e9c9c4d143d09615e",
+      "remote_head_date": "2020-05-15T10:48:35+02:00",
+      "reachable_ref_count": 86,
+      "reachable_commit_count": 393,
+      "commits_declaring_3_0_0_m1": 0,
+      "jakarta_migration": null,
+      "exact_maintainer_repair_under_3_0_0_m1": null
+    },
+    {
+      "repository": "tennaito/rsql-jpa",
+      "default_branch": "master",
+      "remote_head": "7458a9e9f93b185dfff165da6cee3706587f2b10",
+      "remote_head_date": "2017-05-01T14:34:17-03:00",
+      "reachable_ref_count": 57,
+      "reachable_commit_count": 249,
+      "commits_declaring_3_0_0_m1": 0,
+      "unmerged_jakarta_pull_refs": [
+        {
+          "commit": "3f60eee18bf3eb99f5aa19ba18a58d5f95659519",
+          "ref": "refs/pull/28/head",
+          "subject": "migrate from javax to jakarta",
+          "eclipselink_before": "2.6.0-M3",
+          "eclipselink_after": "4.0.1",
+          "jakarta_persistence_api": "3.1.0",
+          "changed_paths": 19
+        },
+        {
+          "commit": "21aa14fa3e5db9beac35694c7e64eaff1a9934c6",
+          "ref": "refs/pull/30/head",
+          "subject": "feat: switch to jakarta apis",
+          "eclipselink_before": "2.6.0-M3",
+          "eclipselink_after": "4.0.2",
+          "jakarta_persistence_api": "3.1.0",
+          "changed_paths": 18
+        }
+      ],
+      "exact_maintainer_repair_under_3_0_0_m1": null
+    },
+    {
+      "repository": "kuros/random-jpa",
+      "default_branch": "master",
+      "remote_head": "a29e661ac1536938a5c07f9642f8e39606f766b5",
+      "remote_head_date": "2024-11-04T11:45:47+05:30",
+      "reachable_ref_count": 64,
+      "reachable_commit_count": 398,
+      "commits_declaring_3_0_0_m1": 0,
+      "later_transition": {
+        "commit": "1f16cf724d255c77e0fd76563d12f74ad63c69a0",
+        "subject": "upgrade to support java 17+",
+        "eclipselink_before": "2.6.4",
+        "eclipselink_after": "4.0.4",
+        "jakarta_persistence_api": "3.2.0",
+        "changed_paths": 186,
+        "scope": "Java 17, Jakarta Persistence, EclipseLink, Hibernate, Mockito and build-plugin migration"
+      },
+      "exact_maintainer_repair_under_3_0_0_m1": null
+    }
+  ],
+  "admission_result": {
+    "raw_records": 4,
+    "failure_observations": 12,
+    "unique_root_relations": 4,
+    "fixed_target_revisions": 0,
+    "exact_maintainer_repairs_under_3_0_0_m1": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}

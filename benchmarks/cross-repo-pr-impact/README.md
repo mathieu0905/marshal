@@ -55,6 +55,8 @@ Mockito 3.8.0、最后通过探针 4.4.0 到失败探针 4.5.0 的 2 条记录�
 
 H2 1.4.197 的 5 条记录、6 个失败观察按根仓和共享合同折叠为 State Machine、RxJava JDBC、JPeek 与 Ontop 四个关系。前两仓分别精确命中“仅显式请求才返回生成键”和“返回多行生成键”的上游提交，后续维护者适配也与失败吻合；但修复分别发生在 1.4.200 和 2.1.210，四仓历史均未采用固定 1.4.197。JPeek 和 Ontop 还含环境噪声。因此保留两个机制锚点，不重放并接纳 0 条。
 
+EclipseLink 3.0.0-M1 的 4 条记录、12 个失败观察对应 dbunit-rules、Fluent JDBC、RSQL JPA 与 Random JPA 四个根仓。四条真实旧版本分别为 2.5.2、2.5.2、2.6.0-M3 和 2.6.4，不能合并成统一旧臂；`javax.persistence` 到 `jakarta.persistence` 的提供者注册边界能解释主要失败。四仓全历史均未采用固定 3.0.0-M1，后续 Jakarta 迁移都改用 4.x 且范围更宽，因此不重放并接纳 0 条。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。
