@@ -1,0 +1,30 @@
+{
+  "case": "babel-es2015-preset-rollup-module-preservation",
+  "run_date": "2026-08-24",
+  "runtime": "Node.js 6.17.1",
+  "babel_core": "6.13.2",
+  "contract": "Rollup 预设转换 ES 模块时必须保留 ES 模块语法，不得生成 CommonJS exports 或 require",
+  "arms": [
+    {"arm": "A0", "source": "6.13.0", "target_code": "1.1.1", "modifier": "1.0.0-unused", "target_version_field": "1.1.1", "result": "pass", "exit_code": 0},
+    {"arm": "A1", "source": "6.13.1", "target_code": "1.1.1", "modifier": "1.0.0-unused", "target_version_field": "1.1.1", "result": "fail", "exit_code": 1, "failure_signature": "CommonJS exports.default emitted"},
+    {"arm": "A2", "source": "6.13.1", "target_code": "1.2.0", "modifier": "2.1.1", "target_version_field": "1.1.1", "result": "pass", "exit_code": 0},
+    {"arm": "CODE_ONLY", "source": "6.13.1", "target_code": "1.2.0", "modifier": "1.0.0", "target_version_field": "1.1.1", "result": "fail", "exit_code": 1},
+    {"arm": "DEPENDENCY_ONLY", "source": "6.13.1", "target_code": "1.1.1", "modifier": "2.1.1-unused", "target_version_field": "1.1.1", "result": "fail", "exit_code": 1},
+    {"arm": "VERSION_ONLY", "source": "6.13.1", "target_code": "1.1.1", "modifier": "1.0.0-unused", "target_version_field": "1.2.0", "result": "fail", "exit_code": 1},
+    {"arm": "RELEASE_1_2_0", "source": "6.13.1", "target_code": "1.2.0", "modifier": "2.1.1", "target_version_field": "1.2.0", "result": "pass", "exit_code": 0}
+  ],
+  "causal_direction_observed": true,
+  "repair_contribution": {
+    "target_code": "required",
+    "modifier_dependency": "required",
+    "target_version_field": "no observed contribution"
+  },
+  "bounded_negative_count": 0,
+  "a3_count": 0,
+  "chain_independent_positive_count": 1,
+  "limitations": [
+    "证明的是 Rollup 预设的模块保留合同，不是所有 Babel 消费者的普遍不兼容",
+    "公开数据把旧目标写成 1.1.0；本包根据实际下游声明和可重现发布物改用 1.1.1",
+    "本地各臂执行一次，公开 Issue 和 PR 只提供历史语义证据，没有历史持续集成日志"
+  ]
+}

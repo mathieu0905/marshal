@@ -19,6 +19,8 @@
 
 旗舰轨道当前有 6 个通过初次语义复核的 OpenDev 因果储备：历史回挖保留 2 个，滚动窗口新增 4 个。扩大到 2026-08-01 之后的窗口共检查 394 个变更、20 个依赖转换和 27 个结构通过任务；扣除已复核重复项后，20 个新任务中只有 5 个支持源差异导致的跨仓修复，对应 3 个新案例。Prow 约 90 天预提交历史另扫描 35,805 次执行，从 1,090 个状态窗口收紧到 11 个结构候选，但代码树与失败语义复核后接受 0 个。通用 Prow 历史因此不作为主体来源；完整漏斗见 `results/prow-three-arm-scan-2026-08-23.json`。独立的 Crater 版本化生态破坏子轨已完成 4 条三臂重放，不并入仓库级旗舰分数。
 
+新的 FSE 2024 行为破坏搜索框从 1,043 条真实客户端测试失败记录聚合出 703 个“依赖升级到破坏版本 × 客户端”候选，涉及 323 个源依赖和 471 个客户端制品。它们提供旧版本到破坏版本的执行失败线索，但缺精确仓库修订和维护者修复；完成仓库恢复与 A0/A1/A2 重放前，703 条均不计为因果案例。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成一轮独立质检，但它不是第二位人工标注者。当前模型质检只接受 Alembic 和 SnakeYAML 两个完整四臂候选；正式人工接受数仍为 0。逐包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。
@@ -32,6 +34,12 @@ terser 4.3.0 的共同破坏变化已经完成三次统一版本隔离重复，A
 SnakeYAML 1.32 到 2.0 的破坏变化和 1.31 到 1.32 的兼容变化已完成四仓三次重复；四仓都覆盖 1.32 新增 3 MB 判断的正常分支。模型质检按当前命令合同接受，超限异常分支不在结论内。
 
 新增筛选没有为了数量强升项目包：Jackson 形成 1 个单正例锚点、2 个源输入和 7 个仓库级判断；Log4j Core 形成 1 个正例、2 个有变化面覆盖的限定负例和兼容变化，但只有 3 个可接受仓；AssertJ 形成 2 个强正例和 2 个限定负例，但两轮 A3 均拒绝；Commons IO 从 34 条、25 仓完整搜索框中形成 2 个单正例三臂锚点，没有可靠负空间与 A3；Checkstyle 从 307 条、53 仓完整框中形成 2 个强正例和 2 个有覆盖限定负例，但 A3 拒绝；Mockito 从 55 条、15 仓完整框中形成 2 个不同源输入的单正例三臂锚点，没有可靠负空间与 A3；Logback 因解析后输入不统一只保留 HTML2POP3 单正例锚点；Spring Core 的 32 条、7 仓完整框没有维护者精确恢复，接受数为 0。这八组正式完整项目包接受数均为 0。详情见各自 `workstreams/` 评估。
+
+OpenDev 的 Ironic Python Agent 到 Requirements 关系已补成本地受控三臂：旧源与旧登记表通过，源变化将 `hardware>=0.24.0` 移入受共享规则检查的可选依赖后失败，只应用 Requirements 维护者的两行登记后恢复。历史 Zuul 两臂另外证明真实组合中的同签名失败与恢复。该结论只覆盖共享依赖登记合同，限定负例和 A3 均为 0，因此只进入单正例锚点层。
+
+React Redux 4.1.2 到 4.2.0 删除了 React Redux Provide 5.1.0 直接导入的内部 `isPlainObject` 模块；目标原生六项测试由通过变为在生产导入处失败，只应用维护者的导入替换和 `is-plain-object 2.0.1` 依赖后恢复。4.0.5 到 4.0.6 的独立兼容臂确实改变同一工具模块的原始导出结构，目标导入在两侧都规范化为函数并通过六项测试。它当前是缺少限定负例、三次重复和独立盲审的单正例四臂锚点。
+
+Babel ES2015 Preset 6.13.0 到 6.13.1 改变插件项形态后，Rollup Preset 的模块保留合同从通过转为生成 CommonJS；采用 1.2.0 发布物代码和 `modify-babel-preset` 2.1.1 后恢复。独立七臂重放确认代码或辅助依赖单独都不足，目标自身版本字段没有贡献。Imagemin Optipng 4.1.0 到 4.2.0 则使同一图片输出从 225 字节变为 228 字节，目标原生 8 项测试出现 3 个精确失败，只应用维护者两处期望更新后恢复 8/8。两者都只有一个正目标仓，没有限定负例；前者无 A3，后者只保留单目标兼容控制，均不计完整项目包。
 
 ## 标签依据
 
@@ -83,7 +91,7 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 |---|---|
 | `INPUT_SPEC.md` | 可见输入、时间边界和网络限制 |
 | `TASK_DEFINITION.md` | 校准轨道与因果旗舰轨道的独立任务定义 |
-| `CAUSAL_SOURCE_ASSESSMENT.md` | Zuul、Prow、Crater、GitLab 等执行来源的实测产率与取舍 |
+| `CAUSAL_SOURCE_ASSESSMENT.md` | Zuul、Prow、Crater、FSE 2024、GitLab 等执行来源的实测产率与取舍 |
 | `ACTIVE_PROJECT_PACKAGE_ASSESSMENT.md` | 主动四臂项目包的候选、执行结果和剩余条件 |
 | `PROJECT_PACKAGE_RESERVE.md` | 已执行项目包、OpenDev 储备和 BUMP 多消费仓搜索框 |
 | `reviews/` | 独立模型语义质检；不得冒充第二位人工复核 |
@@ -108,6 +116,8 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 | `causal-pilot/blind-review-packet.jsonl` | 6 个接受项与 7 个拒绝项的去结论独立复核材料 |
 | `results/prow-three-arm-scan-2026-08-23.json` | Prow 约 90 天预提交历史的完整筛选漏斗与来源决定 |
 | `candidates/crater-linked-fix-candidates.jsonl` | 4 条可逐项审计的 Crater 修复候选和当前状态 |
+| `collect_fse2024_behavioral_candidates.py` | 从 FSE 2024 去重工作簿构造依赖升级执行失败搜索框 |
+| `candidates/fse2024-behavioral-breakage-frame.jsonl` | 703 个待恢复仓库修订与维护者修复的执行失败候选 |
 | `results/crater-replay-*.json` | 4 条版本化包三臂重放、可比性、排除尝试和限制 |
 
 ## Marshal 当前实测

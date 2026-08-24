@@ -1,0 +1,92 @@
+{
+  "screened_at": "2026-08-24",
+  "native_command": "npm test -- --reporter dot",
+  "causal_case": {
+    "source_change": "react-redux 4.1.2 -> 4.2.0",
+    "target_baseline": "react-redux-provide 5.1.0",
+    "maintainer_repair_release": "react-redux-provide 5.2.0",
+    "arms": [
+      {
+        "arm": "A0",
+        "versions": {
+          "node": "v20.20.2",
+          "target": "5.1.0",
+          "source": "4.1.2",
+          "declared_repair_dependency": null
+        },
+        "exit_status": 0,
+        "passing_tests": 6
+      },
+      {
+        "arm": "A1",
+        "versions": {
+          "node": "v20.20.2",
+          "target": "5.1.0",
+          "source": "4.2.0",
+          "declared_repair_dependency": null
+        },
+        "exit_status": 1,
+        "failure": "Cannot find module react-redux/lib/utils/isPlainObject"
+      },
+      {
+        "arm": "A2",
+        "versions": {
+          "node": "v20.20.2",
+          "target": "5.1.0",
+          "source": "4.2.0",
+          "declared_repair_dependency": "2.0.1"
+        },
+        "exit_status": 0,
+        "passing_tests": 6
+      }
+    ],
+    "decision": "accepted_single_positive_three_arm_case"
+  },
+  "package_enhancements": {
+    "bounded_negatives": 0,
+    "a3": {
+      "source_change": "react-redux 4.0.5 -> 4.0.6",
+      "before": {
+        "versions": {
+          "node": "v20.20.2",
+          "target": "5.1.0",
+          "source": "4.0.5",
+          "declared_repair_dependency": null
+        },
+        "exit_status": 0,
+        "passing_tests": 6,
+        "export_probe": {
+          "raw_export_type": "object",
+          "enumerable_keys": [
+            "__esModule",
+            "default"
+          ],
+          "normalized_export_type": "function",
+          "plain_object_result": true,
+          "array_result": false
+        }
+      },
+      "after": {
+        "versions": {
+          "node": "v20.20.2",
+          "target": "5.1.0",
+          "source": "4.0.6",
+          "declared_repair_dependency": null
+        },
+        "exit_status": 0,
+        "passing_tests": 6,
+        "export_probe": {
+          "raw_export_type": "function",
+          "enumerable_keys": [],
+          "normalized_export_type": "function",
+          "plain_object_result": true,
+          "array_result": false
+        }
+      },
+      "decision": "accepted_export_contract_compatibility_case"
+    }
+  },
+  "accepted_causal_cases": 1,
+  "bounded_negative_labels": 0,
+  "accepted_a3_cases": 1
+}

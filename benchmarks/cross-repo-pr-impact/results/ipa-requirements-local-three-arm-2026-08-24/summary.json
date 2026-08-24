@@ -1,0 +1,62 @@
+{
+  "case": "ironic-python-agent-hardware-registration",
+  "run_date": "2026-08-24",
+  "python": "3.12.3",
+  "command": "venv/bin/python req-old/playbooks/files/project-requirements-change.py SOURCE master --reqs REQUIREMENTS",
+  "contract": "OpenStack 项目新增的 Python 依赖必须出现在共享 requirements 登记表中",
+  "arms": [
+    {
+      "arm": "A0",
+      "source_commit": "ec807558924906ae902dfb14ce880e94b69402e1",
+      "requirements_commit": "377f367109c44aaaefc73aa8776e314810e3ad37",
+      "target_patch_applied": false,
+      "exit_code": 0,
+      "result": "pass"
+    },
+    {
+      "arm": "A1",
+      "source_commit": "64c25a49ea0e7a9eba9a08d2c7f8fadba77af5f9",
+      "requirements_commit": "377f367109c44aaaefc73aa8776e314810e3ad37",
+      "target_patch_applied": false,
+      "exit_code": 1,
+      "result": "fail",
+      "failure_signature": "hardware>=0.24.0 not in openstack/requirements"
+    },
+    {
+      "arm": "A2",
+      "source_commit": "64c25a49ea0e7a9eba9a08d2c7f8fadba77af5f9",
+      "requirements_commit": "377f367109c44aaaefc73aa8776e314810e3ad37",
+      "target_patch_applied": true,
+      "target_patch_source_commit": "c9b6a0d3a18e212d4adb5f9c4a31e0136e97cdd6",
+      "target_patch_changed_paths": [
+        "global-requirements.txt",
+        "upper-constraints.txt"
+      ],
+      "exit_code": 0,
+      "result": "pass"
+    }
+  ],
+  "causal_direction_observed": true,
+  "bounded_negative_count": 0,
+  "a3_count": 0,
+  "unjudged_repositories": [
+    "openstack/ceilometer",
+    "openstack/cinder",
+    "openstack/glance",
+    "openstack/keystone",
+    "openstack/kolla",
+    "openstack/kolla-ansible",
+    "openstack/magnum",
+    "openstack/neutron",
+    "openstack/neutron-lib",
+    "openstack/nova",
+    "openstack/openstacksdk",
+    "openstack/puppet-keystone",
+    "openstack/python-magnumclient"
+  ],
+  "limitations": [
+    "证明的是共享依赖登记合同，不是 hardware 库的运行时不兼容",
+    "本地三臂当前执行一次；历史持续集成另提供 A1 到 A2 的独立组合证据",
+    "其余候选仓未执行同一登记规则，保持未判定"
+  ]
+}

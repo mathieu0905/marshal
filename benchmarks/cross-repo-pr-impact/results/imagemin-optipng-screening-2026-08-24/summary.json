@@ -1,0 +1,60 @@
+{
+  "date": "2026-08-24",
+  "dependency_setup": "prepared_cache_reuse",
+  "target_repository": "Brightspace/images-to-variables (restored from omsmith fork)",
+  "target_commit": "94da609777c4af78dc06bd9a0f773531ec0635e6",
+  "target_repair_commit": "b3f8796d8f78e09a4632277bea0bc709c7879b96",
+  "decision": "retain_as_one_causal_three_arm_anchor",
+  "runner_note": "The historical gulp-jasmine task exits zero even when Jasmine reports failures; contract_result is derived from the reported failure count.",
+  "bounded_negative_status": "unavailable_in_source_frame",
+  "compatible_control_status": "single_target_only",
+  "observations": [
+    {
+      "name": "a0",
+      "source_version": "4.1.0",
+      "exit_code": 0,
+      "specs": 8,
+      "failures": 0,
+      "contract_result": "pass"
+    },
+    {
+      "name": "a1",
+      "source_version": "4.2.0",
+      "exit_code": 0,
+      "specs": 8,
+      "failures": 3,
+      "contract_result": "fail"
+    },
+    {
+      "name": "a2",
+      "source_version": "4.2.0",
+      "exit_code": 0,
+      "specs": 8,
+      "failures": 0,
+      "contract_result": "pass"
+    },
+    {
+      "name": "a3-before",
+      "source_version": "4.0.0",
+      "exit_code": 0,
+      "specs": 8,
+      "failures": 0,
+      "contract_result": "pass"
+    },
+    {
+      "name": "a3-after",
+      "source_version": "4.1.0",
+      "exit_code": 0,
+      "specs": 8,
+      "failures": 0,
+      "contract_result": "pass"
+    }
+  ],
+  "expected_direction": {
+    "a0": "pass",
+    "a1": "fail",
+    "a2": "pass",
+    "a3-before": "pass",
+    "a3-after": "pass"
+  }
+}

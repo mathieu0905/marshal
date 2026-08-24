@@ -1,0 +1,693 @@
+2026-08-12 00:55:18.635582 | Job console starting
+2026-08-12 00:55:18.664166 | Updating git repos
+2026-08-12 00:55:18.787065 | Cloning repos into workspace
+2026-08-12 00:55:22.018429 | Restoring repo states
+2026-08-12 00:55:22.114585 | Merging changes
+2026-08-12 00:55:23.472227 | Checking out repos
+2026-08-12 00:55:24.289020 | Preparing playbooks
+2026-08-12 00:55:35.898166 | Running Ansible setup
+2026-08-12 00:55:43.446470 | PRE-RUN START: [trusted : opendev.org/opendev/base-jobs/playbooks/base/pre.yaml@master]
+2026-08-12 00:55:44.788486 | 
+2026-08-12 00:55:44.788712 | PLAY [Create job header and inventory]
+2026-08-12 00:55:44.806499 | 
+2026-08-12 00:55:44.806684 | TASK [Gathering Facts]
+2026-08-12 00:55:46.131973 | localhost | ok
+2026-08-12 00:55:46.144334 | 
+2026-08-12 00:55:46.144494 | TASK [Setup log path fact]
+2026-08-12 00:55:46.176121 | localhost | ok
+2026-08-12 00:55:46.188204 | localhost | included: set-zuul-log-path-fact
+2026-08-12 00:55:46.195515 | 
+2026-08-12 00:55:46.195662 | TASK [set-zuul-log-path-fact : Set log path for a build]
+2026-08-12 00:55:46.236742 | localhost | ok
+2026-08-12 00:55:46.247789 | 
+2026-08-12 00:55:46.247966 | TASK [emit-job-header : Print job information]
+2026-08-12 00:55:46.299007 | # Job Information
+2026-08-12 00:55:46.299259 | Ansible Version: 2.18.18
+2026-08-12 00:55:46.299336 | Job: requirements-check
+2026-08-12 00:55:46.299397 | Pipeline: check
+2026-08-12 00:55:46.299457 | Executor: ze06.opendev.org
+2026-08-12 00:55:46.299517 | Triggered by: https://review.opendev.org/c/openstack/ironic-python-agent/+/1000668
+2026-08-12 00:55:46.299576 | Event ID: 0ce7343bbe484e52b254401a67c7dc4a
+2026-08-12 00:55:46.304591 | 
+2026-08-12 00:55:46.304764 | LOOP [emit-job-header : Print node information]
+2026-08-12 00:55:46.482560 | localhost | ok:
+2026-08-12 00:55:46.482884 | localhost | # Node Information
+2026-08-12 00:55:46.482977 | localhost | Inventory Hostname: ubuntu-noble
+2026-08-12 00:55:46.483062 | localhost | Hostname: np00e1acf03d404
+2026-08-12 00:55:46.483145 | localhost | Username: zuul
+2026-08-12 00:55:46.483231 | localhost | Distro: Ubuntu 24.04
+2026-08-12 00:55:46.483314 | localhost | Provider: opendev.org%2Fopendev%2Fzuul-providers/rax-iad-main
+2026-08-12 00:55:46.483395 | localhost | Region: IAD
+2026-08-12 00:55:46.483476 | localhost | Label: ubuntu-noble-8GB
+2026-08-12 00:55:46.483557 | localhost | Product Name: HVM domU
+2026-08-12 00:55:46.483670 | localhost | Interface IP: 23.253.159.18
+2026-08-12 00:55:46.498535 | 
+2026-08-12 00:55:46.498763 | TASK [log-inventory : Ensure Zuul Ansible directory exists]
+2026-08-12 00:55:47.137153 | localhost -> localhost | changed
+2026-08-12 00:55:47.147100 | 
+2026-08-12 00:55:47.147244 | TASK [log-inventory : Copy ansible inventory to logs dir]
+2026-08-12 00:55:48.577450 | localhost -> localhost | changed
+2026-08-12 00:55:48.591670 | 
+2026-08-12 00:55:48.591833 | PLAY [Setup Zuul environment]
+2026-08-12 00:55:48.606646 | 
+2026-08-12 00:55:48.606824 | TASK [Gather network facts]
+2026-08-12 00:55:49.511194 | ubuntu-noble | ok
+2026-08-12 00:55:49.524668 | 
+2026-08-12 00:55:49.524846 | TASK [add-build-sshkey : Check to see if ssh key was already created for this build]
+2026-08-12 00:55:49.906842 | ubuntu-noble -> localhost | ok
+2026-08-12 00:55:49.916365 | 
+2026-08-12 00:55:49.916515 | TASK [add-build-sshkey : Create a new key in workspace based on build UUID]
+2026-08-12 00:55:49.951066 | ubuntu-noble | ok
+2026-08-12 00:55:49.975180 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/trusted/project_1/opendev.org/zuul/zuul-jobs/roles/add-build-sshkey/tasks/create-key-and-replace.yaml
+2026-08-12 00:55:49.984107 | 
+2026-08-12 00:55:49.984269 | TASK [add-build-sshkey : Create Temp SSH key]
+2026-08-12 00:55:51.744713 | ubuntu-noble -> localhost | Generating public/private rsa key pair.
+2026-08-12 00:55:51.744983 | ubuntu-noble -> localhost | Your identification has been saved in /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/work/d6b05d233d1b47a9b51694b4da905ab1_id_rsa
+2026-08-12 00:55:51.745055 | ubuntu-noble -> localhost | Your public key has been saved in /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/work/d6b05d233d1b47a9b51694b4da905ab1_id_rsa.pub
+2026-08-12 00:55:51.745149 | ubuntu-noble -> localhost | The key fingerprint is:
+2026-08-12 00:55:51.745211 | ubuntu-noble -> localhost | SHA256:k0NkgF8zPN+XXKtq075lA3TySwdD46NCZM8MiGkba4E zuul-build-sshkey
+2026-08-12 00:55:51.745268 | ubuntu-noble -> localhost | The key's randomart image is:
+2026-08-12 00:55:51.745324 | ubuntu-noble -> localhost | +---[RSA 3072]----+
+2026-08-12 00:55:51.745380 | ubuntu-noble -> localhost | |     o.=o.+   o  |
+2026-08-12 00:55:51.745436 | ubuntu-noble -> localhost | |    E *oBo = o ..|
+2026-08-12 00:55:51.745491 | ubuntu-noble -> localhost | |     o *.=..++=+.|
+2026-08-12 00:55:51.745546 | ubuntu-noble -> localhost | |      =. o. o.B= |
+2026-08-12 00:55:51.745603 | ubuntu-noble -> localhost | |     .  S . .o.o.|
+2026-08-12 00:55:51.745693 | ubuntu-noble -> localhost | |         o . .o o|
+2026-08-12 00:55:51.745751 | ubuntu-noble -> localhost | |            o  = |
+2026-08-12 00:55:51.745805 | ubuntu-noble -> localhost | |           + .o .|
+2026-08-12 00:55:51.745860 | ubuntu-noble -> localhost | |          . oo.  |
+2026-08-12 00:55:51.745914 | ubuntu-noble -> localhost | +----[SHA256]-----+
+2026-08-12 00:55:51.746014 | ubuntu-noble -> localhost | ok: Runtime: 0:00:01.098627
+2026-08-12 00:55:51.755894 | 
+2026-08-12 00:55:51.756052 | TASK [add-build-sshkey : Remote setup ssh keys (linux)]
+2026-08-12 00:55:51.793576 | ubuntu-noble | ok
+2026-08-12 00:55:51.810973 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/trusted/project_1/opendev.org/zuul/zuul-jobs/roles/add-build-sshkey/tasks/remote-linux.yaml
+2026-08-12 00:55:51.823253 | 
+2026-08-12 00:55:51.823432 | TASK [add-build-sshkey : Remove previously added zuul-build-sshkey]
+2026-08-12 00:55:51.860018 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:55:51.869745 | 
+2026-08-12 00:55:51.869942 | TASK [add-build-sshkey : Enable access via build key on all nodes]
+2026-08-12 00:55:52.873538 | ubuntu-noble | changed
+2026-08-12 00:55:52.883349 | 
+2026-08-12 00:55:52.883526 | TASK [add-build-sshkey : Make sure user has a .ssh]
+2026-08-12 00:55:53.376166 | ubuntu-noble | ok
+2026-08-12 00:55:53.386535 | 
+2026-08-12 00:55:53.386742 | TASK [add-build-sshkey : Install build private key as SSH key on all nodes]
+2026-08-12 00:55:55.053670 | ubuntu-noble | changed
+2026-08-12 00:55:55.063046 | 
+2026-08-12 00:55:55.063204 | TASK [add-build-sshkey : Install build public key as SSH key on all nodes]
+2026-08-12 00:55:56.757460 | ubuntu-noble | changed
+2026-08-12 00:55:56.766423 | 
+2026-08-12 00:55:56.766593 | TASK [add-build-sshkey : Remote setup ssh keys (windows)]
+2026-08-12 00:55:56.793047 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:55:56.805311 | 
+2026-08-12 00:55:56.805511 | TASK [remove-zuul-sshkey : Remove master key from local agent]
+2026-08-12 00:55:57.395681 | ubuntu-noble -> localhost | changed
+2026-08-12 00:55:57.417496 | 
+2026-08-12 00:55:57.417698 | TASK [add-build-sshkey : Add back temp key]
+2026-08-12 00:55:57.850587 | ubuntu-noble -> localhost | Identity added: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/work/d6b05d233d1b47a9b51694b4da905ab1_id_rsa (zuul-build-sshkey)
+2026-08-12 00:55:57.850972 | ubuntu-noble -> localhost | ok: Runtime: 0:00:00.014194
+2026-08-12 00:55:57.859802 | 
+2026-08-12 00:55:57.859979 | TASK [add-build-sshkey : Verify we can still SSH to all nodes]
+2026-08-12 00:55:58.595218 | ubuntu-noble | ok
+2026-08-12 00:55:58.604141 | 
+2026-08-12 00:55:58.604311 | TASK [add-build-sshkey : Verify we can still SSH to all nodes (windows)]
+2026-08-12 00:55:58.640077 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:55:58.658228 | 
+2026-08-12 00:55:58.658375 | TASK [start-zuul-console : Start zuul_console daemon.]
+2026-08-12 00:55:59.356981 | ubuntu-noble | ok
+2026-08-12 00:55:59.371336 | 
+2026-08-12 00:55:59.371453 | LOOP [ensure-output-dirs : Empty Zuul Output directories by removing them]
+2026-08-12 00:55:59.816810 | ubuntu-noble | ok: "logs"
+2026-08-12 00:55:59.817353 | ubuntu-noble | ok: All items complete
+2026-08-12 00:55:59.817420 | 
+2026-08-12 00:56:00.217212 | ubuntu-noble | ok: "artifacts"
+2026-08-12 00:56:00.665765 | ubuntu-noble | ok: "docs"
+2026-08-12 00:56:00.680771 | 
+2026-08-12 00:56:00.680957 | LOOP [ensure-output-dirs : Ensure Zuul Output directories exist]
+2026-08-12 00:56:01.153170 | ubuntu-noble | changed: "logs"
+2026-08-12 00:56:01.577009 | ubuntu-noble | changed: "artifacts"
+2026-08-12 00:56:01.990656 | ubuntu-noble | changed: "docs"
+2026-08-12 00:56:02.012949 | 
+2026-08-12 00:56:02.013103 | PLAY [Configure unbound]
+2026-08-12 00:56:02.025168 | 
+2026-08-12 00:56:02.025323 | TASK [configure-unbound : Check that Unbound is installed]
+2026-08-12 00:56:02.444717 | ubuntu-noble | ok
+2026-08-12 00:56:02.456659 | 
+2026-08-12 00:56:02.456825 | TASK [configure-unbound : Ensure that Unbound is installed]
+2026-08-12 00:56:02.501074 | ubuntu-noble | ok: All assertions passed
+2026-08-12 00:56:02.508730 | 
+2026-08-12 00:56:02.508851 | TASK [configure-unbound : Check for IPv6]
+2026-08-12 00:56:02.679029 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:02.689913 | 
+2026-08-12 00:56:02.690114 | TASK [configure-unbound : Set IPv6 nameservers]
+2026-08-12 00:56:02.736426 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:02.746751 | 
+2026-08-12 00:56:02.746944 | TASK [configure-unbound : Set IPv4 nameservers]
+2026-08-12 00:56:02.803561 | ubuntu-noble | ok
+2026-08-12 00:56:02.812287 | 
+2026-08-12 00:56:02.812449 | LOOP [configure-unbound : Include OS-specific variables]
+2026-08-12 00:56:02.870917 | ubuntu-noble | ok: "/var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/trusted/project_0/opendev.org/opendev/base-jobs/roles/configure-unbound/vars/Debian.yaml"
+2026-08-12 00:56:02.871232 | ubuntu-noble | changed: All items complete
+2026-08-12 00:56:02.871315 | 
+2026-08-12 00:56:02.892360 | 
+2026-08-12 00:56:02.892601 | TASK [configure-unbound : Ensure Unbound conf.d directory exists]
+2026-08-12 00:56:03.421171 | ubuntu-noble | ok
+2026-08-12 00:56:03.431324 | 
+2026-08-12 00:56:03.431532 | TASK [configure-unbound : Configure unbound forwarding]
+2026-08-12 00:56:05.086954 | ubuntu-noble | changed
+2026-08-12 00:56:05.098133 | 
+2026-08-12 00:56:05.098327 | TASK [configure-unbound : Configure unbound TTL]
+2026-08-12 00:56:06.715077 | ubuntu-noble | changed
+2026-08-12 00:56:06.726597 | 
+2026-08-12 00:56:06.726877 | TASK [configure-unbound : Start unbound]
+2026-08-12 00:56:07.972944 | ubuntu-noble | ok
+2026-08-12 00:56:08.002917 | 
+2026-08-12 00:56:08.003123 | TASK [configure-unbound : Restart unbound]
+2026-08-12 00:56:08.899814 | ubuntu-noble | changed
+2026-08-12 00:56:08.911105 | 
+2026-08-12 00:56:08.911271 | PLAY [Prepare workspace and configure mirrors]
+2026-08-12 00:56:08.927650 | 
+2026-08-12 00:56:08.928184 | TASK [validate-host : Define zuul_info_dir fact]
+2026-08-12 00:56:08.975608 | ubuntu-noble | ok
+2026-08-12 00:56:08.985033 | 
+2026-08-12 00:56:08.985207 | TASK [validate-host : Ensure Zuul Ansible directory exists]
+2026-08-12 00:56:09.368858 | ubuntu-noble -> localhost | ok
+2026-08-12 00:56:09.381531 | 
+2026-08-12 00:56:09.381830 | TASK [validate-host : Collect information about the host]
+2026-08-12 00:56:10.529097 | ubuntu-noble | ok
+2026-08-12 00:56:10.553064 | 
+2026-08-12 00:56:10.553261 | TASK [validate-host : Sanitize hostname]
+2026-08-12 00:56:10.637727 | ubuntu-noble | ok
+2026-08-12 00:56:10.645914 | 
+2026-08-12 00:56:10.646059 | TASK [validate-host : Write out all ansible variables/facts known for each host]
+2026-08-12 00:56:11.379686 | ubuntu-noble -> localhost | changed
+2026-08-12 00:56:11.391070 | 
+2026-08-12 00:56:11.391345 | TASK [validate-host : Collect information about zuul worker]
+2026-08-12 00:56:12.635032 | ubuntu-noble | ok
+2026-08-12 00:56:12.645864 | 
+2026-08-12 00:56:12.646020 | TASK [validate-host : Write out all zuul information for each host]
+2026-08-12 00:56:13.354135 | ubuntu-noble -> localhost | changed
+2026-08-12 00:56:13.372994 | 
+2026-08-12 00:56:13.373225 | TASK [hardware-check : Raise an error if CPU count is too low]
+2026-08-12 00:56:13.409680 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:13.432728 | 
+2026-08-12 00:56:13.432896 | LOOP [prepare-workspace-git : Filter zuul projects if sync-only-required-projects flag is set]
+2026-08-12 00:56:13.468180 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:13.471026 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:13.488977 | 
+2026-08-12 00:56:13.489179 | TASK [prepare-workspace-git : Don't filter zuul projects if flag is false]
+2026-08-12 00:56:13.535719 | ubuntu-noble | ok
+2026-08-12 00:56:13.543947 | 
+2026-08-12 00:56:13.544138 | TASK [prepare-workspace-git : Set initial repo states in workspace]
+2026-08-12 00:56:14.700038 | ubuntu-noble | changed
+2026-08-12 00:56:14.708132 | 
+2026-08-12 00:56:14.708302 | TASK [prepare-workspace-git : Synchronize src repos to workspace directory]
+2026-08-12 00:56:16.451308 | ubuntu-noble -> localhost | changed
+2026-08-12 00:56:16.460957 | 
+2026-08-12 00:56:16.461127 | TASK [prepare-workspace-git : Update remote repository state]
+2026-08-12 00:56:17.340979 | ubuntu-noble | changed
+2026-08-12 00:56:17.358047 | 
+2026-08-12 00:56:17.358213 | TASK [mirror-info : Create /etc/ci]
+2026-08-12 00:56:17.834489 | ubuntu-noble | changed
+2026-08-12 00:56:17.842473 | 
+2026-08-12 00:56:17.842680 | TASK [mirror-info : Install ci_mirror script]
+2026-08-12 00:56:19.508905 | ubuntu-noble | changed
+2026-08-12 00:56:19.523212 | 
+2026-08-12 00:56:19.523396 | TASK [configure-mirrors : Gather needed facts]
+2026-08-12 00:56:19.560361 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:19.569759 | 
+2026-08-12 00:56:19.569919 | TASK [configure-mirrors : Set up infrastructure mirrors]
+2026-08-12 00:56:19.666352 | ubuntu-noble | ok
+2026-08-12 00:56:19.678608 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/trusted/project_1/opendev.org/zuul/zuul-jobs/roles/configure-mirrors/tasks/mirror.yaml
+2026-08-12 00:56:19.685572 | 
+2026-08-12 00:56:19.685735 | TASK [configure-mirrors : Remove .pydistutils.cfg configuration in homedir]
+2026-08-12 00:56:20.134883 | ubuntu-noble | ok
+2026-08-12 00:56:20.145790 | 
+2026-08-12 00:56:20.145976 | LOOP [configure-mirrors : Include OS-specific variables]
+2026-08-12 00:56:20.198046 | ubuntu-noble | ok: "/var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/trusted/project_1/opendev.org/zuul/zuul-jobs/roles/configure-mirrors/vars/Ubuntu.yaml"
+2026-08-12 00:56:20.198356 | 
+2026-08-12 00:56:20.213531 | 
+2026-08-12 00:56:20.213752 | TASK [configure-mirrors : Install /etc/pip.conf configuration]
+2026-08-12 00:56:21.837842 | ubuntu-noble | changed
+2026-08-12 00:56:21.846208 | 
+2026-08-12 00:56:21.846408 | LOOP [configure-mirrors : Setup distribution specific packaging mirrors]
+2026-08-12 00:56:21.890367 | ubuntu-noble | ok: "/var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/trusted/project_1/opendev.org/zuul/zuul-jobs/roles/configure-mirrors/tasks/mirror/Ubuntu.yaml"
+2026-08-12 00:56:21.907312 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/trusted/project_1/opendev.org/zuul/zuul-jobs/roles/configure-mirrors/tasks/mirror/Ubuntu.yaml
+2026-08-12 00:56:21.915666 | 
+2026-08-12 00:56:21.915928 | LOOP [configure-mirrors : Install Ubuntu repository files]
+2026-08-12 00:56:23.645703 | ubuntu-noble | changed: "etc/apt/sources.list"
+2026-08-12 00:56:23.646153 | ubuntu-noble | ok: All items complete
+2026-08-12 00:56:23.646218 | 
+2026-08-12 00:56:25.202308 | ubuntu-noble | changed: "etc/apt/apt.conf.d/99unauthenticated"
+2026-08-12 00:56:25.226687 | 
+2026-08-12 00:56:25.226877 | TASK [configure-mirrors : Update apt cache]
+2026-08-12 00:56:26.936543 | ubuntu-noble | Ign:1 https://mirror-int.iad.rax.opendev.org/ubuntu noble InRelease
+2026-08-12 00:56:26.937660 | ubuntu-noble | Ign:2 https://mirror-int.iad.rax.opendev.org/ubuntu noble-updates InRelease
+2026-08-12 00:56:26.938668 | ubuntu-noble | Ign:3 https://mirror-int.iad.rax.opendev.org/ubuntu noble-security InRelease
+2026-08-12 00:56:26.941964 | ubuntu-noble | Get:4 https://mirror-int.iad.rax.opendev.org/ubuntu noble Release [3235 B]
+2026-08-12 00:56:26.944242 | ubuntu-noble | Get:5 https://mirror-int.iad.rax.opendev.org/ubuntu noble-updates Release [3263 B]
+2026-08-12 00:56:26.945458 | ubuntu-noble | Get:6 https://mirror-int.iad.rax.opendev.org/ubuntu noble-security Release [3262 B]
+2026-08-12 00:56:26.947723 | ubuntu-noble | Ign:7 https://mirror-int.iad.rax.opendev.org/ubuntu noble Release.gpg
+2026-08-12 00:56:26.948666 | ubuntu-noble | Ign:8 https://mirror-int.iad.rax.opendev.org/ubuntu noble-updates Release.gpg
+2026-08-12 00:56:26.950432 | ubuntu-noble | Ign:9 https://mirror-int.iad.rax.opendev.org/ubuntu noble-security Release.gpg
+2026-08-12 00:56:26.952083 | ubuntu-noble | Get:10 https://mirror-int.iad.rax.opendev.org/ubuntu noble/main amd64 Packages [2203 kB]
+2026-08-12 00:56:27.004739 | ubuntu-noble | Get:11 https://mirror-int.iad.rax.opendev.org/ubuntu noble/universe amd64 Packages [24.5 MB]
+2026-08-12 00:56:27.381060 | ubuntu-noble | Get:12 https://mirror-int.iad.rax.opendev.org/ubuntu noble-updates/universe amd64 Packages [2450 kB]
+2026-08-12 00:56:27.419529 | ubuntu-noble | Get:13 https://mirror-int.iad.rax.opendev.org/ubuntu noble-updates/main amd64 Packages [2813 kB]
+2026-08-12 00:56:27.462274 | ubuntu-noble | Get:14 https://mirror-int.iad.rax.opendev.org/ubuntu noble-security/main amd64 Packages [2380 kB]
+2026-08-12 00:56:27.499552 | ubuntu-noble | Get:15 https://mirror-int.iad.rax.opendev.org/ubuntu noble-security/universe amd64 Packages [1751 kB]
+2026-08-12 00:56:29.548582 | ubuntu-noble | Fetched 36.1 MB in 4s (10.1 MB/s)
+2026-08-12 00:56:30.918486 | ubuntu-noble | Reading package lists...
+2026-08-12 00:56:31.410357 | ubuntu-noble | ok: Runtime: 0:00:05.237105
+2026-08-12 00:56:31.412872 | 
+2026-08-12 00:56:31.412953 | PLAY RECAP
+2026-08-12 00:56:31.413045 | localhost | ok: 7 changed: 2 unreachable: 0 failed: 0 skipped: 0 rescued: 0 ignored: 0
+2026-08-12 00:56:31.413115 | ubuntu-noble | ok: 44 changed: 20 unreachable: 0 failed: 0 skipped: 8 rescued: 0 ignored: 0
+2026-08-12 00:56:31.413167 | 
+2026-08-12 00:56:31.593031 | PRE-RUN END RESULT_NORMAL: [trusted : opendev.org/opendev/base-jobs/playbooks/base/pre.yaml@master]
+2026-08-12 00:56:31.596796 | PRE-RUN START: [untrusted : opendev.org/zuul/zuul-jobs/playbooks/unittests/pre.yaml@master]
+2026-08-12 00:56:32.749865 | 
+2026-08-12 00:56:32.750068 | PLAY [all]
+2026-08-12 00:56:32.774241 | 
+2026-08-12 00:56:32.774411 | TASK [Install binary dependencies]
+2026-08-12 00:56:32.850821 | ubuntu-noble | ok
+2026-08-12 00:56:32.876281 | ubuntu-noble | included: bindep
+2026-08-12 00:56:32.885206 | 
+2026-08-12 00:56:32.885440 | TASK [bindep : Include find tasks]
+2026-08-12 00:56:32.930546 | ubuntu-noble | ok
+2026-08-12 00:56:32.945789 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/untrusted/project_0/opendev.org/zuul/zuul-jobs/roles/bindep/tasks/find.yaml
+2026-08-12 00:56:32.955915 | 
+2026-08-12 00:56:32.956135 | TASK [bindep : Look for bindep.txt]
+2026-08-12 00:56:33.702843 | ubuntu-noble | ok
+2026-08-12 00:56:33.712578 | 
+2026-08-12 00:56:33.712809 | TASK [bindep : Define bindep_file fact]
+2026-08-12 00:56:33.775487 | ubuntu-noble | ok
+2026-08-12 00:56:33.788702 | 
+2026-08-12 00:56:33.788894 | TASK [bindep : Look for other-requirements.txt]
+2026-08-12 00:56:33.825011 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:33.835183 | 
+2026-08-12 00:56:33.835451 | TASK [bindep : Define bindep_file fact]
+2026-08-12 00:56:33.871424 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:33.883172 | 
+2026-08-12 00:56:33.883346 | TASK [bindep : Look for bindep fallback file]
+2026-08-12 00:56:33.929538 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:33.939065 | 
+2026-08-12 00:56:33.939254 | TASK [bindep : Define bindep_file fact]
+2026-08-12 00:56:33.975243 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:33.985436 | 
+2026-08-12 00:56:33.985658 | TASK [bindep : Include bindep tasks]
+2026-08-12 00:56:34.030776 | ubuntu-noble | ok
+2026-08-12 00:56:34.046122 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/untrusted/project_0/opendev.org/zuul/zuul-jobs/roles/bindep/tasks/find-bindep.yaml
+2026-08-12 00:56:34.060673 | 
+2026-08-12 00:56:34.060855 | TASK [bindep : Look for bindep command]
+2026-08-12 00:56:34.568826 | ubuntu-noble | ok
+2026-08-12 00:56:34.579033 | 
+2026-08-12 00:56:34.579186 | TASK [bindep : Check for system bindep]
+2026-08-12 00:56:34.743316 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:34.753719 | 
+2026-08-12 00:56:34.753913 | TASK [bindep : Define bindep_command fact]
+2026-08-12 00:56:34.789735 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:34.799607 | 
+2026-08-12 00:56:34.799820 | TASK [bindep : Include install tasks]
+2026-08-12 00:56:34.845753 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:34.856321 | 
+2026-08-12 00:56:34.856453 | LOOP [bindep : Include package tasks]
+2026-08-12 00:56:34.935358 | ubuntu-noble | ok: "src/opendev.org/openstack/ironic-python-agent/bindep.txt"
+2026-08-12 00:56:34.957664 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/untrusted/project_0/opendev.org/zuul/zuul-jobs/roles/bindep/tasks/packages.yaml
+2026-08-12 00:56:34.973281 | 
+2026-08-12 00:56:34.973416 | TASK [bindep : Define bindep_run fact]
+2026-08-12 00:56:35.019537 | ubuntu-noble | ok
+2026-08-12 00:56:35.028805 | 
+2026-08-12 00:56:35.028981 | TASK [bindep : Get list of packages to install from bindep]
+2026-08-12 00:56:36.861890 | ubuntu-noble | gettext
+2026-08-12 00:56:36.862001 | ubuntu-noble | libffi-dev
+2026-08-12 00:56:36.862018 | ubuntu-noble | libssl-dev
+2026-08-12 00:56:36.862028 | ubuntu-noble | mdadm
+2026-08-12 00:56:36.862038 | ubuntu-noble | python3-all-dev
+2026-08-12 00:56:37.252816 | ubuntu-noble | ok: Runtime: 0:00:01.096577
+2026-08-12 00:56:37.261430 | 
+2026-08-12 00:56:37.261547 | TASK [bindep : Install distro packages from bindep]
+2026-08-12 00:56:55.513932 | ubuntu-noble | changed
+2026-08-12 00:56:55.524682 | 
+2026-08-12 00:56:55.524873 | TASK [bindep : Check that packages are installed]
+2026-08-12 00:56:57.215881 | ubuntu-noble | ok: Runtime: 0:00:01.040009
+2026-08-12 00:56:57.226275 | 
+2026-08-12 00:56:57.226451 | TASK [bindep : Fail if we cannot install all packages]
+2026-08-12 00:56:57.262415 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:57.280902 | 
+2026-08-12 00:56:57.281084 | TASK [Run test-setup role]
+2026-08-12 00:56:57.316464 | ubuntu-noble | ok
+2026-08-12 00:56:57.337971 | ubuntu-noble | included: test-setup
+2026-08-12 00:56:57.353330 | 
+2026-08-12 00:56:57.353525 | TASK [test-setup : Check if project's tools/test-setup.sh exists]
+2026-08-12 00:56:57.857399 | ubuntu-noble | ok
+2026-08-12 00:56:57.866179 | 
+2026-08-12 00:56:57.866361 | TASK [test-setup : Run tools/test-setup.sh]
+2026-08-12 00:56:57.930071 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:56:57.944788 | 
+2026-08-12 00:56:57.944933 | PLAY RECAP
+2026-08-12 00:56:57.945030 | ubuntu-noble | ok: 13 changed: 1 unreachable: 0 failed: 0 skipped: 9 rescued: 0 ignored: 0
+2026-08-12 00:56:57.945092 | 
+2026-08-12 00:56:58.124197 | PRE-RUN END RESULT_NORMAL: [untrusted : opendev.org/zuul/zuul-jobs/playbooks/unittests/pre.yaml@master]
+2026-08-12 00:56:58.126841 | RUN START: [untrusted : opendev.org/openstack/requirements/playbooks/requirements-check.yaml@master]
+2026-08-12 00:56:59.365442 | 
+2026-08-12 00:56:59.365696 | PLAY [all]
+2026-08-12 00:56:59.392122 | 
+2026-08-12 00:56:59.392431 | TASK [ensure-pip : Check if pip is installed]
+2026-08-12 00:57:00.578387 | ubuntu-noble | ok: Runtime: 0:00:00.006776
+2026-08-12 00:57:00.589022 | 
+2026-08-12 00:57:00.589267 | LOOP [ensure-pip : Install pip from packages]
+2026-08-12 00:57:00.638481 | ubuntu-noble | ok: "/var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/untrusted/project_0/opendev.org/zuul/zuul-jobs/roles/ensure-pip/tasks/Debian.yaml"
+2026-08-12 00:57:00.658833 | ubuntu-noble | included: /var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/untrusted/project_0/opendev.org/zuul/zuul-jobs/roles/ensure-pip/tasks/Debian.yaml
+2026-08-12 00:57:00.668712 | 
+2026-08-12 00:57:00.668851 | TASK [ensure-pip : Update package lists]
+2026-08-12 00:57:02.430758 | ubuntu-noble | ok
+2026-08-12 00:57:02.440499 | 
+2026-08-12 00:57:02.440721 | TASK [ensure-pip : Install Python 3 pip]
+2026-08-12 00:57:08.711973 | ubuntu-noble | changed
+2026-08-12 00:57:08.727580 | 
+2026-08-12 00:57:08.727803 | TASK [ensure-pip : Install Python 2 pip]
+2026-08-12 00:57:08.811507 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:08.822773 | 
+2026-08-12 00:57:08.822924 | TASK [ensure-pip : Ensure setuptools]
+2026-08-12 00:57:08.848602 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:08.860250 | 
+2026-08-12 00:57:08.860421 | TASK [ensure-pip : Check for ensurepip module]
+2026-08-12 00:57:09.498141 | ubuntu-noble | usage: python -m ensurepip [-h] [--version] [-v] [-U] [--user] [--root ROOT]
+2026-08-12 00:57:09.498312 | ubuntu-noble |                            [--altinstall] [--default-pip]
+2026-08-12 00:57:09.498331 | ubuntu-noble |
+2026-08-12 00:57:09.498342 | ubuntu-noble | options:
+2026-08-12 00:57:09.498353 | ubuntu-noble |   -h, --help     show this help message and exit
+2026-08-12 00:57:09.498367 | ubuntu-noble |   --version      Show the version of pip that is bundled with this Python.
+2026-08-12 00:57:09.498379 | ubuntu-noble |   -v, --verbose  Give more output. Option is additive, and can be used up to 3
+2026-08-12 00:57:09.498393 | ubuntu-noble |                  times.
+2026-08-12 00:57:09.498405 | ubuntu-noble |   -U, --upgrade  Upgrade pip and dependencies, even if already installed.
+2026-08-12 00:57:09.498414 | ubuntu-noble |   --user         Install using the user scheme.
+2026-08-12 00:57:09.498424 | ubuntu-noble |   --root ROOT    Install everything relative to this alternate root directory.
+2026-08-12 00:57:09.498434 | ubuntu-noble |   --altinstall   Make an alternate install, installing only the X.Y versioned
+2026-08-12 00:57:09.498443 | ubuntu-noble |                  scripts (Default: pipX, pipX.Y).
+2026-08-12 00:57:09.498452 | ubuntu-noble |   --default-pip  Make a default pip install, installing the unqualified pip in
+2026-08-12 00:57:09.498461 | ubuntu-noble |                  addition to the versioned scripts.
+2026-08-12 00:57:10.042841 | ubuntu-noble | ok: Runtime: 0:00:00.101827
+2026-08-12 00:57:10.052038 | 
+2026-08-12 00:57:10.052155 | TASK [ensure-pip : Ensure python3-venv]
+2026-08-12 00:57:10.088201 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:10.099819 | 
+2026-08-12 00:57:10.100021 | TASK [ensure-pip : Install pip from source]
+2026-08-12 00:57:10.125877 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:10.137056 | 
+2026-08-12 00:57:10.137278 | TASK [ensure-pip : Probe for venv python full path]
+2026-08-12 00:57:10.684611 | ubuntu-noble | /usr/bin/python3
+2026-08-12 00:57:10.814804 | ubuntu-noble | ok: Runtime: 0:00:00.005541
+2026-08-12 00:57:10.824523 | 
+2026-08-12 00:57:10.824755 | TASK [ensure-pip : Set host default]
+2026-08-12 00:57:10.910222 | ubuntu-noble | ok
+2026-08-12 00:57:10.919685 | 
+2026-08-12 00:57:10.919918 | TASK [ensure-pip : Set ensure_pip_virtualenv_command]
+2026-08-12 00:57:11.008468 | ubuntu-noble | ok
+2026-08-12 00:57:11.069899 | 
+2026-08-12 00:57:11.070081 | TASK [check-requirements : Create virtual environment]
+2026-08-12 00:57:16.762278 | ubuntu-noble | ok: Runtime: 0:00:05.069959
+2026-08-12 00:57:16.771850 | 
+2026-08-12 00:57:16.772068 | TASK [check-requirements : Install openstack_requirements]
+2026-08-12 00:57:17.852598 | ubuntu-noble | Looking in indexes: https://mirror-int.iad.rax.opendev.org/pypi/simple, https://mirror-int.iad.rax.opendev.org/wheel/ubuntu-24.04-x86_64
+2026-08-12 00:57:17.864418 | ubuntu-noble | Processing ./src/opendev.org/openstack/requirements
+2026-08-12 00:57:17.868356 | ubuntu-noble |   Installing build dependencies: started
+2026-08-12 00:57:20.207266 | ubuntu-noble |   Installing build dependencies: finished with status 'done'
+2026-08-12 00:57:20.213096 | ubuntu-noble |   Getting requirements to build wheel: started
+2026-08-12 00:57:20.467644 | ubuntu-noble |   Getting requirements to build wheel: finished with status 'done'
+2026-08-12 00:57:20.476166 | ubuntu-noble |   Preparing metadata (pyproject.toml): started
+2026-08-12 00:57:22.032891 | ubuntu-noble |   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-08-12 00:57:22.186731 | ubuntu-noble | Collecting fixtures>=3.0.0 (from openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:22.190493 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/de/58/b7efb4b7c01cefd47efb53e50c7f1eb2cdc4aff3d98268bdc46c7f628f2c/fixtures-4.3.2-py3-none-any.whl.metadata (22 kB)
+2026-08-12 00:57:22.268544 | ubuntu-noble | Collecting packaging!=20.5,!=20.6,!=20.7,>=16.5 (from openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:22.272278 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-08-12 00:57:22.368414 | ubuntu-noble | Collecting requests>=2.14.2 (from openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:22.372328 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+2026-08-12 00:57:22.480794 | ubuntu-noble | Collecting PyYAML>=3.12 (from openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:22.484677 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/8b/9d/b3589d3877982d4f2329302ef98a8026e7f4443c765c46cfecc8858c6b4b/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+2026-08-12 00:57:22.526960 | ubuntu-noble | Collecting beagle>=0.2.1 (from openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:22.534196 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/22/18/e8ef044782cfb62654e2c079745be42820f05c012a5f0ec2ad509cdfbca7/beagle-0.5.0-py3-none-any.whl.metadata (1.1 kB)
+2026-08-12 00:57:23.729675 | ubuntu-noble | Collecting setuptools!=24.0.0,!=34.0.0,!=34.0.1,!=34.0.2,!=34.0.3,!=34.1.0,!=34.1.1,!=34.2.0,!=34.3.0,!=34.3.1,!=34.3.2,!=36.2.0,>=21.0.0 (from openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:23.731971 | ubuntu-noble |   Using cached https://mirror-int.iad.rax.opendev.org/pypifiles/packages/95/9c/c510029fc6ef33a6275cd2c5d3cecd6613dfd6aa401d57c54f1c18852ccf/setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+2026-08-12 00:57:24.070547 | ubuntu-noble | Collecting charset_normalizer<4,>=2 (from requests>=2.14.2->openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:24.075021 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/01/c4/4fa4c8b3097a11f3c5f09a35b72ed6855fb1d332469504962ab7bafcc702/charset_normalizer-3.4.9-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (41 kB)
+2026-08-12 00:57:24.086531 | ubuntu-noble |      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 41.7/41.7 kB 5.1 MB/s eta 0:00:00
+2026-08-12 00:57:24.139607 | ubuntu-noble | Collecting idna<4,>=2.5 (from requests>=2.14.2->openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:24.143409 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+2026-08-12 00:57:24.256104 | ubuntu-noble | Collecting urllib3<3,>=1.26 (from requests>=2.14.2->openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:24.260243 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/7f/3e/5db95bcf282c52709639744ca2a8b149baccf648e39c8cc87553df9eae0c/urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+2026-08-12 00:57:24.326696 | ubuntu-noble | Collecting certifi>=2023.5.7 (from requests>=2.14.2->openstack_requirements==1.2.1.dev8566)
+2026-08-12 00:57:24.330367 | ubuntu-noble |   Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+2026-08-12 00:57:24.439700 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/22/18/e8ef044782cfb62654e2c079745be42820f05c012a5f0ec2ad509cdfbca7/beagle-0.5.0-py3-none-any.whl (10 kB)
+2026-08-12 00:57:24.447162 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/de/58/b7efb4b7c01cefd47efb53e50c7f1eb2cdc4aff3d98268bdc46c7f628f2c/fixtures-4.3.2-py3-none-any.whl (41 kB)
+2026-08-12 00:57:24.455688 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 41.6/41.6 kB 6.5 MB/s eta 0:00:00
+2026-08-12 00:57:24.458841 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl (129 kB)
+2026-08-12 00:57:24.468685 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 130.0/130.0 kB 18.8 MB/s eta 0:00:00
+2026-08-12 00:57:24.471713 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/8b/9d/b3589d3877982d4f2329302ef98a8026e7f4443c765c46cfecc8858c6b4b/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+2026-08-12 00:57:24.492841 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 45.4 MB/s eta 0:00:00
+2026-08-12 00:57:24.495916 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl (73 kB)
+2026-08-12 00:57:24.504270 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 12.4 MB/s eta 0:00:00
+2026-08-12 00:57:24.506100 | ubuntu-noble | Using cached https://mirror-int.iad.rax.opendev.org/pypifiles/packages/95/9c/c510029fc6ef33a6275cd2c5d3cecd6613dfd6aa401d57c54f1c18852ccf/setuptools-84.0.0-py3-none-any.whl (818 kB)
+2026-08-12 00:57:24.512238 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl (136 kB)
+2026-08-12 00:57:24.521550 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 137.0/137.0 kB 20.8 MB/s eta 0:00:00
+2026-08-12 00:57:24.524629 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/01/c4/4fa4c8b3097a11f3c5f09a35b72ed6855fb1d332469504962ab7bafcc702/charset_normalizer-3.4.9-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (224 kB)
+2026-08-12 00:57:24.536516 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 224.3/224.3 kB 24.4 MB/s eta 0:00:00
+2026-08-12 00:57:24.539537 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl (65 kB)
+2026-08-12 00:57:24.547965 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.5/65.5 kB 10.6 MB/s eta 0:00:00
+2026-08-12 00:57:24.551035 | ubuntu-noble | Downloading https://mirror-int.iad.rax.opendev.org/pypifiles/packages/7f/3e/5db95bcf282c52709639744ca2a8b149baccf648e39c8cc87553df9eae0c/urllib3-2.7.0-py3-none-any.whl (131 kB)
+2026-08-12 00:57:24.560614 | ubuntu-noble |    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.1/131.1 kB 19.0 MB/s eta 0:00:00
+2026-08-12 00:57:24.631840 | ubuntu-noble | Building wheels for collected packages: openstack_requirements
+2026-08-12 00:57:24.633309 | ubuntu-noble |   Building wheel for openstack_requirements (pyproject.toml): started
+2026-08-12 00:57:27.216272 | ubuntu-noble |   Building wheel for openstack_requirements (pyproject.toml): finished with status 'done'
+2026-08-12 00:57:27.217607 | ubuntu-noble |   Created wheel for openstack_requirements: filename=openstack_requirements-1.2.1.dev8566-py3-none-any.whl size=53487 sha256=749954a6184e7e9d6ea765d1c84223afccf9d0a7a49fae66bce09a5e37a18b14
+2026-08-12 00:57:27.218021 | ubuntu-noble |   Stored in directory: /tmp/pip-ephem-wheel-cache-o96rjsq9/wheels/6d/68/5b/d24b67744b5b976c0957dd4d21505b0fece1d2c6bfdbd622c2
+2026-08-12 00:57:27.222181 | ubuntu-noble | Successfully built openstack_requirements
+2026-08-12 00:57:27.351532 | ubuntu-noble | Installing collected packages: urllib3, setuptools, PyYAML, packaging, idna, fixtures, charset_normalizer, certifi, beagle, requests, openstack_requirements
+2026-08-12 00:57:28.930756 | ubuntu-noble | Successfully installed PyYAML-6.0.3 beagle-0.5.0 certifi-2026.7.22 charset_normalizer-3.4.9 fixtures-4.3.2 idna-3.18 openstack_requirements-1.2.1.dev8566 packaging-26.3 requests-2.34.2 setuptools-84.0.0 urllib3-2.7.0
+2026-08-12 00:57:29.469504 | ubuntu-noble | ok: Runtime: 0:00:11.907801
+2026-08-12 00:57:29.478928 | 
+2026-08-12 00:57:29.479093 | TASK [check-requirements : Run requirements check script]
+2026-08-12 00:57:30.181592 | ubuntu-noble | sys.version_info(major=3, minor=12, micro=3, releaselevel='final', serial=0)
+2026-08-12 00:57:30.181768 | ubuntu-noble | selecting default requirements directory for normal mode
+2026-08-12 00:57:30.181793 | ubuntu-noble | Branch: master
+2026-08-12 00:57:30.181814 | ubuntu-noble | Source: src/opendev.org/openstack/ironic-python-agent
+2026-08-12 00:57:30.181839 | ubuntu-noble | Requirements: /home/zuul/src/opendev.org/openstack/requirements
+2026-08-12 00:57:30.181922 | ubuntu-noble | git log -n 1 --format=%H
+2026-08-12 00:57:30.181952 | ubuntu-noble | Patch under test: 64c25a49ea0e7a9eba9a08d2c7f8fadba77af5f9
+2026-08-12 00:57:30.181977 | ubuntu-noble | Checking 64c25a49ea0e7a9eba9a08d2c7f8fadba77af5f9
+2026-08-12 00:57:30.181995 | ubuntu-noble | Processing pyproject.toml (requirements)
+2026-08-12 00:57:30.182013 | ubuntu-noble | Processing requirements.txt (requirements)
+2026-08-12 00:57:30.182029 | ubuntu-noble | Processing test-requirements.txt (requirements)
+2026-08-12 00:57:30.182041 | ubuntu-noble | Processing doc/requirements.txt (requirements)
+2026-08-12 00:57:30.182050 | ubuntu-noble | Processing pyproject.toml (extras)
+2026-08-12 00:57:30.182058 | ubuntu-noble |   Processing 'burnin-network-kazoo' extra
+2026-08-12 00:57:30.182067 | ubuntu-noble |   Processing 'extra-hardware' extra
+2026-08-12 00:57:30.182076 | ubuntu-noble | Validating pyproject.toml (dependencies)
+2026-08-12 00:57:30.182084 | ubuntu-noble | Validating requirements.txt (dependencies)
+2026-08-12 00:57:30.182093 | ubuntu-noble | Validating test-requirements.txt (dependencies)
+2026-08-12 00:57:30.182101 | ubuntu-noble | Validating doc/requirements.txt (dependencies)
+2026-08-12 00:57:30.182110 | ubuntu-noble | Validating pyproject.toml ('burnin-network-kazoo' extra)
+2026-08-12 00:57:30.182125 | ubuntu-noble | Validating pyproject.toml ('extra-hardware' extra)
+2026-08-12 00:57:30.182136 | ubuntu-noble | ERROR: Requirement '{Requirement(package='hardware', location='', specifiers='>=0.24.0', markers='', comment='', extras=frozenset())}' not in openstack/requirements
+2026-08-12 00:57:30.182145 | ubuntu-noble | *** Incompatible requirement found!
+2026-08-12 00:57:30.182153 | ubuntu-noble | *** See https://docs.openstack.org/requirements/latest/
+2026-08-12 00:57:30.661839 | ubuntu-noble | ERROR
+2026-08-12 00:57:30.662117 | ubuntu-noble | {
+2026-08-12 00:57:30.662182 | ubuntu-noble |   "delta": "0:00:00.176666",
+2026-08-12 00:57:30.662234 | ubuntu-noble |   "end": "2026-08-12 00:57:30.198993",
+2026-08-12 00:57:30.662284 | ubuntu-noble |   "msg": "non-zero return code",
+2026-08-12 00:57:30.662332 | ubuntu-noble |   "rc": 1,
+2026-08-12 00:57:30.662380 | ubuntu-noble |   "start": "2026-08-12 00:57:30.022327"
+2026-08-12 00:57:30.662427 | ubuntu-noble | }
+failure
+2026-08-12 00:57:30.665045 | 
+2026-08-12 00:57:30.665164 | PLAY RECAP
+2026-08-12 00:57:30.665253 | ubuntu-noble | ok: 10 changed: 6 unreachable: 0 failed: 1 skipped: 4 rescued: 0 ignored: 0
+2026-08-12 00:57:30.665309 | 
+2026-08-12 00:57:30.843168 | RUN END RESULT_NORMAL: [untrusted : opendev.org/openstack/requirements/playbooks/requirements-check.yaml@master]
+2026-08-12 00:57:30.845793 | POST-RUN START: [untrusted : opendev.org/zuul/zuul-jobs/playbooks/unittests/post.yaml@master]
+2026-08-12 00:57:32.097927 | 
+2026-08-12 00:57:32.098151 | PLAY [all]
+2026-08-12 00:57:32.125588 | 
+2026-08-12 00:57:32.125863 | TASK [fetch-subunit-output : Find stestr or testr executable]
+2026-08-12 00:57:32.997430 | ubuntu-noble | changed: non-zero return code
+2026-08-12 00:57:33.007156 | 
+2026-08-12 00:57:33.007376 | TASK [fetch-subunit-output : Get the list of directories with subunit files]
+2026-08-12 00:57:33.044446 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:33.059113 | 
+2026-08-12 00:57:33.059316 | LOOP [fetch-subunit-output : Find any inflight partial subunit files]
+2026-08-12 00:57:33.101824 | 
+2026-08-12 00:57:33.102108 | LOOP [fetch-subunit-output : Copy any inflight subunit files]
+2026-08-12 00:57:33.138530 | 
+2026-08-12 00:57:33.138840 | TASK [fetch-subunit-output : Create a temporary file to store the subunit stream]
+2026-08-12 00:57:33.164744 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:33.174821 | 
+2026-08-12 00:57:33.175009 | LOOP [fetch-subunit-output : Generate subunit file]
+2026-08-12 00:57:33.210613 | 
+2026-08-12 00:57:33.210951 | TASK [fetch-subunit-output : Copy the combined subunit file to the zuul work directory]
+2026-08-12 00:57:33.236772 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:33.246166 | 
+2026-08-12 00:57:33.246348 | TASK [fetch-subunit-output : Remove the temporary file]
+2026-08-12 00:57:33.272090 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:33.281970 | 
+2026-08-12 00:57:33.282147 | TASK [fetch-subunit-output : Process and fetch subunit results]
+2026-08-12 00:57:33.308299 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:33.321753 | 
+2026-08-12 00:57:33.321889 | PLAY RECAP
+2026-08-12 00:57:33.321986 | ubuntu-noble | ok: 1 changed: 1 unreachable: 0 failed: 0 skipped: 8 rescued: 0 ignored: 0
+2026-08-12 00:57:33.322048 | 
+2026-08-12 00:57:33.479155 | POST-RUN END RESULT_NORMAL: [untrusted : opendev.org/zuul/zuul-jobs/playbooks/unittests/post.yaml@master]
+2026-08-12 00:57:33.483176 | POST-RUN START: [trusted : opendev.org/opendev/base-jobs/playbooks/base/post.yaml@master]
+2026-08-12 00:57:34.682522 | 
+2026-08-12 00:57:34.682766 | PLAY [all]
+2026-08-12 00:57:34.711113 | 
+2026-08-12 00:57:34.711330 | TASK [fetch-output : Set log path for multiple nodes]
+2026-08-12 00:57:34.782324 | ubuntu-noble | skipping: Conditional result was False
+2026-08-12 00:57:34.793750 | 
+2026-08-12 00:57:34.793896 | TASK [fetch-output : Set log path for single node]
+2026-08-12 00:57:34.851717 | ubuntu-noble | ok
+2026-08-12 00:57:34.860041 | 
+2026-08-12 00:57:34.860178 | LOOP [fetch-output : Ensure local output dirs]
+2026-08-12 00:57:35.451498 | ubuntu-noble -> localhost | ok: "/var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/work/logs"
+2026-08-12 00:57:35.784944 | ubuntu-noble -> localhost | changed: "/var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/work/artifacts"
+2026-08-12 00:57:36.127937 | ubuntu-noble -> localhost | changed: "/var/lib/zuul/builds/d6b05d233d1b47a9b51694b4da905ab1/work/docs"
+2026-08-12 00:57:36.150923 | 
+2026-08-12 00:57:36.151110 | LOOP [fetch-output : Collect logs, artifacts and docs]
+2026-08-12 00:57:37.677101 | ubuntu-noble | changed: .d..t...... ./
+2026-08-12 00:57:37.677459 | ubuntu-noble | changed: All items complete
+2026-08-12 00:57:37.677524 | 
+2026-08-12 00:57:38.950975 | ubuntu-noble | changed: .d..t...... ./
+2026-08-12 00:57:40.162774 | ubuntu-noble | changed: .d..t...... ./
+2026-08-12 00:57:40.190550 | 
+2026-08-12 00:57:40.190789 | LOOP [merge-output-to-logs : Move artifacts and docs to logs dir]
+2026-08-12 00:57:40.859209 | ubuntu-noble -> localhost | ok: Item: artifacts Runtime: 0:00:00.008268
+2026-08-12 00:57:41.219899 | ubuntu-noble -> localhost | ok: Item: docs Runtime: 0:00:00.008080
+2026-08-12 00:57:41.245450 | 
+2026-08-12 00:57:41.245672 | TASK [Get df disk usage]
+2026-08-12 00:57:41.431230 | ubuntu-noble | Filesystem     1K-blocks     Used Available Use% Mounted on
+2026-08-12 00:57:41.431506 | ubuntu-noble | tmpfs             812396      688    811708   1% /run
+2026-08-12 00:57:41.431576 | ubuntu-noble | /dev/xvda1      38753324 14637460  22178684  40% /
+2026-08-12 00:57:41.431668 | ubuntu-noble | tmpfs            4061976        0   4061976   0% /dev/shm
+2026-08-12 00:57:41.431733 | ubuntu-noble | tmpfs               5120        0      5120   0% /run/lock
+2026-08-12 00:57:41.431793 | ubuntu-noble | /dev/xvdd            444      444         0 100% /mnt/config
+2026-08-12 00:57:41.431852 | ubuntu-noble | tmpfs             812392        8    812384   1% /run/user/1000
+2026-08-12 00:57:41.431911 | ubuntu-noble | OpenSSH_9.2p1 Debian-2+deb12u10, OpenSSL 3.0.20 7 Apr 2026
+2026-08-12 00:57:41.431973 | ubuntu-noble | debug1: auto-mux: Trying existing master
+2026-08-12 00:57:41.432032 | ubuntu-noble | debug1: mux_client_request_session: master session id: 2
+2026-08-12 00:57:41.432090 | ubuntu-noble | Shared connection to 23.253.159.18 closed.
+2026-08-12 00:57:41.432183 | ubuntu-noble | changed
+2026-08-12 00:57:41.440082 | 
+2026-08-12 00:57:41.440231 | TASK [Get df inode usage]
+2026-08-12 00:57:41.627676 | ubuntu-noble | Filesystem       Inodes  IUsed   IFree IUse% Mounted on
+2026-08-12 00:57:41.627951 | ubuntu-noble | tmpfs           1015494    627 1014867    1% /run
+2026-08-12 00:57:41.628020 | ubuntu-noble | /dev/xvda1     10449920 738071 9711849    8% /
+2026-08-12 00:57:41.628082 | ubuntu-noble | tmpfs           1015494      1 1015493    1% /dev/shm
+2026-08-12 00:57:41.628153 | ubuntu-noble | tmpfs           1015494      2 1015492    1% /run/lock
+2026-08-12 00:57:41.628259 | ubuntu-noble | /dev/xvdd             0      0       0     - /mnt/config
+2026-08-12 00:57:41.628337 | ubuntu-noble | tmpfs            203098     29  203069    1% /run/user/1000
+2026-08-12 00:57:41.628397 | ubuntu-noble | OpenSSH_9.2p1 Debian-2+deb12u10, OpenSSL 3.0.20 7 Apr 2026
+2026-08-12 00:57:41.628454 | ubuntu-noble | debug1: auto-mux: Trying existing master
+2026-08-12 00:57:41.628512 | ubuntu-noble | debug1: mux_client_request_session: master session id: 2
+2026-08-12 00:57:41.628569 | ubuntu-noble | Shared connection to 23.253.159.18 closed.
+2026-08-12 00:57:41.628707 | ubuntu-noble | changed
+2026-08-12 00:57:41.636775 | 
+2026-08-12 00:57:41.636941 | TASK [Get l2 networking]
+2026-08-12 00:57:41.823064 | ubuntu-noble | 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+2026-08-12 00:57:41.823339 | ubuntu-noble |     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2026-08-12 00:57:41.823407 | ubuntu-noble | 2: enX0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+2026-08-12 00:57:41.823469 | ubuntu-noble |     link/ether bc:76:4e:20:01:bf brd ff:ff:ff:ff:ff:ff
+2026-08-12 00:57:41.823528 | ubuntu-noble | 3: enX1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+2026-08-12 00:57:41.823586 | ubuntu-noble |     link/ether bc:76:4e:20:0b:78 brd ff:ff:ff:ff:ff:ff
+2026-08-12 00:57:41.823678 | ubuntu-noble | OpenSSH_9.2p1 Debian-2+deb12u10, OpenSSL 3.0.20 7 Apr 2026
+2026-08-12 00:57:41.823759 | ubuntu-noble | debug1: auto-mux: Trying existing master
+2026-08-12 00:57:41.823816 | ubuntu-noble | debug1: mux_client_request_session: master session id: 2
+2026-08-12 00:57:41.823869 | ubuntu-noble | Shared connection to 23.253.159.18 closed.
+2026-08-12 00:57:41.823957 | ubuntu-noble | changed
+2026-08-12 00:57:41.833233 | 
+2026-08-12 00:57:41.833405 | TASK [Get l3 networking]
+2026-08-12 00:57:42.020433 | ubuntu-noble | 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+2026-08-12 00:57:42.020768 | ubuntu-noble |     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2026-08-12 00:57:42.020863 | ubuntu-noble |     inet 127.0.0.1/8 scope host lo
+2026-08-12 00:57:42.020969 | ubuntu-noble |        valid_lft forever preferred_lft forever
+2026-08-12 00:57:42.021061 | ubuntu-noble |     inet6 ::1/128 scope host noprefixroute
+2026-08-12 00:57:42.021120 | ubuntu-noble |        valid_lft forever preferred_lft forever
+2026-08-12 00:57:42.021186 | ubuntu-noble | 2: enX0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+2026-08-12 00:57:42.021287 | ubuntu-noble |     link/ether bc:76:4e:20:01:bf brd ff:ff:ff:ff:ff:ff
+2026-08-12 00:57:42.021368 | ubuntu-noble |     inet 23.253.159.18/24 brd 23.253.159.255 scope global enX0
+2026-08-12 00:57:42.021425 | ubuntu-noble |        valid_lft forever preferred_lft forever
+2026-08-12 00:57:42.021478 | ubuntu-noble |     inet6 2001:4802:7803:104:be76:4eff:fe20:1bf/64 scope global
+2026-08-12 00:57:42.021530 | ubuntu-noble |        valid_lft forever preferred_lft forever
+2026-08-12 00:57:42.021581 | ubuntu-noble |     inet6 fe80::be76:4eff:fe20:1bf/64 scope link
+2026-08-12 00:57:42.021766 | ubuntu-noble |        valid_lft forever preferred_lft forever
+2026-08-12 00:57:42.021825 | ubuntu-noble | 3: enX1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+2026-08-12 00:57:42.021878 | ubuntu-noble |     link/ether bc:76:4e:20:0b:78 brd ff:ff:ff:ff:ff:ff
+2026-08-12 00:57:42.021929 | ubuntu-noble |     inet 10.176.193.46/19 brd 10.176.223.255 scope global enX1
+2026-08-12 00:57:42.021981 | ubuntu-noble |        valid_lft forever preferred_lft forever
+2026-08-12 00:57:42.022034 | ubuntu-noble |     inet6 fe80::be76:4eff:fe20:b78/64 scope link
+2026-08-12 00:57:42.022086 | ubuntu-noble |        valid_lft forever preferred_lft forever
+2026-08-12 00:57:42.022138 | ubuntu-noble | OpenSSH_9.2p1 Debian-2+deb12u10, OpenSSL 3.0.20 7 Apr 2026
+2026-08-12 00:57:42.022190 | ubuntu-noble | debug1: auto-mux: Trying existing master
+2026-08-12 00:57:42.022241 | ubuntu-noble | debug1: mux_client_request_session: master session id: 2
+2026-08-12 00:57:42.022292 | ubuntu-noble | Shared connection to 23.253.159.18 closed.
+2026-08-12 00:57:42.022389 | ubuntu-noble | changed
+2026-08-12 00:57:42.024524 | 
+2026-08-12 00:57:42.024663 | PLAY RECAP
+2026-08-12 00:57:42.024762 | ubuntu-noble | ok: 8 changed: 7 unreachable: 0 failed: 0 skipped: 1 rescued: 0 ignored: 0
+2026-08-12 00:57:42.024818 | 
+2026-08-12 00:57:42.183547 | POST-RUN END RESULT_NORMAL: [trusted : opendev.org/opendev/base-jobs/playbooks/base/post.yaml@master]
+2026-08-12 00:57:42.188887 | POST-RUN START: [trusted : opendev.org/opendev/base-jobs/playbooks/base/cleanup.yaml@master]
+2026-08-12 00:57:43.430739 | 
+2026-08-12 00:57:43.431018 | PLAY [all]
+2026-08-12 00:57:43.458066 | 
+2026-08-12 00:57:43.458482 | TASK [remove-build-sshkey : Remove the build SSH key from all nodes]
+2026-08-12 00:57:44.362795 | ubuntu-noble | changed
+2026-08-12 00:57:44.373605 | 
+2026-08-12 00:57:44.373820 | PLAY RECAP
+2026-08-12 00:57:44.373934 | ubuntu-noble | ok: 1 changed: 1 unreachable: 0 failed: 0 skipped: 0 rescued: 0 ignored: 0
+2026-08-12 00:57:44.374084 | 
+2026-08-12 00:57:44.550066 | POST-RUN END RESULT_NORMAL: [trusted : opendev.org/opendev/base-jobs/playbooks/base/cleanup.yaml@master]
+2026-08-12 00:57:44.552412 | POST-RUN START: [trusted : opendev.org/opendev/base-jobs/playbooks/base/post-logs.yaml@master]
+2026-08-12 00:57:45.793468 | 
+2026-08-12 00:57:45.793711 | PLAY [localhost]
+2026-08-12 00:57:45.816179 | 
+2026-08-12 00:57:45.816369 | TASK [Include Zuul manifest role]
+2026-08-12 00:57:45.853078 | localhost | ok
+2026-08-12 00:57:45.876947 | localhost | included: generate-zuul-manifest
+2026-08-12 00:57:45.883985 | 
+2026-08-12 00:57:45.884120 | TASK [generate-zuul-manifest : Generate Zuul manifest]
+2026-08-12 00:57:46.385246 | localhost | changed
+2026-08-12 00:57:46.402460 | 
+2026-08-12 00:57:46.402694 | TASK [generate-zuul-manifest : Return Zuul manifest URL to Zuul]
+2026-08-12 00:57:46.446730 | localhost | ok
+2026-08-12 00:57:46.458462 | 
+2026-08-12 00:57:46.458585 | TASK [Generate bulk log download script]
+2026-08-12 00:57:46.480813 | localhost | ok
+2026-08-12 00:57:46.496331 | localhost | included: local-log-download
+2026-08-12 00:57:46.505172 | 
+2026-08-12 00:57:46.505290 | TASK [local-log-download : Check API endpoint is defined]
+2026-08-12 00:57:46.557583 | localhost | ok: All assertions passed
+2026-08-12 00:57:46.564438 | 
+2026-08-12 00:57:46.564556 | TASK [local-log-download : Create download script]
+2026-08-12 00:57:47.590360 | localhost -> localhost | changed
+2026-08-12 00:57:47.606417 | 
+2026-08-12 00:57:47.606604 | LOOP [Select random swift provider for logs upload]
+2026-08-12 00:57:47.643441 | localhost | ok: "ovh_gra"
+2026-08-12 00:57:47.666064 | 
+2026-08-12 00:57:47.666246 | TASK [Upload swift logs to ovh_gra]
+2026-08-12 00:57:47.704324 | localhost | Output suppressed because no_log was given
+2026-08-12 00:57:47.746615 | localhost | included: upload-logs-swift
+2026-08-12 00:57:47.765435 | 
+2026-08-12 00:57:47.765585 | TASK [Set zuul-log-path fact]
+2026-08-12 00:57:47.808356 | localhost | ok
+2026-08-12 00:57:47.825080 | localhost | included: set-zuul-log-path-fact
+2026-08-12 00:57:47.831702 | 
+2026-08-12 00:57:47.831833 | TASK [set-zuul-log-path-fact : Set log path for a build]
+2026-08-12 00:57:47.874815 | localhost | ok
+2026-08-12 00:57:47.889311 | 
+2026-08-12 00:57:47.889473 | TASK [upload-logs-swift : Ensure logs are readable before uploading]
+2026-08-12 00:57:48.564161 | localhost -> localhost | ok: Runtime: 0:00:00.006776
+2026-08-12 00:57:48.571037 | 
+2026-08-12 00:57:48.571154 | TASK [upload-logs-swift : Upload logs to swift]

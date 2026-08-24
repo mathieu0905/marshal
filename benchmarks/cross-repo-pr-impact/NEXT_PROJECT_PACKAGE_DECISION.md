@@ -6,7 +6,7 @@
 
 - 结论：选择 `openstack/requirements` 的 Alembic 变化作为第二个主动项目包主线；覆盖重审后的闭集为 Cinder、Heat、Ironic、Keystone、Nova、Placement。
 - 行动：受控 A0、A1、A2、六仓 A3 和三次正式重复已经完成；第三个 SLF4J 项目包也已完成三次正式重复。
-- 当前阶段：五个已执行包的模型语义质检已经完成，只接受 Alembic、SnakeYAML 两个完整四臂候选；第二位人工盲复核仍未完成。扩展改为一个项目包一个并发任务；Checkstyle 已收口为 A3 拒绝的四仓三臂候选，Mockito 收口为两个单正例锚点，Logback 降为单正例锚点，Spring Core 完整筛选后接受数为零。request 到 PolyClay 已被真实重放拒绝，空出的并发槽已续派下一条 npm 独立关系；另两路继续核对 imagemin-optipng 与 OpenDev hardware 登记。
+- 当前阶段：五个已执行包的模型语义质检已经完成，只接受 Alembic、SnakeYAML 两个完整四臂候选；第二位人工盲复核仍未完成。扩展改为一个项目包一个并发任务；Checkstyle 已收口为 A3 拒绝的四仓三臂候选，Mockito 收口为两个单正例锚点，Logback 降为单正例锚点，Spring Core 完整筛选后接受数为零。request 到 PolyClay 已被真实重放拒绝；Ironic Python Agent 到 Requirements、Babel ES2015 Preset 到 Rollup Preset、Imagemin Optipng 到 Images to Less Variables 各形成 1 条高证据三臂锚点，React Redux 到 React Redux Provide 形成 1 条单正例四臂锚点。当前三路并行核对 ESLint、共享目标 backbone-mongo 关系族和 Socket.IO。
 
 ## 决定依据
 

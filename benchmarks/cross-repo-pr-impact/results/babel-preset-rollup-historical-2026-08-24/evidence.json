@@ -1,0 +1,36 @@
+{
+  "source_dataset": {
+    "doi": "10.5281/zenodo.5558085",
+    "records": ["localforage-setitems", "postcss-clean"],
+    "recorded_target_before": "babel-preset-es2015-rollup@1.1.0",
+    "recorded_target_after": "babel-preset-es2015-rollup@1.2.0",
+    "recorded_client_fix": "code;version",
+    "assessment": "两条记录共享同一中间修复，且旧目标版本标签不足以固定失败环境"
+  },
+  "issue": {
+    "url": "https://github.com/rollup/babel-preset-es2015-rollup/issues/7",
+    "title": "preset not properly filtering module presets from babel-preset-es2015",
+    "created_at": "2016-08-05T13:54:06Z",
+    "closed_at": "2016-08-09T14:12:47Z",
+    "claim": "babel-preset-es2015 的新插件项带选项数组，旧过滤逻辑未删除模块转换；modify-babel-preset 已加入支持"
+  },
+  "pull_request": {
+    "url": "https://github.com/rollup/babel-preset-es2015-rollup/pull/8",
+    "head_commit": "9cfb393c48330cdfa2bc9c4add4db503a91a4904",
+    "merge_commit": "29b4cc39b7cc53ca11f3d595692925ffba2eb82d",
+    "merged_at": "2016-08-05T13:59:09Z",
+    "changed_files": 1,
+    "git_branch_delta": "package.json 中 modify-babel-preset 从 ^1.0.0 升到 ^2.1.1"
+  },
+  "release": {
+    "tag_commit": "56abef9384b778de51811e34140a8277f808dae2",
+    "npm_version": "1.2.0",
+    "published_at": "2016-08-09T14:12:25.647Z",
+    "artifact_delta_from_1_1_1": ["index.js", "package.json", "发布元数据"],
+    "index_same_between_git_tags_1_1_0_and_1_2_0": true
+  },
+  "downstream_references": [
+    {"repository": "thgreasi/localForage-setItems", "commit": "9aa6825030b665e70d2f8a5e8f1eadfb25f84d1a", "declared_target": "^1.1.1"},
+    {"repository": "leodido/postcss-clean", "commit": "c721da5", "declared_target": "^1.1.1"}
+  ]
+}
