@@ -1,0 +1,94 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0586",
+      "fse2024-behavioral-0587"
+    ],
+    "raw_candidate_records": 2,
+    "failure_observations": 3,
+    "unique_root_repositories": 2,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "mockito/mockito",
+    "last_passing_probe": {
+      "version": "4.4.0",
+      "tag_commit": "813add00ecd9a78ea9dcfccfc7797ea242be9ca9"
+    },
+    "breaking_probe": {
+      "version": "4.5.0",
+      "tag_commit": "2c0bf94609300ed369198c3bd44c1555e88f8998"
+    },
+    "production_changes_between_probes": [
+      {
+        "commit": "aabb8f62a2b44e99938d0cccf17e9877f4fc6189",
+        "subject": "Remove internal ListUtil and Fields (#2593)"
+      },
+      {
+        "commit": "d539af2d7afdcfaf1eda4a57911d7f9df107db2a",
+        "subject": "Fix mockito-inline for Groovy projects (#2618)"
+      },
+      {
+        "commit": "d23dc0e57a8360c8d80f69096cee24c20e4c7c26",
+        "subject": "Support subclass mocks on Graal VM."
+      }
+    ],
+    "boundary": "The public records establish a 4.4.0 to 4.5.0 release boundary, not one common source commit. Nacos and JLifx have different failure signatures, and the JLifx test does not exercise Mockito."
+  },
+  "target_repositories": [
+    {
+      "repository": "alibaba/nacos",
+      "default_branch": "develop",
+      "remote_head": "2979345f22a7883c7ebef98f4401c4b21622cee8",
+      "reachable_ref_count": 5580,
+      "reachable_commit_count": 23408,
+      "target_revision_window": {
+        "earliest_test_commit": "3109d57c266d5505d62cc9d880cdcc078b93d776",
+        "default_branch_merge": "4a134b233c416b242b5011f32edb3c21f976f004",
+        "latest_line_matching_default_commit": "5e55d4b1b66f556e405e7bd4e9aa5a58317c6a14",
+        "status": "bounded_not_fixed"
+      },
+      "commits_declaring_mockito_4_5_0": 0,
+      "later_transition": {
+        "pull_request": 12024,
+        "commit": "b2e506d7fef3a7310a806d3b5cb907bdbda34ca6",
+        "before": "3.8.0",
+        "after": "4.11.0",
+        "scope": "Mockito BOM, JUnit 5, Surefire, Failsafe and dependency-management migration"
+      },
+      "exact_maintainer_repair_under_4_5_0": null
+    },
+    {
+      "repository": "robvanderleek/JLifx",
+      "default_branch": "main",
+      "remote_head": "be94ee974e2d0fc9886545b5b6273c65fdd585aa",
+      "reachable_ref_count": 289,
+      "reachable_commit_count": 625,
+      "commits_declaring_mockito_4_5_0": 0,
+      "nearby_unmerged_probe": {
+        "pull_request": 194,
+        "commit": "da63f1adfd1b95f8ce6ea89d19731b95d83eb6d8",
+        "version": "4.5.1",
+        "changed_paths": [
+          "pom.xml"
+        ],
+        "state": "closed_unmerged"
+      },
+      "exact_maintainer_repair_under_4_5_0": null
+    }
+  ],
+  "admission_result": {
+    "raw_records": 2,
+    "unique_root_relations": 2,
+    "exact_source_mechanisms_identified": 0,
+    "fixed_target_revisions": 0,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}
