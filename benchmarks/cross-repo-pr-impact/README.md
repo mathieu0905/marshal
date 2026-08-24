@@ -27,6 +27,8 @@ JUnit 4.10 到 4.11 的 3 条记录对应 Hermes JSON-RPC、Storm Cassandra CQL 
 
 Spring Boot Starter Test 2.5.3 到 2.6.0 的 3 条记录来自 `fonimus/ssh-shell-spring-boot` 同一根仓的三个模块。Spring Boot 默认禁止循环引用的精确源机制可以解释公开错误，但目标唯一的 2.6.0 采用 PR 未合并且没有修复；后来合入的迁移同时升级 Spring Boot、Spring Shell 并改动 82 个文件，不能作为固定 2.6.0 输入下的精确 A2。因此该族在重放前拒绝，正式接纳 0 条。
 
+JAXB 3.0.0-M1 的宽候选框共有 8 条，其中一条不属于 2.3.6 基线；其余 7 条按模块和仓库迁移去重为 5 个独立根历史。JAXB 实现从 `javax` 切换到 `jakarta` 服务提供者的单一提交能解释公开的 `not a subtype` 错误，但 2.3.6 与 3.0.0-M1 位于非线性维护分支，且五个目标历史均没有保持 3.0.0-M1 的维护者恢复。因此不执行三臂，正式接纳 0 条。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。

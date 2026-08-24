@@ -1,0 +1,84 @@
+From dd133e1543c7773944d002fb6474ec1205446d72 Mon Sep 17 00:00:00 2001
+From: Andy McCright <j.andrew.mccright@gmail.com>
+Date: Tue, 31 Mar 2020 03:45:06 -0500
+Subject: [PATCH] [#1392] Update dependencies to Jakarta EE9 (#1393)
+
+This evidence patch contains only the two files that establish the service-provider mechanism. The source commit changes 350 files in total.
+---
+ .../com/sun/xml/bind/v2/JAXBContextFactory.java   | 8 ++++----
+ .../runtime/impl/src/main/java/module-info.java    | 14 +++++++++-----
+ 2 files changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/jaxb-ri/runtime/impl/src/main/java/com/sun/xml/bind/v2/JAXBContextFactory.java b/jaxb-ri/runtime/impl/src/main/java/com/sun/xml/bind/v2/JAXBContextFactory.java
+index c78e8600..f3f549d4 100644
+--- a/jaxb-ri/runtime/impl/src/main/java/com/sun/xml/bind/v2/JAXBContextFactory.java
++++ b/jaxb-ri/runtime/impl/src/main/java/com/sun/xml/bind/v2/JAXBContextFactory.java
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
++ * Copyright (c) 1997, 2020 Oracle and/or its affiliates. All rights reserved.
+  *
+  * This program and the accompanying materials are made available under the
+  * terms of the Eclipse Distribution License v. 1.0, which is available at
+@@ -10,8 +10,8 @@
+ 
+ package com.sun.xml.bind.v2;
+ 
+-import javax.xml.bind.JAXBContext;
+-import javax.xml.bind.JAXBException;
++import jakarta.xml.bind.JAXBContext;
++import jakarta.xml.bind.JAXBException;
+ import java.util.Map;
+ 
+ /**
+@@ -20,7 +20,7 @@ import java.util.Map;
+  *
+  * Redirects to {@link ContextFactory}, which is not removed due to compatibility reasons.
+  */
+-public class JAXBContextFactory implements javax.xml.bind.JAXBContextFactory {
++public class JAXBContextFactory implements jakarta.xml.bind.JAXBContextFactory {
+ 
+     /**
+      * Creates JAXB context.
+diff --git a/jaxb-ri/runtime/impl/src/main/java/module-info.java b/jaxb-ri/runtime/impl/src/main/java/module-info.java
+index a6a8508f..65abf97b 100644
+--- a/jaxb-ri/runtime/impl/src/main/java/module-info.java
++++ b/jaxb-ri/runtime/impl/src/main/java/module-info.java
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (c) 2017, 2019 Oracle and/or its affiliates. All rights reserved.
++ * Copyright (c) 2017, 2020 Oracle and/or its affiliates. All rights reserved.
+  *
+  * This program and the accompanying materials are made available under the
+  * terms of the Eclipse Distribution License v. 1.0, which is available at
+@@ -11,11 +11,11 @@
+ /**
+  * The XML Binding (JAXB) RI modularization implementation.
+  *
+- * @uses javax.xml.bind.JAXBContextFactory
++ * @uses jakarta.xml.bind.JAXBContextFactory
+  *
+  */
+ module org.glassfish.jaxb.runtime {
+-    requires transitive java.xml.bind;
++    requires transitive jakarta.xml.bind;
+     requires java.compiler;
+     requires java.desktop;
+     requires java.logging;
+@@ -50,8 +50,12 @@ module org.glassfish.jaxb.runtime {
+     exports com.sun.xml.bind.v2.util;
+ 
+     opens com.sun.xml.bind.v2.model.nav to org.glassfish.jaxb.xjc;
++    opens com.sun.xml.bind.v2.runtime.reflect.opt to jakarta.xml.bind;
++    opens com.sun.xml.bind.v2.schemagen to jakarta.xml.bind;
++    opens com.sun.xml.bind.v2.schemagen.xmlschema to jakarta.xml.bind;
++    opens com.sun.xml.bind.v2 to jakarta.xml.bind;
+ 
+-    uses javax.xml.bind.JAXBContextFactory;
++    uses jakarta.xml.bind.JAXBContextFactory;
+ 
+-    provides javax.xml.bind.JAXBContextFactory with com.sun.xml.bind.v2.JAXBContextFactory;
++    provides jakarta.xml.bind.JAXBContextFactory with com.sun.xml.bind.v2.JAXBContextFactory;
+ }
+-- 
+2.43.0
