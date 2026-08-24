@@ -1,0 +1,66 @@
+{
+  "source_boundary": {
+    "coordinate": "com.h2database:h2",
+    "adjacent_before_version": "1.4.196",
+    "after_version": "1.4.197",
+    "before_commit": "1c6e22a5679c61b2fbd64ebc05d73f8fce1d5112",
+    "after_commit": "c8a861bb1a3f04967ec40cb5e3336535c43af5fb",
+    "chronology": "forward_ancestor",
+    "intervening_commit_count": 1443
+  },
+  "candidate_frame": {
+    "workbook_records": 5,
+    "published_failure_observations": 6,
+    "independent_root_repositories": 4,
+    "accepted_root_relations": 0,
+    "rejected_root_relations": 4
+  },
+  "exact_source_mechanisms": [
+    {
+      "commit": "58a30ebad329bb2a79a04cff86d99b8708b1a347",
+      "subject": "Return generated keys only if explicitly requested",
+      "affected_root_repository": "davidmoten/state-machine",
+      "boundary_check": "absent_from_1.4.196_present_in_1.4.197"
+    },
+    {
+      "commit": "e05502f1bc365e3237aab643aaf16dd1c800f599",
+      "subject": "Imprement returning of multiple generated keys and multiple generated columns",
+      "affected_root_repository": "davidmoten/rxjava-jdbc",
+      "boundary_check": "absent_from_1.4.196_present_in_1.4.197"
+    }
+  ],
+  "target_history_audit": [
+    {
+      "repository": "davidmoten/state-machine",
+      "reachable_commit_count": 1070,
+      "exact_1_4_197_pom_commits": 0,
+      "nearest_maintainer_repair": "32f8791c4798ee5b49dc5ae24fe34515486f0cdf",
+      "repair_source_version": "1.4.200"
+    },
+    {
+      "repository": "davidmoten/rxjava-jdbc",
+      "reachable_commit_count": 1259,
+      "exact_1_4_197_pom_commits": 0,
+      "nearest_maintainer_repair": "398cdefe835b18aebb6300add3246ef5dc86f814",
+      "repair_source_version": "2.1.210"
+    },
+    {
+      "repository": "yegor256/jpeek",
+      "reachable_commit_count": 1379,
+      "exact_1_4_197_pom_commits": 0,
+      "nearest_h2_upgrade": "46af2fdb8f08e4ffd85f4ec4d98ec762e6dee3d9",
+      "upgrade_source_version": "2.1.210"
+    },
+    {
+      "repository": "ontop/ontop",
+      "reachable_commit_count": 17727,
+      "exact_1_4_197_pom_commits": 0,
+      "last_confirmed_1_x_pin": "f102c763f6a64f486ffc030d5916af577a0e6f2f",
+      "pinned_source_version": "1.4.196"
+    }
+  ],
+  "execution": {
+    "local_three_arm_replays": 0,
+    "reason": "All four independent roots fail the historical fixed-1.4.197 maintainer-A2 admission criterion. Artificially transplanting later fixes would be mechanism ablation, not a flagship causal label."
+  }
+}
