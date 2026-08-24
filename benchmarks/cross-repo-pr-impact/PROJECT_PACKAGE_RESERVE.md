@@ -80,7 +80,7 @@ Jackson、SLF4J、jcabi、Plexus Utils、SnakeYAML、Log4j Core、AssertJ、Comm
 2. escope 到 babel-eslint 已确认只能作为三臂锚点；window-stream 到 Godot 已形成单正例四臂筛选。后续重复不改变两者缺少可靠多仓负空间的边界。
 3. OpenStack SDK 的 17 仓审计已经证明当前搜索空间只有一个直接下游消费者，不再把一般性 SDK 依赖仓或上游服务仓拿来补数量。
 4. 按 `NPM_CAUSAL_SOURCE_ASSESSMENT.md` 的 25 条客户端恢复搜索框继续核对真实代码修复；terser 四仓已完成统一 4.3.0 的隔离重复，不把三个目标拆成独立源案例，也不把一个负例解释成完整影响面。`node-minify` 与 `fis3-plugins` 已因缺少变化表面执行覆盖而拒绝，说明无目标修改的依赖升级不能自动成为负标签；`test-machinepack` 已因源仓自修复与目标路径不相关而拒绝，版本调整只能作为兼容动作单独分层。
-5. SnakeYAML 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；H2 2.0 收口为同源根仓内的单正例锚点后，当前并发执行 Kryo 3.0.3 到 5.0.0、Derby 10.15.1.3 和 Jackson 第二正例补强。
+5. SnakeYAML 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；H2 2.0 收口为同源根仓内的单正例锚点，Kryo 3.0.3 到 5.0.0 的三个独立根仓均因没有维护者精确恢复而停止在历史筛选阶段。当前并发执行 Derby 九仓总筛选、其中 Susom 仓的独立重放和 Jackson 第二正例补强；下一空闲槽补 Log4j 第四仓。
 6. 持续保存 OpenDev 最近窗口，在执行清单和日志失效前完成语义核验。
 
 “首批十个项目包”是用于检查关系隔离、生态覆盖和正式集划分是否可行的中间规模，不是长期目标的终点。即使达到十个，独立复核、保留集、Marshal 实测和可比系统运行仍未完成时，旗舰评测也不能宣告完成。

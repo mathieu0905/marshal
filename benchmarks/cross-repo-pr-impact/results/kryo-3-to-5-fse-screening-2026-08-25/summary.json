@@ -1,0 +1,57 @@
+{
+  "screened_at": "2026-08-25",
+  "family": "com.esotericsoftware:kryo 3.0.3 to 5.0.0",
+  "source_repository": "EsotericSoftware/kryo",
+  "source_release": {
+    "baseline_3_0_3_commit": "9422c847db584dcddfa614303cd41d57eb76220f",
+    "intermediate_4_0_2_commit": "d390da94e1558f8e8808c69257ab4f47a37b04c5",
+    "breaking_5_0_0_commit": "2248bd69084d3b4361f16fe3acca1d43ab48ca12",
+    "isolated_behavior_commit": "fc7f0cc7037ff1384b4cdac5b7ada287c64f0a00",
+    "effect": "Change Kryo.registrationRequired default from false to true.",
+    "shared_failure_signature": "java.lang.IllegalArgumentException: Class is not registered"
+  },
+  "candidate_counts": {
+    "fse_records": 3,
+    "bump_revision": "324d5513aa5ca40b5cb32de5b816a58fa60bd7bb",
+    "bump_benchmark_records_screened": 571,
+    "bump_unsuccessful_reproduction_records_screened": 4763,
+    "bump_sanity_check_failure_records_screened": 47,
+    "bump_kryo_records": 0,
+    "independent_root_repositories": 3,
+    "repositories_with_exact_maintainer_a2": 0
+  },
+  "root_repositories": [
+    {
+      "repository": "stanford-futuredata/macrobase",
+      "candidate_ids": ["fse2024-behavioral-0013"],
+      "a2_status": "missing",
+      "history_result": "Legacy module retains Kryo 3.0.3 and the original unregistered serialization path."
+    },
+    {
+      "repository": "atomix/catalyst",
+      "candidate_ids": ["fse2024-behavioral-0014"],
+      "a2_status": "missing_repository_history_ends_before_source_change",
+      "history_result": "Repository head predates the isolated Kryo behavior change and is archived."
+    },
+    {
+      "repository": "apache/ignite",
+      "candidate_ids": ["fse2024-behavioral-0015"],
+      "a2_status": "missing_module_later_deleted",
+      "history_result": "Cassandra serializer retained Kryo 3.0.3 and its original code until the module was removed."
+    }
+  ],
+  "fse_revision_boundary": "The public workbooks do not record exact client Git revisions; repository recovery uses matching artifact, directory, test method, source location, and history.",
+  "execution_policy": "Run A0/A1/A2 only for a repository with an exact maintainer-authored repair for the shared registration-default change.",
+  "execution_performed": false,
+  "execution_stop_reason": "No independent root repository has an exact maintainer-authored A2.",
+  "a3_screening": {
+    "adjacent_pairs_reviewed": ["3.0.2 to 3.0.3", "4.0.1 to 4.0.2"],
+    "result": "No shared changed-branch evidence is available for all three recovered clients; no ordinary-green replay was promoted."
+  },
+  "decision": "rejected_before_replay_no_maintainer_a2_in_any_root_repository",
+  "strict_three_arm_established": false,
+  "accepted_causal_cases": 0,
+  "bounded_negative_labels": 0,
+  "a3_cases": 0,
+  "unknown_label_policy": "Pinning Kryo 3.0.3, ending maintenance, or deleting the client module is not a compatible negative."
+}
