@@ -35,6 +35,8 @@ JMockit 1.25 到 1.42 的 3 条记录、6 次异常全部来自 QuickBooks SDK �
 
 Jersey 1.19 到 1.19.1 的 core/server 两坐标共 4 条记录、8 次异常；旧组织名会重定向到同一 Swagger Socket 仓库，两个坐标也共享同一上游模块标记提交，去重后只有一条根仓关系。发布成品确认，单独升级一个坐标会让 `ServiceFinder` 看到不一致的模块标记；但目标 409 个可达提交中没有 1.19.1，也没有维护者对齐四个兄弟模块的恢复。因此不执行重型重放，正式接纳 0 条。
 
+WireMock 1.58 到 2.1.6 的 2 条记录对应 Camunda Connect 与 Jolokia 两个独立根仓。最小实测确认 2.1.6 的 JUnit 规则会在测试结束时拒绝未匹配请求，能精确解释 Camunda 的 GET/POST 差异；Jolokia 只有远端 500 和后续空指针，不能归到同一机制。Camunda 从未采用 2.1.6，Jolokia 后来直接迁移到 2.35.0，两仓都没有固定 2.1.6 的维护者 A2。因此客户端重放前拒绝，正式接纳 0 条。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。
