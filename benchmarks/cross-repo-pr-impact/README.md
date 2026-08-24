@@ -39,6 +39,8 @@ WireMock 1.58 到 2.1.6 的 2 条记录对应 Camunda Connect 与 Jolokia 两个
 
 XStream 1.4.18 的 3 条记录按仓库迁移去重为 Resource4J 与 Easy Batch 两个根仓。最小测量确认默认安全策略变化会让自定义类型从通过转为 `ForbiddenClassException`，显式放行后恢复；但 Resource4J 的维护者修复同时改用 1.4.19，Easy Batch 从未采用 1.4.18。两仓都没有固定 1.4.18 的维护者 A2，因此客户端重放前拒绝，正式接纳 0 条。
 
+Bootstrap WebJar 3.4.1 到 4.0.0 的 3 条记录按仓库别名折叠为 Ninja 与 Wicket Bootstrap 两个根仓。这个输入本身不是向前变化：4.0.0 发布于 2018 年，3.4.1 反而发布于 2019 年，二者属于并行大版本线。Ninja 全历史固定 3.3.4，Wicket 的真实 Bootstrap 4 迁移直接采用 4.1.0；两仓都没有固定 4.0.0 的维护者 A2，因此不重放并接纳 0 条。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。

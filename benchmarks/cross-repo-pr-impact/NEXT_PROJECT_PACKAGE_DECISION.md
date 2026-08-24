@@ -18,6 +18,7 @@
 - Jersey 1.19 到 1.19.1 的 core/server 两坐标共 4 条记录、8 次异常，按仓库别名、模块与共享源提交去重后只有 Swagger Socket 一条根仓关系。发布成品确认单独升级一个坐标会造成模块标记错配，但目标 409 提交历史从未采用 1.19.1，也无维护者 A2，故不重放并接纳 0 条。
 - WireMock 1.58 到 2.1.6 的 2 条记录对应 Camunda Connect 与 Jolokia 两个独立根仓。最小实测确认未匹配请求检查能解释 Camunda 的 GET/POST 差异，但 Jolokia 的远端 500 证据不足；两仓都没有保持 2.1.6 的维护者 A2，故客户端不重放并接纳 0 条。
 - XStream 1.4.18 的 3 条记录按仓库迁移去重为 Resource4J 与 Easy Batch 两个根仓。最小测量确认默认拒绝策略会触发 `ForbiddenClassException` 并可由显式放行恢复；Resource4J 的维护者修复同时升级到 1.4.19，Easy Batch 从未采用 1.4.18，故无固定输入 A2，客户端不重放并接纳 0 条。
+- Bootstrap WebJar 3.4.1 到 4.0.0 的 3 条记录折叠为 Ninja 与 Wicket Bootstrap 两个根仓。4.0.0 的发布时间早于 3.4.1，源输入不是向前提交链；两仓完整历史也都没有采用固定 4.0.0，故无维护者 A2，不重放并接纳 0 条。
 
 ## 决定依据
 
