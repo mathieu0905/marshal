@@ -1,0 +1,88 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0546",
+      "fse2024-behavioral-0547",
+      "fse2024-behavioral-0548"
+    ],
+    "raw_candidate_records": 3,
+    "failure_observations": 6,
+    "module_directories": 3,
+    "unique_root_repositories": 1,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "jmockit/jmockit1",
+    "last_compatible_release_commit": "094ccebbc4209298dc00fa5d1d0caf1b347c9dd9",
+    "behavior_onset": {
+      "commit": "1393abf13c3c28e4f547c7dab87436a847c32dda",
+      "subject": "Removed loading of Java agent through Attach API from JUnit and TestNG integrations.",
+      "effect": "TestNG onExecutionStart verifies initialization instead of attempting self-attachment."
+    },
+    "exact_published_diagnostic": {
+      "commit": "6af75a3b9b8e3de1cc3b0ef6b19ea8aec251d8d4",
+      "subject": "Removed the ability to load the Java agent through the Attach API.",
+      "effect": "General self-attachment is removed and the missing-agent message points to -javaagent."
+    },
+    "version_identity_commits": [
+      "8a86aba58163917fb566108a855b9ec4b816da58",
+      "33d53be506c0ddb47840691ab4b5a92fb7b94001"
+    ],
+    "boundary": "The 1.42 mechanism is clear, but the release change spans multiple source commits. The exact workbook message requires both the integration and startup changes."
+  },
+  "target_repository": {
+    "repository": "intuit/QuickBooks-V3-Java-SDK",
+    "default_branch": "develop",
+    "remote_head": "c4d5dfad23ffebf0302356876d0dc389708513a9",
+    "history_first_commit": "be253006a8e2c6c2e69b71b5617891330dc40534",
+    "reachable_commit_count": 499,
+    "unique_relevant_pom_blob_count": 235,
+    "pom_blobs_declaring_jmockit": 153,
+    "pom_blobs_with_commented_jmockit_only": 1,
+    "jmockit_version_blob_counts": {
+      "1.16": 7,
+      "1.25": 141,
+      "1.39": 4,
+      "1.41": 0,
+      "1.42": 0,
+      "1.48": 1
+    },
+    "pom_blobs_with_javaagent": 0,
+    "target_revision_window": {
+      "earliest_matching_commit": "5e5ce63ab6d7cb873c1183769a4b308882d6ae17",
+      "latest_matching_commit": "947c0f1c25cd1e36d13296e2bc92e9fd9c893368",
+      "first_nonmatching_line_commit": "6c3874591f7fde1bfa5a70244722dd4aff6dd05b",
+      "status": "bounded_not_fixed"
+    },
+    "historical_responses": [
+      {
+        "pull_request": 87,
+        "merge_commit": "eaeb2e6ce90cb442dc966af92d9ad97132fa438f",
+        "subject": "revert PR #85 and fix broken tests",
+        "module": "payments-api",
+        "result": "JMockit 1.39 and attach-self configuration were replaced by JMockit 1.25."
+      },
+      {
+        "pull_request": 102,
+        "merge_commit": "1e84602d6f16a1894715213b3803ebe0f687366a",
+        "module": "ipp-v3-java-devkit",
+        "result": "An intermediate 1.48 attempt was reverted to 1.25 before merge; attach-self remained but -javaagent was never added."
+      }
+    ],
+    "exact_maintainer_repair_under_1_42": null
+  },
+  "admission_result": {
+    "raw_records": 3,
+    "unique_root_relations": 1,
+    "source_mechanisms_identified": 1,
+    "fixed_target_revisions": 0,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}
