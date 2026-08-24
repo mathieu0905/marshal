@@ -2,13 +2,13 @@
 
 ## 当前结论
 
-Log4j Core 已形成一个四仓候选，但还不是完整四臂项目包。当前可接受单元是：
+Log4j Core 已形成一个完整四仓四臂候选，但还没有完成正式重复与独立语义复核。当前可接受单元是：
 
 - 正例：`equinor/neqsim`；
 - 限定负例：`archifacts/archifacts`、`elimu-ai/webapp`、`aws-powertools/powertools-lambda-java`；
-- 兼容变化：Log4j 2.17.1 到 2.17.2，前三个仓都执行到真实变化行并通过；Powertools 只补足主变化的限定负空间，不补写尚未执行的 A3。
+- 兼容变化：Log4j 2.17.1 到 2.17.2，四个仓都执行到真实变化行并通过。
 
-第四个仓由 `aws-powertools/powertools-lambda-java` 补足。它在同步升级 Log4j API、Core、SLF4J 实现和模板布局时通过原生结构化日志测试，并命中 Neqsim 失败对应的 `ServiceLoaderUtil` 调用面。当前缺口不再是仓库数量，而是 Powertools 的 A3 和全包三次独立重复。`ApkToolBoxGUI` 的破坏可重放，但没有维护者接受的精确恢复；`ivymx` 的绿色测试没有进入兼容变化表面。二者仍不接纳。
+第四个仓由 `aws-powertools/powertools-lambda-java` 补足。它在同步升级 Log4j API、Core、SLF4J 实现和模板布局时通过原生结构化日志测试，并命中 Neqsim 失败对应的 `ServiceLoaderUtil` 调用面；其 2.17.1 到 2.17.2 兼容臂也命中项目包既定的四处变化行。当前缺口不再是仓库数量或四臂完整性，而是全包三次独立重复。`ApkToolBoxGUI` 的破坏可重放，但没有维护者接受的精确恢复；`ivymx` 的绿色测试没有进入兼容变化表面。二者仍不接纳。
 
 ## 完整失败候选框
 
@@ -64,15 +64,18 @@ A1 的失败签名是 `NoClassDefFoundError: org/apache/logging/log4j/util/Servi
 
 ## 兼容变化与覆盖
 
-A3 选择 2.17.1 到 2.17.2。后者修改了 Log4j Core 初始化与脚本启用路径。三个可接受仓的前后臂都通过，后臂覆盖均命中真实变化行：
+A3 选择 2.17.1 到 2.17.2。后者修改了 Log4j Core 初始化与脚本启用路径。四个可接受仓的前后臂都通过，后臂覆盖均命中真实变化行：
 
 | 消费仓 | `LoggerContext.java:291` | `AbstractConfiguration.java:220/221/222` |
 | --- | ---: | ---: |
 | Neqsim | `0/2` | `0/11`、`0/4`、`0/4` |
 | archifacts | `0/2` | `0/11`、`0/4`、`0/4` |
 | elimu-ai | `0/2` | 未作为接纳所需的共同最小行 |
+| Powertools | `0/2` | `0/11`、`0/4`、`0/4` |
 
 elimu-ai 另有独立的四臂筛选：2.17.1、2.17.2、2.18.0 和 2.19.0 均各运行 122 项测试；2.17.2 后臂命中 `LoggerContext.java:291`。相关结果位于 `results/log4j-elimu-candidate-screening-2026-08-24/`。
+
+Powertools 的兼容臂固定同一消费仓提交，只切换同步的 Log4j API/Core 版本；两侧均为 3 项通过。脚本与结果位于 `workstreams/log4j-2.18-fourth-repo/aws-powertools/run_a3_screening.sh` 和 `results/log4j-a3-aws-powertools-screening-2026-08-25/`。
 
 ## 明确拒绝的候选
 
@@ -88,7 +91,6 @@ elimu-ai 另有独立的四臂筛选：2.17.1、2.17.2、2.18.0 和 2.19.0 均�
 
 ## 下一步
 
-1. 为 Powertools 补做 2.17.1 到 2.17.2 的 A3 前后臂，并核对同一变化面覆盖；普通绿色构建不接纳。
-2. A3 成立后，按 A0、A1、A2、A3 前臂、A3 后臂做三次独立重复。
-3. 对 Neqsim 两个合并 PR 的关系、三个限定负例的标签上限和多模块源发布口径做独立语义复核。
-4. 在上述条件完成前，本组只计一个四仓候选，不进入正式项目包数量和停止能力指标。
+1. 按 A0、A1、A2、A3 前臂、A3 后臂做三次独立重复。
+2. 对 Neqsim 两个合并 PR 的关系、三个限定负例的标签上限和多模块源发布口径做独立语义复核。
+3. 在上述条件完成前，本组只计一个完整四仓四臂候选，不进入正式项目包数量和停止能力指标。
