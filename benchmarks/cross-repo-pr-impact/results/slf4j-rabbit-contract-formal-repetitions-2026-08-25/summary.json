@@ -1,0 +1,59 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_repository": "qos-ch/slf4j",
+  "source_pair": ["1.7.36", "2.0.0"],
+  "target_repository": "rabbitmq/rabbitmq-jms-client",
+  "contract": "com.rabbitmq.jms.LoggingProviderCompatibilityTest#initializesTheConfiguredLoggingProvider",
+  "environment": "OpenJDK 11.0.31; Maven 3.9.8",
+  "repetitions": 3,
+  "fresh_checkouts": 9,
+  "maven_repository_policy": "one isolated seed copy per repetition",
+  "arms": {
+    "A0": {
+      "commit": "41b2abf72827e123c8c472d3f07b30ac3bc24be0",
+      "slf4j_api": "1.7.36",
+      "logback_classic": "1.2.11",
+      "logback_core": "1.2.11",
+      "runs": 3,
+      "tests_per_run": 115,
+      "result": "pass_in_all_runs"
+    },
+    "A1": {
+      "commit": "4fa8b7fea9971db148c98a5a3816a3c850332a92",
+      "slf4j_api": "2.0.0",
+      "logback_classic": "1.2.11",
+      "logback_core": "1.2.11",
+      "runs": 3,
+      "tests_per_run": 115,
+      "failures_per_run": 1,
+      "only_failing_test": "com.rabbitmq.jms.LoggingProviderCompatibilityTest",
+      "signature": "org.slf4j.helpers.NOPLoggerFactory returned instead of ch.qos.logback.classic.LoggerContext",
+      "result": "expected_unique_failure_in_all_runs"
+    },
+    "A2": {
+      "commit": "c2695a908a60b5c3db041afa193399cceb18f10c",
+      "slf4j_api": "2.0.0",
+      "logback_classic": "1.4.0",
+      "logback_core": "1.4.0",
+      "runs": 3,
+      "tests_per_run": 115,
+      "result": "recovered_in_all_runs"
+    }
+  },
+  "measurements": {
+    "maven_test_commands": 9,
+    "total_tests_executed": 1035,
+    "dependency_resolutions_matching_expected": 9,
+    "directions_matching_expected": 9,
+    "a1_unique_contract_failures": 3,
+    "a2_recoveries": 3,
+    "unexpected_results": 0
+  },
+  "repair_scope": "the maintainer-merged one-line Logback 1.2.11 to 1.4.0 update in PR 190",
+  "later_strategy_boundary": {
+    "commit": "7075e98c50a70e05cd3e4890fd49d7afe2ec9aa0",
+    "description": "One week later the project removed its direct SLF4J dependency and returned to the SLF4J 1.7 dependency line through RabbitMQ Java Client."
+  },
+  "evidence_status": "three independent execution repetitions complete",
+  "semantic_review_status": "not independently reviewed; repetitions are stability measurements, not separate relations or reviews"
+}

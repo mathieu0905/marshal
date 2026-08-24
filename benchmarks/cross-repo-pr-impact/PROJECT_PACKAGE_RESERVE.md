@@ -10,7 +10,7 @@
 |---|---|---|---|
 | 模型质检接受，待人工复核 | Alembic 到六个 OpenStack 消费仓 | 90 条仓库命令，Cinder 三次破坏与恢复，五个限定负例，六仓兼容变化 | 第二位人工盲复核 |
 | 永久三臂 | jcabi-aspects 到四个消费仓 | 60 条仓库命令，两个正例、两个限定负例；两轮 A3 覆盖审计均拒绝 | 只保留破坏案例，不计完整项目包 |
-| 四仓候选，待补正式重复 | SLF4J 到 Jadler、Password4j、Spotless、RabbitMQ JMS Client | Jadler 与 RabbitMQ 两个正例、Password4j 与 Spotless 两个限定负例；RabbitMQ 新合同一轮三臂成立 | 对新增合同做三次正式重复和独立语义复核 |
+| 模型质检接受，待人工复核 | SLF4J 到 Jadler、Password4j、Spotless、RabbitMQ JMS Client | Jadler 与 RabbitMQ 两个正例、Password4j 与 Spotless 两个限定负例；四仓按真实消费方式形成异质合同闭集 | 第二位人工盲复核；A3 只支持普通初始化路径 |
 | 历史因果储备 | OpenDev 其余四条强因果关系 | 同任务失败到配套修复成功，已物化失败时点输入 | 扩成含可靠干扰仓与兼容变化的项目包 |
 | OpenDev 单正例锚点 | Ironic Python Agent 到 Requirements | 历史持续集成组合与本地 A0/A1/A2 都证明新的 `hardware` 依赖触发共享登记失败，只应用维护者两行登记后恢复 | 限定为共享依赖登记合同；限定负例 0、A3 0，待独立盲审 |
 | 单正例锚点 | OpenStack SDK 到 Python OpenStack Client | 字段新增导致输出断言失败，配套修改恢复；17 仓时点输入已完成代码覆盖审计 | 只有一个直接下游消费者；其余仓保持未知，不再为凑四仓主动扩张 |
@@ -45,6 +45,8 @@
 | FSE 2024 历史筛选拒绝 | JAX-RS 2.0.1 到 2.1-m08 | 8 条目录记录去重为 Fastjson、Microbule 两个根仓；源破坏隔离为新增抽象 `ResponseBuilder.status(int, String)` 的单一提交 | 两仓历史均固定旧接口与旧 CXF，没有维护者精确 A2；接纳 0 条，不把 Microbule 七模块拆成七条关系 |
 | FSE 2024 机制锚点 | ANTLR Runtime 4.9.3 到 4.10 的五个根仓 | jStyleParser 完整 182 项呈现通过、序列化版本错误、重新生成后恢复；其余四仓无维护者 A2 | 恢复臂是从维护者双版本升级中抽出的混合组合，正式正例 0、机制锚点 1 |
 | FSE 2024 源提交隔离正例 | Derby 10.15 制品拆分到 Susom 等九仓 | `5a6efcc` 父、子构件用同一工具链构建；Susom 在父制品通过、子制品缺驱动失败、子制品加维护者选择的 `derbytools` 后恢复 | 1 条正关系；限定负例和 A3 均为 0，不计完整项目包 |
+| FSE 2024 广泛迁移恢复锚点 | Hibernate Validator 7 到 SmallRye Config | A0 4/4 通过，A1 4/4 同签名失败，完整 Jakarta 迁移与四文件消融均恢复 | 历史 A2 是 98 路径全仓迁移，消融不是独立维护者提交；严格正例 0 |
+| FSE 2024 历史筛选拒绝 | HSQLDB 四组版本变化 | 21 条记录折叠为 16 个根仓、17 个根仓与版本变化单元；1 个精确源机制锚点 | 固定 A1 输入下的维护者精确 A2 为 0；未执行三臂，正式接纳 0 条 |
 | 版本化生态子轨 | 四条 Crater 修复 | 三臂各重复三次 | 不冒充仓库级闭集；继续保留为独立子轨 |
 
 ## npm 代码修复续派队列
@@ -74,15 +76,15 @@ Zenodo 64 条原始记录中，“客户端先恢复且修改代码”的优先�
 
 表内多数行只统计 BUMP 已成功重放的主数据。完整归档漏斗更大：AssertJ 为 12 条、5 仓，其中 6 条已成功重放；Commons IO 为 34 条、25 仓，其中 3 条已成功重放；Checkstyle 为 307 条、53 仓，其中 4 条属于正式重放集；Mockito 为 55 条、15 仓，其中 7 条属于正式重放集。未成功重放记录仍属于搜索框，不能静默丢弃，也不能直接当失败真值。
 
-Jackson、SLF4J、jcabi、Plexus Utils、SnakeYAML、Log4j Core、AssertJ、Commons IO、Checkstyle、Mockito、Logback 和 Spring Core 已完成主动筛选。Plexus Utils、jcabi、AssertJ 与 Checkstyle 都因没有合格兼容变化停在三臂；Log4j Core 已补足第四个有变化面覆盖的限定负例和四仓 A3，但全包正式重复尚未执行；Jackson 保留两个不同源合同的单正例锚点，不能跨合同拼接；Commons IO、Mockito 与 Logback 只保留单正例锚点；Spring Core 接受数为零。只有 SnakeYAML 与 Alembic 通过当前模型语义质检，仍待第二位人工盲复核。
+Jackson、SLF4J、jcabi、Plexus Utils、SnakeYAML、Log4j Core、AssertJ、Commons IO、Checkstyle、Mockito、Logback 和 Spring Core 已完成主动筛选。Plexus Utils、jcabi、AssertJ 与 Checkstyle 都因没有合格兼容变化停在三臂；Log4j Core 已补足第四个有变化面覆盖的限定负例和四仓 A3，正在做全包正式重复；Jackson 保留两个不同源合同的单正例锚点，不能跨合同拼接；Commons IO、Mockito 与 Logback 只保留单正例锚点；Spring Core 接受数为零。SnakeYAML、Alembic 与 SLF4J 通过当前模型语义质检，仍待第二位人工盲复核。
 
 ## 扩展顺序
 
-1. 模型语义质检已完成并撤销 jcabi、terser 的 A3 与 RabbitMQ 负标签；继续安排第二位人工盲复核，同一执行者再次阅读不算独立复核，模型质检也不冒充人工复核。
+1. 模型语义质检已完成并撤销 jcabi、terser 的 A3 与 RabbitMQ 负标签；RabbitMQ 新正例合同也已完成独立模型质检，下一步安排第二位人工盲复核，同一执行者再次阅读不算独立复核，模型质检也不冒充人工复核。
 2. escope 到 babel-eslint 已确认只能作为三臂锚点；window-stream 到 Godot 已形成单正例四臂筛选。后续重复不改变两者缺少可靠多仓负空间的边界。
 3. OpenStack SDK 的 17 仓审计已经证明当前搜索空间只有一个直接下游消费者，不再把一般性 SDK 依赖仓或上游服务仓拿来补数量。
 4. 按 `NPM_CAUSAL_SOURCE_ASSESSMENT.md` 的 25 条客户端恢复搜索框继续核对真实代码修复；terser 四仓已完成统一 4.3.0 的隔离重复，不把三个目标拆成独立源案例，也不把一个负例解释成完整影响面。`node-minify` 与 `fis3-plugins` 已因缺少变化表面执行覆盖而拒绝，说明无目标修改的依赖升级不能自动成为负标签；`test-machinepack` 已因源仓自修复与目标路径不相关而拒绝，版本调整只能作为兼容动作单独分层。
-5. SnakeYAML 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；H2 2.0 收口为同源根仓内的单正例锚点，Kryo 3.0.3 到 5.0.0 的三个独立根仓均因没有维护者精确恢复而停止在历史筛选阶段。Jackson 第二正例已收口为不同精确源合同的单仓锚点，原始模块测试不在恢复结论内。Derby 九仓已收口为一个源提交隔离正例、两个版本辅助对照和六个历史拒绝。Log4j 已补到完整四仓四臂，下一步做全包正式重复；SLF4J 已补到四个已判定仓，下一步重复新增 RabbitMQ 合同。
+5. SnakeYAML 与 SLF4J 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；H2 2.0 收口为同源根仓内的单正例锚点，Kryo 3.0.3 到 5.0.0 的三个独立根仓均因没有维护者精确恢复而停止在历史筛选阶段。Jackson 第二正例已收口为不同精确源合同的单仓锚点，原始模块测试不在恢复结论内。Derby 九仓已收口为一个源提交隔离正例、两个版本辅助对照和六个历史拒绝。Log4j 已补到完整四仓四臂，正在做全包正式重复。
 6. 持续保存 OpenDev 最近窗口，在执行清单和日志失效前完成语义核验。
 
 “首批十个项目包”是用于检查关系隔离、生态覆盖和正式集划分是否可行的中间规模，不是长期目标的终点。即使达到十个，独立复核、保留集、Marshal 实测和可比系统运行仍未完成时，旗舰评测也不能宣告完成。

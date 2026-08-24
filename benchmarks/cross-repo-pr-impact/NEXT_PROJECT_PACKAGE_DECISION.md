@@ -1,12 +1,12 @@
 # 第二个主动项目包路线决定
 
-日期：2026-08-24
+日期：2026-08-25
 
 ## 决定
 
 - 结论：选择 `openstack/requirements` 的 Alembic 变化作为第二个主动项目包主线；覆盖重审后的闭集为 Cinder、Heat、Ironic、Keystone、Nova、Placement。
 - 行动：受控 A0、A1、A2、六仓 A3 和三次正式重复已经完成；第三个 SLF4J 项目包也已完成三次正式重复。
-- 当前阶段：五个已执行包的模型语义质检已经完成，只接受 Alembic、SnakeYAML 两个完整四臂候选；第二位人工盲复核仍未完成。扩展改为一个项目包一个并发任务；Checkstyle 已收口为 A3 拒绝的四仓三臂候选，Mockito 收口为两个单正例锚点，Logback 降为单正例锚点，Spring Core 完整筛选后接受数为零。request 到 PolyClay 与 PowerMock 到 ViSearch 已被真实重放拒绝；Ironic Python Agent 到 Requirements、Babel ES2015 Preset 到 Rollup Preset、Imagemin Optipng 到 Images to Less Variables、ESLint 到 TestCafe 各形成 1 条高证据三臂锚点，React Redux 到 React Redux Provide 形成 1 条单正例四臂锚点。Backbone PR 2878 形成 1 条链独立、2 个共同必要目标仓的多目标三臂锚点；共享目标上的 MongoDB 标签拒绝。Socket.IO 到 Karma 又形成 1 条原生 91 项合同下的三臂锚点，但没有负空间和 A3。H2 的 `MVCC` 提交形成 Database Rider、CloudSlang Score 两条正关系，`VALUE` 关键字提交又形成 Fluent JDBC 一条正关系；三条共享 H2 根仓，仍只能算一个不完整项目族。JUnit 4.11 到 4.12、JAX-RS 2.0.1 到 2.1-m08 和 Kryo 3.0.3 到 5.0.0 分别因缺维护者精确恢复而接纳 0 条；ANTLR 4.10 五仓正式接纳 0 条，只保留 jStyleParser 机制锚点。Jackson 第二正例已形成不同精确源合同的单仓锚点，原始模块测试不在恢复结论内。Derby 九仓已收口为一个源提交隔离正例、两个版本辅助对照和六个历史拒绝；该正例仍无限定负空间和 A3。Log4j 已补到完整四仓四臂，正在做全包正式重复；SLF4J 也已补到四个已判定仓，新增 RabbitMQ 合同待三次正式重复；另一路继续补 Derby 精确源。
+- 当前阶段：五个原执行包和 SLF4J 补充合同的模型语义质检已经完成，接受 Alembic、SnakeYAML、SLF4J 三个完整四臂候选；第二位人工盲复核仍未完成。扩展改为一个项目包一个并发任务；Checkstyle 已收口为 A3 拒绝的四仓三臂候选，Mockito 收口为两个单正例锚点，Logback 降为单正例锚点，Spring Core 完整筛选后接受数为零。request 到 PolyClay 与 PowerMock 到 ViSearch 已被真实重放拒绝；Ironic Python Agent 到 Requirements、Babel ES2015 Preset 到 Rollup Preset、Imagemin Optipng 到 Images to Less Variables、ESLint 到 TestCafe 各形成 1 条高证据三臂锚点，React Redux 到 React Redux Provide 形成 1 条单正例四臂锚点。Backbone PR 2878 形成 1 条链独立、2 个共同必要目标仓的多目标三臂锚点；共享目标上的 MongoDB 标签拒绝。Socket.IO 到 Karma 又形成 1 条原生 91 项合同下的三臂锚点，但没有负空间和 A3。H2 的 `MVCC` 提交形成 Database Rider、CloudSlang Score 两条正关系，`VALUE` 关键字提交又形成 Fluent JDBC 一条正关系；三条共享 H2 根仓，仍只能算一个不完整项目族。JUnit 4.11 到 4.12、JAX-RS 2.0.1 到 2.1-m08 和 Kryo 3.0.3 到 5.0.0 分别因缺维护者精确恢复而接纳 0 条；ANTLR 4.10 五仓正式接纳 0 条，只保留 jStyleParser 机制锚点。Hibernate Validator 7 到 SmallRye 的破坏和恢复可重放，但历史 A2 是 98 路径全仓迁移，严格正例仍为 0；HSQLDB 的 21 条记录折叠为 17 个审计单元后，固定输入精确 A2 同样为 0。Jackson 第二正例已形成不同精确源合同的单仓锚点，原始模块测试不在恢复结论内。Derby 九仓已收口为一个源提交隔离正例、两个版本辅助对照和六个历史拒绝；该正例仍无限定负空间和 A3。Log4j 已补到完整四仓四臂，正在做全包正式重复；SLF4J 已通过补充合同的独立质检，但标签仍限于异质消费合同闭集。
 
 ## 决定依据
 
@@ -40,7 +40,7 @@
 | window-stream 到 Godot | 非 Maven，21 项原生合同上的单次 A0/A1/A2 和 A3 均成立，但只有一个目标仓，A3 对深层克隆语义也只有路径覆盖 | 保留单正例四臂锚点；先找同一 TimeWindow 表面的真实消费者，找不到时不扩成项目包 |
 | test-machinepack 到 test-machinepack-mocha | 论文给出目标修复线索，但 2.1.19 的失败由源仓 2.1.22 自行恢复；目标改动既不恢复 2.1.19，也不在真实客户端测试路径上 | 语义拒绝，保留为来源标签审计记录 |
 | terser 四仓项目包候选 | 四仓统一到 4.3.0 后完成三次隔离重复，51 条命令方向与版本 51/51；三个目标修复和一个 Angular CLI 合同范围内限定负例均可重复 | 破坏案例保留；A3 因无变化表面证据拒绝，Preconstruct 降为子测试证据，不计完整项目包 |
-| SLF4J 或 Jackson 的 BUMP/FSE 分组 | SLF4J 已用新增提供方合同把 RabbitMQ 重标为短期维护适配正例，闭集达到两正两负；Jackson 现有两个不同源合同的单正例锚点，只有原合同具备两个限定负例和四仓 A3 | SLF4J 补三次正式重复和独立语义复核；Jackson 不跨源合同拼成多正例包 |
+| SLF4J 或 Jackson 的 BUMP/FSE 分组 | SLF4J 已用新增提供方合同把 RabbitMQ 重标为短期维护适配正例，闭集达到两正两负；Jackson 现有两个不同源合同的单正例锚点，只有原合同具备两个限定负例和四仓 A3 | SLF4J 转入第二位人工盲复核；Jackson 不跨源合同拼成多正例包 |
 | Plexus Utils 的 BUMP 分组 | pgpverify 与 license 的 A0/A1/A2 已成立，plexus-io 与 build-helper 也形成两个限定负例；但当前相邻兼容发布的真实变化没有被四仓原生检查共同触及 | 保留三臂候选；只有出现合格 A3 后才做三次重复，不用普通绿色构建补第四臂 |
 | SnakeYAML 的 BUMP 分组 | JClouds 与 ZIO JSON 的破坏恢复、YAML JSON 与 YAML Updater 的限定负例、四仓共同命中 1.32 新增判断的 A3 均已完成三次隔离重复；60 条命令版本与方向 60/60 | 模型质检按当前命令合同接受；等待第二位人工盲复核，Polyglot 保持淘汰 |
 | Crater 重放 | 提供 Rust 工具链到包的三臂证据，但不是一个源仓影响多个相邻仓的闭集 | 保持为版本化生态子轨，不改写成仓库级项目包 |

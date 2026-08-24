@@ -21,13 +21,13 @@
 
 新的 FSE 2024 行为破坏搜索框从 1,043 条真实客户端测试失败记录聚合出 703 个“依赖升级到破坏版本 × 客户端”候选，涉及 323 个源依赖和 471 个客户端制品。它们提供旧版本到破坏版本的执行失败线索，但缺精确仓库修订和维护者修复；完成仓库恢复与 A0/A1/A2 重放前，703 条均不计为因果案例。首条 PowerMock 到 ViSearch 的恢复筛选已执行拒绝：A1 复现论文异常，但维护者删除无代码聚合依赖后 A2 仍以同一异常失败，且严格 A0 还受历史缺失制品阻挡，故接纳 0 条。H2 的精确 `MVCC` 拒绝提交形成 2 条正关系：Database Rider 与 CloudSlang Score 都完成 A0/A1/A2，公开 5 条模块记录按根仓折叠为 2 条；随后 1.4.200 到 2.0.202 的 16 条记录又折叠为 10 个根仓，只有 Fluent JDBC 的 `VALUE` 关键字关系具备精确源提交和维护者恢复。H2 当前共有 3 条正关系输入，但它们共享同一源根仓，且仍无限定负例和 A3，不能拆成多个独立项目包。JUnit 4.11 到 4.12 的八仓历史筛选则只有 PIT 留下一条未重放 A2 线索，其余七仓无维护者恢复，接纳 0 条且没有执行重型三臂。JAX-RS 2.0.1 到 2.1-m08 的 8 条目录记录经根仓去重后只剩 Fastjson 和 Microbule 两条关系；源破坏可隔离到新增抽象 `ResponseBuilder.status(int, String)` 的单一提交，但两个目标仓都没有维护者适配，故同样在重放前接纳 0 条。ANTLR Runtime 4.9.3 到 4.10 的五仓筛选只保留 jStyleParser 机制锚点：完整 182 项测试呈现旧组合通过、序列化版本不兼容失败、重新生成后恢复，但恢复臂是从维护者同步升级生成器和运行时的提交中抽出的混合版本，正式正例仍为 0；其余四仓没有维护者 A2。
 
-主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成一轮独立质检，但它不是第二位人工标注者。当前模型质检只接受 Alembic 和 SnakeYAML 两个完整四臂候选；正式人工接受数仍为 0。逐包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`。
+主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML 和 SLF4J 三个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 补充合同的独立复核见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。
 
 `openstack/requirements` 到六个 OpenStack 消费仓已经完成三次正式重复：90 条命令全部符合方向并核验版本和目标测试执行。三次 Cinder A1 都复现同一 12 表检查约束差异，A2 只应用维护者修复后恢复；五个干扰仓和 A3 两臂稳定通过。模型质检按 MySQL 模型同步合同接受，仍待第二位人工盲复核。
 
-SLF4J 四仓的原 60 条正式命令没有判定 RabbitMQ JMS Client 的日志退化。新增日志提供方合同后，RabbitMQ 的连续维护链形成一轮严格三臂：旧组合 115 项通过，仅升级 SLF4J 后回退到 `NOPLoggerFactory` 并有 1 项失败，只应用维护者合并的一行 Logback 1.4.0 更新后 115 项恢复。当前闭集为 Jadler、RabbitMQ 两个正例和 Password4j、Spotless 两个窄负例；由于 RabbitMQ 合同是数据集补充且尚未完成三次正式重复和独立语义复核，本组仍只算四仓候选。原正式摘要位于 `results/slf4j-formal-repetitions-2026-08-24/`，补充重放位于 `results/slf4j-fourth-root-rabbit-2026-08-25/`。
+SLF4J 四仓的原 60 条正式命令没有判定 RabbitMQ JMS Client 的日志退化。新增日志提供方合同后，RabbitMQ 的连续维护链形成严格三臂：三轮旧组合均为 115 项通过，三轮仅升级 SLF4J 后都回退到 `NOPLoggerFactory` 且只有新增合同 1 项失败，三轮只应用维护者合并的一行 Logback 1.4.0 更新后均恢复 115 项。1.7.29 到 1.7.30 的兼容控制也完成三轮，每轮前后各 115 项通过并执行同一提供方合同。独立语义复核接受 RabbitMQ 为“固定 SLF4J 2.0.0 且保留测试范围 Logback 提供方”条件下的正例，并把 A3 限定为普通初始化路径控制。当前闭集为 Jadler、RabbitMQ 两个正例和 Password4j、Spotless 两个窄负例；它是异质消费合同闭集，不是统一日志提供方合同的四次重复。原正式摘要位于 `results/slf4j-formal-repetitions-2026-08-24/`，补充三臂和兼容控制分别位于 `results/slf4j-rabbit-contract-formal-repetitions-2026-08-25/` 与 `results/slf4j-rabbit-contract-a3-repetitions-2026-08-25/`。
 
 terser 4.3.0 的共同破坏变化已经完成三次统一版本隔离重复，Assetgraph Builder、UI5 Builder、Preconstruct 分别形成测试期望、生产配置和生成物快照适配，Angular CLI 支持历史构建合同内无需修改。模型质检拒绝 4.2.0 到 4.2.1 的 A3，因为没有证明任何真实变化表面进入测试；Preconstruct 也只能按三个选中用例和 35 个快照的子测试证据计。它保留为破坏案例，不计完整四臂项目包。
 
@@ -36,6 +36,10 @@ SnakeYAML 1.32 到 2.0 的破坏变化和 1.31 到 1.32 的兼容变化已完成
 新增筛选没有为了数量强升项目包：Jackson 原有一个版本协调单正例四臂锚点，本轮又从 14 条 FSE 记录、12 个独立根仓中恢复一个不同精确源合同的产品路径单正例；新合同没有限定负例或 A3，不能与原合同拼成多正例项目包。Log4j Core 形成 1 个正例、3 个有变化面覆盖的限定负例和四仓兼容变化，但尚未做全包正式重复，因此只算完整四臂候选；AssertJ 形成 2 个强正例和 2 个限定负例，但三轮 A3 均拒绝；Commons IO 从 34 条、25 仓完整搜索框中形成 2 个单正例三臂锚点，没有可靠负空间与 A3；Checkstyle 从 307 条、53 仓完整框中形成 2 个强正例和 2 个有覆盖限定负例，但 A3 拒绝；Mockito 从 55 条、15 仓完整框中形成 2 个不同源输入的单正例三臂锚点，没有可靠负空间与 A3；Logback 因解析后输入不统一只保留 HTML2POP3 单正例锚点；Spring Core 的 32 条、7 仓完整框没有维护者精确恢复，接受数为 0。这八组正式完整项目包接受数均为 0。详情见各自 `workstreams/` 评估。
 
 Derby 10.15 制品拆分的 9 条 FSE 记录对应 9 个独立根仓。Susom 已完成精确源提交隔离：同一工具链构建 `5a6efcc` 的父、子制品后，固定目标在父制品通过、子制品因 `EmbeddedDriver` 移入 `derbytools` 而失败、只加入同侧 `derbytools` 后恢复，因此接纳 1 条源提交隔离正关系；MuProcessManager 与 MyBatis CDI 的恢复依赖后续 Derby 发布元数据，均只作版本辅助对照，其余六仓没有维护者精确恢复。该关系仍无限定负例和 A3，不计完整项目包。
+
+Hibernate Validator 6.2.3.Final 到 7.0.0.CR1 对 SmallRye Config 的四项 Validator 合同形成可重放破坏：旧组合 4/4 通过，只升级源版本后 4/4 均为 `NoProviderFoundException`。维护者后续 `Move to Jakarta` 提交和从中抽出的四文件消融都能恢复，但前者是 98 路径的全仓平台迁移，后者不是独立历史修复；正式严格三臂正例因此仍为 0，只保留广泛迁移恢复锚点和最小恢复消融。
+
+HSQLDB 的 21 条 FSE 记录按模块和根仓去重后形成 16 个根仓、17 个“根仓与版本变化”审计单元。SQL Processor 的 2.5.0 到 2.5.1 变化可隔离到时间戳纳秒处理提交，但没有维护者 A2；2.5.2 到 2.6.0 的主体是默认发布物从 Java 8 类文件变为 Java 11 类文件，不能虚构成单一源提交。LanguageTool 与 Embedded DB JUnit 的分类器修复都同时换到其他 HSQLDB 版本，不保持固定 A1 输入。严格 A2 为 0，因此本轮没有运行重型三臂，正式接纳 0 条。
 
 OpenDev 的 Ironic Python Agent 到 Requirements 关系已补成本地受控三臂：旧源与旧登记表通过，源变化将 `hardware>=0.24.0` 移入受共享规则检查的可选依赖后失败，只应用 Requirements 维护者的两行登记后恢复。历史 Zuul 两臂另外证明真实组合中的同签名失败与恢复。该结论只覆盖共享依赖登记合同，限定负例和 A3 均为 0，因此只进入单正例锚点层。
 
@@ -70,7 +74,7 @@ Socket.IO 1.4.0 把内部套接字集合从数组改成对象后，Karma 0.13.18
 ```bash
 python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
   opendev-991000-semantic-impact \
-  --output-dir /tmp/marshal-cross-repo-inputs
+  --output-dir .work/marshal-cross-repo-inputs
 ```
 
 上述案例已实际准备成功：源补丁 17723 字节，4 个候选仓共展开 8278 个文件。完整输入约束见 `INPUT_SPEC.md`。
@@ -151,7 +155,7 @@ python benchmarks/cross-repo-pr-impact/audit.py --sample-size 20
 - 101 条可恢复 GitHub 候选中只选择 85 条：全部 59 条多目标案例优先保留，单目标案例按仓库关系轮转补齐；
 - 100 条校准轨道没有可靠无影响对照，不能评价误报率和停止能力；旗舰主动轨道的限定负例只在各自执行合同内成立；
 - Cinder 对照只有一次失败和一次成功，仍可能受持续集成环境漂移影响；
-- OpenDev 因果试采只有 6 个通过初次语义复核的储备，且全部来自 2026 年；主动项目包虽已扩到其他生态，但模型质检只接受 2 个完整四臂候选，仍不足以支撑产品优劣结论；
+- OpenDev 因果试采只有 6 个通过初次语义复核的储备，且全部来自 2026 年；主动项目包虽已扩到其他生态，但模型质检只接受 3 个完整四臂候选，仍不足以支撑产品优劣结论；
 - 13 个去重转换的盲审材料已经生成，但独立复核者尚未提交结果，不能把材料准备当作复核完成；
 - Prow 历史扫描从当前仍配置的 104 个多仓预提交任务出发，不包含已退役或改名任务；35,805 次执行没有产生语义成立的因果案例；
 - 198 个持续集成候选因历史执行清单归档缺失而无法判断，当前 OpenDev 历史不能直接扩成数百条强因果案例；

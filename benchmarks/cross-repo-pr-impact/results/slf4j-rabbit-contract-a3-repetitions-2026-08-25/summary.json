@@ -1,0 +1,46 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_repository": "qos-ch/slf4j",
+  "compatible_change": {
+    "from": "1.7.29",
+    "to": "1.7.30"
+  },
+  "target_repository": "rabbitmq/rabbitmq-jms-client",
+  "consumer_commit": "41b2abf72827e123c8c472d3f07b30ac3bc24be0",
+  "contract": "com.rabbitmq.jms.LoggingProviderCompatibilityTest#initializesTheConfiguredLoggingProvider",
+  "contract_assertion": "LoggerFactory.getILoggerFactory() returns ch.qos.logback.classic.LoggerContext",
+  "environment": "Picked up JAVA_TOOL_OPTIONS: -Djava.io.tmpdir=/home/zhihao/hdd/marshal/.work/slf4j-rabbit/slf4j-rabbit-a3.AvQgIv/java-tmp; Apache Maven 3.9.8 (36645f6c9b5079805ea5009217e36f2cffd34256)",
+  "repetitions": 3,
+  "fresh_checkouts": 6,
+  "maven_repository_policy": "one project-local small-seed copy per repetition and arm",
+  "arms": {
+    "before": {
+      "slf4j_api": "1.7.29",
+      "logback_classic": "1.2.11",
+      "logback_core": "1.2.11",
+      "runs": 3,
+      "tests_per_run": 115,
+      "result": "pass_in_all_runs"
+    },
+    "after": {
+      "slf4j_api": "1.7.30",
+      "logback_classic": "1.2.11",
+      "logback_core": "1.2.11",
+      "runs": 3,
+      "tests_per_run": 115,
+      "result": "pass_in_all_runs"
+    }
+  },
+  "measurements": {
+    "maven_test_commands": 6,
+    "total_tests_executed": 690,
+    "dependency_resolutions_matching_expected": 6,
+    "directions_matching_expected": 6,
+    "provider_contract_passes": 6,
+    "unexpected_results": 0
+  },
+  "input_delta": "both arms use the same consumer commit and contract; only slf4j-api.version differs, at 1.7.29 versus 1.7.30",
+  "coverage_boundary": "The provider contract exercises ordinary LoggerFactory initialization, not every initialization-failure or concurrent-cleanup path changed in SLF4J 1.7.30.",
+  "evidence_status": "three execution repetitions complete when unexpected_results is zero",
+  "semantic_review_status": "not independently reviewed; repetitions are stability measurements, not separate relations or reviews"
+}
