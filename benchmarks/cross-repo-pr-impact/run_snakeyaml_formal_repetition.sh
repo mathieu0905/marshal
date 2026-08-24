@@ -9,6 +9,8 @@ fi
 
 repeat=$1
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+work_parent=${MARSHAL_WORK_ROOT:-$repo_root/.work/cross-repo-pr-impact}
 result_root="$script_dir/results/snakeyaml-formal-repetitions-2026-08-24"
 repeat_dir="$result_root/repeat-$repeat"
 input_dir="$result_root/inputs"
@@ -21,7 +23,7 @@ fi
 
 export JAVA_HOME=${SNAKEYAML_JAVA_HOME:-/usr/lib/jvm/java-11-openjdk-amd64}
 export PATH="$JAVA_HOME/bin:$PATH"
-gradle_bin=${SNAKEYAML_GRADLE_BIN:-/tmp/gradle-7.2/bin/gradle}
+gradle_bin=${SNAKEYAML_GRADLE_BIN:-$work_parent/tooling/gradle-7.2/bin/gradle}
 m2_seed=${SNAKEYAML_M2_SEED:-$HOME/.m2/repository}
 coursier_seed=${SNAKEYAML_COURSIER_SEED:-$HOME/.cache/coursier}
 ivy_seed=${SNAKEYAML_IVY_SEED:-$HOME/.ivy2}
@@ -35,9 +37,13 @@ for path in "$JAVA_HOME" "$gradle_bin" "$m2_seed" "$coursier_seed" "$ivy_seed" "
   fi
 done
 
-work_root=$(mktemp -d "/tmp/marshal-snakeyaml-formal-r${repeat}.XXXXXX")
+mkdir -p "$work_parent"
+work_root=$(mktemp -d "$work_parent/marshal-snakeyaml-formal-r${repeat}.XXXXXX")
 mkdir -p "$repeat_dir/runs" "$work_root/mirrors" "$work_root/consumers" \
-  "$work_root/caches/m2" "$work_root/caches/sbt" "$work_root/caches/gradle"
+  "$work_root/caches/m2" "$work_root/caches/sbt" "$work_root/caches/gradle" \
+  "$work_root/tmp" "$work_root/java-tmp"
+export TMPDIR="$work_root/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$work_root/java-tmp"
 
 repos=(jclouds zio xlate xvik)
 configs=(a0 a1 a2 a3-before a3-after)

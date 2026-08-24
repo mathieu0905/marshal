@@ -9,19 +9,22 @@ fi
 
 repeat=$1
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+work_parent=${MARSHAL_WORK_ROOT:-$repo_root/.work/cross-repo-pr-impact}
 result_root=${TERSER_RESULT_ROOT:-$script_dir/results/terser-unified-430-repetitions-2026-08-24}
 repeat_dir=$result_root/repeat-$repeat
 input_dir=${TERSER_INPUT_DIR:-$script_dir/results/terser-formal-repetitions-2026-08-24/inputs}
 
-assetgraph_seed=${TERSER_ASSETGRAPH_SEED:-/tmp/terser-assetgraph-run.LLFXqx}
-ui5_seed=${TERSER_UI5_SEED:-/tmp/ui5-terser-screen.GtjUHb}
-preconstruct_seed=${TERSER_PRECONSTRUCT_SEED:-/tmp/preconstruct-terser-screen.6oxvaO/a0}
-preconstruct_packages=${TERSER_PRECONSTRUCT_PACKAGES:-/tmp/preconstruct-terser-screen.6oxvaO/terser-packages}
-angular_seed=${TERSER_ANGULAR_SEED:-/tmp/terser-negative-screen.gdMiQu/angular-base}
-angular_baseline=${TERSER_ANGULAR_BASELINE:-/tmp/angular-terser-formal-baseline}
-angular_terser_421=${TERSER_ANGULAR_421_SOURCE:-/tmp/terser-negative-screen.gdMiQu/terser-4.2.1}
-terser_430_source=${TERSER_430_SOURCE:-/tmp/ui5-terser-screen.GtjUHb/a1/node_modules/terser}
-yarn_bin_dir=${TERSER_YARN_BIN_DIR:-/tmp/marshal-yarn-1.22.19/node_modules/.bin}
+seed_root=${TERSER_SEED_ROOT:-$work_parent/terser-seeds}
+assetgraph_seed=${TERSER_ASSETGRAPH_SEED:-$seed_root/assetgraph}
+ui5_seed=${TERSER_UI5_SEED:-$seed_root/ui5}
+preconstruct_seed=${TERSER_PRECONSTRUCT_SEED:-$seed_root/preconstruct/a0}
+preconstruct_packages=${TERSER_PRECONSTRUCT_PACKAGES:-$seed_root/preconstruct/packages}
+angular_seed=${TERSER_ANGULAR_SEED:-$seed_root/angular/base}
+angular_baseline=${TERSER_ANGULAR_BASELINE:-$seed_root/angular/baseline}
+angular_terser_421=${TERSER_ANGULAR_421_SOURCE:-$seed_root/angular/terser-4.2.1}
+terser_430_source=${TERSER_430_SOURCE:-$seed_root/ui5/a1/node_modules/terser}
+yarn_bin_dir=${TERSER_YARN_BIN_DIR:-$work_parent/tooling/yarn-1.22.19/node_modules/.bin}
 
 if [[ -e $repeat_dir ]]; then
   echo "拒绝覆盖已有正式重复目录：$repeat_dir" >&2
@@ -59,8 +62,10 @@ if [[ ! -f $nvm_script ]]; then
   exit 5
 fi
 
-work_root=$(mktemp -d "/tmp/marshal-terser-formal-r${repeat}.XXXXXX")
-mkdir -p "$repeat_dir/runs" "$work_root/packages"
+mkdir -p "$work_parent"
+work_root=$(mktemp -d "$work_parent/marshal-terser-formal-r${repeat}.XXXXXX")
+mkdir -p "$repeat_dir/runs" "$work_root/packages" "$work_root/tmp"
+export TMPDIR="$work_root/tmp"
 tar -xzf "$preconstruct_packages/terser-4.2.0.tgz" -C "$work_root/packages"
 mv "$work_root/packages/package" "$work_root/packages/terser-4.2.0"
 tar -xzf "$preconstruct_packages/terser-4.2.1.tgz" -C "$work_root/packages"

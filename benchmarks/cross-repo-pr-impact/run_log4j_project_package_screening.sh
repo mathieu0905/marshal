@@ -3,6 +3,8 @@
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+work_parent=${MARSHAL_WORK_ROOT:-$repo_root/.work/cross-repo-pr-impact}
 result_dir="$script_dir/results/log4j-project-package-screening-2026-08-24"
 
 if [[ -e $result_dir ]]; then
@@ -21,8 +23,11 @@ for path in "$JAVA_HOME" "$m2_seed"; do
   fi
 done
 
-work_root=$(mktemp -d /tmp/marshal-log4j-screening.XXXXXX)
-mkdir -p "$result_dir/runs" "$work_root/mirrors" "$work_root/consumers" "$work_root/m2"
+mkdir -p "$work_parent"
+work_root=$(mktemp -d "$work_parent/marshal-log4j-screening.XXXXXX")
+mkdir -p "$result_dir/runs" "$work_root/mirrors" "$work_root/consumers" "$work_root/m2" "$work_root/tmp" "$work_root/java-tmp"
+export TMPDIR="$work_root/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$work_root/java-tmp"
 
 repos=(apktoolbox neqsim ivymx archifacts)
 configs=(a0 a1 a2 a3-before a3-after)

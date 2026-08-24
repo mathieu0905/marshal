@@ -14,7 +14,8 @@ node_bin=$(realpath "$4")
 phantomjs_bin=$(realpath "$5")
 output=$(realpath -m "$6")
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-task_root=${MARSHAL_TASK_TMP:-/home/zhihao/hdd/marshal-task-tmp/socketio-karma-formal}
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+task_root=${MARSHAL_TASK_TMP:-$repo_root/.work/socketio-karma-formal}
 cache_dir=$task_root/npm-cache
 
 riot_commit=18fb94ee2448bcebb0906a7ce813162e76ba13cf
@@ -26,7 +27,8 @@ socketio_old=e2ebd4349bf27c3839fc9a2700b42cf8390ac3bd
 socketio_break=b73d9bea4efb48277eee685763026ff2df5a79ab
 socketio_new=ddb3445f3d9009554577bbd05b033031e20e23d8
 
-mkdir -p "$task_root" "$cache_dir" "$output"
+mkdir -p "$task_root" "$cache_dir" "$output" "$task_root/tmp"
+export TMPDIR="$task_root/tmp"
 run_root=$(mktemp -d "$task_root/run.XXXXXX")
 
 cleanup() {

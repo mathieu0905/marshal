@@ -3,10 +3,11 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 BENCHMARK_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd)
+REPO_ROOT=$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)
 RESULT_DIR=${RESULT_DIR:-"$BENCHMARK_ROOT/results/derby-10.15-fse-susom-2026-08-25"}
 JAVA_HOME=${JAVA_HOME:-/home/zhihao/.jdks/jdk-11.0.30+7}
 JAVA8_HOME=${JAVA8_HOME:-/home/zhihao/.jdks/jdk8u482-b08}
-MAVEN_REPO=${MAVEN_REPO:-"$HOME/.m2/repository"}
+MAVEN_REPO=${MAVEN_REPO:-"$REPO_ROOT/.work/maven/derby-susom"}
 TARGET_REPOSITORY=${TARGET_REPOSITORY:-https://github.com/susom/database.git}
 TARGET_COMMIT=b9aac59d053af41144f59c77a7f9053f8fe61102
 TEST_SELECTOR=com.github.susom.database.test.VertxLoggingTest#testMdcTransferToWorkerDatabase
@@ -15,7 +16,12 @@ export JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
 mkdir -p "$RESULT_DIR"
-TMP_DIR=$(mktemp -d /tmp/derby-susom-replay.XXXXXX)
+WORK_BASE=${MARSHAL_WORK_ROOT:-$REPO_ROOT/.work/derby-susom}
+mkdir -p "$WORK_BASE" "$MAVEN_REPO"
+TMP_DIR=$(mktemp -d "$WORK_BASE/replay.XXXXXX")
+mkdir -p "$TMP_DIR/tmp" "$TMP_DIR/java-tmp"
+export TMPDIR="$TMP_DIR/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$TMP_DIR/java-tmp"
 printf '%s\n' "$TMP_DIR" >"$RESULT_DIR/replay-work-directory.txt"
 
 git clone --quiet "$TARGET_REPOSITORY" "$TMP_DIR/source"

@@ -9,10 +9,12 @@ fi
 
 output_dir=$(realpath -m "$1")
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-task_root=${MARSHAL_TASK_TMP:-/home/zhihao/hdd/marshal-task-tmp/request-polyclay}
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+task_root=${MARSHAL_TASK_TMP:-$repo_root/.work/request-polyclay}
 cache_dir=$task_root/npm-cache
 
-mkdir -p "$output_dir" "$task_root" "$cache_dir"
+mkdir -p "$output_dir" "$task_root" "$cache_dir" "$task_root/tmp"
+export TMPDIR="$task_root/tmp"
 run_root=$(mktemp -d "$task_root/replay.XXXXXX")
 
 cleanup() {

@@ -25,7 +25,7 @@ GitHub 早期时间线可能缺少历史强推事件。当前 85 条规范案例
 
 ```bash
 python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py CASE_ID \
-  --output-dir /tmp/marshal-cross-repo-inputs
+  --output-dir .work/marshal-cross-repo-inputs
 ```
 
 输出目录中包含 `source.patch`、`input.json`、`repository-snapshots.json`，以及 `repositories/` 下所有当时可用候选仓的展开源码。Git 提交号负责固定版本，不另加内容哈希。准备失败必须记录为本次运行的输入失败，不能换用最新提交。

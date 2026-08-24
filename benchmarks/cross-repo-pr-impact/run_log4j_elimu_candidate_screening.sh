@@ -3,6 +3,8 @@
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+work_parent=${MARSHAL_WORK_ROOT:-$repo_root/.work/cross-repo-pr-impact}
 result_dir="$script_dir/results/log4j-elimu-candidate-screening-2026-08-24"
 source_url=${LOG4J_ELIMU_SOURCE:-https://github.com/elimu-ai/webapp.git}
 consumer_commit=460e263ec22d4768e1b6f171795eef20e4ace80a
@@ -21,8 +23,11 @@ for path in "$JAVA_HOME" "$m2_seed"; do
   fi
 done
 
-work_root=$(mktemp -d /tmp/marshal-log4j-elimu-screening.XXXXXX)
-mkdir -p "$result_dir/runs" "$work_root/mirror.git" "$work_root/m2"
+mkdir -p "$work_parent"
+work_root=$(mktemp -d "$work_parent/marshal-log4j-elimu-screening.XXXXXX")
+mkdir -p "$result_dir/runs" "$work_root/mirror.git" "$work_root/m2" "$work_root/tmp" "$work_root/java-tmp"
+export TMPDIR="$work_root/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$work_root/java-tmp"
 git clone --mirror --quiet "$source_url" "$work_root/mirror.git"
 git --git-dir="$work_root/mirror.git" cat-file -e "$consumer_commit^{commit}"
 cp -a --reflink=auto "$m2_seed/." "$work_root/m2/"

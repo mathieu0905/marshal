@@ -3,11 +3,13 @@
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+work_parent=${MARSHAL_WORK_ROOT:-$repo_root/.work/cross-repo-pr-impact}
 result_dir="$script_dir/results/logback-project-package-screening-2026-08-24"
 java11_home=${LOGBACK_JAVA11_HOME:-/usr/lib/jvm/java-11-openjdk-amd64}
 java17_home=${LOGBACK_JAVA17_HOME:-$HOME/.jdks/jdk-17.0.18+8}
-gradle74=${LOGBACK_GRADLE74:-/tmp/gradle-7.4.2/bin/gradle}
-gradle75=${LOGBACK_GRADLE75:-/tmp/gradle-7.5.1/bin/gradle}
+gradle74=${LOGBACK_GRADLE74:-$work_parent/tooling/gradle-7.4.2/bin/gradle}
+gradle75=${LOGBACK_GRADLE75:-$work_parent/tooling/gradle-7.5.1/bin/gradle}
 m2_seed=${LOGBACK_M2_SEED:-$HOME/.m2/repository}
 gradle_seed=${LOGBACK_GRADLE_SEED:-$HOME/.gradle}
 
@@ -22,8 +24,11 @@ for path in "$java11_home/bin/java" "$java17_home/bin/java" "$gradle74" "$gradle
   fi
 done
 
-work_root=$(mktemp -d "${TMPDIR:-/tmp}/marshal-logback-screening.XXXXXX")
-mkdir -p "$result_dir/runs" "$result_dir/coverage" "$work_root/mirrors" "$work_root/m2" "$work_root/gradle-home"
+mkdir -p "$work_parent"
+work_root=$(mktemp -d "$work_parent/marshal-logback-screening.XXXXXX")
+mkdir -p "$result_dir/runs" "$result_dir/coverage" "$work_root/mirrors" "$work_root/m2" "$work_root/gradle-home" "$work_root/tmp" "$work_root/java-tmp"
+export TMPDIR="$work_root/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$work_root/java-tmp"
 cp -a --reflink=auto "$m2_seed/." "$work_root/m2/"
 cp -a --reflink=auto "$gradle_seed/." "$work_root/gradle-home/"
 

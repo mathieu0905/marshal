@@ -9,7 +9,8 @@ fi
 
 output_dir=$(realpath -m "$1")
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-task_root=${MARSHAL_TASK_TMP:-/home/zhihao/hdd/marshal-task-tmp/powermock-visearch}
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+task_root=${MARSHAL_TASK_TMP:-$repo_root/.work/powermock-visearch}
 repo_dir=$task_root/client
 cache_dir=$task_root/m2
 java_home=${JAVA8_HOME:-/home/zhihao/.jdks/jdk8u482-b08}
@@ -24,7 +25,9 @@ if [[ ! -x $java_home/bin/java || ! -x $java_home/bin/jar ]]; then
   exit 2
 fi
 
-mkdir -p "$output_dir" "$task_root" "$cache_dir"
+mkdir -p "$output_dir" "$task_root" "$cache_dir" "$task_root/tmp" "$task_root/java-tmp"
+export TMPDIR="$task_root/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$task_root/java-tmp"
 
 if [[ ! -d $repo_dir/.git ]]; then
   git clone --filter=blob:none --no-checkout \

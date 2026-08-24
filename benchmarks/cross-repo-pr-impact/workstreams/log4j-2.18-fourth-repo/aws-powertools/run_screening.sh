@@ -4,6 +4,7 @@ set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 benchmark_root=$(cd "$script_dir/../../.." && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
 result_dir="$benchmark_root/results/log4j-2.18-aws-powertools-screening-2026-08-25"
 repository=${LOG4J_POWERTOOLS_SOURCE:-https://github.com/aws-powertools/powertools-lambda-java.git}
 base=0184106b997ba587a33a5ac09a669ad33c3aa6b5
@@ -24,7 +25,12 @@ for path in "$JAVA_HOME" "$m2_seed"; do
   fi
 done
 
-work_root=$(mktemp -d /tmp/marshal-log4j-powertools.XXXXXX)
+work_base=${MARSHAL_WORK_ROOT:-$repo_root/.work/log4j-powertools}
+mkdir -p "$work_base"
+work_root=$(mktemp -d "$work_base/run.XXXXXX")
+mkdir -p "$work_root/tmp" "$work_root/java-tmp"
+export TMPDIR="$work_root/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$work_root/java-tmp"
 mkdir -p "$result_dir/runs" "$work_root/m2"
 git clone --mirror --quiet "$repository" "$work_root/repository.git"
 git --git-dir="$work_root/repository.git" cat-file -e "$base^{commit}"

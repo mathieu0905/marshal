@@ -3,6 +3,8 @@
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+work_parent=${MARSHAL_WORK_ROOT:-$repo_root/.work/cross-repo-pr-impact}
 screening_dir="$script_dir/results/log4j-project-package-screening-2026-08-24"
 result_dir="$script_dir/results/log4j-a3-coverage-audit-2026-08-24"
 
@@ -30,9 +32,12 @@ for path in "$work_root/consumers/a3-after" "$m2" "$core_jar"; do
   fi
 done
 
-coverage_work=$(mktemp -d /tmp/marshal-log4j-a3-coverage.XXXXXX)
+mkdir -p "$work_parent"
+coverage_work=$(mktemp -d "$work_parent/marshal-log4j-a3-coverage.XXXXXX")
 classfiles="$coverage_work/classfiles"
-mkdir -p "$result_dir/runs" "$classfiles"
+mkdir -p "$result_dir/runs" "$classfiles" "$coverage_work/tmp" "$coverage_work/java-tmp"
+export TMPDIR="$coverage_work/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$coverage_work/java-tmp"
 mvn -q "-Dmaven.repo.local=$m2" dependency:get \
   -Dartifact=org.jacoco:org.jacoco.agent:0.8.12:jar:runtime
 mvn -q "-Dmaven.repo.local=$m2" dependency:get \

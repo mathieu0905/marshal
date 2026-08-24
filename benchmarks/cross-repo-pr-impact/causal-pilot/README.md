@@ -50,7 +50,7 @@
 python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
   causal-opendev-999031 \
   --dataset-dir benchmarks/cross-repo-pr-impact/causal-pilot \
-  --output-dir /tmp/marshal-causal-pilot
+  --output-dir .work/marshal-causal-pilot
 ```
 
 滚动新增的 `causal-opendev-1001168` 也已完整展开：源补丁 5794 字节，11 个候选仓连同输入元数据共 14155 个文件，约 157 MB。

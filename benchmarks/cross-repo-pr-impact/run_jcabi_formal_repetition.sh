@@ -9,6 +9,8 @@ fi
 
 repeat="$1"
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(git -C "${script_dir}" rev-parse --show-toplevel)"
+work_parent="${MARSHAL_WORK_ROOT:-${repo_root}/.work/cross-repo-pr-impact}"
 result_root="${script_dir}/results/jcabi-formal-repetitions-2026-08-24"
 repeat_dir="${result_root}/repeat-${repeat}"
 input_dir="${result_root}/inputs"
@@ -29,9 +31,13 @@ fi
 export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 export PATH="${JAVA_HOME}/bin:${PATH}"
 
-work_root="$(mktemp -d "/tmp/marshal-jcabi-formal-r${repeat}.XXXXXX")"
+mkdir -p "${work_parent}"
+work_root="$(mktemp -d "${work_parent}/marshal-jcabi-formal-r${repeat}.XXXXXX")"
 mkdir -p "${repeat_dir}/runs" "${work_root}/mirrors" \
-  "${work_root}/consumers" "${work_root}/m2"
+  "${work_root}/consumers" "${work_root}/m2" "${work_root}/tmp" \
+  "${work_root}/java-tmp"
+export TMPDIR="${work_root}/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=${work_root}/java-tmp"
 
 declare -A remote=(
   [jcabi-s3]="https://github.com/jcabi/jcabi-s3.git"

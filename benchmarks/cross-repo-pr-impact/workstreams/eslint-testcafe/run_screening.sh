@@ -9,12 +9,14 @@ fi
 
 output_dir=$(realpath -m "$1")
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-task_root=${MARSHAL_TASK_TMP:-/home/zhihao/hdd/marshal-task-tmp/eslint-testcafe-replay}
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+task_root=${MARSHAL_TASK_TMP:-$repo_root/.work/eslint-testcafe-replay}
 cache_dir=$task_root/npm-cache
 repo_dir=$task_root/testcafe-repository
 target_commit=72e3c05af334c5a38e45e68e29df8cdaa7856bfc
 
-mkdir -p "$output_dir" "$task_root" "$cache_dir"
+mkdir -p "$output_dir" "$task_root" "$cache_dir" "$task_root/tmp"
+export TMPDIR="$task_root/tmp"
 
 if [[ ! -d $repo_dir/.git ]]; then
   git clone --filter=blob:none --no-checkout \

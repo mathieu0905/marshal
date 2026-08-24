@@ -9,6 +9,8 @@ fi
 
 repeat="$1"
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+work_parent=${MARSHAL_WORK_ROOT:-$repo_root/.work/cross-repo-pr-impact}
 exec_root=${REQUIREMENTS_EXEC_ROOT:?set REQUIREMENTS_EXEC_ROOT to the prepared execution directory}
 tox_runner=${REQUIREMENTS_TOX_RUNNER:?set REQUIREMENTS_TOX_RUNNER to the isolated tox executable}
 db_url=${REQUIREMENTS_DB_URL:-mysql+pymysql://openstack_citest:openstack_citest@127.0.0.1:33317/}
@@ -37,8 +39,10 @@ if [[ ! -f $repair_patch ]]; then
   exit 5
 fi
 
-work_root=$(mktemp -d "/tmp/marshal-requirements-formal-r${repeat}.XXXXXX")
-mkdir -p "$repeat_dir/runs" "$work_root/consumers"
+mkdir -p "$work_parent"
+work_root=$(mktemp -d "$work_parent/marshal-requirements-formal-r${repeat}.XXXXXX")
+mkdir -p "$repeat_dir/runs" "$work_root/consumers" "$work_root/tmp"
+export TMPDIR="$work_root/tmp"
 
 repos=(cinder heat ironic keystone nova placement)
 configs=(a0 a1 a2 a3-before a3-after)

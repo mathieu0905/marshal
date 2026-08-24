@@ -4,6 +4,7 @@ set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 benchmark_root=$(cd "$script_dir/../../.." && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
 result_dir=${RESULT_DIR:-"$benchmark_root/results/derby-10.15-fse-susom-source-isolation-2026-08-25"}
 derby_repository=${DERBY_SOURCE_REPOSITORY:-https://github.com/apache/derby.git}
 target_repository=${DERBY_TARGET_REPOSITORY:-https://github.com/susom/database.git}
@@ -30,7 +31,12 @@ for path in "$source_java_home/bin/java" "$source_ant_home/bin/ant" "$source_jun
   fi
 done
 
-work_root=$(mktemp -d /tmp/derby-source-commit-replay.XXXXXX)
+work_base=${MARSHAL_WORK_ROOT:-$repo_root/.work/derby-source-commit-replay}
+mkdir -p "$work_base"
+work_root=$(mktemp -d "$work_base/run.XXXXXX")
+mkdir -p "$work_root/tmp" "$work_root/java-tmp"
+export TMPDIR="$work_root/tmp"
+export MAVEN_OPTS="${MAVEN_OPTS:-} -Djava.io.tmpdir=$work_root/java-tmp"
 mkdir -p "$result_dir/source-builds/toolchain-attempts" "$result_dir/artifacts" \
   "$result_dir/target-arms" "$work_root/m2/parent" "$work_root/m2/child"
 git clone --mirror --quiet "$derby_repository" "$work_root/derby.git"
