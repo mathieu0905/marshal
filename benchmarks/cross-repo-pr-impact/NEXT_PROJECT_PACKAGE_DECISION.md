@@ -6,7 +6,7 @@
 
 - 结论：选择 `openstack/requirements` 的 Alembic 变化作为第二个主动项目包主线；覆盖重审后的闭集为 Cinder、Heat、Ironic、Keystone、Nova、Placement。
 - 行动：受控 A0、A1、A2、六仓 A3 和三次正式重复已经完成；第三个 SLF4J 项目包也已完成三次正式重复。
-- 当前阶段：五个已执行包的模型语义质检已经完成，只接受 Alembic、SnakeYAML 两个完整四臂候选；第二位人工盲复核仍未完成。扩展改为一个项目包一个并发任务；Checkstyle 已收口为 A3 拒绝的四仓三臂候选，Mockito 收口为两个单正例锚点，Logback 降为单正例锚点，Spring Core 完整筛选后接受数为零。request 到 PolyClay 已被真实重放拒绝；Ironic Python Agent 到 Requirements、Babel ES2015 Preset 到 Rollup Preset、Imagemin Optipng 到 Images to Less Variables、ESLint 到 TestCafe 各形成 1 条高证据三臂锚点，React Redux 到 React Redux Provide 形成 1 条单正例四臂锚点。当前三路并行核对共享目标 backbone-mongo 关系族、Socket.IO 和 FSE 2024 的 PowerMock 到 ViSearch。
+- 当前阶段：五个已执行包的模型语义质检已经完成，只接受 Alembic、SnakeYAML 两个完整四臂候选；第二位人工盲复核仍未完成。扩展改为一个项目包一个并发任务；Checkstyle 已收口为 A3 拒绝的四仓三臂候选，Mockito 收口为两个单正例锚点，Logback 降为单正例锚点，Spring Core 完整筛选后接受数为零。request 到 PolyClay 与 PowerMock 到 ViSearch 已被真实重放拒绝；Ironic Python Agent 到 Requirements、Babel ES2015 Preset 到 Rollup Preset、Imagemin Optipng 到 Images to Less Variables、ESLint 到 TestCafe 各形成 1 条高证据三臂锚点，React Redux 到 React Redux Provide 形成 1 条单正例四臂锚点。Backbone PR 2878 形成 1 条链独立、2 个共同必要目标仓的多目标三臂锚点；共享目标上的 MongoDB 标签拒绝。H2 的精确 `MVCC` 拒绝提交又形成 Database Rider 与 CloudSlang Score 两条正关系，但没有负空间和 A3。JUnit 4.11 到 4.12 的八仓筛选因只有 PIT 留下一条未重放恢复线索而接纳 0 条。当前三路并行核对 Socket.IO、H2 1.4.200 到 2.0.202 和 FSE 2024 的 JAX-RS 2.1-m08。
 
 ## 决定依据
 

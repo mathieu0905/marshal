@@ -21,7 +21,7 @@
 | 三臂筛选完成 | Plexus Utils 到 pgpverify、license、plexus-io、build-helper | 两个真实破坏与精确恢复，两个执行覆盖明确的限定负例 | 当前相邻兼容变化没有被四仓原生检查共同触及；缺 A3、三次重复和独立复核 |
 | 单正例四臂锚点 | Jackson Databind 到 Splunk 等消费仓 | Splunk 精确修复，两个有覆盖的限定负例，四仓兼容变化；2 个源输入、7 个仓库级判断 | 缺第二个高强度正例，不升多正例旗舰包 |
 | 三仓高证据锚点 | Log4j Core 到 Neqsim、archifacts、elimu-ai | Neqsim 真实合并三臂，两个限定负例命中同一 `ServiceLoaderUtil` 调用，三仓兼容变化 | 缺第四个可接受仓，不做正式重复 |
-| 四仓三臂候选 | AssertJ Core 到 Guava、Vavr、DB、Examples | 两个精确修复正例、两个有覆盖的限定负例 | 两轮 A3 均拒绝，不计完整项目包 |
+| 四仓三臂候选 | AssertJ Core 到 Guava、Vavr、DB、Examples | 两个精确修复正例、两个有覆盖的限定负例 | 三轮 A3 均拒绝；3.23.1 到 3.24.0 只有等价重构获四仓共同覆盖，不计完整项目包 |
 | 两个单正例三臂锚点 | Commons IO 到 Cucumber Reporting、jcabi Maven Plugin | 两个真实破坏和维护者精确修复；完整搜索框 34 条、25 仓 | 没有可靠负空间与合格 A3，不计完整项目包 |
 | 四仓三臂候选 | Checkstyle 到 Gauge、WSS4J、Elementary、Conventional Commit Linter | 两个精确修复正例、两个命中 `FinalClassCheck` 新判定路径的限定负例；完整搜索框 307 条、53 仓 | 10.12.2 到 10.12.3 未进入真实修复路径，A3 拒绝 |
 | 两个单正例三臂锚点 | Mockito 到 Apache BVal、junit-quickcheck | 两个不同源输入下的删除接口失败和维护者精确恢复；完整搜索框 55 条、15 仓 | 没有可靠负空间与合格 A3，不计完整项目包 |
@@ -34,17 +34,20 @@
 | npm 单正例三臂锚点 | Babel ES2015 Preset 到 Rollup Preset | 6.13.0 到 6.13.1 改变插件项形态后模块保留合同失败；采用 1.2.0 发布物代码与 `modify-babel-preset` 2.1.1 后恢复，独立七臂重放确认代码或依赖单独均不足 | 限定负例 0、A3 0；公开数据中的旧目标版本 1.1.0 已更正为实际下游声明且稳定失败的 1.1.1 |
 | npm 单正例三臂锚点 | Imagemin Optipng 到 Images to Less Variables | 4.1.0 到 4.2.0 改变压缩输出后，目标原生 8 项出现 3 个精确字节失败；只应用维护者两处测试期望更新后恢复 8/8 | 限定负例 0；4.0.0 到 4.1.0 只作进入真实变化分支的单目标兼容控制，不计多仓 A3 |
 | npm 单正例三臂锚点 | ESLint 到 TestCafe | 4.18.2 到 4.19.0 后原生质量门只在一处控制字符正则失败；保持 `gulp-eslint` 4.0.2 不变，只应用维护者一行测试夹具修改后恢复 | 真实修复仓为 TestCafe；属于测试代码静态检查适配，限定负例 0、A3 0 |
+| npm 多目标三臂锚点 | Backbone 到 Backbone Mongo、Backbone ORM | PR 2878 的单行源差异即可复现 A1；两个维护者行为修复共同加入后恢复，任一单独修复和元数据单独修改均失败 | 按一个关系族计 1 条链独立正例、2 个共同必要目标仓；限定负例 0、A3 0 |
+| npm 语义拒绝 | MongoDB 到 Backbone Mongo | 源内部异常传播变化可执行，但固定目标后三臂均通过，且源版本早于目标首次发布 | 没有 A1 失败或 A2 恢复，不进入因果储备 |
 | FSE 2024 执行失败搜索框 | 703 个依赖升级与客户端关系 | 425 条断言失败和 618 条异常失败聚合而来，保留旧版本、破坏版本、客户端测试和错误日志 | 缺精确仓库修订与维护者修复；逐关系族恢复 A0/A1/A2 前不计因果候选 |
+| FSE 2024 筛选拒绝 | PowerMock 到 ViSearch | 恢复环境中 A0 71 项通过、A1 精确复现公开异常；维护者删除聚合依赖后 A2 同签名失败 | 严格 A0 还受缺失制品阻挡，维护者修改也不能恢复，接纳 0 条；七条同源记录保持未知 |
+| FSE 2024 两正例因果关系族 | H2 到 Database Rider、CloudSlang Score | 精确 `MVCC` 拒绝提交在 1.4.199 基线上复现 `90113`；两个根仓分别完成原生 A0/A1/A2，维护者最小 URL 修复恢复 | 公开 5 条模块记录折叠为 2 个根仓、2 条正关系；限定负例 0、A3 0，不计完整项目包 |
+| FSE 2024 历史筛选拒绝 | JUnit 4.11 到 4.12 | 八个独立仓中七个无维护者 A2；PIT 只有一条十年后的未重放修复线索 | 不把删除、风格迁移、恢复三步历史伪造成单提交字段改名；接纳 0 条，PIT 保留为单仓线索 |
 | 版本化生态子轨 | 四条 Crater 修复 | 三臂各重复三次 | 不冒充仓库级闭集；继续保留为独立子轨 |
 
 ## npm 代码修复续派队列
 
-Zenodo 64 条原始记录中，“客户端先恢复且修改代码”去重后有 11 条关系线索。terser、test-machinepack、window-stream、request、react-redux、babel-preset-es2015、imagemin-optipng 与 ESLint 已经收口，backbone-mongo 关系族与 Socket.IO 正在执行；另从 FSE 2024 续派 PowerMock 到 ViSearch。剩余队列如下：
+Zenodo 64 条原始记录中，“客户端先恢复且修改代码”去重后有 11 条关系线索。terser、test-machinepack、window-stream、request、react-redux、babel-preset-es2015、imagemin-optipng、ESLint 与 backbone-mongo 关系族已经收口，Socket.IO 正在执行；FSE 2024 的 PowerMock 到 ViSearch 已拒绝，后续关系族继续按维护者恢复证据优先筛选。剩余队列如下：
 
 | 源变化 | 目标修复仓 | 公开修复版本 | 调度边界 |
 |---|---|---|---|
-| Backbone 1.1.1 | backbone-mongo | 0.5.2 到 0.5.4 | 与下一条共享目标仓和时间窗，不得拆成关系独立的项目包 |
-| MongoDB 1.3.13 | backbone-mongo | 0.5.2 到 0.5.9 | 与上一条按同一目标关系族统一审计 |
 | Socket.IO 1.4.0 | Karma | 0.13.18 到 0.13.19 | 公开标签同时含代码和版本修复，需隔离两者贡献 |
 
 这张表只是续派队列，不是真值。每条仍须通过 A0、A1、A2 真实执行，再独立寻找有变化表面覆盖的限定负例和 A3。
@@ -80,7 +83,7 @@ Jackson、SLF4J、jcabi、Plexus Utils、SnakeYAML、Log4j Core、AssertJ、Comm
 2. escope 到 babel-eslint 已确认只能作为三臂锚点；window-stream 到 Godot 已形成单正例四臂筛选。后续重复不改变两者缺少可靠多仓负空间的边界。
 3. OpenStack SDK 的 17 仓审计已经证明当前搜索空间只有一个直接下游消费者，不再把一般性 SDK 依赖仓或上游服务仓拿来补数量。
 4. 按 `NPM_CAUSAL_SOURCE_ASSESSMENT.md` 的 25 条客户端恢复搜索框继续核对真实代码修复；terser 四仓已完成统一 4.3.0 的隔离重复，不把三个目标拆成独立源案例，也不把一个负例解释成完整影响面。`node-minify` 与 `fis3-plugins` 已因缺少变化表面执行覆盖而拒绝，说明无目标修改的依赖升级不能自动成为负标签；`test-machinepack` 已因源仓自修复与目标路径不相关而拒绝，版本调整只能作为兼容动作单独分层。
-5. SnakeYAML 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；当前并发执行共享目标 backbone-mongo 关系族、Socket.IO 和 FSE 2024 的 PowerMock 到 ViSearch。
+5. SnakeYAML 已完成三次隔离重复并通过模型质检；Plexus Utils、AssertJ、Checkstyle 和 jcabi 保留三臂结果，不为补 A3 接受未触及变化表面的绿色构建。项目包按关系分路并行，完成一组立即续派下一组；当前并发执行 Socket.IO、H2 1.4.200 到 2.0.202 多客户端关系族和 FSE 2024 的 JAX-RS 2.1-m08。
 6. 持续保存 OpenDev 最近窗口，在执行清单和日志失效前完成语义核验。
 
 “首批十个项目包”是用于检查关系隔离、生态覆盖和正式集划分是否可行的中间规模，不是长期目标的终点。即使达到十个，独立复核、保留集、Marshal 实测和可比系统运行仍未完成时，旗舰评测也不能宣告完成。

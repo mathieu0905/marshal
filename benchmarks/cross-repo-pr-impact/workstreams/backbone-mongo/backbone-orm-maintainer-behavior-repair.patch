@@ -1,0 +1,57 @@
+diff --git a/lib/node/model_type_id.js b/lib/node/model_type_id.js
+index 894b8e0..b779cc7 100644
+--- a/lib/node/model_type_id.js
++++ b/lib/node/model_type_id.js
+@@ -38,7 +38,7 @@ module.exports = ModelTypeID = (function() {
+   ModelTypeID.prototype.modelID = function(model_type) {
+     var e, name_url, url;
+     try {
+-      url = _.result(model_type.prototype, 'url');
++      url = _.result(model_type.prototype.prototype, 'url');
+     } catch (_error) {
+       e = _error;
+     }
+@@ -51,7 +51,7 @@ module.exports = ModelTypeID = (function() {
+     if (!(id = model_type.model_type_id)) {
+       id = this.modelID(model_type);
+       if (this.enabled && this.ids[id] && this.ids[id] !== model_type) {
+-        throw new Error("Duplicate model name / url combination: " + model_type.model_name + ", " + (_.result(model_type.prototype, 'url')) + ". Set a unique model_name property on one of the conflicting models.");
++        throw new Error("Duplicate model name / url combination: " + model_type.model_name + ", " + (_.result(model_type.prototype.prototype, 'url')) + ". Set a unique model_name property on one of the conflicting models.");
+       }
+     }
+     this.ids[id] = model_type;
+diff --git a/lib/schema.js b/lib/schema.js
+index 2267fc4..2a78c36 100644
+--- a/lib/schema.js
++++ b/lib/schema.js
+@@ -148,7 +148,7 @@ module.exports = Schema = (function() {
+ 
+         JoinTable.prototype.model_name = name;
+ 
+-        JoinTable.prototype.urlRoot = "" + ((new DatabaseURL(_.result(relation.model_type.prototype, 'url'))).format({
++        JoinTable.prototype.urlRoot = "" + ((new DatabaseURL(_.result(relation.model_type.prototype.prototype, 'url'))).format({
+           exclude_table: true
+         })) + "/" + url;
+ 
+diff --git a/lib/utils.js b/lib/utils.js
+index 8d56013..e48bb36 100644
+--- a/lib/utils.js
++++ b/lib/utils.js
+@@ -147,7 +147,7 @@ module.exports = Utils = (function() {
+     if (model_type.prototype.model_name) {
+       return model_type.prototype.model_name;
+     }
+-    if (url = _.result(model_type.prototype, 'url')) {
++    if (url = _.result(model_type.prototype.prototype, 'url')) {
+       if (model_name = (new DatabaseURL(url)).modelName()) {
+         return model_name;
+       }
+@@ -335,7 +335,7 @@ module.exports = Utils = (function() {
+       return function() {
+         var e, url;
+         try {
+-          url = _.result(model_type.prototype, 'url');
++          url = _.result(model_type.prototype.prototype, 'url');
+         } catch (_error) {
+           e = _error;
+         }

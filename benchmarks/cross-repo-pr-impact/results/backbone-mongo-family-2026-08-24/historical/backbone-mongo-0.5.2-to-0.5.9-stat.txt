@@ -1,0 +1,26 @@
+ .travis.yml                               |   7 +
+ RELEASE_NOTES.md                          |  22 ++++
+ lib/connection.js                         |  41 +-----
+ lib/connection_queries.js                 |   2 +-
+ lib/cursor.js                             |  78 +++++++----
+ lib/database_tools.js                     | 211 ++++++++++++++++++++++++++++++
+ lib/document_adapter_mongo_id.js          |   2 +-
+ lib/document_adapter_no_mongo_id.js       |   2 +-
+ lib/index.js                              |   2 +-
+ lib/sync.js                               |  77 +++--------
+ package.json                              |  17 ++-
+ src/connection.coffee                     |  12 +-
+ src/connection_queries.coffee             |   2 +-
+ src/cursor.coffee                         |  43 +++---
+ src/database_tools.coffee                 |  91 +++++++++++++
+ src/document_adapter_mongo_id.coffee      |   2 +-
+ src/document_adapter_no_mongo_id.coffee   |   2 +-
+ src/index.coffee                          |   2 +-
+ src/sync.coffee                           |  37 ++----
+ test/generators/database_tools.coffee     |  84 ++++++++++++
+ test/generators/dynamic_attributes.coffee | 127 ++++++++++++++++++
+ test/{unit => generators}/ids.coffee      |  53 +++++++-
+ test/suite.coffee                         |   5 +-
+ test/unit/dynamic_attributes.coffee       |  67 ----------
+ test/unit/extensions.coffee               |  14 ++
+ 25 files changed, 729 insertions(+), 273 deletions(-)

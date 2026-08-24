@@ -1,0 +1,39 @@
+diff --git a/engine/node/score-node-impl/src/test/resources/META-INF/spring/testContext.xml b/engine/node/score-node-impl/src/test/resources/META-INF/spring/testContext.xml
+index 93251a8d2..ac005bd7b 100644
+--- a/engine/node/score-node-impl/src/test/resources/META-INF/spring/testContext.xml
++++ b/engine/node/score-node-impl/src/test/resources/META-INF/spring/testContext.xml
+@@ -49,7 +49,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
+ 
+     <!--H2-->
+     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"    >
+-        <property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE;LOCK_TIMEOUT=5000"/>
++        <property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=5000"/>
+         <property name="driverClassName" value="org.h2.Driver"/>
+         <property name="username" value="sa"/>
+         <property name="password" value="sa"/>
+diff --git a/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/datamodelContext.xml b/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/datamodelContext.xml
+index 9ffecfd9a..c545a6012 100644
+--- a/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/datamodelContext.xml
++++ b/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/datamodelContext.xml
+@@ -15,7 +15,7 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
+ 	<tx:annotation-driven/>
+ 
+     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"    >
+-        <property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE;LOCK_TIMEOUT=5000"/>
++        <property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=5000"/>
+         <property name="driverClassName" value="org.h2.Driver"/>
+         <property name="username" value="sa"/>
+         <property name="password" value="sa"/>
+diff --git a/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/orchestratorEmfContext.xml b/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/orchestratorEmfContext.xml
+index cc80116dc..1f478429d 100644
+--- a/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/orchestratorEmfContext.xml
++++ b/engine/orchestrator/score-orchestrator-impl/src/test/resources/META-INF/spring/orchestratorEmfContext.xml
+@@ -45,7 +45,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
+           p:transactionManager-ref="transactionManager" />
+ 
+     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"    >
+-        <property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE;LOCK_TIMEOUT=5000"/>
++        <property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=5000"/>
+         <property name="driverClassName" value="org.h2.Driver"/>
+         <property name="username" value="sa"/>
+         <property name="password" value="sa"/>

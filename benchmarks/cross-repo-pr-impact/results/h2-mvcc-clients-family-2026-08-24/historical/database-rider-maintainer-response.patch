@@ -1,0 +1,157 @@
+commit 2e38b6e513521f5956a116bff80feb322045c9a3
+Author:     Stefan Berger <bergerst@users.noreply.github.com>
+AuthorDate: Wed Jan 26 09:34:42 2022 +0100
+Commit:     GitHub <noreply@github.com>
+CommitDate: Wed Jan 26 09:34:42 2022 +0100
+
+    Fix foreign key constraint statements for H2 (#376)
+
+diff --git a/rider-core/pom.xml b/rider-core/pom.xml
+index 6fa8ff5c..8b1c85c8 100644
+--- a/rider-core/pom.xml
++++ b/rider-core/pom.xml
+@@ -78,7 +78,7 @@
+         <dependency>
+             <groupId>com.h2database</groupId>
+             <artifactId>h2</artifactId>
+-            <version>1.4.192</version>
++            <version>2.0.202</version>
+             <scope>test</scope>
+         </dependency>
+ 
+diff --git a/rider-core/src/main/java/com/github/database/rider/core/dataset/DataSetExecutorImpl.java b/rider-core/src/main/java/com/github/database/rider/core/dataset/DataSetExecutorImpl.java
+index 48c6908a..e99c373a 100644
+--- a/rider-core/src/main/java/com/github/database/rider/core/dataset/DataSetExecutorImpl.java
++++ b/rider-core/src/main/java/com/github/database/rider/core/dataset/DataSetExecutorImpl.java
+@@ -345,8 +345,8 @@ public class DataSetExecutorImpl implements DataSetExecutor {
+                     executeStatements("SET DATABASE REFERENTIAL INTEGRITY " + hsqlDBFlag + ";");
+                     break;
+                 case H2:
+-                    String h2DBFlag = enable ? "1" : "0";
+-                    executeStatements("SET foreign_key_checks = " + h2DBFlag + ";");
++                    String h2DBFlag = enable ? "TRUE" : "FALSE";
++                    executeStatements("SET REFERENTIAL_INTEGRITY " + h2DBFlag + ";");
+                     break;
+                 case MYSQL:
+                     String mySqlDBFlag = enable ? "1" : "0";
+diff --git a/rider-core/src/main/java/com/github/database/rider/core/spi/DriverNameService.java b/rider-core/src/main/java/com/github/database/rider/core/spi/DriverNameService.java
+index a6df3692..35fcbab8 100644
+--- a/rider-core/src/main/java/com/github/database/rider/core/spi/DriverNameService.java
++++ b/rider-core/src/main/java/com/github/database/rider/core/spi/DriverNameService.java
+@@ -6,7 +6,7 @@ import java.sql.Connection;
+  * Used by DBRider to know which driver it is working on.
+  *
+  * By default DBRider will try to infer the name from connection metadata but if your driver name
+- * does not match expected names you can implement his interface and enable it
++ * does not match expected names you can implement this interface and enable it
+  * in src/main/resources/META-INF/services/com.github.database.rider.core.spi.DriverNameService file
+  * which may contain the fully qualified name of your DriverNameService implementation.
+  *
+diff --git a/rider-core/src/main/java/com/github/database/rider/core/util/TableNameResolver.java b/rider-core/src/main/java/com/github/database/rider/core/util/TableNameResolver.java
+index 810fa9e6..20d580cc 100644
+--- a/rider-core/src/main/java/com/github/database/rider/core/util/TableNameResolver.java
++++ b/rider-core/src/main/java/com/github/database/rider/core/util/TableNameResolver.java
+@@ -68,10 +68,6 @@ public final class TableNameResolver {
+         }
+     }
+ 
+-    public boolean hasTableNamesCache() {
+-        return dbUnitConfig.isCacheTableNames() && !tableNamesCache.isEmpty();
+-    }
+-
+     public String resolveSchema(final Connection connection) {
+         try {
+             try (ResultSet tables = getTablesFromMetadata(connection)) {
+@@ -83,6 +79,10 @@ public final class TableNameResolver {
+         }
+     }
+ 
++    private boolean hasTableNamesCache() {
++        return dbUnitConfig.isCacheTableNames() && !tableNamesCache.isEmpty();
++    }
++
+     private boolean isSystemSchema(String schema, RiderDataSource riderDataSource) {
+         RiderDataSource.DBType dbType = riderDataSource.getDBType();
+         Set<String> systemSchemas = SYSTEM_SCHEMAS.get(dbType);
+diff --git a/rider-core/src/test/java/com/github/database/rider/core/util/TableNameResolverTest.java b/rider-core/src/test/java/com/github/database/rider/core/util/TableNameResolverTest.java
+index a8381b89..34ce44a5 100644
+--- a/rider-core/src/test/java/com/github/database/rider/core/util/TableNameResolverTest.java
++++ b/rider-core/src/test/java/com/github/database/rider/core/util/TableNameResolverTest.java
+@@ -21,8 +21,8 @@ public class TableNameResolverTest {
+         TableNameResolver tableNameResolver = new TableNameResolver();
+         Set<String> tableNames = tableNameResolver.getTableNames(new RiderDataSource(
+                 new ConnectionHolderImpl(EntityManagerProvider.instance("table-names-it").connection())));
+-        assertThat(tableNames).hasSize(3)
+-                .containsExactly("PUBLIC.\"ORDER\"", "PUBLIC.\"LIMIT\"", "PUBLIC.SEQUENCE");
++        assertThat(tableNames)
++                .contains("PUBLIC.\"ORDER\"", "PUBLIC.\"LIMIT\"");
+     }
+ 
+     @Test
+@@ -31,8 +31,8 @@ public class TableNameResolverTest {
+ 
+         Set<String> tableNames = tableNameResolver.getTableNames(new RiderDataSource(
+                 new ConnectionHolderImpl(EntityManagerProvider.instance("table-names-it").connection())));
+-        assertThat(tableNames).hasSize(3)
+-                .containsExactly("PUBLIC.\"ORDER\"", "PUBLIC.\"LIMIT\"", "PUBLIC.SEQUENCE");
++        assertThat(tableNames)
++                .contains("PUBLIC.\"ORDER\"", "PUBLIC.\"LIMIT\"");
+ 
+         Set<String> newTableNames = tableNameResolver.getTableNames(new RiderDataSource(
+                 new ConnectionHolderImpl(EntityManagerProvider.instance("escape-pattern").connection())));
+@@ -46,14 +46,15 @@ public class TableNameResolverTest {
+ 
+         Set<String> tableNames = tableNameResolver.getTableNames(new RiderDataSource(
+                 new ConnectionHolderImpl(EntityManagerProvider.instance("table-names-it").connection())));
+-        assertThat(tableNames).hasSize(3)
+-                .containsExactly("PUBLIC.\"ORDER\"", "PUBLIC.\"LIMIT\"", "PUBLIC.SEQUENCE");
++        assertThat(tableNames)
++                .contains("PUBLIC.\"ORDER\"", "PUBLIC.\"LIMIT\"");
+ 
+         Set<String> newTableNames = tableNameResolver.getTableNames(new RiderDataSource(
+                 new ConnectionHolderImpl(EntityManagerProvider.instance("escape-pattern").connection())));
+ 
+         assertThat(newTableNames).isNotEqualTo(tableNames)
+-                .containsExactly("PUBLIC.\"ORDER\"", "PUBLIC.SEQUENCE");
++                .contains("PUBLIC.\"ORDER\"")
++                .doesNotContain("PUBLIC.\"LIMIT\"");
+     }
+ 
+     @DBUnit(escapePattern = "***?***")
+@@ -63,8 +64,8 @@ public class TableNameResolverTest {
+         Set<String> tableNames = tableNameResolver.getTableNames(new RiderDataSource(
+                 new ConnectionHolderImpl(EntityManagerProvider.instance("escape-pattern").connection())));
+ 
+-        assertThat(tableNames).hasSize(2)
+-                .containsExactlyInAnyOrder("PUBLIC.***SEQUENCE***", "PUBLIC.\"ORDER\"");
++        assertThat(tableNames)
++                .contains("PUBLIC.***SEQUENCE***", "PUBLIC.\"ORDER\"");
+     }
+ 
+ }
+diff --git a/rider-examples/rider-micronaut/pom.xml b/rider-examples/rider-micronaut/pom.xml
+index a05587fb..27659256 100644
+--- a/rider-examples/rider-micronaut/pom.xml
++++ b/rider-examples/rider-micronaut/pom.xml
+@@ -62,7 +62,7 @@
+         <dependency>
+             <groupId>com.h2database</groupId>
+             <artifactId>h2</artifactId>
+-            <version>1.4.199</version>
++            <version>2.0.202</version>
+             <scope>runtime</scope>
+         </dependency>
+         <dependency>
+diff --git a/rider-examples/rider-micronaut/src/main/resources/application.yml b/rider-examples/rider-micronaut/src/main/resources/application.yml
+index e4ae8759..31278d13 100644
+--- a/rider-examples/rider-micronaut/src/main/resources/application.yml
++++ b/rider-examples/rider-micronaut/src/main/resources/application.yml
+@@ -6,7 +6,7 @@ jackson:
+ ---
+ datasources:
+   default:
+-    url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
++    url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+     driverClassName: org.h2.Driver
+     username: sa
+     password: ''

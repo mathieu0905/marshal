@@ -1,0 +1,163 @@
+{
+  "evaluated_at": "2026-08-24",
+  "backbone_relation": {
+    "source_change": "backbone 1.1.0 -> 1.1.1",
+    "public_target_boundary": "backbone-mongo 0.5.2 -> 0.5.4",
+    "corrected_positive_repositories": [
+      "vidigami/backbone-mongo",
+      "vidigami/backbone-orm"
+    ],
+    "arms": {
+      "A0": {
+        "node": "v6.17.1",
+        "source_backbone": "1.1.0",
+        "target_backbone_mongo": "0.5.2",
+        "target_backbone_orm": "0.5.7",
+        "connected_url": "mongodb://localhost:27017/test",
+        "expected_url": "mongodb://localhost:27017/test",
+        "error_name": null,
+        "error_message": null,
+        "result": "pass"
+      },
+      "A1": {
+        "node": "v6.17.1",
+        "source_backbone": "1.1.1",
+        "target_backbone_mongo": "0.5.2",
+        "target_backbone_orm": "0.5.7",
+        "connected_url": null,
+        "expected_url": "mongodb://localhost:27017/test",
+        "error_name": "TypeError",
+        "error_message": "Cannot read property 'id' of undefined",
+        "result": "fail"
+      },
+      "A2": {
+        "node": "v6.17.1",
+        "source_backbone": "1.1.1",
+        "target_backbone_mongo": "0.5.2",
+        "target_backbone_orm": "0.5.7",
+        "connected_url": "mongodb://localhost:27017/test",
+        "expected_url": "mongodb://localhost:27017/test",
+        "error_name": null,
+        "error_message": null,
+        "result": "pass"
+      },
+      "backbone_mongo_only": {
+        "node": "v6.17.1",
+        "source_backbone": "1.1.1",
+        "target_backbone_mongo": "0.5.2",
+        "target_backbone_orm": "0.5.7",
+        "connected_url": null,
+        "expected_url": "mongodb://localhost:27017/test",
+        "error_name": "TypeError",
+        "error_message": "Cannot read property 'id' of undefined",
+        "result": "fail"
+      },
+      "backbone_orm_only": {
+        "node": "v6.17.1",
+        "source_backbone": "1.1.1",
+        "target_backbone_mongo": "0.5.2",
+        "target_backbone_orm": "0.5.7",
+        "connected_url": null,
+        "expected_url": "mongodb://localhost:27017/test",
+        "error_name": "TypeError",
+        "error_message": "Cannot read property 'id' of undefined",
+        "result": "fail"
+      },
+      "metadata_only": {
+        "node": "v6.17.1",
+        "source_backbone": "1.1.1",
+        "target_backbone_mongo": "0.5.4",
+        "target_backbone_orm": "0.5.9",
+        "connected_url": null,
+        "expected_url": "mongodb://localhost:27017/test",
+        "error_name": "TypeError",
+        "error_message": "Cannot read property 'id' of undefined",
+        "result": "fail"
+      },
+      "source_pr_only": {
+        "node": "v6.17.1",
+        "source_backbone": "1.1.0",
+        "target_backbone_mongo": "0.5.2",
+        "target_backbone_orm": "0.5.7",
+        "connected_url": null,
+        "expected_url": "mongodb://localhost:27017/test",
+        "error_name": "TypeError",
+        "error_message": "Cannot read property 'id' of undefined",
+        "result": "fail"
+      }
+    },
+    "decision": "accepted_two-target-causal-anchor",
+    "source_pr": "jashkenas/backbone#2878",
+    "source_commit": "6dcec298314b785a16ccc15bc44db1b91f01c367"
+  },
+  "mongodb_relation": {
+    "source_change": "mongodb 1.3.12 -> 1.3.13",
+    "public_target_boundary": "backbone-mongo 0.5.2 -> 0.5.9",
+    "source_surface": {
+      "before": {
+        "node": "v6.17.1",
+        "mongodb": "1.3.12",
+        "expected_behavior": "callback-throw",
+        "observed_behavior": "callback-throw",
+        "db_error_emitted": false,
+        "callback_error_propagated": true,
+        "db_open_called_after": true,
+        "db_store_size_after": 1,
+        "result": "pass"
+      },
+      "after": {
+        "node": "v6.17.1",
+        "mongodb": "1.3.13",
+        "expected_behavior": "db-error-event",
+        "observed_behavior": "db-error-event",
+        "db_error_emitted": true,
+        "callback_error_propagated": false,
+        "db_open_called_after": false,
+        "db_store_size_after": 0,
+        "result": "pass"
+      }
+    },
+    "target_screening": {
+      "M0": {
+        "node": "v6.17.1",
+        "source_mongodb": "1.3.12",
+        "target_backbone_mongo": "0.5.2",
+        "source_backbone": "1.1.0",
+        "connected_url": "mongodb://localhost:27017/test",
+        "db_error_listener_count": 0,
+        "error_name": null,
+        "error_message": null,
+        "result": "pass"
+      },
+      "M1": {
+        "node": "v6.17.1",
+        "source_mongodb": "1.3.13",
+        "target_backbone_mongo": "0.5.2",
+        "source_backbone": "1.1.0",
+        "connected_url": "mongodb://localhost:27017/test",
+        "db_error_listener_count": 0,
+        "error_name": null,
+        "error_message": null,
+        "result": "pass"
+      },
+      "M2": {
+        "node": "v6.17.1",
+        "source_mongodb": "1.3.13",
+        "target_backbone_mongo": "0.5.9",
+        "source_backbone": "1.1.0",
+        "connected_url": "mongodb://localhost:27017/test",
+        "db_error_listener_count": 0,
+        "error_name": null,
+        "error_message": null,
+        "result": "pass"
+      }
+    },
+    "decision": "rejected-no-a1-failure-no-maintainer-recovery-and-source-predates-target"
+  },
+  "accepted_chain_independent_positive_cases": 1,
+  "positive_target_repositories": 2,
+  "rejected_public_labels": 1,
+  "bounded_negative_labels": 0,
+  "accepted_a3_cases": 0,
+  "package_status": "causal-anchor-not-complete-flagship-package"
+}

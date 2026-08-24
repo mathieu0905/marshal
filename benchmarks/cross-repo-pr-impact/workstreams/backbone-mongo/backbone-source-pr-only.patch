@@ -1,0 +1,13 @@
+diff --git a/backbone.js b/backbone.js
+index a0f6723..9fd0c4f 100644
+--- a/backbone.js
++++ b/backbone.js
+@@ -555,7 +555,7 @@
+ 
+     // A model is new if it has never been saved to the server, and lacks an id.
+     isNew: function() {
+-      return this.id == null;
++      return !this.has(this.idAttribute);
+     },
+ 
+     // Check if the model is currently in a valid state.

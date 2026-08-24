@@ -1,0 +1,55 @@
+{
+  "evaluated_at": "2026-08-24",
+  "source": {
+    "repository": "h2database/h2database",
+    "pull_request": 2143,
+    "behavior_commit": "92692e63df10c3f73dd799f122949c705769e7b1",
+    "before": "version-1.4.199",
+    "after": "version-1.4.200",
+    "behavior": "reject the MVCC connection setting"
+  },
+  "direct_probes": {
+    "h2_1_4_199_old_url": "pass",
+    "h2_1_4_200_old_url": "fail-90113",
+    "h2_1_4_200_fixed_url": "pass",
+    "source_pr_only_old_url": "fail-90113"
+  },
+  "targets": {
+    "database-rider/database-rider": {
+      "base_commit": "c78ffe0add11caf4f2af07d30b56432f242c2646",
+      "maintainer_pull_request": 376,
+      "maintainer_merge_commit": "2e38b6e513521f5956a116bff80feb322045c9a3",
+      "native_test": "example.controllers.OwnerControllerTest",
+      "arms": {
+        "A0": "pass",
+        "A1": "fail-90113",
+        "A2": "pass"
+      }
+    },
+    "CloudSlang/score": {
+      "base_commit": "f72e1adaf5dca565a91c6ab89d9df7ba6fdf8f89",
+      "maintainer_pull_request": 405,
+      "maintainer_merge_commit": "ab4fa3d87e26393a0f80f6ae2ce11a64817262d3",
+      "native_tests": [
+        "WorkerLockRepositoryTest#deleteByUuidTest",
+        "SuspendedExecutionsRepositoryTest#simpleCreateAndReadTest"
+      ],
+      "arms": {
+        "A0": "pass-both-tests",
+        "A1": "fail-90113-both-tests",
+        "A2": "pass-both-tests"
+      },
+      "replay_environment": "Java 11 with javax.annotation-api 1.3.2 added uniformly to all arms"
+    }
+  },
+  "public_record_deduplication": {
+    "records": 5,
+    "independent_root_repositories": 2,
+    "note": "openscore/score is the same GitHub repository as CloudSlang/score; node and orchestrator are modules in that one root repository"
+  },
+  "accepted_chain_independent_positive_relations": 2,
+  "positive_target_repositories": 2,
+  "qualified_negative_relations": 0,
+  "accepted_a3_cases": 0,
+  "package_status": "two-positive-causal-family-not-complete-flagship-package"
+}

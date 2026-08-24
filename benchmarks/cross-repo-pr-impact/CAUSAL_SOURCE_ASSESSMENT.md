@@ -155,6 +155,12 @@ FSE 2024 论文《Understanding the Impact of APIs Behavioral Breaking Changes o
 
 因此 703 个条目只进入执行失败搜索框。后续按同一源版本影响多个客户端的关系族排序，先恢复源版本提交、客户端历史修订和维护者后续修复，再执行 A0、A1、A2。只有三臂成立的条目才进入因果候选；A3 与限定干扰仓仍需另行寻找和执行。可再生提取器为 `collect_fse2024_behavioral_candidates.py`，完整聚合框和统计分别保存在 `candidates/fse2024-behavioral-breakage-frame.jsonl` 与 `candidates/fse2024-behavioral-breakage-metadata.json`。
 
+首个 PowerMock 1.6.4 到 1.6.5 关系族验证了这条准入纪律的必要性。ViSearch 的 A1 能复现论文记录的报告器缺失异常，但维护者真实提交只删除没有代码的聚合依赖，A2 仍以同一异常失败；目标严格 A0 还因 Maven Central 从未提供其声明的聚合 JAR 而无法直接解析。恢复环境只用于诊断公开失败签名，不能替代严格三臂。该关系接纳 0 条，其余七条同源同签名记录在没有独立维护者修复前保持未知。
+
+第二个 H2 1.4.199 到 1.4.200 关系族则产生了正向产率。精确源提交 `92692e63` 删除 `MVCC` 连接设置，在 1.4.199 其余代码不变时即可复现错误码 `90113`。Database Rider 与 CloudSlang Score 的原生测试都完成通过、失败、只删除 `MVCC` 后恢复的三臂。公开五条记录中四条只是 Score 的两个模块和仓库别名，故按根仓折叠为两个独立正关系，而不是五条。当前仍没有可判定负例或 A3，不能从两条正关系提升为完整项目包。
+
+JUnit 4.11 到 4.12 的八仓筛选在执行前停止：七仓没有维护者恢复，PIT 只有一条 2023 年未重放修复线索。五个 PowerMock 客户端的字段错误也不能归到虚构的单次字段改名；真实 JUnit 历史是先删除 `MethodValidator`，再做全仓字段风格迁移，最后按新字段名恢复该类。该家族接纳 0 条，PIT 只保留单仓后续线索，其余仓继续保持未知。
+
 ## GitLab 多项目流水线
 
 ### 项目与流水线可见性

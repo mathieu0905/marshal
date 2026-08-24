@@ -1,0 +1,88 @@
+{
+  "screened_at": "2026-08-24",
+  "family": "junit:junit 4.11 to 4.12",
+  "source_repository": "junit-team/junit4",
+  "source_tags": {
+    "before": {
+      "tag": "r4.11",
+      "commit": "c2e4d911fadfbd64444fb285342a8f1b72336169"
+    },
+    "after": {
+      "tag": "r4.12",
+      "commit": "64155f8a9babcfcf4263cf4d08253a1556e75481"
+    }
+  },
+  "candidate_counts": {
+    "adjacent_records": 9,
+    "in_scope_independent_repositories": 8,
+    "out_of_scope_version_records": 1,
+    "repositories_with_exact_maintainer_a2": 0,
+    "repositories_with_unreplayed_a2_candidate": 1
+  },
+  "execution_policy": "Run A0/A1/A2 only if at least two independent repositories have an isolated source change and a maintainer-authored repair candidate.",
+  "execution_performed": false,
+  "execution_stop_reason": "Only PIT has a plausible maintainer repair candidate; the other seven in-scope repositories have no exact A2. The two-repository family threshold was not met.",
+  "decision": "rejected_before_replay_insufficient_independent_maintainer_repairs",
+  "strict_three_arm_established": false,
+  "accepted_causal_cases": 0,
+  "bounded_negative_labels": 0,
+  "a3_cases": 0,
+  "out_of_scope_record": {
+    "candidate_id": "fse2024-behavioral-0255",
+    "repository_hint": "feedzai/fos-server",
+    "current_version": "4.10",
+    "previous_versions": [
+      "4.11"
+    ],
+    "reason": "The record is not a current-version 4.11 to breaking-version 4.12 transition."
+  },
+  "source_change_findings": [
+    {
+      "failure_family": "powermock_methodvalidator_private_field",
+      "candidate_ids": [
+        "fse2024-behavioral-0256",
+        "fse2024-behavioral-0257",
+        "fse2024-behavioral-0258",
+        "fse2024-behavioral-0259",
+        "fse2024-behavioral-0260",
+        "fse2024-behavioral-0263"
+      ],
+      "historical_sequence": [
+        {
+          "commit": "745ca05dccf5cc907e43a58142bb8be97da2b78f",
+          "effect": "delete MethodValidator with the other long-deprecated runner classes"
+        },
+        {
+          "commit": "df00d5eced3a7737b88de0f6f9e3673f0cf88f88",
+          "effect": "remove f prefixes across the repository while MethodValidator is absent"
+        },
+        {
+          "commit": "883c1bb6da11ff4c8422220fd99d727a495dd51f",
+          "effect": "restore MethodValidator with private field testClass instead of fTestClass"
+        }
+      ],
+      "single_commit_isolation": false,
+      "reason": "No historical commit directly renames the field while MethodValidator remains present."
+    },
+    {
+      "failure_family": "pitest_unnamed_junit3_suite_cases",
+      "candidate_ids": [
+        "fse2024-behavioral-0262"
+      ],
+      "source_commit": "0fa3f12d9b69cb8c97021507bce367be386be338",
+      "source_effect": "JUnit38ClassRunner begins reflecting on TestCase.getName() to collect annotations.",
+      "maintainer_repair_candidate": "e86ff284de044460a1eb252ab4f08c4854fe0abe",
+      "repair_candidate_effect": "PIT assigns explicit method names to the same JUnit3 suite TestCase fixtures while upgrading from JUnit 4.11 to 4.13.1.",
+      "replay_status": "not_run_because_family_two_repository_threshold_not_met"
+    },
+    {
+      "failure_family": "assertj_inherited_theories",
+      "candidate_ids": [
+        "fse2024-behavioral-0261"
+      ],
+      "single_commit_isolation": "not_pursued_after_target_a2_absence",
+      "target_evidence": "16c73f29ed215e2ef608920615129fc99666881d pins JUnit 4.11 because 4.12 breaks Theories defined in a superclass."
+    }
+  ],
+  "unknown_label_policy": "Repositories without a maintainer repair remain unknown; absence of a repair is not a compatible negative."
+}

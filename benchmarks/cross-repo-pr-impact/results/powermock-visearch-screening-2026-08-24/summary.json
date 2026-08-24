@@ -1,0 +1,64 @@
+{
+  "screened_at": "2026-08-24",
+  "candidate_id": "fse2024-behavioral-0615",
+  "native_command": "Java 8 mvn test",
+  "source_change": {
+    "repository": "powermock/powermock",
+    "package": "org.powermock:powermock-module-junit4",
+    "before": "1.6.4",
+    "after": "1.6.5",
+    "release_commit": "f075346a5524e68b33ad6f2346fd5ed2111d7ad0"
+  },
+  "target": {
+    "repository": "visenze/visearch-sdk-java",
+    "baseline_commit": "5f6e72ec5d16987f4cee959ef2063a20989cb40f",
+    "repair_commit": "8fdd4826f7719be850614fc5359bdf4cca32a20c"
+  },
+  "clean_baseline": {
+    "exit_status": 1,
+    "result": "dependency_resolution_failed",
+    "missing_artifact": "org.powermock:powermock-api:jar:1.6.4"
+  },
+  "reconstructed_arms": [
+    {
+      "arm": "A0",
+      "module_junit4": "1.6.4",
+      "api_mockito": "1.6.4",
+      "exit_status": 0,
+      "result": "tests_passed",
+      "tests_run": 71
+    },
+    {
+      "arm": "A1",
+      "module_junit4": "1.6.5",
+      "api_mockito": "1.6.4",
+      "exit_status": 1,
+      "result": "tests_failed",
+      "failure": "MockingFrameworkReporterFactoryImpl could not be located in classpath"
+    },
+    {
+      "arm": "A2",
+      "module_junit4": "1.6.5",
+      "api_mockito": "1.6.4",
+      "maintainer_change": "delete explicit org.powermock:powermock-api:1.6.4",
+      "exit_status": 1,
+      "result": "same_failure_as_a1",
+      "failure": "MockingFrameworkReporterFactoryImpl could not be located in classpath"
+    }
+  ],
+  "decision": "rejected_no_strict_three_arm_and_maintainer_change_does_not_restore",
+  "strict_three_arm_established": false,
+  "accepted_causal_cases": 0,
+  "bounded_negative_labels": 0,
+  "a3_cases": 0,
+  "sibling_records_label": "unknown_without_independent_maintainer_repair",
+  "sibling_candidate_ids": [
+    "fse2024-behavioral-0611",
+    "fse2024-behavioral-0612",
+    "fse2024-behavioral-0613",
+    "fse2024-behavioral-0614",
+    "fse2024-behavioral-0616",
+    "fse2024-behavioral-0617",
+    "fse2024-behavioral-0618"
+  ]
+}
