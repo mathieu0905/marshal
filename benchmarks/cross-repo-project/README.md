@@ -57,7 +57,7 @@ python benchmarks/cross-repo-project/runner.py validate
 
 ```bash
 python benchmarks/cross-repo-project/runner.py all \
-  --workspace /tmp/marshal-cross-repo-eval \
+  --workspace .work/cross-repo-project/eval \
   --results benchmarks/cross-repo-project/results/local-run.jsonl
 ```
 
@@ -65,9 +65,9 @@ python benchmarks/cross-repo-project/runner.py all \
 
 ```bash
 python benchmarks/cross-repo-project/runner.py all \
-  --workspace /tmp/marshal-cross-repo-wandertracks \
+  --workspace .work/cross-repo-project/wandertracks \
   --project opendev-wandertracks-mapstyle-coordination \
-  --results /tmp/wandertracks-results.jsonl
+  --results .work/cross-repo-project/wandertracks-results.jsonl
 ```
 
 也可以先执行 `prepare`，检查工作树后再执行 `run`。`all` 要求工作目录为空，避免旧构建产物影响结果。每条命令都以参数数组执行，不经过命令行解释器。

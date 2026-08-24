@@ -4,7 +4,7 @@ set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 repo_root=$(cd "$script_dir/../../../.." && pwd)
-work_root=${MARSHAL_TASK_TMP:-/home/zhihao/hdd/backbone-mongo-work}
+work_root=${MARSHAL_TASK_TMP:-$repo_root/.work/backbone-mongo}
 output_dir=${1:-$repo_root/benchmarks/cross-repo-pr-impact/results/backbone-mongo-family-2026-08-24}
 node_bin=${NODE_BIN:-/home/zhihao/.nvm/versions/node/v6.17.1/bin/node}
 npm_bin=${NPM_BIN:-npm}

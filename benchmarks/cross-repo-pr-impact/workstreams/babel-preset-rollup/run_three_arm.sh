@@ -2,11 +2,12 @@
 
 set -u -o pipefail
 
-work_root=${1:-/home/zhihao/hdd/babel-preset-rollup-work}
-output_dir=${2:-/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/babel-preset-rollup-local-three-arm-2026-08-24}
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(cd "$script_dir/../../../.." && pwd)
+work_root=${1:-$repo_root/.work/babel-preset-rollup}
+output_dir=${2:-$repo_root/benchmarks/cross-repo-pr-impact/results/babel-preset-rollup-local-three-arm-2026-08-24}
 node_bin=${NODE_BIN:-/home/zhihao/.nvm/versions/node/v6.17.1/bin/node}
 npm_bin=${NPM_BIN:-npm}
-script_dir=$(cd "$(dirname "$0")" && pwd)
 probe="$script_dir/probe.js"
 package_cache="$work_root/package-cache"
 

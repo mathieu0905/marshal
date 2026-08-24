@@ -2,8 +2,10 @@
 
 set -u -o pipefail
 
-work_root=${1:-/home/zhihao/hdd/ipa-requirements-work}
-output_dir=${2:-/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/ipa-requirements-local-three-arm-2026-08-24}
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(cd "$script_dir/../../../.." && pwd)
+work_root=${1:-$repo_root/.work/ipa-requirements}
+output_dir=${2:-$repo_root/benchmarks/cross-repo-pr-impact/results/ipa-requirements-local-three-arm-2026-08-24}
 
 python_bin="$work_root/venv/bin/python"
 check_script="$work_root/req-old/playbooks/files/project-requirements-change.py"
@@ -39,4 +41,3 @@ git -C "$work_root/req-a2" diff >"$output_dir/a2-requirements.patch"
 run_arm A0 "$work_root/ipa-a0" "$work_root/req-old"
 run_arm A1 "$work_root/ipa-a1" "$work_root/req-old"
 run_arm A2 "$work_root/ipa-a1" "$work_root/req-a2"
-

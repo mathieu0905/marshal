@@ -4,7 +4,7 @@ set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 repo_root=$(cd "$script_dir/../../../.." && pwd)
-work_root=${MARSHAL_TASK_TMP:-/home/zhihao/hdd/h2-mvcc-clients-replay}
+work_root=${MARSHAL_TASK_TMP:-$repo_root/.work/h2-mvcc-clients-replay}
 output_dir=${1:-$repo_root/benchmarks/cross-repo-pr-impact/results/h2-mvcc-clients-family-2026-08-24}
 java_home=${JAVA_HOME:-/usr/lib/jvm/java-11-openjdk-amd64}
 
