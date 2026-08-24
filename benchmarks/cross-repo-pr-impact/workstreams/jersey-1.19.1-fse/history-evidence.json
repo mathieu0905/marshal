@@ -1,0 +1,136 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0185",
+      "fse2024-behavioral-0186",
+      "fse2024-behavioral-0189",
+      "fse2024-behavioral-0190"
+    ],
+    "raw_candidate_records": 4,
+    "failure_observations": 8,
+    "unique_failure_signatures": 2,
+    "unique_coordinates": 2,
+    "unique_modules": 1,
+    "unique_root_repositories": 1,
+    "exact_target_revisions_recorded": 0,
+    "duplicate_dimensions": [
+      "The old wordnik owner URL redirects to the current swagger-api owner URL.",
+      "Each coordinate replacement is duplicated under both owner names.",
+      "Each candidate records the same setup failure followed by the same teardown failure."
+    ]
+  },
+  "source_repository": {
+    "repository": "javaee/jersey-1.x",
+    "current_alias": "jersey/jersey-1.x",
+    "before_tag": {
+      "name": "1.19",
+      "commit": "9c7a76c4655a69573d9d29954ed57e23f90b3677",
+      "committed_at": "2015-02-11T10:56:42+01:00"
+    },
+    "after_tag": {
+      "name": "1.19.1",
+      "commit": "8eff6863e79a0b3b3ca6f13be3eec8bb9d9c1117",
+      "committed_at": "2016-03-11T13:03:51+01:00"
+    },
+    "module_marker_commit": {
+      "commit": "4416e81f38c76fa3b72179fdf5947a64b3177343",
+      "subject": "Post-release version upgrade in jersey-module-version files.",
+      "committed_at": "2015-02-12T20:36:13+01:00",
+      "ancestor_of_before_tag": false,
+      "ancestor_of_after_tag": true,
+      "changed_module_markers": 10,
+      "before_marker": "1.19-SNAPSHOT",
+      "after_marker": "1.20-SNAPSHOT",
+      "mechanism_paths": [
+        "jersey-core/src/main/java/META-INF/jersey-module-version",
+        "jersey-server/src/main/java/META-INF/jersey-module-version",
+        "jersey-servlet/src/main/java/META-INF/jersey-module-version",
+        "jersey-json/src/main/java/META-INF/jersey-module-version"
+      ]
+    },
+    "service_filter": {
+      "path": "jersey-core/src/main/java/com/sun/jersey/spi/service/ServiceFinder.java",
+      "lines": "225-245",
+      "behavior": "For Jersey modules in MODULES_BLACKLIST, a service URL is removed when its META-INF/jersey-module-version value differs from the value loaded beside ServiceFinder in jersey-core.",
+      "relevant_blacklist_entries": [
+        "jersey-core",
+        "jersey-server",
+        "jersey-servlet",
+        "jersey-json"
+      ]
+    },
+    "published_artifact_check": [
+      {
+        "artifact": "com.sun.jersey:jersey-core:1.19",
+        "repository_url": "https://repo.maven.apache.org/maven2/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar",
+        "module_marker": "1.19-SNAPSHOT"
+      },
+      {
+        "artifact": "com.sun.jersey:jersey-core:1.19.1",
+        "repository_url": "https://repo.maven.apache.org/maven2/com/sun/jersey/jersey-core/1.19.1/jersey-core-1.19.1.jar",
+        "module_marker": "1.20-SNAPSHOT"
+      },
+      {
+        "artifact": "com.sun.jersey:jersey-server:1.19",
+        "repository_url": "https://repo.maven.apache.org/maven2/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar",
+        "module_marker": "1.19-SNAPSHOT"
+      },
+      {
+        "artifact": "com.sun.jersey:jersey-server:1.19.1",
+        "repository_url": "https://repo.maven.apache.org/maven2/com/sun/jersey/jersey-server/1.19.1/jersey-server-1.19.1.jar",
+        "module_marker": "1.20-SNAPSHOT"
+      }
+    ],
+    "boundary": "The failure is version skew, not evidence that a fully aligned Jersey 1.19.1 stack is incompatible. The FSE interventions replace one coordinate while leaving three sibling modules at 1.19."
+  },
+  "target_repository": {
+    "repository": "swagger-api/swagger-socket",
+    "repository_aliases": [
+      "swagger-api/swagger-socket",
+      "wordnik/swaggersocket"
+    ],
+    "alias_resolution": {
+      "old_url_http_result": "301 redirect to https://github.com/swagger-api/swagger-socket",
+      "remote_ref_lists_equal": true,
+      "remote_ref_count": 34
+    },
+    "github_repository_id": 3671742,
+    "archived": true,
+    "default_branch": "master",
+    "remote_head": "116be447b3ecefa612b7bad8588d943f6ddc1b9d",
+    "remote_head_date": "2019-07-25T10:38:12+02:00",
+    "history_first_commit": "decc879311892a74b3340faa93277c466025402e",
+    "history_first_commit_date": "2012-03-09T10:18:09-05:00",
+    "reachable_commit_count": 409,
+    "default_branch_commit_count": 364,
+    "unique_pom_blob_count": 519,
+    "pom_blobs_containing_jersey_1_19_1": 0,
+    "client_module": {
+      "path": "modules/swaggersocket-java-jsr356-client",
+      "introduction_commit": "6dd601941f34257639aab2412cde901d70a25076",
+      "introduction_committed_at": "2016-02-15T21:27:40-05:00",
+      "pom_unique_blob_count": 1,
+      "pinned_test_dependencies": {
+        "jersey-core": "1.19",
+        "jersey-server": "1.19",
+        "jersey-servlet": "1.19",
+        "jersey-json": "1.19"
+      },
+      "test_setup": "An embedded Tomcat deploys JSR356SwaggerSocketServlet and opens ws://localhost:<port>/test before the test methods run.",
+      "published_setup_failure": "HTTP 500 rejected the WebSocket upgrade.",
+      "published_teardown_failure": "The client then could not close a connection that had never opened."
+    },
+    "exact_maintainer_repair": null
+  },
+  "admission_result": {
+    "exact_source_mechanisms": 1,
+    "published_failure_observations": 8,
+    "independent_root_relations": 1,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0
+  }
+}

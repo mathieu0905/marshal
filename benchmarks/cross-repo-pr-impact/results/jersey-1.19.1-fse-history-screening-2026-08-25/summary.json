@@ -1,0 +1,41 @@
+{
+  "evaluated_at": "2026-08-25",
+  "source_dependency_family": "Jersey 1.x",
+  "source_transition": {
+    "before": "1.19",
+    "after": "1.19.1",
+    "coordinates": [
+      "com.sun.jersey:jersey-core",
+      "com.sun.jersey:jersey-server"
+    ],
+    "shared_source_commit": "4416e81f38c76fa3b72179fdf5947a64b3177343"
+  },
+  "source_frame": "FSE 2024 behavioral breakage replication package",
+  "counts": {
+    "raw_candidate_records": 4,
+    "published_failure_observations": 8,
+    "unique_failure_signatures": 2,
+    "repository_aliases": 2,
+    "unique_modules": 1,
+    "unique_root_repositories": 1,
+    "unique_source_inputs": 1,
+    "exact_source_mechanisms": 1,
+    "exact_maintainer_repairs": 0,
+    "replayed_candidates": 0,
+    "accepted_relations": 0
+  },
+  "root_decisions": [
+    {
+      "repository": "swagger-api/swagger-socket",
+      "aliases": [
+        "swagger-api/swagger-socket",
+        "wordnik/swaggersocket"
+      ],
+      "decision": "rejected_before_replay",
+      "reason": "The mixed Jersey module-marker mechanism is exact, but all 409 reachable target commits contain no Jersey 1.19.1 adoption and no maintainer-authored recovery."
+    }
+  ],
+  "decision": "rejected_before_replay",
+  "reason": "Four candidate records and two coordinate interventions collapse to one repository relation, and that relation has no historical A2.",
+  "label_boundary": "The observations establish failure under a one-coordinate replacement. They do not establish incompatibility of a fully aligned Jersey 1.19.1 stack, and a dataset-author alignment patch cannot serve as A2."
+}
