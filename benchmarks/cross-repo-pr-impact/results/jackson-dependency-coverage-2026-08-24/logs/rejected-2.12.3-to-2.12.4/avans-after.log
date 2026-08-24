@@ -1,0 +1,1381 @@
+[INFO] Scanning for projects...
+[INFO] Inspecting build with total of 8 modules...
+[INFO] Installing Nexus Staging features:
+[INFO]   ... total of 8 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] avans :: parent                                                    [pom]
+[INFO] avans                                                              [jar]
+[INFO] avans-jmh                                                          [jar]
+[INFO] avans-freemarker                                                   [jar]
+[INFO] avans-tinyvalidator                                                [jar]
+[INFO] avans-session                                                      [jar]
+[INFO] avans-session-spymemcached                                         [jar]
+[INFO] avans-setup                                                        [jar]
+[INFO] 
+[INFO] -----------------------< me.geso:avans-project >------------------------
+[INFO] Building avans :: parent 2.5.1-SNAPSHOT                            [1/8]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans-project ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] ---------------------------< me.geso:avans >----------------------------
+[INFO] Building avans 2.5.1-SNAPSHOT                                      [2/8]
+[INFO]   from avans/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ avans ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ avans ---
+[WARNING]  Parameter 'compilerArguments' is deprecated: use {@link #compilerArgs} instead.
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 30 source files to /tmp/jackson-a3-2124/avans/avans/target/classes
+[INFO] /tmp/jackson-a3-2124/avans/avans/src/main/java/me/geso/avans/jackson/JacksonJsonParamReader.java: Some input files use or override a deprecated API.
+[INFO] /tmp/jackson-a3-2124/avans/avans/src/main/java/me/geso/avans/jackson/JacksonJsonParamReader.java: Recompile with -Xlint:deprecation for details.
+[INFO] /tmp/jackson-a3-2124/avans/avans/src/main/java/me/geso/avans/ControllerBase.java: /tmp/jackson-a3-2124/avans/avans/src/main/java/me/geso/avans/ControllerBase.java uses unchecked or unsafe operations.
+[INFO] /tmp/jackson-a3-2124/avans/avans/src/main/java/me/geso/avans/ControllerBase.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ avans ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ avans ---
+[WARNING]  Parameter 'compilerArguments' is deprecated: use {@link #compilerArgs} instead.
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 12 source files to /tmp/jackson-a3-2124/avans/avans/target/test-classes
+[INFO] /tmp/jackson-a3-2124/avans/avans/src/test/java/me/geso/avans/ControllerBaseTest.java: Some input files use or override a deprecated API.
+[INFO] /tmp/jackson-a3-2124/avans/avans/src/test/java/me/geso/avans/ControllerBaseTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:2.5:test (default-test) @ avans ---
+[INFO] Surefire report directory: /tmp/jackson-a3-2124/avans/avans/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running me.geso.avans.annotationbased.AnnotationBasedDispatcherTest
+[main] INFO me.geso.avans.Dispatcher - Registering package: me.geso.avans.annotationbased
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.annotationbased.MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - POST /postForm
+[main] INFO me.geso.avans.Dispatcher - class me.geso.avans.annotationbased.AnnotationBasedDispatcherTest is not a Controller
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @616ms
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@4e375bba{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@113ee1ce{HTTP/1.1}{0.0.0.0:41975}
+[main] INFO org.eclipse.jetty.server.Server - Started @806ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@113ee1ce{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@4e375bba{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering package: me.geso.avans.annotationbased
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.annotationbased.MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - POST /postForm
+[main] INFO me.geso.avans.Dispatcher - class me.geso.avans.annotationbased.AnnotationBasedDispatcherTest is not a Controller
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@76ed7573{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@53769b6c{HTTP/1.1}{0.0.0.0:41885}
+[main] INFO org.eclipse.jetty.server.Server - Started @1689ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@53769b6c{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@76ed7573{/,null,UNAVAILABLE}
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.433 sec
+Running me.geso.avans.trigger.ResponseConverterTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.ResponseConverterTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@27746c5e{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@543ac221{HTTP/1.1}{0.0.0.0:37851}
+[main] INFO org.eclipse.jetty.server.Server - Started @1725ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37851/: HTTP/1.1 200 OK, 0.005 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@543ac221{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@27746c5e{/,null,UNAVAILABLE}
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 sec
+Running me.geso.avans.AvansWebApplicationTest
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@19c1f6f4{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@46fa2a7e{HTTP/1.1}{0.0.0.0:37895}
+[main] INFO org.eclipse.jetty.server.Server - Started @1748ms
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.AvansWebApplicationTest$MyController
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /query
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /jsonEasy
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /jsonParam
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /ng/param/get
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /ng/param/post
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /ng/part/single
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /ng/part/array
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /pathParamAnnotation/{a}
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /optionalString
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /uploadFile
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /uploadOptionalFile
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /uploadFileArray
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /escapeHTML
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /queryParamAnnotation
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - GET /cb
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /postMultipart
+[qtp2032247677-88] INFO me.geso.avans.Dispatcher - POST /postForm
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@46fa2a7e{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@19c1f6f4{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1859e55c{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@190bf8e4{HTTP/1.1}{0.0.0.0:34499}
+[main] INFO org.eclipse.jetty.server.Server - Started @1762ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@190bf8e4{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1859e55c{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@104bc677{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@3bda1f0{HTTP/1.1}{0.0.0.0:39911}
+[main] INFO org.eclipse.jetty.server.Server - Started @1769ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@3bda1f0{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@104bc677{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7ec5aad{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@70358139{HTTP/1.1}{0.0.0.0:42809}
+[main] INFO org.eclipse.jetty.server.Server - Started @1773ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@70358139{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@7ec5aad{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@3dbbed3e{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@56d5460f{HTTP/1.1}{0.0.0.0:37147}
+[main] INFO org.eclipse.jetty.server.Server - Started @1800ms
+p: heyfile:hello
+file:hello,hello
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@56d5460f{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@3dbbed3e{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@98712fa{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@61288814{HTTP/1.1}{0.0.0.0:44325}
+[main] INFO org.eclipse.jetty.server.Server - Started @1835ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@61288814{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@98712fa{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@23d060c2{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@59278072{HTTP/1.1}{0.0.0.0:37649}
+[main] INFO org.eclipse.jetty.server.Server - Started @1846ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@59278072{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@23d060c2{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@d08f85a{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@3e839aa3{HTTP/1.1}{0.0.0.0:44237}
+[main] INFO org.eclipse.jetty.server.Server - Started @1855ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@3e839aa3{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@d08f85a{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1c2fb9e8{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@ec3944{HTTP/1.1}{0.0.0.0:37911}
+[main] INFO org.eclipse.jetty.server.Server - Started @1928ms
+{"code":400,"messages":["Missing mandatory parameter: name"]}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@ec3944{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1c2fb9e8{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5fafa76d{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@720ffab4{HTTP/1.1}{0.0.0.0:37215}
+[main] INFO org.eclipse.jetty.server.Server - Started @1955ms
+[qtp368122875-221] WARN org.eclipse.jetty.util.MultiPartInputStreamParser - Badly formatted multipart request
+[qtp368122875-221] INFO me.geso.avans.ControllerBase - class java.io.IOException: Missing initial multi part boundary
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@720ffab4{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5fafa76d{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5bc14211{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4b99648a{HTTP/1.1}{0.0.0.0:44561}
+[main] INFO org.eclipse.jetty.server.Server - Started @1968ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4b99648a{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5bc14211{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@142918a0{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@745cf754{HTTP/1.1}{0.0.0.0:33591}
+[main] INFO org.eclipse.jetty.server.Server - Started @1975ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@745cf754{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@142918a0{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@6315bb4{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4682882a{HTTP/1.1}{0.0.0.0:36031}
+[main] INFO org.eclipse.jetty.server.Server - Started @1982ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4682882a{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@6315bb4{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@c6bf8d9{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@44392e64{HTTP/1.1}{0.0.0.0:44975}
+[main] INFO org.eclipse.jetty.server.Server - Started @1991ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@44392e64{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@c6bf8d9{/,null,UNAVAILABLE}
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.258 sec
+Running me.geso.avans.jackson.JacksonJsonViewTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 sec
+Running me.geso.avans.trigger.HTMLFilterTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.HTMLFilterTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@129c760d{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@361fa478{HTTP/1.1}{0.0.0.0:36537}
+[main] INFO org.eclipse.jetty.server.Server - Started @2057ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36537/: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@361fa478{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@129c760d{/,null,UNAVAILABLE}
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 sec
+Running me.geso.avans.jackson.JacksonJsonParamReaderTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 sec
+Running me.geso.avans.trigger.ParamProcessorTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.ParamProcessorTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - GET /annotation
+[main] INFO me.geso.avans.Dispatcher - GET /annotation2
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@4203529f{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@7d82ca56{HTTP/1.1}{0.0.0.0:33615}
+[main] INFO org.eclipse.jetty.server.Server - Started @2079ms
+[qtp592242687-311] INFO me.geso.avans.trigger.ParamProcessorTest$MyController - paramAnnotation2
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:33615/annotation2: HTTP/1.1 200 OK, 0.005 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@7d82ca56{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@4203529f{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.ParamProcessorTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - GET /annotation
+[main] INFO me.geso.avans.Dispatcher - GET /annotation2
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@51172948{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@6f2a3b37{HTTP/1.1}{0.0.0.0:36703}
+[main] INFO org.eclipse.jetty.server.Server - Started @2089ms
+[qtp195587155-326] INFO me.geso.avans.trigger.ParamProcessorTest$MyController - paramUpperQ
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36703/: HTTP/1.1 400 Bad Request, 0.006 secs
+[qtp195587155-326] INFO me.geso.avans.trigger.ParamProcessorTest$MyController - paramUpperQ
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36703/?q=hoge: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@6f2a3b37{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@51172948{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.ParamProcessorTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - GET /annotation
+[main] INFO me.geso.avans.Dispatcher - GET /annotation2
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@57867d96{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@2f935102{HTTP/1.1}{0.0.0.0:44197}
+[main] INFO org.eclipse.jetty.server.Server - Started @2102ms
+[qtp1864918211-341] INFO me.geso.avans.trigger.ParamProcessorTest$MyController - paramAnnotation
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44197/annotation: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@2f935102{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@57867d96{/,null,UNAVAILABLE}
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 sec
+Running me.geso.avans.annotation.BeanParamTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.annotation.BeanParamTest$MyController2
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@2bc8caa7{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@78a1d0ad{HTTP/1.1}{0.0.0.0:45357}
+[main] INFO org.eclipse.jetty.server.Server - Started @2116ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:45357/?childName=John&parentName=Nick: HTTP/1.1 200 OK, 0.006 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@78a1d0ad{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@2bc8caa7{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.annotation.BeanParamTest$MyController3
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@15c4b1a4{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@341964d0{HTTP/1.1}{0.0.0.0:43463}
+[main] INFO org.eclipse.jetty.server.Server - Started @2128ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43463/?n=3: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@341964d0{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@15c4b1a4{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.annotation.BeanParamTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - POST /fileBean
+[main] INFO me.geso.avans.Dispatcher - GET /oBean
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5ddf5118{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@7b9d1a4{HTTP/1.1}{0.0.0.0:36911}
+[main] INFO org.eclipse.jetty.server.Server - Started @2163ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36911/fileBean: HTTP/1.1 200 OK, 0.029 secs
+[main] INFO me.geso.avans.annotation.BeanParamTest - response: {"string":"SSS","part":"hello","parts":"hello,hello"}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@7b9d1a4{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5ddf5118{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.annotation.BeanParamTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - POST /fileBean
+[main] INFO me.geso.avans.Dispatcher - GET /oBean
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5cf3a7f9{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@42db955e{HTTP/1.1}{0.0.0.0:41769}
+[main] INFO org.eclipse.jetty.server.Server - Started @2199ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:41769/?string=a&primitive_long=1&object_long=2&primitive_short=3&object_short=4&primitive_int=5&object_int=6&primitive_boolean=false&object_boolean=true: HTTP/1.1 200 OK, 0.007 secs
+[main] INFO me.geso.avans.annotation.BeanParamTest - response: {"string":"a","primitive_long":1,"object_long":2,"object_short":4,"primitive_short":3,"object_int":6,"primitive_int":5,"primitive_boolean":false,"object_boolean":true}
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:41769/oBean: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO me.geso.avans.annotation.BeanParamTest - response: {"int":0,"long":0,"string":"-"}
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:41769/oBean?int=5963&long=4949&string=hello: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO me.geso.avans.annotation.BeanParamTest - response: {"int":0,"long":0,"string":"-"}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@42db955e{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5cf3a7f9{/,null,UNAVAILABLE}
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.105 sec
+Running me.geso.avans.trigger.ResponseFilterTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.ResponseFilterTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@96075c0{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@2337bf27{HTTP/1.1}{0.0.0.0:46185}
+[main] INFO org.eclipse.jetty.server.Server - Started @2219ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46185/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@2337bf27{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@96075c0{/,null,UNAVAILABLE}
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec
+Running me.geso.avans.ControllerBaseTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestForBadNumberFormatExeption$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@189e96af{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@45b6c666{HTTP/1.1}{0.0.0.0:44899}
+[main] INFO org.eclipse.jetty.server.Server - Started @2248ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44899/?q=12345678901555555555555555555555555555555555555555555555555555555555555555555555555555555555234567: HTTP/1.1 400 Bad Request, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@45b6c666{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@189e96af{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestForBigIntegerParameters$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@74d53d63{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@18f27a81{HTTP/1.1}{0.0.0.0:41705}
+[main] INFO org.eclipse.jetty.server.Server - Started @2256ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:41705/: HTTP/1.1 400 Bad Request, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@18f27a81{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@74d53d63{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@4c1b4e07{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@34cfdd84{HTTP/1.1}{0.0.0.0:44963}
+[main] INFO org.eclipse.jetty.server.Server - Started @2262ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44963/?q=: HTTP/1.1 400 Bad Request, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@34cfdd84{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@4c1b4e07{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@38d4488c{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@579ce2e9{HTTP/1.1}{0.0.0.0:35981}
+[main] INFO org.eclipse.jetty.server.Server - Started @2268ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35981/?q=123456789012345678901234567890: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@579ce2e9{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@38d4488c{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestURIWith$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /b
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@4a18e0f1{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@687f62a5{HTTP/1.1}{0.0.0.0:35367}
+[main] INFO org.eclipse.jetty.server.Server - Started @2277ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35367/b?x=ok: HTTP/1.1 200 OK, 0.007 secs
+http://127.0.0.1:35367/b?x=ok&foo=bar
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@687f62a5{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@4a18e0f1{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestURIFor$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /c/d
+[main] INFO me.geso.avans.Dispatcher - GET /b
+[main] INFO me.geso.avans.Dispatcher - GET /uriFor1
+[main] INFO me.geso.avans.Dispatcher - GET /m/d/e
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@58486deb{/aaaa,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4e933cf1{HTTP/1.1}{0.0.0.0:40141}
+[main] INFO org.eclipse.jetty.server.Server - Started @2288ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40141/aaaa/uriFor1?x=ok: HTTP/1.1 200 OK, 0.004 secs
+http://127.0.0.1:40141/aaaa/o
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40141/aaaa/b?x=ok: HTTP/1.1 200 OK, 0.002 secs
+http://127.0.0.1:40141/aaaa/x?foo=bar
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40141/aaaa/c/d?x=ok: HTTP/1.1 200 OK, 0.002 secs
+http://127.0.0.1:40141/aaaa/c/iyan?foo=bar
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40141/aaaa/m/d/e?x=ok: HTTP/1.1 200 OK, 0.002 secs
+http://127.0.0.1:40141/aaaa/m/upper?foo=bar&boo=wow
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4e933cf1{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@58486deb{/aaaa,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestURIFor$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /c/d
+[main] INFO me.geso.avans.Dispatcher - GET /b
+[main] INFO me.geso.avans.Dispatcher - GET /uriFor1
+[main] INFO me.geso.avans.Dispatcher - GET /m/d/e
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5cdc8499{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@2a30b0cb{HTTP/1.1}{0.0.0.0:43357}
+[main] INFO org.eclipse.jetty.server.Server - Started @2305ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43357/uriFor1?x=ok: HTTP/1.1 200 OK, 0.003 secs
+http://127.0.0.1:43357/o
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43357/b?x=ok: HTTP/1.1 200 OK, 0.002 secs
+http://127.0.0.1:43357/x?foo=bar
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@2a30b0cb{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5cdc8499{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestGetCurrentURL$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /a
+[main] WARN org.eclipse.jetty.server.handler.ContextHandler - o.e.j.s.ServletContextHandler@cda144a{/,null,null} contextPath ends with /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@cda144a{/xxxx,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@36885319{HTTP/1.1}{0.0.0.0:34689}
+[main] INFO org.eclipse.jetty.server.Server - Started @2314ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34689/xxxx/a?x=ok: HTTP/1.1 200 OK, 0.003 secs
+http://127.0.0.1:34689/xxxx/a?x=ok
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34689/xxxx/a: HTTP/1.1 200 OK, 0.002 secs
+http://127.0.0.1:34689/xxxx/a
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@36885319{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@cda144a{/xxxx,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestGetCurrentURL$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /a
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@3bbc47c9{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@615e7fe7{HTTP/1.1}{0.0.0.0:37311}
+[main] INFO org.eclipse.jetty.server.Server - Started @2323ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37311/a?x=ok: HTTP/1.1 200 OK, 0.002 secs
+http://127.0.0.1:37311/a?x=ok
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37311/a: HTTP/1.1 200 OK, 0.002 secs
+http://127.0.0.1:37311/a
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@615e7fe7{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@3bbc47c9{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestRedirectWithQueryParameters$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /b
+[main] INFO me.geso.avans.Dispatcher - GET /c
+[main] INFO me.geso.avans.Dispatcher - GET /a
+[main] INFO me.geso.avans.Dispatcher - GET /z
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5feff876{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@10ec4721{HTTP/1.1}{0.0.0.0:37287}
+[main] INFO org.eclipse.jetty.server.Server - Started @2332ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37287/z: HTTP/1.1 302 Found, 0.003 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37287/a: HTTP/1.1 302 Found, 0.002 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37287/b: HTTP/1.1 302 Found, 0.002 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37287/c: HTTP/1.1 302 Found, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@10ec4721{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5feff876{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestRedirect$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.Dispatcher - GET /xxx/yyy
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1dce481b{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@22cb8e5f{HTTP/1.1}{0.0.0.0:44673}
+[main] INFO org.eclipse.jetty.server.Server - Started @2349ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44673/: HTTP/1.1 200 OK, 0.006 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@22cb8e5f{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1dce481b{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestLocalDateTimeParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1d1fd2aa{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4c78e00c{HTTP/1.1}{0.0.0.0:34383}
+[main] INFO org.eclipse.jetty.server.Server - Started @2362ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34383/: HTTP/1.1 400 Bad Request, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4c78e00c{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1d1fd2aa{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5e9f1a4c{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4bf89d3d{HTTP/1.1}{0.0.0.0:43003}
+[main] INFO org.eclipse.jetty.server.Server - Started @2369ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43003/?q=: HTTP/1.1 400 Bad Request, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4bf89d3d{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5e9f1a4c{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@6108fd23{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@746f8520{HTTP/1.1}{0.0.0.0:44597}
+[main] INFO org.eclipse.jetty.server.Server - Started @2377ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44597/?q=2015-02-05T03%3A04%3A04: HTTP/1.1 200 OK, 0.007 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@746f8520{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@6108fd23{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5eba9e41{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@13809363{HTTP/1.1}{0.0.0.0:33619}
+[main] INFO org.eclipse.jetty.server.Server - Started @2389ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:33619/?q=2015-00-00: HTTP/1.1 400 Bad Request, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@13809363{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5eba9e41{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestLocalTimeParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@348bd063{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@3d73cd78{HTTP/1.1}{0.0.0.0:43813}
+[main] INFO org.eclipse.jetty.server.Server - Started @2401ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43813/: HTTP/1.1 400 Bad Request, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@3d73cd78{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@348bd063{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@52bc6fcf{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@1942a36e{HTTP/1.1}{0.0.0.0:36453}
+[main] INFO org.eclipse.jetty.server.Server - Started @2409ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36453/?q=: HTTP/1.1 400 Bad Request, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@1942a36e{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@52bc6fcf{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@67689c81{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@21a0795f{HTTP/1.1}{0.0.0.0:40217}
+[main] INFO org.eclipse.jetty.server.Server - Started @2415ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40217/?q=03%3A04: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@21a0795f{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@67689c81{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@543ba2e1{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@71458178{HTTP/1.1}{0.0.0.0:40393}
+[main] INFO org.eclipse.jetty.server.Server - Started @2422ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40393/?q=2015-00-00: HTTP/1.1 400 Bad Request, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@71458178{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@543ba2e1{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestlLocalDateParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@780dbed7{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@31859960{HTTP/1.1}{0.0.0.0:36583}
+[main] INFO org.eclipse.jetty.server.Server - Started @2429ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36583/: HTTP/1.1 400 Bad Request, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@31859960{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@780dbed7{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1aaf73b7{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@731d0d5c{HTTP/1.1}{0.0.0.0:40123}
+[main] INFO org.eclipse.jetty.server.Server - Started @2438ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40123/?q=: HTTP/1.1 400 Bad Request, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@731d0d5c{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1aaf73b7{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@54033a65{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4fb99927{HTTP/1.1}{0.0.0.0:35053}
+[main] INFO org.eclipse.jetty.server.Server - Started @2445ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35053/?q=2015-01-03: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4fb99927{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@54033a65{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@46590dd0{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@6c737fdb{HTTP/1.1}{0.0.0.0:35121}
+[main] INFO org.eclipse.jetty.server.Server - Started @2450ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35121/?q=2015-00-00: HTTP/1.1 400 Bad Request, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@6c737fdb{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@46590dd0{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalLocalDateTimeParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@346330b6{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@71e2843b{HTTP/1.1}{0.0.0.0:39433}
+[main] INFO org.eclipse.jetty.server.Server - Started @2456ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:39433/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@71e2843b{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@346330b6{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1aef7428{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@1610c03c{HTTP/1.1}{0.0.0.0:35017}
+[main] INFO org.eclipse.jetty.server.Server - Started @2461ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35017/?q=: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@1610c03c{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1aef7428{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@3346e906{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@443ac5b8{HTTP/1.1}{0.0.0.0:39171}
+[main] INFO org.eclipse.jetty.server.Server - Started @2467ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:39171/?q=2015-02-05T03%3A04%3A04: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@443ac5b8{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@3346e906{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@56193e3a{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@6cf3b3d7{HTTP/1.1}{0.0.0.0:45505}
+[main] INFO org.eclipse.jetty.server.Server - Started @2472ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:45505/?q=2015-00-00: HTTP/1.1 400 Bad Request, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@6cf3b3d7{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@56193e3a{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalLocalTimeParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@53d2f0ec{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@560be8c0{HTTP/1.1}{0.0.0.0:45093}
+[main] INFO org.eclipse.jetty.server.Server - Started @2484ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:45093/: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@560be8c0{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@53d2f0ec{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1eee9b78{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@36762234{HTTP/1.1}{0.0.0.0:38307}
+[main] INFO org.eclipse.jetty.server.Server - Started @2491ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:38307/?q=: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@36762234{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1eee9b78{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@4e31b64d{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@434b2e0c{HTTP/1.1}{0.0.0.0:38253}
+[main] INFO org.eclipse.jetty.server.Server - Started @2496ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:38253/?q=03%3A04: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@434b2e0c{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@4e31b64d{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@6963b0bd{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@68a94e58{HTTP/1.1}{0.0.0.0:38459}
+[main] INFO org.eclipse.jetty.server.Server - Started @2500ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:38459/?q=2015-00-00: HTTP/1.1 400 Bad Request, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@68a94e58{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@6963b0bd{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalLocalDateParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@61d150af{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@2c8f65da{HTTP/1.1}{0.0.0.0:46699}
+[main] INFO org.eclipse.jetty.server.Server - Started @2507ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46699/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@2c8f65da{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@61d150af{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@3fe5ad73{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@f83d121{HTTP/1.1}{0.0.0.0:39327}
+[main] INFO org.eclipse.jetty.server.Server - Started @2512ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:39327/?q=: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@f83d121{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@3fe5ad73{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@6ad26381{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4b20aa21{HTTP/1.1}{0.0.0.0:40937}
+[main] INFO org.eclipse.jetty.server.Server - Started @2517ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40937/?q=2015-01-03: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4b20aa21{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@6ad26381{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@2dbcee03{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@6c8672b9{HTTP/1.1}{0.0.0.0:43073}
+[main] INFO org.eclipse.jetty.server.Server - Started @2522ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43073/?q=2015-00-00: HTTP/1.1 400 Bad Request, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@6c8672b9{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@2dbcee03{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalBooleanParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5870fc05{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@45e35a0d{HTTP/1.1}{0.0.0.0:37937}
+[main] INFO org.eclipse.jetty.server.Server - Started @2528ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37937/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@45e35a0d{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5870fc05{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@6c4786af{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@65c689e7{HTTP/1.1}{0.0.0.0:43559}
+[main] INFO org.eclipse.jetty.server.Server - Started @2533ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43559/?q=: HTTP/1.1 200 OK, 0.005 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@65c689e7{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@6c4786af{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1e14b269{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@68543a35{HTTP/1.1}{0.0.0.0:46061}
+[main] INFO org.eclipse.jetty.server.Server - Started @2540ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46061/?q=true: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46061/?q=false: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@68543a35{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1e14b269{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalStringParameter$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@61e0f9b9{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@2c7c898a{HTTP/1.1}{0.0.0.0:33873}
+[main] INFO org.eclipse.jetty.server.Server - Started @2550ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:33873/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@2c7c898a{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@61e0f9b9{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@18df26a1{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@5c459194{HTTP/1.1}{0.0.0.0:35611}
+[main] INFO org.eclipse.jetty.server.Server - Started @2556ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35611/?q=: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@5c459194{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@18df26a1{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@31450fc0{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@52b30dcd{HTTP/1.1}{0.0.0.0:46073}
+[main] INFO org.eclipse.jetty.server.Server - Started @2560ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46073/?q=4649: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@52b30dcd{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@31450fc0{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestList$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /Longs
+[main] INFO me.geso.avans.Dispatcher - GET /Booleans
+[main] INFO me.geso.avans.Dispatcher - GET /Integers
+[main] INFO me.geso.avans.Dispatcher - GET /BigIntegers
+[main] INFO me.geso.avans.Dispatcher - GET /strings
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@72240290{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@b5311cb{HTTP/1.1}{0.0.0.0:36517}
+[main] INFO org.eclipse.jetty.server.Server - Started @2567ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36517/strings: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@b5311cb{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@72240290{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1322b542{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@6a97517{HTTP/1.1}{0.0.0.0:32779}
+[main] INFO org.eclipse.jetty.server.Server - Started @2571ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:32779/strings?q=a&q=b: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@6a97517{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1322b542{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@3e0327dd{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@ebff59d{HTTP/1.1}{0.0.0.0:44949}
+[main] INFO org.eclipse.jetty.server.Server - Started @2576ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44949/Longs?q=5&q=9&q=6&q=3: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@ebff59d{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@3e0327dd{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@565c887e{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@5c215642{HTTP/1.1}{0.0.0.0:33627}
+[main] INFO org.eclipse.jetty.server.Server - Started @2581ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:33627/Integers?q=5&q=9&q=6&q=3: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@5c215642{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@565c887e{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@52963839{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@ce0bbd5{HTTP/1.1}{0.0.0.0:40547}
+[main] INFO org.eclipse.jetty.server.Server - Started @2586ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40547/Booleans?q=true&q=false&q=true: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@ce0bbd5{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@52963839{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@11d422fd{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@6e489bb8{HTTP/1.1}{0.0.0.0:44995}
+[main] INFO org.eclipse.jetty.server.Server - Started @2591ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44995/BigIntegers?q=1234567890&q=12345678901234567890&q=123456789012345678901234567890: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@6e489bb8{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@11d422fd{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestArrays$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /Longs
+[main] INFO me.geso.avans.Dispatcher - GET /ints
+[main] INFO me.geso.avans.Dispatcher - GET /longs
+[main] INFO me.geso.avans.Dispatcher - GET /Booleans
+[main] INFO me.geso.avans.Dispatcher - GET /booleans
+[main] INFO me.geso.avans.Dispatcher - GET /Integers
+[main] INFO me.geso.avans.Dispatcher - GET /BigIntegers
+[main] INFO me.geso.avans.Dispatcher - GET /strings
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@50f13494{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@73c09a98{HTTP/1.1}{0.0.0.0:40647}
+[main] INFO org.eclipse.jetty.server.Server - Started @2598ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40647/strings: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@73c09a98{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@50f13494{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@4c3d72fd{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@259c6ab8{HTTP/1.1}{0.0.0.0:34793}
+[main] INFO org.eclipse.jetty.server.Server - Started @2602ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34793/strings?q=hoge&q=fuga: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@259c6ab8{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@4c3d72fd{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@581d5b33{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@1f365a26{HTTP/1.1}{0.0.0.0:37811}
+[main] INFO org.eclipse.jetty.server.Server - Started @2607ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:37811/longs: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@1f365a26{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@581d5b33{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@2f498f21{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@90394d{HTTP/1.1}{0.0.0.0:41609}
+[main] INFO org.eclipse.jetty.server.Server - Started @2611ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:41609/longs?q=5963&q=4649: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@90394d{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@2f498f21{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@47994b51{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@19f99aaf{HTTP/1.1}{0.0.0.0:35321}
+[main] INFO org.eclipse.jetty.server.Server - Started @2618ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35321/Longs: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@19f99aaf{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@47994b51{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1adf387e{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@72b53f27{HTTP/1.1}{0.0.0.0:44341}
+[main] INFO org.eclipse.jetty.server.Server - Started @2623ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44341/Longs?q=5963&q=4649: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@72b53f27{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1adf387e{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@293ecff6{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@70eb94d7{HTTP/1.1}{0.0.0.0:42835}
+[main] INFO org.eclipse.jetty.server.Server - Started @2628ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:42835/Integers: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@70eb94d7{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@293ecff6{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@770cbe5d{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@f575d2b{HTTP/1.1}{0.0.0.0:34869}
+[main] INFO org.eclipse.jetty.server.Server - Started @2634ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34869/Integers?q=5963&q=4649: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@f575d2b{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@770cbe5d{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@50b4e7b2{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@50008974{HTTP/1.1}{0.0.0.0:33893}
+[main] INFO org.eclipse.jetty.server.Server - Started @2640ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:33893/ints: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@50008974{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@50b4e7b2{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@76b019c4{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@221961af{HTTP/1.1}{0.0.0.0:32945}
+[main] INFO org.eclipse.jetty.server.Server - Started @2644ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:32945/ints?q=5963&q=4649: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@221961af{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@76b019c4{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@18bc1064{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@3cab07dd{HTTP/1.1}{0.0.0.0:39933}
+[main] INFO org.eclipse.jetty.server.Server - Started @2650ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:39933/booleans: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@3cab07dd{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@18bc1064{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@c85486{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@51e1e058{HTTP/1.1}{0.0.0.0:36865}
+[main] INFO org.eclipse.jetty.server.Server - Started @2662ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36865/booleans?q=true&q=false&q=true: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@51e1e058{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@c85486{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@2761156e{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4cf15477{HTTP/1.1}{0.0.0.0:46109}
+[main] INFO org.eclipse.jetty.server.Server - Started @2670ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46109/Booleans: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4cf15477{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@2761156e{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@57f89680{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@70bc9070{HTTP/1.1}{0.0.0.0:40547}
+[main] INFO org.eclipse.jetty.server.Server - Started @2674ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:40547/Booleans?q=true&q=false&q=true: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@70bc9070{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@57f89680{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@22b10124{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@6f36e806{HTTP/1.1}{0.0.0.0:42239}
+[main] INFO org.eclipse.jetty.server.Server - Started @2680ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:42239/BigIntegers: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@6f36e806{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@22b10124{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@44a98a23{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@107ebdad{HTTP/1.1}{0.0.0.0:46061}
+[main] INFO org.eclipse.jetty.server.Server - Started @2685ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46061/BigIntegers?q=1234567890&q=12345678901234567890&q=123456789012345678901234567890: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@107ebdad{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@44a98a23{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalDouble$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@acb1c9c{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@1c681761{HTTP/1.1}{0.0.0.0:46113}
+[main] INFO org.eclipse.jetty.server.Server - Started @2691ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46113/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@1c681761{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@acb1c9c{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1fe7fa16{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@61503d00{HTTP/1.1}{0.0.0.0:36967}
+[main] INFO org.eclipse.jetty.server.Server - Started @2696ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:36967/?q=: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@61503d00{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1fe7fa16{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@197180a5{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@31028e45{HTTP/1.1}{0.0.0.0:33219}
+[main] INFO org.eclipse.jetty.server.Server - Started @2701ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:33219/?q=2.71: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@31028e45{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@197180a5{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalInt$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@6f69e2d8{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@147097ad{HTTP/1.1}{0.0.0.0:42781}
+[main] INFO org.eclipse.jetty.server.Server - Started @2706ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:42781/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@147097ad{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@6f69e2d8{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@31940d6b{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@64cdc310{HTTP/1.1}{0.0.0.0:46161}
+[main] INFO org.eclipse.jetty.server.Server - Started @2710ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:46161/?q=: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@64cdc310{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@31940d6b{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@57ab4b33{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@43b2e7db{HTTP/1.1}{0.0.0.0:43483}
+[main] INFO org.eclipse.jetty.server.Server - Started @2715ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43483/?q=4649: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@43b2e7db{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@57ab4b33{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestOptionalLong$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1be427b4{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@470a446f{HTTP/1.1}{0.0.0.0:34233}
+[main] INFO org.eclipse.jetty.server.Server - Started @2720ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34233/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@470a446f{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1be427b4{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@29fc83c5{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@3fb1948c{HTTP/1.1}{0.0.0.0:34453}
+[main] INFO org.eclipse.jetty.server.Server - Started @2725ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34453/?q=: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@3fb1948c{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@29fc83c5{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@7f53a31f{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4ba1f425{HTTP/1.1}{0.0.0.0:45401}
+[main] INFO org.eclipse.jetty.server.Server - Started @2730ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:45401/?q=4649: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4ba1f425{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@7f53a31f{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.ControllerBaseTest$TestLong$Controller
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5da2966{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@52c27d53{HTTP/1.1}{0.0.0.0:43599}
+[main] INFO org.eclipse.jetty.server.Server - Started @2735ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43599/?q=5963: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@52c27d53{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5da2966{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5e02fb23{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@104392ba{HTTP/1.1}{0.0.0.0:33219}
+[main] INFO org.eclipse.jetty.server.Server - Started @2741ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:33219/?q=: HTTP/1.1 400 Bad Request, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@104392ba{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5e02fb23{/,null,UNAVAILABLE}
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@550574cb{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@1e7113f8{HTTP/1.1}{0.0.0.0:34137}
+[main] INFO org.eclipse.jetty.server.Server - Started @2746ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:34137/?q=4649: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@1e7113f8{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@550574cb{/,null,UNAVAILABLE}
+Tests run: 25, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.526 sec
+Running me.geso.avans.trigger.BeforeDispatchTriggerTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.BeforeDispatchTriggerTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@3fd6dfbc{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@4023d23f{HTTP/1.1}{0.0.0.0:43561}
+[main] INFO org.eclipse.jetty.server.Server - Started @2755ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43561/: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@4023d23f{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@3fd6dfbc{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.trigger.BeforeDispatchTriggerTest$MyController2
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@2c451c4a{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@38ad86b1{HTTP/1.1}{0.0.0.0:41675}
+[main] INFO org.eclipse.jetty.server.Server - Started @2761ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:41675/: HTTP/1.1 200 OK, 0.002 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@38ad86b1{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@2c451c4a{/,null,UNAVAILABLE}
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 sec
+
+Results :
+
+Tests run: 57, Failures: 0, Errors: 0, Skipped: 2
+
+[INFO] 
+[INFO] -------------------------< me.geso:avans-jmh >--------------------------
+[INFO] Building avans-jmh 2.5.1-SNAPSHOT                                  [3/8]
+[INFO]   from avans-jmh/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans-jmh ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ avans-jmh ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ avans-jmh ---
+[WARNING]  Parameter 'compilerArguments' is deprecated: use {@link #compilerArgs} instead.
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 3 source files to /tmp/jackson-a3-2124/avans/avans-jmh/target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ avans-jmh ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-jmh/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ avans-jmh ---
+[WARNING]  Parameter 'compilerArguments' is deprecated: use {@link #compilerArgs} instead.
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:2.5:test (default-test) @ avans-jmh ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ----------------------< me.geso:avans-freemarker >----------------------
+[INFO] Building avans-freemarker 2.5.1-SNAPSHOT                           [4/8]
+[INFO]   from avans-freemarker/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans-freemarker ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ avans-freemarker ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-freemarker/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ avans-freemarker ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to /tmp/jackson-a3-2124/avans/avans-freemarker/target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ avans-freemarker ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ avans-freemarker ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to /tmp/jackson-a3-2124/avans/avans-freemarker/target/test-classes
+[INFO] /tmp/jackson-a3-2124/avans/avans-freemarker/src/test/java/me/geso/avans/freemarker/FreeMarkerViewTest.java: /tmp/jackson-a3-2124/avans/avans-freemarker/src/test/java/me/geso/avans/freemarker/FreeMarkerViewTest.java uses or overrides a deprecated API.
+[INFO] /tmp/jackson-a3-2124/avans/avans-freemarker/src/test/java/me/geso/avans/freemarker/FreeMarkerViewTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:2.5:test (default-test) @ avans-freemarker ---
+[INFO] Surefire report directory: /tmp/jackson-a3-2124/avans/avans-freemarker/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running me.geso.avans.freemarker.FreeMarkerViewTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.freemarker.FreeMarkerViewTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @492ms
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@513b52af{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@793d163b{HTTP/1.1}{0.0.0.0:40025}
+[main] INFO org.eclipse.jetty.server.Server - Started @693ms
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@793d163b{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@513b52af{/,null,UNAVAILABLE}
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.187 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --------------------< me.geso:avans-tinyvalidator >---------------------
+[INFO] Building avans-tinyvalidator 2.5.1-SNAPSHOT                        [5/8]
+[INFO]   from avans-tinyvalidator/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans-tinyvalidator ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ avans-tinyvalidator ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-tinyvalidator/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ avans-tinyvalidator ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to /tmp/jackson-a3-2124/avans/avans-tinyvalidator/target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ avans-tinyvalidator ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-tinyvalidator/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ avans-tinyvalidator ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to /tmp/jackson-a3-2124/avans/avans-tinyvalidator/target/test-classes
+[INFO] /tmp/jackson-a3-2124/avans/avans-tinyvalidator/src/test/java/me/geso/avans/tinyvalidator/TinyValidatorValidatorTest.java: /tmp/jackson-a3-2124/avans/avans-tinyvalidator/src/test/java/me/geso/avans/tinyvalidator/TinyValidatorValidatorTest.java uses or overrides a deprecated API.
+[INFO] /tmp/jackson-a3-2124/avans/avans-tinyvalidator/src/test/java/me/geso/avans/tinyvalidator/TinyValidatorValidatorTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:2.5:test (default-test) @ avans-tinyvalidator ---
+[INFO] Surefire report directory: /tmp/jackson-a3-2124/avans/avans-tinyvalidator/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running me.geso.avans.tinyvalidator.TinyValidatorValidatorTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.tinyvalidator.TinyValidatorValidatorTest$MyController2
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @441ms
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@5e0ec41f{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@7c601d50{HTTP/1.1}{0.0.0.0:44991}
+[main] INFO org.eclipse.jetty.server.Server - Started @688ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:44991/?childName=John&parentName=Nick: HTTP/1.1 200 OK, 0.501 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@7c601d50{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5e0ec41f{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.tinyvalidator.TinyValidatorValidatorTest$PatternController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO me.geso.avans.tinyvalidator.TinyValidatorValidatorTest - [ConstraintViolation(value=null, annotation=@me.geso.tinyvalidator.constraints.NotNull(message="may not be null."), name=childName)]
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@15d0f2a3{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@21632bf8{HTTP/1.1}{0.0.0.0:39675}
+[main] INFO org.eclipse.jetty.server.Server - Started @1637ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:39675/?childName=: HTTP/1.1 200 OK, 0.016 secs
+[main] INFO me.geso.avans.tinyvalidator.TinyValidatorValidatorTest - response: {"code":403,"messages":["childName must match ."]}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@21632bf8{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@15d0f2a3{/,null,UNAVAILABLE}
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.tinyvalidator.TinyValidatorValidatorTest$MyController
+[main] INFO me.geso.avans.Dispatcher - POST /jsonParam
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@209baf91{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@5e1d3188{HTTP/1.1}{0.0.0.0:43475}
+[main] INFO org.eclipse.jetty.server.Server - Started @1665ms
+---- PASS validation rules ----
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43475/jsonParam: HTTP/1.1 200 OK, 0.02 secs
+---- FAIL ----
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:43475/jsonParam: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@5e1d3188{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@209baf91{/,null,UNAVAILABLE}
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.429 sec
+
+Results :
+
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] -----------------------< me.geso:avans-session >------------------------
+[INFO] Building avans-session 2.5.1-SNAPSHOT                              [6/8]
+[INFO]   from avans-session/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans-session ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ avans-session ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-session/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ avans-session ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 11 source files to /tmp/jackson-a3-2124/avans/avans-session/target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ avans-session ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-session/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ avans-session ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 4 source files to /tmp/jackson-a3-2124/avans/avans-session/target/test-classes
+[INFO] /tmp/jackson-a3-2124/avans/avans-session/src/test/java/me/geso/avans/session/DefaultSessionCookieFactoryTest.java: Some input files use or override a deprecated API.
+[INFO] /tmp/jackson-a3-2124/avans/avans-session/src/test/java/me/geso/avans/session/DefaultSessionCookieFactoryTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:2.5:test (default-test) @ avans-session ---
+[INFO] Surefire report directory: /tmp/jackson-a3-2124/avans/avans-session/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running me.geso.avans.session.DefaultSessionCookieFactoryTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.096 sec
+Running me.geso.avans.session.SecureRandomSessionIDGeneratorTest
+o8aU6t86TfVUpuwfkX1CVhfiPsscODa_
+pYhs6lweEW_Bmr7_HYKxB7x8fR19BadC
+gXBgrC8egeDM3lTh29Cn6YM8XsIuUTj0
+aevTcpDs8tm_MR4OpdGsNdoNd7xlgDtv
+AkHwv1FBMB7SS8eBv-Qev2_M6LTC7Eng
+UYxzYU33cOenmtsZhgpmDVNgJfaQWA0s
+SoLckRKUJ0qUMzVAmPE56RzxNSBCef7Q
+G54u9-LHBXu29dTMlch2jYI6rgnDWvzn
+7TDogUTcP03pfoY-FFXOVCiv7zymlbhq
+pxOxWhiL5S5e2VsJQmmWiKyHi7HaO9aK
+bA8OqoVa1Ss6WHo6xGRe8rbGa3p_eYG9
+sk1MEfKXYdjQwXqAxDsgEiEFiLPu3HRT
+HAKasGGbwgmcnvPM2gCDjU_AHyeInD0a
+98qKotqfvKf-Q9oAfRYtUuisvdWlaKX_
+ANeazBCO6SnhTSJSZZF7dGbFHmCUnxOn
+Sn_wqls0liUY4-CAOYNSwB10--DV6Fxd
+4SCp_ZP4JoOzirpEpbUKjpHfrdForG9x
+X1FCiIucA270ANTNo7uhXiKxTLTUv0zC
+3dfKAe2KzUjLzAN_RPYMFd_TsYnnnYPD
+2KqX0WLEUmirLcfdpLUVAg-F41HMU4Pv
+s3f_zMSseLRqWuIzw0NjgHVLCwxXyDMK
+wkKoVC0MC1aHXaT_V6OuhKkVHufq4jMB
+00zSbG3wtTU6iG2cUabEAX2RR92qXEUX
+vn1UOl-O1DYscR1gmXqBWih48d9nBuL1
+uEYBWWY5SZqbADGJ_BS0uYfLQUME-FIm
+7LWwxQUtEY8vOxDk4oRgCwxlaECsB6jE
+AX15iu6rUYHDWUTXrOAKDS84RI3sT4Sk
+03suUa3FnjtPEO1fxZlYJn5ywfizXr-n
+X1CEFqJKgQOGkTarUUJbXGrXMb5Nfa6j
+QEBM9KlGkdO6GbgDumv0L4GntNrp4WBZ
+MkFYNww9UZhHpXXTzIlx3I2xQ5KFg6JT
+4e5ZSFF1ISsRu1MFd_QQnxNXxfxNHeBB
+j0C5N4lBYDgIuJPhpCV6kbIqAFJGJhI4
+N-yrF4briGwE99fl2cw2g-VODkIqHDQ9
+50c93Ez2snsyCRRchW0MiD-y8PohtVb9
+vyEqsJARJNuahH0YTz8gCek4TPTIIElO
+w88cAfm-He6jatrTGm9EHPf7JDmOHfjM
+O5c-0EBqpHE7eYrUCtg_gQTyjy0iMUXO
+Hdc4gturGRzncKdi4kKMrvQXErgkACYH
+duGZidqECPA0sSZasAyshJcAkcyeco91
+32KvMj2wrnTlNQ75og05Br_vNma-FNzf
+z_A4MCrGEuJ8MR2SkQCH0qGGvTxgBOkh
+y4e6P7rxnW0sWvO0jGRz3M0XVeoNn1l1
+c01wD9v1OsyUPXpIgTjXOocS0mGZfuC2
+n9gq4jtc6zFOj8pH-Cj94E7Fuw0LNhI7
+LqEeu4Bf__PHu0cxIFGSCVmAUBOwJzjv
+UUxJACXVxsgM7bo-4YtIAQZFIno46Q_b
+oUIXGmZVbX7fOdGQbhaKuPjbT_u358EC
+41iiYAWNgcwPLCFj4xpVZOZrnKMArGJY
+LbmaLbi6OdVNmca_UYWgkA9yW2zvsqCy
+HLzVT9GQOQdc-5zyvhv4IFSf5rJaLsJZ
+gZxSEWc78cuMQzjplhxms-mewMvVFMsD
+jme1zGd1rq9Uy2fg20U6wWzSzv2JgI0N
+ClcFYDOBZJI1F_uujNy8p7J4_ALRUN9u
+xRcvQ6-31PMl_Pe7pjJre0SCKVCFKf96
+A7v7aIfmZsWInICzbCp4zSvbNl5s7-Kv
+wQ_E66HBRLiKaT767xyKPVN8ZMjMwaMF
+Cczn0_rfEqdvBcJ4a3Euwq7iIg_p55jX
+-sBSibndErd5Mm5jV1Ht8yORV57_Es9q
+sfLEw6DuhRfze3nQqoPTpUErX-66-gIi
+Vneab8Rg3h1_V4lRKC4h1zLZAu-EHCb9
+g9DU0qjsnHsIK8axTpNs71c7ilJZ0Ph4
+ev9HOz3ilaFxlV41bn45IkHiB_gnrrsJ
+e8NBmlxgb5Qkpawx6fuieUZ2qwMh5NU5
+Ojh9srr5op1xLxxfiuNEIXZ2wD8RfvcR
+BmpI0hIvSXjk2elFY5zPOqNv4xgdcqoI
+Lr6JkahWibsSJ7HsUe8AkqUWrIfsiSnY
+MWO06IMAAmzSHqw_G0G6wTUJnxdSvVNZ
+CuuUGlfzBVX057jqMjo7cgRxCaeFBq-o
+nZ4OSibllfrAKGVeE1MsuZUGySscWTSE
+yMJ6LndvtC7prPtkbTEgqu9b97b9jqLb
+uO3R_FVfrqYOypojJlvyQB3lOLid8Hlk
+exxrluzDCirtHmrLgb3Gm-J6DqoFabx6
+YurYNS8nu8jIZZs8O5S08w6vkmPxS9FK
+gO1Dmr-5QkmVG4Yp_bjYFwGenD5RdNlK
+vQ-Il7w_qR72F47YIWZ_fqNCqkfbA4bH
+afqx23HpCYZu8agreGiMtTawVQ6CpiSd
+eOtAWHJXDc2eSeFhKhhGP351a1mnU6fe
+Puh9odq5rh139p3uLtm7_WTMNRYuiyqk
+xOkGFlDK8_VcgIvMQCqtiGesOUPoklEf
+uk9ZJGhfF5QT1XK_1USYkEOX3lslbw8W
+gR389mdsqBsz_SL8NWAJaJMYPamyw04w
+Ofp8Z2VEYq6wriLaDlO1CBYLZdw1EXmz
+ZXrb93m4bo_-acnlPkqWWh3cZ8WMR9Oj
+b-xJf3HTX6aoMrxkihGyhfr92UiJtrY7
+oKFe4-X73muHA83u9Il7UUyhJQNESD9Q
+Nc4klj2z-NjQ-SkxGZO3PXKbWcXkJ9n4
+cKwSb6ZVszN9vvJUQn14moGBxuvd7zTN
+wlPvFZ9CEyADx3fVcXSqUYLSpz-zOVKq
+so3KOtngKQwK1odTAYk96_VVXyzajLua
+krhab8_cW9oeunC4hymZmKbhT4h7B8vz
+prmCatKlYWWTQIB-8mNklSCLGOuw4pEO
+lQUmmWsJ6cfJXAcqxiNPfFOJeFPa3JHa
+3jfcNqwwD8h7fqKWCZ5zKjQvU8G-RmEg
+i77ajDaVOlf-LZXiU-ieCKPT0WhTiGDx
+ar4oZsZqGQ7BcCDrH3usHzySXrxEgbme
+7n_EE0RJnoj0pJErrWJWoptXUhQKvURn
+_7otfPREQsIBgCKVHlbtWdPYVbvdE2ee
+uPUcCX9b9if0zUxRO3TGck1-MHmUqCKn
+Ib22TWWjsHl0EJJJZ4D4Uf_h8j2ckFfk
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 sec
+Running me.geso.avans.session.DefaultXSRFTokenCookieFactoryTest
+aQdwvcP2urhxvtkZFVMbIxHD7C8=
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 sec
+Running me.geso.avans.session.SessionMixinTest
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.session.SessionMixinTest$MyController
+[main] INFO me.geso.avans.Dispatcher - POST /counter
+[main] INFO me.geso.avans.Dispatcher - GET /getSessionID
+[main] INFO me.geso.avans.Dispatcher - GET /getXSRFToken
+[main] INFO me.geso.avans.Dispatcher - GET /expire
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @587ms
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1934ad7c{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@1200458e{HTTP/1.1}{0.0.0.0:35041}
+[main] INFO org.eclipse.jetty.server.Server - Started @752ms
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/counter: HTTP/1.1 200 OK, 0.388 secs
+Set-Cookie: avans_session_id=h9j7wmu5yJDQUhJqL2kg9e0qtIYXeif4;Path=/;Expires=Tue, 25-Aug-2026 12:21:50 GMT;HttpOnly
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/counter: HTTP/1.1 200 OK, 0.013 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/getSessionID: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/counter: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/getSessionID: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/getXSRFToken: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/getXSRFToken: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/expire: HTTP/1.1 200 OK, 0.004 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/counter: HTTP/1.1 200 OK, 0.005 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/getXSRFToken: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO me.geso.mech2.Mech2 - http://127.0.0.1:35041/counter: HTTP/1.1 200 OK, 0.003 secs
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@1200458e{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1934ad7c{/,null,UNAVAILABLE}
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.104 sec
+
+Results :
+
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] -----------------< me.geso:avans-session-spymemcached >-----------------
+[INFO] Building avans-session-spymemcached 2.5.1-SNAPSHOT                 [7/8]
+[INFO]   from avans-session-spymemcached/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans-session-spymemcached ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ avans-session-spymemcached ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-session-spymemcached/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ avans-session-spymemcached ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to /tmp/jackson-a3-2124/avans/avans-session-spymemcached/target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ avans-session-spymemcached ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-session-spymemcached/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ avans-session-spymemcached ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to /tmp/jackson-a3-2124/avans/avans-session-spymemcached/target/test-classes
+[INFO] /tmp/jackson-a3-2124/avans/avans-session-spymemcached/src/test/java/me/geso/avans/session/spymemcached/SpyMemcachedSessionStoreTest.java: /tmp/jackson-a3-2124/avans/avans-session-spymemcached/src/test/java/me/geso/avans/session/spymemcached/SpyMemcachedSessionStoreTest.java uses or overrides a deprecated API.
+[INFO] /tmp/jackson-a3-2124/avans/avans-session-spymemcached/src/test/java/me/geso/avans/session/spymemcached/SpyMemcachedSessionStoreTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:2.5:test (default-test) @ avans-session-spymemcached ---
+[INFO] Surefire report directory: /tmp/jackson-a3-2124/avans/avans-session-spymemcached/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running me.geso.avans.session.spymemcached.SpyMemcachedSessionStoreTest
+[main] INFO com.thimbleware.jmemcached.MemCacheDaemon - Listening on localhost:11211
+2026-08-24 20:21:53.135 INFO net.spy.memcached.MemcachedConnection:  Setting retryQueueSize to -1
+2026-08-24 20:21:53.141 INFO net.spy.memcached.MemcachedConnection:  Added {QA sa=localhost/127.0.0.1:11211, #Rops=0, #Wops=0, #iq=0, topRop=null, topWop=null, toWrite=0, interested=0} to connect queue
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - SET com.thimbleware.jmemcached.Key@f0a72e90
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - SET com.thimbleware.jmemcached.Key@decf061
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - GET com.thimbleware.jmemcached.Key@decf061
+[main] INFO me.geso.avans.Dispatcher - Registering class: class me.geso.avans.session.spymemcached.SpyMemcachedSessionStoreTest$MyController
+[main] INFO me.geso.avans.Dispatcher - GET /
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @1118ms
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.2.3.v20140905
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@1e60890c{/,null,AVAILABLE}
+[main] INFO org.eclipse.jetty.server.ServerConnector - Started ServerConnector@2d7e5216{HTTP/1.1}{0.0.0.0:39751}
+[main] INFO org.eclipse.jetty.server.Server - Started @1257ms
+2026-08-24 20:21:54.203 INFO net.spy.memcached.MemcachedConnection:  Setting retryQueueSize to -1
+2026-08-24 20:21:54.205 INFO net.spy.memcached.MemcachedConnection:  Added {QA sa=/127.0.0.1:11211, #Rops=0, #Wops=0, #iq=0, topRop=null, topWop=null, toWrite=0, interested=0} to connect queue
+[New I/O server worker #1-2] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - SET com.thimbleware.jmemcached.Key@30e7d4e0
+[New I/O server worker #1-2] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - GET com.thimbleware.jmemcached.Key@30e7d4e0
+[New I/O server worker #1-2] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - SET com.thimbleware.jmemcached.Key@30e7d4e0
+[main] INFO org.eclipse.jetty.server.ServerConnector - Stopped ServerConnector@2d7e5216{HTTP/1.1}{0.0.0.0:0}
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@1e60890c{/,null,UNAVAILABLE}
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - GET com.thimbleware.jmemcached.Key@eaee2b98
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - SET com.thimbleware.jmemcached.Key@decf061
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - GET com.thimbleware.jmemcached.Key@decf061
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - GET com.thimbleware.jmemcached.Key@decf061
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - DELETE com.thimbleware.jmemcached.Key@decf061
+[New I/O server worker #1-1] INFO com.thimbleware.jmemcached.protocol.MemcachedCommandHandler - GET com.thimbleware.jmemcached.Key@decf061
+[main] INFO com.thimbleware.jmemcached.MemCacheDaemon - terminating daemon; closing all channels
+[main] INFO com.thimbleware.jmemcached.MemCacheDaemon - channels closed, freeing cache storage
+[main] INFO com.thimbleware.jmemcached.MemCacheDaemon - successfully shut down
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.509 sec
+
+Results :
+
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] ---------------------< me.geso.avans:avans-setup >----------------------
+[INFO] Building avans-setup 2.5.1-SNAPSHOT                                [8/8]
+[INFO]   from avans-setup/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default-cli) @ avans-setup ---
+[INFO] argLine set to -javaagent:/home/zhihao/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/tmp/jackson-a3-2124/avans/jacoco.exec,append=true
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ avans-setup ---
+[INFO] Copying 62 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ avans-setup ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ avans-setup ---
+[INFO] skip non existing resourceDirectory /tmp/jackson-a3-2124/avans/avans-setup/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ avans-setup ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:2.5:test (default-test) @ avans-setup ---
+[INFO] No tests to run.
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for avans :: parent 2.5.1-SNAPSHOT:
+[INFO] 
+[INFO] avans :: parent .................................... SUCCESS [  0.172 s]
+[INFO] avans .............................................. SUCCESS [  9.523 s]
+[INFO] avans-jmh .......................................... SUCCESS [  0.554 s]
+[INFO] avans-freemarker ................................... SUCCESS [  2.060 s]
+[INFO] avans-tinyvalidator ................................ SUCCESS [  2.310 s]
+[INFO] avans-session ...................................... SUCCESS [  2.187 s]
+[INFO] avans-session-spymemcached ......................... SUCCESS [  4.084 s]
+[INFO] avans-setup ........................................ SUCCESS [  0.016 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  22.391 s
+[INFO] Finished at: 2026-08-24T20:21:54+08:00
+[INFO] ------------------------------------------------------------------------

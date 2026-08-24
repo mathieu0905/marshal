@@ -1,0 +1,46 @@
+diff --git a/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java b/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java
+--- a/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java
++++ b/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java
+@@ -6,8 +6,8 @@
+ import static org.junit.Assert.assertNotNull;
+ import static org.junit.Assert.assertThrows;
+ 
+-import com.pholser.junit.quickcheck.generator.GenerationStatus;
+ import com.pholser.junit.quickcheck.generator.Generator;
++import com.pholser.junit.quickcheck.internal.GeometricDistribution;
+ import com.pholser.junit.quickcheck.internal.ParameterTypeContext;
+ import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.Convention;
+ import com.pholser.junit.quickcheck.internal.generator.conventiontestclasses.GeneratesOtherTypes;
+@@ -15,18 +15,16 @@
+ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+ import org.junit.Before;
+ import org.junit.Test;
+-import org.junit.runner.RunWith;
+-import org.mockito.Mock;
+-import org.mockito.runners.MockitoJUnitRunner;
+ 
+-@RunWith(MockitoJUnitRunner.class)
++import java.util.Random;
++
+ public class RegisterGeneratorsByConventionTest {
+     private GeneratorRepository repo;
+-    @Mock private SourceOfRandomness random;
+-    @Mock private GenerationStatus generationStatus;
++    private SourceOfRandomness random;
+ 
+     @Before
+     public void setupRepository() {
++        random = new SourceOfRandomness(new Random());
+         repo = new GeneratorRepository(random);
+     }
+ 
+@@ -37,7 +35,9 @@
+ 
+         assertNotNull(generator);
+         assertThat(
+-            generator.generate(random, generationStatus),
++            generator.generate(
++                random,
++                new SimpleGenerationStatus(new GeometricDistribution(), random, 1)),
+             instanceOf(Convention.class));
+     }

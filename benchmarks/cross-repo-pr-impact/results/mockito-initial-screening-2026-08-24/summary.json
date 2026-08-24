@@ -1,0 +1,72 @@
+{
+  "source_project": "mockito/mockito",
+  "candidate_frame": {
+    "source_dataset": "BUMP",
+    "source_revision": "324d5513aa5ca40b5cb32de5b816a58fa60bd7bb",
+    "records": 55,
+    "unique_consumer_repositories": 15,
+    "reproduced_failure_records": 7,
+    "unsuccessful_reproduction_records": 48
+  },
+  "executed_arms": 16,
+  "anchors": [
+    {
+      "consumer_repository": "apache/bval",
+      "source_versions": [
+        "1.10.19",
+        "5.1.1"
+      ],
+      "source_change_commit": "dff5510cb3e97dae414e58ba85825ad01b273c72",
+      "maintenance_commit": "901c849ab0c0eacf76807bc9b033027ebd70b786",
+      "a0": "success_full_project_1313_tests_17_skipped",
+      "a1": "failure_test_compile_get_argument_at_missing",
+      "a2": "success_full_project_1313_tests_17_skipped",
+      "status": "accepted_single_positive_anchor"
+    },
+    {
+      "consumer_repository": "pholser/junit-quickcheck",
+      "source_versions": [
+        "3.12.4",
+        "4.1.0"
+      ],
+      "source_change_commit": "caf35b24e2764df0498469526ecb3e7ec68a0430",
+      "maintenance_commit": "f4091d8be84155aec678fbce36cad809c8e3f344",
+      "a0": "success_full_project_1114_tests_20_skipped",
+      "a1": "failure_test_compile_old_junit_runner_missing",
+      "a2": "success_full_project_1114_tests_20_skipped",
+      "status": "accepted_single_positive_anchor"
+    }
+  ],
+  "rejections": [
+    {
+      "consumer_repository": "pholser/junit-quickcheck",
+      "versions": [
+        "4.11.0",
+        "5.2.0"
+      ],
+      "reason": "a0_failed_a_randomized_property_test"
+    },
+    {
+      "consumer_repository": "pholser/junit-quickcheck",
+      "versions": [
+        "4.11.0",
+        "5.x"
+      ],
+      "reason": "same_repository_same_failure_chain_without_maintainer_recovery"
+    },
+    {
+      "consumer_repository": "googleapis/gax-java",
+      "versions": [
+        "4.11.0",
+        "5.1.0"
+      ],
+      "reason": "no_merged_maintainer_recovery_and_failure_includes_resource_timeouts"
+    }
+  ],
+  "accepted_full_project_packages": 0,
+  "accepted_source_inputs": 2,
+  "accepted_positive_repository_labels": 2,
+  "accepted_negative_repository_labels": 0,
+  "accepted_a3_inputs": 0,
+  "formal_repetitions_started": false
+}

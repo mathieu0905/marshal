@@ -1,0 +1,55 @@
+{
+  "screened_at": "2026-08-24",
+  "contract": "PolyClay CouchAdapter.remove -> Cradle Database.remove -> request callback on an empty HTTP response",
+  "arms": [
+    {
+      "arm": "A0",
+      "versions": {
+        "polyclay": "1.3.0",
+        "cradle": "0.6.5",
+        "request": "2.16.6"
+      },
+      "exit_status": 1,
+      "observation": {
+        "adapter": "present",
+        "callback": false,
+        "error": "TypeError: Cannot read properties of undefined (reading '_id')",
+        "responseJson": null
+      }
+    },
+    {
+      "arm": "A1",
+      "versions": {
+        "polyclay": "1.3.0",
+        "cradle": "0.6.5",
+        "request": "2.18.0"
+      },
+      "exit_status": 0,
+      "observation": {
+        "adapter": "present",
+        "callback": true,
+        "error": null,
+        "responseJson": ""
+      }
+    },
+    {
+      "arm": "A2",
+      "versions": {
+        "polyclay": "1.4.0",
+        "cradle": "0.6.5",
+        "request": "2.18.0"
+      },
+      "exit_status": 3,
+      "observation": {
+        "adapter": "missing",
+        "callback": false,
+        "error": null,
+        "responseJson": null
+      }
+    }
+  ],
+  "decision": "rejected",
+  "accepted_cases": 0,
+  "bounded_negatives": 0,
+  "a3_cases": 0
+}

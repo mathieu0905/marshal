@@ -1,0 +1,435 @@
+added_lines=9991 common_covered_added_lines=434
+com/fasterxml/jackson/databind/AnnotationIntrospector.java:1500	return ann.getAnnotation(annoClass);
+com/fasterxml/jackson/databind/AnnotationIntrospector.java:1522	return ann.hasAnnotation(annoClass);
+com/fasterxml/jackson/databind/AnnotationIntrospector.java:1538	return ann.hasOneOf(annoClasses);
+com/fasterxml/jackson/databind/DeserializationConfig.java:122	_nodeFactory = JsonNodeFactory.instance;
+com/fasterxml/jackson/databind/DeserializationConfig.java:123	_ctorDetector = null;
+com/fasterxml/jackson/databind/DeserializationConfig.java:124	_coercionConfigs = coercionConfigs;
+com/fasterxml/jackson/databind/DeserializationConfig.java:780	return p;
+com/fasterxml/jackson/databind/DeserializationConfig.java:888	if (_ctorDetector == null) {
+com/fasterxml/jackson/databind/DeserializationConfig.java:889	return ConstructorDetector.DEFAULT;
+com/fasterxml/jackson/databind/DeserializationConfig.java:907	return getClassIntrospector().forDeserialization(this, type, this);
+com/fasterxml/jackson/databind/DeserializationConfig.java:915	return getClassIntrospector().forCreation(this, type, this);
+com/fasterxml/jackson/databind/DeserializationContext.java:177	_readCapabilities = null;
+com/fasterxml/jackson/databind/DeserializationContext.java:211	_readCapabilities = (p == null) ? null : p.getReadCapabilities();
+com/fasterxml/jackson/databind/JavaType.java:319	return ClassUtil.isRecordType(_class);
+com/fasterxml/jackson/databind/MapperFeature.java:227	ALLOW_VOID_VALUED_PROPERTIES(false),
+com/fasterxml/jackson/databind/MapperFeature.java:329	INFER_BUILDER_TYPE_BINDINGS(true),
+com/fasterxml/jackson/databind/MapperFeature.java:395	SORT_CREATOR_PROPERTIES_FIRST(true),
+com/fasterxml/jackson/databind/ObjectMapper.java:641	_coercionConfigs = new CoercionConfigs();
+com/fasterxml/jackson/databind/ObjectMapper.java:4679	JsonToken t = p.currentToken();
+com/fasterxml/jackson/databind/PropertyName.java:92	if (simpleName == null || simpleName.isEmpty()) {
+com/fasterxml/jackson/databind/PropertyName.java:103	if (ns == null && simpleName.isEmpty()) {
+com/fasterxml/jackson/databind/PropertyName.java:111	if (_simpleName.isEmpty()) { // empty String is canonical already
+com/fasterxml/jackson/databind/SerializationConfig.java:862	return getClassIntrospector().forSerialization(this, type, this);
+com/fasterxml/jackson/databind/cfg/BaseSettings.java:172	_accessorNaming = accNaming;
+com/fasterxml/jackson/databind/cfg/BaseSettings.java:386	return _accessorNaming;
+com/fasterxml/jackson/databind/cfg/CoercionAction.java:16	public enum CoercionAction
+com/fasterxml/jackson/databind/cfg/CoercionAction.java:21	Fail,
+com/fasterxml/jackson/databind/cfg/CoercionAction.java:26	TryConvert,
+com/fasterxml/jackson/databind/cfg/CoercionAction.java:31	AsNull,
+com/fasterxml/jackson/databind/cfg/CoercionAction.java:40	AsEmpty;
+com/fasterxml/jackson/databind/cfg/CoercionConfig.java:13	private final static int INPUT_SHAPE_COUNT = CoercionInputShape.values().length;
+com/fasterxml/jackson/databind/cfg/CoercionConfig.java:23	public CoercionConfig() {
+com/fasterxml/jackson/databind/cfg/CoercionConfig.java:24	_coercionsByShape = new CoercionAction[INPUT_SHAPE_COUNT];
+com/fasterxml/jackson/databind/cfg/CoercionConfig.java:25	_acceptBlankAsEmpty = false;
+com/fasterxml/jackson/databind/cfg/CoercionConfig.java:26	}
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:19	private final static int TARGET_TYPE_COUNT = LogicalType.values().length;
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:49	this(CoercionAction.TryConvert, new MutableCoercionConfig(),
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:51	}
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:57	{
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:58	_defaultCoercions = defaultCoercions;
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:59	_defaultAction = defaultAction;
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:60	_perTypeCoercions = perTypeCoercions;
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:61	_perClassCoercions = perClassCoercions;
+com/fasterxml/jackson/databind/cfg/CoercionConfigs.java:62	}
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:19	public enum CoercionInputShape
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:28	Array,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:35	Object,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:41	Integer,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:47	Float,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:54	Boolean,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:60	String,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:68	Binary,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:78	EmptyArray,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:86	EmptyObject,
+com/fasterxml/jackson/databind/cfg/CoercionInputShape.java:93	EmptyString
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:34	public enum SingleArgConstructor {
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:38	DELEGATING,
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:43	PROPERTIES,
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:51	HEURISTIC,
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:58	REQUIRE_MODE;
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:80	public final static ConstructorDetector DEFAULT
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:87	public final static ConstructorDetector USE_PROPERTIES_BASED
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:94	public final static ConstructorDetector USE_DELEGATING
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:101	public final static ConstructorDetector EXPLICIT_ONLY
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:134	{
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:135	_singleArgMode = singleArgMode;
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:136	_requireCtorAnnotation = requireCtorAnnotation;
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:137	_allowJDKTypeCtors = allowJDKTypeCtors;
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:138	}
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:145	this(singleArgMode, false, false);
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:146	}
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:174	return _requireCtorAnnotation;
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:201	if (_requireCtorAnnotation) {
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:205	if (!_allowJDKTypeCtors) {
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:206	if (ClassUtil.isJDKClass(rawType)) {
+com/fasterxml/jackson/databind/cfg/ConstructorDetector.java:215	return true;
+com/fasterxml/jackson/databind/cfg/MapperConfig.java:252	return _base.getAccessorNaming();
+com/fasterxml/jackson/databind/cfg/MapperConfigBase.java:675	: intr.findPropertyIgnoralByName(this, actualClass);
+com/fasterxml/jackson/databind/cfg/MapperConfigBase.java:684	AnnotationIntrospector intr = getAnnotationIntrospector();
+com/fasterxml/jackson/databind/cfg/MapperConfigBase.java:685	return (intr == null) ? null : intr.findPropertyInclusionByName(this, actualClass);
+com/fasterxml/jackson/databind/cfg/MutableCoercionConfig.java:16	public MutableCoercionConfig() { }
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:239	if (instantiator != null) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:240	instantiator = instantiator.createContextual(ctxt, beanDesc);
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:258	final DeserializationConfig config = ctxt.getConfig();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:260	final VisibilityChecker<?> vchecker = config.getDefaultVisibilityChecker(beanDesc.getBeanClass(),
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:261	beanDesc.getClassInfo());
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:262	ctorDetector = config.getConstructorDetector();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:271	final CreatorCollector creators = new CreatorCollector(beanDesc, config);
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:272	Map<AnnotatedWithParams,BeanPropertyDefinition[]> creatorDefs = _findCreatorsFromProperties(ctxt,
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:274	ccState = new CreatorCollectionState(ctxt, beanDesc, vchecker,
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:279	_addExplicitFactoryCreators(ctxt, ccState, !ctorDetector.requireCtorAnnotation());
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:284	if (beanDesc.getType().isRecordType()) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:296	final boolean isNonStaticInnerClass = beanDesc.isNonStaticInnerClass();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:297	if (isNonStaticInnerClass) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:303	final boolean findImplicit = ctorDetector.shouldIntrospectorImplicitConstructors(beanDesc.getBeanClass());
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:304	_addExplicitConstructorCreators(ctxt, ccState, findImplicit);
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:305	if (ccState.hasImplicitConstructorCandidates()
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:306	&& !ccState.hasExplicitFactories() && !ccState.hasExplicitConstructors()) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:312	if (ccState.hasImplicitFactoryCandidates()
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:316	return ccState.creators.constructValueInstantiator(ctxt);
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:429	final BeanDescription beanDesc = ccState.beanDesc;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:430	final CreatorCollector creators = ccState.creators;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:431	final AnnotationIntrospector intr = ccState.annotationIntrospector();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:432	final VisibilityChecker<?> vchecker = ccState.vchecker;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:433	final Map<AnnotatedWithParams, BeanPropertyDefinition[]> creatorParams = ccState.creatorParams;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:447	if (JsonCreator.Mode.DISABLED == creatorMode) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:452	if (findImplicit && vchecker.isCreatorVisible(ctor)) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:453	ccState.addImplicitConstructorCandidate(CreatorCandidate.construct(intr,
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:454	ctor, creatorParams.get(ctor)));
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:476	}
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:634	final BeanDescription beanDesc = ccState.beanDesc;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:635	final CreatorCollector creators = ccState.creators;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:636	final AnnotationIntrospector intr = ccState.annotationIntrospector();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:637	final VisibilityChecker<?> vchecker = ccState.vchecker;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:638	final Map<AnnotatedWithParams, BeanPropertyDefinition[]> creatorParams = ccState.creatorParams;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:641	for (AnnotatedMethod factory : beanDesc.getFactoryMethods()) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:681	}
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:1545	JsonIncludeProperties.Value inclusions = config.getDefaultPropertyInclusions(Map.class,
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:1546	beanDesc.getClassInfo());
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:1547	Set<String> included = inclusions == null ? null : inclusions.getIncluded();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:1548	md.setIncludableProperties(included);
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2533	{
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2534	context = ctxt;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2535	beanDesc = bd;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2536	vchecker = vc;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2537	creators = cc;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2538	creatorParams = cp;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2539	}
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2542	return context.getAnnotationIntrospector();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2559	return _explicitFactoryCount > 0;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2563	return _implicitFactoryCandidates != null;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2573	if (_implicitConstructorCandidates == null) {
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2574	_implicitConstructorCandidates = new LinkedList<>();
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2576	_implicitConstructorCandidates.add(cc);
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2577	}
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2584	return _explicitConstructorCount > 0;
+com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java:2588	return _implicitConstructorCandidates != null;
+com/fasterxml/jackson/databind/deser/BeanDeserializer.java:83	super(builder, beanDesc, properties, backRefs,
+com/fasterxml/jackson/databind/deser/BeanDeserializer.java:317	String propName = p.currentName();
+com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java:220	_includableProps = includableProps;
+com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java:243	final JsonFormat.Value format = beanDesc.findExpectedFormat(null);
+com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java:244	_serializationShape = format.getShape();
+com/fasterxml/jackson/databind/deser/BeanDeserializerBuilder.java:375	_collectAliases(props),
+com/fasterxml/jackson/databind/deser/BeanDeserializerBuilder.java:376	_findCaseInsensitivity());
+com/fasterxml/jackson/databind/deser/BeanDeserializerBuilder.java:574	JsonFormat.Value format = _beanDesc.findExpectedFormat(null);
+com/fasterxml/jackson/databind/deser/BeanDeserializerBuilder.java:576	Boolean B = format.getFeature(JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+com/fasterxml/jackson/databind/deser/BeanDeserializerBuilder.java:577	return (B == null) ? _config.isEnabled(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:144	deser = _findUnsupportedTypeDeserializer(ctxt, type, beanDesc);
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:145	if (deser != null) {
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:209	final String errorMsg = BeanUtil.checkUnsupportedType(type);
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:210	if (errorMsg != null) {
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:217	return null;
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:524	JsonIncludeProperties.Value inclusions = ctxt.getConfig()
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:525	.getDefaultPropertyInclusions(beanDesc.getBeanClass(),
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:526	beanDesc.getClassInfo());
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:527	Set<String> included = null;
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:528	if (inclusions != null) {
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:529	included = inclusions.getIncluded();
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:530	if (included != null) {
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:558	beanDesc, builder, beanDesc.findProperties(), ignored, included);
+com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java:704	if (IgnorePropertiesUtil.shouldIgnore(name, ignored, included)) {
+com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java:50	super(src, config, p, values);
+com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java:51	}
+com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java:318	if (_config.useRootWrapping()) {
+com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java:321	if (valueToUpdate == null) {
+com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java:322	return deser.deserialize(p, this);
+com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java:391	super(src, config, p, values);
+com/fasterxml/jackson/databind/deser/DeserializerCache.java:384	if (format.getShape() != JsonFormat.Shape.OBJECT) {
+com/fasterxml/jackson/databind/deser/DeserializerCache.java:399	if (format.getShape() != JsonFormat.Shape.OBJECT) {
+com/fasterxml/jackson/databind/deser/ValueInstantiator.java:73	return this;
+com/fasterxml/jackson/databind/deser/impl/BeanPropertyMap.java:280	return new BeanPropertyMap(caseInsensitive,
+com/fasterxml/jackson/databind/deser/impl/BeanPropertyMap.java:282	config.getLocale());
+com/fasterxml/jackson/databind/deser/impl/BeanPropertyMap.java:589	int ix = (hashSize + (slot>>1)) << 1;
+com/fasterxml/jackson/databind/deser/impl/CreatorCollector.java:52	final protected AnnotatedWithParams[] _creators = new AnnotatedWithParams[11];
+com/fasterxml/jackson/databind/deser/impl/CreatorCollector.java:104	inst.configureFromBigIntegerCreator(_creators[C_BIG_INTEGER]);
+com/fasterxml/jackson/databind/deser/impl/CreatorCollector.java:106	inst.configureFromBigDecimalCreator(_creators[C_BIG_DECIMAL]);
+com/fasterxml/jackson/databind/deser/impl/FailingDeserializer.java:22	this(Object.class, m);
+com/fasterxml/jackson/databind/deser/impl/FailingDeserializer.java:23	}
+com/fasterxml/jackson/databind/deser/impl/FailingDeserializer.java:27	super(rawType);
+com/fasterxml/jackson/databind/deser/std/CollectionDeserializer.java:198	if ((!Objects.equals(unwrapSingle, _unwrapSingle))
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:123	_inclusionChecker = null;
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:176	_includableProperties = includable;
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:177	_inclusionChecker = IgnorePropertiesUtil.buildCheckerIfNeeded(ignorable, includable);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:244	_inclusionChecker = IgnorePropertiesUtil.buildCheckerIfNeeded(_ignorableProperties, _includableProperties);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:245	}
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:248	_includableProperties = includable;
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:249	_inclusionChecker = IgnorePropertiesUtil.buildCheckerIfNeeded(_ignorableProperties, _includableProperties);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:325	Set<String> included = _includableProperties;
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:330	final DeserializationConfig config = ctxt.getConfig();
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:331	JsonIgnoreProperties.Value ignorals = intr.findPropertyIgnoralByName(config, member);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:341	JsonIncludeProperties.Value inclusions = intr.findPropertyInclusionByName(config, member);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:342	if (inclusions != null) {
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:343	Set<String> includedToAdd = inclusions.getIncluded();
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:344	if (includedToAdd != null) {
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:361	findContentNullProvider(ctxt, property, valueDeser), ignored, included);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:431	switch (p.currentTokenId()) {
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:435	final Map<Object,Object> result = (Map<Object,Object>) _valueInstantiator.createUsingDefault(ctxt);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:436	if (_standardStringKey) {
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:437	_readAndBindStringKeyMap(p, ctxt, result);
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:438	return result;
+com/fasterxml/jackson/databind/deser/std/MapDeserializer.java:596	if ((_inclusionChecker != null) && _inclusionChecker.shouldIgnore(key)) {
+com/fasterxml/jackson/databind/deser/std/NumberDeserializers.java:146	_logicalType = logicalType;
+com/fasterxml/jackson/databind/deser/std/NumberDeserializers.java:515	super(cls, LogicalType.Integer, nvl, 0);
+com/fasterxml/jackson/databind/deser/std/NumberDeserializers.java:524	if (p.isExpectedNumberIntToken()) {
+com/fasterxml/jackson/databind/deser/std/StdValueInstantiator.java:162	public void configureFromBigIntegerCreator(AnnotatedWithParams creator) { _fromBigIntegerCreator = creator; }
+com/fasterxml/jackson/databind/deser/std/StdValueInstantiator.java:168	public void configureFromBigDecimalCreator(AnnotatedWithParams creator) { _fromBigDecimalCreator = creator; }
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:93	protected OptionalHandlerFactory() {
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:94	_sqlDeserializers = new HashMap<>();
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:95	_sqlDeserializers.put(CLS_NAME_JAVA_SQL_DATE,
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:97	_sqlDeserializers.put(CLS_NAME_JAVA_SQL_TIMESTAMP,
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:102	_sqlSerializers = new HashMap<>();
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:107	_sqlSerializers.put(CLS_NAME_JAVA_SQL_TIMESTAMP, DateSerializer.instance);
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:108	_sqlSerializers.put(CLS_NAME_JAVA_SQL_DATE, "com.fasterxml.jackson.databind.ser.std.SqlDateSerializer");
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:109	_sqlSerializers.put(CLS_NAME_JAVA_SQL_TIME, "com.fasterxml.jackson.databind.ser.std.SqlTimeSerializer");
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:115	_sqlSerializers.put(CLS_NAME_JAVA_SQL_BLOB, "com.fasterxml.jackson.databind.ext.SqlBlobSerializer");
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:116	_sqlSerializers.put(CLS_NAME_JAVA_SQL_SERIALBLOB, "com.fasterxml.jackson.databind.ext.SqlBlobSerializer");
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:117	}
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:142	Object sqlHandler = _sqlSerializers.get(className);
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:144	if (sqlHandler != null) {
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:185	final String deserName = _sqlDeserializers.get(className);
+com/fasterxml/jackson/databind/ext/OptionalHandlerFactory.java:186	if (deserName != null) {
+com/fasterxml/jackson/databind/introspect/AccessorNamingStrategy.java:12	public abstract class AccessorNamingStrategy
+com/fasterxml/jackson/databind/introspect/AccessorNamingStrategy.java:140	public abstract static class Provider
+com/fasterxml/jackson/databind/introspect/AnnotatedClass.java:234	return _typeFactory.resolveMemberType(type, _bindings);
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:60	return new AnnotatedCreatorCollector(intr, tc, collectAnnotations)
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:61	.collect(typeFactory, type, primaryMixIn);
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:71	List<AnnotatedMethod> factories = _findPotentialFactories(typeFactory, type, primaryMixIn);
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:198	if (!_isIncludableFactoryMethod(m)) {
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:225	final TypeResolutionContext emptyTypeResCtxt = new TypeResolutionContext.Empty(typeFactory);
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:260	Method candidate = candidates.get(i);
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:264	TypeResolutionContext typeResCtxt = MethodGenericTypeResolver.narrowMethodTypeParameters(
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:267	constructFactoryCreator(candidate, typeResCtxt, null));
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:275	return Modifier.isStatic(m.getModifiers())
+com/fasterxml/jackson/databind/introspect/AnnotatedCreatorCollector.java:278	&& !m.isSynthetic();
+com/fasterxml/jackson/databind/introspect/BasicBeanDescription.java:475	if (_propCollector != null) {
+com/fasterxml/jackson/databind/introspect/BasicBeanDescription.java:476	AnnotatedMember anyGetter = _propCollector.getAnyGetterMethod();
+com/fasterxml/jackson/databind/introspect/BasicBeanDescription.java:477	if (anyGetter != null) {
+com/fasterxml/jackson/databind/introspect/BasicBeanDescription.java:489	AnnotatedMember anyField = _propCollector.getAnyGetterField();
+com/fasterxml/jackson/databind/introspect/BasicBeanDescription.java:490	if (anyField != null) {
+com/fasterxml/jackson/databind/introspect/BasicBeanDescription.java:502	return null;
+com/fasterxml/jackson/databind/introspect/BasicClassIntrospector.java:180	final AnnotatedClass classDef = _resolveAnnotatedClass(config, type, r);
+com/fasterxml/jackson/databind/introspect/BasicClassIntrospector.java:181	final AccessorNamingStrategy accNaming = type.isRecordType()
+com/fasterxml/jackson/databind/introspect/BasicClassIntrospector.java:182	? config.getAccessorNaming().forRecord(config, classDef)
+com/fasterxml/jackson/databind/introspect/BasicClassIntrospector.java:183	: config.getAccessorNaming().forPOJO(config, classDef);
+com/fasterxml/jackson/databind/introspect/BasicClassIntrospector.java:184	return constructPropertyCollector(config, classDef, type, forSerialization, accNaming);
+com/fasterxml/jackson/databind/introspect/BasicClassIntrospector.java:202	return new POJOPropertiesCollector(config, forSerialization, type, classDef, accNaming);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:55	{
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:56	_config = config;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:57	_forClass = forClass;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:59	_stdBeanNaming = config.isEnabled(MapperFeature.USE_STD_BEAN_NAMING);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:60	_mutatorPrefix = mutatorPrefix;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:61	_getterPrefix = getterPrefix;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:62	_isGetterPrefix = isGetterPrefix;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:63	_baseNameValidator = baseNameValidator;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:64	}
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:69	if (_isGetterPrefix != null) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:70	final Class<?> rt = am.getRawType();
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:71	if (rt == Boolean.class || rt == Boolean.TYPE) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:72	if (name.startsWith(_isGetterPrefix)) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:73	return _stdBeanNaming
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:74	? stdManglePropertyName(name, 2)
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:75	: legacyManglePropertyName(name, 2);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:79	return null;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:85	if ((_getterPrefix != null) && name.startsWith(_getterPrefix)) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:90	if ("getCallbacks".equals(name)) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:94	} else if ("getMetaClass".equals(name)) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:100	return _stdBeanNaming
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:101	? stdManglePropertyName(name, _getterPrefix.length())
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:102	: legacyManglePropertyName(name, _getterPrefix.length());
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:104	return null;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:110	if ((_mutatorPrefix != null) && name.startsWith(_mutatorPrefix)) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:111	return _stdBeanNaming
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:112	? stdManglePropertyName(name, _mutatorPrefix.length())
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:113	: legacyManglePropertyName(name, _mutatorPrefix.length());
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:115	return null;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:121	return name;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:139	final int end = basename.length();
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:140	if (end == offset) { // empty name, nope
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:143	char c = basename.charAt(offset);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:146	if (_baseNameValidator != null) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:153	char d = Character.toLowerCase(c);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:155	if (c == d) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:159	StringBuilder sb = new StringBuilder(end - offset);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:160	sb.append(d);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:161	int i = offset+1;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:162	for (; i < end; ++i) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:163	c = basename.charAt(i);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:164	d = Character.toLowerCase(c);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:165	if (c == d) {
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:166	sb.append(basename, i, end);
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:167	break;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:171	return sb.toString();
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:286	this("set", JsonPOJOBuilder.DEFAULT_WITH_PREFIX,
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:288	}
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:307	{
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:308	_setterPrefix = setterPrefix;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:309	_withPrefix = withPrefix;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:310	_getterPrefix = getterPrefix;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:311	_isGetterPrefix = isGetterPrefix;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:312	_baseNameValidator = vld;
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:313	}
+com/fasterxml/jackson/databind/introspect/DefaultAccessorNamingStrategy.java:428	return new DefaultAccessorNamingStrategy(config, targetClass,
+com/fasterxml/jackson/databind/introspect/JacksonAnnotationIntrospector.java:297	JsonIgnoreType ignore = _findAnnotation(ac, JsonIgnoreType.class);
+com/fasterxml/jackson/databind/introspect/JacksonAnnotationIntrospector.java:298	return (ignore == null) ? null : ignore.value();
+com/fasterxml/jackson/databind/introspect/JacksonAnnotationIntrospector.java:321	JsonIncludeProperties v = _findAnnotation(a, JsonIncludeProperties.class);
+com/fasterxml/jackson/databind/introspect/JacksonAnnotationIntrospector.java:322	if (v == null) {
+com/fasterxml/jackson/databind/introspect/JacksonAnnotationIntrospector.java:323	return JsonIncludeProperties.Value.all();
+com/fasterxml/jackson/databind/introspect/MethodGenericTypeResolver.java:42	TypeBindings newTypeBindings = bindMethodTypeParameters(candidate, requestedType, emptyTypeResCtxt);
+com/fasterxml/jackson/databind/introspect/MethodGenericTypeResolver.java:43	return newTypeBindings == null
+com/fasterxml/jackson/databind/introspect/MethodGenericTypeResolver.java:56	TypeVariable<Method>[] methodTypeParameters = candidate.getTypeParameters();
+com/fasterxml/jackson/databind/introspect/MethodGenericTypeResolver.java:57	if (methodTypeParameters.length == 0
+com/fasterxml/jackson/databind/introspect/MethodGenericTypeResolver.java:59	|| requestedType.getBindings().isEmpty()) {
+com/fasterxml/jackson/databind/introspect/MethodGenericTypeResolver.java:61	return null;
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:163	_accessorNaming = accessorNaming;
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:258	if (!_collected) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:261	if (_anyGetterField != null) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:268	return null;
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:451	if (Boolean.TRUE.equals(ai.hasAsKey(_config, f))) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:467	boolean anyGetter = Boolean.TRUE.equals(ai.hasAnyGetter(f));
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:468	boolean anySetter = Boolean.TRUE.equals(ai.hasAnySetter(f));
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:469	if (anyGetter || anySetter) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:492	implName = _accessorNaming.modifyFieldName(f, implName);
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:493	if (implName == null) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:497	final PropertyName implNameP = _propNameFromSimple(implName);
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:666	final Class<?> rt = m.getRawReturnType();
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:667	if ((rt == Void.TYPE) ||
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:669	return;
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:683	if (Boolean.TRUE.equals(ai.hasAsKey(_config, m))) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:707	implName = _accessorNaming.findNameForRegularGetter(m, m.getName());
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:710	implName = _accessorNaming.findNameForIsGetter(m, m.getName());
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:754	implName = _accessorNaming.findNameForMutator(m, m.getName());
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:779	boolean ignore = (ai != null) && ai.hasIgnoreMarker(m);
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:890	prop.removeNonVisible(inferMutators, _forSerialization ? null : this);
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:1095	Boolean alpha = intr.findSerializationSortAlphabetically(_classDef);
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:1096	final boolean sortAlpha = (alpha == null)
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:1104	if (!sortAlpha && !indexed && (_creatorProperties == null) && (propertyOrder == null)) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:1110	if (sortAlpha) {
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:1160	if ((_creatorProperties != null)
+com/fasterxml/jackson/databind/introspect/POJOPropertiesCollector.java:1168	if (sortAlpha) {
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:224	final AnnotatedMember prim = getPrimaryMemberUnchecked();
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:226	if (prim == null) {
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:229	final Boolean b = _annotationIntrospector.hasRequiredMarker(prim);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:230	final String desc = _annotationIntrospector.findPropertyDescription(prim);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:231	final Integer idx = _annotationIntrospector.findPropertyIndex(prim);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:232	final String def = _annotationIntrospector.findPropertyDefaultValue(prim);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:234	if (b == null && idx == null && def == null) {
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:235	_metadata = (desc == null) ? PropertyMetadata.STD_REQUIRED_OR_OPTIONAL
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:236	: PropertyMetadata.STD_REQUIRED_OR_OPTIONAL.withDescription(desc);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:240	if (!_forSerialization) {
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:241	_metadata = _getSetterInfo(_metadata, prim);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:266	if (primary != null) {
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:270	Boolean b = _annotationIntrospector.findMergeInfo(primary);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:278	JsonSetter.Value setterInfo = _annotationIntrospector.findSetterInfo(primary);
+com/fasterxml/jackson/databind/introspect/POJOPropertyBuilder.java:290	Class<?> rawType = _rawTypeOf(primary);
+com/fasterxml/jackson/databind/introspect/TypeResolutionContext.java:33	return _typeFactory.resolveMemberType(type, _bindings);
+com/fasterxml/jackson/databind/ser/BasicSerializerFactory.java:710	if (format.getShape() == JsonFormat.Shape.OBJECT) {
+com/fasterxml/jackson/databind/ser/BasicSerializerFactory.java:800	if (format.getShape() == JsonFormat.Shape.OBJECT) {
+com/fasterxml/jackson/databind/ser/BasicSerializerFactory.java:829	JsonIncludeProperties.Value inclusions = config.getDefaultPropertyInclusions(Map.class,
+com/fasterxml/jackson/databind/ser/BasicSerializerFactory.java:830	beanDesc.getClassInfo());
+com/fasterxml/jackson/databind/ser/BasicSerializerFactory.java:831	Set<String> included = (inclusions == null) ? null
+com/fasterxml/jackson/databind/ser/BasicSerializerFactory.java:832	: inclusions.getIncluded();
+com/fasterxml/jackson/databind/ser/BasicSerializerFactory.java:833	MapSerializer mapSer = MapSerializer.construct(ignored, included,
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:384	JsonSerializer<?> ser = _findUnsupportedTypeSerializer(prov, type, beanDesc);
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:385	if (ser != null) {
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:461	ser = builder.build();
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:466	if (ser == null) { // Means that no properties were found
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:484	return (JsonSerializer<Object>) ser;
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:646	Set<String> ignored = null;
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:648	ignored = ignorals.findIgnoredForSerialization();
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:650	JsonIncludeProperties.Value inclusions = config.getDefaultPropertyInclusions(beanDesc.getBeanClass(),
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:651	beanDesc.getClassInfo());
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:652	Set<String> included = null;
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:653	if (inclusions != null) {
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:654	included = inclusions.getIncluded();
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:656	if (included != null || (ignored != null && !ignored.isEmpty())) {
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:847	final String errorMsg = BeanUtil.checkUnsupportedType(type);
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:848	if (errorMsg != null) {
+com/fasterxml/jackson/databind/ser/BeanSerializerFactory.java:855	return null;
+com/fasterxml/jackson/databind/ser/PropertyBuilder.java:220	final SerializationFeature emptyJsonArrays = SerializationFeature.WRITE_EMPTY_JSON_ARRAYS;
+com/fasterxml/jackson/databind/ser/PropertyBuilder.java:221	if (actualType.isContainerType() && !_config.isEnabled(emptyJsonArrays)) {
+com/fasterxml/jackson/databind/ser/PropertyBuilder.java:230	BeanPropertyWriter bpw = _constructPropertyWriter(propDef,
+com/fasterxml/jackson/databind/ser/PropertyBuilder.java:261	return new BeanPropertyWriter(propDef,
+com/fasterxml/jackson/databind/ser/std/AsArraySerializerBase.java:81	this(cls, et, staticTyping, vts, null, elementSerializer, null);
+com/fasterxml/jackson/databind/ser/std/AsArraySerializerBase.java:107	_elementType = elementType;
+com/fasterxml/jackson/databind/ser/std/AsArraySerializerBase.java:109	_staticTyping = staticTyping || (elementType != null && elementType.isFinal());
+com/fasterxml/jackson/databind/ser/std/AsArraySerializerBase.java:112	_elementSerializer = (JsonSerializer<Object>) elementSerializer;
+com/fasterxml/jackson/databind/ser/std/AsArraySerializerBase.java:114	_unwrapSingle = unwrapSingle;
+com/fasterxml/jackson/databind/ser/std/BeanSerializerBase.java:133	final JsonFormat.Value format = builder.getBeanDescription().findExpectedFormat(null);
+com/fasterxml/jackson/databind/ser/std/BeanSerializerBase.java:134	_serializationShape = format.getShape();
+com/fasterxml/jackson/databind/ser/std/BeanSerializerBase.java:499	Set<String> includedProps = null;
+com/fasterxml/jackson/databind/ser/std/BeanSerializerBase.java:592	if (((ignoredProps != null) && !ignoredProps.isEmpty())
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:187	_includedEntries = includedEntries;
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:201	_inclusionChecker = IgnorePropertiesUtil.buildCheckerIfNeeded(_ignoredEntries, _includedEntries);
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:231	_includedEntries = includedEntries;
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:246	_inclusionChecker = IgnorePropertiesUtil.buildCheckerIfNeeded(_ignoredEntries, _includedEntries);
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:247	}
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:326	MapSerializer ser = new MapSerializer(this, property, keySerializer, valueSerializer, ignored, included);
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:397	MapSerializer ser = new MapSerializer(ignoredEntries, includedEntries, keyType, valueType, staticValueType, vts,
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:521	Set<String> included = _includedEntries;
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:552	MapSerializer mser = withResolved(property, keySer, ser, ignored, included, sortKeys);
+com/fasterxml/jackson/databind/ser/std/MapSerializer.java:555	if (propertyAcc != null) {
+com/fasterxml/jackson/databind/type/LogicalType.java:11	public enum LogicalType
+com/fasterxml/jackson/databind/type/LogicalType.java:20	Array,
+com/fasterxml/jackson/databind/type/LogicalType.java:26	Collection,
+com/fasterxml/jackson/databind/type/LogicalType.java:32	Map,
+com/fasterxml/jackson/databind/type/LogicalType.java:46	POJO,
+com/fasterxml/jackson/databind/type/LogicalType.java:53	Untyped,
+com/fasterxml/jackson/databind/type/LogicalType.java:61	Integer,
+com/fasterxml/jackson/databind/type/LogicalType.java:67	Float,
+com/fasterxml/jackson/databind/type/LogicalType.java:72	Boolean,
+com/fasterxml/jackson/databind/type/LogicalType.java:77	Enum,
+com/fasterxml/jackson/databind/type/LogicalType.java:83	Textual,
+com/fasterxml/jackson/databind/type/LogicalType.java:88	Binary,
+com/fasterxml/jackson/databind/type/LogicalType.java:93	DateTime,
+com/fasterxml/jackson/databind/type/LogicalType.java:99	OtherScalar
+com/fasterxml/jackson/databind/type/TypeFactory.java:156	this((LookupCache<Object,JavaType>) null);
+com/fasterxml/jackson/databind/type/TypeFactory.java:171	protected TypeFactory(LookupCache<Object,JavaType> typeCache) {
+com/fasterxml/jackson/databind/type/TypeFactory.java:173	typeCache = new LRUMap<>(16, 200);
+com/fasterxml/jackson/databind/type/TypeFactory.java:778	return _fromAny(null, type, contextBindings);
+com/fasterxml/jackson/databind/util/BeanUtil.java:298	final Class<?> rawType = type.getRawClass();
+com/fasterxml/jackson/databind/util/BeanUtil.java:301	if (isJava8TimeClass(rawType)) {
+com/fasterxml/jackson/databind/util/BeanUtil.java:304	} else if (isJodaTimeClass(rawType)) {
+com/fasterxml/jackson/databind/util/BeanUtil.java:308	return null;
+com/fasterxml/jackson/databind/util/BeanUtil.java:318	return rawType.getName().startsWith("java.time.");
+com/fasterxml/jackson/databind/util/BeanUtil.java:325	return rawType.getName().startsWith("org.joda.time.");
+com/fasterxml/jackson/databind/util/ClassUtil.java:291	Class<?> parent = cls.getSuperclass();
+com/fasterxml/jackson/databind/util/ClassUtil.java:292	return (parent != null) && "java.lang.Record".equals(parent.getName());
+com/fasterxml/jackson/databind/util/ClassUtil.java:1142	final String clsName = rawType.getName();
+com/fasterxml/jackson/databind/util/ClassUtil.java:1143	return clsName.startsWith("java.") || clsName.startsWith("javax.");
+com/fasterxml/jackson/databind/util/IgnorePropertiesUtil.java:17	if (toIgnore == null && toInclude ==null) {
+com/fasterxml/jackson/databind/util/IgnorePropertiesUtil.java:21	if (toInclude == null) {
+com/fasterxml/jackson/databind/util/IgnorePropertiesUtil.java:22	return toIgnore.contains(value);
+com/fasterxml/jackson/databind/util/IgnorePropertiesUtil.java:44	if ((toInclude == null) && ((toIgnore == null) || toIgnore.isEmpty())) {
+com/fasterxml/jackson/databind/util/IgnorePropertiesUtil.java:45	return null;

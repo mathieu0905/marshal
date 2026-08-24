@@ -1,0 +1,11 @@
+configuration	repository	consumer_commit	actual_databind_version	expected_result	exit_code	test_count	status	remarks
+a0	splunk/kafka-connect-splunk	374ef350f9f255bc28957326f45e1461bf321dad	2.10.5.1	pass	0	143	confirmed	原始父提交
+a1	splunk/kafka-connect-splunk	55931d4c3a2e17683deff5d4e8065a929866290b	2.12.6.1	fail	1	143	confirmed	97 项错误，JacksonFeature 缺失
+a2	splunk/kafka-connect-splunk	ddbd37d5ffa2f745130cd449e631222fba71d7c7	2.12.6.1	pass	0	143	confirmed	维护者 PR 330，Core 2.12.6
+a0	pac4j/dropwizard-pac4j	1098dfe9aa1cbde769f2cca4eed8257221831a4b	2.10.5.1	pass	0	16	confirmed	原始父提交
+a1	pac4j/dropwizard-pac4j	f222a61aa0ca3b1db39da2fee47fbe5c4d31f918	2.12.6.1	fail	1	0	confirmed	Core 与 Annotations 2.10.5 收敛失败
+a2-synthetic	pac4j/dropwizard-pac4j	f222a61aa0ca3b1db39da2fee47fbe5c4d31f918	2.12.6.1	pass	0	16	not-label-grade	人工对齐 Core 与 Annotations，无维护者精确修复
+a0	spotify/github-java-client	a63577cb69ceb64982f0e7ef3db42b0da0e35d52	2.10.5.1	pass	0	96	candidate-negative	BOM 2.10.5.20201202
+a1	spotify/github-java-client	a63577cb69ceb64982f0e7ef3db42b0da0e35d52	2.12.6.1	pass	0	96	accepted-limited-negative	BOM 2.12.6.20220326，变化面覆盖已确认
+a0	tokuhirom/avans	b987be9c83ef0985f2a59af883569fcc09fd29f8	2.10.5.1	pass	0	69	candidate-negative	BOM 2.10.5.20201202
+a1	tokuhirom/avans	b987be9c83ef0985f2a59af883569fcc09fd29f8	2.12.6.1	pass	0	69	accepted-limited-negative	BOM 2.12.6.20220326，变化面覆盖已确认

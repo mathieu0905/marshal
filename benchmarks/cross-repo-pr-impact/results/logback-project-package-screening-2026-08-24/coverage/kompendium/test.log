@@ -1,0 +1,166 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.5.1/userguide/gradle_daemon.html#sec:disabling_the_daemon.
+Daemon will be stopped at the end of the build 
+VFS> Statistics since last build:
+VFS> > Stat: Executed stat() x 0. getUnixMode() x 0
+VFS> > FileHasher: Hashed 0 files (0 bytes)
+VFS> > DirectorySnapshotter: Snapshot 0 directory hierarchies (visited 0 directories, 0 files and 0 failed files)
+Type-safe project accessors is an incubating feature.
+> Task :kompendium-core:cleanTest
+> Task :kompendium-json-schema:compileKotlin UP-TO-DATE
+> Task :kompendium-json-schema:compileJava NO-SOURCE
+> Task :kompendium-oas:compileKotlin UP-TO-DATE
+> Task :kompendium-oas:compileJava NO-SOURCE
+> Task :kompendium-core:compileKotlin UP-TO-DATE
+> Task :kompendium-core:compileJava NO-SOURCE
+> Task :kompendium-core:processResources NO-SOURCE
+> Task :kompendium-core:classes UP-TO-DATE
+> Task :kompendium-core:inspectClassesForKotlinIC UP-TO-DATE
+> Task :kompendium-core:jar UP-TO-DATE
+> Task :kompendium-core:compileTestFixturesKotlin UP-TO-DATE
+> Task :kompendium-core:compileTestFixturesJava NO-SOURCE
+> Task :kompendium-core:processTestFixturesResources NO-SOURCE
+> Task :kompendium-core:testFixturesClasses UP-TO-DATE
+> Task :kompendium-core:testFixturesJar UP-TO-DATE
+> Task :kompendium-core:compileTestKotlin UP-TO-DATE
+> Task :kompendium-core:compileTestJava NO-SOURCE
+> Task :kompendium-core:processTestResources UP-TO-DATE
+> Task :kompendium-core:testClasses UP-TO-DATE
+> Task :kompendium-json-schema:processResources NO-SOURCE
+> Task :kompendium-json-schema:classes UP-TO-DATE
+> Task :kompendium-json-schema:inspectClassesForKotlinIC UP-TO-DATE
+> Task :kompendium-json-schema:jar UP-TO-DATE
+> Task :kompendium-oas:processResources NO-SOURCE
+> Task :kompendium-oas:classes UP-TO-DATE
+> Task :kompendium-oas:inspectClassesForKotlinIC UP-TO-DATE
+> Task :kompendium-oas:jar UP-TO-DATE
+
+> Task :kompendium-core:test
+
+Exception in thread "main" FATAL ERROR in native method: processing of -javaagent failed, processJavaStart failed
+java.lang.reflect.InvocationTargetException
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0x8b22de]	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:491)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndCallPremain(InstrumentationImpl.java:503)
+Caused by: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.jacoco.agent.rt.internal_b6258fc.core.runtime.InjectedClassRuntime$Lookup.defineClass(InjectedClassRuntime.java:134)
+	at org.jacoco.agent.rt.internal_b6258fc.core.runtime.InjectedClassRuntime.startup(InjectedClassRuntime.java:54)
+	at org.jacoco.agent.rt.internal_b6258fc.PreMain.premain(PreMain.java:53)
+	... 6 more
+Caused by: java.lang.LinkageError: loader 'bootstrap' attempted duplicate class definition for java.lang.$JaCoCo. (java.lang.$JaCoCo is in module java.base of loader 'bootstrap')
+	at java.base/java.lang.ClassLoader.defineClass0(Native Method)
+	at java.base/java.lang.System$2.defineClass(System.java:2324)
+	at java.base/java.lang.invoke.MethodHandles$Lookup$ClassDefiner.defineClass(MethodHandles.java:2439)
+	at java.base/java.lang.invoke.MethodHandles$Lookup$ClassDefiner.defineClass(MethodHandles.java:2416)
+	at java.base/java.lang.invoke.MethodHandles$Lookup.defineClass(MethodHandles.java:1843)
+	... 13 more
+*** java.lang.instrument ASSERTION FAILED ***: "!errorOutstanding" with message Outstanding error when calling method in invokeJavaAgentMainMethod at src/java.instrument/share/native/libinstrument/JPLISAgent.c line: 619
+*** java.lang.instrument ASSERTION FAILED ***: "success" with message invokeJavaAgentMainMethod failed at src/java.instrument/share/native/libinstrument/JPLISAgent.c line: 459
+*** java.lang.instrument ASSERTION FAILED ***: "result" with message agent load/premain call failed at src/java.instrument/share/native/libinstrument/JPLISAgent.c line: 422
+  jni_FatalError+0xbe
+V  [libjvm.so+0xa30cd2]  JvmtiExport::post_vm_initialized()+0x132
+V  [libjvm.so+0xe6e616]  Threads::create_vm(JavaVMInitArgs*, bool*)+0x946
+V  [libjvm.so+0x8c0a1f]  JNI_CreateJavaVM+0x4f
+C  [libjli.so+0x9c6f]  JavaMain+0x8f
+C  [libjli.so+0xdf99]  ThreadJavaMain+0x9
+C  [libc.so.6+0x9cb84]
+
+Exception in thread "main" java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:491)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndCallPremain(InstrumentationImpl.java:503)
+Caused by: java.lang.reflect.InvocationTargetException
+FATAL ERROR in native method: processing of -javaagent failed, processJavaStart failed
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+V  [libjvm.so+0x8b22de]	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.jacoco.agent.rt.internal_b6258fc.core.runtime.InjectedClassRuntime$Lookup.defineClass(InjectedClassRuntime.java:134)
+	at org.jacoco.agent.rt.internal_b6258fc.core.runtime.InjectedClassRuntime.startup(InjectedClassRuntime.java:54)
+	at org.jacoco.agent.rt.internal_b6258fc.PreMain.premain(PreMain.java:53)
+	... 6 more
+Caused by: java.lang.LinkageError: loader 'bootstrap' attempted duplicate class definition for java.lang.$JaCoCo. (java.lang.$JaCoCo is in module java.base of loader 'bootstrap')
+	at java.base/java.lang.ClassLoader.defineClass0(Native Method)
+	at java.base/java.lang.System$2.defineClass(System.java:2324)
+	at java.base/java.lang.invoke.MethodHandles$Lookup$ClassDefiner.defineClass(MethodHandles.java:2439)
+	at java.base/java.lang.invoke.MethodHandles$Lookup$ClassDefiner.defineClass(MethodHandles.java:2416)
+	at java.base/java.lang.invoke.MethodHandles$Lookup.defineClass(MethodHandles.java:1843)
+	... 13 more
+*** java.lang.instrument ASSERTION FAILED ***: "!errorOutstanding" with message Outstanding error when calling method in invokeJavaAgentMainMethod at src/java.instrument/share/native/libinstrument/JPLISAgent.c line: 619
+*** java.lang.instrument ASSERTION FAILED ***: "success" with message invokeJavaAgentMainMethod failed at src/java.instrument/share/native/libinstrument/JPLISAgent.c line: 459
+*** java.lang.instrument ASSERTION FAILED ***: "result" with message agent load/premain call failed at src/java.instrument/share/native/libinstrument/JPLISAgent.c line: 422
+  jni_FatalError+0xbe
+V  [libjvm.so+0xa30cd2]  JvmtiExport::post_vm_initialized()+0x132
+V  [libjvm.so+0xe6e616]  Threads::create_vm(JavaVMInitArgs*, bool*)+0x946
+V  [libjvm.so+0x8c0a1f]  JNI_CreateJavaVM+0x4f
+C  [libjli.so+0x9c6f]  JavaMain+0x8f
+C  [libjli.so+0xdf99]  ThreadJavaMain+0x9
+C  [libc.so.6+0x9cb84]
+
+Process 'Gradle Test Executor 2' finished with non-zero exit value 134
+org.gradle.process.internal.ExecException: Process 'Gradle Test Executor 2' finished with non-zero exit value 134
+	at org.gradle.process.internal.DefaultExecHandle$ExecResultImpl.assertNormalExitValue(DefaultExecHandle.java:415)
+	at org.gradle.process.internal.worker.DefaultWorkerProcess.onProcessStop(DefaultWorkerProcess.java:145)
+	at org.gradle.process.internal.worker.DefaultWorkerProcess.access$000(DefaultWorkerProcess.java:42)
+	at org.gradle.process.internal.worker.DefaultWorkerProcess$1.executionFinished(DefaultWorkerProcess.java:98)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.event.AbstractBroadcastDispatch.dispatch(AbstractBroadcastDispatch.java:43)
+	at org.gradle.internal.event.BroadcastDispatch$SingletonDispatch.dispatch(BroadcastDispatch.java:245)
+	at org.gradle.internal.event.BroadcastDispatch$SingletonDispatch.dispatch(BroadcastDispatch.java:157)
+	at org.gradle.internal.event.ListenerBroadcast.dispatch(ListenerBroadcast.java:141)
+	at org.gradle.internal.event.ListenerBroadcast.dispatch(ListenerBroadcast.java:37)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
+	at com.sun.proxy.$Proxy91.executionFinished(Unknown Source)
+	at org.gradle.process.internal.DefaultExecHandle.setEndStateInfo(DefaultExecHandle.java:221)
+	at org.gradle.process.internal.DefaultExecHandle.finished(DefaultExecHandle.java:355)
+	at org.gradle.process.internal.ExecHandleRunner.completed(ExecHandleRunner.java:110)
+	at org.gradle.process.internal.ExecHandleRunner.run(ExecHandleRunner.java:84)
+	at org.gradle.internal.operations.CurrentBuildOperationPreservingRunnable.run(CurrentBuildOperationPreservingRunnable.java:42)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+  [0K[32m0 passing [90m(5s)[m
+
+
+> Task :kompendium-core:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':kompendium-core:test'.
+> Process 'Gradle Test Executor 1' finished with non-zero exit value 134
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 22s
+15 actionable tasks: 2 executed, 13 up-to-date
+Received 1 file system events during the current build while watching 1 locations
+Virtual file system retains information about 3245 files, 223 directories and 18 missing files until next build
+VFS> Statistics during current build:
+VFS> > Stat: Executed stat() x 415. getUnixMode() x 0
+VFS> > FileHasher: Hashed 6 files (7,352 bytes)
+VFS> > DirectorySnapshotter: Snapshot 53 directory hierarchies (visited 234 directories, 2,921 files and 0 failed files)

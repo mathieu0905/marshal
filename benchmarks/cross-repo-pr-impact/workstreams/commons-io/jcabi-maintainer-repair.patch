@@ -1,0 +1,14 @@
+diff --git a/src/main/java/com/jcabi/maven/plugin/VersionalizeMojo.java b/src/main/java/com/jcabi/maven/plugin/VersionalizeMojo.java
+--- a/src/main/java/com/jcabi/maven/plugin/VersionalizeMojo.java
++++ b/src/main/java/com/jcabi/maven/plugin/VersionalizeMojo.java
+@@ -192,7 +192,9 @@ public final class VersionalizeMojo extends AbstractMojo {
+      * @return List of Java file names
+      */
+     private static Collection<String> files(final File dir, final String mask) {
+-        final FileFilter filter = new WildcardFileFilter(mask);
++        final FileFilter filter = WildcardFileFilter.builder()
++            .setWildcards(mask)
++            .get();
+         final File[] files = dir.listFiles(filter);
+         final Collection<String> names = new ArrayList<>(files.length);
+         for (final File file : files) {

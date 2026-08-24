@@ -1,0 +1,127 @@
+Unable to find image 'ghcr.io/chains-project/breaking-updates:ff8b5b61548d50cf60b77784a181e917cb35033b-breaking' locally
+ff8b5b61548d50cf60b77784a181e917cb35033b-breaking: Pulling from chains-project/breaking-updates
+31e352740f53: Already exists
+42276f95e61f: Already exists
+54b545e4942c: Pulling fs layer
+c03ceb2600a9: Pulling fs layer
+c03ceb2600a9: Waiting
+54b545e4942c: Verifying Checksum
+54b545e4942c: Download complete
+54b545e4942c: Pull complete
+c03ceb2600a9: Verifying Checksum
+c03ceb2600a9: Download complete
+c03ceb2600a9: Pull complete
+Digest: sha256:0cbe213b5d3162c78733f955912602747d1e0d3b6e1bf27ee63e4e18e3005977
+Status: Downloaded newer image for ghcr.io/chains-project/breaking-updates:ff8b5b61548d50cf60b77784a181e917cb35033b-breaking
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] junit-quickcheck                                                   [pom]
+[INFO] junit-quickcheck-core                                              [jar]
+[INFO] junit-quickcheck-generators                                        [jar]
+[INFO] junit-quickcheck-guava                                             [jar]
+[INFO] junit-quickcheck-examples                                          [jar]
+[INFO] 
+[INFO] --------------------< com.pholser:junit-quickcheck >--------------------
+[INFO] Building junit-quickcheck 1.1-SNAPSHOT                             [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ junit-quickcheck ---
+[INFO] 
+[INFO] --- enforcer:1.2:enforce (enforce-maven) @ junit-quickcheck ---
+[INFO] 
+[INFO] -----------------< com.pholser:junit-quickcheck-core >------------------
+[INFO] Building junit-quickcheck-core 1.1-SNAPSHOT                        [2/5]
+[INFO]   from core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ junit-quickcheck-core ---
+[INFO] Deleting /junit-quickcheck/core/target
+[INFO] 
+[INFO] --- enforcer:1.2:enforce (enforce-maven) @ junit-quickcheck-core ---
+[INFO] 
+[INFO] --- jacoco:0.8.7:prepare-agent (default-prepare-agent) @ junit-quickcheck-core ---
+[INFO] argLine set to -javaagent:/root/.m2/repository/org/jacoco/org.jacoco.agent/0.8.7/org.jacoco.agent-0.8.7-runtime.jar=destfile=/junit-quickcheck/core/target/jacoco.exec
+[INFO] 
+[INFO] --- resources:3.3.0:resources (default-resources) @ junit-quickcheck-core ---
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- compiler:3.8.1:compile (default-compile) @ junit-quickcheck-core ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 73 source files to /junit-quickcheck/core/target/classes
+[INFO] /junit-quickcheck/core/src/main/java/com/pholser/junit/quickcheck/internal/Reflection.java: Some input files use or override a deprecated API.
+[INFO] /junit-quickcheck/core/src/main/java/com/pholser/junit/quickcheck/internal/Reflection.java: Recompile with -Xlint:deprecation for details.
+[INFO] /junit-quickcheck/core/src/main/java/com/pholser/junit/quickcheck/generator/Generators.java: Some input files use unchecked or unsafe operations.
+[INFO] /junit-quickcheck/core/src/main/java/com/pholser/junit/quickcheck/generator/Generators.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] >>> pmd:3.15.0:cpd-check (default) > :cpd @ junit-quickcheck-core >>>
+[INFO] 
+[INFO] --- pmd:3.15.0:cpd (cpd) @ junit-quickcheck-core ---
+[WARNING] Unable to locate Source XRef to link to - DISABLED
+[WARNING] Unable to locate Source XRef to link to - DISABLED
+[INFO] PMD version: 6.38.0
+[INFO] 
+[INFO] <<< pmd:3.15.0:cpd-check (default) < :cpd @ junit-quickcheck-core <<<
+[INFO] 
+[INFO] 
+[INFO] --- pmd:3.15.0:cpd-check (default) @ junit-quickcheck-core ---
+[INFO] PMD version: 6.38.0
+[INFO] 
+[INFO] 
+[INFO] --- resources:3.3.0:testResources (default-testResources) @ junit-quickcheck-core ---
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- compiler:3.8.1:testCompile (default-testCompile) @ junit-quickcheck-core ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 128 source files to /junit-quickcheck/core/target/test-classes
+[INFO] /junit-quickcheck/core/src/test/java/com/pholser/junit/quickcheck/internal/ListsTest.java: /junit-quickcheck/core/src/test/java/com/pholser/junit/quickcheck/internal/ListsTest.java uses unchecked or unsafe operations.
+[INFO] /junit-quickcheck/core/src/test/java/com/pholser/junit/quickcheck/internal/ListsTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /junit-quickcheck/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java:[20,27] package org.mockito.runners does not exist
+[ERROR] /junit-quickcheck/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java:[22,10] cannot find symbol
+  symbol: class MockitoJUnitRunner
+[INFO] 2 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for junit-quickcheck 1.1-SNAPSHOT:
+[INFO] 
+[INFO] junit-quickcheck ................................... SUCCESS [  0.350 s]
+[INFO] junit-quickcheck-core .............................. FAILURE [  4.495 s]
+[INFO] junit-quickcheck-generators ........................ SKIPPED
+[INFO] junit-quickcheck-guava ............................. SKIPPED
+[INFO] junit-quickcheck-examples .......................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.991 s
+[INFO] Finished at: 2026-08-24T12:51:41Z
+[INFO] ------------------------------------------------------------------------
+[WARNING] 
+[WARNING] Plugin validation issues were detected in 5 plugin(s)
+[WARNING] 
+[WARNING]  * org.jacoco:jacoco-maven-plugin:0.8.7
+[WARNING]  * org.apache.maven.plugins:maven-compiler-plugin:3.8.1
+[WARNING]  * org.apache.maven.plugins:maven-pmd-plugin:3.15.0
+[WARNING]  * org.apache.maven.plugins:maven-enforcer-plugin:1.2
+[WARNING]  * org.apache.maven.plugins:maven-resources-plugin:3.3.0
+[WARNING] 
+[WARNING] For more or less details, use 'maven.plugin.validation' property with one of the values (case insensitive): [BRIEF, DEFAULT, VERBOSE]
+[WARNING] 
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project junit-quickcheck-core: Compilation failure: Compilation failure: 
+[ERROR] /junit-quickcheck/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java:[20,27] package org.mockito.runners does not exist
+[ERROR] /junit-quickcheck/core/src/test/java/com/pholser/junit/quickcheck/internal/generator/RegisterGeneratorsByConventionTest.java:[22,10] cannot find symbol
+[ERROR]   symbol: class MockitoJUnitRunner
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :junit-quickcheck-core

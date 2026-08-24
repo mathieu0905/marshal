@@ -1,0 +1,109 @@
+[INFO] Scanning for projects...
+[INFO] Artifact com.fasterxml.jackson:jackson-bom:pom:2.12.6.20220326 is present in the local repository, but cached from a remote repository ID that is unavailable in current build context, verifying that is downloadable from [central (https://repo.maven.apache.org/maven2, default, releases)]
+[INFO] Artifact com.fasterxml.jackson:jackson-bom:pom:2.12.6.20220326 is present in the local repository, but cached from a remote repository ID that is unavailable in current build context, verifying that is downloadable from [central (https://repo.maven.apache.org/maven2, default, releases)]
+[INFO] Inspecting build with total of 8 modules...
+[INFO] Installing Nexus Staging features:
+[INFO]   ... total of 8 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] avans :: parent                                                    [pom]
+[INFO] avans                                                              [jar]
+[INFO] avans-jmh                                                          [jar]
+[INFO] avans-freemarker                                                   [jar]
+[INFO] avans-tinyvalidator                                                [jar]
+[INFO] avans-session                                                      [jar]
+[INFO] avans-session-spymemcached                                         [jar]
+[INFO] avans-setup                                                        [jar]
+[INFO] Artifact org.apache.maven.plugins:maven-plugins:pom:27 is present in the local repository, but cached from a remote repository ID that is unavailable in current build context, verifying that is downloadable from [central (https://repo.maven.apache.org/maven2, default, releases)]
+[INFO] Artifact org.apache.maven.plugins:maven-plugins:pom:27 is present in the local repository, but cached from a remote repository ID that is unavailable in current build context, verifying that is downloadable from [central (https://repo.maven.apache.org/maven2, default, releases)]
+[INFO] 
+[INFO] -----------------------< me.geso:avans-project >------------------------
+[INFO] Building avans :: parent 2.5.1-SNAPSHOT                            [1/8]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans-project ---
+[INFO] 
+[INFO] ---------------------------< me.geso:avans >----------------------------
+[INFO] Building avans 2.5.1-SNAPSHOT                                      [2/8]
+[INFO]   from avans/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans ---
+[INFO] me.geso:avans:jar:2.5.1-SNAPSHOT
+[INFO] \- com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile
+[INFO] 
+[INFO] -------------------------< me.geso:avans-jmh >--------------------------
+[INFO] Building avans-jmh 2.5.1-SNAPSHOT                                  [3/8]
+[INFO]   from avans-jmh/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans-jmh ---
+[INFO] me.geso:avans-jmh:jar:2.5.1-SNAPSHOT
+[INFO] \- me.geso:avans:jar:2.5.1-SNAPSHOT:compile
+[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile
+[INFO] 
+[INFO] ----------------------< me.geso:avans-freemarker >----------------------
+[INFO] Building avans-freemarker 2.5.1-SNAPSHOT                           [4/8]
+[INFO]   from avans-freemarker/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans-freemarker ---
+[INFO] me.geso:avans-freemarker:jar:2.5.1-SNAPSHOT
+[INFO] \- me.geso:avans:jar:2.5.1-SNAPSHOT:compile
+[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile
+[INFO] 
+[INFO] --------------------< me.geso:avans-tinyvalidator >---------------------
+[INFO] Building avans-tinyvalidator 2.5.1-SNAPSHOT                        [5/8]
+[INFO]   from avans-tinyvalidator/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans-tinyvalidator ---
+[INFO] me.geso:avans-tinyvalidator:jar:2.5.1-SNAPSHOT
+[INFO] \- me.geso:mech2:jar:0.3.0:test
+[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile
+[INFO] 
+[INFO] -----------------------< me.geso:avans-session >------------------------
+[INFO] Building avans-session 2.5.1-SNAPSHOT                              [6/8]
+[INFO]   from avans-session/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans-session ---
+[INFO] me.geso:avans-session:jar:2.5.1-SNAPSHOT
+[INFO] \- me.geso:avans:jar:2.5.1-SNAPSHOT:compile
+[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile
+[INFO] 
+[INFO] -----------------< me.geso:avans-session-spymemcached >-----------------
+[INFO] Building avans-session-spymemcached 2.5.1-SNAPSHOT                 [7/8]
+[INFO]   from avans-session-spymemcached/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans-session-spymemcached ---
+[INFO] me.geso:avans-session-spymemcached:jar:2.5.1-SNAPSHOT
+[INFO] \- me.geso:avans:jar:2.5.1-SNAPSHOT:compile
+[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile
+[INFO] 
+[INFO] ---------------------< me.geso.avans:avans-setup >----------------------
+[INFO] Building avans-setup 2.5.1-SNAPSHOT                                [8/8]
+[INFO]   from avans-setup/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ avans-setup ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for avans :: parent 2.5.1-SNAPSHOT:
+[INFO] 
+[INFO] avans :: parent .................................... SUCCESS [  0.453 s]
+[INFO] avans .............................................. SUCCESS [ 14.466 s]
+[INFO] avans-jmh .......................................... SUCCESS [  6.618 s]
+[INFO] avans-freemarker ................................... SUCCESS [  1.204 s]
+[INFO] avans-tinyvalidator ................................ SUCCESS [  0.663 s]
+[INFO] avans-session ...................................... SUCCESS [  0.008 s]
+[INFO] avans-session-spymemcached ......................... SUCCESS [  2.441 s]
+[INFO] avans-setup ........................................ SUCCESS [  0.011 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  32.021 s
+[INFO] Finished at: 2026-08-24T19:39:48+08:00
+[INFO] ------------------------------------------------------------------------
