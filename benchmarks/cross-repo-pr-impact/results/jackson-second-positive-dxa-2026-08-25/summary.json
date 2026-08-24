@@ -1,0 +1,55 @@
+{
+  "evaluated_at": "2026-08-25",
+  "candidate_frame": {
+    "dependency": "com.fasterxml.jackson.core:jackson-databind",
+    "published_records": 14,
+    "independent_root_repositories": 12
+  },
+  "accepted_anchor": {
+    "source_repository": "FasterXML/jackson-databind",
+    "source_parent": "a8d8ec0e92b6220381a8eae38d4bf8765c7c9ca1",
+    "source_behavior_commit": "2897aa00e04e3a28aef45f5b485001db161e2e2c",
+    "behavior": "Object.class receives a cached BasicBeanDescription and bypasses per-mapper mix-in introspection",
+    "target_repository": "RWS/dxa-web-application-java",
+    "target_base_commit": "6bedc440f72e5cee768db367d59f5bb26e4512e8",
+    "maintainer_repair_commits": [
+      "ef4c26df93c2ec02ffb45752c8e23015b57ccd85",
+      "8b5d02ba3dfe1925ee8482eb69f0560686f790b4"
+    ],
+    "product_path_test": "com.sdl.dxa.JacksonObjectMixinCompatibilityTest#shouldDeserializePolymorphicExtensionData",
+    "arms": {
+      "A0": {
+        "result": "pass",
+        "tests": 1,
+        "source_input": "2.11.0-a8d8ec0e"
+      },
+      "A1": {
+        "result": "fail",
+        "tests": 1,
+        "failures": 1,
+        "source_input": "2.11.0-2897aa00e",
+        "signature": "EntityModelData polymorphic extension value remains untyped at JacksonObjectMixinCompatibilityTest.java:24"
+      },
+      "A2": {
+        "result": "pass",
+        "tests": 1,
+        "source_input": "2.11.0-2897aa00e",
+        "repair_scope": "maintainer product ObjectMapper introspector plus JsonPojo marker and mix-in registration"
+      }
+    },
+    "replay_environment": "Java 11 and Maven 3.9.8; Jackson Core and Annotations remain 2.10.5 in all arms"
+  },
+  "original_fse_module_test_boundary": {
+    "test": "com.sdl.dxa.api.datamodel.DeserializationTest#shouldDeserializePageModel",
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "fail",
+    "interpretation": "The strict fail-to-pass result is established on the maintainer product ObjectMapper path, not the original standalone module command."
+  },
+  "accepted_chain_independent_positive_relations": 1,
+  "positive_target_repositories": 1,
+  "qualified_negative_relations": 0,
+  "accepted_a3_cases": 0,
+  "package_status": "accepted_as_high-evidence-causal-anchor_only",
+  "complete_flagship_package_increment": 0
+}

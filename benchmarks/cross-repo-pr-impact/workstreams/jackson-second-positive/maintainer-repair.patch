@@ -1,0 +1,303 @@
+diff --git a/dxa-framework/dxa-common-api/src/main/java/com/sdl/dxa/DxaSpringInitialization.java b/dxa-framework/dxa-common-api/src/main/java/com/sdl/dxa/DxaSpringInitialization.java
+index 3245c02a..b8a5cdee 100644
+--- a/dxa-framework/dxa-common-api/src/main/java/com/sdl/dxa/DxaSpringInitialization.java
++++ b/dxa-framework/dxa-common-api/src/main/java/com/sdl/dxa/DxaSpringInitialization.java
+@@ -2,16 +2,23 @@ package com.sdl.dxa;
+ 
+ import com.fasterxml.jackson.annotation.JsonInclude;
+ import com.fasterxml.jackson.databind.DeserializationFeature;
++import com.fasterxml.jackson.databind.JavaType;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+ import com.fasterxml.jackson.databind.SerializationFeature;
++import com.fasterxml.jackson.databind.cfg.MapperConfig;
++import com.fasterxml.jackson.databind.introspect.BasicBeanDescription;
++import com.fasterxml.jackson.databind.introspect.BasicClassIntrospector;
++import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
+ import com.fasterxml.jackson.databind.ser.FilterProvider;
+ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
++import com.fasterxml.jackson.databind.type.SimpleType;
+ import com.fasterxml.jackson.databind.util.StdDateFormat;
+ import com.fasterxml.jackson.datatype.joda.JodaModule;
+ import com.sdl.dxa.api.datamodel.DataModelSpringConfiguration;
+ import com.sdl.dxa.api.datamodel.json.Polymorphic;
+ import com.sdl.dxa.api.datamodel.json.PolymorphicObjectMixin;
++import com.sdl.dxa.api.datamodel.model.JsonPojo;
+ import com.sdl.webapp.common.api.contextengine.ContextEngine;
+ import com.sdl.webapp.common.api.serialization.json.DxaViewModelJsonChainFilter;
+ import com.sdl.webapp.common.util.ApplicationContextHolder;
+@@ -166,7 +173,25 @@ public class DxaSpringInitialization {
+     @Bean
+     @Primary
+     public ObjectMapper objectMapper() {
+-        ObjectMapper objectMapper = new ObjectMapper();
++        ObjectMapper objectMapper = new ObjectMapper() {
++            // this is working replacements for Jackson 2.11 and later
++            protected ClassIntrospector defaultClassIntrospector() {
++                return new BasicClassIntrospector() {
++                    @Override
++                    public BasicBeanDescription forClassAnnotations(MapperConfig<?> config,
++                                                                    JavaType type,
++                                                                    MixInResolver r) {
++
++                        if (!type.equals(SimpleType.constructUnsafe(Object.class))) {
++                            return super.forClassAnnotations(config, type, r);
++                        }
++                        return BasicBeanDescription.forOtherUse(config,
++                                type,
++                                _resolveAnnotatedClass(config, type, r));
++                    }
++                };
++            }
++        };
+ 
+         objectMapper.registerModule(new JodaModule());
+         objectMapper.setFilterProvider(jsonFilterProvider());
+@@ -187,7 +212,14 @@ public class DxaSpringInitialization {
+                         throw new RuntimeException("Class not found while mapping model data to typeIDs. Should never happen.", e);
+                     }
+                 });
++
++        // this is not working for Jackson 2.11
++        // (see the link https://github.com/FasterXML/jackson-databind/blob/
++        // 9cfcf8da7e94fa37c814ac8f38a50c80951726ee/src/main/
++        // java/com/fasterxml/jackson/databind/introspect/BasicClassIntrospector.java#L218)
+         objectMapper.addMixIn(Object.class, PolymorphicObjectMixin.class);
++        // so there is substitute for that case
++        objectMapper.addMixIn(JsonPojo.class, PolymorphicObjectMixin.class);
+         traceBeanInitialization(objectMapper);
+         return objectMapper;
+     }
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/DataModelSpringConfiguration.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/DataModelSpringConfiguration.java
+index 04434f46..8bae45af 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/DataModelSpringConfiguration.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/DataModelSpringConfiguration.java
+@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
+ import com.fasterxml.jackson.datatype.joda.JodaModule;
+ import com.sdl.dxa.api.datamodel.json.Polymorphic;
+ import com.sdl.dxa.api.datamodel.json.PolymorphicObjectMixin;
++import com.sdl.dxa.api.datamodel.model.JsonPojo;
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+@@ -51,6 +52,7 @@ public class DataModelSpringConfiguration {
+                     }
+                 });
+         objectMapper.addMixIn(Object.class, PolymorphicObjectMixin.class);
++        objectMapper.addMixIn(JsonPojo.class, PolymorphicObjectMixin.class);
+ 
+         return objectMapper;
+     }
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/BinaryContentData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/BinaryContentData.java
+index 561b7c22..e43f4db8 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/BinaryContentData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/BinaryContentData.java
+@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
+ import com.google.common.base.Objects;
+ 
+ @JsonTypeName
+-public class BinaryContentData {
++public class BinaryContentData implements JsonPojo {
+     public BinaryContentData() {
+     }
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ComponentTemplateData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ComponentTemplateData.java
+index 3251c88a..042103c9 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ComponentTemplateData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ComponentTemplateData.java
+@@ -6,7 +6,7 @@ import com.sdl.dxa.api.datamodel.Constants;
+ import org.joda.time.DateTime;
+ 
+ @JsonTypeName
+-public class ComponentTemplateData {
++public class ComponentTemplateData implements JsonPojo {
+     public ComponentTemplateData() {
+     }
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ContentModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ContentModelData.java
+index c10fa4d6..a8b2ae9e 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ContentModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ContentModelData.java
+@@ -18,7 +18,7 @@ import static com.sdl.dxa.api.datamodel.Constants.DOLLAR_TYPE;
+  */
+ @JsonTypeName
+ public class ContentModelData extends HashMap<String, Object>
+-        implements Map<String, Object>, CanGetAndCast<String>, CanWrapContentAndMetadata {
++        implements Map<String, Object>, CanGetAndCast<String>, CanWrapContentAndMetadata, JsonPojo {
+ 
+     //region Constructors matching super and copy-constructor
+     public ContentModelData(int initialCapacity, float loadFactor) {
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/EntityModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/EntityModelData.java
+index 91edf52a..19d6dc2f 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/EntityModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/EntityModelData.java
+@@ -21,7 +21,7 @@ import java.util.Map;
+ @NoArgsConstructor
+ @Data
+ @Accessors(chain = true)
+-public class EntityModelData extends ViewModelData implements CanWrapContentAndMetadata {
++public class EntityModelData extends ViewModelData implements CanWrapContentAndMetadata, JsonPojo {
+ 
+     private String id;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ExternalContentData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ExternalContentData.java
+index 0ab819da..541b4db9 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ExternalContentData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ExternalContentData.java
+@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
+ import com.google.common.base.Objects;
+ 
+ @JsonTypeName
+-public class ExternalContentData {
++public class ExternalContentData implements JsonPojo {
+     public ExternalContentData() {
+     }
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/KeywordModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/KeywordModelData.java
+index ca6d72ed..afbbab0b 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/KeywordModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/KeywordModelData.java
+@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
+ @NoArgsConstructor
+ @Accessors(chain = true)
+ @ToString(callSuper = true)
+-public class KeywordModelData extends ViewModelData {
++public class KeywordModelData extends ViewModelData implements JsonPojo {
+ 
+     private String id;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/MvcModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/MvcModelData.java
+index 15a58a9b..caae2f29 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/MvcModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/MvcModelData.java
+@@ -16,7 +16,7 @@ import java.util.Map;
+ @Getter
+ @Setter
+ @EqualsAndHashCode
+-public class MvcModelData {
++public class MvcModelData implements JsonPojo {
+ 
+     private String actionName;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageModelData.java
+index 76ab713b..cd8b0aa3 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageModelData.java
+@@ -20,7 +20,7 @@ import java.util.Map;
+ @AllArgsConstructor
+ @Accessors(chain = true)
+ @ToString(callSuper = true)
+-public class PageModelData extends ViewModelData {
++public class PageModelData extends ViewModelData implements JsonPojo {
+ 
+     private String id;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageTemplateData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageTemplateData.java
+index d4023bb5..4971c277 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageTemplateData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/PageTemplateData.java
+@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
+ @Data
+ @Accessors(chain = true)
+ @JsonTypeName
+-public class PageTemplateData {
++public class PageTemplateData implements JsonPojo {
+ 
+     private String id;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RegionModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RegionModelData.java
+index 8895ba12..7f821089 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RegionModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RegionModelData.java
+@@ -19,7 +19,7 @@ import java.util.Map;
+ @Accessors(chain = true)
+ @EqualsAndHashCode(callSuper = true)
+ @JsonTypeName
+-public class RegionModelData extends ViewModelData {
++public class RegionModelData extends ViewModelData implements JsonPojo {
+ 
+     private String name;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RichTextData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RichTextData.java
+index 67449152..a875b817 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RichTextData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/RichTextData.java
+@@ -17,7 +17,7 @@ import java.util.List;
+ @Data
+ @AllArgsConstructor
+ @Accessors(chain = true)
+-public class RichTextData implements DelegatesToList<Object>, CanGetAndCast<Integer> {
++public class RichTextData implements DelegatesToList<Object>, CanGetAndCast<Integer>, JsonPojo {
+ 
+     private List<Object> fragments;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/SitemapItemModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/SitemapItemModelData.java
+index 6a57f94f..da3bc77c 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/SitemapItemModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/SitemapItemModelData.java
+@@ -29,7 +29,7 @@ import java.util.TreeSet;
+ @Accessors(chain = true)
+ @JsonTypeName
+ @Polymorphic
+-public class SitemapItemModelData implements Comparable<SitemapItemModelData> {
++public class SitemapItemModelData implements Comparable<SitemapItemModelData>, JsonPojo {
+ 
+     @JsonProperty("Id")
+     private String id;
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/TaxonomyNodeModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/TaxonomyNodeModelData.java
+index 1fdee797..145f6a3f 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/TaxonomyNodeModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/TaxonomyNodeModelData.java
+@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
+ @Data
+ @Accessors(chain = true)
+ @JsonTypeName
+-public class TaxonomyNodeModelData extends SitemapItemModelData {
++public class TaxonomyNodeModelData extends SitemapItemModelData implements JsonPojo {
+ 
+     @JsonProperty("Key")
+     private String key;
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ViewModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ViewModelData.java
+index 826b651e..9610f3c7 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ViewModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/ViewModelData.java
+@@ -21,7 +21,8 @@ import java.util.Map;
+ @AllArgsConstructor
+ @NoArgsConstructor
+ @ToString
+-public abstract class ViewModelData implements CanCopyValues<ViewModelData>, CanWrapContentAndMetadata {
++public abstract class ViewModelData
++        implements CanCopyValues<ViewModelData>, CanWrapContentAndMetadata, JsonPojo {
+ 
+     private String schemaId;
+ 
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/unknown/UnknownModelData.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/unknown/UnknownModelData.java
+index a5b8d6ce..71511a54 100644
+--- a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/unknown/UnknownModelData.java
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/unknown/UnknownModelData.java
+@@ -3,13 +3,14 @@ package com.sdl.dxa.api.datamodel.model.unknown;
+ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+ import com.google.common.base.Objects;
++import com.sdl.dxa.api.datamodel.model.JsonPojo;
+ 
+ /**
+  * Handler of any unknown entity-level class. Basically represents any data of a class that is not known with a JSON string as it is.
+  */
+ @JsonDeserialize(using = UnknownModelDataDeserializer.class)
+ @JsonSerialize(using = UnknownModelDataSerializer.class)
+-public class UnknownModelData {
++public class UnknownModelData implements JsonPojo {
+     public UnknownModelData(String content) {
+         this.content = content;
+     }
+diff --git a/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/JsonPojo.java b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/JsonPojo.java
+new file mode 100644
+index 00000000..624057cb
+--- /dev/null
++++ b/dxa-framework/dxa-data-model/src/main/java/com/sdl/dxa/api/datamodel/model/JsonPojo.java
+@@ -0,0 +1,4 @@
++package com.sdl.dxa.api.datamodel.model;
++
++public interface JsonPojo {
++}
