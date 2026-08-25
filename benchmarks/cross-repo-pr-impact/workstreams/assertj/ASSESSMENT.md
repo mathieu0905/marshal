@@ -2,7 +2,7 @@
 
 ## 当前结论
 
-AssertJ Core 目前形成了两个强因果正例和两个限定合同负例，但还不是正式项目包。三轮兼容变化筛选都未满足 A3：3.24.1 到 3.24.2 只有一个消费仓执行到真实行为变化，3.21.0 到 3.22.0 有一个消费仓前臂失败，3.23.1 到 3.24.0 虽然四仓两侧全通过，但行为修复同样没有四仓共同覆盖。因此当前正式接受数为 0，不能用普通绿色构建或等价重构补齐。
+AssertJ Core 原有 3.22.0 到 3.23.0 闭集形成了两个强因果正例和两个限定合同负例，但还不是正式项目包。三轮兼容变化筛选都未满足 A3：3.24.1 到 3.24.2 只有一个消费仓执行到真实行为变化，3.21.0 到 3.22.0 有一个消费仓前臂失败，3.23.1 到 3.24.0 虽然四仓两侧全通过，但行为修复同样没有四仓共同覆盖。因此当前完整项目包接受数仍为 0，不能用普通绿色构建或等价重构补齐。另有一条来自 FSE 2024 搜索框的 AssertJ 3.19.0 到 Brave 单仓正关系，版本合同和消费仓均不同，只作为独立三臂锚点，不拼入原闭集。
 
 ## 完整失败候选框
 
@@ -18,6 +18,8 @@ BUMP 固定版本 `324d5513aa5ca40b5cb32de5b816a58fa60bd7bb` 中共有 12 条 As
 
 搜索框由 `collect_bump_candidate_frame.sh` 生成，原始记录保存在 `bump-candidate-frame.jsonl`。这些记录只是失败线索，不自动产生标签。
 
+FSE 2024 另有 8 条 AssertJ Core 记录，折叠后是 6 个可辨识根仓和 1 条无法恢复的历史；其中两个 Brave 目录提示属于同一迁移历史，只计一条关系。本轮逐条恢复公开历史后，JTransfo、Hiccup、Bundler 和 XChange Stream 都没有在破坏版本下的维护者 A2，AssertJ Guava 跳过 3.21.0 后由上游后续版本恢复，WampSpring 的目标历史无法恢复；只有 Brave 进入三臂。逐条裁决保存在 `fse-candidate-audit.jsonl`。
+
 ## 两个强因果正例
 
 统一破坏变化为 AssertJ Core 3.22.0 到 3.23.0。两个消费仓都保留了基线、真实依赖更新失败和维护者实际合并的精确恢复：
@@ -28,6 +30,14 @@ BUMP 固定版本 `324d5513aa5ca40b5cb32de5b816a58fa60bd7bb` 中共有 12 条 As
 | AssertJ Vavr | `edced3fc51e16f17586c5ebc181705b0d5fc1934`，694 项通过 | `1cc7071371953a7880c2c2c3a5a32c36af7f88f9`，失败 | `d330a1528031a8e68795d3f9158a5527e0e9d535`，694 项通过 | 3.23.0 移除内部 `org.assertj.core.internal.bytebuddy.*`；PR 181 改用公开 `net.bytebuddy.*` |
 
 Vavr 使用 `mvn clean test`，因为本机 Java 11 安装没有 `javadoc` 可执行文件。此前 `verify` 的 694 项测试已全部通过，只在 Javadoc 打包阶段失败，因此没有把环境失败误记为产品失败。脚本与原始日志位于 `run_positive_screening.sh` 和 `results/assertj-positive-screening-2026-08-24/`。
+
+## FSE 2024 补充单正例
+
+FSE 候选 `fse2024-behavioral-0385` 指向 `openzipkin/brave` 的 `brave-tests`。恢复后的源破坏提交是 AssertJ Core `66e784987234e9c649e043f631ef984036ee9b30`：它在 JUnit 存在时开始用 `ComparisonFailure` 表示 expected/actual，因而会把比较详情追加到自定义失败消息。Brave 的原生 `IntegrationTestSpanHandlerTest#goodMessageForOrphanedSpan` 原先要求消息以提示文本结尾，3.19.0 下新增的比较详情使该合同失败。维护者提交 `eac0ffa658c7c708ce26e306f171a4fc04bef9ca` 把这一处 `hasMessageEndingWith` 改为 `hasMessageContaining`。
+
+本轮在 Java 11 上执行原生测试方法，使用发布的 `brave-tests:5.16.0` 作为被测实现；发布标签到消费基线 `5e15c20e7d79a0d032f5606c1b3684277bd11d7d` 之间，该测试及被测 `IntegrationTestSpanHandler` 均无差异。A0 使用 AssertJ 3.18.1，1 项通过；A1 只换成 3.19.0，1 项以 FSE 记录的同一“消息不再以提示文本结尾”签名失败；A2 保持 3.19.0，只取维护者提交后的原生测试文件，1 项恢复。脚本和日志分别位于 `run_brave_fse_replay.sh` 与 `results/assertj-3.19-brave-fse-2026-08-25/`。
+
+该关系接纳为单仓三臂正例，但不升格为 AssertJ 项目包：A2 行来自一次大范围 Java LTS 构建迁移提交，本轮只隔离重放与此合同直接相关的维护者行；它不提供同版本合同的限定负例或 A3，也不与 3.22.0 到 3.23.0 的 Guava/Vavr/DB/Examples 闭集混合计数。
 
 ## 两个限定合同负例
 

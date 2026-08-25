@@ -1,0 +1,39 @@
+From f4cb14728f13629972a0ea76bb3dc0705a735fa8 Mon Sep 17 00:00:00 2001
+From: Douglas Crockford <douglas@crockford.com>
+Date: Mon, 9 May 2011 10:08:10 -0700
+Subject: [PATCH] Make JSONObject.getString reject non-String values
+
+This is the behavior-bearing JSONObject hunk from upstream commit
+f4cb14728f13629972a0ea76bb3dc0705a735fa8. The upstream commit also changes
+JSONArray.getString and performs unrelated formatting.
+
+diff --git a/JSONObject.java b/JSONObject.java
+index 268a726..a2b3edf 100755
+--- a/JSONObject.java
++++ b/JSONObject.java
+@@ -624,17 +624,21 @@ public class JSONObject {
+ 
+     /**
+      * Get the string associated with a key.
+      *
+      * @param key   A key string.
+      * @return      A string which is the value.
+-     * @throws   JSONException if the key is not found.
++     * @throws   JSONException if there is no string value for the key.
+      */
+     public String getString(String key) throws JSONException {
+         Object object = get(key);
+-        return object == NULL ? null : object.toString();
++        if (object instanceof String) {
++            return (String)object;
++        }
++        throw new JSONException("JSONObject[" + quote(key) +
++            "] not a string.");
+     }
+ 
+ 
+     /**
+      * Determine if the JSONObject contains a specific key.
+      * @param key   A key string.
+-- 
+2.43.0

@@ -1,0 +1,43 @@
+{
+  "observed_at": "2026-08-25",
+  "repository": "stleary/JSON-java",
+  "github_repository_id": 1187853,
+  "published_versions": {
+    "20090211": {
+      "central_binary_available": true,
+      "central_sources_available": false,
+      "exact_git_revision": null,
+      "boundary": "The binary predates the recoverable upstream Git history. A direct runtime probe shows JSONObject.getString coercing a parsed Long with toString()."
+    },
+    "20090911": {
+      "central_binary_available": false,
+      "listed_in_central_metadata": false,
+      "exact_git_revision": null,
+      "boundary": "This FSE previous-version value is not a published org.json:json version in current Maven Central metadata and cannot be used as a recoverable source arm."
+    },
+    "20131018": {
+      "central_binary_available": true,
+      "central_sources_available": true,
+      "exact_git_revision": "34f327e6d070568256b314479be158589d391891",
+      "commit_date": "2013-06-17T17:10:27-07:00",
+      "source_match": "All 17 Java files in the Central source JAR exactly match the commit after normalizing CRLF line endings."
+    }
+  },
+  "isolated_mechanism": {
+    "commit": "f4cb14728f13629972a0ea76bb3dc0705a735fa8",
+    "parent": "dced076cd4db0bd86df36c7eb528df5f1543de7e",
+    "commit_date": "2011-05-09T10:08:10-07:00",
+    "subject": ".getString(...) now throws if there is no property or if it is not a string",
+    "contained_in_20131018": true,
+    "path": "JSONObject.java",
+    "method": "JSONObject.getString(String)",
+    "before": "Return null for JSONObject.NULL; otherwise return object.toString().",
+    "after": "Return only actual String values; throw JSONException for numbers and every other non-String value."
+  },
+  "runtime_probe": {
+    "input": "{\"value\":12312313121}",
+    "parsed_value_class": "java.lang.Long",
+    "20090211": "getString returns 12312313121",
+    "20131018": "getString throws org.json.JSONException: JSONObject[\"value\"] not a string."
+  }
+}

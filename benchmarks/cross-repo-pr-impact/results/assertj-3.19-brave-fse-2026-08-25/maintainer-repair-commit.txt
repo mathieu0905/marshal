@@ -1,0 +1,21 @@
+commit eac0ffa658c7c708ce26e306f171a4fc04bef9ca
+Author:     Crypt Keeper <64215+codefromthecrypt@users.noreply.github.com>
+AuthorDate: Sun Dec 17 07:31:21 2023 +0700
+Commit:     GitHub <noreply@github.com>
+CommitDate: Sun Dec 17 07:31:21 2023 +0700
+
+    build: updates to build and test with LTS JDKs (#1385)
+    
+    This updates to build and test with LTS JDKs, using the same project setup as zipkin and zipkin-reporter
+    
+    * moves off takari to normal maven wrapper, and updates all plugin versions
+    * removes retrolambda which is incompatible with recent JDKs
+      * ports java 6 code to java 6 syntax
+      * test release profile with JDK 11, which is last to compile java 1.6.
+    * adds opens configuration for old spring and grpc integration tests
+    * moves off abandoned powermock for mockito
+      * bytebuddy no longer supports mocking System, so had to refactor code around currentTime
+    * updates GitHub Actions to build on first and last LTS (11, 21)
+      * adds javadoc tests to ensure it will build prior to running deploy job
+    
+    Signed-off-by: Adrian Cole <adrian@tetrate.io>
