@@ -30,4 +30,4 @@ E2-009 is a test-expectation adaptation rather than a production-code repair. It
 - The proposed evaluation and holdout labels are not blind: mechanisms, repairs, and labels remain visible in the index. Every case therefore has `blind_evaluation_eligible=false`.
 - Two Crater repairs establish repair efficacy but were unmerged at the observation time; they do not establish maintainer adoption.
 - The validator and generated manifests are in the same implementation package. The validator checks independent retained execution summaries/logs, but the generated index is not independent evidence for itself.
-- A durable Git revision has not been created by this task. Until the user authorizes staging and commit, acceptance must name the workspace state rather than a commit ID.
+- The dataset and validator are committed to Git as of commit `f6bcb0c` ("Add machine-verified 50-case E2 dataset"). Acceptance anchors to that revision; documentation errata that postdate it (this note and the quiet-mode log clarification in `new-replays/README.md`) do not alter the machine-verified evidence.
