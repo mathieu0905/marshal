@@ -1,0 +1,135 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0668",
+      "fse2024-behavioral-0671",
+      "fse2024-behavioral-0672",
+      "fse2024-behavioral-0673",
+      "fse2024-behavioral-0674"
+    ],
+    "raw_candidate_records": 5,
+    "failure_observations": 5,
+    "unique_root_repositories": 5,
+    "exact_target_revisions_recorded": 0,
+    "shared_root_cause": {
+      "message": "SpringJUnit4ClassRunner requires JUnit 4.12 or higher.",
+      "location": "org.springframework.test.context.junit4.SpringJUnit4ClassRunner.<clinit>:102",
+      "verified_full_stack_count": 5
+    }
+  },
+  "source_repository": {
+    "repository": "spring-projects/spring-framework",
+    "last_passing_probe": {
+      "version": "4.2.9.RELEASE",
+      "tag_object": "f213d2c3a3ea67dbd68180efbc41035a27444c10",
+      "tag_commit": "2cc3b278024ca45a72bc847a9457fc138424b16c"
+    },
+    "breaking_probe": {
+      "version": "4.3.0.RELEASE",
+      "tag_object": "e1f37db1315171cedf74bac3caa46617c0c4ab8c",
+      "tag_commit": "b49d801f241fb8088a5b7514db93fda32c58731c"
+    },
+    "isolated_change": {
+      "commit": "66562f258917fa448db96787107ba6574359040d",
+      "commit_date": "2015-12-19T18:43:59+01:00",
+      "subject": "Require JUnit 4.12 or higher in the TestContext framework",
+      "issue": "SPR-13275",
+      "changed_paths": 11,
+      "mechanism": "SpringJUnit4ClassRunner static initialization now checks for org.junit.internal.Throwables and a compatible withRules method, raising the published message when JUnit is older than 4.12.",
+      "contained_in_last_passing_probe": false,
+      "contained_in_breaking_probe": true
+    }
+  },
+  "target_repositories": [
+    {
+      "repository": "opencredo/opencredo-esper",
+      "default_branch": "master",
+      "remote_head": "bbc202609f06f44c6b2f029e8ae09813b7ea2e05",
+      "remote_head_date": "2022-08-31T11:12:22+01:00",
+      "reachable_ref_count": 5,
+      "reachable_commit_count": 92,
+      "retained_dependency_shape": {
+        "spring": "3.1.2.RELEASE",
+        "junit": "4.10"
+      },
+      "dependency_changes_declaring_spring_test_4_3_0": 0,
+      "dependency_changes_declaring_junit_4_12": 0,
+      "exact_maintainer_repair_under_4_3_0": null
+    },
+    {
+      "repository": "NitorCreations/CoreComponents",
+      "default_branch": "master",
+      "remote_head": "7904336ec0ed2e3e92a4adbcdc5186c2b64cf2cc",
+      "remote_head_date": "2017-03-29T23:23:16+03:00",
+      "reachable_ref_count": 20,
+      "reachable_commit_count": 204,
+      "retained_dependency_shape": {
+        "spring": "4.1.1.RELEASE",
+        "junit": "4.11"
+      },
+      "dependency_changes_declaring_spring_test_4_3_0": 0,
+      "dependency_changes_declaring_junit_4_12": 0,
+      "exact_maintainer_repair_under_4_3_0": null
+    },
+    {
+      "repository": "uaihebert/uaiMockServer",
+      "default_branch": "master",
+      "remote_head": "8b0090d4018c2f430cfbbb3ae249347652802f2b",
+      "remote_head_date": "2018-11-17T23:42:39+01:00",
+      "reachable_ref_count": 11,
+      "reachable_commit_count": 310,
+      "retained_dependency_shape": {
+        "spring_test": "4.1.5.RELEASE",
+        "junit": "4.9"
+      },
+      "dependency_changes_declaring_spring_test_4_3_0": 0,
+      "dependency_changes_declaring_junit_4_12": 0,
+      "exact_maintainer_repair_under_4_3_0": null
+    },
+    {
+      "repository": "adrobisch/brainslug",
+      "default_branch": "master",
+      "remote_head": "3a906bd759aa82b896087bd90ae5a96aa0564eda",
+      "remote_head_date": "2016-06-15T09:57:15+02:00",
+      "reachable_ref_count": 20,
+      "reachable_commit_count": 176,
+      "retained_dependency_shape": {
+        "spring": "4.1.6.RELEASE",
+        "junit": "4.11"
+      },
+      "dependency_changes_declaring_spring_test_4_3_0": 0,
+      "dependency_changes_declaring_junit_4_12": 0,
+      "exact_maintainer_repair_under_4_3_0": null
+    },
+    {
+      "repository": "neoremind/fluent-validator",
+      "default_branch": "master",
+      "remote_head": "9422352dc4df99565aab41b96c05e7a284c9f578",
+      "remote_head_date": "2020-07-29T16:27:51+08:00",
+      "reachable_ref_count": 44,
+      "reachable_commit_count": 124,
+      "retained_dependency_shape": {
+        "spring": "4.1.7.RELEASE",
+        "junit": "4.11"
+      },
+      "dependency_changes_declaring_spring_test_4_3_0": 0,
+      "dependency_changes_declaring_junit_4_12": 0,
+      "exact_maintainer_repair_under_4_3_0": null
+    }
+  ],
+  "admission_result": {
+    "raw_records": 5,
+    "failure_observations": 5,
+    "unique_root_relations": 5,
+    "exact_source_mechanisms_identified": 1,
+    "fixed_target_revisions": 0,
+    "exact_maintainer_repairs_under_4_3_0": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}
