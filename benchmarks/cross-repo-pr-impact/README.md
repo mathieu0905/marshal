@@ -57,6 +57,10 @@ H2 1.4.197 的 5 条记录、6 个失败观察按根仓和共享合同折叠为 
 
 EclipseLink 3.0.0-M1 的 4 条记录、12 个失败观察对应 dbunit-rules、Fluent JDBC、RSQL JPA 与 Random JPA 四个根仓。四条真实旧版本分别为 2.5.2、2.5.2、2.6.0-M3 和 2.6.4，不能合并成统一旧臂；`javax.persistence` 到 `jakarta.persistence` 的提供者注册边界能解释主要失败。四仓全历史均未采用固定 3.0.0-M1，后续 Jakarta 迁移都改用 4.x 且范围更宽，因此不重放并接纳 0 条。
 
+Logback Classic 1.1.7 到 1.1.8 的 3 条记录对应 Libcrunch、Wro4j Taglib 和 Goodies 三个独立根仓。三个客户端在原版本和 1.1.7 对照下共 10/10 项通过，只把 Classic 换成 1.1.8、保留旧 Core 后共 10/10 项错误；首次底层异常都是缺少 `StatusListenerConfigHelper`。精确源提交把初始化边界由捕获 `Throwable` 缩为捕获 `Exception`，使相同的缺类错误从被吞掉变成逃逸。三仓完整历史均无固定 1.1.8 的维护者 A2，因此这些结果只计 3 个执行破坏见证，正式接纳 0 条。
+
+Spring Test 的 4.2.9.RELEASE 到 4.3.0.RELEASE 搜索框有 5 条记录和 5 个独立根仓，完整堆栈都命中新增加的 `SpringJUnit4ClassRunner requires JUnit 4.12 or higher.` 检查。源变化可精确定位到提高 JUnit 下限的单一提交，但工作簿没有保存目标 Git 修订，五仓全部历史也没有固定 4.3.0.RELEASE 的采用或维护者 A2。为避免把数据集作者手工升级 JUnit 冒充历史适配，本组不执行合成三臂，正式接纳 0 条。
+
 主动干预的执行完成数不能直接当成语义接受数。未参与执行的模型会话已完成独立质检，但它不是第二位人工标注者。当前模型质检接受 Alembic、SnakeYAML、SLF4J 和 Log4j 四个完整四臂候选；正式人工接受数仍为 0。原五包判断见 `reviews/model-semantic-review-existing-packages-2026-08-24.md`，SLF4J 与 Log4j 的补充复核分别见 `workstreams/slf4j-rabbit-formal-repetitions/SEMANTIC_REVIEW.md` 和 `workstreams/log4j-formal-repetitions/SEMANTIC_REVIEW.md`。
 
 `jcabi-aspects` 的破坏三臂仍成立：两个执行正例、两个命令范围内的限定负例完成三次重复，六次目标破坏均为相同的 `Tv` 缺失签名。原 A3 0.22.2 到 0.22.3 没有触发真实 `HV000151` 分支；替代候选 0.20.1 到 0.20.2 也只有 SimpleDB 命中变化方法。因此当前四仓闭集永久保留为三臂破坏案例，不计完整项目包。评估见 `workstreams/jcabi-a3-repair/ASSESSMENT.md`。
