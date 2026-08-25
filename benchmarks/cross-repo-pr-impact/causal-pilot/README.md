@@ -67,7 +67,7 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 
 ## 独立复核材料
 
-`blind-review-packet.jsonl` 将当前全部 6 个接受项和 7 个语义拒绝项整理为 13 个去重转换、29 个任务。材料保留源与目标补丁、两臂日志、执行清单和时间证据，但移除了初次决定、理由、影响类型和失败签名。复核者按 `BLIND_REVIEW_PROTOCOL.md` 工作，并用 `blind-review-response-schema.json` 输出。当前只有材料，尚没有独立复核结果。
+`blind-review-packet.jsonl` 将当前全部 6 个接受项和 8 个语义拒绝项整理为 14 个去重转换、33 个任务。材料保留源与目标补丁、两臂日志、执行清单和时间证据，但移除了初次决定、理由、影响类型和失败签名。复核者按 `BLIND_REVIEW_PROTOCOL.md` 工作，并用 `blind-review-response-schema.json` 输出。当前只有材料，尚没有独立复核结果。
 
 ## 尚未完成
 

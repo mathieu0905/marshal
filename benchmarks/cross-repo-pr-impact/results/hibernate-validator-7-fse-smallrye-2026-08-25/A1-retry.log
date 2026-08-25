@@ -1,0 +1,81 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] SmallRye: MicroProfile Config Parent                               [pom]
+[INFO] SmallRye: Common classes                                           [jar]
+[INFO] SmallRye: MicroProfile Config Core Implementation                  [jar]
+[INFO] SmallRye: MicroProfile Config CDI Implementation                   [jar]
+[INFO] SmallRye: MicroProfile Config Validator                            [jar]
+[INFO] 
+[INFO] -------------< io.smallrye.config:smallrye-config-parent >--------------
+[INFO] Building SmallRye: MicroProfile Config Parent 2.8.2-SNAPSHOT       [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- formatter:2.16.0:format (default) @ smallrye-config-parent ---
+[INFO] Using 'UTF-8' encoding to format source files.
+[INFO] Number of files to be formatted: 0
+[INFO] 
+[INFO] --- impsort:1.6.2:sort (sort-imports) @ smallrye-config-parent ---
+[INFO] Processed 0 files in 00:00.002 (Already Sorted: 0, Needed Sorting: 0)
+[INFO] 
+[INFO] --- compiler:3.8.1:compile (default-compile) @ smallrye-config-parent ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] -------------< io.smallrye.config:smallrye-config-common >--------------
+[INFO] Building SmallRye: Common classes 2.8.2-SNAPSHOT                   [2/5]
+[INFO]   from common/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- formatter:2.16.0:format (default) @ smallrye-config-common ---
+[INFO] Using 'UTF-8' encoding to format source files.
+[INFO] Number of files to be formatted: 9
+[INFO] Successfully formatted:          0 file(s)
+[INFO] Fail to format:                  0 file(s)
+[INFO] Skipped:                         9 file(s)
+[INFO] Read only skipped:               0 file(s)
+[INFO] Approximate time taken:          0s
+[INFO] 
+[INFO] --- impsort:1.6.2:sort (sort-imports) @ smallrye-config-common ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for SmallRye: MicroProfile Config Parent 2.8.2-SNAPSHOT:
+[INFO] 
+[INFO] SmallRye: MicroProfile Config Parent ............... SUCCESS [  0.611 s]
+[INFO] SmallRye: Common classes ........................... FAILURE [  0.491 s]
+[INFO] SmallRye: MicroProfile Config Core Implementation .. SKIPPED
+[INFO] SmallRye: MicroProfile Config CDI Implementation ... SKIPPED
+[INFO] SmallRye: MicroProfile Config Validator ............ SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.474 s
+[INFO] Finished at: 2026-08-25T01:19:38+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal net.revelc.code:impsort-maven-plugin:1.6.2:sort (sort-imports) on project smallrye-config-common: Execution sort-imports of goal net.revelc.code:impsort-maven-plugin:1.6.2:sort failed: A required class was missing while executing net.revelc.code:impsort-maven-plugin:1.6.2:sort: org/codehaus/plexus/util/DirectoryScanner
+[ERROR] -----------------------------------------------------
+[ERROR] realm =    plugin>net.revelc.code:impsort-maven-plugin:1.6.2
+[ERROR] strategy = org.codehaus.plexus.classworlds.strategy.SelfFirstStrategy
+[ERROR] urls[0] = file:/home/zhihao/.m2/repository/net/revelc/code/impsort-maven-plugin/1.6.2/impsort-maven-plugin-1.6.2.jar
+[ERROR] urls[1] = file:/home/zhihao/.m2/repository/com/github/javaparser/javaparser-core/3.22.1/javaparser-core-3.22.1.jar
+[ERROR] urls[2] = file:/home/zhihao/.m2/repository/com/google/guava/guava/30.1.1-jre/guava-30.1.1-jre.jar
+[ERROR] urls[3] = file:/home/zhihao/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar
+[ERROR] urls[4] = file:/home/zhihao/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
+[ERROR] urls[5] = file:/home/zhihao/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar
+[ERROR] urls[6] = file:/home/zhihao/.m2/repository/org/checkerframework/checker-qual/3.8.0/checker-qual-3.8.0.jar
+[ERROR] urls[7] = file:/home/zhihao/.m2/repository/com/google/errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.jar
+[ERROR] urls[8] = file:/home/zhihao/.m2/repository/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar
+[ERROR] Number of foreign imports: 1
+[ERROR] import: Entry[import  from realm ClassRealm[maven.api, parent: null]]
+[ERROR] 
+[ERROR] -----------------------------------------------------: org.codehaus.plexus.util.DirectoryScanner
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/PluginContainerException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :smallrye-config-common

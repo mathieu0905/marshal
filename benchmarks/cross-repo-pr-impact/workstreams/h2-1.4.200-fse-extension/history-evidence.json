@@ -1,0 +1,54 @@
+{
+  "source_boundary": {
+    "coordinate": "com.h2database:h2",
+    "before_version": "1.4.199",
+    "after_version": "1.4.200",
+    "before_commit": "1ceaa87e6a5508fd117e8b39b33d623caded3c14",
+    "after_commit": "e1bcf3b6ba8927ff640299c879011f2df0750ef9",
+    "chronology": "forward_ancestor",
+    "intervening_commit_count": 847
+  },
+  "complete_candidate_frame": {
+    "fse_records": 16,
+    "excluded_existing_mvcc_records": 5,
+    "new_records": 11,
+    "new_independent_root_relations": 6,
+    "accepted_new_relations": 1,
+    "rejected_new_relations": 5
+  },
+  "existing_workstream_exclusion": {
+    "workstream": "h2-mvcc-clients",
+    "source_commit": "92692e63df10c3f73dd799f122949c705769e7b1",
+    "excluded_record_ids": [2177, 2181, 10575, 15868, 15872],
+    "already_counted_root_relations": ["database-rider/database-rider", "CloudSlang/score"],
+    "reason": "These five records and two positive root relations already have formal A0/A1/A2 evidence and must not be counted or replayed again."
+  },
+  "new_source_mechanism": {
+    "commit": "3f24dad2b358b7f0a89cc24b5b3b6dc1d81c11b2",
+    "subject": "Disallow comma before closing parenthesis in a few remaining places",
+    "absent_from_1_4_199": true,
+    "present_in_1_4_200": true,
+    "affected_new_roots": [
+      "btc-ag/redg",
+      "arey/spring-batch-toolkit",
+      "sea-huang/spring-data-mybatis-pagination",
+      "jaxio/celerio"
+    ]
+  },
+  "target_history_counts": {
+    "btc-ag/redg": 336,
+    "arey/spring-batch-toolkit": 108,
+    "liefke/org.fastnate": 397,
+    "sea-huang/spring-data-mybatis-pagination": 20,
+    "jaxio/celerio": 139,
+    "RyanSusana/elepy": 1837
+  },
+  "formal_positive": {
+    "case_id": "h2-1.4.200-trailing-comma-spring-batch-toolkit",
+    "target_repository": "arey/spring-batch-toolkit",
+    "baseline_commit": "1605c3fc6a70a99386f6c0bb8487a81da54e28ae",
+    "maintainer_a2_commit": "4c467ad8d7dccb1d769c17847cc585530969603d",
+    "test": "com.javaetmoi.core.batch.test.TestParallelAndPartitioning#launchJob",
+    "expected_direction": {"a0": "pass", "a1": "fail", "a2": "pass"}
+  }
+}

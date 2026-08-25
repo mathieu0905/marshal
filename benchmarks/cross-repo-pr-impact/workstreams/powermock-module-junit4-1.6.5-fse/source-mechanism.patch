@@ -1,0 +1,74 @@
+From 3ed63349711fc6194658e5e54db852d82c80502c Mon Sep 17 00:00:00 2001
+From: Arthur Zagretdinov <a.zagretdinov@outlook.com>
+Date: Sat, 5 Mar 2016 09:57:06 +0300
+Subject: [PATCH] Require a mocking-framework reporter from the API artifact
+
+This is the minimal behavior-bearing subset of upstream commit
+3ed63349711fc6194658e5e54db852d82c80502c. The full commit also contains
+refactoring and tests unrelated to the observed mixed-version failure.
+
+diff --git a/core/src/main/java/org/powermock/tests/utils/impl/AbstractTestSuiteChunkerImpl.java b/core/src/main/java/org/powermock/tests/utils/impl/AbstractTestSuiteChunkerImpl.java
+index 95d124e8..3ab4daa2 100644
+--- a/core/src/main/java/org/powermock/tests/utils/impl/AbstractTestSuiteChunkerImpl.java
++++ b/core/src/main/java/org/powermock/tests/utils/impl/AbstractTestSuiteChunkerImpl.java
+@@ -18,6 +18,7 @@ package org.powermock.tests.utils.impl;
+ import java.lang.annotation.Annotation;
+ import org.powermock.core.classloader.MockClassLoader;
+ import org.powermock.core.classloader.annotations.*;
++import org.powermock.core.reporter.MockingFrameworkReporterFactory;
+ import org.powermock.core.spi.PowerMockPolicy;
+ import org.powermock.core.spi.PowerMockTestListener;
+ import org.powermock.core.transformers.MockTransformer;
+@@ -466,4 +467,19 @@ public abstract class AbstractTestSuiteChunkerImpl<T> implements TestSuiteChunke
+                     new String[arrayOfClassNames.length + 1]);
+         }
+     }
++
++
++    @SuppressWarnings("unchecked")
++    protected MockingFrameworkReporterFactory getFrameworkReporterFactory() {
++        Class<MockingFrameworkReporterFactory> mockingFrameworkReporterFactoryClass;
++        try {
++            ClassLoader classLoader = this.getClass().getClassLoader();
++            mockingFrameworkReporterFactoryClass = (Class<MockingFrameworkReporterFactory>) classLoader.loadClass("org.powermock.api.extension.reporter.MockingFrameworkReporterFactoryImpl");
++        } catch (ClassNotFoundException e) {
++            throw new IllegalStateException(
++                                                   "Extension API internal error: org.powermock.api.org.powermock.api.extension.reporter.MockingFrameworkReporterFactoryImpl could not be located in classpath.");
++        }
++
++        return Whitebox.newInstance(mockingFrameworkReporterFactoryClass);
++    }
+ }
+diff --git a/modules/module-impl/junit4-common/src/main/java/org/powermock/modules/junit4/common/internal/impl/JUnit4TestSuiteChunkerImpl.java b/modules/module-impl/junit4-common/src/main/java/org/powermock/modules/junit4/common/internal/impl/JUnit4TestSuiteChunkerImpl.java
+index 56c3a32f..ef752564 100644
+--- a/modules/module-impl/junit4-common/src/main/java/org/powermock/modules/junit4/common/internal/impl/JUnit4TestSuiteChunkerImpl.java
++++ b/modules/module-impl/junit4-common/src/main/java/org/powermock/modules/junit4/common/internal/impl/JUnit4TestSuiteChunkerImpl.java
+@@ -22,5 +22,6 @@ import org.junit.runner.Description;
+ import org.junit.runner.manipulation.*;
+ import org.junit.runner.notification.RunNotifier;
++import org.powermock.core.reporter.MockingFrameworkReporter;
+ import org.powermock.core.spi.PowerMockTestListener;
+ import org.powermock.core.spi.testresult.TestSuiteResult;
+ import org.powermock.core.spi.testresult.impl.TestSuiteResultImpl;
+@@ -104,7 +105,10 @@ public class JUnit4TestSuiteChunkerImpl extends AbstractTestSuiteChunkerImpl<Pow
+ 			final ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
+ 			Thread.currentThread().setContextClassLoader(key);
+ 			try {
++                MockingFrameworkReporter mockingFrameworkReporter = getMockingFrameworkReporter();
++                mockingFrameworkReporter.enable();
+ 				delegate.run(notifier);
++                mockingFrameworkReporter.disable();
+ 			} finally {
+ 				Thread.currentThread().setContextClassLoader(originalClassLoader);
+ 			}
+@@ -122,6 +126,8 @@ public class JUnit4TestSuiteChunkerImpl extends AbstractTestSuiteChunkerImpl<Pow
+ 		powerMockTestNotifier.notifyAfterTestSuiteEnded(testClass, allMethodsAsArray, testSuiteResult);
+ 	}
+ 
++    private MockingFrameworkReporter getMockingFrameworkReporter() {return getFrameworkReporterFactory().create();}
++
+ 	@Override
+ 	public boolean shouldExecuteTestForMethod(Class<?> testClass, Method potentialTestMethod) {
+ 		return (potentialTestMethod.getName().startsWith("test")
+-- 
+2.43.0

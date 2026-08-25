@@ -1,0 +1,123 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0534",
+      "fse2024-behavioral-0535",
+      "fse2024-behavioral-0537"
+    ],
+    "raw_candidate_records": 3,
+    "failure_observations": 3,
+    "unique_root_repositories": 3,
+    "exact_target_revisions_recorded": 0,
+    "shared_failure_contract": {
+      "plugin": "Script Security Plugin v1.72",
+      "required_jenkins_version": "2.176.4",
+      "location": "hudson.PluginWrapper.resolvePluginDependencies",
+      "verified_full_stack_count": 3
+    }
+  },
+  "source_repository": {
+    "repository": "jenkinsci/script-security-plugin",
+    "last_passing_probe": {
+      "version": "1.71",
+      "tag_object": "cca114e6b7d576c54f00a428b25686ff23eb1b3e",
+      "tag_commit": "830412e1d2ec7a9f3715811150e11396614a7314"
+    },
+    "breaking_probe": {
+      "version": "1.72",
+      "tag_object": "e354313a4dd0215fb3b1ce9868f72561b4d6622b",
+      "tag_commit": "2bf6a1a3b9933790ac36cf69aa8bc88c0e42d32b"
+    },
+    "isolated_change": {
+      "commit": "df064cd7e51e861b47752103cdc60065d1941b34",
+      "commit_date": "2020-05-04T13:38:45-04:00",
+      "subject": "Fix build errors by updating minimum core version and parent POM",
+      "path": "pom.xml",
+      "jenkins_version_before": "2.60.3",
+      "jenkins_version_after": "2.176.4",
+      "mechanism": "The plugin build writes the minimum Jenkins core version into plugin metadata; older target test harnesses reject Script Security 1.72 before tests execute.",
+      "contained_in_last_passing_probe": false,
+      "contained_in_breaking_probe": true
+    },
+    "other_release_changes": [
+      "plugin parent 3.55 to 4.1",
+      "Caffeine 2.7.0 to 2.8.2",
+      "SandboxResolvingClassLoader source adjustment"
+    ]
+  },
+  "target_repositories": [
+    {
+      "repository": "jenkinsci/extended-choice-parameter-plugin",
+      "default_branch": "main",
+      "remote_head": "023f1e97bb3c00e75994da55501a987a35e05c17",
+      "remote_head_date": "2025-03-11T23:56:32+00:00",
+      "reachable_ref_count": 254,
+      "reachable_commit_count": 604,
+      "fse_dependency_shape": {
+        "script_security": "1.19",
+        "jenkins": "2.60.3"
+      },
+      "dependency_changes_declaring_1_72": 0,
+      "later_mainline_transition": {
+        "commit": "79347da6fc5ad4bd46cd96de7cb459b7e3b30914",
+        "script_security": "1172.v35f6a_0b_8207e",
+        "jenkins": "2.332.4",
+        "changed_paths": 9
+      },
+      "exact_maintainer_repair_under_1_72": null
+    },
+    {
+      "repository": "jenkinsci/scriptler-plugin",
+      "default_branch": "main",
+      "remote_head": "8ccbd0e7cdc51da114295ce5e51bd3ec12eec4d6",
+      "remote_head_date": "2026-08-11T09:35:43-04:00",
+      "reachable_ref_count": 275,
+      "reachable_commit_count": 709,
+      "fse_dependency_shape": {
+        "script_security": "1.26",
+        "jenkins": "2.121.3"
+      },
+      "dependency_changes_declaring_1_72": 0,
+      "later_mainline_transition": {
+        "commit": "a7b7a5358bc39b7ef516a0d4fea5e996ae401916",
+        "script_security": "managed_by_bom",
+        "jenkins": "2.319.3"
+      },
+      "exact_maintainer_repair_under_1_72": null
+    },
+    {
+      "repository": "jenkinsci/groovy-plugin",
+      "default_branch": "master",
+      "remote_head": "741a5af1b581edad62730bcd19064074676e87c0",
+      "remote_head_date": "2026-03-13T14:09:52-04:00",
+      "reachable_ref_count": 175,
+      "reachable_commit_count": 620,
+      "fse_dependency_shape": {
+        "script_security": "1.54",
+        "jenkins": "2.107.3"
+      },
+      "dependency_changes_declaring_1_72": 0,
+      "later_mainline_transition": {
+        "commit": "41c9425b91d22771ec00a0f8ddab41d9b8bf6220",
+        "script_security": "managed_by_bom",
+        "jenkins": "2.303.3"
+      },
+      "exact_maintainer_repair_under_1_72": null
+    }
+  ],
+  "admission_result": {
+    "raw_records": 3,
+    "failure_observations": 3,
+    "unique_root_relations": 3,
+    "exact_source_mechanisms_identified": 1,
+    "fixed_target_revisions": 0,
+    "exact_maintainer_repairs_under_1_72": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}

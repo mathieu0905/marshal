@@ -30,6 +30,16 @@ BATCHES = [
         / "opendev-rolling-2026-08-01-to-2026-08-23"
         / "composition-verified.jsonl",
     ),
+    (
+        ROOT
+        / "results"
+        / "opendev-rolling-2026-08-24-to-2026-08-25-noon"
+        / "semantic-review.jsonl",
+        ROOT
+        / "results"
+        / "opendev-rolling-2026-08-24-to-2026-08-25-noon"
+        / "composition-verified.jsonl",
+    ),
 ]
 
 
