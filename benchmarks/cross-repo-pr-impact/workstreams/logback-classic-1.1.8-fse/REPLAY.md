@@ -20,6 +20,7 @@ Libcrunch：
 
 ```bash
 TMPDIR=/home/zhihao/hdd/marshal/.work/tmp \
+MAVEN_OPTS='-Djava.io.tmpdir=/home/zhihao/hdd/marshal/.work/tmp -Djansi.tmpdir=/home/zhihao/hdd/marshal/.work/tmp -XX:-UsePerfData' \
 JAVA_HOME=/home/zhihao/hdd/marshal/.work/logback-classic-1.1.8-fse/jdk8 \
 mvn -q clean \
   -Dmaven.repo.local=/home/zhihao/hdd/marshal/.work/logback-classic-1.1.8-fse/m2 \
@@ -31,6 +32,7 @@ Wro4j Taglib：
 
 ```bash
 TMPDIR=/home/zhihao/hdd/marshal/.work/tmp \
+MAVEN_OPTS='-Djava.io.tmpdir=/home/zhihao/hdd/marshal/.work/tmp -Djansi.tmpdir=/home/zhihao/hdd/marshal/.work/tmp -XX:-UsePerfData' \
 JAVA_HOME=/home/zhihao/hdd/marshal/.work/logback-classic-1.1.8-fse/jdk8 \
 mvn -q clean \
   -Dmaven.repo.local=/home/zhihao/hdd/marshal/.work/logback-classic-1.1.8-fse/m2 \
@@ -42,6 +44,7 @@ Goodies：
 
 ```bash
 TMPDIR=/home/zhihao/hdd/marshal/.work/tmp \
+MAVEN_OPTS='-Djava.io.tmpdir=/home/zhihao/hdd/marshal/.work/tmp -Djansi.tmpdir=/home/zhihao/hdd/marshal/.work/tmp -XX:-UsePerfData' \
 JAVA_HOME=/home/zhihao/hdd/marshal/.work/logback-classic-1.1.8-fse/jdk8 \
 mvn -q clean -pl testsupport -am \
   -Dmaven.repo.local=/home/zhihao/hdd/marshal/.work/logback-classic-1.1.8-fse/m2 \
