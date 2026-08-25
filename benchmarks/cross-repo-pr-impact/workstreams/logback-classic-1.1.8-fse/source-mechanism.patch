@@ -1,0 +1,13 @@
+diff --git a/logback-classic/src/main/java/org/slf4j/impl/StaticLoggerBinder.java b/logback-classic/src/main/java/org/slf4j/impl/StaticLoggerBinder.java
+index d5e78114c..004021d4a 100644
+--- a/logback-classic/src/main/java/org/slf4j/impl/StaticLoggerBinder.java
++++ b/logback-classic/src/main/java/org/slf4j/impl/StaticLoggerBinder.java
+@@ -91,7 +91,7 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
+             }
+             contextSelectorBinder.init(defaultLoggerContext, KEY);
+             initialized = true;
+-        } catch (Throwable t) {
++        } catch (Exception t) {//do not swallow Errors
+             // we should never get here
+             Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
+         }
