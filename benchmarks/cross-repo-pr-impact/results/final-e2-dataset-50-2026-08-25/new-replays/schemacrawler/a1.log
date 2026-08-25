@@ -1,0 +1,30 @@
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Aug 25, 2026 6:48:34 PM us.fatehi.utility.ioresource.ClasspathInputResource openNewInputReader
+INFO: Opened input reader to classpath resource, /attributes-bad-2.yaml.bad
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.187 s <<< FAILURE! - in schemacrawler.test.AttributesModelTest
+[ERROR] schemacrawler.test.AttributesModelTest.testParseBad2  Time elapsed: 0.173 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <schemacrawler.schemacrawler.SchemaCrawlerRuntimeException> but was: <java.lang.NoSuchMethodError>
+	at schemacrawler.test.AttributesModelTest.testParseBad2(AttributesModelTest.java:62)
+Caused by: java.lang.NoSuchMethodError: 'com.fasterxml.jackson.core.io.ContentReference com.fasterxml.jackson.dataformat.yaml.YAMLFactory._createContentReference(java.lang.Object)'
+	at schemacrawler.test.AttributesModelTest.lambda$testParseBad2$0(AttributesModelTest.java:68)
+	at schemacrawler.test.AttributesModelTest.testParseBad2(AttributesModelTest.java:62)
+
+[ERROR] Failures: 
+[ERROR]   AttributesModelTest.testParseBad2:62 Unexpected exception type thrown ==> expected: <schemacrawler.schemacrawler.SchemaCrawlerRuntimeException> but was: <java.lang.NoSuchMethodError>
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.0.0-M5:test (default-test) on project schemacrawler-loader: There are test failures.
+[ERROR] 
+[ERROR] Please refer to /home/zhihao/hdd/marshal/.work/e2-gap-search/schemacrawler-a1/schemacrawler-loader/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :schemacrawler-loader

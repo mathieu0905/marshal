@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "fse2024-behavioral-0171",
+  "source_repository": "TakahikoKawasaki/nv-i18n",
+  "source_change": "nv-i18n 1.28 -> 1.29",
+  "target_repository": "marcwrobel/jbanking",
+  "baseline_commit": "fab87b7d2683e8a3c6c5e187a68c3dc5f55ed51a",
+  "maintainer_repair_commit": "ba28899ca8cb1fac56b09c25fbeafc7e200e995b",
+  "command": "mvn -q -B -ntp -Dtest=IsoCountryTest#ensureCompleteness test",
+  "arms": {
+    "A0": {"result": "pass", "exit_code": 0, "input": "baseline with nv-i18n 1.28"},
+    "A1": {"result": "fail", "exit_code": 1, "input": "baseline with only nv-i18n changed to 1.29", "signature": "Missing countries : [XU]"},
+    "A2": {"result": "pass", "exit_code": 0, "input": "exact maintainer commit adding XU to the test exclusion while retaining nv-i18n 1.29"}
+  },
+  "decision": "accepted_strict_e2"
+}

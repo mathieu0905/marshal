@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "candidate_ids_collapsed": ["fse2024-behavioral-0595", "fse2024-behavioral-0596", "fse2024-behavioral-0598", "fse2024-behavioral-0602"],
+  "source_repository": "ow2/asm",
+  "source_change": "ASM aggregate 9.2 -> 9.3",
+  "target_repository": "raphw/byte-buddy",
+  "baseline_commit": "fbd78e1868c53b0c73b9528f821465bb3173794c",
+  "maintainer_repair_commit": "5e3dcf289e3287cb7fec80f644c4f6b0eac212a7",
+  "command": "mvn -q -B -ntp -pl byte-buddy-dep -am -Dtest=ClassFileVersionTest#testLatestVersion -Dsurefire.failIfNoSpecifiedTests=false test",
+  "arms": {
+    "A0": {"result": "pass", "exit_code": 0, "input": "baseline with ASM 9.2"},
+    "A1": {"result": "fail", "exit_code": 1, "input": "baseline with only ASM aggregate changed to 9.3", "signature": "expected class-file version 63 but observed 62"},
+    "A2": {"result": "pass", "exit_code": 0, "input": "exact maintainer commit updating the Java 19 class-file target while retaining ASM 9.3"}
+  },
+  "deduplication": "four component records share one target root, one source aggregate update, one failing test, and one repair; counted once",
+  "decision": "accepted_strict_e2"
+}

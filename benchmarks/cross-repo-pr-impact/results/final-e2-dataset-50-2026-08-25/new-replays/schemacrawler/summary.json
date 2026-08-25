@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "fse2024-behavioral-0042",
+  "source_repository": "FasterXML/jackson-dataformats-text",
+  "source_change": "jackson-dataformat-yaml 2.12.4 -> 2.13.0",
+  "target_repository": "SchemaCrawler/SchemaCrawler",
+  "baseline_commit": "7de7f014c0347640e3df93ef477bd90b736528a3",
+  "maintainer_repair_commit": "882c36c07d87d253fb8bb2ac636e0cba6ea3a9e3",
+  "command": "mvn -q -B -ntp -pl schemacrawler-loader -am -Dtest=AttributesModelTest#testParseBad2 -Dsurefire.failIfNoSpecifiedTests=false test",
+  "arms": {
+    "A0": {"result": "pass", "exit_code": 0, "input": "baseline with all Jackson components at 2.12.4"},
+    "A1": {"result": "fail", "exit_code": 1, "input": "baseline with only jackson-dataformat-yaml at 2.13.0", "signature": "expected SchemaCrawlerRuntimeException but got NoSuchMethodError from YAMLFactory._createContentReference"},
+    "A2": {"result": "pass", "exit_code": 0, "input": "exact maintainer commit aligning all Jackson components to 2.13.0"}
+  },
+  "decision": "accepted_strict_e2"
+}

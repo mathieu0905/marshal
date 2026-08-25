@@ -1,0 +1,113 @@
+{
+  "observed_at": "2026-08-25",
+  "repository": "oboehm/gdv.xport",
+  "module": "lib",
+  "environment": {
+    "java": "OpenJDK 11.0.31",
+    "maven": "3.9.8",
+    "command": "mvn -B -ntp -pl lib -am clean test",
+    "maven_repository": ".work/log4j-core-2.15-fse/m2/<arm>",
+    "worktree_root": ".work/log4j-core-2.15-fse/runs",
+    "tmp_root": ".work/log4j-core-2.15-fse/tmp"
+  },
+  "arms": [
+    {
+      "arm": "a0",
+      "commit": "3f806a2a37029b6d2a0afbc716917dacc19bea17",
+      "log4j_api": "2.14.1",
+      "log4j_core": "2.14.1",
+      "exit_code": 0,
+      "maven_summary": {
+        "tests": 1070,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 5
+      },
+      "surefire_xml_summary": {
+        "files": 50,
+        "tests": 1069,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 9
+      },
+      "log": "a0.log"
+    },
+    {
+      "arm": "a1",
+      "commit": "3bf9996a0afdbf426e920e03aafe069cab4e2491",
+      "log4j_api": "2.14.1",
+      "log4j_core": "2.15.0",
+      "exit_code": 1,
+      "maven_summary": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "surefire_xml_summary": {
+        "files": 0,
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "public_signature_match": true,
+      "public_signature": "java.util.ServiceConfigurationError: org.junit.platform.launcher.TestExecutionListener: Provider patterntesting.runtime.junit.extension.SmokeTestExtension could not be instantiated",
+      "inner_cause": "java.lang.NoSuchFieldError: EMPTY_BYTE_ARRAY",
+      "log": "a1.log",
+      "surefire_dump": "a1-surefire.dump"
+    },
+    {
+      "arm": "a2",
+      "base_commit": "3bf9996a0afdbf426e920e03aafe069cab4e2491",
+      "repair_source_commit": "a84175f220b8a7925a97ce22f211303d47960ba6",
+      "repair": "Exact maintainer pom.xml hunk synchronizing log4j-api to 2.15.0",
+      "log4j_api": "2.15.0",
+      "log4j_core": "2.15.0",
+      "exit_code": 0,
+      "maven_summary": {
+        "tests": 1070,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 5
+      },
+      "surefire_xml_summary": {
+        "files": 50,
+        "tests": 1069,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 9
+      },
+      "log": "a2-isolated.log"
+    }
+  ],
+  "full_maintainer_commit_diagnostic": {
+    "commit": "a84175f220b8a7925a97ce22f211303d47960ba6",
+    "exit_code": 1,
+    "log4j_failure_recovered": true,
+    "different_failure": "gdv.xport.demo.MyUnfallDatensatzTest.testMyUnfallDatensatz: IllegalArgumentException for missing Baujahr field",
+    "maven_summary": {
+      "tests": 1074,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 2
+    },
+    "surefire_xml_summary": {
+      "files": 50,
+      "tests": 1070,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 2
+    },
+    "log": "a2-maintainer-full.log",
+    "formal_a2": false
+  },
+  "verdict": {
+    "accepted_positive": true,
+    "a0_passed": true,
+    "a1_reproduced_public_failure": true,
+    "a2_recovered_public_failure": true,
+    "repair_is_maintainer_authored": true,
+    "security_release_label_used_as_causal_evidence": false
+  }
+}

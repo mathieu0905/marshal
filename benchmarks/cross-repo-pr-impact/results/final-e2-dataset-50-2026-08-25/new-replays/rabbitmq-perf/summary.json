@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "candidate_ids_collapsed": ["fse2024-behavioral-0220", "fse2024-behavioral-0221", "fse2024-behavioral-0222", "fse2024-behavioral-0223"],
+  "source_repository": "micrometer-metrics/micrometer",
+  "source_change": "Micrometer aggregate 1.8.5 -> 1.9.0",
+  "target_repository": "rabbitmq/rabbitmq-perf-test",
+  "baseline_commit": "f951a02c678eeb4317bc5d98ec25cba3732c3a54",
+  "source_only_commit": "aa059be4151bca3636aec06992636ef97a2da06a",
+  "maintainer_repair_commit": "94edf4dcc34c0de5813d96111cfec589b2f149ce",
+  "command": "mvn -q -B -ntp -Dtest=JmxMetricsTest#metricsShouldBeExposedAsMbeans test",
+  "arms": {
+    "A0": {"result": "pass", "exit_code": 0, "input": "baseline with Micrometer 1.8.5"},
+    "A1": {"result": "fail", "exit_code": 1, "input": "source-only aggregate update to Micrometer 1.9.0", "signature": "JMX query expected one MBean but found zero"},
+    "A2": {"result": "pass", "exit_code": 0, "input": "exact maintainer child commit adding type=gauges to the query while retaining Micrometer 1.9.0"}
+  },
+  "deduplication": "four Micrometer component records share one aggregate update, one target root, one failing test, and one repair; counted once",
+  "decision": "accepted_strict_e2"
+}
