@@ -1,6 +1,6 @@
 # results/ index
 
-Navigation for this directory. Only the entries below are part of a released chain; everything else is construction-period working material kept locally and not committed.
+Navigation for this directory. Every entry here is committed; construction-period working material was archived off-repo (see the last section).
 
 ## Authoritative (committed)
 
@@ -13,13 +13,8 @@ Navigation for this directory. Only the entries below are part of a released cha
 - `formal-e2-50-release-2026-08-26/` — **withdrawn**. Its 0/1/0 evidence came from post-hoc reference-surface checks, not pre-existing target tasks; see `CURRENT_CHECKPOINT.md` and the formal set's `ACCEPTANCE.md`.
 - `formal-e2-benchmark-50-system-run{,-v2,-v3}-2026-08-27/` — ramp-up reruns (1/2/7 cases) proving v4 is the same system at full scale, not a fourth tuned version.
 
-## Uncommitted construction-period material (local only)
+## Construction-period material (archived off-repo)
 
-Roughly 440 directories from 2026-08-25..27 screening and construction waves:
+The 448 untracked screening/construction entries (~115 GB) that previously lived here were moved out of the repository on 2026-08-27 to `/home/zhihao/hdd/marshal-results-archive/` (same-disk `mv`, zero data loss). They comprised the `formal-e2-strict-*-contract-triage-*` waves (whose `target-patches/` hold the provenance originals of every accepted A2 patch), `formal-e2-high-confidence-*` / `formal-e2-*-reconstruction-*` patch provenance, `single-case-pipeline-*` working directories (replays, tox/Maven environments, snapshots), and assorted `*-screening-*` / `*-fse-*` / E1 catalog directories.
 
-- `formal-e2-strict-{wave4,reverse-wave1b}-*-contract-triage-*` — contract triage waves whose `target-patches/` hold the provenance originals of every accepted A2 patch (content-identical copies live inside the benchmark package at `cases/*/evidence/*/target.patch`);
-- `formal-e2-high-confidence-*-target-patches-*`, `formal-e2-*-reconstruction-*` — per-relation reconstruction and patch provenance;
-- `single-case-pipeline-*` — per-case pipeline working directories (replays, tox/Maven environments, snapshots);
-- assorted `*-screening-*`, `*-fse-*`, and E1 catalog/data-ready directories.
-
-These are regenerable working output or provenance duplicates; they are the disk-footprint heavy part of this directory and are deliberately outside Git.
+This is safe for the benchmark package because all 50 external patch references are content-identical to the in-package copies at `cases/*/evidence/*/target.patch` (verified 50/50 by byte comparison before the move). The archive is regenerable working output and provenance duplicates, not release material; see its `README.md`. Everything else in this directory is committed.
