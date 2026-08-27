@@ -1,0 +1,2430 @@
+diff --git a/config/puppet-modules/puppet-etcd/debian/bullseye/patches/0003-Rename-package-name-to-etcd-server.patch b/config/puppet-modules/puppet-etcd/debian/bullseye/patches/0003-Rename-package-name-to-etcd-server.patch
+index aeb4301..e8fa325 100644
+--- a/config/puppet-modules/puppet-etcd/debian/bullseye/patches/0003-Rename-package-name-to-etcd-server.patch
++++ b/config/puppet-modules/puppet-etcd/debian/bullseye/patches/0003-Rename-package-name-to-etcd-server.patch
+@@ -3,7 +3,7 @@
+ Date: Fri, 29 Sep 2023 18:23:35 -0700
+ Subject: [PATCH] Rename package name to etcd-server
+ 
+-etcd-3.4.27 does not generate binary/package 'etcd'.
++etcd-<version>-server does not generate binary/package 'etcd'.
+ Without this change, puppet manifest fails as it can not
+ find the package etcd.
+ 
+@@ -21,7 +21,7 @@
+  class etcd::params {
+    $ensure = 'present'
+ -  $package_name = 'etcd'
+-+  $package_name = 'etcd-server'
+++  $package_name = 'etcd-3.4.37-server'
+    $manage_package = true
+    $manage_service = true
+  
+diff --git a/config/puppet-modules/puppet-etcd/debian/trixie/patches/0003-Rename-package-name-to-etcd-server.patch b/config/puppet-modules/puppet-etcd/debian/trixie/patches/0003-Rename-package-name-to-etcd-server.patch
+index aeb4301..e8fa325 100644
+--- a/config/puppet-modules/puppet-etcd/debian/trixie/patches/0003-Rename-package-name-to-etcd-server.patch
++++ b/config/puppet-modules/puppet-etcd/debian/trixie/patches/0003-Rename-package-name-to-etcd-server.patch
+@@ -3,7 +3,7 @@
+ Date: Fri, 29 Sep 2023 18:23:35 -0700
+ Subject: [PATCH] Rename package name to etcd-server
+ 
+-etcd-3.4.27 does not generate binary/package 'etcd'.
++etcd-<version>-server does not generate binary/package 'etcd'.
+ Without this change, puppet manifest fails as it can not
+ find the package etcd.
+ 
+@@ -21,7 +21,7 @@
+  class etcd::params {
+    $ensure = 'present'
+ -  $package_name = 'etcd'
+-+  $package_name = 'etcd-server'
+++  $package_name = 'etcd-3.4.37-server'
+    $manage_package = true
+    $manage_service = true
+  
+diff --git a/debian_iso_image.inc b/debian_iso_image.inc
+index ded3813..703c558 100644
+--- a/debian_iso_image.inc
++++ b/debian_iso_image.inc
+@@ -122,9 +122,9 @@
+ #efitools-dbgsym  # not used
+ efitools
+ 
+-#etcd
+-etcd-client
+-etcd-server
++#etcd-x
++etcd-3.4.37-client
++etcd-3.4.37-server
+ #golang-etcd-server-dev  # not used
+ 
+ #facter
+diff --git a/debian_pkg_dirs b/debian_pkg_dirs
+index 0b6d5af..ad22f31 100644
+--- a/debian_pkg_dirs
++++ b/debian_pkg_dirs
+@@ -62,7 +62,7 @@
+ kubernetes/containerd
+ kubernetes/crictl
+ kubernetes/docker-distribution
+-kubernetes/etcd
++kubernetes/etcd-3.4.37
+ kubernetes/flux2
+ kubernetes/flux2-charts
+ kubernetes/flux2-charts-legacy
+diff --git a/debian_trixie_pkg_dirs_std b/debian_trixie_pkg_dirs_std
+index 0df0a6d..80aef7d 100644
+--- a/debian_trixie_pkg_dirs_std
++++ b/debian_trixie_pkg_dirs_std
+@@ -58,7 +58,7 @@
+ kubernetes/containerd
+ kubernetes/crictl
+ kubernetes/docker-distribution
+-kubernetes/etcd
++kubernetes/etcd-3.4.37
+ kubernetes/flux2
+ kubernetes/flux2-charts
+ kubernetes/helm
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/changelog b/kubernetes/etcd-3.4.37/debian/all/deb_folder/changelog
+new file mode 100644
+index 0000000..420442a
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/changelog
+@@ -0,0 +1,23 @@
++etcd-3.4.37 (3.4.37-1) unstable; urgency=medium
++
++  * Modified packaging to support multiple etcd-x packages
++
++ -- Jim Gauld <james.gauld@windriver.com>  Mon, 01 Dec 2025 14:36:30 +0000
++
++etcd (3.4.37-1) unstable; urgency=medium
++
++  * Updated to include a CVE fix
++
++ -- Kaustubh Dhokte <kaustubh.dhokte@windriver.com>  Thu, 01 May 2025 17:28:19 +0000
++
++etcd (3.4.36-1) unstable; urgency=medium
++
++  * Updated for stx debian packaging
++
++ -- Kaustubh Dhokte <kaustubh.dhokte@windriver.com>  Tue, 08 Apr 2025 16:41:53 +0000
++
++etcd (3.4.27-1) unstable; urgency=medium
++
++  * Updated for stx debian packaging
++
++ -- Kaustubh Dhokte <kaustubh.dhokte@windriver.com>  Thu, 21 Sep 2023 23:41:53 +0000
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/control b/kubernetes/etcd-3.4.37/debian/all/deb_folder/control
+new file mode 100644
+index 0000000..06fc1b9
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/control
+@@ -0,0 +1,69 @@
++Source: etcd-3.4.37
++Maintainer: StarlingX Developers <StarlingX-discuss@lists.StarlingX.io>
++Section: net
++Priority: optional
++Build-Depends: debhelper-compat (= 13)
++Standards-Version: 4.6.2
++Homepage: https://etcd.io
++Rules-Requires-Root: no
++XS-Go-Import-Path: go.etcd.io/etcd,
++                   github.com/coreos/etcd
++
++Package: etcd-3.4.37-server
++Architecture: any
++Pre-Depends: ${misc:Pre-Depends},
++Depends: adduser,
++         ${misc:Depends},
++         ${shlibs:Depends},
++Suggests: etcd-3.4.37-client,
++Built-Using: ${misc:Built-Using},
++Description: highly-available key value store -- daemon
++ A highly-available key value store for shared configuration and service
++ discovery. etcd is inspired by zookeeper and doozer, with a focus on:
++ .
++  * Simple: curl'able user facing API (HTTP+JSON)
++  * Secure: optional SSL client cert authentication
++  * Fast: benchmarked 1000s of writes/s per instance
++  * Reliable: Properly distributed using Raft
++ .
++ Etcd uses the Raft consensus algorithm to manage a highly-available replicated
++ log.
++ .
++ This package contains the server binaries.
++
++Package: etcd-3.4.37-client
++Architecture: any
++Depends: ${misc:Depends},
++         ${shlibs:Depends},
++Built-Using: ${misc:Built-Using},
++Description: highly-available key value store -- client
++ A highly-available key value store for shared configuration and service
++ discovery. etcd is inspired by zookeeper and doozer, with a focus on:
++ .
++  * Simple: curl'able user facing API (HTTP+JSON)
++  * Secure: optional SSL client cert authentication
++  * Fast: benchmarked 1000s of writes/s per instance
++  * Reliable: Properly distributed using Raft
++ .
++ Etcd uses the Raft consensus algorithm to manage a highly-available replicated
++ log.
++ .
++ This package contains the client binaries.
++
++Package: golang-etcd-server-dev
++Architecture: all
++Depends: ${misc:Depends},
++Provides: golang-github-coreos-etcd-dev,
++Description: highly-available key value store -- source
++ A highly-available key value store for shared configuration and service
++ discovery. etcd is inspired by zookeeper and doozer, with a focus on:
++ .
++  * Simple: curl'able user facing API (HTTP+JSON)
++  * Secure: optional SSL client cert authentication
++  * Fast: benchmarked 1000s of writes/s per instance
++  * Reliable: Properly distributed using Raft
++ .
++ Etcd uses the Raft consensus algorithm to manage a highly-available replicated
++ log.
++ .
++ This package contains the source.
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/copyright b/kubernetes/etcd-3.4.37/debian/all/deb_folder/copyright
+new file mode 100644
+index 0000000..aa0f76b
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/copyright
+@@ -0,0 +1,27 @@
++Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
++Upstream-Name: etcd
++Source: https://github.com/etcd-io/etcd
++Files-Excluded: vendor
++
++Files are included from the upstream etcd binary package at
++https://github.com/etcd-io/etcd/releases/download/v3.4.37/etcd-v3.4.37-linux-amd64.tar.gz
++
++Files: *
++Copyright: 2014-2015 CoreOS, Inc
++           2013-2017 The etcd Authors
++License: Apache-2.0
++
++Files: debian/*
++Copyright: 2025 Wind River Systems, Inc.
++License: Apache-2.0
++
++License: Apache-2.0
++ Licensed under the Apache License, Version 2.0 (the "License");
++ you may not use this file except in compliance with the License.
++ You may obtain a copy of the License at
++ .
++   http://www.apache.org/licenses/LICENSE-2.0
++ .
++ On Debian systems, the complete text of the Apache 2.0
++ License can be found in `/usr/share/common-licenses/Apache-2.0`.
++
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-client.install b/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-client.install
+new file mode 100644
+index 0000000..ab79a78
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-client.install
+@@ -0,0 +1 @@
++usr/local/etcd/3.4.37/stage0/usr/bin/etcdctl
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-server.install b/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-server.install
+new file mode 100644
+index 0000000..5181bce
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-server.install
+@@ -0,0 +1 @@
++usr/local/etcd/3.4.37/stage0/usr/bin/etcd
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-server.postinst b/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-server.postinst
+new file mode 100644
+index 0000000..08a90ef
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/etcd-3.4.37-server.postinst
+@@ -0,0 +1,17 @@
++#!/bin/sh
++
++set -e
++
++case $1 in
++    configure)
++        mkdir -m 755 -p /etc/etcd
++    ;;
++    abort-upgrade|abort-remove|abort-deconfigure)
++    ;;
++    *)
++        echo "postinst called with unknown argument \`$1'" >&2
++        exit 1
++    ;;
++esac
++
++#DEBHELPER#
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/not-installed b/kubernetes/etcd-3.4.37/debian/all/deb_folder/not-installed
+new file mode 100644
+index 0000000..cbb01d7
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/not-installed
+@@ -0,0 +1,12 @@
++usr/bin/benchmark
++usr/bin/bridge
++usr/bin/etcd-agent
++usr/bin/etcd-dump-db
++usr/bin/etcd-dump-logs
++usr/bin/etcd-dump-metrics
++usr/bin/etcd-proxy
++usr/bin/etcd-runner
++usr/bin/etcd-tester
++usr/bin/etcd2-backup-coreos
++usr/bin/raftexample
++
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/rules b/kubernetes/etcd-3.4.37/debian/all/deb_folder/rules
+new file mode 100755
+index 0000000..5924f76
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/rules
+@@ -0,0 +1,20 @@
++#!/usr/bin/make -f
++# See debhelper(7) (uncomment to enable)
++# output every command that modifies files on the build system.
++export DH_VERBOSE = 1
++
++etcd_version := 3.4.37
++_bindir := /usr/local/etcd/${etcd_version}/stage0/usr/bin
++
++export ROOT = debian/tmp
++
++%:
++	dh $@
++
++override_dh_auto_install:
++	install -v -m 755 -d $(ROOT)${_bindir}
++	install -p -D -m 755 etcd $(ROOT)${_bindir}
++	install -p -D -m 755 etcdctl $(ROOT)${_bindir}
++
++override_dh_usrlocal:
++	# Do Nothing
+diff --git a/kubernetes/etcd-3.4.37/debian/all/deb_folder/source/format b/kubernetes/etcd-3.4.37/debian/all/deb_folder/source/format
+new file mode 100644
+index 0000000..163aaf8
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/deb_folder/source/format
+@@ -0,0 +1 @@
++3.0 (quilt)
+diff --git a/kubernetes/etcd-3.4.37/debian/all/meta_data.yaml b/kubernetes/etcd-3.4.37/debian/all/meta_data.yaml
+new file mode 100644
+index 0000000..0ce1110
+--- /dev/null
++++ b/kubernetes/etcd-3.4.37/debian/all/meta_data.yaml
+@@ -0,0 +1,12 @@
++---
++debname: etcd-3.4.37
++debver: 3.4.37
++dl_path:
++  name: etcd-3.4.37.tar.gz
++  url: https://github.com/etcd-io/etcd/releases/download/v3.4.37/etcd-v3.4.37-linux-amd64.tar.gz
++  sha256sum: e155b80ee292e19fa39000a218a7ea9166f45b161c610074db73e4e8f9011927
++revision:
++  dist: $STX_DIST
++  GITREVCOUNT:
++    BASE_SRCREV: 4493a3146c752e2d3cd11ea8fa964a9399dd8b52
++    SRC_DIR: ${MY_REPO}/stx/integ/kubernetes/etcd-3.4.37
+diff --git a/kubernetes/etcd/debian/all/deb_folder/changelog b/kubernetes/etcd/debian/all/deb_folder/changelog
+deleted file mode 100644
+index 60c0edd..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/changelog
++++ /dev/null
+@@ -1,17 +0,0 @@
+-etcd (3.4.37-1) unstable; urgency=medium
+-
+-  * Updated to include a CVE fix
+-
+- -- Kaustubh Dhokte <kaustubh.dhokte@windriver.com>  Thu, 01 May 2025 17:28:19 +0000
+-
+-etcd (3.4.36-1) unstable; urgency=medium
+-
+-  * Updated for stx debian packaging
+-
+- -- Kaustubh Dhokte <kaustubh.dhokte@windriver.com>  Tue, 08 Apr 2025 16:41:53 +0000
+-
+-etcd (3.4.27-1) unstable; urgency=medium
+-
+-  * Updated for stx debian packaging
+-
+- -- Kaustubh Dhokte <kaustubh.dhokte@windriver.com>  Thu, 21 Sep 2023 23:41:53 +0000
+diff --git a/kubernetes/etcd/debian/all/deb_folder/control b/kubernetes/etcd/debian/all/deb_folder/control
+deleted file mode 100644
+index 6474aac..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/control
++++ /dev/null
+@@ -1,69 +0,0 @@
+-Source: etcd
+-Maintainer: StarlingX Developers <StarlingX-discuss@lists.StarlingX.io>
+-Section: net
+-Priority: optional
+-Build-Depends: debhelper-compat (= 13)
+-Standards-Version: 4.6.2
+-Homepage: https://etcd.io
+-Rules-Requires-Root: no
+-XS-Go-Import-Path: go.etcd.io/etcd,
+-                   github.com/coreos/etcd
+-
+-Package: etcd-server
+-Architecture: any
+-Pre-Depends: ${misc:Pre-Depends},
+-Depends: adduser,
+-         ${misc:Depends},
+-         ${shlibs:Depends},
+-Suggests: etcd-client,
+-Built-Using: ${misc:Built-Using},
+-Description: highly-available key value store -- daemon
+- A highly-available key value store for shared configuration and service
+- discovery. etcd is inspired by zookeeper and doozer, with a focus on:
+- .
+-  * Simple: curl'able user facing API (HTTP+JSON)
+-  * Secure: optional SSL client cert authentication
+-  * Fast: benchmarked 1000s of writes/s per instance
+-  * Reliable: Properly distributed using Raft
+- .
+- Etcd uses the Raft consensus algorithm to manage a highly-available replicated
+- log.
+- .
+- This package contains the server binaries.
+-
+-Package: etcd-client
+-Architecture: any
+-Depends: ${misc:Depends},
+-         ${shlibs:Depends},
+-Built-Using: ${misc:Built-Using},
+-Description: highly-available key value store -- client
+- A highly-available key value store for shared configuration and service
+- discovery. etcd is inspired by zookeeper and doozer, with a focus on:
+- .
+-  * Simple: curl'able user facing API (HTTP+JSON)
+-  * Secure: optional SSL client cert authentication
+-  * Fast: benchmarked 1000s of writes/s per instance
+-  * Reliable: Properly distributed using Raft
+- .
+- Etcd uses the Raft consensus algorithm to manage a highly-available replicated
+- log.
+- .
+- This package contains the client binaries.
+-
+-Package: golang-etcd-server-dev
+-Architecture: all
+-Depends: ${misc:Depends},
+-Provides: golang-github-coreos-etcd-dev,
+-Description: highly-available key value store -- source
+- A highly-available key value store for shared configuration and service
+- discovery. etcd is inspired by zookeeper and doozer, with a focus on:
+- .
+-  * Simple: curl'able user facing API (HTTP+JSON)
+-  * Secure: optional SSL client cert authentication
+-  * Fast: benchmarked 1000s of writes/s per instance
+-  * Reliable: Properly distributed using Raft
+- .
+- Etcd uses the Raft consensus algorithm to manage a highly-available replicated
+- log.
+- .
+- This package contains the source.
+diff --git a/kubernetes/etcd/debian/all/deb_folder/copyright b/kubernetes/etcd/debian/all/deb_folder/copyright
+deleted file mode 100644
+index aa0f76b..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/copyright
++++ /dev/null
+@@ -1,27 +0,0 @@
+-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+-Upstream-Name: etcd
+-Source: https://github.com/etcd-io/etcd
+-Files-Excluded: vendor
+-
+-Files are included from the upstream etcd binary package at
+-https://github.com/etcd-io/etcd/releases/download/v3.4.37/etcd-v3.4.37-linux-amd64.tar.gz
+-
+-Files: *
+-Copyright: 2014-2015 CoreOS, Inc
+-           2013-2017 The etcd Authors
+-License: Apache-2.0
+-
+-Files: debian/*
+-Copyright: 2025 Wind River Systems, Inc.
+-License: Apache-2.0
+-
+-License: Apache-2.0
+- Licensed under the Apache License, Version 2.0 (the "License");
+- you may not use this file except in compliance with the License.
+- You may obtain a copy of the License at
+- .
+-   http://www.apache.org/licenses/LICENSE-2.0
+- .
+- On Debian systems, the complete text of the Apache 2.0
+- License can be found in `/usr/share/common-licenses/Apache-2.0`.
+-
+diff --git a/kubernetes/etcd/debian/all/deb_folder/etcd-client.install b/kubernetes/etcd/debian/all/deb_folder/etcd-client.install
+deleted file mode 100644
+index c07aeba..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/etcd-client.install
++++ /dev/null
+@@ -1 +0,0 @@
+-etcdctl usr/bin/
+diff --git a/kubernetes/etcd/debian/all/deb_folder/etcd-server.install b/kubernetes/etcd/debian/all/deb_folder/etcd-server.install
+deleted file mode 100644
+index b7e27d3..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/etcd-server.install
++++ /dev/null
+@@ -1 +0,0 @@
+-etcd usr/bin/
+diff --git a/kubernetes/etcd/debian/all/deb_folder/etcd-server.postinst b/kubernetes/etcd/debian/all/deb_folder/etcd-server.postinst
+deleted file mode 100644
+index 08a90ef..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/etcd-server.postinst
++++ /dev/null
+@@ -1,17 +0,0 @@
+-#!/bin/sh
+-
+-set -e
+-
+-case $1 in
+-    configure)
+-        mkdir -m 755 -p /etc/etcd
+-    ;;
+-    abort-upgrade|abort-remove|abort-deconfigure)
+-    ;;
+-    *)
+-        echo "postinst called with unknown argument \`$1'" >&2
+-        exit 1
+-    ;;
+-esac
+-
+-#DEBHELPER#
+diff --git a/kubernetes/etcd/debian/all/deb_folder/not-installed b/kubernetes/etcd/debian/all/deb_folder/not-installed
+deleted file mode 100644
+index cbb01d7..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/not-installed
++++ /dev/null
+@@ -1,12 +0,0 @@
+-usr/bin/benchmark
+-usr/bin/bridge
+-usr/bin/etcd-agent
+-usr/bin/etcd-dump-db
+-usr/bin/etcd-dump-logs
+-usr/bin/etcd-dump-metrics
+-usr/bin/etcd-proxy
+-usr/bin/etcd-runner
+-usr/bin/etcd-tester
+-usr/bin/etcd2-backup-coreos
+-usr/bin/raftexample
+-
+diff --git a/kubernetes/etcd/debian/all/deb_folder/rules b/kubernetes/etcd/debian/all/deb_folder/rules
+deleted file mode 100755
+index 12b6d47..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/rules
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/usr/bin/make -f
+-# See debhelper(7) (uncomment to enable)
+-# output every command that modifies files on the build system.
+-export DH_VERBOSE = 1
+-
+-%:
+-	dh $@
+diff --git a/kubernetes/etcd/debian/all/deb_folder/source/format b/kubernetes/etcd/debian/all/deb_folder/source/format
+deleted file mode 100644
+index 163aaf8..0000000
+--- a/kubernetes/etcd/debian/all/deb_folder/source/format
++++ /dev/null
+@@ -1 +0,0 @@
+-3.0 (quilt)
+diff --git a/kubernetes/etcd/debian/all/meta_data.yaml b/kubernetes/etcd/debian/all/meta_data.yaml
+deleted file mode 100644
+index e92d44a..0000000
+--- a/kubernetes/etcd/debian/all/meta_data.yaml
++++ /dev/null
+@@ -1,12 +0,0 @@
+----
+-debname: etcd
+-debver: 3.4.37
+-dl_path:
+-  name: etcd-3.4.37.tar.gz
+-  url: https://github.com/etcd-io/etcd/releases/download/v3.4.37/etcd-v3.4.37-linux-amd64.tar.gz
+-  sha256sum: e155b80ee292e19fa39000a218a7ea9166f45b161c610074db73e4e8f9011927
+-revision:
+-  dist: $STX_DIST
+-  GITREVCOUNT:
+-    BASE_SRCREV: 4493a3146c752e2d3cd11ea8fa964a9399dd8b52
+-    SRC_DIR: ${MY_REPO}/stx/integ/kubernetes/etcd
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/changelog b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/changelog
+new file mode 100644
+index 0000000..0014615
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/changelog
+@@ -0,0 +1,5 @@
++kubernetes-unversioned (1.0-1) unstable; urgency=medium
++
++  * Initial release
++
++ -- Mihnea Saracin <mihnea.saracin@opendev.org>  Mon, 15 Nov 2021 16:09:12 +0000
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/control b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/control
+new file mode 100644
+index 0000000..c83fd5f
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/control
+@@ -0,0 +1,16 @@
++Source: kubernetes-unversioned
++Section: admin
++Priority: optional
++Maintainer: StarlingX Developers <StarlingX-discuss@lists.StarlingX.io>
++Build-Depends: debhelper-compat (= 13), libsystemd-dev
++Standards-Version: 4.4.1
++Homepage: https://www.starlingx.io
++Rules-Requires-Root: no
++
++Package: kubernetes-unversioned
++Architecture: any
++Depends: ${shlibs:Depends},
++ ${misc:Depends},
++ systemd
++Description: Kubernetes unversioned common config and current version symlinks
++ This package contains kubernetes config files and current version symlinks
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/copyright b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/copyright
+new file mode 100644
+index 0000000..51b5077
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/copyright
+@@ -0,0 +1,22 @@
++Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
++Upstream-Name: kubernetes-unversioned
++Source: https://opendev.org/starlingx/integ/src/branch/master/kubernetes/kubernetes-unversioned
++
++Files: *
++Copyright: (c) 2022 Wind River Systems, Inc
++           (c) Others (See individual files for more details)
++License: Apache-2
++ Licensed under the Apache License, Version 2.0 (the "License");
++ you may not use this file except in compliance with the License.
++ You may obtain a copy of the License at
++ .
++    http://www.apache.org/licenses/LICENSE-2.0
++ .
++ Unless required by applicable law or agreed to in writing, software
++ distributed under the License is distributed on an "AS IS" BASIS,
++ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ See the License for the specific language governing permissions and
++ limitations under the License.
++ .
++ On Debian-based systems the full text of the Apache version 2.0 license
++ can be found in `/usr/share/common-licenses/Apache-2.0'.
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubeadm.conf b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubeadm.conf
+new file mode 100644
+index 0000000..9c1e1be
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubeadm.conf
+@@ -0,0 +1,21 @@
++# Note: This dropin only works with kubeadm and kubelet v1.11+
++[Unit]
++ConditionPathExists=/etc/default/kubelet
++ConditionPathExists=/var/lib/kubelet/config.yaml
++
++[Service]
++Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
++Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
++# This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically
++EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
++# This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use
++# the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.
++EnvironmentFile=-/etc/default/kubelet
++ExecStart=
++ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
++ExecStartPre=-/usr/local/sbin/sanitize_kubelet_reserved_cpus.sh /etc/default/kubelet
++ExecStartPre=-/usr/bin/kubelet-cgroup-setup.sh
++ExecStartPost=/bin/bash -c 'echo $MAINPID > /var/run/kubelet.pid;'
++ExecStopPost=/bin/rm -f /var/run/kubelet.pid
++StartLimitInterval=0
++RestartSec=10
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubelet-cgroup-setup.sh b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubelet-cgroup-setup.sh
+new file mode 100644
+index 0000000..8d40814
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubelet-cgroup-setup.sh
+@@ -0,0 +1,184 @@
++#!/bin/bash
++#
++# Copyright (c) 2024-2025 Wind River Systems, Inc.
++#
++# SPDX-License-Identifier: Apache-2.0
++#
++# This script does minimal cgroup setup for kubelet. This creates k8s-infra
++# cgroup for a minimal set of resource controllers, and configures cpuset
++# attributes to span all online cpus and nodes. This will do nothing if
++# the k8s-infra cgroup already exists (i.e., assume already configured).
++# NOTE: The creation of directories under /sys/fs/cgroup is volatile, and
++# does not persist reboots. The cpuset.mems and cpuset.cpus is later updated
++# by puppet kubernetes.pp manifest.
++#
++# Furthermore, it defines an upper memory limit for the kubepods cgroup to 
++# restrain the effects of misbehaving pods runnning on the platform cores.
++#
++
++# Define minimal path
++PATH=/bin:/usr/bin:/usr/local/bin
++
++# Log info message to /var/log/daemon.log
++function LOG {
++    logger -p daemon.info "$0($$): $@"
++}
++
++# Log warning message to /var/log/daemon.log
++function WARN {
++    logger -s -p daemon.warning "$0($$): WARN: $@"
++}
++
++# Log error message to /var/log/daemon.log
++function ERROR {
++    logger -s -p daemon.error "$0($$): ERROR: $@"
++}
++
++# Create minimal cgroup directories and configure cpuset attributes if required
++function create_cgroup {
++    local cg_name=$1
++    local cg_nodeset=$2
++    local cg_cpuset=$3
++
++    local CGROUP=/sys/fs/cgroup
++    local CONTROLLERS_AUTO_DELETED=("pids" "hugetlb")
++    local CONTROLLERS_PRESERVED=("cpuset" "memory" "cpu,cpuacct" "systemd")
++    local cnt=''
++    local CGDIR=''
++    local RC=0
++
++    # Ensure that these cgroups are created every time as they are auto deleted
++    for cnt in ${CONTROLLERS_AUTO_DELETED[@]}; do
++        CGDIR=${CGROUP}/${cnt}/${cg_name}
++        if [ -d ${CGDIR} ]; then
++            LOG "Nothing to do, already configured: ${CGDIR}."
++            continue
++        fi
++        LOG "Creating: ${CGDIR}"
++        mkdir -p ${CGDIR}
++        RC=$?
++        if [ ${RC} -ne 0 ]; then
++            ERROR "Creating: ${CGDIR}, rc=${RC}"
++            exit ${RC}
++        fi
++    done
++
++    # These cgroups are preserved so if any of these are encountered additional
++    # cgroup setup is not required
++    for cnt in ${CONTROLLERS_PRESERVED[@]}; do
++        CGDIR=${CGROUP}/${cnt}/${cg_name}
++        if [ -d ${CGDIR} ]; then
++            LOG "Nothing to do, already configured: ${CGDIR}."
++            return ${RC}
++        fi
++        LOG "Creating: ${CGDIR}"
++        mkdir -p ${CGDIR}
++        RC=$?
++        if [ ${RC} -ne 0 ]; then
++            ERROR "Creating: ${CGDIR}, rc=${RC}"
++            exit ${RC}
++        fi
++    done
++
++    # Customize cpuset attributes
++    LOG "Configuring cgroup: ${cg_name}, nodeset: ${cg_nodeset}, cpuset: ${cg_cpuset}"
++    CGDIR=${CGROUP}/cpuset/${cg_name}
++    local CGMEMS=${CGDIR}/cpuset.mems
++    local CGCPUS=${CGDIR}/cpuset.cpus
++    local CGTASKS=${CGDIR}/tasks
++
++    # Assign cgroup memory nodeset
++    LOG "Assign nodeset ${cg_nodeset} to ${CGMEMS}"
++    echo ${cg_nodeset} > ${CGMEMS}
++    RC=$?
++    if [ ${RC} -ne 0 ]; then
++        ERROR "Unable to write to: ${CGMEMS}, rc=${RC}"
++        exit ${RC}
++    fi
++
++    # Assign cgroup cpus
++    LOG "Assign cpuset ${cg_cpuset} to ${CGCPUS}"
++    echo ${cg_cpuset} > ${CGCPUS}
++    RC=$?
++    if [ ${RC} -ne 0 ]; then
++        ERROR "Assigning: ${cg_cpuset} to ${CGCPUS}, rc=${RC}"
++        exit ${RC}
++    fi
++
++    # Set file ownership
++    chown root:root ${CGMEMS} ${CGCPUS} ${CGTASKS}
++    RC=$?
++    if [ ${RC} -ne 0 ]; then
++        ERROR "Setting owner for: ${CGMEMS}, ${CGCPUS}, ${CGTASKS}, rc=${RC}"
++        exit ${RC}
++    fi
++
++    # Set file mode permissions
++    chmod 644 ${CGMEMS} ${CGCPUS} ${CGTASKS}
++    RC=$?
++    if [ ${RC} -ne 0 ]; then
++        ERROR "Setting mode for: ${CGMEMS}, ${CGCPUS}, ${CGTASKS}, rc=${RC}"
++        exit ${RC}
++    fi
++
++    return ${RC}
++}
++
++# Define an upper limit for the memory consumed by the kubepod cgroups
++function set_kubepods_memory_limit {
++    local cg_name=$1
++    local cg_limit_in_bytes=$2
++
++    local CGATTR="memory.limit_in_bytes"
++    local CGDIR="/sys/fs/cgroup/memory/${cg_name}/kubepods"
++
++    if [ ! -d "${CGDIR}" ]; then
++        LOG "Creating: ${CGDIR}"
++        mkdir -p "${CGDIR}"
++        RC=$?
++        if [ ${RC} -ne 0 ]; then
++            ERROR "Creating: ${CGDIR}, rc=${RC}"
++            exit ${RC}
++        fi
++    fi
++
++    echo ${cg_limit_in_bytes} > ${CGDIR}/${CGATTR}
++    RC=$?
++    if [ ${RC} -ne 0 ]; then
++        ERROR "Setting memory limit for cgroup: ${CGDIR}, Attr: ${CGATTR}, Value: ${cg_limit_in_bytes}, rc=${RC}"
++        exit ${RC}
++    fi
++
++    LOG "Memory limit set for kubepods cgroup in ${CGDIR}: ${cg_limit_in_bytes}"
++    return ${RC}
++}
++
++if [ ${UID} -ne 0 ]; then
++    ERROR "Require sudo/root."
++    exit 1
++fi
++
++# Configure default kubepods cpuset to span all online cpus and nodes.
++ONLINE_NODESET=$(/bin/cat /sys/devices/system/node/online)
++ONLINE_CPUSET=$(/bin/cat /sys/devices/system/cpu/online)
++
++# Configure kubelet cgroup to match cgroupRoot.
++create_cgroup 'k8s-infra' ${ONLINE_NODESET} ${ONLINE_CPUSET}
++create_cgroup 'k8s-infra-stx' ${ONLINE_NODESET} ${ONLINE_CPUSET}
++
++# Use the same amount of memory reserved for the system as reference
++SYSTEM_RESERVED_MEMORY_MiB=$(sed -nr 's/.*--system-reserved=memory=([0-9]+)Mi.*/\1/p' /etc/default/kubelet 2>&1)
++RC=$?
++
++if [[ ${SYSTEM_RESERVED_MEMORY_MiB} =~ ^[0-9]+$ ]]; then
++    # Convert to bytes
++    SYSTEM_RESERVED_MEMORY_BYTES=$(( SYSTEM_RESERVED_MEMORY_MiB * 1048576 ))
++
++    # Limit memory consumption on kubepods
++    set_kubepods_memory_limit 'k8s-infra-stx' ${SYSTEM_RESERVED_MEMORY_BYTES}
++
++else
++    WARN "Unable to extract the value of reserved system memory from kubelet parameters. rc=${RC}:${SYSTEM_RESERVED_MEMORY_BYTES}"
++fi
++
++exit $?
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-accounting.conf b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-accounting.conf
+new file mode 100644
+index 0000000..af72207
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-accounting.conf
+@@ -0,0 +1,3 @@
++[Manager]
++DefaultCPUAccounting=yes
++DefaultMemoryAccounting=yes
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.dirs b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.dirs
+new file mode 100644
+index 0000000..a9edbad
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.dirs
+@@ -0,0 +1,6 @@
++etc/systemd/system/kubelet.service.d
++usr/share/bash-completion/completions
++var/lib/etcd
++var/lib/kubelet
++var/lib/kubernetes
++run/kubernetes
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.install b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.install
+new file mode 100644
+index 0000000..ae70cab
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.install
+@@ -0,0 +1,10 @@
++usr/lib/systemd/system/kubelet.service
++etc/kubernetes/config
++etc/kubernetes/kubelet
++etc/kubernetes/kubelet.kubeconfig
++etc/kubernetes/proxy
++etc/systemd/system/kubelet.service.d/kubeadm.conf
++etc/systemd/system.conf.d/kubernetes-accounting.conf
++usr/lib/tmpfiles.d/kubernetes.conf
++usr/bin/kubelet-cgroup-setup.sh
++usr/local/sbin/sanitize_kubelet_reserved_cpus.sh
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.links b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.links
+new file mode 100644
+index 0000000..1b6fabd
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/kubernetes-unversioned.links
+@@ -0,0 +1,6 @@
++/var/lib/etcd/stage0/usr/bin/etcd /usr/bin/etcd
++/var/lib/etcd/stage0/usr/bin/etcdctl /usr/bin/etcdctl
++/var/lib/kubernetes/stage1/usr/bin/kubeadm /usr/bin/kubeadm
++/var/lib/kubernetes/stage2/usr/bin/kubelet /usr/bin/kubelet
++/var/lib/kubernetes/stage1/usr/bin/kubectl /usr/bin/kubectl
++/var/lib/kubernetes/stage1/usr/share/bash-completion/completions/kubectl /usr/share/bash-completion/completions/kubectl
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/not-installed b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/not-installed
+new file mode 100644
+index 0000000..ad3d1da
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/not-installed
+@@ -0,0 +1,6 @@
++usr/bin/etcd
++usr/bin/etcdctl
++usr/bin/kubeadm
++usr/bin/kubelet
++usr/bin/kubectl
++usr/share/bash-completion/completions/kubectl
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
+new file mode 100644
+index 0000000..8a0d80d
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
+@@ -0,0 +1,25 @@
++From c7f3a7c54c3fc5bbf8708e98e4cef145eaeb6983 Mon Sep 17 00:00:00 2001
++From: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
++Date: Fri, 2 Dec 2022 18:55:34 +0530
++Subject: [PATCH] Remove KUBE_ALLOW_PRIV from kubelet service
++
++Signed-off-by: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
++---
++ init/systemd/kubelet.service | 1 -
++ 1 file changed, 1 deletion(-)
++
++diff --git a/init/systemd/kubelet.service b/init/systemd/kubelet.service
++index 1082bba..5808312 100644
++--- a/init/systemd/kubelet.service
+++++ b/init/systemd/kubelet.service
++@@ -15,7 +15,6 @@ ExecStart=/usr/bin/kubelet \
++ 	    $KUBELET_ADDRESS \
++ 	    $KUBELET_PORT \
++ 	    $KUBELET_HOSTNAME \
++-	    $KUBE_ALLOW_PRIV \
++ 	    $KUBELET_ARGS
++ Restart=on-failure
++ KillMode=process
++-- 
++2.17.1
++
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch
+new file mode 100644
+index 0000000..52cda6b
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch
+@@ -0,0 +1,33 @@
++From 44e59ca86c4d5f69a6f0505bfbe7f607c8dd1193 Mon Sep 17 00:00:00 2001
++From: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
++Date: Fri, 7 Jul 2023 13:22:27 +0530
++Subject: [PATCH] Update kubelet.kubeconfig environment variable
++
++The incorrect specification of the KUBELET_KUBECONFIG environment
++variable made it so that default parameters were not present.
++
++Update the KUBELET_KUBECONFIG environment variable as
++KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig".
++So that kubelet have the correct default parameters.
++
++Signed-off-by: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
++---
++ init/systemd/environ/kubelet | 2 +-
++ 1 file changed, 1 insertion(+), 1 deletion(-)
++
++diff --git a/init/systemd/environ/kubelet b/init/systemd/environ/kubelet
++index a623673..405aabf 100644
++--- a/init/systemd/environ/kubelet
+++++ b/init/systemd/environ/kubelet
++@@ -11,7 +11,7 @@ KUBELET_ADDRESS="--address=127.0.0.1"
++ KUBELET_HOSTNAME="--hostname-override=127.0.0.1"
++ 
++ # Edit the kubelet.kubeconfig to have correct cluster server address
++-KUBELET_KUBECONFIG=/etc/kubernetes/kubelet.kubeconfig
+++KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig"
++ 
++ # Add your own!
++ KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false"
++-- 
++2.17.1
++
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/kubelet-service-remove-docker-dependency.patch b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/kubelet-service-remove-docker-dependency.patch
+new file mode 100644
+index 0000000..78eea1e
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/kubelet-service-remove-docker-dependency.patch
+@@ -0,0 +1,15 @@
++diff --git a/init/systemd/kubelet.service b/init/systemd/kubelet.service
++index 1082bba..1fae395 100644
++--- a/init/systemd/kubelet.service
+++++ b/init/systemd/kubelet.service
++@@ -1,8 +1,8 @@
++ [Unit]
++ Description=Kubernetes Kubelet Server
++ Documentation=https://kubernetes.io/docs/concepts/overview/components/#kubelet https://kubernetes.io/docs/reference/generated/kubelet/
++-After=docker.service
++-Requires=docker.service
+++Wants=network-online.target
+++After=network-online.target
++ 
++ [Service]
++ WorkingDirectory=/var/lib/kubelet
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/series b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/series
+new file mode 100644
+index 0000000..7edccd6
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/patches/series
+@@ -0,0 +1,3 @@
++kubelet-service-remove-docker-dependency.patch
++Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
++Update-kubelet-kube-config-environment-variable.patch
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/rules b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/rules
+new file mode 100755
+index 0000000..40da9d2
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/rules
+@@ -0,0 +1,74 @@
++#!/usr/bin/make -f
++# See debhelper(7) (uncomment to enable)
++# output every command that modifies files on the build system.
++#export DH_VERBOSE = 1
++
++_k8s_name := kubernetes
++_bindir := /usr/bin
++_local_sbindir := /usr/local/sbin
++_etcd_symlinkdir := /var/lib/etcd
++_k8s_symlinkdir := /var/lib/kubernetes
++
++DEBIAN_DESTDIR := $(CURDIR)/debian/tmp
++
++# GNU Make function, e.g., $(call stage_link,arg1,arg2,arg3)
++stage_link = ln -v -sf ${1}${2}/${3} ${DEBIAN_DESTDIR}${2}/${3}
++
++%:
++	dh $@ --builddirectory=contrib
++
++override_dh_auto_build:
++	mkdir -pv contrib
++	cp -rv init contrib
++
++override_dh_install:
++	# location for stage0, stage1 and stage2 version symlinks
++	install -v -m 755 -d ${DEBIAN_DESTDIR}${_etcd_symlinkdir}
++	install -v -m 755 -d ${DEBIAN_DESTDIR}${_k8s_symlinkdir}
++
++	# Symlink targets
++	install -v -m 755 -d ${DEBIAN_DESTDIR}${_bindir}
++	install -v -m 755 -d ${DEBIAN_DESTDIR}/etc/systemd/system/kubelet.service.d
++	install -v -m 755 -d ${DEBIAN_DESTDIR}/usr/share/bash-completion/completions
++	$(call stage_link,${_etcd_symlinkdir}/stage0,${_bindir},etcd)
++	$(call stage_link,${_etcd_symlinkdir}/stage0,${_bindir},etcdctl)
++	$(call stage_link,${_k8s_symlinkdir}/stage1,${_bindir},kubeadm)
++	$(call stage_link,${_k8s_symlinkdir}/stage1,/usr/share/bash-completion/completions,kubectl)
++	$(call stage_link,${_k8s_symlinkdir}/stage2,${_bindir},kubelet)
++	$(call stage_link,${_k8s_symlinkdir}/stage1,${_bindir},kubectl)
++
++	# install environment files
++	install -v -d -m 0755 ${DEBIAN_DESTDIR}/etc/${_k8s_name}
++	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/config
++	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/kubelet
++	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/kubelet.kubeconfig
++	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/proxy
++
++	# install config files
++	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/etc/systemd/system/kubelet.service.d debian/kubeadm.conf
++	install -v -d -m 0755 ${DEBIAN_DESTDIR}/usr/lib/tmpfiles.d
++	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/usr/lib/tmpfiles.d contrib/init/systemd/tmpfiles.d/kubernetes.conf
++	mkdir -p ${DEBIAN_DESTDIR}/run
++	install -v -d -m 0755 ${DEBIAN_DESTDIR}/run/${_k8s_name}/
++
++	# install service files
++	install -v -d -m 0755 ${DEBIAN_DESTDIR}/usr/lib/systemd/system
++	install -v -m 0644 -t ${DEBIAN_DESTDIR}/usr/lib/systemd/system contrib/init/systemd/kubelet.service
++
++	# install the place the kubelet defaults to put volumes (/var/lib/kubelet)
++	install -v -d ${DEBIAN_DESTDIR}/var/lib/kubelet
++
++	# enable CPU and Memory accounting
++	install -v -d -m 0755 ${DEBIAN_DESTDIR}/etc/systemd/system.conf.d
++	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/etc/systemd/system.conf.d debian/kubernetes-accounting.conf
++
++	# install scripts
++	install -p -m 0700 -t ${DEBIAN_DESTDIR}${_bindir} debian/kubelet-cgroup-setup.sh
++	install -v -m 0700 -d ${DEBIAN_DESTDIR}${_local_sbindir}
++	install -v -m 0700 -t ${DEBIAN_DESTDIR}${_local_sbindir} debian/sanitize_kubelet_reserved_cpus.sh
++
++	dh_install
++
++override_dh_usrlocal:
++
++override_dh_auto_test:
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/sanitize_kubelet_reserved_cpus.sh b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/sanitize_kubelet_reserved_cpus.sh
+new file mode 100755
+index 0000000..1dcdbfd
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/sanitize_kubelet_reserved_cpus.sh
+@@ -0,0 +1,98 @@
++#! /bin/bash
++# Copyright (c) 2022 Wind River Systems, Inc.
++#
++# SPDX-License-Identifier: Apache-2.0
++#
++# The script will run everytime before the kubelet service is started.
++# (Runs as a "ExecStartPre" action)
++#
++# It reads the reserved-cpus list for the kubelet from the kubelet
++# environment file and sanitizes it on the basis of online CPUs.
++#
++# If none of the reserved cpus is online, it removes the --reserved-cpus flag
++# from the environment file which allows the kubelet to choose CPUs itself
++#
++
++ENVIRONMENT_FILE=$1
++
++# Log info message to /var/log/daemon.log
++function LOG {
++    logger -p daemon.info "$0($$): $@"
++}
++
++
++# Log error message to /var/log/daemon.log
++function ERROR {
++    logger -s -p daemon.error "$0($$): ERROR: $@"
++}
++
++function sanitize_reserved_cpus {
++    kubelet_extra_args=$(cat ${ENVIRONMENT_FILE} 2>/dev/null)
++    RC=$?
++    if [ ${RC} != "0" ]; then
++        ERROR "Error reading kubelet extra arguments. Error code: [${RC}]"
++        exit ${RC}
++    fi
++
++    # Get reserved-cpus comma-separated-values string from environment file and strip double quotes
++    # format of kubelet_extra_args is:
++    # "KUBELET_EXTRA_ARGS=--cni-bin-dir=/usr/libexec/cni --node-ip=abcd:204::2
++    # --system-reserved=memory=9000Mi --reserved-cpus="0-29" --pod-max-pids 10000"
++    if [[ ${kubelet_extra_args} =~ --reserved-cpus=\"([0-9,-]+)\" ]]; then
++        reserved_cpus=${BASH_REMATCH[1]}
++    else
++        reserved_cpus=""
++    fi
++    if test -z "${reserved_cpus}"; then
++        LOG "No reserved-cpu list found for kubelet. Nothing to do."
++        exit 0
++    fi
++    LOG "Current reserved-cpus for the kubelet service: ${reserved_cpus}"
++
++    cpus_online=$(cat /sys/devices/system/cpu/online)
++    RC=$?
++    if [ ${RC} != "0" ]; then
++        ERROR "Error reading online CPU list. Error code: [${RC}]"
++        exit ${RC}
++    fi
++    LOG "Online CPUs: ${cpus_online}"
++
++    # Possible formats for reserved_cpus could be
++    # 0,2,4,6
++    # 0-23,36-45
++    # 0-4,6,9,13,23-34
++    expanded_reserved_cpus=$(expand_sequence ${reserved_cpus})
++    reserved_cpus_array=(${expanded_reserved_cpus//,/ })
++
++    sanitized_reserved_cpus=""
++    for element in "${reserved_cpus_array[@]}"; do
++        in_list ${element} ${cpus_online}
++        if [[ "$?" == "0" ]] ; then
++            sanitized_reserved_cpus+=",${element}"
++        fi
++    done
++    # Remove the extra leading ','
++    sanitized_reserved_cpus=${sanitized_reserved_cpus#","}
++    LOG "Sanitized reserved-cpus list for the kubelet: ${sanitized_reserved_cpus}"
++
++    if test -z "${sanitized_reserved_cpus}"; then
++        # Strip out --reserved-cpus option if no reserved-cpus are online
++        sed -i "s/ --reserved-cpus=\"${reserved_cpus}\"//g" ${ENVIRONMENT_FILE}
++    else
++        # Replace existing reserved-cpus with sanitized list
++        sed -i "s/--reserved-cpus=\"${reserved_cpus}\"/--reserved-cpus=\"${sanitized_reserved_cpus}\"/g" ${ENVIRONMENT_FILE}
++    fi
++    RC="$?"
++    if [ ${RC} != "0" ]; then
++        ERROR "Error updating reserved-cpus list for the kubelet. Error code: [${RC}]"
++        exit ${RC}
++    fi
++    LOG "Successfully updated reserved-cpus list for the kubelet."
++
++}
++
++source /etc/init.d/cpumap_functions.sh
++
++sanitize_reserved_cpus
++
++exit 0
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/deb_folder/source/format b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/source/format
+new file mode 100644
+index 0000000..163aaf8
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/deb_folder/source/format
+@@ -0,0 +1 @@
++3.0 (quilt)
+diff --git a/kubernetes/kubernetes-unversioned/debian/all/meta_data.yaml b/kubernetes/kubernetes-unversioned/debian/all/meta_data.yaml
+new file mode 100644
+index 0000000..196b0ab
+--- /dev/null
++++ b/kubernetes/kubernetes-unversioned/debian/all/meta_data.yaml
+@@ -0,0 +1,13 @@
++---
++debname: kubernetes-unversioned
++debver: 1.0-1
++dl_path:
++  name: kubernetes-contrib-v1.18.1.tar.gz
++  url: https://github.com/kubernetes-retired/contrib/tarball/89f6948e24578fed2a90a87871b2263729f90ac3
++  md5sum: 9aa15af65ed89a7167b9520573bbdcd7
++  sha256sum: 97206b6c1ea8dc7cb6201f909c2d14fc68cf40faa4e2641cdefb8411e9403274
++revision:
++  dist: $STX_DIST
++  GITREVCOUNT:
++    BASE_SRCREV: e73a8b35d5c8942e7b60258bf48cefc6b41121ea
++    SRC_DIR: ${MY_REPO}/stx/integ/kubernetes/kubernetes-unversioned
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/changelog b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/changelog
+deleted file mode 100644
+index 0014615..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/changelog
++++ /dev/null
+@@ -1,5 +0,0 @@
+-kubernetes-unversioned (1.0-1) unstable; urgency=medium
+-
+-  * Initial release
+-
+- -- Mihnea Saracin <mihnea.saracin@opendev.org>  Mon, 15 Nov 2021 16:09:12 +0000
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/control b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/control
+deleted file mode 100644
+index c83fd5f..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/control
++++ /dev/null
+@@ -1,16 +0,0 @@
+-Source: kubernetes-unversioned
+-Section: admin
+-Priority: optional
+-Maintainer: StarlingX Developers <StarlingX-discuss@lists.StarlingX.io>
+-Build-Depends: debhelper-compat (= 13), libsystemd-dev
+-Standards-Version: 4.4.1
+-Homepage: https://www.starlingx.io
+-Rules-Requires-Root: no
+-
+-Package: kubernetes-unversioned
+-Architecture: any
+-Depends: ${shlibs:Depends},
+- ${misc:Depends},
+- systemd
+-Description: Kubernetes unversioned common config and current version symlinks
+- This package contains kubernetes config files and current version symlinks
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/copyright b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/copyright
+deleted file mode 100644
+index 51b5077..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/copyright
++++ /dev/null
+@@ -1,22 +0,0 @@
+-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+-Upstream-Name: kubernetes-unversioned
+-Source: https://opendev.org/starlingx/integ/src/branch/master/kubernetes/kubernetes-unversioned
+-
+-Files: *
+-Copyright: (c) 2022 Wind River Systems, Inc
+-           (c) Others (See individual files for more details)
+-License: Apache-2
+- Licensed under the Apache License, Version 2.0 (the "License");
+- you may not use this file except in compliance with the License.
+- You may obtain a copy of the License at
+- .
+-    http://www.apache.org/licenses/LICENSE-2.0
+- .
+- Unless required by applicable law or agreed to in writing, software
+- distributed under the License is distributed on an "AS IS" BASIS,
+- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- See the License for the specific language governing permissions and
+- limitations under the License.
+- .
+- On Debian-based systems the full text of the Apache version 2.0 license
+- can be found in `/usr/share/common-licenses/Apache-2.0'.
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubeadm.conf b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubeadm.conf
+deleted file mode 100644
+index b09b7f8..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubeadm.conf
++++ /dev/null
+@@ -1,20 +0,0 @@
+-# Note: This dropin only works with kubeadm and kubelet v1.11+
+-[Unit]
+-ConditionPathExists=/etc/default/kubelet
+-ConditionPathExists=/var/lib/kubelet/config.yaml
+-[Service]
+-Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
+-Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+-# This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically
+-EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
+-# This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use
+-# the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.
+-EnvironmentFile=-/etc/default/kubelet
+-ExecStart=
+-ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+-ExecStartPre=-/usr/local/sbin/sanitize_kubelet_reserved_cpus.sh /etc/default/kubelet
+-ExecStartPre=-/usr/bin/kubelet-cgroup-setup.sh
+-ExecStartPost=/bin/bash -c 'echo $MAINPID > /var/run/kubelet.pid;'
+-ExecStopPost=/bin/rm -f /var/run/kubelet.pid
+-StartLimitInterval=0
+-RestartSec=10
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubelet-cgroup-setup.sh b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubelet-cgroup-setup.sh
+deleted file mode 100644
+index 8d40814..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubelet-cgroup-setup.sh
++++ /dev/null
+@@ -1,184 +0,0 @@
+-#!/bin/bash
+-#
+-# Copyright (c) 2024-2025 Wind River Systems, Inc.
+-#
+-# SPDX-License-Identifier: Apache-2.0
+-#
+-# This script does minimal cgroup setup for kubelet. This creates k8s-infra
+-# cgroup for a minimal set of resource controllers, and configures cpuset
+-# attributes to span all online cpus and nodes. This will do nothing if
+-# the k8s-infra cgroup already exists (i.e., assume already configured).
+-# NOTE: The creation of directories under /sys/fs/cgroup is volatile, and
+-# does not persist reboots. The cpuset.mems and cpuset.cpus is later updated
+-# by puppet kubernetes.pp manifest.
+-#
+-# Furthermore, it defines an upper memory limit for the kubepods cgroup to 
+-# restrain the effects of misbehaving pods runnning on the platform cores.
+-#
+-
+-# Define minimal path
+-PATH=/bin:/usr/bin:/usr/local/bin
+-
+-# Log info message to /var/log/daemon.log
+-function LOG {
+-    logger -p daemon.info "$0($$): $@"
+-}
+-
+-# Log warning message to /var/log/daemon.log
+-function WARN {
+-    logger -s -p daemon.warning "$0($$): WARN: $@"
+-}
+-
+-# Log error message to /var/log/daemon.log
+-function ERROR {
+-    logger -s -p daemon.error "$0($$): ERROR: $@"
+-}
+-
+-# Create minimal cgroup directories and configure cpuset attributes if required
+-function create_cgroup {
+-    local cg_name=$1
+-    local cg_nodeset=$2
+-    local cg_cpuset=$3
+-
+-    local CGROUP=/sys/fs/cgroup
+-    local CONTROLLERS_AUTO_DELETED=("pids" "hugetlb")
+-    local CONTROLLERS_PRESERVED=("cpuset" "memory" "cpu,cpuacct" "systemd")
+-    local cnt=''
+-    local CGDIR=''
+-    local RC=0
+-
+-    # Ensure that these cgroups are created every time as they are auto deleted
+-    for cnt in ${CONTROLLERS_AUTO_DELETED[@]}; do
+-        CGDIR=${CGROUP}/${cnt}/${cg_name}
+-        if [ -d ${CGDIR} ]; then
+-            LOG "Nothing to do, already configured: ${CGDIR}."
+-            continue
+-        fi
+-        LOG "Creating: ${CGDIR}"
+-        mkdir -p ${CGDIR}
+-        RC=$?
+-        if [ ${RC} -ne 0 ]; then
+-            ERROR "Creating: ${CGDIR}, rc=${RC}"
+-            exit ${RC}
+-        fi
+-    done
+-
+-    # These cgroups are preserved so if any of these are encountered additional
+-    # cgroup setup is not required
+-    for cnt in ${CONTROLLERS_PRESERVED[@]}; do
+-        CGDIR=${CGROUP}/${cnt}/${cg_name}
+-        if [ -d ${CGDIR} ]; then
+-            LOG "Nothing to do, already configured: ${CGDIR}."
+-            return ${RC}
+-        fi
+-        LOG "Creating: ${CGDIR}"
+-        mkdir -p ${CGDIR}
+-        RC=$?
+-        if [ ${RC} -ne 0 ]; then
+-            ERROR "Creating: ${CGDIR}, rc=${RC}"
+-            exit ${RC}
+-        fi
+-    done
+-
+-    # Customize cpuset attributes
+-    LOG "Configuring cgroup: ${cg_name}, nodeset: ${cg_nodeset}, cpuset: ${cg_cpuset}"
+-    CGDIR=${CGROUP}/cpuset/${cg_name}
+-    local CGMEMS=${CGDIR}/cpuset.mems
+-    local CGCPUS=${CGDIR}/cpuset.cpus
+-    local CGTASKS=${CGDIR}/tasks
+-
+-    # Assign cgroup memory nodeset
+-    LOG "Assign nodeset ${cg_nodeset} to ${CGMEMS}"
+-    echo ${cg_nodeset} > ${CGMEMS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Unable to write to: ${CGMEMS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    # Assign cgroup cpus
+-    LOG "Assign cpuset ${cg_cpuset} to ${CGCPUS}"
+-    echo ${cg_cpuset} > ${CGCPUS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Assigning: ${cg_cpuset} to ${CGCPUS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    # Set file ownership
+-    chown root:root ${CGMEMS} ${CGCPUS} ${CGTASKS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Setting owner for: ${CGMEMS}, ${CGCPUS}, ${CGTASKS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    # Set file mode permissions
+-    chmod 644 ${CGMEMS} ${CGCPUS} ${CGTASKS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Setting mode for: ${CGMEMS}, ${CGCPUS}, ${CGTASKS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    return ${RC}
+-}
+-
+-# Define an upper limit for the memory consumed by the kubepod cgroups
+-function set_kubepods_memory_limit {
+-    local cg_name=$1
+-    local cg_limit_in_bytes=$2
+-
+-    local CGATTR="memory.limit_in_bytes"
+-    local CGDIR="/sys/fs/cgroup/memory/${cg_name}/kubepods"
+-
+-    if [ ! -d "${CGDIR}" ]; then
+-        LOG "Creating: ${CGDIR}"
+-        mkdir -p "${CGDIR}"
+-        RC=$?
+-        if [ ${RC} -ne 0 ]; then
+-            ERROR "Creating: ${CGDIR}, rc=${RC}"
+-            exit ${RC}
+-        fi
+-    fi
+-
+-    echo ${cg_limit_in_bytes} > ${CGDIR}/${CGATTR}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Setting memory limit for cgroup: ${CGDIR}, Attr: ${CGATTR}, Value: ${cg_limit_in_bytes}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    LOG "Memory limit set for kubepods cgroup in ${CGDIR}: ${cg_limit_in_bytes}"
+-    return ${RC}
+-}
+-
+-if [ ${UID} -ne 0 ]; then
+-    ERROR "Require sudo/root."
+-    exit 1
+-fi
+-
+-# Configure default kubepods cpuset to span all online cpus and nodes.
+-ONLINE_NODESET=$(/bin/cat /sys/devices/system/node/online)
+-ONLINE_CPUSET=$(/bin/cat /sys/devices/system/cpu/online)
+-
+-# Configure kubelet cgroup to match cgroupRoot.
+-create_cgroup 'k8s-infra' ${ONLINE_NODESET} ${ONLINE_CPUSET}
+-create_cgroup 'k8s-infra-stx' ${ONLINE_NODESET} ${ONLINE_CPUSET}
+-
+-# Use the same amount of memory reserved for the system as reference
+-SYSTEM_RESERVED_MEMORY_MiB=$(sed -nr 's/.*--system-reserved=memory=([0-9]+)Mi.*/\1/p' /etc/default/kubelet 2>&1)
+-RC=$?
+-
+-if [[ ${SYSTEM_RESERVED_MEMORY_MiB} =~ ^[0-9]+$ ]]; then
+-    # Convert to bytes
+-    SYSTEM_RESERVED_MEMORY_BYTES=$(( SYSTEM_RESERVED_MEMORY_MiB * 1048576 ))
+-
+-    # Limit memory consumption on kubepods
+-    set_kubepods_memory_limit 'k8s-infra-stx' ${SYSTEM_RESERVED_MEMORY_BYTES}
+-
+-else
+-    WARN "Unable to extract the value of reserved system memory from kubelet parameters. rc=${RC}:${SYSTEM_RESERVED_MEMORY_BYTES}"
+-fi
+-
+-exit $?
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-accounting.conf b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-accounting.conf
+deleted file mode 100644
+index af72207..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-accounting.conf
++++ /dev/null
+@@ -1,3 +0,0 @@
+-[Manager]
+-DefaultCPUAccounting=yes
+-DefaultMemoryAccounting=yes
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.dirs b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.dirs
+deleted file mode 100644
+index 341031a..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.dirs
++++ /dev/null
+@@ -1,5 +0,0 @@
+-etc/systemd/system/kubelet.service.d
+-usr/share/bash-completion/completions
+-var/lib/kubelet
+-var/lib/kubernetes
+-run/kubernetes
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.install b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.install
+deleted file mode 100644
+index ae70cab..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.install
++++ /dev/null
+@@ -1,10 +0,0 @@
+-usr/lib/systemd/system/kubelet.service
+-etc/kubernetes/config
+-etc/kubernetes/kubelet
+-etc/kubernetes/kubelet.kubeconfig
+-etc/kubernetes/proxy
+-etc/systemd/system/kubelet.service.d/kubeadm.conf
+-etc/systemd/system.conf.d/kubernetes-accounting.conf
+-usr/lib/tmpfiles.d/kubernetes.conf
+-usr/bin/kubelet-cgroup-setup.sh
+-usr/local/sbin/sanitize_kubelet_reserved_cpus.sh
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.links b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.links
+deleted file mode 100644
+index a68e79b..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/kubernetes-unversioned.links
++++ /dev/null
+@@ -1,4 +0,0 @@
+-/var/lib/kubernetes/stage1/usr/bin/kubeadm /usr/bin/kubeadm
+-/var/lib/kubernetes/stage2/usr/bin/kubelet /usr/bin/kubelet
+-/var/lib/kubernetes/stage1/usr/bin/kubectl /usr/bin/kubectl
+-/var/lib/kubernetes/stage1/usr/share/bash-completion/completions/kubectl /usr/share/bash-completion/completions/kubectl
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/not-installed b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/not-installed
+deleted file mode 100644
+index bff8bb6..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/not-installed
++++ /dev/null
+@@ -1,4 +0,0 @@
+-usr/bin/kubeadm
+-usr/bin/kubelet
+-usr/bin/kubectl
+-usr/share/bash-completion/completions/kubectl
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
+deleted file mode 100644
+index 8a0d80d..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
++++ /dev/null
+@@ -1,25 +0,0 @@
+-From c7f3a7c54c3fc5bbf8708e98e4cef145eaeb6983 Mon Sep 17 00:00:00 2001
+-From: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+-Date: Fri, 2 Dec 2022 18:55:34 +0530
+-Subject: [PATCH] Remove KUBE_ALLOW_PRIV from kubelet service
+-
+-Signed-off-by: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+----
+- init/systemd/kubelet.service | 1 -
+- 1 file changed, 1 deletion(-)
+-
+-diff --git a/init/systemd/kubelet.service b/init/systemd/kubelet.service
+-index 1082bba..5808312 100644
+---- a/init/systemd/kubelet.service
+-+++ b/init/systemd/kubelet.service
+-@@ -15,7 +15,6 @@ ExecStart=/usr/bin/kubelet \
+- 	    $KUBELET_ADDRESS \
+- 	    $KUBELET_PORT \
+- 	    $KUBELET_HOSTNAME \
+--	    $KUBE_ALLOW_PRIV \
+- 	    $KUBELET_ARGS
+- Restart=on-failure
+- KillMode=process
+--- 
+-2.17.1
+-
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch
+deleted file mode 100644
+index 52cda6b..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch
++++ /dev/null
+@@ -1,33 +0,0 @@
+-From 44e59ca86c4d5f69a6f0505bfbe7f607c8dd1193 Mon Sep 17 00:00:00 2001
+-From: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+-Date: Fri, 7 Jul 2023 13:22:27 +0530
+-Subject: [PATCH] Update kubelet.kubeconfig environment variable
+-
+-The incorrect specification of the KUBELET_KUBECONFIG environment
+-variable made it so that default parameters were not present.
+-
+-Update the KUBELET_KUBECONFIG environment variable as
+-KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig".
+-So that kubelet have the correct default parameters.
+-
+-Signed-off-by: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+----
+- init/systemd/environ/kubelet | 2 +-
+- 1 file changed, 1 insertion(+), 1 deletion(-)
+-
+-diff --git a/init/systemd/environ/kubelet b/init/systemd/environ/kubelet
+-index a623673..405aabf 100644
+---- a/init/systemd/environ/kubelet
+-+++ b/init/systemd/environ/kubelet
+-@@ -11,7 +11,7 @@ KUBELET_ADDRESS="--address=127.0.0.1"
+- KUBELET_HOSTNAME="--hostname-override=127.0.0.1"
+- 
+- # Edit the kubelet.kubeconfig to have correct cluster server address
+--KUBELET_KUBECONFIG=/etc/kubernetes/kubelet.kubeconfig
+-+KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig"
+- 
+- # Add your own!
+- KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false"
+--- 
+-2.17.1
+-
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/kubelet-service-remove-docker-dependency.patch b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/kubelet-service-remove-docker-dependency.patch
+deleted file mode 100644
+index 78eea1e..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/kubelet-service-remove-docker-dependency.patch
++++ /dev/null
+@@ -1,15 +0,0 @@
+-diff --git a/init/systemd/kubelet.service b/init/systemd/kubelet.service
+-index 1082bba..1fae395 100644
+---- a/init/systemd/kubelet.service
+-+++ b/init/systemd/kubelet.service
+-@@ -1,8 +1,8 @@
+- [Unit]
+- Description=Kubernetes Kubelet Server
+- Documentation=https://kubernetes.io/docs/concepts/overview/components/#kubelet https://kubernetes.io/docs/reference/generated/kubelet/
+--After=docker.service
+--Requires=docker.service
+-+Wants=network-online.target
+-+After=network-online.target
+- 
+- [Service]
+- WorkingDirectory=/var/lib/kubelet
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/series b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/series
+deleted file mode 100644
+index 7edccd6..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/patches/series
++++ /dev/null
+@@ -1,3 +0,0 @@
+-kubelet-service-remove-docker-dependency.patch
+-Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
+-Update-kubelet-kube-config-environment-variable.patch
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/rules b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/rules
+deleted file mode 100755
+index be527fc..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/rules
++++ /dev/null
+@@ -1,70 +0,0 @@
+-#!/usr/bin/make -f
+-# See debhelper(7) (uncomment to enable)
+-# output every command that modifies files on the build system.
+-#export DH_VERBOSE = 1
+-
+-_k8s_name := kubernetes
+-_bindir := /usr/bin
+-_local_sbindir := /usr/local/sbin
+-_symlinkdir := /var/lib/kubernetes
+-
+-DEBIAN_DESTDIR := $(CURDIR)/debian/tmp
+-
+-
+-stage_link = ln -v -sf ${1}${2}/${3} ${DEBIAN_DESTDIR}${2}/${3}
+-
+-%:
+-	dh $@ --builddirectory=contrib
+-
+-override_dh_auto_build:
+-	mkdir -pv contrib
+-	cp -rv init contrib
+-
+-override_dh_install:
+-	# location for stage1 and state2 version symlinks
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}${_symlinkdir}
+-
+-	# Symlink targets
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}${_bindir}
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}/etc/systemd/system/kubelet.service.d
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}/usr/share/bash-completion/completions
+-	$(call stage_link,${_symlinkdir}/stage1,${_bindir},kubeadm)
+-	$(call stage_link,${_symlinkdir}/stage1,/usr/share/bash-completion/completions,kubectl)
+-	$(call stage_link,${_symlinkdir}/stage2,${_bindir},kubelet)
+-	$(call stage_link,${_symlinkdir}/stage1,${_bindir},kubectl)
+-
+-	# install environment files
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/etc/${_k8s_name}
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/config
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/kubelet
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/kubelet.kubeconfig
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/proxy
+-
+-	# install config files
+-	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/etc/systemd/system/kubelet.service.d debian/kubeadm.conf
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/usr/lib/tmpfiles.d
+-	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/usr/lib/tmpfiles.d contrib/init/systemd/tmpfiles.d/kubernetes.conf
+-	mkdir -p ${DEBIAN_DESTDIR}/run
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/run/${_k8s_name}/
+-
+-	# install service files
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/usr/lib/systemd/system
+-	install -v -m 0644 -t ${DEBIAN_DESTDIR}/usr/lib/systemd/system contrib/init/systemd/kubelet.service
+-
+-	# install the place the kubelet defaults to put volumes (/var/lib/kubelet)
+-	install -v -d ${DEBIAN_DESTDIR}/var/lib/kubelet
+-
+-	# enable CPU and Memory accounting
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/etc/systemd/system.conf.d
+-	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/etc/systemd/system.conf.d debian/kubernetes-accounting.conf
+-
+-	# install scripts
+-	install -p -m 0700 -t ${DEBIAN_DESTDIR}${_bindir} debian/kubelet-cgroup-setup.sh
+-	install -v -m 0700 -d ${DEBIAN_DESTDIR}${_local_sbindir}
+-	install -v -m 0700 -t ${DEBIAN_DESTDIR}${_local_sbindir} debian/sanitize_kubelet_reserved_cpus.sh
+-
+-	dh_install
+-
+-override_dh_usrlocal:
+-
+-override_dh_auto_test:
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/sanitize_kubelet_reserved_cpus.sh b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/sanitize_kubelet_reserved_cpus.sh
+deleted file mode 100755
+index 1dcdbfd..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/sanitize_kubelet_reserved_cpus.sh
++++ /dev/null
+@@ -1,98 +0,0 @@
+-#! /bin/bash
+-# Copyright (c) 2022 Wind River Systems, Inc.
+-#
+-# SPDX-License-Identifier: Apache-2.0
+-#
+-# The script will run everytime before the kubelet service is started.
+-# (Runs as a "ExecStartPre" action)
+-#
+-# It reads the reserved-cpus list for the kubelet from the kubelet
+-# environment file and sanitizes it on the basis of online CPUs.
+-#
+-# If none of the reserved cpus is online, it removes the --reserved-cpus flag
+-# from the environment file which allows the kubelet to choose CPUs itself
+-#
+-
+-ENVIRONMENT_FILE=$1
+-
+-# Log info message to /var/log/daemon.log
+-function LOG {
+-    logger -p daemon.info "$0($$): $@"
+-}
+-
+-
+-# Log error message to /var/log/daemon.log
+-function ERROR {
+-    logger -s -p daemon.error "$0($$): ERROR: $@"
+-}
+-
+-function sanitize_reserved_cpus {
+-    kubelet_extra_args=$(cat ${ENVIRONMENT_FILE} 2>/dev/null)
+-    RC=$?
+-    if [ ${RC} != "0" ]; then
+-        ERROR "Error reading kubelet extra arguments. Error code: [${RC}]"
+-        exit ${RC}
+-    fi
+-
+-    # Get reserved-cpus comma-separated-values string from environment file and strip double quotes
+-    # format of kubelet_extra_args is:
+-    # "KUBELET_EXTRA_ARGS=--cni-bin-dir=/usr/libexec/cni --node-ip=abcd:204::2
+-    # --system-reserved=memory=9000Mi --reserved-cpus="0-29" --pod-max-pids 10000"
+-    if [[ ${kubelet_extra_args} =~ --reserved-cpus=\"([0-9,-]+)\" ]]; then
+-        reserved_cpus=${BASH_REMATCH[1]}
+-    else
+-        reserved_cpus=""
+-    fi
+-    if test -z "${reserved_cpus}"; then
+-        LOG "No reserved-cpu list found for kubelet. Nothing to do."
+-        exit 0
+-    fi
+-    LOG "Current reserved-cpus for the kubelet service: ${reserved_cpus}"
+-
+-    cpus_online=$(cat /sys/devices/system/cpu/online)
+-    RC=$?
+-    if [ ${RC} != "0" ]; then
+-        ERROR "Error reading online CPU list. Error code: [${RC}]"
+-        exit ${RC}
+-    fi
+-    LOG "Online CPUs: ${cpus_online}"
+-
+-    # Possible formats for reserved_cpus could be
+-    # 0,2,4,6
+-    # 0-23,36-45
+-    # 0-4,6,9,13,23-34
+-    expanded_reserved_cpus=$(expand_sequence ${reserved_cpus})
+-    reserved_cpus_array=(${expanded_reserved_cpus//,/ })
+-
+-    sanitized_reserved_cpus=""
+-    for element in "${reserved_cpus_array[@]}"; do
+-        in_list ${element} ${cpus_online}
+-        if [[ "$?" == "0" ]] ; then
+-            sanitized_reserved_cpus+=",${element}"
+-        fi
+-    done
+-    # Remove the extra leading ','
+-    sanitized_reserved_cpus=${sanitized_reserved_cpus#","}
+-    LOG "Sanitized reserved-cpus list for the kubelet: ${sanitized_reserved_cpus}"
+-
+-    if test -z "${sanitized_reserved_cpus}"; then
+-        # Strip out --reserved-cpus option if no reserved-cpus are online
+-        sed -i "s/ --reserved-cpus=\"${reserved_cpus}\"//g" ${ENVIRONMENT_FILE}
+-    else
+-        # Replace existing reserved-cpus with sanitized list
+-        sed -i "s/--reserved-cpus=\"${reserved_cpus}\"/--reserved-cpus=\"${sanitized_reserved_cpus}\"/g" ${ENVIRONMENT_FILE}
+-    fi
+-    RC="$?"
+-    if [ ${RC} != "0" ]; then
+-        ERROR "Error updating reserved-cpus list for the kubelet. Error code: [${RC}]"
+-        exit ${RC}
+-    fi
+-    LOG "Successfully updated reserved-cpus list for the kubelet."
+-
+-}
+-
+-source /etc/init.d/cpumap_functions.sh
+-
+-sanitize_reserved_cpus
+-
+-exit 0
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/source/format b/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/source/format
+deleted file mode 100644
+index 163aaf8..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/deb_folder/source/format
++++ /dev/null
+@@ -1 +0,0 @@
+-3.0 (quilt)
+diff --git a/kubernetes/kubernetes-unversioned/debian/bullseye/meta_data.yaml b/kubernetes/kubernetes-unversioned/debian/bullseye/meta_data.yaml
+deleted file mode 100644
+index 196b0ab..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/bullseye/meta_data.yaml
++++ /dev/null
+@@ -1,13 +0,0 @@
+----
+-debname: kubernetes-unversioned
+-debver: 1.0-1
+-dl_path:
+-  name: kubernetes-contrib-v1.18.1.tar.gz
+-  url: https://github.com/kubernetes-retired/contrib/tarball/89f6948e24578fed2a90a87871b2263729f90ac3
+-  md5sum: 9aa15af65ed89a7167b9520573bbdcd7
+-  sha256sum: 97206b6c1ea8dc7cb6201f909c2d14fc68cf40faa4e2641cdefb8411e9403274
+-revision:
+-  dist: $STX_DIST
+-  GITREVCOUNT:
+-    BASE_SRCREV: e73a8b35d5c8942e7b60258bf48cefc6b41121ea
+-    SRC_DIR: ${MY_REPO}/stx/integ/kubernetes/kubernetes-unversioned
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/changelog b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/changelog
+deleted file mode 100644
+index 0014615..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/changelog
++++ /dev/null
+@@ -1,5 +0,0 @@
+-kubernetes-unversioned (1.0-1) unstable; urgency=medium
+-
+-  * Initial release
+-
+- -- Mihnea Saracin <mihnea.saracin@opendev.org>  Mon, 15 Nov 2021 16:09:12 +0000
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/control b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/control
+deleted file mode 100644
+index c83fd5f..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/control
++++ /dev/null
+@@ -1,16 +0,0 @@
+-Source: kubernetes-unversioned
+-Section: admin
+-Priority: optional
+-Maintainer: StarlingX Developers <StarlingX-discuss@lists.StarlingX.io>
+-Build-Depends: debhelper-compat (= 13), libsystemd-dev
+-Standards-Version: 4.4.1
+-Homepage: https://www.starlingx.io
+-Rules-Requires-Root: no
+-
+-Package: kubernetes-unversioned
+-Architecture: any
+-Depends: ${shlibs:Depends},
+- ${misc:Depends},
+- systemd
+-Description: Kubernetes unversioned common config and current version symlinks
+- This package contains kubernetes config files and current version symlinks
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/copyright b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/copyright
+deleted file mode 100644
+index 51b5077..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/copyright
++++ /dev/null
+@@ -1,22 +0,0 @@
+-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+-Upstream-Name: kubernetes-unversioned
+-Source: https://opendev.org/starlingx/integ/src/branch/master/kubernetes/kubernetes-unversioned
+-
+-Files: *
+-Copyright: (c) 2022 Wind River Systems, Inc
+-           (c) Others (See individual files for more details)
+-License: Apache-2
+- Licensed under the Apache License, Version 2.0 (the "License");
+- you may not use this file except in compliance with the License.
+- You may obtain a copy of the License at
+- .
+-    http://www.apache.org/licenses/LICENSE-2.0
+- .
+- Unless required by applicable law or agreed to in writing, software
+- distributed under the License is distributed on an "AS IS" BASIS,
+- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- See the License for the specific language governing permissions and
+- limitations under the License.
+- .
+- On Debian-based systems the full text of the Apache version 2.0 license
+- can be found in `/usr/share/common-licenses/Apache-2.0'.
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubeadm.conf b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubeadm.conf
+deleted file mode 100644
+index b09b7f8..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubeadm.conf
++++ /dev/null
+@@ -1,20 +0,0 @@
+-# Note: This dropin only works with kubeadm and kubelet v1.11+
+-[Unit]
+-ConditionPathExists=/etc/default/kubelet
+-ConditionPathExists=/var/lib/kubelet/config.yaml
+-[Service]
+-Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
+-Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+-# This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically
+-EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
+-# This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use
+-# the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.
+-EnvironmentFile=-/etc/default/kubelet
+-ExecStart=
+-ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+-ExecStartPre=-/usr/local/sbin/sanitize_kubelet_reserved_cpus.sh /etc/default/kubelet
+-ExecStartPre=-/usr/bin/kubelet-cgroup-setup.sh
+-ExecStartPost=/bin/bash -c 'echo $MAINPID > /var/run/kubelet.pid;'
+-ExecStopPost=/bin/rm -f /var/run/kubelet.pid
+-StartLimitInterval=0
+-RestartSec=10
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubelet-cgroup-setup.sh b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubelet-cgroup-setup.sh
+deleted file mode 100644
+index de690b8..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubelet-cgroup-setup.sh
++++ /dev/null
+@@ -1,133 +0,0 @@
+-#!/bin/bash
+-#
+-# Copyright (c) 2024 Wind River Systems, Inc.
+-#
+-# SPDX-License-Identifier: Apache-2.0
+-#
+-# This script does minimal cgroup setup for kubelet. This creates k8s-infra
+-# cgroup for a minimal set of resource controllers, and configures cpuset
+-# attributes to span all online cpus and nodes. This will do nothing if
+-# the k8s-infra cgroup already exists (i.e., assume already configured).
+-# NOTE: The creation of directories under /sys/fs/cgroup is volatile, and
+-# does not persist reboots. The cpuset.mems and cpuset.cpus is later updated
+-# by puppet kubernetes.pp manifest.
+-#
+-
+-# Define minimal path
+-PATH=/bin:/usr/bin:/usr/local/bin
+-
+-# Log info message to /var/log/daemon.log
+-function LOG {
+-    logger -p daemon.info "$0($$): $@"
+-}
+-
+-# Log error message to /var/log/daemon.log
+-function ERROR {
+-    logger -s -p daemon.error "$0($$): ERROR: $@"
+-}
+-
+-# Create minimal cgroup directories and configure cpuset attributes if required
+-function create_cgroup {
+-    local cg_name=$1
+-    local cg_nodeset=$2
+-    local cg_cpuset=$3
+-
+-    local CGROUP=/sys/fs/cgroup
+-    local CONTROLLERS_AUTO_DELETED=("pids" "hugetlb")
+-    local CONTROLLERS_PRESERVED=("cpuset" "memory" "cpu,cpuacct" "systemd")
+-    local cnt=''
+-    local CGDIR=''
+-    local RC=0
+-
+-    # Ensure that these cgroups are created every time as they are auto deleted
+-    for cnt in ${CONTROLLERS_AUTO_DELETED[@]}; do
+-        CGDIR=${CGROUP}/${cnt}/${cg_name}
+-        if [ -d ${CGDIR} ]; then
+-            LOG "Nothing to do, already configured: ${CGDIR}."
+-            continue
+-        fi
+-        LOG "Creating: ${CGDIR}"
+-        mkdir -p ${CGDIR}
+-        RC=$?
+-        if [ ${RC} -ne 0 ]; then
+-            ERROR "Creating: ${CGDIR}, rc=${RC}"
+-            exit ${RC}
+-        fi
+-    done
+-
+-    # These cgroups are preserved so if any of these are encountered additional
+-    # cgroup setup is not required
+-    for cnt in ${CONTROLLERS_PRESERVED[@]}; do
+-        CGDIR=${CGROUP}/${cnt}/${cg_name}
+-        if [ -d ${CGDIR} ]; then
+-            LOG "Nothing to do, already configured: ${CGDIR}."
+-            return ${RC}
+-        fi
+-        LOG "Creating: ${CGDIR}"
+-        mkdir -p ${CGDIR}
+-        RC=$?
+-        if [ ${RC} -ne 0 ]; then
+-            ERROR "Creating: ${CGDIR}, rc=${RC}"
+-            exit ${RC}
+-        fi
+-    done
+-
+-    # Customize cpuset attributes
+-    LOG "Configuring cgroup: ${cg_name}, nodeset: ${cg_nodeset}, cpuset: ${cg_cpuset}"
+-    CGDIR=${CGROUP}/cpuset/${cg_name}
+-    local CGMEMS=${CGDIR}/cpuset.mems
+-    local CGCPUS=${CGDIR}/cpuset.cpus
+-    local CGTASKS=${CGDIR}/tasks
+-
+-    # Assign cgroup memory nodeset
+-    LOG "Assign nodeset ${cg_nodeset} to ${CGMEMS}"
+-    echo ${cg_nodeset} > ${CGMEMS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Unable to write to: ${CGMEMS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    # Assign cgroup cpus
+-    LOG "Assign cpuset ${cg_cpuset} to ${CGCPUS}"
+-    echo ${cg_cpuset} > ${CGCPUS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Assigning: ${cg_cpuset} to ${CGCPUS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    # Set file ownership
+-    chown root:root ${CGMEMS} ${CGCPUS} ${CGTASKS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Setting owner for: ${CGMEMS}, ${CGCPUS}, ${CGTASKS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    # Set file mode permissions
+-    chmod 644 ${CGMEMS} ${CGCPUS} ${CGTASKS}
+-    RC=$?
+-    if [ ${RC} -ne 0 ]; then
+-        ERROR "Setting mode for: ${CGMEMS}, ${CGCPUS}, ${CGTASKS}, rc=${RC}"
+-        exit ${RC}
+-    fi
+-
+-    return ${RC}
+-}
+-
+-if [ ${UID} -ne 0 ]; then
+-    ERROR "Require sudo/root."
+-    exit 1
+-fi
+-
+-# Configure default kubepods cpuset to span all online cpus and nodes.
+-ONLINE_NODESET=$(/bin/cat /sys/devices/system/node/online)
+-ONLINE_CPUSET=$(/bin/cat /sys/devices/system/cpu/online)
+-
+-# Configure kubelet cgroup to match cgroupRoot.
+-create_cgroup 'k8s-infra' ${ONLINE_NODESET} ${ONLINE_CPUSET}
+-create_cgroup 'k8s-infra-stx' ${ONLINE_NODESET} ${ONLINE_CPUSET}
+-
+-exit $?
+-
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-accounting.conf b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-accounting.conf
+deleted file mode 100644
+index af72207..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-accounting.conf
++++ /dev/null
+@@ -1,3 +0,0 @@
+-[Manager]
+-DefaultCPUAccounting=yes
+-DefaultMemoryAccounting=yes
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.dirs b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.dirs
+deleted file mode 100644
+index 341031a..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.dirs
++++ /dev/null
+@@ -1,5 +0,0 @@
+-etc/systemd/system/kubelet.service.d
+-usr/share/bash-completion/completions
+-var/lib/kubelet
+-var/lib/kubernetes
+-run/kubernetes
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.install b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.install
+deleted file mode 100644
+index ae70cab..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.install
++++ /dev/null
+@@ -1,10 +0,0 @@
+-usr/lib/systemd/system/kubelet.service
+-etc/kubernetes/config
+-etc/kubernetes/kubelet
+-etc/kubernetes/kubelet.kubeconfig
+-etc/kubernetes/proxy
+-etc/systemd/system/kubelet.service.d/kubeadm.conf
+-etc/systemd/system.conf.d/kubernetes-accounting.conf
+-usr/lib/tmpfiles.d/kubernetes.conf
+-usr/bin/kubelet-cgroup-setup.sh
+-usr/local/sbin/sanitize_kubelet_reserved_cpus.sh
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.links b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.links
+deleted file mode 100644
+index a68e79b..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/kubernetes-unversioned.links
++++ /dev/null
+@@ -1,4 +0,0 @@
+-/var/lib/kubernetes/stage1/usr/bin/kubeadm /usr/bin/kubeadm
+-/var/lib/kubernetes/stage2/usr/bin/kubelet /usr/bin/kubelet
+-/var/lib/kubernetes/stage1/usr/bin/kubectl /usr/bin/kubectl
+-/var/lib/kubernetes/stage1/usr/share/bash-completion/completions/kubectl /usr/share/bash-completion/completions/kubectl
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/not-installed b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/not-installed
+deleted file mode 100644
+index bff8bb6..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/not-installed
++++ /dev/null
+@@ -1,4 +0,0 @@
+-usr/bin/kubeadm
+-usr/bin/kubelet
+-usr/bin/kubectl
+-usr/share/bash-completion/completions/kubectl
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
+deleted file mode 100644
+index 8a0d80d..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
++++ /dev/null
+@@ -1,25 +0,0 @@
+-From c7f3a7c54c3fc5bbf8708e98e4cef145eaeb6983 Mon Sep 17 00:00:00 2001
+-From: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+-Date: Fri, 2 Dec 2022 18:55:34 +0530
+-Subject: [PATCH] Remove KUBE_ALLOW_PRIV from kubelet service
+-
+-Signed-off-by: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+----
+- init/systemd/kubelet.service | 1 -
+- 1 file changed, 1 deletion(-)
+-
+-diff --git a/init/systemd/kubelet.service b/init/systemd/kubelet.service
+-index 1082bba..5808312 100644
+---- a/init/systemd/kubelet.service
+-+++ b/init/systemd/kubelet.service
+-@@ -15,7 +15,6 @@ ExecStart=/usr/bin/kubelet \
+- 	    $KUBELET_ADDRESS \
+- 	    $KUBELET_PORT \
+- 	    $KUBELET_HOSTNAME \
+--	    $KUBE_ALLOW_PRIV \
+- 	    $KUBELET_ARGS
+- Restart=on-failure
+- KillMode=process
+--- 
+-2.17.1
+-
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch
+deleted file mode 100644
+index 52cda6b..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/Update-kubelet-kube-config-environment-variable.patch
++++ /dev/null
+@@ -1,33 +0,0 @@
+-From 44e59ca86c4d5f69a6f0505bfbe7f607c8dd1193 Mon Sep 17 00:00:00 2001
+-From: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+-Date: Fri, 7 Jul 2023 13:22:27 +0530
+-Subject: [PATCH] Update kubelet.kubeconfig environment variable
+-
+-The incorrect specification of the KUBELET_KUBECONFIG environment
+-variable made it so that default parameters were not present.
+-
+-Update the KUBELET_KUBECONFIG environment variable as
+-KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig".
+-So that kubelet have the correct default parameters.
+-
+-Signed-off-by: Ramesh Kumar Sivanandam <rameshkumar.sivanandam@windriver.com>
+----
+- init/systemd/environ/kubelet | 2 +-
+- 1 file changed, 1 insertion(+), 1 deletion(-)
+-
+-diff --git a/init/systemd/environ/kubelet b/init/systemd/environ/kubelet
+-index a623673..405aabf 100644
+---- a/init/systemd/environ/kubelet
+-+++ b/init/systemd/environ/kubelet
+-@@ -11,7 +11,7 @@ KUBELET_ADDRESS="--address=127.0.0.1"
+- KUBELET_HOSTNAME="--hostname-override=127.0.0.1"
+- 
+- # Edit the kubelet.kubeconfig to have correct cluster server address
+--KUBELET_KUBECONFIG=/etc/kubernetes/kubelet.kubeconfig
+-+KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig"
+- 
+- # Add your own!
+- KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false"
+--- 
+-2.17.1
+-
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/kubelet-service-remove-docker-dependency.patch b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/kubelet-service-remove-docker-dependency.patch
+deleted file mode 100644
+index 78eea1e..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/kubelet-service-remove-docker-dependency.patch
++++ /dev/null
+@@ -1,15 +0,0 @@
+-diff --git a/init/systemd/kubelet.service b/init/systemd/kubelet.service
+-index 1082bba..1fae395 100644
+---- a/init/systemd/kubelet.service
+-+++ b/init/systemd/kubelet.service
+-@@ -1,8 +1,8 @@
+- [Unit]
+- Description=Kubernetes Kubelet Server
+- Documentation=https://kubernetes.io/docs/concepts/overview/components/#kubelet https://kubernetes.io/docs/reference/generated/kubelet/
+--After=docker.service
+--Requires=docker.service
+-+Wants=network-online.target
+-+After=network-online.target
+- 
+- [Service]
+- WorkingDirectory=/var/lib/kubelet
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/series b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/series
+deleted file mode 100644
+index 7edccd6..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/patches/series
++++ /dev/null
+@@ -1,3 +0,0 @@
+-kubelet-service-remove-docker-dependency.patch
+-Remove-KUBE_ALLOW_PRIV-from-kubelet-service.patch
+-Update-kubelet-kube-config-environment-variable.patch
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/rules b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/rules
+deleted file mode 100755
+index be527fc..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/rules
++++ /dev/null
+@@ -1,70 +0,0 @@
+-#!/usr/bin/make -f
+-# See debhelper(7) (uncomment to enable)
+-# output every command that modifies files on the build system.
+-#export DH_VERBOSE = 1
+-
+-_k8s_name := kubernetes
+-_bindir := /usr/bin
+-_local_sbindir := /usr/local/sbin
+-_symlinkdir := /var/lib/kubernetes
+-
+-DEBIAN_DESTDIR := $(CURDIR)/debian/tmp
+-
+-
+-stage_link = ln -v -sf ${1}${2}/${3} ${DEBIAN_DESTDIR}${2}/${3}
+-
+-%:
+-	dh $@ --builddirectory=contrib
+-
+-override_dh_auto_build:
+-	mkdir -pv contrib
+-	cp -rv init contrib
+-
+-override_dh_install:
+-	# location for stage1 and state2 version symlinks
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}${_symlinkdir}
+-
+-	# Symlink targets
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}${_bindir}
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}/etc/systemd/system/kubelet.service.d
+-	install -v -m 755 -d ${DEBIAN_DESTDIR}/usr/share/bash-completion/completions
+-	$(call stage_link,${_symlinkdir}/stage1,${_bindir},kubeadm)
+-	$(call stage_link,${_symlinkdir}/stage1,/usr/share/bash-completion/completions,kubectl)
+-	$(call stage_link,${_symlinkdir}/stage2,${_bindir},kubelet)
+-	$(call stage_link,${_symlinkdir}/stage1,${_bindir},kubectl)
+-
+-	# install environment files
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/etc/${_k8s_name}
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/config
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/kubelet
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/kubelet.kubeconfig
+-	install -v -m 644 -t ${DEBIAN_DESTDIR}/etc/${_k8s_name} contrib/init/systemd/environ/proxy
+-
+-	# install config files
+-	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/etc/systemd/system/kubelet.service.d debian/kubeadm.conf
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/usr/lib/tmpfiles.d
+-	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/usr/lib/tmpfiles.d contrib/init/systemd/tmpfiles.d/kubernetes.conf
+-	mkdir -p ${DEBIAN_DESTDIR}/run
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/run/${_k8s_name}/
+-
+-	# install service files
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/usr/lib/systemd/system
+-	install -v -m 0644 -t ${DEBIAN_DESTDIR}/usr/lib/systemd/system contrib/init/systemd/kubelet.service
+-
+-	# install the place the kubelet defaults to put volumes (/var/lib/kubelet)
+-	install -v -d ${DEBIAN_DESTDIR}/var/lib/kubelet
+-
+-	# enable CPU and Memory accounting
+-	install -v -d -m 0755 ${DEBIAN_DESTDIR}/etc/systemd/system.conf.d
+-	install -v -p -m 0644 -t ${DEBIAN_DESTDIR}/etc/systemd/system.conf.d debian/kubernetes-accounting.conf
+-
+-	# install scripts
+-	install -p -m 0700 -t ${DEBIAN_DESTDIR}${_bindir} debian/kubelet-cgroup-setup.sh
+-	install -v -m 0700 -d ${DEBIAN_DESTDIR}${_local_sbindir}
+-	install -v -m 0700 -t ${DEBIAN_DESTDIR}${_local_sbindir} debian/sanitize_kubelet_reserved_cpus.sh
+-
+-	dh_install
+-
+-override_dh_usrlocal:
+-
+-override_dh_auto_test:
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/sanitize_kubelet_reserved_cpus.sh b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/sanitize_kubelet_reserved_cpus.sh
+deleted file mode 100755
+index 1dcdbfd..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/sanitize_kubelet_reserved_cpus.sh
++++ /dev/null
+@@ -1,98 +0,0 @@
+-#! /bin/bash
+-# Copyright (c) 2022 Wind River Systems, Inc.
+-#
+-# SPDX-License-Identifier: Apache-2.0
+-#
+-# The script will run everytime before the kubelet service is started.
+-# (Runs as a "ExecStartPre" action)
+-#
+-# It reads the reserved-cpus list for the kubelet from the kubelet
+-# environment file and sanitizes it on the basis of online CPUs.
+-#
+-# If none of the reserved cpus is online, it removes the --reserved-cpus flag
+-# from the environment file which allows the kubelet to choose CPUs itself
+-#
+-
+-ENVIRONMENT_FILE=$1
+-
+-# Log info message to /var/log/daemon.log
+-function LOG {
+-    logger -p daemon.info "$0($$): $@"
+-}
+-
+-
+-# Log error message to /var/log/daemon.log
+-function ERROR {
+-    logger -s -p daemon.error "$0($$): ERROR: $@"
+-}
+-
+-function sanitize_reserved_cpus {
+-    kubelet_extra_args=$(cat ${ENVIRONMENT_FILE} 2>/dev/null)
+-    RC=$?
+-    if [ ${RC} != "0" ]; then
+-        ERROR "Error reading kubelet extra arguments. Error code: [${RC}]"
+-        exit ${RC}
+-    fi
+-
+-    # Get reserved-cpus comma-separated-values string from environment file and strip double quotes
+-    # format of kubelet_extra_args is:
+-    # "KUBELET_EXTRA_ARGS=--cni-bin-dir=/usr/libexec/cni --node-ip=abcd:204::2
+-    # --system-reserved=memory=9000Mi --reserved-cpus="0-29" --pod-max-pids 10000"
+-    if [[ ${kubelet_extra_args} =~ --reserved-cpus=\"([0-9,-]+)\" ]]; then
+-        reserved_cpus=${BASH_REMATCH[1]}
+-    else
+-        reserved_cpus=""
+-    fi
+-    if test -z "${reserved_cpus}"; then
+-        LOG "No reserved-cpu list found for kubelet. Nothing to do."
+-        exit 0
+-    fi
+-    LOG "Current reserved-cpus for the kubelet service: ${reserved_cpus}"
+-
+-    cpus_online=$(cat /sys/devices/system/cpu/online)
+-    RC=$?
+-    if [ ${RC} != "0" ]; then
+-        ERROR "Error reading online CPU list. Error code: [${RC}]"
+-        exit ${RC}
+-    fi
+-    LOG "Online CPUs: ${cpus_online}"
+-
+-    # Possible formats for reserved_cpus could be
+-    # 0,2,4,6
+-    # 0-23,36-45
+-    # 0-4,6,9,13,23-34
+-    expanded_reserved_cpus=$(expand_sequence ${reserved_cpus})
+-    reserved_cpus_array=(${expanded_reserved_cpus//,/ })
+-
+-    sanitized_reserved_cpus=""
+-    for element in "${reserved_cpus_array[@]}"; do
+-        in_list ${element} ${cpus_online}
+-        if [[ "$?" == "0" ]] ; then
+-            sanitized_reserved_cpus+=",${element}"
+-        fi
+-    done
+-    # Remove the extra leading ','
+-    sanitized_reserved_cpus=${sanitized_reserved_cpus#","}
+-    LOG "Sanitized reserved-cpus list for the kubelet: ${sanitized_reserved_cpus}"
+-
+-    if test -z "${sanitized_reserved_cpus}"; then
+-        # Strip out --reserved-cpus option if no reserved-cpus are online
+-        sed -i "s/ --reserved-cpus=\"${reserved_cpus}\"//g" ${ENVIRONMENT_FILE}
+-    else
+-        # Replace existing reserved-cpus with sanitized list
+-        sed -i "s/--reserved-cpus=\"${reserved_cpus}\"/--reserved-cpus=\"${sanitized_reserved_cpus}\"/g" ${ENVIRONMENT_FILE}
+-    fi
+-    RC="$?"
+-    if [ ${RC} != "0" ]; then
+-        ERROR "Error updating reserved-cpus list for the kubelet. Error code: [${RC}]"
+-        exit ${RC}
+-    fi
+-    LOG "Successfully updated reserved-cpus list for the kubelet."
+-
+-}
+-
+-source /etc/init.d/cpumap_functions.sh
+-
+-sanitize_reserved_cpus
+-
+-exit 0
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/source/format b/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/source/format
+deleted file mode 100644
+index 163aaf8..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/deb_folder/source/format
++++ /dev/null
+@@ -1 +0,0 @@
+-3.0 (quilt)
+diff --git a/kubernetes/kubernetes-unversioned/debian/trixie/meta_data.yaml b/kubernetes/kubernetes-unversioned/debian/trixie/meta_data.yaml
+deleted file mode 100644
+index 196b0ab..0000000
+--- a/kubernetes/kubernetes-unversioned/debian/trixie/meta_data.yaml
++++ /dev/null
+@@ -1,13 +0,0 @@
+----
+-debname: kubernetes-unversioned
+-debver: 1.0-1
+-dl_path:
+-  name: kubernetes-contrib-v1.18.1.tar.gz
+-  url: https://github.com/kubernetes-retired/contrib/tarball/89f6948e24578fed2a90a87871b2263729f90ac3
+-  md5sum: 9aa15af65ed89a7167b9520573bbdcd7
+-  sha256sum: 97206b6c1ea8dc7cb6201f909c2d14fc68cf40faa4e2641cdefb8411e9403274
+-revision:
+-  dist: $STX_DIST
+-  GITREVCOUNT:
+-    BASE_SRCREV: e73a8b35d5c8942e7b60258bf48cefc6b41121ea
+-    SRC_DIR: ${MY_REPO}/stx/integ/kubernetes/kubernetes-unversioned

@@ -1,0 +1,126 @@
+{0} placement.tests.functional.cmd.test_status.UpgradeCheckIncompleteConsumersTestCase.test_check_root_provider_ids [0.043302s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/placement/tests/functional/cmd/test_status.py", line 78, in test_check_root_provider_ids
+    resource_provider.set_root_provider_ids(self.context, batch_size=50)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/oslo_db/sqlalchemy/enginefacade.py", line 1014, in wrapper
+    return fn(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/placement/objects/resource_provider.py", line 513, in set_root_provider_ids
+    subq_1 = sa.alias(subq_1.as_scalar(), name="subq_1")
+
+      File "<string>", line 2, in alias
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/selectable.py", line 1709, in _factory
+    return coercions.expect(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 200, in expect
+    return impl._implicit_coercions(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 932, in _implicit_coercions
+    self._raise_for_expected(original_element, argname, resolved)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 424, in _raise_for_expected
+    return super(_SelectIsNotFrom, self)._raise_for_expected(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 270, in _raise_for_expected
+    util.raise_(exc.ArgumentError(msg, code=code), replace_context=err)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+
+    sqlalchemy.exc.ArgumentError: FROM expression, such as a Table or alias() object expected, got <sqlalchemy.sql.selectable.ScalarSelect object at 0x708a17062b20>.
+
+{1} placement.tests.functional.cmd.test_status.UpgradeCheckIncompleteConsumersTestCase.test_all_registered_check_is_runnable [0.050015s] ... ok
+{2} placement.tests.functional.cmd.test_status.UpgradeCheckIncompleteConsumersTestCase.test_check_incomplete_consumers [0.057952s] ... ok
++-------------------------------------------+
+| Upgrade Check Results                     |
++-------------------------------------------+
+| Check: Missing Root Provider IDs          |
+| Result: Success                           |
+| Details: None                             |
++-------------------------------------------+
+| Check: Incomplete Consumers               |
+| Result: Success                           |
+| Details: None                             |
++-------------------------------------------+
+| Check: Policy File JSON to YAML Migration |
+| Result: Success                           |
+| Details: None                             |
++-------------------------------------------+
+[93mReadline features including tab completion have been disabled because
+no supported version of readline was found. To resolve this, install
+pyreadline on Windows or gnureadline on Mac.
+
+[39m
+==============================
+Failed 1 tests - output below:
+==============================
+
+placement.tests.functional.cmd.test_status.UpgradeCheckIncompleteConsumersTestCase.test_check_root_provider_ids
+---------------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/placement/tests/functional/cmd/test_status.py", line 78, in test_check_root_provider_ids
+    resource_provider.set_root_provider_ids(self.context, batch_size=50)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/oslo_db/sqlalchemy/enginefacade.py", line 1014, in wrapper
+    return fn(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/placement/objects/resource_provider.py", line 513, in set_root_provider_ids
+    subq_1 = sa.alias(subq_1.as_scalar(), name="subq_1")
+
+      File "<string>", line 2, in alias
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/selectable.py", line 1709, in _factory
+    return coercions.expect(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 200, in expect
+    return impl._implicit_coercions(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 932, in _implicit_coercions
+    self._raise_for_expected(original_element, argname, resolved)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 424, in _raise_for_expected
+    return super(_SelectIsNotFrom, self)._raise_for_expected(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py", line 270, in _raise_for_expected
+    util.raise_(exc.ArgumentError(msg, code=code), replace_context=err)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-789921-v1-2026-08-27/replay-work/formal-opendev-788339--target-789921/target-a1/.tox/functional/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+
+    sqlalchemy.exc.ArgumentError: FROM expression, such as a Table or alias() object expected, got <sqlalchemy.sql.selectable.ScalarSelect object at 0x708a17062b20>.
+
+
+
+======
+Totals
+======
+Ran: 3 tests in 0.0580 sec.
+ - Passed: 2
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 0.1513 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.043302
+ - Worker 1 (1 tests) => 0:00:00.050015
+ - Worker 2 (1 tests) => 0:00:00.057952
+sys:1: ResourceWarning: unclosed file <_io.FileIO name=1 mode='wb' closefd=True>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+sys:1: ResourceWarning: unclosed file <_io.FileIO name=1 mode='wb' closefd=True>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+sys:1: ResourceWarning: unclosed file <_io.FileIO name=1 mode='wb' closefd=True>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback

@@ -1,0 +1,29 @@
+{
+  "bootstrap_constraints": [
+    "Cython<3"
+  ],
+  "candidate_id": "formal-opendev-788339",
+  "expected_check_paths": [
+    "placement/tests/functional/cmd/test_status.py"
+  ],
+  "mechanism": "SQLAlchemy 1.4 rejects Placement's use of a ScalarSelect as a FROM expression in the existing online-data-migrations query",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38/bin/python",
+  "relation_id": "formal-opendev-788339--target-789921",
+  "repair_template": "construct the derived query with the SQLAlchemy 1.4-compatible subquery API while retaining SQLAlchemy 1.3 compatibility",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-788339-placement-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Placement opening-cutoff snapshot, the pre-existing functional status module runs three tests with SQLAlchemy 1.3.23. With 1.4.11, one online-data-migrations test fails with an exclusive ArgumentError because a ScalarSelect is no longer accepted as a FROM expression; the exact maintainer patch restores all three tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, exact one-file production target diff, cutoff functional tox command, installed-version probes proving SQLAlchemy 1.3.23/1.4.11/1.4.11, patch applicability, and complete three-arm logs. The same three pre-existing functional tests run in every arm; only A1 has the normalized ScalarSelect ArgumentError. The Python 3.8/tox 3 runner, source-era setuptools seed, Cython build constraint, and pip seed are identical across arms and only restore opening-era packaging compatibility.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, SQLAlchemy 1.3.23 to 1.4.11; SQLAlchemy 1.4 enforces that FROM elements be tables, aliases, or explicit subqueries rather than ScalarSelect objects.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-788339-target-patches-2026-08-27/789921.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Placement snapshot and changes the production query from alias(as_scalar()) to the explicit subquery() API accepted by both SQLAlchemy 1.3 and 1.4. It changes no test, test selection, or unrelated behavior."
+  },
+  "source_change_family": "opendev-change-788339-opening",
+  "target_repository": "openstack/placement",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38/bin/tox",
+  "virtualenv_pip_version": "21.1.3"
+}

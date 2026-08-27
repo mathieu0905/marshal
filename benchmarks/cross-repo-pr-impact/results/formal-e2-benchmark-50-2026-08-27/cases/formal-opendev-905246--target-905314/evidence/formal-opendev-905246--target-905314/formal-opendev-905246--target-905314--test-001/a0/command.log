@@ -1,0 +1,21 @@
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: oslo_context.context, urllib3. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: oslo_context.context, urllib3. This warning can usually be ignored if the caller is only importing and not executing nova code.
+2026-08-27 01:02:06.762 2261342 INFO oslo_service.periodic_task [None req-16f2cc81-4ca7-4e96-a349-988f66572e63 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - - -] Skipping periodic task _discover_hosts_in_cells because its interval is negative[00m
+2026-08-27 01:02:06.789 2261342 ERROR stevedore.extension [None req-16f2cc81-4ca7-4e96-a349-988f66572e63 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - - -] Could not load 'oslo_cache.memcache_pool': No module named 'memcache': ModuleNotFoundError: No module named 'memcache'[00m
+{0} nova.tests.unit.limit.test_local.TestLocalLimits.test_enforce_api_limit_metadata [0.059619s] ... ok
+
+======
+Totals
+======
+Ran: 1 tests in 0.0596 sec.
+ - Passed: 1
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 0.0596 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.059619

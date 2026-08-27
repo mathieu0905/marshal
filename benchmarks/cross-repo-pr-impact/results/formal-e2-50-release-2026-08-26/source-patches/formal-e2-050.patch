@@ -1,0 +1,35 @@
+diff --git a/remote_cli/client_wrapper.sh b/remote_cli/client_wrapper.sh
+index 79fd6b3..97e7420 100755
+--- a/remote_cli/client_wrapper.sh
++++ b/remote_cli/client_wrapper.sh
+@@ -43,6 +43,9 @@
+ # Append CLI-specific environment variables
+ EXPORTS+=" CLI_CONFIRMATIONS"
+ 
++# Append OIDC-related environment variables
++EXPORTS+=" OIDC_CLIENT_ID OIDC_CLIENT_SECRET OIDC_ISSUER_CA OIDC_ISSUER_URL"
++
+ # We initialize the environment variable list with the OS_ENDPOINT_TYPE set
+ # "publicURL" because dcmanager defaults to "internalURL" if not overridden
+ # by a parameter to the command itself or by the environment variable.
+diff --git a/remote_cli/config_aliases.sh b/remote_cli/config_aliases.sh
+index 6408049..919e221 100644
+--- a/remote_cli/config_aliases.sh
++++ b/remote_cli/config_aliases.sh
+@@ -16,7 +16,7 @@
+ fi
+ 
+ if [[ "$CONFIG_TYPE" = "platform" ]]; then
+-    SERVICES="system fm openstack dcmanager kubectl helm oidc-auth sw-manager software"
++    SERVICES="system fm openstack dcmanager kubectl helm oidc-auth sw-manager software kubeconfig-setup"
+     alias "platform_shell"="${PATH_TO_SCRIPT}/client_wrapper.sh /bin/bash"
+ else
+     SERVICES="openstack nova cinder glance heat"
+diff --git a/remote_cli/docker_image_version.sh b/remote_cli/docker_image_version.sh
+index 974ac8c..33220f2 100644
+--- a/remote_cli/docker_image_version.sh
++++ b/remote_cli/docker_image_version.sh
+@@ -1,2 +1,2 @@
+-export PLATFORM_DOCKER_IMAGE="docker.io/starlingx/stx-platformclients:stx.12.0-v1.0.5"
++export PLATFORM_DOCKER_IMAGE="docker.io/starlingx/stx-platformclients:stx.13.0-v1.0.0-trixie"
+ export APPLICATION_DOCKER_IMAGE="docker.io/starlingx/stx-openstackclients:stx.10.0-v1.0.0"

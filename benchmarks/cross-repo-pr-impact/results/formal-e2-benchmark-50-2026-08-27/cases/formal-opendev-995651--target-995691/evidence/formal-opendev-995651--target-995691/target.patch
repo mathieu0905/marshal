@@ -1,0 +1,13 @@
+diff --git a/cinder/tests/unit/test_coordination.py b/cinder/tests/unit/test_coordination.py
+index a1fc475..de92677 100644
+--- a/cinder/tests/unit/test_coordination.py
++++ b/cinder/tests/unit/test_coordination.py
+@@ -31,7 +31,7 @@
+ class MockToozLock(tooz.locking.Lock):
+     active_locks = set()
+ 
+-    def acquire(self, blocking=True):
++    def acquire(self, blocking=True, shared=False, timeout=None):
+         if self.name not in self.active_locks:
+             self.active_locks.add(self.name)
+             return True

@@ -1,0 +1,388 @@
+diff --git a/distributedcloud/dcmanager/common/phased_subcloud_deploy.py b/distributedcloud/dcmanager/common/phased_subcloud_deploy.py
+index d5e1676..01d899f 100644
+--- a/distributedcloud/dcmanager/common/phased_subcloud_deploy.py
++++ b/distributedcloud/dcmanager/common/phased_subcloud_deploy.py
+@@ -200,13 +200,18 @@
+     """
+     # Ensure systemcontroller gateway is in the management subnet
+     # for the systemcontroller region.
++    #
++    # system-controller and subcloud communication is through
++    # single-stack/primary, so here systemcontroller_gateway_address is
++    # validated against primary systemcontroller mangement subnet.
++
+     management_address_pool = get_network_address_pool()
+     systemcontroller_subnet_str = "%s/%d" % (
+         management_address_pool.network,
+         management_address_pool.prefix)
+-    systemcontroller_subnet = netaddr.IPNetwork(systemcontroller_subnet_str)
++    systemcontroller_subnet = [netaddr.IPNetwork(systemcontroller_subnet_str)]
+     try:
+-        systemcontroller_gw_ip = utils.validate_address_str(
++        systemcontroller_gw_ips = utils.validate_address_str(
+             gateway_address,
+             systemcontroller_subnet
+         )
+@@ -218,8 +223,8 @@
+     # management subnet address pool to prevent address collision.
+     mgmt_address_start = netaddr.IPAddress(management_address_pool.ranges[0][0])
+     mgmt_address_end = netaddr.IPAddress(management_address_pool.ranges[0][1])
+-    if ((systemcontroller_gw_ip >= mgmt_address_start) and
+-            (systemcontroller_gw_ip <= mgmt_address_end)):
++    if ((systemcontroller_gw_ips[0] >= mgmt_address_start) and
++            (systemcontroller_gw_ips[0] <= mgmt_address_end)):
+         pecan.abort(400, _("systemcontroller_gateway_address invalid, "
+                            "is within management pool: %(start)s - "
+                            "%(end)s") %
+@@ -256,15 +261,16 @@
+         # ignore_conflicts_with
+         if ignore_conflicts_with and (subcloud.id == ignore_conflicts_with.id):
+             continue
+-        subcloud_subnets.append(netaddr.IPNetwork(subcloud.management_subnet))
++        for subcloud_management_subnet in subcloud.management_subnet.split(','):
++            subcloud_subnets.append(netaddr.IPNetwork(subcloud_management_subnet))
+ 
+     MIN_MANAGEMENT_SUBNET_SIZE = 7
+     # subtract 3 for network, gateway and broadcast addresses.
+     MIN_MANAGEMENT_ADDRESSES = MIN_MANAGEMENT_SUBNET_SIZE - 3
+ 
+-    management_subnet = None
++    management_subnets = []
+     try:
+-        management_subnet = utils.validate_network_str(
++        management_subnets = utils.validate_network_str(
+             payload.get('management_subnet'),
+             minimum_size=MIN_MANAGEMENT_SUBNET_SIZE,
+             existing_networks=subcloud_subnets,
+@@ -274,41 +280,45 @@
+         pecan.abort(400, _("management_subnet invalid: %s") % e)
+ 
+     # Parse/validate the start/end addresses
+-    management_start_ip = None
++    management_start_ips = []
+     try:
+-        management_start_ip = utils.validate_address_str(
+-            payload.get('management_start_address'), management_subnet)
++        management_start_ips = utils.validate_address_str(
++            payload.get('management_start_address'), management_subnets)
+     except exceptions.ValidateFail as e:
+         LOG.exception(e)
+         pecan.abort(400, _("management_start_address invalid: %s") % e)
+ 
+-    management_end_ip = None
++    management_end_ips = []
+     try:
+-        management_end_ip = utils.validate_address_str(
+-            payload.get('management_end_address'), management_subnet)
++        management_end_ips = utils.validate_address_str(
++            payload.get('management_end_address'), management_subnets)
+     except exceptions.ValidateFail as e:
+         LOG.exception(e)
+         pecan.abort(400, _("management_end_address invalid: %s") % e)
+ 
+-    if management_start_ip > management_end_ip:
+-        pecan.abort(
+-            400,
+-            _("management_start_address greater than "
+-                "management_end_address"))
++    for i in range(len(management_subnets)):
++        if management_start_ips[i] > management_end_ips[i]:
++            pecan.abort(
++                400,
++                _("management_start_address greater than "
++                    "management_end_address"))
+ 
+-    if len(netaddr.IPRange(management_start_ip, management_end_ip)) < \
+-            MIN_MANAGEMENT_ADDRESSES:
+-        pecan.abort(
+-            400,
+-            _("management address range must contain at least %d "
+-                "addresses") % MIN_MANAGEMENT_ADDRESSES)
++        if len(netaddr.IPRange(management_start_ips[i], management_end_ips[i])) < \
++                MIN_MANAGEMENT_ADDRESSES:
++            pecan.abort(
++                400,
++                _("management address range must contain at least %d "
++                    "addresses") % MIN_MANAGEMENT_ADDRESSES)
+ 
+     # Parse/validate the gateway
+-    management_gateway_ip = None
++    # system-controller and subcloud communication is through
++    # single-stack/primary, so here management_gateway_address is
++    # validated against primary management_subnet.
++    management_gateway_ips = []
+     if not admin_gateway_ip:
+         try:
+-            management_gateway_ip = utils.validate_address_str(payload.get(
+-                'management_gateway_address'), management_subnet)
++            management_gateway_ips = utils.validate_address_str(payload.get(
++                'management_gateway_address'), [management_subnets[0]])
+         except exceptions.ValidateFail as e:
+             LOG.exception(e)
+             pecan.abort(400, _("management_gateway_address invalid: %s") % e)
+@@ -326,18 +336,23 @@
+     # management subnet address pool for consistency with the
+     # systemcontroller gateway restriction below. Address collision
+     # is not a concern as the address is added to sysinv.
++    #
++    # system-controller and subcloud communication is through
++    # single-stack/primary, so admin/management gateway address is
++    # validated against primary admin/management subnet.
++
+     if admin_start_ip:
+-        subcloud_mgmt_address_start = netaddr.IPAddress(admin_start_ip)
++        subcloud_mgmt_address_start = netaddr.IPAddress(admin_start_ip.split(',')[0])
+     else:
+-        subcloud_mgmt_address_start = management_start_ip
++        subcloud_mgmt_address_start = management_start_ips[0]
+     if admin_end_ip:
+-        subcloud_mgmt_address_end = netaddr.IPAddress(admin_end_ip)
++        subcloud_mgmt_address_end = netaddr.IPAddress(admin_end_ip.split(',')[0])
+     else:
+-        subcloud_mgmt_address_end = management_end_ip
++        subcloud_mgmt_address_end = management_end_ips[0]
+     if admin_gateway_ip:
+-        subcloud_mgmt_gw_ip = netaddr.IPAddress(admin_gateway_ip)
++        subcloud_mgmt_gw_ip = netaddr.IPAddress(admin_gateway_ip.split(',')[0])
+     else:
+-        subcloud_mgmt_gw_ip = management_gateway_ip
++        subcloud_mgmt_gw_ip = management_gateway_ips[0]
+ 
+     if ((subcloud_mgmt_gw_ip >= subcloud_mgmt_address_start) and
+             (subcloud_mgmt_gw_ip <= subcloud_mgmt_address_end)):
+@@ -377,9 +392,9 @@
+     # subtract 3 for network, gateway and broadcast addresses.
+     MIN_ADMIN_ADDRESSES = MIN_ADMIN_SUBNET_SIZE - 3
+ 
+-    admin_subnet = None
++    admin_subnets = []
+     try:
+-        admin_subnet = utils.validate_network_str(
++        admin_subnets = utils.validate_network_str(
+             admin_subnet_str,
+             minimum_size=MIN_ADMIN_SUBNET_SIZE,
+             existing_networks=existing_networks,
+@@ -389,45 +404,49 @@
+         pecan.abort(400, _("admin_subnet invalid: %s") % e)
+ 
+     # Parse/validate the start/end addresses
+-    admin_start_ip = None
++    admin_start_ips = []
+     try:
+-        admin_start_ip = utils.validate_address_str(
+-            admin_start_address_str, admin_subnet)
++        admin_start_ips = utils.validate_address_str(
++            admin_start_address_str, admin_subnets)
+     except exceptions.ValidateFail as e:
+         LOG.exception(e)
+         pecan.abort(400, _("admin_start_address invalid: %s") % e)
+ 
+-    admin_end_ip = None
++    admin_end_ips = []
+     try:
+-        admin_end_ip = utils.validate_address_str(
+-            admin_end_address_str, admin_subnet)
++        admin_end_ips = utils.validate_address_str(
++            admin_end_address_str, admin_subnets)
+     except exceptions.ValidateFail as e:
+         LOG.exception(e)
+         pecan.abort(400, _("admin_end_address invalid: %s") % e)
+ 
+-    if admin_start_ip >= admin_end_ip:
+-        pecan.abort(
+-            400,
+-            _("admin_start_address greater than or equal to "
+-                "admin_end_address"))
++    for i in range(len(admin_subnets)):
++        if admin_start_ips[i] >= admin_end_ip[i]:
++            pecan.abort(
++                400,
++                _("admin_start_address greater than or equal to "
++                    "admin_end_address"))
+ 
+-    if len(netaddr.IPRange(admin_start_ip, admin_end_ip)) < \
+-            MIN_ADMIN_ADDRESSES:
+-        pecan.abort(
+-            400,
+-            _("admin address range must contain at least %d "
+-                "addresses") % MIN_ADMIN_ADDRESSES)
++        if len(netaddr.IPRange(admin_start_ip[i], admin_end_ip[i])) < \
++                MIN_ADMIN_ADDRESSES:
++            pecan.abort(
++                400,
++                _("admin address range must contain at least %d "
++                    "addresses") % MIN_ADMIN_ADDRESSES)
+ 
+     # Parse/validate the gateway
++    # system-controller and subcloud communication is through
++    # single-stack/primary, so here admin_gateway_address is
++    # validated against primary admin_subnet.
+     try:
+         utils.validate_address_str(
+-            admin_gateway_address_str, admin_subnet)
++            admin_gateway_address_str, [admin_subnets[0]])
+     except exceptions.ValidateFail as e:
+         LOG.exception(e)
+         pecan.abort(400, _("admin_gateway_address invalid: %s") % e)
+ 
+-    subcloud_admin_address_start = netaddr.IPAddress(admin_start_address_str)
+-    subcloud_admin_address_end = netaddr.IPAddress(admin_end_address_str)
++    subcloud_admin_address_start = admin_start_ips[0]
++    subcloud_admin_address_end = admin_end_ips[0]
+     subcloud_admin_gw_ip = netaddr.IPAddress(admin_gateway_address_str)
+     if ((subcloud_admin_gw_ip >= subcloud_admin_address_start) and
+             (subcloud_admin_gw_ip <= subcloud_admin_address_end)):
+@@ -446,9 +465,9 @@
+ 
+     # Parse/validate the oam subnet
+     MIN_OAM_SUBNET_SIZE = 3
+-    oam_subnet = None
++    oam_subnets = []
+     try:
+-        oam_subnet = utils.validate_network_str(
++        oam_subnets = utils.validate_network_str(
+             external_oam_subnet_str,
+             minimum_size=MIN_OAM_SUBNET_SIZE,
+             existing_networks=existing_networks)
+@@ -459,14 +478,14 @@
+     # Parse/validate the addresses
+     try:
+         utils.validate_address_str(
+-            external_oam_gateway_address_str, oam_subnet)
++            external_oam_gateway_address_str, oam_subnets)
+     except exceptions.ValidateFail as e:
+         LOG.exception(e)
+         pecan.abort(400, _("oam_gateway_address invalid: %s") % e)
+ 
+     try:
+         utils.validate_address_str(
+-            external_oam_floating_address_str, oam_subnet)
++            external_oam_floating_address_str, oam_subnets)
+     except exceptions.ValidateFail as e:
+         LOG.exception(e)
+         pecan.abort(400, _("oam_floating_address invalid: %s") % e)
+@@ -645,12 +664,12 @@
+         network_str = (install_values['network_address'] + '/' +
+                        str(install_values['network_mask']))
+         try:
+-            network = utils.validate_network_str(network_str, 1)
++            networks = utils.validate_network_str(network_str, 1)
+         except exceptions.ValidateFail as e:
+             LOG.exception(e)
+             pecan.abort(400, _("network address invalid: %s") % e)
+ 
+-        if network.version != ip_version:
++        if networks[0].version != ip_version:
+             pecan.abort(400, _("network address and bootstrap address "
+                                "must be the same IP version"))
+ 
+diff --git a/distributedcloud/dcmanager/common/utils.py b/distributedcloud/dcmanager/common/utils.py
+index 5a4b575..1aed9de 100644
+--- a/distributedcloud/dcmanager/common/utils.py
++++ b/distributedcloud/dcmanager/common/utils.py
+@@ -103,25 +103,44 @@
+     return six.moves.zip_longest(fillvalue=fillvalue, *args)
+ 
+ 
+-def validate_address_str(ip_address_str, network):
+-    """Determine whether an address is valid."""
+-    try:
+-        ip_address = netaddr.IPAddress(ip_address_str)
+-        if ip_address.version != network.version:
+-            msg = ("Invalid IP version - must match network version " +
+-                   ip_version_to_string(network.version))
+-            raise exceptions.ValidateFail(msg)
+-        elif ip_address == network:
+-            raise exceptions.ValidateFail("Cannot use network address")
+-        elif ip_address == network.broadcast:
+-            raise exceptions.ValidateFail("Cannot use broadcast address")
+-        elif ip_address not in network:
+-            raise exceptions.ValidateFail(
+-                "Address must be in subnet %s" % str(network))
+-        return ip_address
+-    except netaddr.AddrFormatError:
++def validate_address_str(ip_address_str, networks):
++    """Determine whether an dual-stack address is valid."""
++    address_values = ip_address_str.split(',')
++
++    if len(address_values) > 2:
+         raise exceptions.ValidateFail(
+-            "Invalid address - not a valid IP address")
++            "Invalid address - more than two IP addresses")
++
++    ip_addresses = []
++    for address_value in address_values:
++        try:
++            ip_address = netaddr.IPAddress(address_value)
++            ip_addresses.append(ip_address)
++        except:
++            raise exceptions.ValidateFail(
++                "Invalid address - not a valid IP address")
++
++    if len(address_values) == 2 and ip_addresses[0].version == ip_addresses[1].version:
++        raise exceptions.ValidateFail(
++            "Invalid address - dual-stack of same IP family")
++
++    if len(ip_addresses) != len(networks):
++        raise exceptions.ValidateFail(
++            "Invalid address - Not of same size (single or dual-stack) with subnet")
++
++    for i, ip_address in enumerate(ip_addresses):
++        if ip_address.version != networks[i].version:
++            msg = ("Invalid IP version - must match network version " +
++                   ip_version_to_string(networks[i].version))
++            raise exceptions.ValidateFail(msg)
++        elif ip_address == networks[i]:
++            raise exceptions.ValidateFail("Cannot use network address")
++        elif ip_address == networks[i].broadcast:
++            raise exceptions.ValidateFail("Cannot use broadcast address")
++        elif ip_address not in networks[i]:
++            raise exceptions.ValidateFail(
++                "Address must be in subnet %s" % str(networks[i]))
++    return ip_addresses
+ 
+ 
+ def ip_version_to_string(ip_version):
+@@ -136,9 +155,27 @@
+ 
+ def validate_network_str(network_str, minimum_size, existing_networks=None,
+                          multicast=False, operation=None):
+-    """Determine whether a network is valid."""
+-    try:
+-        network = netaddr.IPNetwork(network_str)
++    """Determine whether dual-stack network is valid."""
++    network_values = network_str.split(',')
++
++    if len(network_values) > 2:
++        raise exceptions.ValidateFail(
++            "Invalid subnet - more than two IP subnets")
++
++    networks = []
++    for network_value in network_values:
++        try:
++            network = netaddr.IPNetwork(network_value)
++            networks.append(network)
++        except netaddr.AddrFormatError:
++            raise exceptions.ValidateFail(
++                "Invalid subnet - not a valid IP subnet")
++
++    if len(network_values) == 2 and networks[0].version == networks[1].version:
++        raise exceptions.ValidateFail(
++            "Invalid subnet - dual-stack of same IP family")
++
++    for network in networks:
+         if network.size < minimum_size:
+             raise exceptions.ValidateFail("Subnet too small - must have at "
+                                           "least %d addresses" % minimum_size)
+@@ -150,10 +187,7 @@
+                                               "configured subnet")
+         elif multicast and not network.is_multicast():
+             raise exceptions.ValidateFail("Invalid subnet - must be multicast")
+-        return network
+-    except netaddr.AddrFormatError:
+-        raise exceptions.ValidateFail(
+-            "Invalid subnet - not a valid IP subnet")
++    return networks
+ 
+ 
+ def validate_certificate_subject(subject):

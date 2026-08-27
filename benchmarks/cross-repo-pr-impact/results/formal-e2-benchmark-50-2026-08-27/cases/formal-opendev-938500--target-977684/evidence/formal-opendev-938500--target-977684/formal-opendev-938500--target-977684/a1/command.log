@@ -1,0 +1,188 @@
+{6} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_or_create_network_view [0.004734s] ... ok
+{1} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_or_create_network_view_already_found [0.004691s] ... ok
+{7} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_is_multi_project [0.004383s] ... ok
+{11} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_options [0.004329s] ... ok
+{9} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_create_zone_ipv6_ptr [0.005237s] ... ok
+{8} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_delete_zone_no_dns_view [0.004951s] ... ok
+{0} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_or_create_dns_view_no_network_provided [0.004702s] ... ok
+{10} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_create_zone_handle_error [0.004562s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/designate/tests/unit/backend/test_infoblox.py", line 296, in test_create_zone_handle_error
+    infoblox_exceptions.InfobloxTimeoutError('error')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 37, in __init__
+    super(InfobloxException, self).__init__(**kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 27, in __init__
+    super(BaseExc, self).__init__(self.message % kwargs)
+
+    KeyError: 'reason'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-26 21:50:23,401 DEBUG [designate.plugin] Loaded plugin backend:infoblox
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] Cloud WAPI version detected: 2.10
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] Configuring session
+2026-08-26 21:50:23,403 DEBUG [urllib3.util.retry] Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+2026-08-26 21:50:23,403 INFO [infoblox_client.connector] Authenticating with username and password.
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] SSL verification is False
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] Connector initialized with options: {'host': '192.0.2.1', 'username': '****', 'password': '****', 'http_pool_connections': None, 'http_pool_maxsize': None, 'wapi_version': '2.10', 'ssl_verify': None, 'cert': '****', 'key': '****'}
+
+{14} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_backend_with_invalid_master_port [0.005279s] ... ok
+{3} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_network_view_no_result [0.005036s] ... ok
+{2} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_create_zone [0.005844s] ... ok
+{4} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_delete_zone [0.005862s] ... ok
+{5} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_or_create_dns_view [0.005544s] ... ok
+{18} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_create_zone_no_dns_view [0.005043s] ... ok
+{24} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_create_zone_ptr [0.005495s] ... ok
+{12} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_delete_zone_handle_error [0.004814s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/designate/tests/unit/backend/test_infoblox.py", line 365, in test_delete_zone_handle_error
+    infoblox_exceptions.InfobloxTimeoutError('error')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 37, in __init__
+    super(InfobloxException, self).__init__(**kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 27, in __init__
+    super(BaseExc, self).__init__(self.message % kwargs)
+
+    KeyError: 'reason'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-26 21:50:23,464 DEBUG [designate.plugin] Loaded plugin backend:infoblox
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] Cloud WAPI version detected: 2.10
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] Configuring session
+2026-08-26 21:50:23,466 DEBUG [urllib3.util.retry] Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+2026-08-26 21:50:23,466 INFO [infoblox_client.connector] Authenticating with username and password.
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] SSL verification is False
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] Connector initialized with options: {'host': '192.0.2.1', 'username': '****', 'password': '****', 'http_pool_connections': None, 'http_pool_maxsize': None, 'wapi_version': '2.10', 'ssl_verify': None, 'cert': '****', 'key': '****'}
+
+{13} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_or_create_dns_view_not_found [0.005418s] ... ok
+{16} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_network_view [0.005257s] ... ok
+{20} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_no_library_installed [0.005700s] ... ok
+{15} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_parse_wapi_url [0.005096s] ... ok
+{26} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_restart_if_needed_unable_to_restart [0.005475s] ... ok
+{17} designate.tests.unit.backend.test_infoblox.AdvancedInfobloxBackendTestCase.test_delete_zone [0.014735s] ... ok
+{23} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_or_create_dns_view_already_found [0.005899s] ... ok
+{22} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_backend_with_host [0.006170s] ... ok
+{25} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_backend_with_wapi_url [0.006475s] ... ok
+{19} designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_get_or_create_network_view_not_found [0.005411s] ... ok
+{21} designate.tests.unit.backend.test_infoblox.AdvancedInfobloxBackendTestCase.test_create_zone [0.014513s] ... ok
+
+==============================
+Failed 2 tests - output below:
+==============================
+
+designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_create_zone_handle_error
+-----------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/designate/tests/unit/backend/test_infoblox.py", line 296, in test_create_zone_handle_error
+    infoblox_exceptions.InfobloxTimeoutError('error')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 37, in __init__
+    super(InfobloxException, self).__init__(**kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 27, in __init__
+    super(BaseExc, self).__init__(self.message % kwargs)
+
+    KeyError: 'reason'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-26 21:50:23,401 DEBUG [designate.plugin] Loaded plugin backend:infoblox
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] Cloud WAPI version detected: 2.10
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] Configuring session
+2026-08-26 21:50:23,403 DEBUG [urllib3.util.retry] Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+2026-08-26 21:50:23,403 INFO [infoblox_client.connector] Authenticating with username and password.
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] SSL verification is False
+2026-08-26 21:50:23,403 DEBUG [infoblox_client.connector] Connector initialized with options: {'host': '192.0.2.1', 'username': '****', 'password': '****', 'http_pool_connections': None, 'http_pool_maxsize': None, 'wapi_version': '2.10', 'ssl_verify': None, 'cert': '****', 'key': '****'}
+
+
+designate.tests.unit.backend.test_infoblox.BasicInfobloxBackendTestCase.test_delete_zone_handle_error
+-----------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/designate/tests/unit/backend/test_infoblox.py", line 365, in test_delete_zone_handle_error
+    infoblox_exceptions.InfobloxTimeoutError('error')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 37, in __init__
+    super(InfobloxException, self).__init__(**kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-938500-977684-v1-2026-08-26/replay-work/formal-opendev-938500--target-977684/target-a1/.tox/py3/lib/python3.10/site-packages/infoblox_client/exceptions.py", line 27, in __init__
+    super(BaseExc, self).__init__(self.message % kwargs)
+
+    KeyError: 'reason'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-26 21:50:23,464 DEBUG [designate.plugin] Loaded plugin backend:infoblox
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] Cloud WAPI version detected: 2.10
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] Configuring session
+2026-08-26 21:50:23,466 DEBUG [urllib3.util.retry] Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+2026-08-26 21:50:23,466 INFO [infoblox_client.connector] Authenticating with username and password.
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] SSL verification is False
+2026-08-26 21:50:23,466 DEBUG [infoblox_client.connector] Connector initialized with options: {'host': '192.0.2.1', 'username': '****', 'password': '****', 'http_pool_connections': None, 'http_pool_maxsize': None, 'wapi_version': '2.10', 'ssl_verify': None, 'cert': '****', 'key': '****'}
+
+
+
+======
+Totals
+======
+Ran: 27 tests in 0.2056 sec.
+ - Passed: 25
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 2
+Sum of execute time for each test: 0.1607 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.004702
+ - Worker 1 (1 tests) => 0:00:00.004691
+ - Worker 2 (1 tests) => 0:00:00.005844
+ - Worker 3 (1 tests) => 0:00:00.005036
+ - Worker 4 (1 tests) => 0:00:00.005862
+ - Worker 5 (1 tests) => 0:00:00.005544
+ - Worker 6 (1 tests) => 0:00:00.004734
+ - Worker 7 (1 tests) => 0:00:00.004383
+ - Worker 8 (1 tests) => 0:00:00.004951
+ - Worker 9 (1 tests) => 0:00:00.005237
+ - Worker 10 (1 tests) => 0:00:00.004562
+ - Worker 11 (1 tests) => 0:00:00.004329
+ - Worker 12 (1 tests) => 0:00:00.004814
+ - Worker 13 (1 tests) => 0:00:00.005418
+ - Worker 14 (1 tests) => 0:00:00.005279
+ - Worker 15 (1 tests) => 0:00:00.005096
+ - Worker 16 (1 tests) => 0:00:00.005257
+ - Worker 17 (1 tests) => 0:00:00.014735
+ - Worker 18 (1 tests) => 0:00:00.005043
+ - Worker 19 (1 tests) => 0:00:00.005411
+ - Worker 20 (1 tests) => 0:00:00.005700
+ - Worker 21 (1 tests) => 0:00:00.014513
+ - Worker 22 (1 tests) => 0:00:00.006170
+ - Worker 23 (1 tests) => 0:00:00.005899
+ - Worker 24 (1 tests) => 0:00:00.005495
+ - Worker 25 (1 tests) => 0:00:00.006475
+ - Worker 26 (1 tests) => 0:00:00.005475

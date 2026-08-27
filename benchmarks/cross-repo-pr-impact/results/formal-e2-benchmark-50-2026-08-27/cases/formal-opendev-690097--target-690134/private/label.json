@@ -1,0 +1,30 @@
+{
+  "bootstrap_constraints": [
+    "Cython<3"
+  ],
+  "candidate_id": "formal-opendev-690097",
+  "expected_check_paths": [
+    "openstack_dashboard/test/unit/api/test_nova.py"
+  ],
+  "mechanism": "python-novaclient 16.0 removes novaclient.v2.list_extensions, causing Horizon API module import failure before an existing Nova API unit test",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38-2021/bin/python",
+  "relation_id": "formal-opendev-690097--target-690134",
+  "repair_template": "Remove the obsolete novaclient list_extensions import and route, and use the existing extension support surface",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-690097-horizon-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the global constraint changed to python-novaclient 16.0.0, importing Horizon's Nova API module fails because novaclient.v2.list_extensions no longer exists; the existing ComputeApiTests.test_server_reboot command exits nonzero before test execution.",
+    "approved": true,
+    "reviewer_basis": "The source opening changes exactly the python-novaclient pin from 15.1.0 to 16.0.0; the cutoff target replays 0/1/0 with installed versions 15.1.0/16.0.0/16.0.0; the ImportError is exclusive to A1; and the maintainer patch removes the obsolete production dependency while leaving the selected pre-existing test intact.",
+    "source_effect": "python-novaclient 16.0.0 removes the novaclient.v2.list_extensions API imported by Horizon at module load time.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-690097-target-patches-2026-08-27/690134.patch",
+    "target_repair": "The maintainer patch removes Horizon's obsolete list_extensions import and REST helper and uses Horizon's existing extension support path; it does not delete, skip, or weaken the selected ComputeApiTests.test_server_reboot test."
+  },
+  "source_change_family": "opendev-change-690097-opening",
+  "target_repository": "openstack/horizon",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38-2021/bin/tox",
+  "virtualenv_pip_version": "21.1.3",
+  "virtualenv_setuptools_version": "41.4.0"
+}

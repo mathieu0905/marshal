@@ -1,0 +1,870 @@
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+{3} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_version_not_matched_2_volumes_detail [0.535564s] ... ok
+{0} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_3 [0.554099s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:45:40,497 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,499 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,500 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,502 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,922 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,923 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,924 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,925 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:40,998 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+{7} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_1 [0.558920s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:45:40,492 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,494 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,495 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,497 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,922 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,923 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,924 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,925 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:40,998 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+{1} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_5 [0.587661s] ... ok
+{5} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_4 [0.549784s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:45:40,535 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,537 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,537 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,539 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,956 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,957 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,958 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,958 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,960 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,961 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:41,031 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+{4} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_2 [0.571645s] ... ok
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+{2} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_6 [0.556440s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:45:40,545 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,547 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,547 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,549 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,971 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,972 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,973 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,974 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,975 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,976 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:41,047 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+{6} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_version_not_matched_1_volumes [0.527950s] ... ok
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+
+==============================
+Failed 4 tests - output below:
+==============================
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_3
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:45:40,497 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,499 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,500 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,502 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,922 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,923 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,924 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,925 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:40,998 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_1
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:45:40,492 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,494 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,495 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,497 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,922 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,923 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,924 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,925 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,927 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:40,998 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_4
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:45:40,535 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,537 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,537 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,539 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,956 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,957 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,958 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,958 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,960 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,961 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:41,031 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_6
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-788339-790797-v1-2026-08-27/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+[93mReadline features including tab completion have been disabled because
+no supported version of readline was found. To resolve this, install
+pyreadline on Windows or gnureadline on Mac.
+
+[39m    2026-08-27 03:45:40,545 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-27 03:45:40,547 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-27 03:45:40,547 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-27 03:45:40,549 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-27 03:45:40,971 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,972 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-27 03:45:40,973 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,974 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-27 03:45:40,975 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-27 03:45:40,976 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-27 03:45:41,047 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+
+======
+Totals
+======
+Ran: 8 tests in 0.6210 sec.
+ - Passed: 4
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 4
+Sum of execute time for each test: 4.4421 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.554099
+ - Worker 1 (1 tests) => 0:00:00.587661
+ - Worker 2 (1 tests) => 0:00:00.556440
+ - Worker 3 (1 tests) => 0:00:00.535564
+ - Worker 4 (1 tests) => 0:00:00.571645
+ - Worker 5 (1 tests) => 0:00:00.549784
+ - Worker 6 (1 tests) => 0:00:00.527950
+ - Worker 7 (1 tests) => 0:00:00.558920

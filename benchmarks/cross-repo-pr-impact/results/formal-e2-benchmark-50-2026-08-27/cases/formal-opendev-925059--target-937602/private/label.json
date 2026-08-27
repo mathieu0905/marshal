@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-925059",
+  "expected_check_paths": [
+    "masakari/tests/unit/test_api_validation.py"
+  ],
+  "mechanism": "jsonschema 4.23.0 changes the canonical validation message for an empty string from 'too short' to 'should be non-empty', invalidating an exact target API error assertion",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-925059--target-937602",
+  "repair_template": "accept the dependency's old and new semantically equivalent validation messages in the existing target assertion",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With jsonschema 4.23.0 installed against the unchanged target, the empty-string validation test receives the new 'should be non-empty' detail instead of the exact 'is too short' string and one of 26 tests fails; A0 and A2 pass all 26 tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff target validation test, maintainer patch, three isolated tox environments, installed-version probes proving 4.19.2/4.23.0/4.23.0, identical stestr command, and complete A0/A1/A2 logs showing 26 pass / 25 pass plus one exact-message mismatch / 26 pass.",
+    "source_effect": "The opening source diff changes the sole jsonschema pin from 4.19.2 to 4.23.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/937602.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target extends only the existing validation-detail expectation to accept the dependency's old and new semantically equivalent empty-string messages; the same 26-test module returns to zero without deletion or skipping."
+  },
+  "source_change_family": "opendev-change-925059-opening",
+  "target_repository": "openstack/masakari",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

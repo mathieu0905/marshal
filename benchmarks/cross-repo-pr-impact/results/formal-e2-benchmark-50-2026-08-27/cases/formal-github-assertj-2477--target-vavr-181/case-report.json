@@ -1,0 +1,99 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 13,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 260,
+    "case_id": "e2-019",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T16:32:23.852727Z",
+  "blind_prediction_created_at": "2026-08-26T16:32:22.100119Z",
+  "blockers": [],
+  "candidate_id": "e2-019",
+  "case_id": "formal-github-assertj-2477--target-vavr-181",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "assertj/assertj-core",
+    "assertj/assertj-vavr"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T16:32:23.855192Z",
+  "mechanism": "removing shaded Byte Buddy packages makes the target imports unresolved",
+  "repair_template": "migrate target imports to public Byte Buddy packages and update the source dependency",
+  "replay": {
+    "built_source_commits": {
+      "A0": "27ef21c4ed3c97eb62129bc88160f56516753606",
+      "A1": "463004be40302f0543e8c3ba5d73515d50527d10",
+      "A2": "463004be40302f0543e8c3ba5d73515d50527d10"
+    },
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "package org.assertj.core.internal.bytebuddy does not exist",
+    "machine_strict_e2": true,
+    "primary_result_channel": "project_build_or_test",
+    "schema_version": "1.0",
+    "source_application": "maven_local_artifact_from_opening_checkout",
+    "source_artifact_versions": {
+      "A0": "3.22.0",
+      "A1": "3.22.0",
+      "A2": "3.23.1"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "c767d94c2fafddb9245a31a1c00db47e433ad28b",
+    "target_test_path": "src/main/java/org/assertj/vavr/api/VavrAssumptions.java",
+    "test_command": [
+      "mvn",
+      "clean",
+      "test"
+    ],
+    "tests_run": {
+      "A0": 689,
+      "A2": 689
+    }
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-github-assertj-2477--target-vavr-181",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "pom.xml",
+      "src/main/java/org/assertj/vavr/api/ClassLoadingStrategyFactory.java",
+      "src/main/java/org/assertj/vavr/api/VavrAssumptions.java"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "assertj/assertj-vavr"
+  },
+  "semantic_review": {
+    "a1_failure": "With the source opening head installed under the cutoff target's declared 3.22.0 coordinate, the unchanged target fails compilation because org.assertj.core.internal.bytebuddy packages no longer exist.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source opening diff, exact maintainer target diff, opening-cutoff target code, and the formal full Maven replay: A0 passed all 689 tests, A1 failed at the removed internal Byte Buddy imports, and A2 passed all 689 tests.",
+    "source_effect": "The assertj-core opening removes its Byte Buddy shading and therefore removes the org.assertj.core.internal.bytebuddy package surface consumed by assertj-vavr.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-reconstructed-plan-2026-08-26/target-patches/181.patch",
+    "target_repair": "The maintainer patch updates assertj-core from 3.22.0 to 3.23.1 and migrates the two production imports to public net.bytebuddy packages; it does not delete or skip the selected test suite."
+  },
+  "source_change_family": "github-pr-2477-opening",
+  "status": "case_ready_for_formal_pool"
+}

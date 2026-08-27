@@ -1,0 +1,1184 @@
+diff --git a/build.xml b/build.xml
+index 5b79f4c79..21c66878e 100644
+--- a/build.xml
++++ b/build.xml
+@@ -1293,7 +1293,7 @@
+ 
+   <target
+       name="buildjars"
+-      depends="initjars,derbyjar,derbytoolsjar,derbynetjar,derbyclientjar,derbyoptionaltoolsjar,derbysharedjar,derbyrunjar,derbywar,derbylocalejars,derbytestingjar,jardriftcheck"
++      depends="initjars,derbysharedjar,derbyjar,derbynetjar,derbyclientjar,derbytoolsjar,derbyoptionaltoolsjar,derbyrunjar,derbywar,derbylocalejars,derbytestingjar,jardriftcheck"
+       description="Build all of the Derby jar files."
+   />
+ 
+@@ -1330,17 +1330,6 @@
+       </classpath>
+     </java>
+ 
+-    <echo level="info" message=" creating derby.jar class list "/>
+-    <java classname="org.apache.derbyBuild.classlister" fork="yes">
+-      <jvmarg value="-DcloudscapeOnly=true"/>
+-      <jvmarg value="-Doutputfile=${derby.jar.dir}/lists/derby.list"/>
+-      <arg value="${derby.jar.dir}/lists/otherDerbyClasses.properties"/> 
+-      <arg value="${derby.jar.dir}/lists/org/apache/derby/modules.properties"/>
+-      <classpath>
+-        <pathelement path="${out.dir}"/> 
+-      </classpath>
+-    </java>
+-
+     <!-- This next antcall generates a new properties file for the build.  -->
+     <!-- If a changenumber is passed into the build via a property file or -->
+     <!-- on the command line, the build number will be inserted into the   -->
+@@ -1378,16 +1367,42 @@
+ 
+     <jar destfile="${derby.jar.dir}/derby.jar"
+          basedir="${out.dir}"
+-	 includesfile="${derby.jar.dir}/lists/derby.list"
++         includes="org/apache/derby/agg/**,
++                   org/apache/derby/authentication/**,
++                   org/apache/derby/catalog/**,
++                   org/apache/derby/database/**,
++                   org/apache/derby/diag/**,
++                   org/apache/derby/io/**,
++                   org/apache/derby/jdbc/load/**,
++                   org/apache/derby/mbeans/*.class,
++                   org/apache/derby/osgi/**,
++                   org/apache/derby/security/**,
++                   org/apache/derby/vti/**,
++                   org/apache/derby/iapi/db/**,
++                   org/apache/derby/iapi/jdbc/**,
++                   org/apache/derby/iapi/security/**,
++                   org/apache/derby/iapi/services/**,
++                   org/apache/derby/iapi/sql/**,
++                   org/apache/derby/iapi/store/**,
++                   org/apache/derby/iapi/types/**,
++                   org/apache/derby/iapi/transaction/**,
++                   org/apache/derby/iapi/util/**,
++                   org/apache/derby/impl/db/**,
++                   org/apache/derby/impl/io/**,
++                   org/apache/derby/impl/jdbc/**,
++                   org/apache/derby/impl/load/**,
++                   org/apache/derby/impl/optional/**,
++                   org/apache/derby/impl/services/**,
++                   org/apache/derby/impl/sql/**,
++                   org/apache/derby/impl/store/**,
++                   org/apache/derby/loc/m?_en.properties,
++                   org/apache/derby/loc/m??_en.properties,
++                   org/apache/derby/impl/sql/catalog/metadata_net.properties,
++                   org/apache/derby/info/engine/info.properties"
++         excludes="**/D_*,**/odbcmeta.done"
+          compress="true"
+          filesonly="true"
+          manifest="${derby.jar.dir}/lists/smf.mf">
+-      <fileset dir="${out.dir}"
+-               includes="org/apache/derby/loc/m?_en.properties,
+-                         org/apache/derby/loc/m??_en.properties,
+-                         org/apache/derby/impl/jdbc/metadata.properties,
+-                         org/apache/derby/impl/sql/catalog/metadata_net.properties,
+-                         org/apache/derby/info/engine/info.properties"/>
+       <fileset dir="${derby.jar.dir}/lists"
+                includes="META-INF/**,
+                          org/apache/derby/modules.properties"/>
+@@ -1433,17 +1448,6 @@
+       <fileset dir="${derby.jar.dir}/lists" includes="**/*"/>
+     </delete>
+ 
+-    <echo level="info" message=" creating tools.list "/>
+-    <java classname="org.apache.derbyBuild.classlister" fork="yes">
+-      <jvmarg value="-Ddb2jtools=true"/>
+-      <jvmarg value="-Doutputfile=${derby.jar.dir}/lists/derbytools.list"/>
+-      <arg value="${basedir}/tools/jar/tools.properties"/>
+-      <classpath>
+-        <pathelement path="${out.dir}"/>
+-      </classpath>
+-    </java>
+-    <replace file="${derby.jar.dir}/lists/derbytools.list" token="$$$$" value="$$"/>
+-
+     <echo level="info" message=" creating new tools.properties file "/>
+     <antcall target="infowriter">
+       <param name="info.buildnumber" value="${changenumber}"/>
+@@ -1460,17 +1464,25 @@
+         <param name="manifest.mode" value="replace"/>
+     </antcall>
+ 
++    <manifest file="${derby.jar.dir}/lists/smftools.mf">
++      <attribute name="Class-Path" value="derby.jar derbyclient.jar derbynet.jar"/>
++    </manifest> 
++ 	
+     <delete file="${derby.jar.dir}/derbytools.jar"/>
+     <jar destfile="${derby.jar.dir}/derbytools.jar"
+          basedir="${out.dir}"
+-         includesfile="${derby.jar.dir}/lists/derbytools.list"
++         includes="org/apache/derby/tools/**,
++                   org/apache/derby/iapi/tools/**,
++                   org/apache/derby/impl/tools/**,
++                   org/apache/derby/jdbc/**,
++                   org/apache/derby/loc/sysinfoMessages.properties,
++                   org/apache/derby/loc/toolsmessages.properties,
++                   org/apache/derby/info/tools/info.properties"
++         excludes="org/apache/derby/impl/tools/ij/SimpleCharStream.class,
++                   org/apache/derby/impl/tools/ij/mt*.class"
+          manifest="${derby.jar.dir}/lists/smftools.mf"
+          compress="true"
+          filesonly="true">
+-      <fileset dir="${out.dir}"
+-               includes="org/apache/derby/loc/sysinfoMessages.properties,
+-                         org/apache/derby/loc/toolsmessages.properties,
+-                         org/apache/derby/info/tools/info.properties"/>
+ 	  <fileset dir="${derby.tools.src.dir}"
+                includes="org/apache/derby/impl/tools/planexporter/resources/*.xsl"/>
+       <fileset dir="${derby.jar.dir}/lists"
+@@ -1536,16 +1548,6 @@
+       <fileset dir="${derby.jar.dir}/lists" includes="**/*"/>
+     </delete>
+ 
+-    <echo level="info" message=" creating net.list"/> 
+-    <java classname="org.apache.derbyBuild.classlister" fork="yes">
+-      <jvmarg value="-Ddb2jdrda=true"/>
+-      <jvmarg value="-Doutputfile=${derby.jar.dir}/lists/derbynet.list"/>
+-      <arg value="${basedir}/tools/jar/net.properties"/>
+-      <classpath>
+-        <pathelement path="${out.dir}"/>
+-      </classpath>
+-    </java>
+-
+     <echo level="info" message=" creating new net.properties file "/>
+     <antcall target="infowriter">
+       <param name="info.buildnumber" value="${changenumber}"/>
+@@ -1567,14 +1569,14 @@
+     <delete file="${derby.jar.dir}/derbynet.jar"/>
+     <jar destfile="${derby.jar.dir}/derbynet.jar"
+          basedir="${out.dir}"
+-         includesfile="${derby.jar.dir}/lists/derbynet.list"
++         includes="org/apache/derby/drda/**,
++                   org/apache/derby/impl/drda/**,
++                   org/apache/derby/loc/drda/**,
++                   org/apache/derby/mbeans/drda/**,
++                   org/apache/derby/info/net/info.properties"
+          compress="true"
+          filesonly="true"
+     	 manifest="${derby.jar.dir}/lists/smfnet.mf">
+-      <fileset dir="${out.dir}"
+-               includes="org/apache/derby/loc/drda/**,
+-                         org/apache/derby/info/net/info.properties,
+-                         org/apache/derby/drda/server.policy"/>
+       <fileset dir="${derby.jar.dir}/lists"
+                includes="META-INF/**"/>
+     </jar>
+@@ -1592,20 +1594,6 @@
+       <fileset dir="${derby.jar.dir}/lists" includes="**/*"/>
+     </delete>
+ 
+-    <copy file="${basedir}/tools/jar/dnc.properties"
+-          tofile="${derby.jar.dir}/lists/dnc.properties"/>
+-    <antcall target="derbyclientjar.1.8"/>
+-
+-    <java classname="org.apache.derbyBuild.classlister" fork="yes">
+-      <jvmarg value="-Doutputfile=${derby.jar.dir}/lists/dnc.list"/>
+-      <arg value="${derby.jar.dir}/lists/dnc.properties"/>
+-      <classpath>
+-        <pathelement path="${out.dir}"/> 
+-      </classpath>
+-    </java>
+-
+-    <echo level="info" message=" creating new dnc.properties file "/>
+-
+     <mkdir dir="${out.dir}/org/apache/derby/info/"/>
+     <antcall target="infowriter">
+       <param name="info.buildnumber" value="${changenumber}"/>
+@@ -1637,16 +1625,15 @@
+     <delete file="${derby.jar.dir}/derbyclient.jar"/>
+ 
+     <jar destfile="${derby.jar.dir}/derbyclient.jar"
++         basedir="${out.dir}"
+          compress="true"
+          filesonly="true"
+          update="true"
++         includes="org/apache/derby/client/**,
++                   org/apache/derby/info/client/info.properties,
++                   org/apache/derby/loc/clientmessages*.properties"
++         excludes="org/apache/derby/loc/clientmessages_qq_PP_testOnly.properties"
+     	 manifest="${derby.jar.dir}/lists/smfclient.mf">
+-      <fileset dir="${out.dir}"
+-               includesfile="${derby.jar.dir}/lists/dnc.list"/>
+-      <fileset dir="${out.dir}"
+-               includes="org/apache/derby/info/client/info.properties,
+-                         org/apache/derby/loc/clientmessages*.properties"
+-               excludes="org/apache/derby/loc/clientmessages_qq_PP_testOnly.properties"/>
+       <fileset dir="${derby.jar.dir}/lists"
+                includes="META-INF/**"/>
+     </jar>
+@@ -1690,7 +1677,8 @@
+     <delete file="${derby.jar.dir}/derbyshared.jar"/>
+     <jar destfile="${derby.jar.dir}/derbyshared.jar"
+          basedir="${out.dir}"
+-         includes="org/apache/derby/shared/common/**,org/apache/derby/info/shared/info.properties"
++         includes="org/apache/derby/shared/common/**,
++                   org/apache/derby/info/shared/info.properties"
+          compress="true"
+          filesonly="true"
+     	 manifest="${derby.jar.dir}/lists/smfshared.mf"/>
+diff --git a/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derby.jar.lastcontents b/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derby.jar.lastcontents
+index ceb579f9b..e326ae2ff 100644
+--- a/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derby.jar.lastcontents
++++ b/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derby.jar.lastcontents
+@@ -88,6 +88,7 @@ org.apache.derby.iapi.services.cache.CacheableFactory.class
+ org.apache.derby.iapi.services.cache.ClassSize.class
+ org.apache.derby.iapi.services.cache.ClassSizeCatalog.class
+ org.apache.derby.iapi.services.cache.ClassSizeCatalogImpl.class
++org.apache.derby.iapi.services.cache.SizedCacheable.class
+ org.apache.derby.iapi.services.classfile.AttributeEntry.class
+ org.apache.derby.iapi.services.classfile.Attributes.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Double_info.class
+@@ -96,9 +97,11 @@ org.apache.derby.iapi.services.classfile.CONSTANT_Index_info.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Integer_info.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Long_info.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Utf8_info.class
++org.apache.derby.iapi.services.classfile.ClassEnumeration.class
+ org.apache.derby.iapi.services.classfile.ClassFormatOutput.class
+ org.apache.derby.iapi.services.classfile.ClassHolder.class
+ org.apache.derby.iapi.services.classfile.ClassInput.class
++org.apache.derby.iapi.services.classfile.ClassInvestigator.class
+ org.apache.derby.iapi.services.classfile.ClassMember.class
+ org.apache.derby.iapi.services.classfile.ConstantPoolEntry.class
+ org.apache.derby.iapi.services.classfile.MemberTable.class
+@@ -134,6 +137,7 @@ org.apache.derby.iapi.services.io.CloseFilterInputStream.class
+ org.apache.derby.iapi.services.io.CompressedNumber.class
+ org.apache.derby.iapi.services.io.CounterOutputStream.class
+ org.apache.derby.iapi.services.io.DataInputUtil.class
++org.apache.derby.iapi.services.io.DebugByteTeeOutputStream.class
+ org.apache.derby.iapi.services.io.DerbyIOException.class
+ org.apache.derby.iapi.services.io.DynamicByteArrayOutputStream.class
+ org.apache.derby.iapi.services.io.ErrorInfo.class
+@@ -155,7 +159,9 @@ org.apache.derby.iapi.services.io.Limit.class
+ org.apache.derby.iapi.services.io.LimitInputStream.class
+ org.apache.derby.iapi.services.io.LimitObjectInput.class
+ org.apache.derby.iapi.services.io.LimitReader.class
++org.apache.derby.iapi.services.io.NullOutputStream.class
+ org.apache.derby.iapi.services.io.RegisteredFormatIds.class
++org.apache.derby.iapi.services.io.SQLExceptionWrapper.class
+ org.apache.derby.iapi.services.io.Storable.class
+ org.apache.derby.iapi.services.io.StoredFormatIds.class
+ org.apache.derby.iapi.services.io.StreamStorable.class
+@@ -210,6 +216,7 @@ org.apache.derby.iapi.sql.StatementUtil.class
+ org.apache.derby.iapi.sql.StorablePreparedStatement.class
+ org.apache.derby.iapi.sql.compile.ASTVisitor.class
+ org.apache.derby.iapi.sql.compile.AccessPath.class
++org.apache.derby.iapi.sql.compile.C_NodeTypes.class
+ org.apache.derby.iapi.sql.compile.CodeGeneration.class
+ org.apache.derby.iapi.sql.compile.CompilerContext.class
+ org.apache.derby.iapi.sql.compile.CostEstimate.class
+@@ -330,6 +337,7 @@ org.apache.derby.iapi.sql.execute.xplain.XPLAINable.class
+ org.apache.derby.iapi.store.access.AccessFactory.class
+ org.apache.derby.iapi.store.access.AccessFactoryGlobals.class
+ org.apache.derby.iapi.store.access.BackingStoreHashtable.class
++org.apache.derby.iapi.store.access.BinaryOrderable.class
+ org.apache.derby.iapi.store.access.ColumnOrdering.class
+ org.apache.derby.iapi.store.access.ConglomPropertyQueryable.class
+ org.apache.derby.iapi.store.access.ConglomerateController.class
+@@ -389,6 +397,7 @@ org.apache.derby.iapi.store.raw.RePreparable.class
+ org.apache.derby.iapi.store.raw.RecordHandle.class
+ org.apache.derby.iapi.store.raw.RowLock.class
+ org.apache.derby.iapi.store.raw.ScanHandle.class
++org.apache.derby.iapi.store.raw.ScannedTransactionHandle.class
+ org.apache.derby.iapi.store.raw.StreamContainerHandle.class
+ org.apache.derby.iapi.store.raw.Transaction.class
+ org.apache.derby.iapi.store.raw.UndoHandler.class
+@@ -477,6 +486,7 @@ org.apache.derby.iapi.util.InterruptDetectedException.class
+ org.apache.derby.iapi.util.InterruptStatus.class
+ org.apache.derby.iapi.util.JBitSet.class
+ org.apache.derby.iapi.util.Matchable.class
++org.apache.derby.iapi.util.Operator.class
+ org.apache.derby.iapi.util.PropertyUtil.class
+ org.apache.derby.iapi.util.StringUtil.class
+ org.apache.derby.iapi.util.UTF8Util.class
+@@ -582,8 +592,10 @@ org.apache.derby.impl.services.bytecode.BCMethodDescriptor.class
+ org.apache.derby.impl.services.bytecode.CodeChunk.class
+ org.apache.derby.impl.services.bytecode.Conditional.class
+ org.apache.derby.impl.services.bytecode.GClass.class
++org.apache.derby.impl.services.bytecode.OpcodeDebug.class
+ org.apache.derby.impl.services.bytecode.Type.class
+ org.apache.derby.impl.services.bytecode.VMTypeIdCacheable.class
++org.apache.derby.impl.services.bytecode.d_BCValidate.class
+ org.apache.derby.impl.services.cache.BackgroundCleaner.class
+ org.apache.derby.impl.services.cache.CacheEntry.class
+ org.apache.derby.impl.services.cache.ClockPolicy.class
+@@ -806,6 +818,7 @@ org.apache.derby.impl.sql.compile.InListOperatorNode.class
+ org.apache.derby.impl.sql.compile.IndexToBaseRowNode.class
+ org.apache.derby.impl.sql.compile.InsertNode.class
+ org.apache.derby.impl.sql.compile.IntersectOrExceptNode.class
++org.apache.derby.impl.sql.compile.IsNode.class
+ org.apache.derby.impl.sql.compile.IsNullNode.class
+ org.apache.derby.impl.sql.compile.JavaToSQLValueNode.class
+ org.apache.derby.impl.sql.compile.JavaValueNode.class
+@@ -1040,6 +1053,7 @@ org.apache.derby.impl.sql.execute.MatchingClauseConstantAction.class
+ org.apache.derby.impl.sql.execute.MaterializedResultSet.class
+ org.apache.derby.impl.sql.execute.MaxMinAggregator.class
+ org.apache.derby.impl.sql.execute.MergeConstantAction.class
++org.apache.derby.impl.sql.execute.MergeJoinResultSet.class
+ org.apache.derby.impl.sql.execute.MergeResultSet.class
+ org.apache.derby.impl.sql.execute.MiscResultSet.class
+ org.apache.derby.impl.sql.execute.MultiProbeTableScanResultSet.class
+@@ -1172,6 +1186,7 @@ org.apache.derby.impl.store.access.btree.BranchControlRow.class
+ org.apache.derby.impl.store.access.btree.BranchRow.class
+ org.apache.derby.impl.store.access.btree.ControlRow.class
+ org.apache.derby.impl.store.access.btree.LeafControlRow.class
++org.apache.derby.impl.store.access.btree.LevelInfo.class
+ org.apache.derby.impl.store.access.btree.OpenBTree.class
+ org.apache.derby.impl.store.access.btree.SearchParameters.class
+ org.apache.derby.impl.store.access.btree.WaitError.class
+@@ -1191,6 +1206,7 @@ org.apache.derby.impl.store.access.btree.index.B2ITableLocking3.class
+ org.apache.derby.impl.store.access.btree.index.B2IUndo.class
+ org.apache.derby.impl.store.access.btree.index.B2I_10_3.class
+ org.apache.derby.impl.store.access.btree.index.B2I_v10_2.class
++org.apache.derby.impl.store.access.conglomerate.BinaryOrderableWrapper.class
+ org.apache.derby.impl.store.access.conglomerate.ConglomerateUtil.class
+ org.apache.derby.impl.store.access.conglomerate.GenericConglomerate.class
+ org.apache.derby.impl.store.access.conglomerate.GenericConglomerateController.class
+@@ -1213,6 +1229,7 @@ org.apache.derby.impl.store.access.heap.HeapScan.class
+ org.apache.derby.impl.store.access.heap.HeapScanInfo.class
+ org.apache.derby.impl.store.access.heap.Heap_v10_2.class
+ org.apache.derby.impl.store.access.heap.OpenHeap.class
++org.apache.derby.impl.store.access.heap.TableStats.class
+ org.apache.derby.impl.store.access.sort.ExternalSortFactory.class
+ org.apache.derby.impl.store.access.sort.MergeInserter.class
+ org.apache.derby.impl.store.access.sort.MergeScan.class
+@@ -1356,17 +1373,6 @@ org.apache.derby.io.StorageFactory.class
+ org.apache.derby.io.StorageFile.class
+ org.apache.derby.io.StorageRandomAccessFile.class
+ org.apache.derby.io.WritableStorageFactory.class
+-org.apache.derby.jdbc.BasicEmbeddedConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.BasicEmbeddedDataSource40.class
+-org.apache.derby.jdbc.BasicEmbeddedXADataSource40.class
+-org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource.class
+-org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.EmbeddedDataSource.class
+-org.apache.derby.jdbc.EmbeddedDataSource40.class
+-org.apache.derby.jdbc.EmbeddedDriver.class
+-org.apache.derby.jdbc.EmbeddedXADataSource.class
+-org.apache.derby.jdbc.EmbeddedXADataSource40.class
+-org.apache.derby.jdbc.ReferenceableDataSource.class
+ org.apache.derby.mbeans.CacheManagerMBean.class
+ org.apache.derby.mbeans.JDBCMBean.class
+ org.apache.derby.mbeans.Management.class
+diff --git a/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbyclient.jar.lastcontents b/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbyclient.jar.lastcontents
+index 9fd06e6bf..da01b96a1 100644
+--- a/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbyclient.jar.lastcontents
++++ b/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbyclient.jar.lastcontents
+@@ -141,14 +141,3 @@ org.apache.derby.client.net.StatementReplyInterface.class
+ org.apache.derby.client.net.StatementRequestInterface.class
+ org.apache.derby.client.net.Typdef.class
+ org.apache.derby.client.net.Utf8CcsidManager.class
+-org.apache.derby.jdbc.BasicClientConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.BasicClientDataSource40.class
+-org.apache.derby.jdbc.BasicClientXADataSource40.class
+-org.apache.derby.jdbc.ClientConnectionPoolDataSource.class
+-org.apache.derby.jdbc.ClientConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.ClientDataSource.class
+-org.apache.derby.jdbc.ClientDataSource40.class
+-org.apache.derby.jdbc.ClientDriver.class
+-org.apache.derby.jdbc.ClientDriver40.class
+-org.apache.derby.jdbc.ClientXADataSource.class
+-org.apache.derby.jdbc.ClientXADataSource40.class
+diff --git a/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbytools.jar.lastcontents b/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbytools.jar.lastcontents
+index ac22fa30c..303467ae7 100644
+--- a/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbytools.jar.lastcontents
++++ b/java/build/org/apache/derbyBuild/lastgoodjarcontents/insane.derbytools.jar.lastcontents
+@@ -58,6 +58,28 @@ org.apache.derby.impl.tools.planexporter.CreateXMLFile.class
+ org.apache.derby.impl.tools.planexporter.TreeNode.class
+ org.apache.derby.impl.tools.sysinfo.Main.class
+ org.apache.derby.impl.tools.sysinfo.ZipInfoProperties.class
++org.apache.derby.jdbc.BasicClientConnectionPoolDataSource40.class
++org.apache.derby.jdbc.BasicClientDataSource40.class
++org.apache.derby.jdbc.BasicClientXADataSource40.class
++org.apache.derby.jdbc.BasicEmbeddedConnectionPoolDataSource40.class
++org.apache.derby.jdbc.BasicEmbeddedDataSource40.class
++org.apache.derby.jdbc.BasicEmbeddedXADataSource40.class
++org.apache.derby.jdbc.ClientConnectionPoolDataSource.class
++org.apache.derby.jdbc.ClientConnectionPoolDataSource40.class
++org.apache.derby.jdbc.ClientDataSource.class
++org.apache.derby.jdbc.ClientDataSource40.class
++org.apache.derby.jdbc.ClientDriver.class
++org.apache.derby.jdbc.ClientDriver40.class
++org.apache.derby.jdbc.ClientXADataSource.class
++org.apache.derby.jdbc.ClientXADataSource40.class
++org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource.class
++org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource40.class
++org.apache.derby.jdbc.EmbeddedDataSource.class
++org.apache.derby.jdbc.EmbeddedDataSource40.class
++org.apache.derby.jdbc.EmbeddedDriver.class
++org.apache.derby.jdbc.EmbeddedXADataSource.class
++org.apache.derby.jdbc.EmbeddedXADataSource40.class
++org.apache.derby.jdbc.ReferenceableDataSource.class
+ org.apache.derby.tools.JDBCDisplayUtil.class
+ org.apache.derby.tools.PlanExporter.class
+ org.apache.derby.tools.SignatureChecker.class
+diff --git a/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derby.jar.lastcontents b/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derby.jar.lastcontents
+index aed9bef10..e326ae2ff 100644
+--- a/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derby.jar.lastcontents
++++ b/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derby.jar.lastcontents
+@@ -88,6 +88,7 @@ org.apache.derby.iapi.services.cache.CacheableFactory.class
+ org.apache.derby.iapi.services.cache.ClassSize.class
+ org.apache.derby.iapi.services.cache.ClassSizeCatalog.class
+ org.apache.derby.iapi.services.cache.ClassSizeCatalogImpl.class
++org.apache.derby.iapi.services.cache.SizedCacheable.class
+ org.apache.derby.iapi.services.classfile.AttributeEntry.class
+ org.apache.derby.iapi.services.classfile.Attributes.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Double_info.class
+@@ -96,9 +97,11 @@ org.apache.derby.iapi.services.classfile.CONSTANT_Index_info.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Integer_info.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Long_info.class
+ org.apache.derby.iapi.services.classfile.CONSTANT_Utf8_info.class
++org.apache.derby.iapi.services.classfile.ClassEnumeration.class
+ org.apache.derby.iapi.services.classfile.ClassFormatOutput.class
+ org.apache.derby.iapi.services.classfile.ClassHolder.class
+ org.apache.derby.iapi.services.classfile.ClassInput.class
++org.apache.derby.iapi.services.classfile.ClassInvestigator.class
+ org.apache.derby.iapi.services.classfile.ClassMember.class
+ org.apache.derby.iapi.services.classfile.ConstantPoolEntry.class
+ org.apache.derby.iapi.services.classfile.MemberTable.class
+@@ -156,7 +159,9 @@ org.apache.derby.iapi.services.io.Limit.class
+ org.apache.derby.iapi.services.io.LimitInputStream.class
+ org.apache.derby.iapi.services.io.LimitObjectInput.class
+ org.apache.derby.iapi.services.io.LimitReader.class
++org.apache.derby.iapi.services.io.NullOutputStream.class
+ org.apache.derby.iapi.services.io.RegisteredFormatIds.class
++org.apache.derby.iapi.services.io.SQLExceptionWrapper.class
+ org.apache.derby.iapi.services.io.Storable.class
+ org.apache.derby.iapi.services.io.StoredFormatIds.class
+ org.apache.derby.iapi.services.io.StreamStorable.class
+@@ -211,6 +216,7 @@ org.apache.derby.iapi.sql.StatementUtil.class
+ org.apache.derby.iapi.sql.StorablePreparedStatement.class
+ org.apache.derby.iapi.sql.compile.ASTVisitor.class
+ org.apache.derby.iapi.sql.compile.AccessPath.class
++org.apache.derby.iapi.sql.compile.C_NodeTypes.class
+ org.apache.derby.iapi.sql.compile.CodeGeneration.class
+ org.apache.derby.iapi.sql.compile.CompilerContext.class
+ org.apache.derby.iapi.sql.compile.CostEstimate.class
+@@ -331,6 +337,7 @@ org.apache.derby.iapi.sql.execute.xplain.XPLAINable.class
+ org.apache.derby.iapi.store.access.AccessFactory.class
+ org.apache.derby.iapi.store.access.AccessFactoryGlobals.class
+ org.apache.derby.iapi.store.access.BackingStoreHashtable.class
++org.apache.derby.iapi.store.access.BinaryOrderable.class
+ org.apache.derby.iapi.store.access.ColumnOrdering.class
+ org.apache.derby.iapi.store.access.ConglomPropertyQueryable.class
+ org.apache.derby.iapi.store.access.ConglomerateController.class
+@@ -390,6 +397,7 @@ org.apache.derby.iapi.store.raw.RePreparable.class
+ org.apache.derby.iapi.store.raw.RecordHandle.class
+ org.apache.derby.iapi.store.raw.RowLock.class
+ org.apache.derby.iapi.store.raw.ScanHandle.class
++org.apache.derby.iapi.store.raw.ScannedTransactionHandle.class
+ org.apache.derby.iapi.store.raw.StreamContainerHandle.class
+ org.apache.derby.iapi.store.raw.Transaction.class
+ org.apache.derby.iapi.store.raw.UndoHandler.class
+@@ -478,6 +486,7 @@ org.apache.derby.iapi.util.InterruptDetectedException.class
+ org.apache.derby.iapi.util.InterruptStatus.class
+ org.apache.derby.iapi.util.JBitSet.class
+ org.apache.derby.iapi.util.Matchable.class
++org.apache.derby.iapi.util.Operator.class
+ org.apache.derby.iapi.util.PropertyUtil.class
+ org.apache.derby.iapi.util.StringUtil.class
+ org.apache.derby.iapi.util.UTF8Util.class
+@@ -583,6 +592,7 @@ org.apache.derby.impl.services.bytecode.BCMethodDescriptor.class
+ org.apache.derby.impl.services.bytecode.CodeChunk.class
+ org.apache.derby.impl.services.bytecode.Conditional.class
+ org.apache.derby.impl.services.bytecode.GClass.class
++org.apache.derby.impl.services.bytecode.OpcodeDebug.class
+ org.apache.derby.impl.services.bytecode.Type.class
+ org.apache.derby.impl.services.bytecode.VMTypeIdCacheable.class
+ org.apache.derby.impl.services.bytecode.d_BCValidate.class
+@@ -608,7 +618,6 @@ org.apache.derby.impl.services.locks.ConcurrentLockSet.class
+ org.apache.derby.impl.services.locks.ConcurrentPool.class
+ org.apache.derby.impl.services.locks.Constants.class
+ org.apache.derby.impl.services.locks.Control.class
+-org.apache.derby.impl.services.locks.D_LockControl.class
+ org.apache.derby.impl.services.locks.Deadlock.class
+ org.apache.derby.impl.services.locks.Lock.class
+ org.apache.derby.impl.services.locks.LockControl.class
+@@ -809,6 +818,7 @@ org.apache.derby.impl.sql.compile.InListOperatorNode.class
+ org.apache.derby.impl.sql.compile.IndexToBaseRowNode.class
+ org.apache.derby.impl.sql.compile.InsertNode.class
+ org.apache.derby.impl.sql.compile.IntersectOrExceptNode.class
++org.apache.derby.impl.sql.compile.IsNode.class
+ org.apache.derby.impl.sql.compile.IsNullNode.class
+ org.apache.derby.impl.sql.compile.JavaToSQLValueNode.class
+ org.apache.derby.impl.sql.compile.JavaValueNode.class
+@@ -1043,6 +1053,7 @@ org.apache.derby.impl.sql.execute.MatchingClauseConstantAction.class
+ org.apache.derby.impl.sql.execute.MaterializedResultSet.class
+ org.apache.derby.impl.sql.execute.MaxMinAggregator.class
+ org.apache.derby.impl.sql.execute.MergeConstantAction.class
++org.apache.derby.impl.sql.execute.MergeJoinResultSet.class
+ org.apache.derby.impl.sql.execute.MergeResultSet.class
+ org.apache.derby.impl.sql.execute.MiscResultSet.class
+ org.apache.derby.impl.sql.execute.MultiProbeTableScanResultSet.class
+@@ -1175,6 +1186,7 @@ org.apache.derby.impl.store.access.btree.BranchControlRow.class
+ org.apache.derby.impl.store.access.btree.BranchRow.class
+ org.apache.derby.impl.store.access.btree.ControlRow.class
+ org.apache.derby.impl.store.access.btree.LeafControlRow.class
++org.apache.derby.impl.store.access.btree.LevelInfo.class
+ org.apache.derby.impl.store.access.btree.OpenBTree.class
+ org.apache.derby.impl.store.access.btree.SearchParameters.class
+ org.apache.derby.impl.store.access.btree.WaitError.class
+@@ -1194,6 +1206,7 @@ org.apache.derby.impl.store.access.btree.index.B2ITableLocking3.class
+ org.apache.derby.impl.store.access.btree.index.B2IUndo.class
+ org.apache.derby.impl.store.access.btree.index.B2I_10_3.class
+ org.apache.derby.impl.store.access.btree.index.B2I_v10_2.class
++org.apache.derby.impl.store.access.conglomerate.BinaryOrderableWrapper.class
+ org.apache.derby.impl.store.access.conglomerate.ConglomerateUtil.class
+ org.apache.derby.impl.store.access.conglomerate.GenericConglomerate.class
+ org.apache.derby.impl.store.access.conglomerate.GenericConglomerateController.class
+@@ -1216,6 +1229,7 @@ org.apache.derby.impl.store.access.heap.HeapScan.class
+ org.apache.derby.impl.store.access.heap.HeapScanInfo.class
+ org.apache.derby.impl.store.access.heap.Heap_v10_2.class
+ org.apache.derby.impl.store.access.heap.OpenHeap.class
++org.apache.derby.impl.store.access.heap.TableStats.class
+ org.apache.derby.impl.store.access.sort.ExternalSortFactory.class
+ org.apache.derby.impl.store.access.sort.MergeInserter.class
+ org.apache.derby.impl.store.access.sort.MergeScan.class
+@@ -1359,17 +1373,6 @@ org.apache.derby.io.StorageFactory.class
+ org.apache.derby.io.StorageFile.class
+ org.apache.derby.io.StorageRandomAccessFile.class
+ org.apache.derby.io.WritableStorageFactory.class
+-org.apache.derby.jdbc.BasicEmbeddedConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.BasicEmbeddedDataSource40.class
+-org.apache.derby.jdbc.BasicEmbeddedXADataSource40.class
+-org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource.class
+-org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.EmbeddedDataSource.class
+-org.apache.derby.jdbc.EmbeddedDataSource40.class
+-org.apache.derby.jdbc.EmbeddedDriver.class
+-org.apache.derby.jdbc.EmbeddedXADataSource.class
+-org.apache.derby.jdbc.EmbeddedXADataSource40.class
+-org.apache.derby.jdbc.ReferenceableDataSource.class
+ org.apache.derby.mbeans.CacheManagerMBean.class
+ org.apache.derby.mbeans.JDBCMBean.class
+ org.apache.derby.mbeans.Management.class
+diff --git a/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbyclient.jar.lastcontents b/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbyclient.jar.lastcontents
+index 9fd06e6bf..da01b96a1 100644
+--- a/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbyclient.jar.lastcontents
++++ b/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbyclient.jar.lastcontents
+@@ -141,14 +141,3 @@ org.apache.derby.client.net.StatementReplyInterface.class
+ org.apache.derby.client.net.StatementRequestInterface.class
+ org.apache.derby.client.net.Typdef.class
+ org.apache.derby.client.net.Utf8CcsidManager.class
+-org.apache.derby.jdbc.BasicClientConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.BasicClientDataSource40.class
+-org.apache.derby.jdbc.BasicClientXADataSource40.class
+-org.apache.derby.jdbc.ClientConnectionPoolDataSource.class
+-org.apache.derby.jdbc.ClientConnectionPoolDataSource40.class
+-org.apache.derby.jdbc.ClientDataSource.class
+-org.apache.derby.jdbc.ClientDataSource40.class
+-org.apache.derby.jdbc.ClientDriver.class
+-org.apache.derby.jdbc.ClientDriver40.class
+-org.apache.derby.jdbc.ClientXADataSource.class
+-org.apache.derby.jdbc.ClientXADataSource40.class
+diff --git a/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbytools.jar.lastcontents b/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbytools.jar.lastcontents
+index ac22fa30c..303467ae7 100644
+--- a/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbytools.jar.lastcontents
++++ b/java/build/org/apache/derbyBuild/lastgoodjarcontents/sane.derbytools.jar.lastcontents
+@@ -58,6 +58,28 @@ org.apache.derby.impl.tools.planexporter.CreateXMLFile.class
+ org.apache.derby.impl.tools.planexporter.TreeNode.class
+ org.apache.derby.impl.tools.sysinfo.Main.class
+ org.apache.derby.impl.tools.sysinfo.ZipInfoProperties.class
++org.apache.derby.jdbc.BasicClientConnectionPoolDataSource40.class
++org.apache.derby.jdbc.BasicClientDataSource40.class
++org.apache.derby.jdbc.BasicClientXADataSource40.class
++org.apache.derby.jdbc.BasicEmbeddedConnectionPoolDataSource40.class
++org.apache.derby.jdbc.BasicEmbeddedDataSource40.class
++org.apache.derby.jdbc.BasicEmbeddedXADataSource40.class
++org.apache.derby.jdbc.ClientConnectionPoolDataSource.class
++org.apache.derby.jdbc.ClientConnectionPoolDataSource40.class
++org.apache.derby.jdbc.ClientDataSource.class
++org.apache.derby.jdbc.ClientDataSource40.class
++org.apache.derby.jdbc.ClientDriver.class
++org.apache.derby.jdbc.ClientDriver40.class
++org.apache.derby.jdbc.ClientXADataSource.class
++org.apache.derby.jdbc.ClientXADataSource40.class
++org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource.class
++org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource40.class
++org.apache.derby.jdbc.EmbeddedDataSource.class
++org.apache.derby.jdbc.EmbeddedDataSource40.class
++org.apache.derby.jdbc.EmbeddedDriver.class
++org.apache.derby.jdbc.EmbeddedXADataSource.class
++org.apache.derby.jdbc.EmbeddedXADataSource40.class
++org.apache.derby.jdbc.ReferenceableDataSource.class
+ org.apache.derby.tools.JDBCDisplayUtil.class
+ org.apache.derby.tools.PlanExporter.class
+ org.apache.derby.tools.SignatureChecker.class
+diff --git a/java/client/org/apache/derby/client/BasicClientDataSource.java b/java/client/org/apache/derby/client/BasicClientDataSource.java
+index f9b93bfae..128a7599c 100644
+--- a/java/client/org/apache/derby/client/BasicClientDataSource.java
++++ b/java/client/org/apache/derby/client/BasicClientDataSource.java
+@@ -104,7 +104,7 @@ public class BasicClientDataSource
+ 
+     private final static long serialVersionUID = 1894299584216955554L;
+     public final static String className__ =
+-            "org.apache.derby.jdbc.BasicClientDataSource";
++            "org.apache.derby.client.BasicClientDataSource";
+ 
+     // ---------------------------- traceLevel -------------------------------
+     //
+diff --git a/java/drda/org/apache/derby/drda/server.policy b/java/drda/org/apache/derby/drda/server.policy
+index 83ad30ff9..7c8a24827 100644
+--- a/java/drda/org/apache/derby/drda/server.policy
++++ b/java/drda/org/apache/derby/drda/server.policy
+@@ -195,6 +195,8 @@ grant codeBase "${derby.install.url}derbytools.jar"
+   permission java.io.FilePermission "<<ALL FILES>>", "read";
+   permission java.io.FilePermission "java.runtime.version", "read";
+   permission java.io.FilePermission "java.fullversion", "read";
++
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ grant codeBase "${derby.install.url}derbyclient.jar"
+diff --git a/java/drda/org/apache/derby/drda/template.policy b/java/drda/org/apache/derby/drda/template.policy
+index 641ad6376..f19163d23 100644
+--- a/java/drda/org/apache/derby/drda/template.policy
++++ b/java/drda/org/apache/derby/drda/template.policy
+@@ -180,3 +180,9 @@ grant codeBase "${derby.install.url}derbynet.jar"
+   permission java.io.FilePermission "<<ALL FILES>>", "read";
+ };
+ 
++grant codeBase "${derby.install.url}derbytools.jar"
++{
++  // Needed by DataSources
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
++
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/GetCurrentPropertiesTest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/GetCurrentPropertiesTest.policy
+index 8ecb0f8c4..c263d32a0 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/GetCurrentPropertiesTest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/GetCurrentPropertiesTest.policy
+@@ -164,6 +164,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/NetworkServerControlApiTest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/NetworkServerControlApiTest.policy
+index 375f9c959..2df8b7e8d 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/NetworkServerControlApiTest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/NetworkServerControlApiTest.policy
+@@ -158,6 +158,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/RuntimeInfoTest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/RuntimeInfoTest.policy
+index 45454ca46..0d260052d 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/RuntimeInfoTest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/RuntimeInfoTest.policy
+@@ -205,6 +205,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SecureServerTest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SecureServerTest.policy
+index 62db3d956..e3a84a56e 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SecureServerTest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SecureServerTest.policy
+@@ -234,7 +234,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
+-
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/ServerPropertiesTest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/ServerPropertiesTest.policy
+index d7d78beae..85c507b5d 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/ServerPropertiesTest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/ServerPropertiesTest.policy
+@@ -168,6 +168,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SysinfoTest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SysinfoTest.policy
+index 131ac0a67..0b0e36269 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SysinfoTest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/derbynet/SysinfoTest.policy
+@@ -203,6 +203,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/engine/noDeregisterPermission.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/engine/noDeregisterPermission.policy
+index 3c530c28b..bb7dfb7c4 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/engine/noDeregisterPermission.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/engine/noDeregisterPermission.policy
+@@ -212,7 +212,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
+-
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/jdbc4/noAbortPermission.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/jdbc4/noAbortPermission.policy
+index c265f74eb..cc8cea4eb 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/jdbc4/noAbortPermission.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/jdbc4/noAbortPermission.policy
+@@ -191,6 +191,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/LDAPTests.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/LDAPTests.policy
+index 9fb5f1575..e4cf277df 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/LDAPTests.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/LDAPTests.policy
+@@ -182,6 +182,8 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+  
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
++
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/XATest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/XATest.policy
+index d2832f3fc..b258c6e60 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/XATest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/jdbcapi/XATest.policy
+@@ -161,6 +161,8 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+  
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
++
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.initial.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.initial.policy
+index 557d533da..34c17ea4d 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.initial.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.initial.policy
+@@ -112,3 +112,8 @@ grant {
+ grant {
+   permission java.io.FilePermission "${jacoco.active}${user.dir}${/}*", "read, write";
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
++
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.modified.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.modified.policy
+index c64ac0afb..620ffb6d3 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.modified.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.modified.policy
+@@ -80,3 +80,8 @@ grant codeBase "${derbyTesting.testjar}derbyTesting.jar"
+   permission java.security.SecurityPermission "getPolicy";
+   permission java.lang.RuntimePermission "setIO"; 
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
++
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.unreloadable.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.unreloadable.policy
+index 84beaac87..9c1b749b9 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.unreloadable.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/SecurityPolicyReloadingTest.unreloadable.policy
+@@ -148,6 +148,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/VetJigsawTest.java b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/VetJigsawTest.java
+index 62f7940d5..7454f7069 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/VetJigsawTest.java
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/VetJigsawTest.java
+@@ -181,7 +181,8 @@ public class VetJigsawTest extends BaseJDBCTestCase
+              conn,
+              "insert into zipClasses\n" +
+              "  select directory, '" + fullJarFileName + "', name\n" +
+-             "  from table(zipFile('" + fullJarFileName + "')) t\n"
++             "  from table(zipFile('" + fullJarFileName + "')) t\n" +
++             "  where name like '%.class'"
+              );
+     }
+     private String vetContents() throws Exception
+@@ -210,8 +211,8 @@ public class VetJigsawTest extends BaseJDBCTestCase
+     }
+     private void examinePackage(StringBuilder buffer, String packageName) throws Exception
+     {
+-        buffer.append(packageName + " straddles more than one jar file:\n");
+-
++        boolean packageHasClasses = false;
++ 
+         String packageContents =
+           "select zipFileName, className\n" +
+           "from zipClasses\n" +
+@@ -226,6 +227,7 @@ public class VetJigsawTest extends BaseJDBCTestCase
+                 {
+                     String zipFileName = rs.getString(1);
+                     String className = rs.getString(2);
++                    packageHasClasses = true;
+ 
+                     buffer
+                       .append("    ")
+@@ -235,7 +237,11 @@ public class VetJigsawTest extends BaseJDBCTestCase
+                       .append("\n");
+                 }
+             }
++        }
+ 
++        if (packageHasClasses)
++        {
++            buffer.insert(0, packageName + " straddles more than one jar file:\n");
+             buffer.append("\n");
+         }
+     }
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/_Suite.java b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/_Suite.java
+index d610d21d4..1bf98aba5 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/_Suite.java
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/_Suite.java
+@@ -262,6 +262,7 @@ public class _Suite extends BaseTestCase  {
+         suite.addTest(Derby5866TriggerOrderTest.suite());
+         suite.addTest(NoDBInternalsPermissionTest.suite());
+         suite.addTest(ClassLoadingTest.suite());
++        suite.addTest(VetJigsawTest.suite());
+         return suite;
+ 	}
+ }
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/luceneSupport.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/luceneSupport.policy
+index e80d9b1c8..04ed285a5 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/luceneSupport.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/luceneSupport.policy
+@@ -231,7 +231,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
+-
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/no_derby_internals.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/no_derby_internals.policy
+index bb0a5d24d..337d62ad8 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/no_derby_internals.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/no_derby_internals.policy
+@@ -229,7 +229,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
+-
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/resultSetReader.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/resultSetReader.policy
+index a61db0fcf..bec0046be 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/lang/resultSetReader.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/lang/resultSetReader.policy
+@@ -216,7 +216,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
+-
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withPerm.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withPerm.policy
+index 1596d0241..e3297440f 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withPerm.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withPerm.policy
+@@ -93,3 +93,7 @@ grant codeBase "${derbyTesting.antjunit}" {
+     // This permission is needed when running the tests using ant 1.7
+     permission java.io.FilePermission "${user.dir}${/}*", "write";
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withoutPerm.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withoutPerm.policy
+index a5483f285..e96206ec9 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withoutPerm.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/management/CacheManagerMBeanTest.withoutPerm.policy
+@@ -91,3 +91,8 @@ grant codeBase "${derbyTesting.antjunit}" {
+     // This permission is needed when running the tests using ant 1.7
+     permission java.io.FilePermission "${user.dir}${/}*", "write";
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
++
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/store/ClassLoaderBootTest.java b/java/testing/org/apache/derbyTesting/functionTests/tests/store/ClassLoaderBootTest.java
+index a019ccd36..a8794a27e 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/store/ClassLoaderBootTest.java
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/store/ClassLoaderBootTest.java
+@@ -50,22 +50,25 @@ import org.apache.derbyTesting.junit.SystemPropertyTestSetup;
+ public class ClassLoaderBootTest extends BaseJDBCTestCase {
+ 
+     private static URL derbyClassLocation; 
++    private static URL embeddedDataSourceClassLocation; 
+ 	static {
+-        // find the location of derby jar file or location 
+-        // of classes. 
++        // find the location of derby jar file and derbytools jar file
++        derbyClassLocation = getClassLocation("org.apache.derby.database.Database");
++        embeddedDataSourceClassLocation = getClassLocation("org.apache.derby.jdbc.EmbeddedDataSource");
++	}
++    private static URL getClassLocation(String className)
++    {
+         CodeSource cs;
+         try {
+-            Class cls = Class.forName("org.apache.derby.database.Database");
++            Class cls = Class.forName(className);
+             cs = cls.getProtectionDomain().getCodeSource();
+         } catch (ClassNotFoundException e) {
+             cs = null;
+         }
+ 
+-        if(cs == null )
+-            derbyClassLocation = null;        
+-        else 
+-            derbyClassLocation = cs.getLocation();
+-	}
++        if(cs == null ) { return null; }
++        else { return cs.getLocation(); }
++    }
+         
+ 
+     private ClassLoader loader_1;
+@@ -111,7 +114,7 @@ public class ClassLoaderBootTest extends BaseJDBCTestCase {
+      */
+     protected void setUp() throws Exception
+     {
+-        URL[] urls = new URL[]{derbyClassLocation};
++        URL[] urls = new URL[]{derbyClassLocation, embeddedDataSourceClassLocation};
+         mainLoader = getThreadLoader();
+ 
+         loader_1 = createDerbyClassLoader(urls);
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/tests/store/Derby3980DeadlockTest.policy b/java/testing/org/apache/derbyTesting/functionTests/tests/store/Derby3980DeadlockTest.policy
+index e9865b943..05bba09ff 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/tests/store/Derby3980DeadlockTest.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/tests/store/Derby3980DeadlockTest.policy
+@@ -204,6 +204,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/functionTests/util/derby_tests.policy b/java/testing/org/apache/derbyTesting/functionTests/util/derby_tests.policy
+index 597cc5d7a..bbffdfb71 100644
+--- a/java/testing/org/apache/derbyTesting/functionTests/util/derby_tests.policy
++++ b/java/testing/org/apache/derbyTesting/functionTests/util/derby_tests.policy
+@@ -259,7 +259,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar" {
+   // ij needs permission to read the sql files in this jar
+   permission java.io.FilePermission "${derbyTesting.testjarpath}", "read";
+   
+-
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ //
+diff --git a/java/testing/org/apache/derbyTesting/junit/Derby.java b/java/testing/org/apache/derbyTesting/junit/Derby.java
+index 63ed80f66..37cbf656b 100644
+--- a/java/testing/org/apache/derbyTesting/junit/Derby.java
++++ b/java/testing/org/apache/derbyTesting/junit/Derby.java
+@@ -94,7 +94,7 @@ public class Derby {
+             return true;
+         }
+ 
+-        return hasCorrectJar("/derbyclient.jar",
++        return hasCorrectJar("/derbytools.jar",
+                 JDBC.vmSupportsJNDI() ?
+                 "org.apache.derby.jdbc.ClientDataSource" :
+                 "org.apache.derby.jdbc.BasicClientDataSource40");
+diff --git a/java/testing/org/apache/derbyTesting/junit/DerbyDistribution.java b/java/testing/org/apache/derbyTesting/junit/DerbyDistribution.java
+index 34266f3ad..27b008f3f 100644
+--- a/java/testing/org/apache/derbyTesting/junit/DerbyDistribution.java
++++ b/java/testing/org/apache/derbyTesting/junit/DerbyDistribution.java
+@@ -51,6 +51,8 @@ public class DerbyDistribution implements Comparable<DerbyDistribution> {
+     public static final String JAR_CLIENT = "derbyclient.jar";
+     public static final String JAR_ENGINE = "derby.jar";
+     public static final String JAR_NET = "derbynet.jar";
++    public static final String JAR_SHARED = "derbyshared.jar";
++    public static final String JAR_TOOLS = "derbytools.jar";
+     public static final String JAR_TESTING = "derbyTesting.jar";
+     private static final String[] REQUIRED_JARS = {
+         JAR_ENGINE, JAR_NET, JAR_CLIENT
+@@ -66,6 +68,13 @@ public class DerbyDistribution implements Comparable<DerbyDistribution> {
+     private final String derbyEngineJarPath;
+     /** Path to derbynet.jar. */
+     private final String derbyNetJarPath;
++
++    /** Shared jar (10.15 onward) */
++    private final String derbySharedJarPath;
++
++    /** Tools jar (needed for DataSources from 10.15 onward */
++    private final String derbyToolsJarPath;
++    
+     /**
+      * Production classpath, i.e. all JAR files found except for
+      * derbyTesting.jar.
+@@ -93,6 +102,8 @@ public class DerbyDistribution implements Comparable<DerbyDistribution> {
+         this.derbyClientJarPath = getPath(root, JAR_CLIENT);
+         this.derbyEngineJarPath = getPath(root, JAR_ENGINE);
+         this.derbyNetJarPath = getPath(root, JAR_NET);
++        this.derbySharedJarPath = getPath(root, JAR_SHARED);
++        this.derbyToolsJarPath = getPath(root, JAR_TOOLS);
+     }
+ 
+     /** Returns the absolute path to the JAR if it exists, otherwise null. */
+@@ -123,12 +134,32 @@ public class DerbyDistribution implements Comparable<DerbyDistribution> {
+ 
+     /** Returns the path to {@code derbyclient.jar}. */
+     public String getDerbyClientJarPath() {
+-        return derbyClientJarPath;
+-    }
++        String retval = derbyClientJarPath;
++        if (version.atLeast(DerbyVersion.FIRST_JIGSAW_VERSION))
++        {
++            retval =
++              retval +
++              File.pathSeparator + getDerbySharedJarPath() +
++              File.pathSeparator + getDerbyToolsJarPath()
++              ;
++        }
++
++        return retval;
++   }
+ 
+     /** Returns the path to {@code derby.jar}. */
+     public String getDerbyEngineJarPath() {
+-        return derbyEngineJarPath;
++        String retval = derbyEngineJarPath;
++        if (version.atLeast(DerbyVersion.FIRST_JIGSAW_VERSION))
++        {
++            retval =
++              retval +
++              File.pathSeparator + getDerbySharedJarPath() +
++              File.pathSeparator + getDerbyToolsJarPath()
++              ;
++        }
++
++        return retval;
+     }
+ 
+     /** Returns the path to {@code derbynet.jar}. */
+@@ -136,10 +167,20 @@ public class DerbyDistribution implements Comparable<DerbyDistribution> {
+         return derbyEngineJarPath;
+     }
+ 
++    /** Returns the path to {@code derbyshared.jar}. */
++    public String getDerbySharedJarPath() {
++        return derbySharedJarPath;
++    }
++
++    /** Returns the path to {@code derbytools.jar}. */
++    public String getDerbyToolsJarPath() {
++        return derbyToolsJarPath;
++    }
++
+     /** Returns a classpath with the network server production JARs. */
+     public String getServerClasspath() {
+         return
+-            this.derbyNetJarPath + File.pathSeparator + this.derbyEngineJarPath;
++            this.derbyNetJarPath + File.pathSeparator + getDerbyEngineJarPath();
+     }
+ 
+     /** Returns a classpath with all production JARs. */
+diff --git a/java/testing/org/apache/derbyTesting/junit/DerbyVersion.java b/java/testing/org/apache/derbyTesting/junit/DerbyVersion.java
+index 108022218..00eb39e6a 100644
+--- a/java/testing/org/apache/derbyTesting/junit/DerbyVersion.java
++++ b/java/testing/org/apache/derbyTesting/junit/DerbyVersion.java
+@@ -84,6 +84,10 @@ public class DerbyVersion
+     /** 10.9.1.0 (June 25, 2012/ SVN 1344872) */
+     public static final DerbyVersion _10_9_1_0 = new DerbyVersion(10,9,1,0);
+ 
++
++    /** The release which introduced Jigsaw modules */
++    public static final DerbyVersion FIRST_JIGSAW_VERSION = new DerbyVersion(10,15,0,0);
++  
+     private final int major;
+     private final int minor;
+     private final int fixpack;
+diff --git a/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest.policy b/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest.policy
+index 9edacfcba..2e903b5af 100644
+--- a/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest.policy
++++ b/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest.policy
+@@ -161,3 +161,7 @@ grant {
+   permission java.io.FilePermission "${jacoco.active}${user.dir}${/}*", "read, write";
+   permission java.lang.RuntimePermission "${jacoco.active}shutdownHooks";
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
+diff --git a/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest1.policy b/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest1.policy
+index effa7e3a4..f16414573 100644
+--- a/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest1.policy
++++ b/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest1.policy
+@@ -153,3 +153,7 @@ grant codeBase "${derbyTesting.antjunit}" {
+     // This permission is needed when running the tests using ant 1.7
+     permission java.io.FilePermission "${user.dir}${/}*", "write";
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
+diff --git a/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest2.policy b/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest2.policy
+index 3a557dc0d..9696716c5 100644
+--- a/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest2.policy
++++ b/java/testing/org/apache/derbyTesting/unitTests/junit/MissingPermissionsTest2.policy
+@@ -134,6 +134,7 @@ grant codeBase "${derbyTesting.codejar}derbytools.jar"
+   permission java.io.FilePermission "<<ALL FILES>>", "read";
+   permission java.io.FilePermission "java.runtime.version", "read";
+   permission java.io.FilePermission "java.fullversion", "read";
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
+ };
+ 
+ // JUnit jar file tries to read junit.properties in the user's
+diff --git a/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest.policy b/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest.policy
+index 02df780dc..091b7df49 100644
+--- a/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest.policy
++++ b/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest.policy
+@@ -162,3 +162,7 @@ grant codeBase "${derbyTesting.antjunit}" {
+     // This permission is needed when running the tests using ant 1.7
+     permission java.io.FilePermission "${user.dir}${/}*", "write";
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};
+diff --git a/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest1.policy b/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest1.policy
+index 0e3ef34cd..ae064946e 100644
+--- a/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest1.policy
++++ b/java/testing/org/apache/derbyTesting/unitTests/junit/SystemPrivilegesPermissionTest1.policy
+@@ -142,3 +142,7 @@ grant codeBase "${derbyTesting.antjunit}" {
+     // This permission is needed when running the tests using ant 1.7
+     permission java.io.FilePermission "${user.dir}${/}*", "write";
+ };
++
++grant codeBase "${derbyTesting.codejar}derbytools.jar" {
++  permission org.apache.derby.shared.common.security.SystemPermission "engine", "usederbyinternals";
++};

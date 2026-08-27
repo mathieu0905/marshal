@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-938500",
+  "expected_check_paths": [
+    "designate/tests/unit/backend/test_infoblox.py"
+  ],
+  "mechanism": "infoblox-client 0.6.2 changes InfobloxTimeoutError construction from a positional message to required response and reason parameters, breaking existing Designate backend tests",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-938500--target-977684",
+  "repair_template": "construct the dependency exception with its new response and reason interface in existing target tests",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With infoblox-client 0.6.2, two of the pre-existing 27 Designate backend tests fail with KeyError 'reason' when constructing InfobloxTimeoutError using the old positional-message interface.",
+    "approved": true,
+    "reviewer_basis": "Opening-cutoff replay independently installed infoblox-client 0.6.1/0.6.2/0.6.2 for A0/A1/A2 and ran the identical 27-test Designate backend module in all arms. A0 and A2 pass; A1 has exactly the two constructor-interface failures repaired by the maintainer patch. The patch changes existing test fixtures without deleting or skipping tests.",
+    "source_effect": "The opening source diff changes the sole infoblox-client pin from 0.6.1 to 0.6.2.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/977684.patch",
+    "target_repair": "The maintainer updates the two existing mocked timeout exceptions to pass response and reason; with infoblox-client 0.6.2 the same 27-test module returns to passing."
+  },
+  "source_change_family": "opendev-change-938500-opening",
+  "target_repository": "openstack/designate",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

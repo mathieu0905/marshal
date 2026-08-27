@@ -1,0 +1,433 @@
+{0} octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_get_barbican_client_user_auth [0.009257s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 91, in test_get_barbican_client_user_auth
+    bc = acl_auth_object.get_barbican_client_user_auth(mock.Mock())
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 97, in get_barbican_client_user_auth
+    return barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 805, in request
+    if not urllib.parse.urlparse(url).netloc:
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 401, in urlparse
+    splitresult = urlsplit(url, scheme, allow_fragments)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 513, in urlsplit
+    if i > 0:
+
+    TypeError: '>' not supported between instances of 'MagicMock' and 'int'
+
+Error creating Barbican client
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 42, in get_barbican_client
+    cls._barbican_client = barbican_client.Client(
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 133, in get_version_data
+    return body_resp['versions']
+TypeError: 'Mock' object is not subscriptable
+{1} octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_get_barbican_client [0.003438s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 43, in test_get_barbican_client
+    bc1 = acl_auth_object.get_barbican_client()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 48, in get_barbican_client
+    with excutils.save_and_reraise_exception():
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_utils/excutils.py", line 227, in __exit__
+    self.force_reraise()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_utils/excutils.py", line 200, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 42, in get_barbican_client
+    cls._barbican_client = barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 133, in get_version_data
+    return body_resp['versions']
+
+    TypeError: 'Mock' object is not subscriptable
+
+{2} octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_load_auth_driver [0.000634s] ... ok
+{4} octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_revoke_secret_access [0.010374s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 85, in test_revoke_secret_access
+    acl_auth_object.revoke_secret_access(mock.Mock(), mock.Mock())
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 73, in revoke_secret_access
+    bc = cls.get_barbican_client_user_auth(context)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 97, in get_barbican_client_user_auth
+    return barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 805, in request
+    if not urllib.parse.urlparse(url).netloc:
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 401, in urlparse
+    splitresult = urlsplit(url, scheme, allow_fragments)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 513, in urlsplit
+    if i > 0:
+
+    TypeError: '>' not supported between instances of 'MagicMock' and 'int'
+
+{3} octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_ensure_secret_access [0.010204s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 69, in test_ensure_secret_access
+    acl_auth_object.ensure_secret_access(mock.Mock(), mock.Mock())
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 59, in ensure_secret_access
+    bc = cls.get_barbican_client_user_auth(context)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 97, in get_barbican_client_user_auth
+    return barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 805, in request
+    if not urllib.parse.urlparse(url).netloc:
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 401, in urlparse
+    splitresult = urlsplit(url, scheme, allow_fragments)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 513, in urlsplit
+    if i > 0:
+
+    TypeError: '>' not supported between instances of 'MagicMock' and 'int'
+
+
+==============================
+Failed 4 tests - output below:
+==============================
+
+octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_get_barbican_client_user_auth
+--------------------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 91, in test_get_barbican_client_user_auth
+    bc = acl_auth_object.get_barbican_client_user_auth(mock.Mock())
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 97, in get_barbican_client_user_auth
+    return barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 805, in request
+    if not urllib.parse.urlparse(url).netloc:
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 401, in urlparse
+    splitresult = urlsplit(url, scheme, allow_fragments)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 513, in urlsplit
+    if i > 0:
+
+    TypeError: '>' not supported between instances of 'MagicMock' and 'int'
+
+
+octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_get_barbican_client
+----------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 43, in test_get_barbican_client
+    bc1 = acl_auth_object.get_barbican_client()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 48, in get_barbican_client
+    with excutils.save_and_reraise_exception():
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_utils/excutils.py", line 227, in __exit__
+    self.force_reraise()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_utils/excutils.py", line 200, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 42, in get_barbican_client
+    cls._barbican_client = barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 133, in get_version_data
+    return body_resp['versions']
+
+    TypeError: 'Mock' object is not subscriptable
+
+
+octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_revoke_secret_access
+-----------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 85, in test_revoke_secret_access
+    acl_auth_object.revoke_secret_access(mock.Mock(), mock.Mock())
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 73, in revoke_secret_access
+    bc = cls.get_barbican_client_user_auth(context)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 97, in get_barbican_client_user_auth
+    return barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 805, in request
+    if not urllib.parse.urlparse(url).netloc:
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 401, in urlparse
+    splitresult = urlsplit(url, scheme, allow_fragments)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 513, in urlsplit
+    if i > 0:
+
+    TypeError: '>' not supported between instances of 'MagicMock' and 'int'
+
+
+octavia.tests.unit.certificates.common.auth.test_barbican_acl.TestBarbicanACLAuth.test_ensure_secret_access
+-----------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/tests/unit/certificates/common/auth/test_barbican_acl.py", line 69, in test_ensure_secret_access
+    acl_auth_object.ensure_secret_access(mock.Mock(), mock.Mock())
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 59, in ensure_secret_access
+    bc = cls.get_barbican_client_user_auth(context)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/octavia/certificates/common/auth/barbican_acl.py", line 97, in get_barbican_client_user_auth
+    return barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/client.py", line 186, in Client
+    return client_class(session=session, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-873970-v1-2026-08-26/replay-work/formal-opendev-873906--target-873970/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 805, in request
+    if not urllib.parse.urlparse(url).netloc:
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 401, in urlparse
+    splitresult = urlsplit(url, scheme, allow_fragments)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/parse.py", line 513, in urlsplit
+    if i > 0:
+
+    TypeError: '>' not supported between instances of 'MagicMock' and 'int'
+
+
+
+======
+Totals
+======
+Ran: 5 tests in 0.0823 sec.
+ - Passed: 1
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 4
+Sum of execute time for each test: 0.0339 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.009257
+ - Worker 1 (1 tests) => 0:00:00.003438
+ - Worker 2 (1 tests) => 0:00:00.000634
+ - Worker 3 (1 tests) => 0:00:00.010204
+ - Worker 4 (1 tests) => 0:00:00.010374

@@ -1,0 +1,332 @@
+diff --git a/neutron_lib/context.py b/neutron_lib/context.py
+index 2cb03b5..7cb13cb 100644
+--- a/neutron_lib/context.py
++++ b/neutron_lib/context.py
+@@ -36,23 +36,10 @@
+     def __init__(self, user_id=None, project_id=None, is_admin=None,
+                  timestamp=None, project_name=None, user_name=None,
+                  is_advsvc=None, is_service_role=None,
+-                 tenant_id=None, tenant_name=None,
+                  has_global_access=False, can_set_project_id=False, **kwargs):
+         # NOTE(jamielennox): We maintain this argument order for tests that
+         # pass arguments positionally.
+ 
+-        # Prefer project_id and project_name, as that's what's going to be
+-        # set by keystone.
+-        # NOTE(haleyb): remove fall-back and warning in E+2 release, or when
+-        # all callers have been changed to use project_*.
+-        project_id = project_id or tenant_id
+-        project_name = project_name or tenant_name
+-        if tenant_id:
+-            LOG.warning('Keyword tenant_id has been deprecated, use '
+-                        'project_id instead')
+-        if tenant_name:
+-            LOG.warning('Keyword tenant_name has been deprecated, use '
+-                        'project_name instead')
+         kwargs.setdefault('project_id', project_id)
+         kwargs.setdefault('project_name', project_name)
+         self._has_global_access = has_global_access
+@@ -90,22 +77,6 @@
+                 self)
+ 
+     @property
+-    def tenant_id(self):
+-        return self.project_id
+-
+-    @tenant_id.setter
+-    def tenant_id(self, tenant_id):
+-        self.project_id = tenant_id
+-
+-    @property
+-    def tenant_name(self):
+-        return self.project_name
+-
+-    @tenant_name.setter
+-    def tenant_name(self, tenant_name):
+-        self.project_name = tenant_name
+-
+-    @property
+     def is_service_role(self):
+         # TODO(slaweq): we will not need to check ContextBase._is_advsvc once
+         # we will get rid of the old API policies
+@@ -138,10 +109,8 @@
+         context = super().to_dict()
+         context.update({
+             'user_id': self.user_id,
+-            'tenant_id': self.project_id,
+             'project_id': self.project_id,
+             'timestamp': str(self.timestamp),
+-            'tenant_name': self.project_name,
+             'project_name': self.project_name,
+             'user_name': self.user_name,
+             'has_global_access': self.has_global_access,
+@@ -151,7 +120,6 @@
+ 
+     def to_policy_values(self):
+         values = super().to_policy_values()
+-        values['tenant_id'] = self.project_id
+         values['is_admin'] = self.is_admin
+         values['has_global_access'] = self.has_global_access
+         values['can_set_project_id'] = self.can_set_project_id
+@@ -161,11 +129,9 @@
+         # (oslo.context from Ocata release already issues deprecation warnings
+         # for non-standard keys).
+         values['user'] = self.user_id
+-        values['tenant'] = self.project_id
+         values['domain'] = self.domain_id
+         values['user_domain'] = self.user_domain_id
+         values['project_domain'] = self.project_domain_id
+-        values['tenant_name'] = self.project_name
+         values['project_name'] = self.project_name
+         values['user_name'] = self.user_name
+ 
+@@ -177,8 +143,6 @@
+         if values.get('timestamp'):
+             cls_obj.timestamp = values['timestamp']
+         cls_obj.user_id = values.get('user_id', values.get('user'))
+-        cls_obj.tenant_id = values.get('tenant_id', values.get('project_id'))
+-        cls_obj.tenant_name = values.get('tenant_name')
+         return cls_obj
+ 
+     def elevated(self):
+diff --git a/neutron_lib/tests/unit/test_context.py b/neutron_lib/tests/unit/test_context.py
+index 7a4fd0e..1d2acff 100644
+--- a/neutron_lib/tests/unit/test_context.py
++++ b/neutron_lib/tests/unit/test_context.py
+@@ -32,76 +32,38 @@
+         ctx = context.Context('user_id', 'project_id')
+         self.assertEqual('user_id', ctx.user_id)
+         self.assertEqual('project_id', ctx.project_id)
+-        self.assertEqual('project_id', ctx.tenant_id)
+         request_id = ctx.request_id
+         if isinstance(request_id, bytes):
+             request_id = request_id.decode('utf-8')
+         self.assertThat(request_id, matchers.StartsWith('req-'))
+         self.assertIsNone(ctx.user_name)
+-        self.assertIsNone(ctx.tenant_name)
+-        self.assertIsNone(ctx.project_name)
+-        self.assertIsNone(ctx.auth_token)
+-
+-    def _test_neutron_context_create(self, project_id, tenant_id):
+-        p_id = project_id or tenant_id
+-        ctx = context.Context('user_id', project_id=project_id,
+-                              tenant_id=tenant_id)
+-        self.assertEqual('user_id', ctx.user_id)
+-        self.assertEqual(p_id, ctx.project_id)
+-        self.assertEqual(p_id, ctx.tenant_id)
+-        request_id = ctx.request_id
+-        if isinstance(request_id, bytes):
+-            request_id = request_id.decode('utf-8')
+-        self.assertThat(request_id, matchers.StartsWith('req-'))
+-        self.assertIsNone(ctx.user_name)
+-        self.assertIsNone(ctx.tenant_name)
+         self.assertIsNone(ctx.project_name)
+         self.assertIsNone(ctx.auth_token)
+ 
+     def test_neutron_context_create(self):
+-        self._test_neutron_context_create('project_id', None)
++        project_id = 'project_id'
++        ctx = context.Context('user_id', project_id=project_id)
++        self.assertEqual('user_id', ctx.user_id)
++        self.assertEqual(project_id, ctx.project_id)
++        request_id = ctx.request_id
++        if isinstance(request_id, bytes):
++            request_id = request_id.decode('utf-8')
++        self.assertThat(request_id, matchers.StartsWith('req-'))
++        self.assertIsNone(ctx.user_name)
++        self.assertIsNone(ctx.project_name)
++        self.assertIsNone(ctx.auth_token)
+ 
+-    def test_neutron_context_create_tenant_id(self):
+-        self._test_neutron_context_create(None, 'tenant_id')
+-
+-    def _test_neutron_context_getter_setter(self, project_id, tenant_id):
+-        p_id = project_id or tenant_id
+-        ctx = context.Context('Anakin', project_id=project_id,
+-                              tenant_id=tenant_id)
+-        self.assertEqual('Anakin', ctx.user_id)
+-        self.assertEqual(p_id, ctx.tenant_id)
+-        ctx.user_id = 'Darth'
+-        ctx.project_id = 'Vader'
+-        self.assertEqual('Darth', ctx.user_id)
+-        self.assertEqual('Vader', ctx.tenant_id)
+-        self.assertEqual('Vader', ctx.project_id)
+-
+-    def test_neutron_context_getter_setter(self):
+-        self._test_neutron_context_getter_setter('Skywalker', None)
+-
+-    def test_neutron_context_getter_setter_tenant_id(self):
+-        self._test_neutron_context_getter_setter(None, 'Skywalker')
+-
+-    def _test_neutron_context_create_with_name(
+-            self, project_name, tenant_name):
+-        project_name = project_name or tenant_name
++    def test_neutron_context_create_with_name(self):
++        project_name = 'project_name'
+         ctx = context.Context('user_id', 'project_id',
+-                              tenant_name=tenant_name, user_name='user_name',
++                              user_name='user_name',
+                               project_name=project_name)
+         # Check name is set
+         self.assertEqual('user_name', ctx.user_name)
+-        self.assertEqual(project_name, ctx.tenant_name)
+         self.assertEqual(project_name, ctx.project_name)
+-        # Check user/tenant contains its ID even if user/tenant_name is passed
++        # Check user contains its ID
+         self.assertEqual('user_id', ctx.user_id)
+         self.assertEqual('project_id', ctx.project_id)
+-        self.assertEqual('project_id', ctx.tenant_id)
+-
+-    def test_neutron_context_create_with_name(self):
+-        self._test_neutron_context_create_with_name('project_name', None)
+-
+-    def test_neutron_context_create_with_name_tenant_name(self):
+-        self._test_neutron_context_create_with_name(None, 'tenant_name')
+ 
+     def test_neutron_context_create_with_request_id(self):
+         ctx = context.Context('user_id', 'project_id', request_id='req_id_xxx')
+@@ -136,26 +98,20 @@
+         ctx = context.Context.from_dict(owner)
+         self.assertEqual(owner['user_id'], ctx.user_id)
+         self.assertEqual(owner['project_id'], ctx.project_id)
+-        self.assertEqual(owner['project_id'], ctx.tenant_id)
+ 
+-    def _test_neutron_context_from_dict_validate(
+-            self, project_id, project_name, tenant_id, tenant_name):
+-        project_id = project_id or tenant_id
+-        project_name = project_name or tenant_name
++    def test_neutron_context_from_dict_validate(self):
++        project_id = 'project_id'
++        project_name = 'project_name'
+         ctx = context.Context(user_id='user_id1',
+                               user_name='user',
+                               project_id=project_id,
+                               project_name=project_name,
+-                              tenant_id=tenant_id,
+-                              tenant_name=tenant_name,
+                               request_id='request_id1',
+                               auth_token='auth_token1')
+         values = {'user_id': 'user_id1',
+                   'user_name': 'user',
+                   'project_id': project_id,
+                   'project_name': project_name,
+-                  'tenant_id': project_id,
+-                  'tenant_name': project_name,
+                   'request_id': 'request_id1',
+                   'auth_token': 'auth_token1'}
+         ctx2 = context.Context.from_dict(values)
+@@ -166,52 +122,27 @@
+         ctx2_dict.pop('timestamp')
+         self.assertEqual(ctx_dict, ctx2_dict)
+ 
+-    def test_neutron_context_from_dict_validate(self):
+-        self._test_neutron_context_from_dict_validate(
+-            'project_id', 'project_name', None, None)
+-
+-    def test_neutron_context_from_dict_validate_tenant(self):
+-        self._test_neutron_context_from_dict_validate(
+-            None, None, 'tenant_id', 'tenant_name')
+-
+-    def _test_neutron_context_to_dict(self, project_id, tenant_id):
+-        project_id = project_id or tenant_id
+-        ctx = context.Context('user_id', project_id, tenant_id=tenant_id)
++    def test_neutron_context_to_dict(self):
++        project_id = 'project_id'
++        ctx = context.Context('user_id', project_id)
+         ctx_dict = ctx.to_dict()
+         self.assertEqual('user_id', ctx_dict['user_id'])
+         self.assertEqual(project_id, ctx_dict['project_id'])
+-        self.assertEqual(project_id, ctx_dict['tenant_id'])
+         self.assertEqual(ctx.request_id, ctx_dict['request_id'])
+         self.assertEqual('user_id', ctx_dict['user'])
+         self.assertIsNone(ctx_dict['user_name'])
+-        self.assertIsNone(ctx_dict['tenant_name'])
+         self.assertIsNone(ctx_dict['project_name'])
+         self.assertIsNone(ctx_dict['auth_token'])
+ 
+-    def test_neutron_context_to_dict(self):
+-        self._test_neutron_context_to_dict('project_id', None)
+-
+-    def test_neutron_context_to_dict_tenant(self):
+-        self._test_neutron_context_to_dict(None, 'tenant_id')
+-
+-    def _test_neutron_context_to_dict_with_name(
+-            self, project_name, tenant_name):
+-        project_name = project_name or tenant_name
++    def _test_neutron_context_to_dict_with_name(self):
++        project_name = 'project_name'
+         ctx = context.Context('user_id', 'project_id',
+                               project_name=project_name,
+-                              tenant_name=tenant_name,
+                               user_name='user_name')
+         ctx_dict = ctx.to_dict()
+         self.assertEqual('user_name', ctx_dict['user_name'])
+-        self.assertEqual(project_name, ctx_dict['tenant_name'])
+         self.assertEqual(project_name, ctx_dict['project_name'])
+ 
+-    def test_neutron_context_to_dict_with_name(self):
+-        self._test_neutron_context_to_dict_with_name('project_name', None)
+-
+-    def test_neutron_context_to_dict_with_name_tenant(self):
+-        self._test_neutron_context_to_dict_with_name(None, 'tenant_name')
+-
+     def test_neutron_context_to_dict_with_auth_token(self):
+         ctx = context.Context('user_id', 'project_id',
+                               auth_token='auth_token_xxx')
+@@ -224,7 +155,6 @@
+         ctx_dict = ctx.to_dict()
+         self.assertIsNone(ctx_dict['user_id'])
+         self.assertIsNone(ctx_dict['project_id'])
+-        self.assertIsNone(ctx_dict['tenant_id'])
+         self.assertIsNone(ctx_dict['auth_token'])
+         self.assertTrue(ctx_dict['is_admin'])
+         self.assertTrue(ctx_dict['has_global_access'])
+@@ -238,7 +168,6 @@
+         ctx_dict = ctx.to_dict()
+         self.assertIsNone(ctx_dict['user_id'])
+         self.assertIsNone(ctx_dict['project_id'])
+-        self.assertIsNone(ctx_dict['tenant_id'])
+         self.assertIsNone(ctx_dict['auth_token'])
+         self.assertIn('admin', ctx_dict['roles'])
+         self.assertFalse(hasattr(ctx, 'session'))
+@@ -366,9 +295,6 @@
+         }
+         additional_values = {
+             'user': 'user_id',
+-            'tenant': 'project_id',
+-            'tenant_id': 'project_id',
+-            'tenant_name': 'project_name',
+         }
+         ctx = context.Context(**values)
+         # apply dict() to get a real dictionary, needed for newer oslo.context
+diff --git a/neutron_lib/tests/unit/test_rpc.py b/neutron_lib/tests/unit/test_rpc.py
+index 8144033..1306036 100644
+--- a/neutron_lib/tests/unit/test_rpc.py
++++ b/neutron_lib/tests/unit/test_rpc.py
+@@ -171,7 +171,7 @@
+     def test_deserialize_context(self):
+         context_dict = {'foo': 'bar',
+                         'user_id': 1,
+-                        'tenant_id': 1,
++                        'project_id': 1,
+                         'is_admin': True}
+ 
+         c = self.ser.deserialize_context(context_dict)
+@@ -182,17 +182,6 @@
+     def test_deserialize_context_no_user_id(self):
+         context_dict = {'foo': 'bar',
+                         'user': 1,
+-                        'tenant_id': 1,
+-                        'is_admin': True}
+-
+-        c = self.ser.deserialize_context(context_dict)
+-
+-        self.assertEqual(1, c.user_id)
+-        self.assertEqual(1, c.project_id)
+-
+-    def test_deserialize_context_no_tenant_id(self):
+-        context_dict = {'foo': 'bar',
+-                        'user_id': 1,
+                         'project_id': 1,
+                         'is_admin': True}
+ 

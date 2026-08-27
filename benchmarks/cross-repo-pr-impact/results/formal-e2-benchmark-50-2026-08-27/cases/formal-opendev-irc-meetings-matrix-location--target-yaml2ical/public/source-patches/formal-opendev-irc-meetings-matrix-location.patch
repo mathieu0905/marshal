@@ -1,0 +1,30 @@
+diff --git a/meetingindex.jinja b/meetingindex.jinja
+index 7181deb9..5194ac08 100644
+--- a/meetingindex.jinja
++++ b/meetingindex.jinja
+@@ -80,8 +80,10 @@ use in your favorite calendaring app:</p>
+     class="timelink">
+         {{ schedule.utc }} UTC
+ </a>
+-in <a href="ircs://irc.oftc.net:6697/{{ schedule.irc }}">#{{ schedule.irc }}</a>
+-(IRC <a href="https://webchat.oftc.net/?randomnick=1&channels=%23{{ schedule.irc }}&prompt=1&uio=d4">webclient</a>){% if schedule.chair != meeting.chair %}, chair: {{ schedule.chair }}{% endif %}
++in
++{% if schedule.irc %}<a href="ircs://irc.oftc.net:6697/{{ schedule.irc }}">#{{ schedule.irc }}</a> (IRC <a href="https://webchat.oftc.net/?randomnick=1&channels=%23{{ schedule.irc }}&prompt=1&uio=d4">webclient</a>){% endif %}
++{% if schedule.matrix %}<a href="https://matrix.to/#/{{ schedule.matrix }}">#{{ schedule.matrix }}</a>{% endif %}
++{% if schedule.chair != meeting.chair %}, chair: {{ schedule.chair }}{% endif %}
+    </div>
+ {% endfor %}
+    <div><span class="glyphicon glyphicon-calendar"></span>&nbsp;
+diff --git a/meetings/opendev-meeting.yaml b/meetings/opendev-meeting.yaml
+index 959b5608..177a60bb 100644
+--- a/meetings/opendev-meeting.yaml
++++ b/meetings/opendev-meeting.yaml
+@@ -4,7 +4,7 @@ agenda_url: https://wiki.openstack.org/wiki/Meetings/InfraTeamMeeting
+ schedule:
+   - time:       '1900'
+     day:        Tuesday
+-    irc:        opendev-meeting
++    matrix:     "#opendev-meeting:opendev.org"
+     frequency:  weekly
+     start_date: 20160112
+ chair: Clark Boylan (clarkb)

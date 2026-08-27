@@ -1,0 +1,30 @@
+{
+  "candidate_id": "e2-020",
+  "expected_check_paths": [
+    "brave-tests/src/test/java/brave/test/IntegrationTestSpanHandlerTest.java"
+  ],
+  "java_home": ".work/jdks/temurin11",
+  "maven": "/home/zhihao/.local/maven/bin/mvn",
+  "maven_seed_repository": ".work/assertj-fse/m2",
+  "mechanism": "AssertJ begins using JUnit ComparisonFailure when available, which appends expected/actual details after Brave's custom orphan-span diagnostic and breaks its exact message-ending assertion",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-github-assertj-mirrors-2026-08-26",
+  "python": "/data/zhihao/miniconda3/bin/python",
+  "relation_id": "formal-github-assertj-comparisonfailure--target-brave-1385",
+  "repair_template": "Relax only the unstable message-boundary assertion while preserving the diagnostic-content checks",
+  "replay_adapter": "maven_source",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-assertj-brave-reconstruction-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening AssertJ artifact substituted, the existing Brave test fails because the orphan diagnostic no longer ends at the asserted hint; the expected/actual suffix is exclusive to A1.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the opening source diff, cutoff target source and Maven configuration, maintainer commit and patch, failed uncommitted-patch license runs, committed-patch license behavior, and real A0/A1/A2 executions using source JDK 8 and target JDK 11. No test, license gate, or lifecycle phase is skipped.",
+    "source_effect": "The opening changes assertion construction so that, with JUnit on Brave's test classpath, the same custom failure message is rendered with ComparisonFailure expected/actual text appended.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/assertj-3.19-brave-fse-2026-08-25/maintainer-repair.diff",
+    "target_repair": "The maintainer changes only hasMessageEndingWith to hasMessageContaining for the same diagnostic hint. The full target command, license checks, compilation, and the selected existing test remain enabled; the patch is locally committed with the real maintainer commit metadata so the cutoff repository's Git-aware license check evaluates the authentic 2023 header."
+  },
+  "source_change_family": "github-assertj-comparisonfailure-opening",
+  "source_java_home": ".work/jdks/temurin8",
+  "target_java_home": ".work/jdks/temurin11",
+  "target_repository": "openzipkin/brave",
+  "tox": "/home/zhihao/.local/bin/tox"
+}

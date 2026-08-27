@@ -1,0 +1,60 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "built_source_commits": {
+    "A0": "7154a44151991af59f81b2f8993f4e007db71925",
+    "A1": "ed8cfed796e41eb9ae57d4b8e8e1e05ff4d2f383",
+    "A2": "ed8cfed796e41eb9ae57d4b8e8e1e05ff4d2f383"
+  },
+  "candidate_id": "formal-opendev-irc-meetings-matrix-location",
+  "case_id": "formal-opendev-irc-meetings-matrix-location--target-yaml2ical",
+  "checks_run": {
+    "A0": 1,
+    "A1": 1,
+    "A2": 1
+  },
+  "command_config_path": "tox.ini",
+  "command_provenance": {
+    "commit": "7154a44151991af59f81b2f8993f4e007db71925",
+    "path": "tox.ini",
+    "repository": "opendev/irc-meetings"
+  },
+  "failure_signature": "Invalid YAML meeting schedule definition - missing attribute 'irc'",
+  "machine_arm_verification": "passed",
+  "primary_result_channel": "project_build_or_test",
+  "schema_version": "1.0",
+  "selected_attempt_id": "formal-opendev-irc-meetings-matrix-location--target-yaml2ical",
+  "source_application": "side_by_side_opening_checkout",
+  "source_base_commit": "7154a44151991af59f81b2f8993f4e007db71925",
+  "source_head_commit": "ed8cfed796e41eb9ae57d4b8e8e1e05ff4d2f383",
+  "source_repository": "opendev/irc-meetings",
+  "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+  "target_base_commit": "630657cafd6600d6ac40452a7c917ea75ac18ff5",
+  "target_change": "1000380",
+  "target_head_commit": "6bac50a3612c287d38bd77a13ab6e14b3925298b",
+  "target_patch_base_commit": "630657cafd6600d6ac40452a7c917ea75ac18ff5",
+  "target_patch_evidence": "target.patch",
+  "target_repository": "opendev/yaml2ical",
+  "target_test_path": "yaml2ical/meeting.py",
+  "test_command": [
+    "python3",
+    "-m",
+    "yaml2ical.cli",
+    "-n",
+    "OpenStack Meetings",
+    "-d",
+    "Meeting schedule for the OpenStack projects",
+    "-y",
+    "../source/meetings",
+    "-o",
+    "irc-meetings.ical",
+    "-t",
+    "../source/meetingindex.jinja",
+    "-w",
+    "index.html",
+    "-f"
+  ]
+}

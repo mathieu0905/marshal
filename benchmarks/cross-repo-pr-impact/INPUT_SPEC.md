@@ -19,6 +19,8 @@ GitHub 早期时间线可能缺少历史强推事件。当前 85 条规范案例
 - `candidate_repository_catalog` 指向 `candidate-repositories.json` 中该项目的候选仓目录；
 - `candidate_repository_snapshots` 指向 `repository-snapshots.jsonl` 中该案例的时点代码清单。
 
+候选目录是数据集提供的搜索边界，不是隐藏答案。正式目录必须由项目、生态或治理规则独立生成并记录 provenance，不能把单条案例的目标标签直接并入目录。当前 12 个目录仍待这项审计，因此现有输入只用于开发和诊断；详细处置见 `CANDIDATE_BOUNDED_DESIGN.md`。
+
 时点代码清单为目录内每个候选仓记录：托管站点、截止时间前最后一个默认分支提交、提交时间和源码归档地址。若仓库当时尚未创建，状态为 `not_created_by_cutoff`，不提供代码。校验器要求所有已知目标都为 `available`，并要求每条案例至少有一个可用非目标候选。
 
 运行准备程序可取得完整输入：
@@ -30,7 +32,7 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py CASE_ID \
 
 输出目录中包含 `source.patch`、`input.json`、`repository-snapshots.json`，以及 `repositories/` 下所有当时可用候选仓的展开源码。Git 提交号负责固定版本，不另加内容哈希。准备失败必须记录为本次运行的输入失败，不能换用最新提交。
 
-旗舰轨道中的 `source.patch` 必须是基提交到候选提交的代码差异，不得夹带邮件格式补丁中的提交说明和尾注。原因不是隐藏正常代码线索，而是 OpenDev 的邮件格式补丁会把 `Depends-On` 和配套变更地址放在差异前面，直接泄漏目标仓。`input.json` 中可保留开单标题、仓库和版本等正常变更元数据；代码正文原本包含的仓库名、组件名和注释仍属于可见证据，不做针对答案的删改。当前准备程序尚未完成这项统一转换，因此因果试采输入必须先经过 `causal-pilot/input-visibility-audit.jsonl` 的可见性审计；标为排除的案例不能进入仓库检索分数。
+E2 输入中的 `source.patch` 必须是基提交到候选提交的代码差异，不得夹带邮件格式补丁中的提交说明和尾注。原因不是隐藏正常代码线索，而是 OpenDev 的邮件格式补丁会把 `Depends-On` 和配套变更地址放在差异前面，直接泄漏目标仓。`input.json` 中可保留开单标题、仓库和版本等正常变更元数据；代码正文原本包含的仓库名、组件名和注释仍属于可见证据，不做针对答案的删改。当前准备程序尚未完成这项统一转换，因此因果试采输入必须先经过 `causal-pilot/input-visibility-audit.jsonl` 的可见性审计；标为排除的案例不能进入仓库检索分数。
 
 ## 推理阶段
 
@@ -52,6 +54,8 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py CASE_ID \
 ## 输出与评分
 
 受测系统按 `prediction-schema.json` 输出目标仓排序，并可选填路径、测试、命令和执行结果。主报告只评价目标仓排序。绝大多数案例没有独立筛选的细粒度真值，因此目标 PR 完整改动面、路径、测试和命令只放在次级诊断中。
+
+证据不足或没有运行时使用 `not_assessed`。`no_cross_repo_impact` 只允许用于 E3 已完整判定的 bounded universe；主集中未标注的候选仓是 `unjudged`，不得提交或评分为无影响。
 
 ## 训练语料污染
 

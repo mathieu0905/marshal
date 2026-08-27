@@ -1,0 +1,27 @@
+{
+  "candidate_id": "formal-opendev-irc-meetings-matrix-location",
+  "command_config_path": "tox.ini",
+  "command_config_repository": "source",
+  "expected_check_paths": [
+    "yaml2ical/meeting.py"
+  ],
+  "mechanism": "Changing the meeting schedule from IRC to Matrix makes the unchanged yaml2ical parser reject the newly valid source configuration.",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-yaml2ical-mirrors-2026-08-27",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-yaml2ical-runner-v2-2026-08-27/bin/python",
+  "relation_id": "formal-opendev-irc-meetings-matrix-location--target-yaml2ical",
+  "repair_template": "Extend the parser and calendar location model to accept Matrix while retaining IRC support and the existing source-native generation command.",
+  "replay_adapter": "cross_repo_command",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-yaml2ical-reconstruction-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the source opening revision present, the unchanged yaml2ical parser reaches the changed meeting file, reports the missing irc attribute, raises KeyError, and exits nonzero; the same signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "The source and final maintainer target diffs, Gerrit opening chronology, the source repository's pre-existing tox ical command, parser code, and an independently run native-command pilot with exits 0/1/0 and 47 meetings generated in A0 and A2.",
+    "source_effect": "The opening source revision changes the OpenDev meeting schedule from an irc field to a matrix field and updates the existing output template to render either location kind.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-yaml2ical-reconstruction-2026-08-27/target-patches/1000380.patch",
+    "target_repair": "The final maintainer revision changes yaml2ical to accept either irc or matrix, derives a common location field, updates calendar output and conflict comparison, and adds a Matrix parser test; it does not remove or skip the existing generation command. The final revision also corrects the initial patch set's erroneous boolean guard."
+  },
+  "source_change_family": "opendev-change-1000378-opening",
+  "target_repository": "opendev/yaml2ical",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

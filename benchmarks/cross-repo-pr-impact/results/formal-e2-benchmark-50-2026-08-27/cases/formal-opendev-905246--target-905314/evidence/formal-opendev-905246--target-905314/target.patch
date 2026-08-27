@@ -1,0 +1,14 @@
+diff --git a/nova/tests/fixtures/conf.py b/nova/tests/fixtures/conf.py
+index bfa85a7..c6e23d6 100644
+--- a/nova/tests/fixtures/conf.py
++++ b/nova/tests/fixtures/conf.py
+@@ -62,6 +62,9 @@
+         self.conf.set_default(
+             'notification_format', "both", group="notifications")
+ 
++        # oslo.limit requires endpoint_id since 2.3.0
++        self.conf.set_default('endpoint_id', 'ENDPOINT_ID', group='oslo_limit')
++
+         config.parse_args([], default_config_files=[], configure_db=False,
+                           init_rpc=False)
+         policy_opts.set_defaults(self.conf)

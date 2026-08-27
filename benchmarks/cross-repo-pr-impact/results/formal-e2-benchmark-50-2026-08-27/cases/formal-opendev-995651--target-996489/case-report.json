@@ -1,0 +1,97 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5008,
+    "case_id": "formal-opendev-995651",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T12:02:56.379437Z",
+  "blind_prediction_created_at": "2026-08-26T12:02:45.103378Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-995651",
+  "case_id": "formal-opendev-995651--target-996489",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/manila"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T12:02:56.385897Z",
+  "mechanism": "a newly constrained tooz version passes shared and timeout arguments to target lock implementations whose old signatures do not accept them",
+  "repair_template": "extend target lock implementation and test-double signatures to match the changed dependency interface",
+  "replay": {
+    "catalog_source_snapshot_commit": "e93565a60e34357734bf5c7e2bff23d49969addd",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "TypeError: MockToozLock.acquire() takes from 1 to 2 positional arguments but 4 were given",
+    "installed_source_versions": {
+      "A0": "8.1.0",
+      "A1": "9.0.0",
+      "A2": "9.0.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "e93565a60e34357734bf5c7e2bff23d49969addd",
+    "source_head_commit": "56f0448e75900c32c77e73845a58879274c0590e",
+    "source_versions": {
+      "A0": "8.1.0",
+      "A1": "9.0.0",
+      "A2": "9.0.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "ea09dd565de130704ff212fb76b4433f375f10ac",
+    "target_test_path": "manila/tests/test_coordination.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "manila.tests.test_coordination"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-995651--target-996489",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "manila/coordination.py",
+      "manila/tests/test_coordination.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/manila"
+  },
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff target and tooz 9.0.0 installed, three of six tests fail because tooz passes blocking, shared, and timeout to the old Manila Lock.acquire and MockToozLock.acquire signatures; the selected MockToozLock TypeError is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff production and test code, maintainer target diff, installed-version probes, identical three-arm stestr command, and all A0/A1/A2 logs.",
+    "source_effect": "The opening source diff changes the sole tooz pin from 8.1.0 to 9.0.0 in upper-constraints.txt.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/996489.patch",
+    "target_repair": "The maintainer extends both the production lock wrapper and existing test double to accept shared and timeout. A2 applies only that patch to the cutoff target, retains tooz 9.0.0, and restores all six tests without deleting or skipping any test."
+  },
+  "source_change_family": "opendev-change-995651-opening",
+  "status": "case_ready_for_formal_pool"
+}

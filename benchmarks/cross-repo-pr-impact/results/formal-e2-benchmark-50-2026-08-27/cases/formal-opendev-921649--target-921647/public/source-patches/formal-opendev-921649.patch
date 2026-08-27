@@ -1,0 +1,133 @@
+diff --git a/neutron_lib/api/attributes.py b/neutron_lib/api/attributes.py
+index 0fd9fdc..f0442a8 100644
+--- a/neutron_lib/api/attributes.py
++++ b/neutron_lib/api/attributes.py
+@@ -237,6 +237,11 @@
+                             "Reason: %(reason)s.") % msg_dict
+                     raise exc_cls(msg)
+ 
++    def _project_id_required(self, res_dict):
++        return (('tenant_id' in self.attributes or
++                    'project_id' in self.attributes) and
++                'project_id' not in res_dict)
++
+     def populate_project_id(self, context, res_dict, is_create):
+         """Populate the owner information in a request body.
+ 
+@@ -256,14 +261,14 @@
+         populate_project_info(res_dict)
+         _validate_privileges(context, res_dict)
+ 
+-        if is_create and 'project_id' not in res_dict:
++        if is_create and self._project_id_required(res_dict):
+             if context.project_id:
+                 res_dict['project_id'] = context.project_id
+ 
+                 # For backward compatibility
+                 res_dict['tenant_id'] = context.project_id
+ 
+-            elif 'tenant_id' in self.attributes:
++            else:
+                 msg = _("Running without keystone AuthN requires "
+                         "that tenant_id is specified")
+                 raise exc.HTTPBadRequest(msg)
+diff --git a/neutron_lib/api/definitions/flavors.py b/neutron_lib/api/definitions/flavors.py
+index b8ffd06..f016095 100644
+--- a/neutron_lib/api/definitions/flavors.py
++++ b/neutron_lib/api/definitions/flavors.py
+@@ -47,11 +47,6 @@
+                              {'type:service_plugin_type': None},
+                          'is_filter': True, 'is_sort_key': True,
+                          'is_visible': True},
+-        'tenant_id': {'allow_post': True, 'allow_put': False,
+-                      'required_by_policy': True,
+-                      'validate': {
+-                          'type:string': db_const.PROJECT_ID_FIELD_SIZE},
+-                      'is_visible': True},
+         'service_profiles': {'allow_post': True, 'allow_put': True,
+                              'validate': {'type:uuid_list': None},
+                              'is_visible': True, 'default': []},
+@@ -78,11 +73,6 @@
+         'metainfo': {'allow_post': True, 'allow_put': True,
+                      'is_visible': True, 'is_sort_key': True,
+                      'default': ''},
+-        'tenant_id': {'allow_post': True, 'allow_put': False,
+-                      'required_by_policy': True,
+-                      'validate': {
+-                          'type:string': db_const.PROJECT_ID_FIELD_SIZE},
+-                      'is_visible': True},
+         'enabled': {'allow_post': True, 'allow_put': True,
+                     'convert_to': converters.convert_to_boolean_if_not_none,
+                     'is_filter': True, 'is_sort_key': True,
+@@ -101,26 +91,14 @@
+                                   'is_visible': True},
+                        'metainfo': {'allow_post': False,
+                                     'allow_put': False,
+-                                    'is_visible': True},
+-                       'tenant_id': {'allow_post': True, 'allow_put': False,
+-                                     'required_by_policy': True,
+-                                     'validate': {
+-                                         'type:string':
+-                                             db_const.PROJECT_ID_FIELD_SIZE},
+-                                     'is_visible': True}}
++                                    'is_visible': True}}
+     },
+     SERVICE_PROFILES: {
+         'parent': {'collection_name': FLAVORS,
+                    'member_name': FLAVOR},
+         'parameters': {'id': {'allow_post': True, 'allow_put': False,
+                               'validate': {'type:uuid': None},
+-                              'is_visible': True},
+-                       'tenant_id': {'allow_post': True, 'allow_put': False,
+-                                     'required_by_policy': True,
+-                                     'validate': {
+-                                         'type:string':
+-                                             db_const.PROJECT_ID_FIELD_SIZE},
+-                                     'is_visible': True}}
++                              'is_visible': True}}
+     }
+ }
+ ACTION_MAP = {}
+diff --git a/neutron_lib/api/definitions/qos.py b/neutron_lib/api/definitions/qos.py
+index 64a8b30..45834fa 100644
+--- a/neutron_lib/api/definitions/qos.py
++++ b/neutron_lib/api/definitions/qos.py
+@@ -35,11 +35,6 @@
+         'is_filter': True,
+         'is_sort_key': True,
+         'primary_key': True
+-    },
+-    'tenant_id': {
+-        'allow_post': True, 'allow_put': False,
+-        'required_by_policy': True,
+-        'is_visible': True
+     }
+ }
+ 
+diff --git a/neutron_lib/tests/unit/api/test_attributes.py b/neutron_lib/tests/unit/api/test_attributes.py
+index 59dfc4c..f2bc4fd 100644
+--- a/neutron_lib/tests/unit/api/test_attributes.py
++++ b/neutron_lib/tests/unit/api/test_attributes.py
+@@ -214,10 +214,11 @@
+     def test_populate_project_id_from_context(self):
+         tenant_id = uuidutils.generate_uuid()
+         ctx = context.Context(user_id=None, tenant_id=tenant_id)
+-        # for each create request, the tenant_id should be added to the
+-        # req body
++        # for each create request, for the resources which require tenant_id,
++        # it should be added to the req body
+         res_dict = {}
+-        attr_inst = attributes.AttributeInfo({})
++        attr_inst = attributes.AttributeInfo(
++            {'tenant_id': {'allow_post': True}})
+         attr_inst.populate_project_id(ctx, res_dict, is_create=True)
+         self.assertEqual(
+             {'tenant_id': ctx.tenant_id, 'project_id': ctx.tenant_id},
+@@ -244,6 +245,7 @@
+         attr_inst = attributes.AttributeInfo({})
+         ctx.tenant_id = None
+         attr_inst.populate_project_id(ctx, res_dict, True)
++        self.assertEqual({'name': 'test_port'}, res_dict)
+ 
+     def test_verify_attributes_null(self):
+         attributes.AttributeInfo({}).verify_attributes({})

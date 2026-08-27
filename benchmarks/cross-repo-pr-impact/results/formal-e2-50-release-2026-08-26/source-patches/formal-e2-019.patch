@@ -1,0 +1,102 @@
+diff --git a/toscaparser/imports.py b/toscaparser/imports.py
+index 266d27e..4ffe22b 100644
+--- a/toscaparser/imports.py
++++ b/toscaparser/imports.py
+@@ -34,11 +34,12 @@
+                        'namespace_prefix')
+ 
+     def __init__(self, importslist, path, type_definition_list=None,
+-                 tpl=None):
++                 tpl=None, local_defs=None):
+         self.importslist = importslist
+         self.custom_defs = {}
+         self.nested_tosca_tpls = []
+         self.nested_imports = {}
++        self.local_defs = local_defs
+         if not path and not tpl:
+             msg = _('Input tosca template is not provided.')
+             log.warning(msg)
+@@ -197,7 +198,15 @@
+             return None, None
+ 
+         if toscaparser.utils.urlutils.UrlUtils.validate_url(file_name):
+-            return file_name, YAML_LOADER(file_name, False)
++            has_file = False
++            if self.local_defs is not None:
++                # "https://forge.etsi.org/rep/nfv/SOL001/raw/v2.6.1/etsi_nfv_sol001_common_types.yaml"
++                for k in self.local_defs.keys():
++                    if k == file_name:
++                        file_name = self.local_defs[k]
++                        has_file = True
++
++            return file_name, YAML_LOADER(file_name, a_file=has_file)
+         elif not repository:
+             import_template = None
+             if self.path:
+diff --git a/toscaparser/tests/test_toscatplvalidation.py b/toscaparser/tests/test_toscatplvalidation.py
+index 1acfacd..46143cb 100644
+--- a/toscaparser/tests/test_toscatplvalidation.py
++++ b/toscaparser/tests/test_toscatplvalidation.py
+@@ -449,6 +449,22 @@
+         self.assertTrue(custom_defs.get("mycompany.tosca.nodes."
+                                         "WebApplication.WordPress"))
+ 
++    def test_imports_with_local_defs(self):
++        url = "https://raw.githubusercontent.com/openstack/\
++heat-translator/master/translator/tests/data/custom_types/wordpress.yaml"
++        tpl_snippet = '''
++        imports:
++        - {}
++        '''.format(url)
++        local_defs = {url: "../data/wordpress.yaml"}
++
++        path = 'toscaparser/tests/data/tosca_elk.yaml'
++        imports = (toscaparser.utils.yamlparser.
++                   simple_parse(tpl_snippet)['imports'])
++        ld1 = ImportsLoader(imports, path, "node_types")
++        ld2 = ImportsLoader(imports, path, "node_types", local_defs)
++        self.assertEqual(ld1.get_custom_defs(), ld2.get_custom_defs())
++
+     def test_imports_file_with_suffix_yml(self):
+         tpl_snippet = '''
+         imports:
+diff --git a/toscaparser/tosca_template.py b/toscaparser/tosca_template.py
+index 1671f7e..cbdec4b 100644
+--- a/toscaparser/tosca_template.py
++++ b/toscaparser/tosca_template.py
+@@ -67,7 +67,7 @@
+ 
+     '''Load the template data.'''
+     def __init__(self, path=None, parsed_params=None, a_file=True,
+-                 yaml_dict_tpl=None):
++                 yaml_dict_tpl=None, local_defs=None):
+ 
+         ExceptionCollector.start()
+         self.a_file = a_file
+@@ -76,6 +76,16 @@
+         self.tpl = None
+         self.nested_tosca_tpls_with_topology = {}
+         self.nested_tosca_templates_with_topology = []
++
++        baseurl = "https://forge.etsi.org/rep/nfv/SOL001"
++        v = "v2.6.1"
++        url = \
++            "{}/raw/{}/etsi_nfv_sol001_common_types.yaml".format(baseurl, v)
++        fpath = \
++            "/opt/stack/tacker/etc/sol001/etsi_nfv_sol001_common_types.yaml"
++        local_defs = {url: fpath}
++        self.local_defs = local_defs
++
+         if path:
+             self.input_path = path
+             self.path = self._get_path(path)
+@@ -209,7 +219,8 @@
+ 
+         if imports:
+             custom_service = toscaparser.imports.\
+-                ImportsLoader(imports, path, type_defs, self.tpl)
++                ImportsLoader(imports, path, type_defs, self.tpl,
++                              self.local_defs)
+ 
+             nested_tosca_tpls = custom_service.get_nested_tosca_tpls()
+             self._update_nested_tosca_tpls_with_topology(nested_tosca_tpls)

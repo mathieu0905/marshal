@@ -1,0 +1,13 @@
+diff --git a/zuul.d/master_jobs.yaml b/zuul.d/master_jobs.yaml
+index 18a2ad2..fb7731e 100644
+--- a/zuul.d/master_jobs.yaml
++++ b/zuul.d/master_jobs.yaml
+@@ -633,7 +633,7 @@
+         Q_AGENT: ovn
+         OVN_AGENT_EXTENSIONS: 'metadata'
+         NETWORK_API_EXTENSIONS: "{{ (network_api_extensions_common + network_api_extensions_ovn) | join(',') }}"
+-        Q_ML2_PLUGIN_MECHANISM_DRIVERS: ovn,logger
++        Q_ML2_PLUGIN_MECHANISM_DRIVERS: ovn
+         Q_ML2_PLUGIN_TYPE_DRIVERS: local,flat,vlan,geneve
+         Q_ML2_TENANT_NETWORK_TYPE: geneve
+         Q_USE_PROVIDERNET_FOR_PUBLIC: true

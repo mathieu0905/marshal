@@ -1,0 +1,685 @@
+diff --git a/docker/base/Dockerfile.j2 b/docker/base/Dockerfile.j2
+index 8eb5dbf..63e90a1 100644
+--- a/docker/base/Dockerfile.j2
++++ b/docker/base/Dockerfile.j2
+@@ -59,6 +59,7 @@
+     'mariadb.repo',
+     'opensearch.repo',
+     'proxysql.repo',
++    'proxysql-3.repo',
+     'rabbitmq_rabbitmq-server.repo',
+     'td.repo',
+ ] %}
+@@ -326,6 +327,7 @@
+    {'name': 'mariadb', 'url': 'https://downloads.mariadb.com/MariaDB/mariadb-keyring-2019.gpg', 'type': 'gpg'},
+    {'name': 'opensearch', 'url': 'https://artifacts.opensearch.org/publickeys/opensearch.pgp'},
+    {'name': 'proxysql', 'url': 'https://repo.proxysql.com/ProxySQL/proxysql-2.7.x/repo_pub_key'},
++   {'name': 'proxysql-3', 'url': 'https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/repo_pub_key'},
+    {'name': 'treasuredata', 'url': 'https://packages.treasuredata.com/GPG-KEY-td-agent'},
+ ] %}
+ 
+diff --git a/docker/base/proxysql-3.repo b/docker/base/proxysql-3.repo
+new file mode 100644
+index 0000000..39cca24
+--- /dev/null
++++ b/docker/base/proxysql-3.repo
+@@ -0,0 +1,8 @@
++
++[proxysql]
++name = ProxySQL
++# NOTE(mnasiadka): use 9 for both 9 and 10
++baseurl = https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/almalinux/9
++gpgkey = https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/repo_pub_key
++gpgcheck = 1
++enabled = 0
+diff --git a/docker/proxysql/Dockerfile.j2 b/docker/proxysql/Dockerfile.j2
+deleted file mode 100644
+index 41df913..0000000
+--- a/docker/proxysql/Dockerfile.j2
++++ /dev/null
+@@ -1,43 +0,0 @@
+-FROM {{ namespace }}/{{ image_prefix }}base:{{ tag }}
+-{% block labels %}
+-LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+-{% endblock %}
+-
+-{% block proxysql_header %}{% endblock %}
+-
+-{% import "macros.j2" as macros with context %}
+-
+-{{ macros.enable_extra_repos(['proxysql']) }}
+-
+-{% set proxysql_packages = [
+-    'proxysql',
+-] %}
+-
+-{% if base_package_type == 'rpm' %}
+-    {% set proxysql_packages = proxysql_packages + [
+-        'python3-PyYAML',
+-    ] %}
+-{% elif base_package_type == 'deb' %}
+-    {% set proxysql_packages = proxysql_packages + [
+-        'python3-yaml',
+-    ] %}
+-{% endif %}
+-
+-{{ macros.configure_user(name='proxysql') }}
+-{{ macros.install_packages(proxysql_packages | customizable("packages")) }}
+-
+-COPY kolla_proxysql_config_sync kolla_extend_start /usr/local/bin/
+-RUN chmod 755 /usr/local/bin/kolla_proxysql_config_sync \
+-    && chmod 644 /usr/local/bin/kolla_extend_start
+-
+-RUN install -g proxysql -o proxysql -m 770 -d /var/lib/kolla/proxysql \
+-    && touch /etc/proxysql.cnf \
+-    && chown proxysql:proxysql /etc/proxysql.cnf \
+-    && chmod 600 /etc/proxysql.cnf
+-
+-{{ macros.kolla_patch_sources() }}
+-
+-{% block proxysql_footer %}{% endblock %}
+-{% block footer %}{% endblock %}
+-
+-USER proxysql
+diff --git a/docker/proxysql/kolla_extend_start b/docker/proxysql/kolla_extend_start
+deleted file mode 100644
+index 229e8ad..0000000
+--- a/docker/proxysql/kolla_extend_start
++++ /dev/null
+@@ -1,21 +0,0 @@
+-#!/bin/bash
+-
+-PROXYSQL_LIB_DIR="/var/lib/proxysql"
+-PROXYSQL_LOG_DIR="/var/log/kolla/proxysql"
+-
+-if [[ ! -d "${PROXYSQL_LOG_DIR}" ]]; then
+-    mkdir -p "${PROXYSQL_LOG_DIR}"
+-fi
+-chown -R proxysql:kolla "${PROXYSQL_LOG_DIR}"
+-
+-# Remove old pid
+-rm -f ${PROXYSQL_LIB_DIR}/proxysql.pid
+-
+-# As proxysql supports only one
+-# configuration file, there is a
+-# script which reads global and services
+-# configs (similar to haproxy) and
+-# generate single configuration file
+-# from which is internal DB created
+-# every time.
+-kolla_proxysql_config_sync
+diff --git a/docker/proxysql/kolla_proxysql_config_sync b/docker/proxysql/kolla_proxysql_config_sync
+deleted file mode 100644
+index d6d531f..0000000
+--- a/docker/proxysql/kolla_proxysql_config_sync
++++ /dev/null
+@@ -1,152 +0,0 @@
+-#!/usr/bin/python3
+-
+-# Copyright 2021 Michal Arbet
+-#
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+-# You may obtain a copy of the License at
+-#
+-#     http://www.apache.org/licenses/LICENSE-2.0
+-#
+-# Unless required by applicable law or agreed to in writing, software
+-# distributed under the License is distributed on an "AS IS" BASIS,
+-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-# See the License for the specific language governing permissions and
+-# limitations under the License.
+-
+-import logging
+-import os
+-import yaml
+-
+-# Default paths
+-PROXYSQL_CONFIG_DIR = "/etc/proxysql"
+-PROXYSQL_CONFIG = "/etc/proxysql.cnf"
+-
+-# Logging
+-log_format = '%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s'
+-logging.basicConfig(format=log_format,
+-                    datefmt='%H:%M:%S',
+-                    level=logging.DEBUG)
+-LOG = logging.getLogger("proxysql_config_sync")
+-
+-
+-class ProxySQLConfig:
+-
+-    def __init__(self, conf_dir, conf_file):
+-        self.configs = dict()
+-        self.config = dict()
+-        self.configs['global'] = "{}/proxysql.yaml".format(conf_dir)
+-        self.configs['users'] = "{}/users".format(conf_dir)
+-        self.configs['rules'] = "{}/rules".format(conf_dir)
+-        self.conf_file = conf_file
+-        self._load_config()
+-
+-    def _load_config(self):
+-        users = dict()
+-        rules = dict()
+-
+-        for cfg, path in self.configs.items():
+-            if not os.path.isdir(path):
+-                with open(path) as config_file:
+-                    self.config.update(
+-                        yaml.safe_load(config_file))
+-            else:
+-                users['mysql_users'] = list()
+-                rules['mysql_query_rules'] = list()
+-                user_paths = [os.path.join(self.configs['users'], f)
+-                              for f in os.listdir(self.configs['users'])]
+-                rule_paths = [os.path.join(self.configs['rules'], f)
+-                              for f in os.listdir(self.configs['rules'])]
+-
+-                for user_conf in user_paths:
+-                    with open(user_conf) as config_file:
+-                        tmp_users = yaml.safe_load(config_file)
+-                        for i in tmp_users['mysql_users']:
+-                            users['mysql_users'].append(i)
+-                self.config.update(users)
+-                for rule_conf in rule_paths:
+-                    with open(rule_conf) as config_file:
+-                        tmp_rules = yaml.safe_load(config_file)
+-                        for i in tmp_rules['mysql_query_rules']:
+-                            rules['mysql_query_rules'].append(i)
+-                self.config.update(rules)
+-        self._sanity()
+-
+-    def _sanity(self):
+-        self._users_sanity()
+-        self._rules_sanity()
+-
+-    def _users_sanity(self):
+-        users_added = list()
+-        users = list()
+-        for user in self.config['mysql_users']:
+-            if user['username'] not in users_added:
+-                users_added.append(user['username'])
+-                users.append(user)
+-            else:
+-                LOG.warning("User {} already exist, ignoring."
+-                            .format(user['username']))
+-        self.config['mysql_users'] = users
+-
+-    def _rules_sanity(self):
+-        rules_added = list()
+-        rules = list()
+-        rule_id = 1
+-        for rule in self.config['mysql_query_rules']:
+-            if rule['schemaname'] not in rules_added:
+-                rules_added.append(rule['schemaname'])
+-                rule['rule_id'] = rule_id
+-                rules.append(rule)
+-                rule_id += 1
+-            else:
+-                LOG.warning("Rule witch schemaname {} already exist, ignoring."
+-                            .format(rule['schemaname']))
+-        self.config['mysql_query_rules'] = rules
+-
+-    def _write_dict(self, key, value):
+-        if not isinstance(value, list):
+-            value = [value]
+-        with open(self.conf_file, "a+") as f:
+-            if key:
+-                f.write("{} =\n".format(key))
+-            for i in range(len(value)):
+-                f.write("  {\n")
+-                for k, v in value[i].items():
+-                    if isinstance(v, str):
+-                        v = '"{}"'.format(v)
+-                    f.write("     {} = {}\n".format(k, v))
+-                if i == len(value)-1:
+-                    f.write("  }\n")
+-                else:
+-                    f.write("  },\n")
+-
+-    def _write_list(self, key, values):
+-        with open(self.conf_file, "a+") as f:
+-            f.write("{} =\n".format(key))
+-            f.write("(\n")
+-        self._write_dict(key=None, value=values)
+-        with open(self.conf_file, "a+") as f:
+-            f.write(")\n")
+-
+-    def _write(self, key, value):
+-        with open(self.conf_file, "a+") as f:
+-            if isinstance(value, str):
+-                value = '"{}"'.format(value)
+-            f.write("{} = {}\n".format(key, value))
+-
+-    def write_config(self):
+-        LOG.info("Writing config to {}".format(self.conf_file))
+-        with open(self.conf_file, 'wb') as f:
+-            pass
+-        for k, v in self.config.items():
+-            if isinstance(v, dict):
+-                self._write_dict(k, v)
+-            elif isinstance(v, list):
+-                self._write_list(k, v)
+-            else:
+-                self._write(k, v)
+-
+-
+-if __name__ == "__main__":
+-    config = ProxySQLConfig(PROXYSQL_CONFIG_DIR, PROXYSQL_CONFIG)
+-    config.write_config()
+diff --git a/docker/proxysql/proxysql-3/Dockerfile.j2 b/docker/proxysql/proxysql-3/Dockerfile.j2
+new file mode 100644
+index 0000000..438b5f3
+--- /dev/null
++++ b/docker/proxysql/proxysql-3/Dockerfile.j2
+@@ -0,0 +1,43 @@
++FROM {{ namespace }}/{{ image_prefix }}base:{{ tag }}
++{% block labels %}
++LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
++{% endblock %}
++
++{% block proxysql_header %}{% endblock %}
++
++{% import "macros.j2" as macros with context %}
++
++{{ macros.enable_extra_repos(['proxysql-3']) }}
++
++{% set proxysql_packages = [
++    'proxysql',
++] %}
++
++{% if base_package_type == 'rpm' %}
++    {% set proxysql_packages = proxysql_packages + [
++        'python3-PyYAML',
++    ] %}
++{% elif base_package_type == 'deb' %}
++    {% set proxysql_packages = proxysql_packages + [
++        'python3-yaml',
++    ] %}
++{% endif %}
++
++{{ macros.configure_user(name='proxysql') }}
++{{ macros.install_packages(proxysql_packages | customizable("packages")) }}
++
++COPY kolla_proxysql_config_sync kolla_extend_start /usr/local/bin/
++RUN chmod 755 /usr/local/bin/kolla_proxysql_config_sync \
++    && chmod 644 /usr/local/bin/kolla_extend_start
++
++RUN install -g proxysql -o proxysql -m 770 -d /var/lib/kolla/proxysql \
++    && touch /etc/proxysql.cnf \
++    && chown proxysql:proxysql /etc/proxysql.cnf \
++    && chmod 600 /etc/proxysql.cnf
++
++{{ macros.kolla_patch_sources() }}
++
++{% block proxysql_footer %}{% endblock %}
++{% block footer %}{% endblock %}
++
++USER proxysql
+diff --git a/docker/proxysql/proxysql-3/kolla_extend_start b/docker/proxysql/proxysql-3/kolla_extend_start
+new file mode 120000
+index 0000000..928d198
+--- /dev/null
++++ b/docker/proxysql/proxysql-3/kolla_extend_start
+@@ -0,0 +1 @@
++../proxysql/kolla_extend_start
+\ No newline at end of file
+diff --git a/docker/proxysql/proxysql-3/kolla_proxysql_config_sync b/docker/proxysql/proxysql-3/kolla_proxysql_config_sync
+new file mode 120000
+index 0000000..6313088
+--- /dev/null
++++ b/docker/proxysql/proxysql-3/kolla_proxysql_config_sync
+@@ -0,0 +1 @@
++../proxysql/kolla_proxysql_config_sync
+\ No newline at end of file
+diff --git a/docker/proxysql/proxysql/Dockerfile.j2 b/docker/proxysql/proxysql/Dockerfile.j2
+new file mode 100644
+index 0000000..41df913
+--- /dev/null
++++ b/docker/proxysql/proxysql/Dockerfile.j2
+@@ -0,0 +1,43 @@
++FROM {{ namespace }}/{{ image_prefix }}base:{{ tag }}
++{% block labels %}
++LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
++{% endblock %}
++
++{% block proxysql_header %}{% endblock %}
++
++{% import "macros.j2" as macros with context %}
++
++{{ macros.enable_extra_repos(['proxysql']) }}
++
++{% set proxysql_packages = [
++    'proxysql',
++] %}
++
++{% if base_package_type == 'rpm' %}
++    {% set proxysql_packages = proxysql_packages + [
++        'python3-PyYAML',
++    ] %}
++{% elif base_package_type == 'deb' %}
++    {% set proxysql_packages = proxysql_packages + [
++        'python3-yaml',
++    ] %}
++{% endif %}
++
++{{ macros.configure_user(name='proxysql') }}
++{{ macros.install_packages(proxysql_packages | customizable("packages")) }}
++
++COPY kolla_proxysql_config_sync kolla_extend_start /usr/local/bin/
++RUN chmod 755 /usr/local/bin/kolla_proxysql_config_sync \
++    && chmod 644 /usr/local/bin/kolla_extend_start
++
++RUN install -g proxysql -o proxysql -m 770 -d /var/lib/kolla/proxysql \
++    && touch /etc/proxysql.cnf \
++    && chown proxysql:proxysql /etc/proxysql.cnf \
++    && chmod 600 /etc/proxysql.cnf
++
++{{ macros.kolla_patch_sources() }}
++
++{% block proxysql_footer %}{% endblock %}
++{% block footer %}{% endblock %}
++
++USER proxysql
+diff --git a/docker/proxysql/proxysql/kolla_extend_start b/docker/proxysql/proxysql/kolla_extend_start
+new file mode 100644
+index 0000000..229e8ad
+--- /dev/null
++++ b/docker/proxysql/proxysql/kolla_extend_start
+@@ -0,0 +1,21 @@
++#!/bin/bash
++
++PROXYSQL_LIB_DIR="/var/lib/proxysql"
++PROXYSQL_LOG_DIR="/var/log/kolla/proxysql"
++
++if [[ ! -d "${PROXYSQL_LOG_DIR}" ]]; then
++    mkdir -p "${PROXYSQL_LOG_DIR}"
++fi
++chown -R proxysql:kolla "${PROXYSQL_LOG_DIR}"
++
++# Remove old pid
++rm -f ${PROXYSQL_LIB_DIR}/proxysql.pid
++
++# As proxysql supports only one
++# configuration file, there is a
++# script which reads global and services
++# configs (similar to haproxy) and
++# generate single configuration file
++# from which is internal DB created
++# every time.
++kolla_proxysql_config_sync
+diff --git a/docker/proxysql/proxysql/kolla_proxysql_config_sync b/docker/proxysql/proxysql/kolla_proxysql_config_sync
+new file mode 100644
+index 0000000..d6d531f
+--- /dev/null
++++ b/docker/proxysql/proxysql/kolla_proxysql_config_sync
+@@ -0,0 +1,152 @@
++#!/usr/bin/python3
++
++# Copyright 2021 Michal Arbet
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++import logging
++import os
++import yaml
++
++# Default paths
++PROXYSQL_CONFIG_DIR = "/etc/proxysql"
++PROXYSQL_CONFIG = "/etc/proxysql.cnf"
++
++# Logging
++log_format = '%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s'
++logging.basicConfig(format=log_format,
++                    datefmt='%H:%M:%S',
++                    level=logging.DEBUG)
++LOG = logging.getLogger("proxysql_config_sync")
++
++
++class ProxySQLConfig:
++
++    def __init__(self, conf_dir, conf_file):
++        self.configs = dict()
++        self.config = dict()
++        self.configs['global'] = "{}/proxysql.yaml".format(conf_dir)
++        self.configs['users'] = "{}/users".format(conf_dir)
++        self.configs['rules'] = "{}/rules".format(conf_dir)
++        self.conf_file = conf_file
++        self._load_config()
++
++    def _load_config(self):
++        users = dict()
++        rules = dict()
++
++        for cfg, path in self.configs.items():
++            if not os.path.isdir(path):
++                with open(path) as config_file:
++                    self.config.update(
++                        yaml.safe_load(config_file))
++            else:
++                users['mysql_users'] = list()
++                rules['mysql_query_rules'] = list()
++                user_paths = [os.path.join(self.configs['users'], f)
++                              for f in os.listdir(self.configs['users'])]
++                rule_paths = [os.path.join(self.configs['rules'], f)
++                              for f in os.listdir(self.configs['rules'])]
++
++                for user_conf in user_paths:
++                    with open(user_conf) as config_file:
++                        tmp_users = yaml.safe_load(config_file)
++                        for i in tmp_users['mysql_users']:
++                            users['mysql_users'].append(i)
++                self.config.update(users)
++                for rule_conf in rule_paths:
++                    with open(rule_conf) as config_file:
++                        tmp_rules = yaml.safe_load(config_file)
++                        for i in tmp_rules['mysql_query_rules']:
++                            rules['mysql_query_rules'].append(i)
++                self.config.update(rules)
++        self._sanity()
++
++    def _sanity(self):
++        self._users_sanity()
++        self._rules_sanity()
++
++    def _users_sanity(self):
++        users_added = list()
++        users = list()
++        for user in self.config['mysql_users']:
++            if user['username'] not in users_added:
++                users_added.append(user['username'])
++                users.append(user)
++            else:
++                LOG.warning("User {} already exist, ignoring."
++                            .format(user['username']))
++        self.config['mysql_users'] = users
++
++    def _rules_sanity(self):
++        rules_added = list()
++        rules = list()
++        rule_id = 1
++        for rule in self.config['mysql_query_rules']:
++            if rule['schemaname'] not in rules_added:
++                rules_added.append(rule['schemaname'])
++                rule['rule_id'] = rule_id
++                rules.append(rule)
++                rule_id += 1
++            else:
++                LOG.warning("Rule witch schemaname {} already exist, ignoring."
++                            .format(rule['schemaname']))
++        self.config['mysql_query_rules'] = rules
++
++    def _write_dict(self, key, value):
++        if not isinstance(value, list):
++            value = [value]
++        with open(self.conf_file, "a+") as f:
++            if key:
++                f.write("{} =\n".format(key))
++            for i in range(len(value)):
++                f.write("  {\n")
++                for k, v in value[i].items():
++                    if isinstance(v, str):
++                        v = '"{}"'.format(v)
++                    f.write("     {} = {}\n".format(k, v))
++                if i == len(value)-1:
++                    f.write("  }\n")
++                else:
++                    f.write("  },\n")
++
++    def _write_list(self, key, values):
++        with open(self.conf_file, "a+") as f:
++            f.write("{} =\n".format(key))
++            f.write("(\n")
++        self._write_dict(key=None, value=values)
++        with open(self.conf_file, "a+") as f:
++            f.write(")\n")
++
++    def _write(self, key, value):
++        with open(self.conf_file, "a+") as f:
++            if isinstance(value, str):
++                value = '"{}"'.format(value)
++            f.write("{} = {}\n".format(key, value))
++
++    def write_config(self):
++        LOG.info("Writing config to {}".format(self.conf_file))
++        with open(self.conf_file, 'wb') as f:
++            pass
++        for k, v in self.config.items():
++            if isinstance(v, dict):
++                self._write_dict(k, v)
++            elif isinstance(v, list):
++                self._write_list(k, v)
++            else:
++                self._write(k, v)
++
++
++if __name__ == "__main__":
++    config = ProxySQLConfig(PROXYSQL_CONFIG_DIR, PROXYSQL_CONFIG)
++    config.write_config()
+diff --git a/kolla/template/repos-el10.yaml b/kolla/template/repos-el10.yaml
+index ff1993f..708f623 100644
+--- a/kolla/template/repos-el10.yaml
++++ b/kolla/template/repos-el10.yaml
+@@ -16,6 +16,7 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+ centos-aarch64:
+   ceph: "centos-ceph-squid"
+@@ -36,6 +37,7 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+ rocky:
+   ceph: "centos-ceph-squid"
+@@ -55,6 +57,7 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+ rocky-aarch64:
+   ceph: "centos-ceph-squid"
+@@ -75,4 +78,5 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+diff --git a/kolla/template/repos.yaml b/kolla/template/repos.yaml
+index 607396e..437b67a 100644
+--- a/kolla/template/repos.yaml
++++ b/kolla/template/repos.yaml
+@@ -16,6 +16,7 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+ 
+ centos-aarch64:
+@@ -36,6 +37,7 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+ 
+ # NOTE(mnasiadka): For RabbitMQ Debuntu suite names is following:
+@@ -92,6 +94,11 @@
+     suite: "./"
+     component: ""
+     gpg_key: "proxysql.asc"
++  proxysql-3:
++    url: "https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/bookworm/"
++    suite: "./"
++    component: ""
++    gpg_key: "proxysql.asc"
+   rabbitmq:
+     url: "https://deb1.rabbitmq.com/rabbitmq-server/debian/bookworm"
+     suite: "bookworm"
+@@ -149,6 +156,11 @@
+     suite: "./"
+     component: ""
+     gpg_key: "proxysql.asc"
++  proxysql-3:
++    url: "https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/bookworm/"
++    suite: "./"
++    component: ""
++    gpg_key: "proxysql.asc"
+   rabbitmq:
+     url: "https://deb1.rabbitmq.com/rabbitmq-server/debian/bookworm"
+     suite: "bookworm"
+@@ -175,6 +187,7 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+ 
+ rocky-aarch64:
+@@ -195,6 +208,7 @@
+   openvswitch: "centos-nfv-openvswitch"
+   opstools: "centos-opstools"
+   proxysql: "proxysql"
++  proxysql-3: "proxysql-3"
+   rabbitmq: "rabbitmq_rabbitmq-server"
+ 
+ ubuntu:
+@@ -249,6 +263,11 @@
+     suite: "./"
+     component: ""
+     gpg_key: "proxysql.asc"
++  proxysql-3:
++    url: "https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/noble/"
++    suite: "./"
++    component: ""
++    gpg_key: "proxysql.asc"
+   rabbitmq:
+     url: "https://deb1.rabbitmq.com/rabbitmq-server/ubuntu/noble"
+     suite: "noble"
+@@ -307,6 +326,11 @@
+     suite: "./"
+     component: ""
+     gpg_key: "proxysql.asc"
++  proxysql-3:
++    url: "https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/noble/"
++    suite: "./"
++    component: ""
++    gpg_key: "proxysql.asc"
+   rabbitmq:
+     url: "https://deb1.rabbitmq.com/rabbitmq-server/ubuntu/noble"
+     suite: "noble"

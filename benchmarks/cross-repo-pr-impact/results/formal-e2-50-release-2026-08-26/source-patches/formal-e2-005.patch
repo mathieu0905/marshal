@@ -1,0 +1,270 @@
+diff --git a/sysinv/cgts-client/cgts-client/cgtsclient/v1/iHost_shell.py b/sysinv/cgts-client/cgts-client/cgtsclient/v1/iHost_shell.py
+index b32c38a..54c5b53 100755
+--- a/sysinv/cgts-client/cgts-client/cgtsclient/v1/iHost_shell.py
++++ b/sysinv/cgts-client/cgts-client/cgtsclient/v1/iHost_shell.py
+@@ -37,7 +37,8 @@
+                   'install_state', 'install_state_info', 'inv_state',
+                   'clock_synchronization', 'device_image_update',
+                   'reboot_needed', 'max_cpu_mhz_configured',
+-                  'max_cpu_mhz_allowed', 'apparmor']
++                  'min_cpu_mhz_allowed', 'max_cpu_mhz_allowed',
++                  'cstates_available', 'apparmor']
+         optional_fields = ['vsc_controllers', 'ttys_dcd']
+         if ihost.subfunctions != ihost.personality:
+             fields.append('subfunctions')
+diff --git a/sysinv/sysinv/sysinv/sysinv/agent/manager.py b/sysinv/sysinv/sysinv/sysinv/agent/manager.py
+index cb01fe7..5cd6aa5 100644
+--- a/sysinv/sysinv/sysinv/sysinv/agent/manager.py
++++ b/sysinv/sysinv/sysinv/sysinv/agent/manager.py
+@@ -332,6 +332,17 @@
+                 return constants.CONFIGURABLE
+         return constants.NOT_CONFIGURABLE
+ 
++    def _get_min_cpu_mhz_allowed(self):
++        output = utils.execute(
++            "lscpu | grep 'CPU min MHz' | awk '{ print $4 }' | cut -d ',' -f 1",
++            shell=True)
++
++        if isinstance(output, tuple):
++            default_min = output[0]
++            if default_min:
++                LOG.info("Default CPU min frequency: {}".format(default_min))
++                return int(default_min.split('.')[0])
++
+     def _get_max_cpu_mhz_allowed(self):
+         output = utils.execute(
+             "lscpu | grep 'CPU max MHz' | awk '{ print $4 }' | cut -d ',' -f 1",
+@@ -343,6 +354,25 @@
+                 LOG.info("Default CPU max frequency: {}".format(default_max))
+                 return int(default_max.split('.')[0])
+ 
++    def _get_cstates_names(self):
++        """Get the names of available c-state on the system.
++
++        Returns:
++            list(string,..): A list of c-state names
++        """
++        states = os.listdir(constants.CSTATE_PATH)
++        cstates = []
++
++        for state in states:
++            with open(os.path.join(constants.CSTATE_PATH, state + "/name"),
++                      'r') as file:
++                c_name = file.readline()
++                file.close()
++                cstates.append(c_name.split('\n')[0])
++
++        cstates.sort()
++        return cstates
++
+     def _force_grub_update(self):
+         """ Force update the grub on the first AIO controller after the initial
+             config is completed
+@@ -525,6 +555,8 @@
+             max_cpu_freq_dict = {
+                 constants.IHOST_IS_MAX_CPU_MHZ_CONFIGURABLE:
+                 self._is_max_cpu_mhz_configurable(),
++                constants.IHOST_MIN_CPU_MHZ_ALLOWED:
++                self._get_min_cpu_mhz_allowed(),
+                 constants.IHOST_MAX_CPU_MHZ_ALLOWED:
+                 self._get_max_cpu_mhz_allowed()}
+             msg_dict.update({constants.HOST_ACTION_STATE:
+@@ -535,6 +567,12 @@
+         msg_dict.update({constants.SYSINV_AGENT_FIRST_REPORT:
+                          not os.path.exists(constants.SYSINV_FIRST_REPORT_FLAG)})
+ 
++        # Get and update Cstates
++        msg_dict.update({
++            constants.IHOST_CSTATES_AVAILABLE:
++            self._get_cstates_names()
++        })
++
+         try:
+             rpcapi.iplatform_update_by_ihost(context,
+                                              host_uuid,
+diff --git a/sysinv/sysinv/sysinv/sysinv/api/controllers/v1/host.py b/sysinv/sysinv/sysinv/sysinv/api/controllers/v1/host.py
+index e626b52..c243846 100644
+--- a/sysinv/sysinv/sysinv/sysinv/api/controllers/v1/host.py
++++ b/sysinv/sysinv/sysinv/sysinv/api/controllers/v1/host.py
+@@ -559,9 +559,15 @@
+     max_cpu_mhz_configured = wtypes.text
+     "Represent the CPU max frequency"
+ 
++    min_cpu_mhz_allowed = wtypes.text
++    "Represent the default CPU min frequency"
++
+     max_cpu_mhz_allowed = wtypes.text
+     "Represent the default CPU max frequency"
+ 
++    cstates_available = wtypes.text
++    "Represent the CStates available to use"
++
+     iscsi_initiator_name = wtypes.text
+     "The iscsi initiator name (only used for worker hosts)"
+ 
+@@ -597,7 +603,8 @@
+                           'install_state', 'install_state_info',
+                           'iscsi_initiator_name', 'device_image_update',
+                           'reboot_needed', 'inv_state', 'clock_synchronization',
+-                          'max_cpu_mhz_configured', 'max_cpu_mhz_allowed',
++                          'max_cpu_mhz_configured', 'min_cpu_mhz_allowed',
++                          'max_cpu_mhz_allowed', 'cstates_available',
+                           'apparmor']
+ 
+         fields = minimum_fields if not expand else None
+diff --git a/sysinv/sysinv/sysinv/sysinv/common/constants.py b/sysinv/sysinv/sysinv/sysinv/common/constants.py
+index ceba239..64bf6f5 100644
+--- a/sysinv/sysinv/sysinv/sysinv/common/constants.py
++++ b/sysinv/sysinv/sysinv/sysinv/common/constants.py
+@@ -200,7 +200,9 @@
+ # ihost field attributes
+ IHOST_STOR_FUNCTION = 'stor_function'
+ IHOST_IS_MAX_CPU_MHZ_CONFIGURABLE = 'is_max_cpu_configurable'
++IHOST_MIN_CPU_MHZ_ALLOWED = 'min_cpu_mhz_allowed'
+ IHOST_MAX_CPU_MHZ_ALLOWED = 'max_cpu_mhz_allowed'
++IHOST_CSTATES_AVAILABLE = 'cstates_available'
+ 
+ # ihost config_status field values
+ CONFIG_STATUS_OUT_OF_DATE = "Config out-of-date"
+@@ -2358,3 +2360,6 @@
+ PLATFORM_FIREWALL_NTP_PORT = 123
+ PLATFORM_FIREWALL_PTP_PORT = 319
+ PLATFORM_FIREWALL_PTP_PORT = 320
++
++# CStates support
++CSTATE_PATH = "/sys/devices/system/cpu/cpu0/cpuidle"
+diff --git a/sysinv/sysinv/sysinv/sysinv/common/utils.py b/sysinv/sysinv/sysinv/sysinv/common/utils.py
+index 4cc7411..1f60b44 100644
+--- a/sysinv/sysinv/sysinv/sysinv/common/utils.py
++++ b/sysinv/sysinv/sysinv/sysinv/common/utils.py
+@@ -3877,3 +3877,33 @@
+         raise exception.SysinvException(
+             "Error checkout ostree commit: %s" % (error),
+         )
++
++
++def cstates_need_update(old_cstates, new_cstates):
++    if old_cstates is None:
++        return True
++    if new_cstates is None:
++        return False
++
++    old_cstates_list = []
++    if isinstance(old_cstates, str):
++        if old_cstates.strip() == '':
++            return True
++        old_cstates_list = old_cstates.split(',')
++    else:
++        old_cstates_list = old_cstates
++
++    new_cstates_list = []
++    if isinstance(new_cstates, str):
++        if new_cstates.strip() == '':
++            return False
++        new_cstates_list = new_cstates.split(',')
++    else:
++        new_cstates_list = new_cstates
++
++    if len(old_cstates_list) != len(new_cstates_list):
++        return True
++    diff = [v for v in old_cstates_list if v not in new_cstates_list]
++    if len(diff) > 0:
++        return True
++    return False
+diff --git a/sysinv/sysinv/sysinv/sysinv/conductor/manager.py b/sysinv/sysinv/sysinv/sysinv/conductor/manager.py
+index 52d210c..0782ec0 100644
+--- a/sysinv/sysinv/sysinv/sysinv/conductor/manager.py
++++ b/sysinv/sysinv/sysinv/sysinv/conductor/manager.py
+@@ -5721,9 +5721,19 @@
+             ihost.capabilities.update({
+                 constants.IHOST_IS_MAX_CPU_MHZ_CONFIGURABLE:
+                 max_cpu_dict.get(constants.IHOST_IS_MAX_CPU_MHZ_CONFIGURABLE)})
++            ihost.min_cpu_mhz_allowed = max_cpu_dict.get('min_cpu_mhz_allowed')
+             ihost.max_cpu_mhz_allowed = max_cpu_dict.get('max_cpu_mhz_allowed')
+             val.update({'capabilities': ihost.capabilities,
+-                        constants.IHOST_MAX_CPU_MHZ_ALLOWED: ihost.max_cpu_mhz_allowed})
++                        constants.IHOST_MAX_CPU_MHZ_ALLOWED: ihost.max_cpu_mhz_allowed,
++                        constants.IHOST_MIN_CPU_MHZ_ALLOWED: ihost.min_cpu_mhz_allowed})
++
++        cstates_names = imsg_dict.get(constants.IHOST_CSTATES_AVAILABLE)
++        if cutils.cstates_need_update(ihost.cstates_available, cstates_names):
++            ihost.cstates_available = ','.join(cstates_names)
++            val.update({
++                constants.IHOST_CSTATES_AVAILABLE:
++                ','.join(cstates_names)
++            })
+ 
+         if val:
+             ihost = self.dbapi.ihost_update(ihost_uuid, val)
+diff --git a/sysinv/sysinv/sysinv/sysinv/db/sqlalchemy/migrate_repo/versions/129_min_cpu_frequency_and_cstates.py b/sysinv/sysinv/sysinv/sysinv/db/sqlalchemy/migrate_repo/versions/129_min_cpu_frequency_and_cstates.py
+new file mode 100644
+index 0000000..dbdb9d6
+--- /dev/null
++++ b/sysinv/sysinv/sysinv/sysinv/db/sqlalchemy/migrate_repo/versions/129_min_cpu_frequency_and_cstates.py
+@@ -0,0 +1,20 @@
++#
++# Copyright (c) 2023 Wind River Systems, Inc.
++#
++# SPDX-License-Identifier: Apache-2.0
++#
++
++from sqlalchemy import Column, MetaData, Table
++from sqlalchemy import String
++
++
++def upgrade(migrate_engine):
++    meta = MetaData()
++    meta.bind = migrate_engine
++    host_table = Table('i_host', meta, autoload=True)
++    host_table.create_column(Column('min_cpu_mhz_allowed', String(64)))
++    host_table.create_column(Column('cstates_available', String(255)))
++
++
++def downgrade(migrate_engine):
++    raise NotImplementedError('SysInv database downgrade is unsupported.')
+diff --git a/sysinv/sysinv/sysinv/sysinv/db/sqlalchemy/models.py b/sysinv/sysinv/sysinv/sysinv/db/sqlalchemy/models.py
+index 915530c..ded7ec4 100644
+--- a/sysinv/sysinv/sysinv/sysinv/db/sqlalchemy/models.py
++++ b/sysinv/sysinv/sysinv/sysinv/db/sqlalchemy/models.py
+@@ -243,8 +243,11 @@
+     device_image_update = Column(String(64))
+     reboot_needed = Column(Boolean, nullable=False, default=False)
+     max_cpu_mhz_configured = Column(String(64))  # in MHz
++    min_cpu_mhz_allowed = Column(String(64))  # in MHz
+     max_cpu_mhz_allowed = Column(String(64))  # in MHz
+ 
++    cstates_available = Column(String(255))
++
+     forisystemid = Column(Integer,
+                           ForeignKey('i_system.id', ondelete='CASCADE'))
+     peer_id = Column(Integer,
+diff --git a/sysinv/sysinv/sysinv/sysinv/objects/host.py b/sysinv/sysinv/sysinv/sysinv/objects/host.py
+index a1acc2d..609eedd 100644
+--- a/sysinv/sysinv/sysinv/sysinv/objects/host.py
++++ b/sysinv/sysinv/sysinv/sysinv/objects/host.py
+@@ -104,7 +104,9 @@
+             'device_image_update': utils.str_or_none,
+             'reboot_needed': utils.bool_or_none,
+             'max_cpu_mhz_configured': utils.str_or_none,
+-            'max_cpu_mhz_allowed': utils.str_or_none
++            'min_cpu_mhz_allowed': utils.str_or_none,
++            'max_cpu_mhz_allowed': utils.str_or_none,
++            'cstates_available': utils.str_or_none
+              }
+ 
+     _foreign_fields = {
+diff --git a/sysinv/sysinv/sysinv/sysinv/tests/db/utils.py b/sysinv/sysinv/sysinv/sysinv/tests/db/utils.py
+index 71c0be8..437ee17 100644
+--- a/sysinv/sysinv/sysinv/sysinv/tests/db/utils.py
++++ b/sysinv/sysinv/sysinv/sysinv/tests/db/utils.py
+@@ -167,7 +167,9 @@
+             'inv_state': kw.get('inv_state', 'inventoried'),
+             'clock_synchronization': kw.get('clock_synchronization', constants.NTP),
+             'max_cpu_mhz_configured': kw.get('max_cpu_mhz_configured', ''),
+-            'max_cpu_mhz_allowed': kw.get('max_cpu_mhz_allowed', '')
++            'min_cpu_mhz_allowed': kw.get('min_cpu_mhz_allowed', ''),
++            'max_cpu_mhz_allowed': kw.get('max_cpu_mhz_allowed', ''),
++            'cstates_available': kw.get('cstates_available', '')
+              }
+     return inv
+ 

@@ -1,0 +1,2040 @@
+diff --git a/.github/codecov.yml b/.github/workflows/codecov.yml
+similarity index 100%
+rename from .github/codecov.yml
+rename to .github/workflows/codecov.yml
+diff --git a/.github/mvn.yml b/.github/workflows/mvn.yml
+similarity index 100%
+rename from .github/mvn.yml
+rename to .github/workflows/mvn.yml
+diff --git a/.github/pdd.yml b/.github/workflows/pdd.yml
+similarity index 100%
+rename from .github/pdd.yml
+rename to .github/workflows/pdd.yml
+diff --git a/.github/xcop.yml b/.github/workflows/xcop.yml
+similarity index 100%
+rename from .github/xcop.yml
+rename to .github/workflows/xcop.yml
+diff --git a/pom.xml b/pom.xml
+index fd3e0560..0b66cc14 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -189,7 +189,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
+           <plugin>
+             <groupId>com.qulice</groupId>
+             <artifactId>qulice-maven-plugin</artifactId>
+-            <version>0.18.19</version>
++            <version>0.22.0</version>
+             <configuration>
+               <excludes combine.children="append">
+                 <exclude>checkstyle:/src/it.*</exclude>
+diff --git a/src/it/loggable/src/test/java/com/jcabi/LoggableThreadingTest.java b/src/it/loggable/src/test/java/com/jcabi/LoggableThreadingTest.java
+index 496bcc36..ea3143a8 100644
+--- a/src/it/loggable/src/test/java/com/jcabi/LoggableThreadingTest.java
++++ b/src/it/loggable/src/test/java/com/jcabi/LoggableThreadingTest.java
+@@ -30,7 +30,6 @@
+ package com.jcabi;
+ 
+ import com.jcabi.aspects.Loggable;
+-import com.jcabi.aspects.Tv;
+ import java.lang.Thread.State;
+ import java.util.Set;
+ import java.util.concurrent.TimeUnit;
+@@ -43,10 +42,6 @@
+  */
+ public final class LoggableThreadingTest {
+ 
+-    /**
+-     * Check if thread created by Loggable is terminated.
+-     * @throws Exception if something goes wrong
+-     */
+     @Test
+     public void loggableThreadTerminates() throws Exception {
+         new LoggableThreading().foo();
+@@ -61,7 +56,7 @@ public void loggableThreadTerminates() throws Exception {
+         }
+         MatcherAssert.assertThat(thread, Matchers.notNullValue());
+         thread.interrupt();
+-        TimeUnit.SECONDS.sleep(Tv.TEN);
++        TimeUnit.SECONDS.sleep(10);
+         MatcherAssert.assertThat(
+             thread.getState(), Matchers.is(State.TERMINATED)
+         );
+diff --git a/src/it/weaving/src/test/java/com/jcabi/CounterTest.java b/src/it/weaving/src/test/java/com/jcabi/CounterTest.java
+index faa5601e..0e684235 100644
+--- a/src/it/weaving/src/test/java/com/jcabi/CounterTest.java
++++ b/src/it/weaving/src/test/java/com/jcabi/CounterTest.java
+@@ -40,10 +40,6 @@
+  */
+ public final class CounterTest {
+ 
+-    /**
+-     * Counter can retry on failure.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     public void retriesOnFailure() throws Exception {
+         final Counter counter = new Counter();
+diff --git a/src/it/weaving/src/test/java/com/jcabi/DocumentTest.java b/src/it/weaving/src/test/java/com/jcabi/DocumentTest.java
+index 771cffef..680a3454 100644
+--- a/src/it/weaving/src/test/java/com/jcabi/DocumentTest.java
++++ b/src/it/weaving/src/test/java/com/jcabi/DocumentTest.java
+@@ -37,29 +37,17 @@
+  */
+ public final class DocumentTest {
+ 
+-    /**
+-     * Document can be instantiated.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     public void instantiates() throws Exception {
+         final Document doc = new Document("test");
+         doc.name();
+     }
+ 
+-    /**
+-     * Document can throw and log.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test(expected = IllegalStateException.class)
+     public void throwsAndLogs() throws Exception {
+         new Document("foo").exception();
+     }
+ 
+-    /**
+-     * Document can throw when NULL provided.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test(expected = javax.validation.ConstraintViolationException.class)
+     public void throwsOnNullParameter() throws Exception {
+         new Document(null);
+diff --git a/src/it/weaving/src/test/java/com/jcabi/ImmutableAnnotationTest.java b/src/it/weaving/src/test/java/com/jcabi/ImmutableAnnotationTest.java
+index 0580caa8..64aa0061 100644
+--- a/src/it/weaving/src/test/java/com/jcabi/ImmutableAnnotationTest.java
++++ b/src/it/weaving/src/test/java/com/jcabi/ImmutableAnnotationTest.java
+@@ -40,19 +40,11 @@
+  */
+ public final class ImmutableAnnotationTest {
+ 
+-    /**
+-     * Immutable annotation validate class mutability.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test(expected = IllegalStateException.class)
+     public void validatesClassImmutability() throws Exception {
+         new Mutable();
+     }
+ 
+-    /**
+-     * Immutable annotation validate class mutability.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     public void validatesClassWithTrueImmutability() throws Exception {
+         new TruelyImmutable();
+diff --git a/src/it/weaving/src/test/java/com/jcabi/PageTest.java b/src/it/weaving/src/test/java/com/jcabi/PageTest.java
+index 252b196c..b1d42f2f 100644
+--- a/src/it/weaving/src/test/java/com/jcabi/PageTest.java
++++ b/src/it/weaving/src/test/java/com/jcabi/PageTest.java
+@@ -37,12 +37,8 @@
+  * Test case for {@link Page}, which is actually testing how
+  * {@link Cacheable} annotation works.
+  */
+-public final class PageTest {
++final class PageTest {
+ 
+-    /**
+-     * Page can cache results.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     public void cachesResults() throws Exception {
+         final Page page = new Page();
+@@ -53,10 +49,6 @@ public void cachesResults() throws Exception {
+         MatcherAssert.assertThat(page.counted(), Matchers.equalTo(3));
+     }
+ 
+-    /**
+-     * Page is equipped with three methods.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     public void equippedWithThreeMethods() throws Exception {
+         final Page first = new Page();
+diff --git a/src/it/weaving/src/test/java/com/jcabi/ParallelTest.java b/src/it/weaving/src/test/java/com/jcabi/ParallelTest.java
+index 7990e02a..f1b2e910 100644
+--- a/src/it/weaving/src/test/java/com/jcabi/ParallelTest.java
++++ b/src/it/weaving/src/test/java/com/jcabi/ParallelTest.java
+@@ -39,12 +39,8 @@
+ /**
+  * Test case for {@link Parallel} annotation.
+  */
+-public final class ParallelTest {
++final class ParallelTest {
+ 
+-    /**
+-     * Parallel can run methods in parallel.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     public void runsMethodInParallelThreads() throws Exception {
+         final AtomicInteger cnt = new AtomicInteger();
+diff --git a/src/it/weaving/src/test/java/com/jcabi/StaticPageTest.java b/src/it/weaving/src/test/java/com/jcabi/StaticPageTest.java
+index 9202edf8..79372c9f 100644
+--- a/src/it/weaving/src/test/java/com/jcabi/StaticPageTest.java
++++ b/src/it/weaving/src/test/java/com/jcabi/StaticPageTest.java
+@@ -37,12 +37,8 @@
+  * Test case for {@link StaticPage}, which is actually testing how
+  * {@link Cacheable} annotation works with static methods.
+  */
+-public final class StaticPageTest {
++final class StaticPageTest {
+ 
+-    /**
+-     * StaticPage can cache results.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     public void cachesResults() throws Exception {
+         StaticPage.download();
+diff --git a/src/main/java/com/jcabi/aspects/RetryOnFailure.java b/src/main/java/com/jcabi/aspects/RetryOnFailure.java
+index 80a22b97..1586d48f 100644
+--- a/src/main/java/com/jcabi/aspects/RetryOnFailure.java
++++ b/src/main/java/com/jcabi/aspects/RetryOnFailure.java
+@@ -57,14 +57,12 @@
+ 
+     /**
+      * How many times to retry.
+-     * @checkstyle MagicNumber (4 lines)
+      * @return Number of attempts
+      */
+     int attempts() default 3;
+ 
+     /**
+      * Delay between attempts, in time units.
+-     * @checkstyle MagicNumber (4 lines)
+      * @return Delay
+      */
+     long delay() default 50;
+diff --git a/src/main/java/com/jcabi/aspects/Timeable.java b/src/main/java/com/jcabi/aspects/Timeable.java
+index c96e3571..8e0236fa 100644
+--- a/src/main/java/com/jcabi/aspects/Timeable.java
++++ b/src/main/java/com/jcabi/aspects/Timeable.java
+@@ -84,7 +84,6 @@
+ 
+     /**
+      * Maximum amount allowed for this method.
+-     * @checkstyle MagicNumber (2 lines)
+      * @return The limit
+      */
+     int limit() default Timeable.DEFAULT_LIMIT;
+diff --git a/src/main/java/com/jcabi/aspects/Tv.java b/src/main/java/com/jcabi/aspects/Tv.java
+deleted file mode 100644
+index 885dd9b3..00000000
+--- a/src/main/java/com/jcabi/aspects/Tv.java
++++ /dev/null
+@@ -1,158 +0,0 @@
+-/*
+- * Copyright (c) 2012-2022, jcabi.com
+- * All rights reserved.
+- *
+- * Redistribution and use in source and binary forms, with or without
+- * modification, are permitted provided that the following conditions
+- * are met: 1) Redistributions of source code must retain the above
+- * copyright notice, this list of conditions and the following
+- * disclaimer. 2) Redistributions in binary form must reproduce the above
+- * copyright notice, this list of conditions and the following
+- * disclaimer in the documentation and/or other materials provided
+- * with the distribution. 3) Neither the name of the jcabi.com nor
+- * the names of its contributors may be used to endorse or promote
+- * products derived from this software without specific prior written
+- * permission.
+- *
+- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+- * OF THE POSSIBILITY OF SUCH DAMAGE.
+- */
+-package com.jcabi.aspects;
+-
+-/**
+- * Convenient holder of numeric constants for annotations
+- * (TV means "time values").
+- *
+- * <p>For example, you can use it like this:
+- *
+- * <pre> &#64;Cacheable(lifetime = Tv.FIVE, unit = TimeUnit.SECONDS)
+- * String load(String resource) throws IOException {
+- * }</pre>
+- *
+- * @see <a href="http://aspects.jcabi.com">http://aspects.jcabi.com/</a>
+- * @since 0.22.1
+- */
+-public final class Tv {
+-
+-    /**
+-     * Three.
+-     */
+-    public static final int THREE = 3;
+-
+-    /**
+-     * Four.
+-     */
+-    public static final int FOUR = 4;
+-
+-    /**
+-     * Five.
+-     */
+-    public static final int FIVE = 5;
+-
+-    /**
+-     * Six.
+-     */
+-    public static final int SIX = 6;
+-
+-    /**
+-     * Seven.
+-     */
+-    public static final int SEVEN = 7;
+-
+-    /**
+-     * Eight.
+-     */
+-    public static final int EIGHT = 8;
+-
+-    /**
+-     * Nine.
+-     */
+-    public static final int NINE = 9;
+-
+-    /**
+-     * Ten.
+-     */
+-    public static final int TEN = 10;
+-
+-    /**
+-     * Fifteen.
+-     */
+-    public static final int FIFTEEN = 15;
+-
+-    /**
+-     * Twenty.
+-     */
+-    public static final int TWENTY = 20;
+-
+-    /**
+-     * Thirty.
+-     */
+-    public static final int THIRTY = 30;
+-
+-    /**
+-     * Forty.
+-     */
+-    public static final int FORTY = 40;
+-
+-    /**
+-     * Fifty.
+-     */
+-    public static final int FIFTY = 50;
+-
+-    /**
+-     * Sixty.
+-     */
+-    public static final int SIXTY = 60;
+-
+-    /**
+-     * Seventy.
+-     */
+-    public static final int SEVENTY = 70;
+-
+-    /**
+-     * Eighty.
+-     */
+-    public static final int EIGHTY = 80;
+-
+-    /**
+-     * Ninety.
+-     */
+-    public static final int NINETY = 90;
+-
+-    /**
+-     * Hundren.
+-     */
+-    public static final int HUNDRED = 100;
+-
+-    /**
+-     * Thousand.
+-     */
+-    public static final int THOUSAND = 1000;
+-
+-    /**
+-     * Million.
+-     */
+-    public static final int MILLION = 1000000;
+-
+-    /**
+-     * Billion.
+-     */
+-    public static final int BILLION = 1000000000;
+-
+-    /**
+-     * Private constructor.
+-     */
+-    private Tv() {
+-        throw new IllegalStateException("Utility class - cannot instantiate!");
+-    }
+-}
+diff --git a/src/main/java/com/jcabi/aspects/UnitedThrow.java b/src/main/java/com/jcabi/aspects/UnitedThrow.java
+index 382c4f4a..5d3f0d8c 100644
+--- a/src/main/java/com/jcabi/aspects/UnitedThrow.java
++++ b/src/main/java/com/jcabi/aspects/UnitedThrow.java
+@@ -43,6 +43,7 @@
+ @Documented
+ @Retention(RetentionPolicy.RUNTIME)
+ @Target(ElementType.METHOD)
++@SuppressWarnings("PMD.DoNotExtendJavaLangThrowable")
+ public @interface UnitedThrow {
+     /**
+      * Default empty exception.
+diff --git a/src/main/java/com/jcabi/aspects/aj/ImmutabilityChecker.java b/src/main/java/com/jcabi/aspects/aj/ImmutabilityChecker.java
+index b6adb53f..151392e9 100644
+--- a/src/main/java/com/jcabi/aspects/aj/ImmutabilityChecker.java
++++ b/src/main/java/com/jcabi/aspects/aj/ImmutabilityChecker.java
+@@ -36,7 +36,6 @@
+ import java.lang.reflect.Modifier;
+ import java.util.Collection;
+ import java.util.HashSet;
+-import java.util.Set;
+ import org.aspectj.lang.JoinPoint;
+ import org.aspectj.lang.annotation.After;
+ import org.aspectj.lang.annotation.Aspect;
+diff --git a/src/main/java/com/jcabi/aspects/aj/LogHelper.java b/src/main/java/com/jcabi/aspects/aj/LogHelper.java
+index 16788ba5..6a1210ba 100644
+--- a/src/main/java/com/jcabi/aspects/aj/LogHelper.java
++++ b/src/main/java/com/jcabi/aspects/aj/LogHelper.java
+@@ -37,6 +37,7 @@
+  *
+  * @since 0.17
+  */
++@SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+ final class LogHelper {
+ 
+     /**
+diff --git a/src/main/java/com/jcabi/aspects/aj/MethodAsyncRunner.java b/src/main/java/com/jcabi/aspects/aj/MethodAsyncRunner.java
+index 3c73ac79..21b8ebbd 100644
+--- a/src/main/java/com/jcabi/aspects/aj/MethodAsyncRunner.java
++++ b/src/main/java/com/jcabi/aspects/aj/MethodAsyncRunner.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.aspects.aj;
+ 
+-import java.util.concurrent.Callable;
+ import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Executors;
+ import java.util.concurrent.Future;
+diff --git a/src/main/java/com/jcabi/aspects/aj/MethodCacher.java b/src/main/java/com/jcabi/aspects/aj/MethodCacher.java
+index b7bd45fe..6b01baee 100644
+--- a/src/main/java/com/jcabi/aspects/aj/MethodCacher.java
++++ b/src/main/java/com/jcabi/aspects/aj/MethodCacher.java
+@@ -74,47 +74,50 @@ public final class MethodCacher {
+      * Calling tunnels.
+      * @checkstyle LineLength (2 lines)
+      */
+-    private final transient ConcurrentMap<MethodCacher.Key, MethodCacher.Tunnel> tunnels =
+-        new ConcurrentHashMap<>(0);
++    private final transient ConcurrentMap<MethodCacher.Key, MethodCacher.Tunnel> tunnels;
+ 
+     /**
+      * Save the keys which need update.
+      */
+-    private final transient BlockingQueue<MethodCacher.Key> updatekeys =
+-        new LinkedBlockingQueue<>();
++    private final transient BlockingQueue<MethodCacher.Key> updatekeys;
+ 
+     /**
+      * Service that cleans cache.
+      */
+-    private final transient ScheduledExecutorService cleaner =
+-        Executors.newSingleThreadScheduledExecutor(
+-            new NamedThreads(
+-                "cacheable-clean",
+-                "automated cleaning of expired @Cacheable values"
+-            )
+-        );
++    @SuppressWarnings("PMD.SingularField")
++    private final transient ScheduledExecutorService cleaner;
+ 
+     /**
+      * Service that update cache.
+      */
+-    private final transient ScheduledExecutorService updater =
+-        Executors.newSingleThreadScheduledExecutor(
+-            new NamedThreads(
+-                "cacheable-update",
+-                "async update of expired @Cacheable values"
+-            )
+-        );
++    @SuppressWarnings("PMD.SingularField")
++    private final transient ScheduledExecutorService updater;
+ 
+     /**
+      * Public ctor.
+      */
++    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+     public MethodCacher() {
++        this.tunnels = new ConcurrentHashMap<>(0);
++        this.updatekeys = new LinkedBlockingQueue<>();
++        this.cleaner = Executors.newSingleThreadScheduledExecutor(
++            new NamedThreads(
++                "cacheable-clean",
++                "automated cleaning of expired @Cacheable values"
++            )
++        );
+         this.cleaner.scheduleWithFixedDelay(
+             new VerboseRunnable(
+                 this::clean
+             ),
+             1L, 1L, TimeUnit.SECONDS
+         );
++        this.updater = Executors.newSingleThreadScheduledExecutor(
++            new NamedThreads(
++                "cacheable-update",
++                "async update of expired @Cacheable values"
++            )
++        );
+         this.updater.schedule(
+             new VerboseRunnable(
+                 this::update
+@@ -461,12 +464,12 @@ private static final class Key {
+         /**
+          * When instantiated.
+          */
+-        private final transient long start = System.currentTimeMillis();
++        private final transient long start;
+ 
+         /**
+          * How many times the key was already accessed.
+          */
+-        private final transient AtomicInteger accessed = new AtomicInteger();
++        private final transient AtomicInteger accessed;
+ 
+         /**
+          * Method.
+@@ -492,7 +495,10 @@ private static final class Key {
+          * Public ctor.
+          * @param point Joint point
+          */
++        @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+         Key(final JoinPoint point) {
++            this.start = System.currentTimeMillis();
++            this.accessed = new AtomicInteger();
+             this.method = ((MethodSignature) point.getSignature()).getMethod();
+             this.target = MethodCacher.Key.targetize(point);
+             this.arguments = point.getArgs();
+diff --git a/src/main/java/com/jcabi/aspects/aj/MethodInterrupter.java b/src/main/java/com/jcabi/aspects/aj/MethodInterrupter.java
+index 8785038b..99e4b74f 100644
+--- a/src/main/java/com/jcabi/aspects/aj/MethodInterrupter.java
++++ b/src/main/java/com/jcabi/aspects/aj/MethodInterrupter.java
+@@ -71,6 +71,7 @@ public final class MethodInterrupter {
+     /**
+      * Public ctor.
+      */
++    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+     public MethodInterrupter() {
+         this.calls = new ConcurrentSkipListSet<>();
+         this.interrupter = Executors.newSingleThreadScheduledExecutor(
+@@ -154,6 +155,7 @@ private static final class Call implements
+          * Public ctor.
+          * @param pnt Joint point
+          */
++        @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+         Call(final ProceedingJoinPoint pnt) {
+             this.thread = Thread.currentThread();
+             this.start = System.currentTimeMillis();
+@@ -197,13 +199,15 @@ public boolean interrupted() {
+                 this.thread.interrupt();
+                 final Method method = ((MethodSignature) this.point.getSignature())
+                     .getMethod();
+-                Logger.warn(
+-                    method.getDeclaringClass(),
+-                    "%s: interrupted on %[ms]s timeout (over %[ms]s)",
+-                    Mnemos.toText(this.point, true, false),
+-                    System.currentTimeMillis() - this.start,
+-                    this.deadline - this.start
+-                );
++                if (Logger.isWarnEnabled(method.getDeclaringClass())) {
++                    Logger.warn(
++                        method.getDeclaringClass(),
++                        "%s: interrupted on %[ms]s timeout (over %[ms]s)",
++                        Mnemos.toText(this.point, true, false),
++                        System.currentTimeMillis() - this.start,
++                        this.deadline - this.start
++                    );
++                }
+                 dead = false;
+             } else {
+                 dead = true;
+diff --git a/src/main/java/com/jcabi/aspects/aj/MethodLogger.java b/src/main/java/com/jcabi/aspects/aj/MethodLogger.java
+index bd0b8b28..c98008af 100644
+--- a/src/main/java/com/jcabi/aspects/aj/MethodLogger.java
++++ b/src/main/java/com/jcabi/aspects/aj/MethodLogger.java
+@@ -74,7 +74,12 @@ public final class MethodLogger {
+     /**
+      * Public ctor.
+      */
+-    @SuppressWarnings("PMD.DoNotUseThreads")
++    @SuppressWarnings(
++        {
++            "PMD.DoNotUseThreads",
++            "PMD.ConstructorOnlyInitializesOrCallOtherConstructors"
++        }
++    )
+     public MethodLogger() {
+         this.running = new ConcurrentSkipListSet<>();
+         final ScheduledExecutorService monitor =
+@@ -172,7 +177,12 @@ public Object wrapMethod(final ProceedingJoinPoint point) throws Throwable {
+      * @return The result of call
+      * @throws Throwable If something goes wrong inside
+      * @checkstyle ExecutableStatementCountCheck (100 lines)
++     * @checkstyle CyclomaticComplexityCheck (100 lines)
+      */
++    @SuppressWarnings({
++        "PMD.AvoidThreadGroup",
++        "PMD.GuardLogStatement"
++    })
+     private Object wrap(final ProceedingJoinPoint point, final Method method,
+         final Loggable annotation) throws Throwable {
+         if (Thread.interrupted()) {
+@@ -230,22 +240,24 @@ private Object wrap(final ProceedingJoinPoint point, final Method method,
+                 } else {
+                     origin = "somewhere";
+                 }
+-                LogHelper.log(
+-                    level,
+-                    method.getDeclaringClass(),
+-                    Logger.format(
+-                        "%s: thrown %s out of %s in %[nano]s",
+-                        Mnemos.toText(
+-                            point,
+-                            annotation.trim(),
+-                            annotation.skipArgs(),
+-                            annotation.logThis()
+-                        ),
+-                        Mnemos.toText(ex),
+-                        origin,
+-                        System.nanoTime() - start
+-                    )
+-                );
++                if (LogHelper.enabled(level, method.getDeclaringClass())) {
++                    LogHelper.log(
++                        level,
++                        method.getDeclaringClass(),
++                        Logger.format(
++                            "%s: thrown %s out of %s in %[nano]s",
++                            Mnemos.toText(
++                                point,
++                                annotation.trim(),
++                                annotation.skipArgs(),
++                                annotation.logThis()
++                            ),
++                            Mnemos.toText(ex),
++                            origin,
++                            System.nanoTime() - start
++                        )
++                    );
++                }
+             }
+             throw ex;
+         } finally {
+diff --git a/src/main/java/com/jcabi/aspects/aj/MethodScheduler.java b/src/main/java/com/jcabi/aspects/aj/MethodScheduler.java
+index 3b9287f8..ffa61eff 100644
+--- a/src/main/java/com/jcabi/aspects/aj/MethodScheduler.java
++++ b/src/main/java/com/jcabi/aspects/aj/MethodScheduler.java
+@@ -34,7 +34,6 @@
+ import com.jcabi.log.VerboseRunnable;
+ import com.jcabi.log.VerboseThreads;
+ import java.io.Closeable;
+-import java.io.IOException;
+ import java.util.concurrent.Callable;
+ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ConcurrentMap;
+@@ -176,7 +175,8 @@ private static final class Service implements Closeable {
+          * @param obj Object
+          * @param annt Annotation
+          */
+-        protected Service(final Runnable runnable, final Object obj,
++        @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
++        Service(final Runnable runnable, final Object obj,
+             final ScheduleWithFixedDelay annt) {
+             this.start = System.currentTimeMillis();
+             this.counter = new AtomicLong();
+@@ -246,7 +246,7 @@ public void close() {
+                 Thread.currentThread().interrupt();
+                 throw new IllegalStateException(ex);
+             }
+-            if (this.verbose) {
++            if (this.verbose && Logger.isInfoEnabled(this.object)) {
+                 Logger.info(
+                     this.object,
+                     "execution stopped after %[ms]s and %d tick(s)",
+diff --git a/src/main/java/com/jcabi/aspects/aj/MethodValidator.java b/src/main/java/com/jcabi/aspects/aj/MethodValidator.java
+index 7184579d..b2dc8476 100644
+--- a/src/main/java/com/jcabi/aspects/aj/MethodValidator.java
++++ b/src/main/java/com/jcabi/aspects/aj/MethodValidator.java
+@@ -31,7 +31,6 @@
+ 
+ import java.lang.reflect.Constructor;
+ import java.lang.reflect.Method;
+-import java.util.Collection;
+ import java.util.Set;
+ import javax.validation.ConstraintViolation;
+ import javax.validation.ConstraintViolationException;
+diff --git a/src/main/java/com/jcabi/aspects/aj/Mnemos.java b/src/main/java/com/jcabi/aspects/aj/Mnemos.java
+index 088507ff..44ed5428 100644
+--- a/src/main/java/com/jcabi/aspects/aj/Mnemos.java
++++ b/src/main/java/com/jcabi/aspects/aj/Mnemos.java
+@@ -41,7 +41,13 @@
+  * @since 0.0.0
+  */
+ @Immutable
+-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.AvoidUsingShortType" })
++@SuppressWarnings(
++    {
++        "PMD.TooManyMethods",
++        "PMD.AvoidUsingShortType",
++        "PMD.ProhibitPublicStaticMethods"
++    }
++)
+ final class Mnemos {
+ 
+     /**
+diff --git a/src/main/java/com/jcabi/aspects/aj/NamedThreads.java b/src/main/java/com/jcabi/aspects/aj/NamedThreads.java
+index 9cb8a9e5..85d35b03 100644
+--- a/src/main/java/com/jcabi/aspects/aj/NamedThreads.java
++++ b/src/main/java/com/jcabi/aspects/aj/NamedThreads.java
+@@ -65,6 +65,7 @@ final class NamedThreads implements ThreadFactory {
+      * @param suffix Suffix of thread names
+      * @param desc Description of purpose
+      */
++    @SuppressWarnings("PMD.AvoidThreadGroup")
+     NamedThreads(final String suffix, final String desc) {
+         this.name = String.format("jcabi-%s", suffix);
+         this.purpose = desc;
+diff --git a/src/main/java/com/jcabi/aspects/aj/Parallelizer.java b/src/main/java/com/jcabi/aspects/aj/Parallelizer.java
+index 0df2111c..2ea00086 100644
+--- a/src/main/java/com/jcabi/aspects/aj/Parallelizer.java
++++ b/src/main/java/com/jcabi/aspects/aj/Parallelizer.java
+@@ -35,7 +35,6 @@
+ import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.LinkedList;
+-import java.util.List;
+ import java.util.concurrent.Callable;
+ import java.util.concurrent.CountDownLatch;
+ import java.util.concurrent.ExecutionException;
+@@ -115,6 +114,7 @@ private static void process(final Collection<Throwable> failures,
+                 failures.add(exception);
+             }
+         } catch (final InterruptedException ex) {
++            Thread.currentThread().interrupt();
+             failures.add(ex);
+         } catch (final ExecutionException ex) {
+             failures.add(ex);
+diff --git a/src/main/java/com/jcabi/aspects/aj/Repeater.java b/src/main/java/com/jcabi/aspects/aj/Repeater.java
+index 38c95283..3952a828 100644
+--- a/src/main/java/com/jcabi/aspects/aj/Repeater.java
++++ b/src/main/java/com/jcabi/aspects/aj/Repeater.java
+@@ -31,7 +31,6 @@
+ 
+ import com.jcabi.aspects.Immutable;
+ import com.jcabi.aspects.RetryOnFailure;
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.log.Logger;
+ import java.lang.reflect.Method;
+ import java.security.SecureRandom;
+@@ -67,7 +66,7 @@ public final class Repeater {
+      * @checkstyle ExecutableStatementCountCheck (100 lines)
+      */
+     @Around("execution(* * (..)) && @annotation(com.jcabi.aspects.RetryOnFailure)")
+-    @SuppressWarnings("PMD.AvoidCatchingThrowable")
++    @SuppressWarnings({ "PMD.AvoidCatchingThrowable", "PMD.GuardLogStatement" })
+     public Object wrap(final ProceedingJoinPoint point) throws Throwable {
+         final Method method = ((MethodSignature) point.getSignature())
+             .getMethod();
+@@ -92,25 +91,27 @@ public Object wrap(final ProceedingJoinPoint point) throws Throwable {
+                     throw ex;
+                 }
+                 ++attempt;
+-                if (rof.verbose()) {
+-                    Logger.warn(
+-                        joinpoint.targetize(),
+-                        // @checkstyle LineLength (1 line)
+-                        "#%s(): attempt #%d of %d failed in %[nano]s (%[nano]s waiting already) with %[exception]s",
+-                        method.getName(),
+-                        attempt, rof.attempts(), System.nanoTime() - start,
+-                        System.nanoTime() - begin, ex
+-                    );
+-                } else {
+-                    Logger.warn(
+-                        joinpoint.targetize(),
+-                        // @checkstyle LineLength (1 line)
+-                        "#%s(): attempt #%d/%d failed with %[type]s in %[nano]s (%[nano]s in total): %s",
+-                        method.getName(),
+-                        attempt, rof.attempts(), ex, System.nanoTime() - start,
+-                        System.nanoTime() - begin,
+-                        Repeater.message(ex)
+-                    );
++                if (Logger.isWarnEnabled(joinpoint.targetize())) {
++                    if (rof.verbose()) {
++                        Logger.warn(
++                            joinpoint.targetize(),
++                            // @checkstyle LineLength (1 line)
++                            "#%s(): attempt #%d of %d failed in %[nano]s (%[nano]s waiting already) with %[exception]s",
++                            method.getName(),
++                            attempt, rof.attempts(), System.nanoTime() - start,
++                            System.nanoTime() - begin, ex
++                        );
++                    } else {
++                        Logger.warn(
++                            joinpoint.targetize(),
++                            // @checkstyle LineLength (1 line)
++                            "#%s(): attempt #%d/%d failed with %[type]s in %[nano]s (%[nano]s in total): %s",
++                            method.getName(),
++                            attempt, rof.attempts(), ex, System.nanoTime() - start,
++                            System.nanoTime() - begin,
++                            Repeater.message(ex)
++                        );
++                    }
+                 }
+                 if (attempt >= rof.attempts()) {
+                     throw ex;
+@@ -152,8 +153,8 @@ private static String message(final Throwable exp) {
+             text.append("; ").append(Repeater.message(exp.getCause()));
+         }
+         String msg = text.toString();
+-        if (msg.length() > Tv.HUNDRED) {
+-            msg = String.format("%s...", msg.substring(0, Tv.HUNDRED));
++        if (msg.length() > 100) {
++            msg = String.format("%s...", msg.substring(0, 100));
+         }
+         return msg;
+     }
+diff --git a/src/main/java/com/jcabi/aspects/aj/SingleException.java b/src/main/java/com/jcabi/aspects/aj/SingleException.java
+index 124f1e22..b99c43f9 100644
+--- a/src/main/java/com/jcabi/aspects/aj/SingleException.java
++++ b/src/main/java/com/jcabi/aspects/aj/SingleException.java
+@@ -65,7 +65,7 @@ public final class SingleException {
+             "execution(* * (..))"
+             + " && @annotation(com.jcabi.aspects.UnitedThrow)"
+         )
+-    @SuppressWarnings("PMD.AvoidCatchingThrowable")
++    @SuppressWarnings({"PMD.AvoidCatchingThrowable", "PMD.PreserveStackTrace"})
+     // @checkstyle IllegalThrowsCheck (1 line)
+     public Object wrap(final ProceedingJoinPoint point) throws Throwable {
+         final Method method =
+diff --git a/src/test/java/com/jcabi/aspects/AsyncTest.java b/src/test/java/com/jcabi/aspects/AsyncTest.java
+index 3acd3355..76040415 100644
+--- a/src/test/java/com/jcabi/aspects/AsyncTest.java
++++ b/src/test/java/com/jcabi/aspects/AsyncTest.java
+@@ -43,7 +43,7 @@
+  * Test case for {@link Async} annotation and its implementation.
+  * @since 0.0.0
+  */
+-public final class AsyncTest {
++final class AsyncTest {
+ 
+     /**
+      * Thread name matcher.
+@@ -53,13 +53,9 @@ public final class AsyncTest {
+         Matchers.startsWith("jcabi-async")
+     );
+ 
+-    /**
+-     * Async annotation can execute asynchronously in a different thread.
+-     * @throws Exception If a problem occurs.
+-     */
+     @Test
+     @SuppressWarnings("PMD.DoNotUseThreads")
+-    public void executesAsynchronously() throws Exception {
++    void executesAsynchronously() throws Exception {
+         final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+         final Runnable runnable = new Runnable() {
+             @Async
+@@ -71,30 +67,22 @@ public void run() {
+         runnable.run();
+         // @checkstyle MultipleStringLiterals (5 lines)
+         MatcherAssert.assertThat(
+-            queue.poll(Tv.THIRTY, TimeUnit.SECONDS),
++            queue.poll(30, TimeUnit.SECONDS),
+             AsyncTest.THREAD_NAME
+         );
+     }
+ 
+-    /**
+-     * Asynchronous execution can return a value within a Future object.
+-     * @throws Exception If a problem occurs.
+-     */
+     @Test
+-    public void returnsFutureValue() throws Exception {
++    void returnsFutureValue() throws Exception {
+         MatcherAssert.assertThat(
+             new AsyncTest.Foo().asyncMethodWithReturnValue()
+-                .get(Tv.FIVE, TimeUnit.MINUTES),
++                .get(5, TimeUnit.MINUTES),
+             AsyncTest.THREAD_NAME
+         );
+     }
+ 
+-    /**
+-     * Throws exception when method is annotated with Async but does not return
+-     * Future or void.
+-     */
+     @Test
+-    public void throwsWhenMethodDoesNotReturnVoidOrFuture() {
++    void throwsWhenMethodDoesNotReturnVoidOrFuture() {
+         Assertions.assertThrows(
+             IllegalStateException.class,
+             () -> new AsyncTest.Foo().asyncMethodThatReturnsInt()
+diff --git a/src/test/java/com/jcabi/aspects/CacheableTest.java b/src/test/java/com/jcabi/aspects/CacheableTest.java
+index 6ba7e50e..ad9e2f58 100644
+--- a/src/test/java/com/jcabi/aspects/CacheableTest.java
++++ b/src/test/java/com/jcabi/aspects/CacheableTest.java
+@@ -56,7 +56,7 @@
+             "PMD.ProhibitPublicStaticMethods"
+         }
+     )
+-public final class CacheableTest {
++final class CacheableTest {
+ 
+     /**
+      * Random.
+@@ -64,11 +64,8 @@ public final class CacheableTest {
+      */
+     private static final Random RANDOM = new SecureRandom();
+ 
+-    /**
+-     * Cacheable can cache calls.
+-     */
+     @Test
+-    public void cachesSimpleCall() {
++    void cachesSimpleCall() {
+         final CacheableTest.Foo foo = new CacheableTest.Foo(1L);
+         final String first = foo.get().toString();
+         MatcherAssert.assertThat(first, Matchers.equalTo(foo.get().toString()));
+@@ -79,13 +76,9 @@ public void cachesSimpleCall() {
+         );
+     }
+ 
+-    /**
+-     * Cacheable can Asynchronous update.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+     @Disabled
+-    public void asyncUpdateCacheSimpleCall() throws Exception {
++    void asyncUpdateCacheSimpleCall() throws Exception {
+         final CacheableTest.Foo foo = new CacheableTest.Foo(1L);
+         final String first = foo.asyncGet().toString();
+         MatcherAssert.assertThat(
+@@ -104,11 +97,8 @@ public void asyncUpdateCacheSimpleCall() throws Exception {
+         );
+     }
+ 
+-    /**
+-     * Cacheable can cache static calls.
+-     */
+     @Test
+-    public void cachesSimpleStaticCall() {
++    void cachesSimpleStaticCall() {
+         final String first = CacheableTest.Foo.staticGet();
+         MatcherAssert.assertThat(
+             first,
+@@ -121,28 +111,19 @@ public void cachesSimpleStaticCall() {
+         );
+     }
+ 
+-    /**
+-     * Cacheable can clean cache after timeout.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+-    public void cleansCacheWhenExpired() throws Exception {
++    void cleansCacheWhenExpired() throws Exception {
+         final CacheableTest.Foo foo = new CacheableTest.Foo(1L);
+         final String first = foo.get().toString();
+-        TimeUnit.SECONDS.sleep(Tv.FIVE);
++        TimeUnit.SECONDS.sleep(5);
+         MatcherAssert.assertThat(
+             foo.get().toString(),
+             Matchers.not(Matchers.equalTo(first))
+         );
+     }
+ 
+-    /**
+-     * Cacheable can cache just once.
+-     * @checkstyle ExecutableStatementCountCheck (30 lines)
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+-    public void cachesJustOnceInParallelThreads() throws Exception {
++    void cachesJustOnceInParallelThreads() throws Exception {
+         final CacheableTest.Foo foo = new CacheableTest.Foo(1L);
+         final Thread never = new Thread(foo::never);
+         never.start();
+@@ -162,7 +143,7 @@ public void cachesJustOnceInParallelThreads() throws Exception {
+                 executor.submit(task);
+             }
+             start.countDown();
+-            done.await(Tv.THIRTY, TimeUnit.SECONDS);
++            done.await(30, TimeUnit.SECONDS);
+             MatcherAssert.assertThat(values.size(), Matchers.equalTo(1));
+             never.interrupt();
+         } finally {
+@@ -170,11 +151,8 @@ public void cachesJustOnceInParallelThreads() throws Exception {
+         }
+     }
+ 
+-    /**
+-     * Cacheable can flush with a static trigger.
+-     */
+     @Test
+-    public void flushesWithStaticTrigger() {
++    void flushesWithStaticTrigger() {
+         final CacheableTest.Bar bar = new CacheableTest.Bar();
+         MatcherAssert.assertThat(
+             bar.get(),
+diff --git a/src/test/java/com/jcabi/aspects/ImmutableTest.java b/src/test/java/com/jcabi/aspects/ImmutableTest.java
+index 8332570c..a94303f2 100644
+--- a/src/test/java/com/jcabi/aspects/ImmutableTest.java
++++ b/src/test/java/com/jcabi/aspects/ImmutableTest.java
+@@ -50,64 +50,46 @@
+             "PMD.FinalFieldCouldBeStatic"
+         }
+     )
+-public final class ImmutableTest {
++final class ImmutableTest {
+ 
+-    /**
+-     * Immutable can catch mutable classes.
+-     */
+     @Test
+-    public void catchedMutableTypes() {
++    void catchedMutableTypes() {
+         Assertions.assertThrows(
+             IllegalStateException.class,
+             ImmutableTest.Mutable::new
+         );
+     }
+ 
+-    /**
+-     * ImmutabilityChecker can catch mutable classes with arrays.
+-     */
+     @Test
+-    public void catchedMutableTypesWithArrays() {
++    void catchedMutableTypesWithArrays() {
+         Assertions.assertThrows(
+             IllegalStateException.class,
+             ImmutableTest.MutableWithArray::new
+         );
+     }
+ 
+-    /**
+-     * Immutable can pass immutable classes.
+-     */
+     @Test
+-    public void passesImmutableObjects() {
++    void passesImmutableObjects() {
+         final Object obj = new ImmutableTest.TruelyImmutable(
+             new ImmutableTest.TruelyImmutableWithNonPrivateFields()
+         );
+     }
+ 
+-    /**
+-     * Immutable can pass immutable classes.
+-     */
+     @Test
+-    public void passesImmutableObjectsWithNonPrivateFields() {
++    void passesImmutableObjectsWithNonPrivateFields() {
+         new ImmutableTest.TruelyImmutableWithNonPrivateFields();
+     }
+ 
+-    /**
+-     * Immutable can catch mutable classes with interfaces.
+-     */
+     @Test
+-    public void catchesTypesMutableByClassInheritance() {
++    void catchesTypesMutableByClassInheritance() {
+         Assertions.assertThrows(
+             IllegalStateException.class,
+             ImmutableTest.MutableByInheritance::new
+         );
+     }
+ 
+-    /**
+-     * Informs version on error.
+-     */
+     @Test
+-    public void informsVersionOnError() {
++    void informsVersionOnError() {
+         MatcherAssert.assertThat(
+             Assertions.assertThrows(
+                 IllegalStateException.class,
+diff --git a/src/test/java/com/jcabi/aspects/JSR303Test.java b/src/test/java/com/jcabi/aspects/JSR303Test.java
+index 89430091..5b1b2983 100644
+--- a/src/test/java/com/jcabi/aspects/JSR303Test.java
++++ b/src/test/java/com/jcabi/aspects/JSR303Test.java
+@@ -51,90 +51,66 @@
+  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
+  */
+ @SuppressWarnings("PMD.TooManyMethods")
+-public final class JSR303Test {
++final class JSR303Test {
+     /**
+      * The test message.
+      */
+     private static final String OVERRIDEN_MSG = "this is a message";
+ 
+-    /**
+-     * NotNull can throw when invalid method parameters.
+-     */
+     @Test
+-    public void throwsWhenMethodParametersAreInvalid() {
++    void throwsWhenMethodParametersAreInvalid() {
+         Assertions.assertThrows(
+             ConstraintViolationException.class,
+             () -> new JSR303Test.Foo().foo(null)
+         );
+     }
+ 
+-    /**
+-     * NotNull can throw when regex doesn't match.
+-     */
+     @Test
+-    public void throwsWhenRegularExpressionDoesntMatch() {
++    void throwsWhenRegularExpressionDoesntMatch() {
+         Assertions.assertThrows(
+             ConstraintViolationException.class,
+             () -> new JSR303Test.Foo().foo("some text")
+         );
+     }
+ 
+-    /**
+-     * NotNull can pass for valid parameters.
+-     */
+     @Test
+-    public void passesWhenMethodParametersAreValid() {
++    void passesWhenMethodParametersAreValid() {
+         new JSR303Test.Foo().foo("123");
+     }
+ 
+-    /**
+-     * NotNull can validate method output.
+-     */
+     @Test
+-    public void validatesOutputForNonNull() {
++    void validatesOutputForNonNull() {
+         Assertions.assertThrows(
+             ConstraintViolationException.class,
+             () -> new JSR303Test.Foo().nullValue()
+         );
+     }
+ 
+-    /**
+-     * NotNull can ignore methods that return VOID.
+-     */
+     @Test
+-    public void ignoresVoidResponses() {
++    void ignoresVoidResponses() {
+         new JSR303Test.Foo().voidAlways();
+     }
+ 
+-    /**
+-     * Validates constructor parameters for directly invoked constructors.
+-     */
+     @Test
+     @Disabled
+-    public void validatesConstructorParameters() {
++    void validatesConstructorParameters() {
+         Assertions.assertThrows(
+             ConstraintViolationException.class,
+             () -> new JSR303Test.ConstructorValidation(null, null)
+         );
+     }
+ 
+-    /**
+-     * Validates constructor parameters for other invoked constructors.
+-     */
+     @Test
+     @Disabled
+-    public void validatesChainedConstructorParameters() {
++    void validatesChainedConstructorParameters() {
+         Assertions.assertThrows(
+             ConstraintViolationException.class,
+             () -> new JSR303Test.ConstructorValidation(null)
+         );
+     }
+ 
+-    /**
+-     * NotNull can override the message.
+-     */
+     @Test
+-    public void overridesMessage() {
++    void overridesMessage() {
+         MatcherAssert.assertThat(
+             Assertions.assertThrows(
+                 ConstraintViolationException.class,
+@@ -147,11 +123,8 @@ public void overridesMessage() {
+         );
+     }
+ 
+-    /**
+-     * Validator can skip a constraint rule.
+-     */
+     @Test
+-    public void skipsConstraintRule() {
++    void skipsConstraintRule() {
+         new JSR303Test.Bar().test("value");
+     }
+ 
+diff --git a/src/test/java/com/jcabi/aspects/LoggableTest.java b/src/test/java/com/jcabi/aspects/LoggableTest.java
+index 46c1d2d3..cfbf48e1 100644
+--- a/src/test/java/com/jcabi/aspects/LoggableTest.java
++++ b/src/test/java/com/jcabi/aspects/LoggableTest.java
+@@ -52,62 +52,42 @@
+  * @since 0.0.0
+  */
+ @SuppressWarnings({ "PMD.TooManyMethods", "PMD.AvoidUsingShortType" })
+-public final class LoggableTest {
++final class LoggableTest {
+     /**
+      * Foo toString result.
+      */
+     private static final transient String RESULT = "some text";
+ 
+-    /**
+-     * Loggable can log simple calls.
+-     */
+     @Test
+-    public void logsSimpleCall() {
++    void logsSimpleCall() {
+         new LoggableTest.Foo().revert("hello");
+     }
+ 
+-    /**
+-     * Loggable can ignore toString() methods.
+-     */
+     @Test
+-    public void ignoresToStringMethods() {
++    void ignoresToStringMethods() {
+         new LoggableTest.Foo().self();
+     }
+ 
+-    /**
+-     * Loggable can log static methods.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+-    public void logsStaticMethods() throws Exception {
++    void logsStaticMethods() throws Exception {
+         LoggableTest.Foo.text();
+     }
+ 
+-    /**
+-     * Loggable can ignore inherited methods.
+-     */
+     @Test
+-    public void doesntLogInheritedMethods() {
++    void doesntLogInheritedMethods() {
+         new LoggableTest.Foo().parentText();
+     }
+ 
+-    /**
+-     * Loggable can ignore some exceptions.
+-     */
+     @Test
+-    public void ignoresSomeExceptions() {
++    void ignoresSomeExceptions() {
+         Assertions.assertThrows(
+             IllegalStateException.class,
+             () -> new LoggableTest.Foo().doThrow()
+         );
+     }
+ 
+-    /**
+-     * Loggable can log duration with a specific time unit.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+-    public void logsDurationWithSpecifiedTimeUnit() throws Exception {
++    void logsDurationWithSpecifiedTimeUnit() throws Exception {
+         final StringWriter writer = new StringWriter();
+         Logger.getRootLogger().addAppender(
+             new WriterAppender(new SimpleLayout(), writer)
+@@ -119,11 +99,8 @@ public void logsDurationWithSpecifiedTimeUnit() throws Exception {
+         );
+     }
+ 
+-    /**
+-     * Loggable can log toString method.
+-     */
+     @Test
+-    public void logsToStringResult() {
++    void logsToStringResult() {
+         final StringWriter writer = new StringWriter();
+         Logger.getRootLogger().addAppender(
+             new WriterAppender(new SimpleLayout(), writer)
+@@ -135,11 +112,8 @@ public void logsToStringResult() {
+         );
+     }
+ 
+-    /**
+-     * Loggable can log byte array results.
+-     */
+     @Test
+-    public void logsByteArray() {
++    void logsByteArray() {
+         final StringWriter writer = new StringWriter();
+         Logger.getRootLogger().addAppender(
+             new WriterAppender(new SimpleLayout(), writer)
+@@ -163,11 +137,8 @@ public void logsByteArray() {
+         );
+     }
+ 
+-    /**
+-     * Loggable can log short array results.
+-     */
+     @Test
+-    public void logsShortArray() {
++    void logsShortArray() {
+         final StringWriter writer = new StringWriter();
+         Logger.getRootLogger().addAppender(
+             new WriterAppender(new SimpleLayout(), writer)
+@@ -191,12 +162,8 @@ public void logsShortArray() {
+         );
+     }
+ 
+-    /**
+-     * Loggable can log methods that specify their own logger name.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+-    public void logsWithExplicitLoggerName() throws Exception {
++    void logsWithExplicitLoggerName() throws Exception {
+         final StringWriter writer = new StringWriter();
+         Logger.getRootLogger().addAppender(
+             new WriterAppender(new PatternLayout("%t %c: %m%n"), writer)
+@@ -285,7 +252,7 @@ public String revert(final String text) {
+          * @return Some text
+          * @throws Exception If terminated
+          */
+-        @Loggable(precision = Tv.THREE)
++        @Loggable(precision = 3)
+         public static String logsDurationInSeconds() throws Exception {
+             TimeUnit.SECONDS.sleep(2L);
+             return LoggableTest.Foo.hiddenText();
+@@ -297,7 +264,7 @@ public static String logsDurationInSeconds() throws Exception {
+          */
+         @Loggable
+         public byte[] logsByteArray() {
+-            final byte[] bytes = new byte[Tv.TEN];
++            final byte[] bytes = new byte[10];
+             new Random().nextBytes(bytes);
+             return bytes;
+         }
+@@ -308,7 +275,7 @@ public byte[] logsByteArray() {
+          */
+         @Loggable
+         public short[] logsShortArray() {
+-            final short[] shorts = new short[Tv.TEN];
++            final short[] shorts = new short[10];
+             final Random random = new Random();
+             for (int idx = 0; idx < shorts.length; ++idx) {
+                 shorts[idx] = (short) random.nextInt();
+diff --git a/src/test/java/com/jcabi/aspects/RetryOnFailureTest.java b/src/test/java/com/jcabi/aspects/RetryOnFailureTest.java
+index cdbe8be6..df426ea7 100644
+--- a/src/test/java/com/jcabi/aspects/RetryOnFailureTest.java
++++ b/src/test/java/com/jcabi/aspects/RetryOnFailureTest.java
+@@ -40,13 +40,10 @@
+  * @since 0.0.0
+  */
+ @SuppressWarnings("PMD.DoNotUseThreads")
+-public final class RetryOnFailureTest {
++final class RetryOnFailureTest {
+ 
+-    /**
+-     * RetryOnFailure can force duplicate execution of the same method.
+-     */
+     @Test
+-    public void executesMethodManyTimes() {
++    void executesMethodManyTimes() {
+         final AtomicInteger count = new AtomicInteger();
+         new Runnable() {
+             @Override
+@@ -62,11 +59,8 @@ public void run() {
+         MatcherAssert.assertThat(count.get(), Matchers.greaterThan(0));
+     }
+ 
+-    /**
+-     * RetryOnFailure can retry when Error types are thrown.
+-     */
+     @Test
+-    public void retriesOnError() {
++    void retriesOnError() {
+         final AtomicInteger count = new AtomicInteger();
+         new Runnable() {
+             @Override
+diff --git a/src/test/java/com/jcabi/aspects/ScheduleWithFixedDelayTest.java b/src/test/java/com/jcabi/aspects/ScheduleWithFixedDelayTest.java
+index 4677de55..b994ae26 100644
+--- a/src/test/java/com/jcabi/aspects/ScheduleWithFixedDelayTest.java
++++ b/src/test/java/com/jcabi/aspects/ScheduleWithFixedDelayTest.java
+@@ -42,36 +42,27 @@
+  * @since 0.0.0
+  */
+ @SuppressWarnings("PMD.DoNotUseThreads")
+-public final class ScheduleWithFixedDelayTest {
++final class ScheduleWithFixedDelayTest {
+ 
+-    /**
+-     * ScheduleWithFixedDelay can run routine operations.
+-     * @throws Exception If something goes wrong
+-     */
+     @Test
+-    public void runsRoutineOperations() throws Exception {
++    void runsRoutineOperations() throws Exception {
+         final AtomicLong counter = new AtomicLong();
+         final ScheduleWithFixedDelayTest.Sample sample =
+             new ScheduleWithFixedDelayTest.Sample(counter);
+         TimeUnit.SECONDS.sleep(1L);
+         MatcherAssert.assertThat(counter.get(), Matchers.greaterThan(0L));
+         sample.close();
+-        TimeUnit.MILLISECONDS.sleep(Tv.TEN);
++        TimeUnit.MILLISECONDS.sleep(10);
+         MatcherAssert.assertThat(counter.get(), Matchers.lessThan(0L));
+     }
+ 
+-    /**
+-     * ScheduleWithFixedDelay can stop a scheduled run before the first
+-     * execution occurs.
+-     * @throws Exception If something goes wrong.
+-     */
+     @Test
+-    public void canStopBeforeFirstScheduledRun() throws Exception {
++    void canStopBeforeFirstScheduledRun() throws Exception {
+         final AtomicLong counter = new AtomicLong();
+         final ScheduleWithFixedDelayTest.LongDelaySample sample =
+             new ScheduleWithFixedDelayTest.LongDelaySample(counter);
+         sample.close();
+-        TimeUnit.MILLISECONDS.sleep(Tv.HUNDRED);
++        TimeUnit.MILLISECONDS.sleep(100);
+         MatcherAssert.assertThat(counter.get(), Matchers.is(0L));
+     }
+ 
+diff --git a/src/test/java/com/jcabi/aspects/TimeableTest.java b/src/test/java/com/jcabi/aspects/TimeableTest.java
+index 813050a8..935728a8 100644
+--- a/src/test/java/com/jcabi/aspects/TimeableTest.java
++++ b/src/test/java/com/jcabi/aspects/TimeableTest.java
+@@ -37,14 +37,10 @@
+  * Test case for {@link Timeable} annotation.
+  * @since 0.0.0
+  */
+-@SuppressWarnings("PMD.TestClassWithoutTestCases")
+-public final class TimeableTest {
++final class TimeableTest {
+ 
+-    /**
+-     * Timeable annotation can interrupt a long method.
+-     */
+     @Test
+-    public void interruptsLongRunningMethod() {
++    void interruptsLongRunningMethod() {
+         Assertions.assertThrows(
+             InterruptedException.class,
+             this::slow
+@@ -56,7 +52,7 @@ public void interruptsLongRunningMethod() {
+      * @throws Exception If terminated
+      */
+     @Timeable(limit = 1, unit = TimeUnit.MILLISECONDS)
+-    public void slow() throws Exception {
++    void slow() throws Exception {
+         TimeUnit.MINUTES.sleep(1L);
+     }
+ 
+diff --git a/src/test/java/com/jcabi/aspects/UnitedThrowTest.java b/src/test/java/com/jcabi/aspects/UnitedThrowTest.java
+index d3b569a9..e546b476 100644
+--- a/src/test/java/com/jcabi/aspects/UnitedThrowTest.java
++++ b/src/test/java/com/jcabi/aspects/UnitedThrowTest.java
+@@ -40,57 +40,42 @@
+  * Tests for {@link UnitedThrow}.
+  * @since 0.0.0
+  */
+-public final class UnitedThrowTest {
++final class UnitedThrowTest {
+ 
+-    /**
+-     * UnitedThrow can rethrow exception that is a subclass of declared one.
+-     */
+     @Test
+-    public void rethrowsDeclaredException() {
++    void rethrowsDeclaredException() {
+         Assertions.assertThrows(
+             IOException.class,
+             () -> new UnitedThrowTest.Thrower().file()
+         );
+     }
+ 
+-    /**
+-     * UnitedThrow can throw first declared exception.
+-     */
+     @Test
+-    public void throwsDeclaredException() {
++    void throwsDeclaredException() {
+         Assertions.assertThrows(
+             IOException.class,
+             () -> new UnitedThrowTest.Thrower().save()
+         );
+     }
+ 
+-    /**
+-     * UnitedThrow can throw configured exception.
+-     */
+     @Test
+-    public void throwsConfiguredException() {
++    void throwsConfiguredException() {
+         Assertions.assertThrows(
+             IOException.class,
+             () -> new UnitedThrowTest.Thrower().multiple()
+         );
+     }
+ 
+-    /**
+-     * UnitedThrow can throw IllegalStateException when no exception declared.
+-     */
+     @Test
+-    public void throwsIllegalStateException() {
++    void throwsIllegalStateException() {
+         Assertions.assertThrows(
+             IllegalStateException.class,
+             () -> new UnitedThrowTest.Thrower().def()
+         );
+     }
+ 
+-    /**
+-     * UnitedThrow can encapsulate thrown exception inside declared one.
+-     */
+     @Test
+-    public void throwsOriginalExceptionEncapsulatedInsideDeclared() {
++    void throwsOriginalExceptionEncapsulatedInsideDeclared() {
+         try {
+             new UnitedThrowTest.Thrower().encapsulate();
+         } catch (final IOException ex) {
+diff --git a/src/test/java/com/jcabi/aspects/aj/ImmutabilityCheckerTest.java b/src/test/java/com/jcabi/aspects/aj/ImmutabilityCheckerTest.java
+index 8e914265..e4bd3d88 100644
+--- a/src/test/java/com/jcabi/aspects/aj/ImmutabilityCheckerTest.java
++++ b/src/test/java/com/jcabi/aspects/aj/ImmutabilityCheckerTest.java
+@@ -40,22 +40,16 @@
+  *
+  * @since 0.7.8
+  */
+-public final class ImmutabilityCheckerTest {
+-    /**
+-     * ImmutabilityChecker should check recursive classes.
+-     */
++final class ImmutabilityCheckerTest {
+     @Test
+-    public void checksRecursiveClasses() {
++    void checksRecursiveClasses() {
+         MatcherAssert.assertThat(
+             new ImmutabilityCheckerTest.Recursive(null).getNext(), Matchers.nullValue()
+         );
+     }
+ 
+-    /**
+-     * ImmutabilityChecker should fail on non final fields.
+-     */
+     @Test
+-    public void failsOnNonFinalFields() {
++    void failsOnNonFinalFields() {
+         Assertions.assertThrows(
+             IllegalStateException.class,
+             () -> new ImmutabilityCheckerTest.NonFinal("test")
+diff --git a/src/test/java/com/jcabi/aspects/aj/MethodSchedulerTest.java b/src/test/java/com/jcabi/aspects/aj/MethodSchedulerTest.java
+index 17235678..09a69d60 100644
+--- a/src/test/java/com/jcabi/aspects/aj/MethodSchedulerTest.java
++++ b/src/test/java/com/jcabi/aspects/aj/MethodSchedulerTest.java
+@@ -30,7 +30,6 @@
+ package com.jcabi.aspects.aj;
+ 
+ import com.jcabi.aspects.ScheduleWithFixedDelay;
+-import com.jcabi.aspects.Tv;
+ import java.io.Closeable;
+ import java.util.concurrent.TimeUnit;
+ import org.hamcrest.MatcherAssert;
+@@ -43,26 +42,18 @@
+  * @since 0.7.22
+  */
+ @SuppressWarnings("PMD.DoNotUseThreads")
+-public final class MethodSchedulerTest {
++final class MethodSchedulerTest {
+ 
+-    /**
+-     * MethodScheduler should wait for the task to finish.
+-     * @throws Exception When there is a problem.
+-     */
+     @Test
+-    public void shortRunningTaskShouldBeAllowedToFinish() throws Exception {
++    void shortRunningTaskShouldBeAllowedToFinish() throws Exception {
+         final MethodSchedulerTest.ShortRun target = new MethodSchedulerTest.ShortRun();
+-        TimeUnit.SECONDS.sleep(Tv.FIVE);
++        TimeUnit.SECONDS.sleep(5);
+         target.close();
+         MatcherAssert.assertThat(target.finished, Matchers.equalTo(true));
+     }
+ 
+-    /**
+-     * MethodScheduler should interrupt long running task.
+-     * @throws Exception When there is a problem.
+-     */
+     @Test
+-    public void interruptLongRunningTask() throws Exception {
++    void interruptLongRunningTask() throws Exception {
+         final MethodSchedulerTest.LongRun target = new MethodSchedulerTest.LongRun();
+         target.close();
+         MatcherAssert.assertThat(target.finished, Matchers.equalTo(false));
+@@ -101,7 +92,7 @@ public void close() {
+      * @since 0.7.22
+      */
+     @ScheduleWithFixedDelay(unit = TimeUnit.NANOSECONDS,
+-        await = Tv.TEN, awaitUnit = TimeUnit.SECONDS)
++        await = 10, awaitUnit = TimeUnit.SECONDS)
+     private static class LongRun implements Runnable, Closeable {
+         /**
+          * Have we finished?
+@@ -111,7 +102,6 @@ private static class LongRun implements Runnable, Closeable {
+         @Override
+         public void run() {
+             try {
+-                // @checkstyle MagicNumber (1 line)
+                 TimeUnit.SECONDS.sleep(30L);
+                 this.finished = true;
+             } catch (final InterruptedException ex) {
+diff --git a/src/test/java/com/jcabi/aspects/aj/MnemosTest.java b/src/test/java/com/jcabi/aspects/aj/MnemosTest.java
+index 56fc4f6b..8cf2537c 100644
+--- a/src/test/java/com/jcabi/aspects/aj/MnemosTest.java
++++ b/src/test/java/com/jcabi/aspects/aj/MnemosTest.java
+@@ -38,18 +38,15 @@
+  *
+  * @since 0.0.0
+  */
+-public final class MnemosTest {
++final class MnemosTest {
+ 
+     /**
+      * The representation of a empty array.
+      */
+     private static final transient String EMPTY_ARRAY = "[]";
+ 
+-    /**
+-     * Mnemos can build a string from an object.
+-     */
+     @Test
+-    public void buildsTextFromObject() {
++    void buildsTextFromObject() {
+         final Object[][] pairs = {
+             new Object[] {1, "1"},
+             new Object[] {1.43f, "1.43"},
+@@ -63,11 +60,8 @@ public void buildsTextFromObject() {
+         this.validateText(pairs);
+     }
+ 
+-    /**
+-     * Mnemos can handle toxic objects gracefully.
+-     */
+     @Test
+-    public void handlesToxicObjectsGracefully() {
++    void handlesToxicObjectsGracefully() {
+         MatcherAssert.assertThat(
+             Mnemos.toText(
+                 new Object() {
+@@ -84,11 +78,8 @@ public String toString() {
+         );
+     }
+ 
+-    /**
+-     * Mnemos can build a string from an int array.
+-     */
+     @Test
+-    public void buildsTextFromIntArray() {
++    void buildsTextFromIntArray() {
+         final Object[][] pairs = {
+             new Object[] {new int[0], MnemosTest.EMPTY_ARRAY},
+             new Object[] {new int[] {1}, "[1]"},
+@@ -97,11 +88,8 @@ public void buildsTextFromIntArray() {
+         this.validateText(pairs);
+     }
+ 
+-    /**
+-     * Mnemos can build a string from an long array.
+-     */
+     @Test
+-    public void buildsTextFromLongArray() {
++    void buildsTextFromLongArray() {
+         final Object[][] pairs = {
+             new Object[] {new long[0], MnemosTest.EMPTY_ARRAY},
+             new Object[] {new long[] {2L}, "[2]"},
+@@ -110,11 +98,8 @@ public void buildsTextFromLongArray() {
+         this.validateText(pairs);
+     }
+ 
+-    /**
+-     * Mnemos can build a string from an float array.
+-     */
+     @Test
+-    public void buildsTextFromFloatArray() {
++    void buildsTextFromFloatArray() {
+         final Object[][] pairs = {
+             new Object[] {new float[0], MnemosTest.EMPTY_ARRAY},
+             new Object[] {new float[] {1.01f}, "[1.01]"},
+@@ -126,11 +111,8 @@ public void buildsTextFromFloatArray() {
+         this.validateText(pairs);
+     }
+ 
+-    /**
+-     * Mnemos can build a string from an double array.
+-     */
+     @Test
+-    public void buildsTextFromDoubleArray() {
++    void buildsTextFromDoubleArray() {
+         final Object[][] pairs = {
+             new Object[] {new double[0], MnemosTest.EMPTY_ARRAY},
+             new Object[] {new double[] {2.01}, "[2.01]"},
+@@ -142,11 +124,8 @@ public void buildsTextFromDoubleArray() {
+         this.validateText(pairs);
+     }
+ 
+-    /**
+-     * Mnemos can build a string from an char array.
+-     */
+     @Test
+-    public void buildsTextFromCharArray() {
++    void buildsTextFromCharArray() {
+         final Object[][] pairs = {
+             new Object[] {new char[0], MnemosTest.EMPTY_ARRAY},
+             new Object[] {new char[] {'a'}, "[a]"},
+@@ -155,11 +134,8 @@ public void buildsTextFromCharArray() {
+         this.validateText(pairs);
+     }
+ 
+-    /**
+-     * Mnemos can build a string from an boolean array.
+-     */
+     @Test
+-    public void buildsTextFromBooleanArray() {
++    void buildsTextFromBooleanArray() {
+         final Object[][] pairs = {
+             new Object[] {new boolean[0], MnemosTest.EMPTY_ARRAY},
+             new Object[] {new boolean[] {true}, "[true]"},
+diff --git a/src/test/java/com/jcabi/aspects/aj/NamedThreadsTest.java b/src/test/java/com/jcabi/aspects/aj/NamedThreadsTest.java
+index b5896366..bad9cc15 100644
+--- a/src/test/java/com/jcabi/aspects/aj/NamedThreadsTest.java
++++ b/src/test/java/com/jcabi/aspects/aj/NamedThreadsTest.java
+@@ -46,13 +46,11 @@
+  *
+  * @since 0.22
+  */
+-public final class NamedThreadsTest {
+-    /**
+-     * Version test.
+-     */
++final class NamedThreadsTest {
++
+     @Test
+     @SuppressWarnings("PMD.DoNotUseThreads")
+-    public void testVersion() {
++    void testVersion() {
+         final Logger root = LogManager.getRootLogger();
+         final Level level = root.getLevel();
+         root.setLevel(Level.INFO);
+diff --git a/src/test/java/com/jcabi/aspects/aj/ParallelizerTest.java b/src/test/java/com/jcabi/aspects/aj/ParallelizerTest.java
+index 85e1d671..5b58aa96 100644
+--- a/src/test/java/com/jcabi/aspects/aj/ParallelizerTest.java
++++ b/src/test/java/com/jcabi/aspects/aj/ParallelizerTest.java
+@@ -30,7 +30,6 @@
+ package com.jcabi.aspects.aj;
+ 
+ import com.jcabi.aspects.Parallel;
+-import com.jcabi.aspects.Tv;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import org.hamcrest.MatcherAssert;
+ import org.hamcrest.Matchers;
+@@ -43,16 +42,13 @@
+  * @since 0.10
+  */
+ @SuppressWarnings("PMD.DoNotUseThreads")
+-public final class ParallelizerTest {
+-    /**
+-     * Method should execute in multiple threads.
+-     */
++final class ParallelizerTest {
+     @Test
+-    public void executesInParallel() {
+-        final AtomicInteger count = new AtomicInteger(Tv.TEN);
++    void executesInParallel() {
++        final AtomicInteger count = new AtomicInteger(10);
+         new Runnable() {
+             @Override
+-            @Parallel(threads = Tv.TEN)
++            @Parallel(threads = 10)
+             public void run() {
+                 count.decrementAndGet();
+             }
+@@ -60,16 +56,13 @@ public void run() {
+         MatcherAssert.assertThat(count.get(), Matchers.equalTo(0));
+     }
+ 
+-    /**
+-     * Method should have exception propagated.
+-     */
+     @Test
+-    public void throwsCatchedException() {
++    void throwsCatchedException() {
+         Assertions.assertThrows(
+             Exception.class,
+             () -> new Runnable() {
+                 @Override
+-                @Parallel(threads = Tv.TEN)
++                @Parallel(threads = 10)
+                 public void run() {
+                     throw new IllegalArgumentException();
+                 }
+diff --git a/src/test/java/com/jcabi/aspects/aj/QuietExceptionsLoggerTest.java b/src/test/java/com/jcabi/aspects/aj/QuietExceptionsLoggerTest.java
+index 42bc4e5f..0bbdd0b4 100644
+--- a/src/test/java/com/jcabi/aspects/aj/QuietExceptionsLoggerTest.java
++++ b/src/test/java/com/jcabi/aspects/aj/QuietExceptionsLoggerTest.java
+@@ -45,13 +45,9 @@
+     (
+         { "PMD.AvoidCatchingThrowable", "PMD.AvoidThrowingRawExceptionTypes" }
+     )
+-public final class QuietExceptionsLoggerTest {
+-    /**
+-     * Call method that doesn't throw exception.
+-     * @throws Throwable In case of error.
+-     */
++final class QuietExceptionsLoggerTest {
+     @Test
+-    public void withoutException() throws Throwable {
++    void withoutException() throws Throwable {
+         final ProceedingJoinPoint point = Mockito
+             .mock(ProceedingJoinPoint.class);
+         final MethodSignature signature = Mockito.mock(MethodSignature.class);
+@@ -64,12 +60,8 @@ public void withoutException() throws Throwable {
+         Mockito.verify(point).proceed();
+     }
+ 
+-    /**
+-     * Call method that throws exception.
+-     * @throws Throwable In case of error.
+-     */
+     @Test
+-    public void exception() throws Throwable {
++    void exception() throws Throwable {
+         final ProceedingJoinPoint point = Mockito
+             .mock(ProceedingJoinPoint.class);
+         Mockito.when(point.proceed()).thenThrow(new Exception());
+@@ -84,11 +76,8 @@ public void exception() throws Throwable {
+         Mockito.verify(point).proceed();
+     }
+ 
+-    /**
+-     * Throws exception when used with method that does not return void.
+-     */
+     @Test
+-    public void throwsWhenUsedWithNonVoidReturnValue() {
++    void throwsWhenUsedWithNonVoidReturnValue() {
+         final ProceedingJoinPoint point = Mockito
+             .mock(ProceedingJoinPoint.class);
+         final MethodSignature signature = Mockito.mock(MethodSignature.class);
+diff --git a/src/test/java/com/jcabi/aspects/aj/RepeaterTest.java b/src/test/java/com/jcabi/aspects/aj/RepeaterTest.java
+index 6981964c..eeb3059a 100644
+--- a/src/test/java/com/jcabi/aspects/aj/RepeaterTest.java
++++ b/src/test/java/com/jcabi/aspects/aj/RepeaterTest.java
+@@ -30,7 +30,6 @@
+ package com.jcabi.aspects.aj;
+ 
+ import com.jcabi.aspects.RetryOnFailure;
+-import com.jcabi.aspects.Tv;
+ import java.util.concurrent.Callable;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import org.hamcrest.MatcherAssert;
+@@ -43,20 +42,17 @@
+  *
+  * @since 0.1.10
+  */
+-public final class RepeaterTest {
++final class RepeaterTest {
+ 
+-    /**
+-     * Repeater should retry a method that fails.
+-     */
+     @Test
+-    public void retriesAfterFailure() {
++    void retriesAfterFailure() {
+         final AtomicInteger calls = new AtomicInteger(0);
+         MatcherAssert.assertThat(
+             new Callable<Boolean>() {
+                 @Override
+                 @RetryOnFailure(verbose = false)
+                 public Boolean call() {
+-                    if (calls.get() < Tv.THREE - 1) {
++                    if (calls.get() < 3 - 1) {
+                         calls.incrementAndGet();
+                         throw new IllegalStateException();
+                     }
+@@ -65,14 +61,11 @@ public Boolean call() {
+             } .call(),
+             Matchers.equalTo(true)
+         );
+-        MatcherAssert.assertThat(calls.get(), Matchers.equalTo(Tv.THREE - 1));
++        MatcherAssert.assertThat(calls.get(), Matchers.equalTo(3 - 1));
+     }
+ 
+-    /**
+-     * Repeater should stop method retries if it exceeds a threshold.
+-     */
+     @Test
+-    public void stopsRetryingAfterNumberOfAttempts() {
++    void stopsRetryingAfterNumberOfAttempts() {
+         final AtomicInteger calls = new AtomicInteger(0);
+         Assertions.assertThrows(
+             IllegalStateException.class,
+@@ -80,7 +73,7 @@ public void stopsRetryingAfterNumberOfAttempts() {
+                 @Override
+                 @RetryOnFailure(verbose = false)
+                 public Boolean call() {
+-                    if (calls.get() < Tv.THREE) {
++                    if (calls.get() < 3) {
+                         calls.incrementAndGet();
+                         throw new IllegalStateException();
+                     }
+@@ -90,12 +83,8 @@ public Boolean call() {
+         );
+     }
+ 
+-    /**
+-     * Repeater should retry if an exception specified to be
+-     * retried is thrown from the method.
+-     */
+     @Test
+-    public void onlyRetryExceptionsWhichAreSpecified() {
++    void onlyRetryExceptionsWhichAreSpecified() {
+         final AtomicInteger calls = new AtomicInteger(0);
+         MatcherAssert.assertThat(
+             new Callable<Boolean>() {
+@@ -105,7 +94,7 @@ public void onlyRetryExceptionsWhichAreSpecified() {
+                     verbose = false
+                 )
+                 public Boolean call() {
+-                    if (calls.get() < Tv.THREE - 1) {
++                    if (calls.get() < 3 - 1) {
+                         calls.incrementAndGet();
+                         throw new ArrayIndexOutOfBoundsException();
+                     }
+@@ -114,15 +103,11 @@ public Boolean call() {
+             } .call(),
+             Matchers.equalTo(true)
+         );
+-        MatcherAssert.assertThat(calls.get(), Matchers.equalTo(Tv.THREE - 1));
++        MatcherAssert.assertThat(calls.get(), Matchers.equalTo(3 - 1));
+     }
+ 
+-    /**
+-     * Repeater should throw the exception if it is
+-     * not specified to be retried.
+-     */
+     @Test
+-    public void throwExceptionsWhichAreNotSpecifiedAsRetry() {
++    void throwExceptionsWhichAreNotSpecifiedAsRetry() {
+         final AtomicInteger calls = new AtomicInteger(0);
+         try {
+             Assertions.assertThrows(
+@@ -131,7 +116,7 @@ public void throwExceptionsWhichAreNotSpecifiedAsRetry() {
+                     @Override
+                     @RetryOnFailure(types = IllegalArgumentException.class, verbose = false)
+                     public Boolean call() {
+-                        if (calls.get() < Tv.THREE - 1) {
++                        if (calls.get() < 3 - 1) {
+                             calls.incrementAndGet();
+                             throw new ArrayIndexOutOfBoundsException();
+                         }
+@@ -144,19 +129,15 @@ public Boolean call() {
+         }
+     }
+ 
+-    /**
+-     * Repeater should retry even if the exception is a
+-     * subtype of the class specified to be retried.
+-     */
+     @Test
+-    public void retryExceptionsWhichAreSubTypesOfTheExceptionsSpecified() {
++    void retryExceptionsWhichAreSubTypesOfTheExceptionsSpecified() {
+         final AtomicInteger calls = new AtomicInteger(0);
+         MatcherAssert.assertThat(
+             new Callable<Boolean>() {
+                 @Override
+                 @RetryOnFailure(verbose = false, types = IndexOutOfBoundsException.class)
+                 public Boolean call() {
+-                    if (calls.get() < Tv.THREE - 1) {
++                    if (calls.get() < 3 - 1) {
+                         calls.incrementAndGet();
+                         throw new ArrayIndexOutOfBoundsException();
+                     }
+@@ -165,6 +146,6 @@ public Boolean call() {
+             } .call(),
+             Matchers.equalTo(true)
+         );
+-        MatcherAssert.assertThat(calls.get(), Matchers.equalTo(Tv.THREE - 1));
++        MatcherAssert.assertThat(calls.get(), Matchers.equalTo(3 - 1));
+     }
+ }
+diff --git a/src/test/java/com/jcabi/aspects/version/VersionTest.java b/src/test/java/com/jcabi/aspects/version/VersionTest.java
+index 84b5d661..80699d2a 100644
+--- a/src/test/java/com/jcabi/aspects/version/VersionTest.java
++++ b/src/test/java/com/jcabi/aspects/version/VersionTest.java
+@@ -37,14 +37,10 @@
+  * Unit tests for {@link Version}.
+  * @since 0.23
+  */
+-public final class VersionTest {
++final class VersionTest {
+ 
+-    /**
+-     * Version.CURRENT can contain actual project version and not a
+-     * "${project.version}" placeholder.
+-     */
+     @Test
+-    public void containsCorrectVersionNumber() {
++    void containsCorrectVersionNumber() {
+         MatcherAssert.assertThat(
+             Version.CURRENT.projectVersion(),
+             Matchers.not(
+@@ -53,12 +49,8 @@ public void containsCorrectVersionNumber() {
+         );
+     }
+ 
+-    /**
+-     * Version.CURRENT can contain actual build number and not a
+-     * "${buildNumber}" placeholder.
+-     */
+     @Test
+-    public void containsCorrectBuildNumber() {
++    void containsCorrectBuildNumber() {
+         MatcherAssert.assertThat(
+             Version.CURRENT.buildNumber(),
+             Matchers.not(

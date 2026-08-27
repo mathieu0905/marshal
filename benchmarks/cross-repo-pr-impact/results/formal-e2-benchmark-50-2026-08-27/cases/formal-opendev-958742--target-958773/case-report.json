@@ -1,0 +1,104 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5100,
+    "case_id": "formal-opendev-958742",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T18:34:27.842269Z",
+  "blind_prediction_created_at": "2026-08-26T18:34:16.814855Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-958742",
+  "case_id": "formal-opendev-958742--target-958773",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/heat"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T18:34:27.848626Z",
+  "mechanism": "oslo.service 4.3.0 removes the private oslo_service.backend.threading package path used by Heat, so importing Heat's engine service during target test discovery fails",
+  "repair_template": "replace the removed private dependency import with oslo.service's public threadgroup API and initialize the test backend explicitly",
+  "replay": {
+    "catalog_source_snapshot_commit": "91d4d40cda062c036d4e42390e5d9d032153a6f0",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 100,
+      "A2": 0
+    },
+    "failure_signature": "ModuleNotFoundError: No module named 'oslo_service.backend.threading'",
+    "installed_source_versions": {
+      "A0": "4.2.2",
+      "A1": "4.3.0",
+      "A2": "4.3.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "91d4d40cda062c036d4e42390e5d9d032153a6f0",
+    "source_head_commit": "be09307c3c30442cdca87d918a0004dce258db65",
+    "source_versions": {
+      "A0": "4.2.2",
+      "A1": "4.3.0",
+      "A2": "4.3.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "7a9db22063b9dd654770cf16ca2bd8bb6f387aa8",
+    "target_test_path": "heat/tests/engine/service/test_service_engine.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "heat.tests.engine.service.test_service_engine"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-958742--target-958773",
+    "check_position_found": true,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "heat/engine/service.py",
+      "heat/tests/common.py",
+      "heat/tests/engine/service/test_service_engine.py"
+    ],
+    "mean_reciprocal_rank": 0.3333333333333333,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "doc/source/templates/index.rst",
+      "heat/engine/clients/os/neutron/neutron_constraints.py",
+      "heat/engine/constraint/common_constraints.py",
+      "heat/engine/resources/openstack/neutron/taas/tap_service.py",
+      "heat/engine/service.py"
+    ],
+    "rank": 3,
+    "recall_at_1": 0.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "openstack/heat"
+  },
+  "semantic_review": {
+    "a1_failure": "With oslo.service 4.3.0 installed against the unchanged opening-cutoff Heat snapshot, the pre-existing service-engine command fails during discovery because heat.engine.service imports the removed oslo_service.backend.threading path. With 4.2.2 the command runs 13 tests successfully, and the exact target patch restores all 13 under 4.3.0. The exclusive stable signature is ModuleNotFoundError: No module named 'oslo_service.backend.threading'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes proving oslo.service 4.2.2/4.3.0/4.3.0, patch applicability, and all arm logs. Every arm used the same pre-existing stestr selector; A0 and A2 ran all 13 selected tests, while A1 failed at target-module discovery on the removed dependency path. The patch deletes or skips no tests.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, oslo.service 4.2.2 to 4.3.0; version 4.3 removes the private backend.threading module path while retaining threadgroup through a public import.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-958742-target-patches-2026-08-27/958773.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Heat snapshot, changes production code to import the public oslo_service.threadgroup API, and explicitly initializes the threading backend in the existing test base. Its tox lint adjustment follows the new import ordering; no target test is deleted, skipped, or replaced."
+  },
+  "source_change_family": "opendev-change-958742-opening",
+  "status": "case_ready_for_formal_pool"
+}

@@ -1,0 +1,45 @@
+diff --git a/docker/base/apt_preferences.debian b/docker/base/apt_preferences.debian
+index 7b5d463..8067069 100644
+--- a/docker/base/apt_preferences.debian
++++ b/docker/base/apt_preferences.debian
+@@ -1,5 +1,5 @@
+ Package: rabbitmq-server
+-Pin: version 3.10.*
++Pin: version 3.11.*
+ Pin-Priority: 1000
+ 
+ Package: erlang*
+diff --git a/docker/base/apt_preferences.ubuntu b/docker/base/apt_preferences.ubuntu
+index 8e6a907..81e6516 100644
+--- a/docker/base/apt_preferences.ubuntu
++++ b/docker/base/apt_preferences.ubuntu
+@@ -1,5 +1,5 @@
+ Package: rabbitmq-server
+-Pin: version 3.10.*
++Pin: version 3.11.*
+ Pin-Priority: 1000
+ 
+ Package: erlang*
+diff --git a/docker/rabbitmq/Dockerfile.j2 b/docker/rabbitmq/Dockerfile.j2
+index 93d5245..c17cf0a 100644
+--- a/docker/rabbitmq/Dockerfile.j2
++++ b/docker/rabbitmq/Dockerfile.j2
+@@ -16,7 +16,7 @@
+ 
+     {% set rabbitmq_packages = [
+         'erlang-25.*',
+-        'rabbitmq-server-3.10.*'
++        'rabbitmq-server-3.11.*'
+     ] %}
+ 
+ {% elif base_package_type == 'deb' %}
+diff --git a/releasenotes/notes/rabbitmq-3-11-3b9ae3fc33ed4042.yaml b/releasenotes/notes/rabbitmq-3-11-3b9ae3fc33ed4042.yaml
+new file mode 100644
+index 0000000..508403d
+--- /dev/null
++++ b/releasenotes/notes/rabbitmq-3-11-3b9ae3fc33ed4042.yaml
+@@ -0,0 +1,4 @@
++---
++upgrade:
++  - |
++    RabbitMQ version has been updated to 3.11.

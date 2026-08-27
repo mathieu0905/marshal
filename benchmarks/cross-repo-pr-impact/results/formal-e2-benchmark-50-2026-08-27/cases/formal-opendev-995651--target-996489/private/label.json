@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-995651",
+  "expected_check_paths": [
+    "manila/coordination.py",
+    "manila/tests/test_coordination.py"
+  ],
+  "mechanism": "a newly constrained tooz version passes shared and timeout arguments to target lock implementations whose old signatures do not accept them",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-995651--target-996489",
+  "repair_template": "extend target lock implementation and test-double signatures to match the changed dependency interface",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff target and tooz 9.0.0 installed, three of six tests fail because tooz passes blocking, shared, and timeout to the old Manila Lock.acquire and MockToozLock.acquire signatures; the selected MockToozLock TypeError is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff production and test code, maintainer target diff, installed-version probes, identical three-arm stestr command, and all A0/A1/A2 logs.",
+    "source_effect": "The opening source diff changes the sole tooz pin from 8.1.0 to 9.0.0 in upper-constraints.txt.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/996489.patch",
+    "target_repair": "The maintainer extends both the production lock wrapper and existing test double to accept shared and timeout. A2 applies only that patch to the cutoff target, retains tooz 9.0.0, and restores all six tests without deleting or skipping any test."
+  },
+  "source_change_family": "opendev-change-995651-opening",
+  "target_repository": "openstack/manila",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}

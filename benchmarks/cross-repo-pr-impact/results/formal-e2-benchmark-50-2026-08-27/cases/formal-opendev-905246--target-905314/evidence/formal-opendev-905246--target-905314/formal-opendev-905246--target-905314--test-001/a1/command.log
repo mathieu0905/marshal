@@ -1,0 +1,95 @@
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+2026-08-27 01:03:41.168 2272599 INFO oslo_service.periodic_task [None req-0ecf21c6-cb70-45a0-b870-e895781f093e fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - - -] Skipping periodic task _discover_hosts_in_cells because its interval is negative[00m
+2026-08-27 01:03:41.196 2272599 ERROR stevedore.extension [None req-0ecf21c6-cb70-45a0-b870-e895781f093e fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - - -] Could not load 'oslo_cache.memcache_pool': No module named 'memcache': ModuleNotFoundError: No module named 'memcache'[00m
+{0} nova.tests.unit.limit.test_local.TestLocalLimits.test_enforce_api_limit_metadata [0.057819s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/nova/tests/unit/limit/test_local.py", line 43, in test_enforce_api_limit_metadata
+    local_limit.enforce_api_limit(local_limit.SERVER_METADATA_ITEMS, 128)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/nova/limit/local.py", line 132, in enforce_api_limit
+    enforcer = limit.Enforcer(always_zero_usage)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 75, in __init__
+    self.model = self._get_model_impl(usage_callback, cache=cache)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 86, in _get_model_impl
+    return impl(usage_callback, cache=cache)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 198, in __init__
+    self._utils = _EnforcerUtils(cache=cache)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 268, in __init__
+    raise ValueError("endpoint_id is not configured")
+
+    ValueError: endpoint_id is not configured
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 01:03:41,733 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 01:03:41,733 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 01:03:41,734 WARNING [oslo_policy.policy] Policy Rules ['os_compute_api:extensions', 'os_compute_api:os-floating-ip-pools', 'os_compute_api:os-quota-sets:defaults', 'os_compute_api:os-availability-zone:list', 'os_compute_api:limits', 'project_member_api', 'project_reader_api', 'project_member_or_admin', 'project_reader_or_admin', 'os_compute_api:limits:other_project', 'os_compute_api:os-lock-server:unlock:unlock_override', 'os_compute_api:servers:create:zero_disk_flavor', 'compute:servers:resize:cross_cell', 'os_compute_api:os-shelve:unshelve_to_host'] specified in policy files are the same as the defaults provided by the service. You can remove these rules from policy files which will make maintenance easier. You can detect these redundant rules by ``oslopolicy-list-redundant`` tool also.
+
+
+No tests were successful during the run
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+nova.tests.unit.limit.test_local.TestLocalLimits.test_enforce_api_limit_metadata
+--------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/nova/tests/unit/limit/test_local.py", line 43, in test_enforce_api_limit_metadata
+    local_limit.enforce_api_limit(local_limit.SERVER_METADATA_ITEMS, 128)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/nova/limit/local.py", line 132, in enforce_api_limit
+    enforcer = limit.Enforcer(always_zero_usage)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 75, in __init__
+    self.model = self._get_model_impl(usage_callback, cache=cache)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 86, in _get_model_impl
+    return impl(usage_callback, cache=cache)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 198, in __init__
+    self._utils = _EnforcerUtils(cache=cache)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-905246-905314-v1-2026-08-27/replay-work/formal-opendev-905246--target-905314/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 268, in __init__
+    raise ValueError("endpoint_id is not configured")
+
+    ValueError: endpoint_id is not configured
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 01:03:41,733 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 01:03:41,733 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 01:03:41,734 WARNING [oslo_policy.policy] Policy Rules ['os_compute_api:extensions', 'os_compute_api:os-floating-ip-pools', 'os_compute_api:os-quota-sets:defaults', 'os_compute_api:os-availability-zone:list', 'os_compute_api:limits', 'project_member_api', 'project_reader_api', 'project_member_or_admin', 'project_reader_or_admin', 'os_compute_api:limits:other_project', 'os_compute_api:os-lock-server:unlock:unlock_override', 'os_compute_api:servers:create:zero_disk_flavor', 'compute:servers:resize:cross_cell', 'os_compute_api:os-shelve:unshelve_to_host'] specified in policy files are the same as the defaults provided by the service. You can remove these rules from policy files which will make maintenance easier. You can detect these redundant rules by ``oslopolicy-list-redundant`` tool also.
+
+
+
+======
+Totals
+======
+Ran: 1 tests in 0.0578 sec.
+ - Passed: 0
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 0.0578 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.057819

@@ -1,0 +1,53 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "candidate_id": "formal-opendev-862167",
+  "case_id": "formal-e2-002",
+  "contract_mode": "removed_reference_signature",
+  "contract_token": "glance_show_multiple_locations",
+  "eligible": true,
+  "quality": 28,
+  "replayed_at": "2026-08-26T04:29:56.042097Z",
+  "revealed_at": "2026-08-26T04:19:15.423750Z",
+  "selected_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 1,
+    "target_head": 0
+  },
+  "signature_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 1,
+    "target_head": 0
+  },
+  "source_base_commit": "fef2375ea19450dcd3669eb7aba553903b9e2eea",
+  "source_change": 862167,
+  "source_head_commit": "6b6ece2bd9e597cb4d7d55d633aa1618da8650d6",
+  "source_path": "inventory/group_vars/all/glance.yml",
+  "source_repository": "openstack/openstack-ansible",
+  "source_signature": "glance_show_multiple_locations: \"{{ (glance_default_store == 'rbd') or (horizon_images_upload_mode == 'direct') }}\"",
+  "source_subject": "Do not enable glance_show_multiple_locations",
+  "target_base_commit": "504e641ed41c4447c0341f705a0aeb24c4069273",
+  "target_change": 862171,
+  "target_head_commit": "5bc252de44343f0fd38782f9be5a89fbdef28f8b",
+  "target_path": "defaults/main.yml",
+  "target_repository": "openstack/openstack-ansible-os_glance",
+  "target_signature": "glance_cors_allowed_origin: \"{{ (glance_show_multiple_locations | bool) | ternary(openstack_service_publicuri_proto | default('http') + '://' + external_lb_vip_address, None) }}\"",
+  "target_subject": "Add external_lb_vip_address to glance_cors_allowed_origin by default",
+  "token_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 2,
+    "target_head": 1
+  },
+  "urls": {
+    "source_base": "https://opendev.org/openstack/openstack-ansible/raw/commit/fef2375ea19450dcd3669eb7aba553903b9e2eea/inventory/group_vars/all/glance.yml",
+    "source_head": "https://opendev.org/openstack/openstack-ansible/raw/commit/6b6ece2bd9e597cb4d7d55d633aa1618da8650d6/inventory/group_vars/all/glance.yml",
+    "target_base": "https://opendev.org/openstack/openstack-ansible-os_glance/raw/commit/504e641ed41c4447c0341f705a0aeb24c4069273/defaults/main.yml",
+    "target_head": "https://opendev.org/openstack/openstack-ansible-os_glance/raw/commit/5bc252de44343f0fd38782f9be5a89fbdef28f8b/defaults/main.yml"
+  }
+}

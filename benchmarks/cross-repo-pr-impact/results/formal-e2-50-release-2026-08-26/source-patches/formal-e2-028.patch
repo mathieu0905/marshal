@@ -1,0 +1,13 @@
+diff --git a/scripts/upgrade-utilities/galera-cluster-rolling-restart.yml b/scripts/upgrade-utilities/galera-cluster-rolling-restart.yml
+index d98f6bd..3d27003 100644
+--- a/scripts/upgrade-utilities/galera-cluster-rolling-restart.yml
++++ b/scripts/upgrade-utilities/galera-cluster-rolling-restart.yml
+@@ -59,7 +59,7 @@
+       delegate_to: "{{ groups['utility_all'][0] }}"
+ 
+     - name: Check that WSREP is ready and Synced
+-      shell: "/usr/bin/mysqladmin extended-status | egrep '(wsrep_local_state_comment)'"
++      shell: "/usr/bin/mariadb-admin extended-status | egrep '(wsrep_local_state_comment)'"
+       register: mariadb_ready
+       until:
+         - mariadb_ready.rc == 0

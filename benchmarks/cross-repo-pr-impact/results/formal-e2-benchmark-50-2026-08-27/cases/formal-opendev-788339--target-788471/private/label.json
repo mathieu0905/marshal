@@ -1,0 +1,29 @@
+{
+  "bootstrap_constraints": [
+    "Cython<3"
+  ],
+  "candidate_id": "formal-opendev-788339",
+  "expected_check_paths": [
+    "nova/tests/unit/cmd/test_manage.py"
+  ],
+  "mechanism": "SQLAlchemy 1.4 makes URL objects immutable, so Nova's existing cell0 connection helper can no longer assign to url.database",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38-2021/bin/python",
+  "relation_id": "formal-opendev-788339--target-788471",
+  "repair_template": "replace in-place mutation of a dependency-owned immutable value object with its compatibility-preserving functional setter",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-788339-nova-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Nova opening-cutoff snapshot, the pre-existing cell0 database mapping test passes with SQLAlchemy 1.3.23. With 1.4.11, the same test fails exclusively with AttributeError because the helper assigns to the now-immutable URL.database attribute; the exact maintainer patch restores it.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, exact one-file production target diff, cutoff tox command, installed-version probes proving SQLAlchemy 1.3.23/1.4.11/1.4.11, patch applicability, and complete three-arm logs. The same pre-existing test runs in every arm; only A1 has the normalized immutable-URL AttributeError. The Python 3.8/tox 3/virtualenv 20 runner, source-era setuptools seed, Cython build constraint, and pip seed are identical across arms and only restore opening-era packaging compatibility.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, SQLAlchemy 1.3.23 to 1.4.11; SQLAlchemy 1.4 replaces mutable URL attributes with the URL.set functional update API.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-788339-target-patches-nova-2026-08-27/788471.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Nova snapshot and uses URL.set when available while retaining the earlier assignment path for SQLAlchemy 1.3. It changes one production helper and changes, deletes, or skips no test."
+  },
+  "source_change_family": "opendev-change-788339-opening",
+  "target_repository": "openstack/nova",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38-2021/bin/tox",
+  "virtualenv_pip_version": "21.1.3"
+}

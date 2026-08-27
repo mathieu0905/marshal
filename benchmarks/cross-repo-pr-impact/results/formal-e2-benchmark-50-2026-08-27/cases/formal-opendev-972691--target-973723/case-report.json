@@ -1,0 +1,97 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5017,
+    "case_id": "formal-opendev-972691",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T17:38:08.221090Z",
+  "blind_prediction_created_at": "2026-08-26T17:37:55.893746Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-972691",
+  "case_id": "formal-opendev-972691--target-973723",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/magnum"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T17:38:08.227923Z",
+  "mechanism": "oslo.concurrency 7.3 lets Python reject unsupported execute keyword arguments with TypeError instead of raising the legacy UnknownArgumentError expected by Magnum",
+  "repair_template": "translate the dependency TypeError back to the target-facing UnknownArgumentError contract",
+  "replay": {
+    "catalog_source_snapshot_commit": "dfcad1d7fe24ad7a6f664eef2fe787a8c990fc83",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "TypeError: execute() got an unexpected keyword argument 'this_is_not_a_valid_kwarg'",
+    "installed_source_versions": {
+      "A0": "7.2.0",
+      "A1": "7.3.0",
+      "A2": "7.3.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "dfcad1d7fe24ad7a6f664eef2fe787a8c990fc83",
+    "source_head_commit": "e144bb97d5c453a95b435bab0edf61b485433bd9",
+    "source_versions": {
+      "A0": "7.2.0",
+      "A1": "7.3.0",
+      "A2": "7.3.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "03b5b4275e45e78d8e8b6169417e3a14b2ad02ac",
+    "target_test_path": "magnum/tests/unit/common/test_utils.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "magnum.tests.unit.common.test_utils.ExecuteTestCase.test_unknown_kwargs_raises_error"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-972691--target-973723",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "magnum/common/utils.py",
+      "magnum/tests/unit/common/test_utils.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/magnum"
+  },
+  "semantic_review": {
+    "a1_failure": "On the unchanged Magnum opening-cutoff snapshot, the pre-existing unknown-keyword contract test fails only with oslo.concurrency 7.3.0 because processutils.execute now exposes Python's TypeError instead of the expected UnknownArgumentError; the stable signature is TypeError: execute() got an unexpected keyword argument 'this_is_not_a_valid_kwarg'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes, and the three real replay logs; the unchanged selector produced 0/1/0, and the production-code repair neither deletes nor skips tests.",
+    "source_effect": "The opening source change updates the only changed upper-constraints pin from oslo.concurrency 7.2.0 to 7.3.0, whose explicit processutils.execute signature changes the exception observed for unsupported keywords.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/973723.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Magnum snapshot and translates the dependency TypeError at its execute wrapper into the target-facing processutils.UnknownArgumentError contract."
+  },
+  "source_change_family": "opendev-change-972691-opening",
+  "status": "case_ready_for_formal_pool"
+}

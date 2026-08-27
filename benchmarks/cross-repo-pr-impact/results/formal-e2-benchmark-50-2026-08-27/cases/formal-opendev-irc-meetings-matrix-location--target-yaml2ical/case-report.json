@@ -1,0 +1,112 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 46,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 920,
+    "case_id": "formal-opendev-irc-meetings-matrix-location",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-27T03:38:34.901677Z",
+  "blind_prediction_created_at": "2026-08-27T03:38:32.497702Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-irc-meetings-matrix-location",
+  "case_id": "formal-opendev-irc-meetings-matrix-location--target-yaml2ical",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "opendev/irc-meetings",
+    "opendev/yaml2ical"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-27T03:38:34.904881Z",
+  "mechanism": "Changing the meeting schedule from IRC to Matrix makes the unchanged yaml2ical parser reject the newly valid source configuration.",
+  "repair_template": "Extend the parser and calendar location model to accept Matrix while retaining IRC support and the existing source-native generation command.",
+  "replay": {
+    "built_source_commits": {
+      "A0": "7154a44151991af59f81b2f8993f4e007db71925",
+      "A1": "ed8cfed796e41eb9ae57d4b8e8e1e05ff4d2f383",
+      "A2": "ed8cfed796e41eb9ae57d4b8e8e1e05ff4d2f383"
+    },
+    "checks_run": {
+      "A0": 1,
+      "A1": 1,
+      "A2": 1
+    },
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "Invalid YAML meeting schedule definition - missing attribute 'irc'",
+    "machine_strict_e2": true,
+    "primary_result_channel": "project_build_or_test",
+    "schema_version": "1.0",
+    "source_application": "side_by_side_opening_checkout",
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "630657cafd6600d6ac40452a7c917ea75ac18ff5",
+    "target_test_path": "yaml2ical/meeting.py",
+    "test_command": [
+      "python3",
+      "-m",
+      "yaml2ical.cli",
+      "-n",
+      "OpenStack Meetings",
+      "-d",
+      "Meeting schedule for the OpenStack projects",
+      "-y",
+      "../source/meetings",
+      "-o",
+      "irc-meetings.ical",
+      "-t",
+      "../source/meetingindex.jinja",
+      "-w",
+      "index.html",
+      "-f"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-irc-meetings-matrix-location--target-yaml2ical",
+    "check_position_found": true,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "yaml2ical/meeting.py"
+    ],
+    "mean_reciprocal_rank": 1.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "meetings/example2.yaml",
+      "meetings/example3.yaml",
+      "yaml2ical/meeting.py",
+      "yaml2ical/tests/test_meeting.py",
+      "yaml2ical/tests/test_meeting_recurrence.py"
+    ],
+    "rank": 1,
+    "recall_at_1": 1.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "opendev/yaml2ical"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the source opening revision present, the unchanged yaml2ical parser reaches the changed meeting file, reports the missing irc attribute, raises KeyError, and exits nonzero; the same signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "The source and final maintainer target diffs, Gerrit opening chronology, the source repository's pre-existing tox ical command, parser code, and an independently run native-command pilot with exits 0/1/0 and 47 meetings generated in A0 and A2.",
+    "source_effect": "The opening source revision changes the OpenDev meeting schedule from an irc field to a matrix field and updates the existing output template to render either location kind.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-yaml2ical-reconstruction-2026-08-27/target-patches/1000380.patch",
+    "target_repair": "The final maintainer revision changes yaml2ical to accept either irc or matrix, derives a common location field, updates calendar output and conflict comparison, and adds a Matrix parser test; it does not remove or skip the existing generation command. The final revision also corrects the initial patch set's erroneous boolean guard."
+  },
+  "source_change_family": "opendev-change-1000378-opening",
+  "status": "case_ready_for_formal_pool"
+}

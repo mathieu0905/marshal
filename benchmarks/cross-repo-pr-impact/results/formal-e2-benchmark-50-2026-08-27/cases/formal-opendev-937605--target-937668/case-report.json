@@ -1,0 +1,89 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5100,
+    "case_id": "formal-opendev-937605",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T11:40:37.647300Z",
+  "blind_prediction_created_at": "2026-08-26T11:40:27.191860Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-937605",
+  "case_id": "formal-opendev-937605--target-937668",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/neutron-lib",
+    "openstack/neutron"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T11:40:37.654224Z",
+  "mechanism": "exception parent change alters the HTTP status mapped by the target API",
+  "repair_template": "update an existing target expectation for the changed exception-to-status mapping",
+  "replay": {
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "testtools.matchers._impl.MismatchError: 500 != 400",
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "requirements_cutoff_commit": "d8e8ef1cbca48b42eff7d7862555ff629fe8f475",
+    "schema_version": "1.0",
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "b7d55e3677edfa49ebd8b9fc2dfa12a71186ee00",
+    "target_test_path": "neutron/tests/unit/plugins/ml2/test_plugin.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "neutron.tests.unit.plugins.ml2.test_plugin.TestMl2NetworksWithVlanTransparency.test_create_network_vlan_transparent_fail"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-937605--target-937668",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "neutron/tests/unit/plugins/ml2/test_plugin.py"
+    ],
+    "mean_reciprocal_rank": 1.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "neutron/plugins/ml2/drivers/mech_sriov/mech_driver/exceptions.py",
+      "neutron/plugins/ml2/drivers/openvswitch/mech_driver/mech_openvswitch.py",
+      "neutron/plugins/ml2/drivers/ovn/mech_driver/mech_driver.py",
+      "neutron/plugins/ml2/drivers/ovn/mech_driver/ovsdb/ovn_client.py",
+      "releasenotes/notes/ovn-driver-adds-support-for-vlan-transparency-3ac9d965f5093a15.yaml"
+    ],
+    "rank": 1,
+    "recall_at_1": 1.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "openstack/neutron"
+  },
+  "semantic_review": {
+    "a1_failure": "The unchanged Neutron test expects HTTP 500, while the new neutron-lib BadRequest parent produces HTTP 400; stestr reports MismatchError: 500 != 400.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source code diff, maintainer target diff, identical three-arm stestr command, and A0/A1/A2 logs.",
+    "source_effect": "VlanTransparencyDriverError changes from NeutronException to BadRequest, changing the API response classification from server error to bad request.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-300-contract-triage-2026-08-26/target-patches/937668.patch",
+    "target_repair": "The maintainer changes the pre-existing assertion to accept the old 500 and new 400 status while preserving the error type and message assertions; it does not delete or skip the test."
+  },
+  "source_change_family": "opendev-change-937605-opening",
+  "status": "case_ready_for_formal_pool"
+}

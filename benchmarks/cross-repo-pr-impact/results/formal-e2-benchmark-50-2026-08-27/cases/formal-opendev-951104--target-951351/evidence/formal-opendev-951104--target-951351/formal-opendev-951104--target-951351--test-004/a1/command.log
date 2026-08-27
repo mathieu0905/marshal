@@ -1,0 +1,189 @@
+{0} glance.tests.unit.test_quota.TestImageKeystoneQuota.test_enforce_multiple_limits_over_quota [0.009313s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/glance/tests/unit/test_quota.py", line 884, in test_enforce_multiple_limits_over_quota
+    self.assertRaises(exception.LimitExceeded,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/glance/quota/keystone.py", line 60, in _enforce_some
+    enforcer.enforce(project_id,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 151, in enforce
+    self.model.enforce(project_id, deltas)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 225, in enforce
+    project_limits = self.get_project_limits(project_id,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 215, in get_project_limits
+    return self._utils.get_project_limits(project_id, resources_to_check)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 439, in get_project_limits
+    limit = self._get_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 452, in _get_limit
+    project_limit = (self._get_project_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 478, in _get_project_limit
+    limits = self.connection.limits(
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1179, in _execute_mock_call
+    result = effect(*args, **kwargs)
+
+    TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 01:31:00,766 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'locations': [{'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning image_create: {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [{'id': '9463aa31-bf0d-419a-ad5f-05e43b641947', 'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 766968), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 766968), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning image_create: {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767298), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767298), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning wrapper: {'id': '2a4ef9e0-e7bd-4d33-807b-b7d519eb3650', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767534), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767534), 'deleted': False}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning wrapper: {'id': '66a6aae3-e78d-4bdc-b70a-355d9d58dedd', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767720), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767720), 'deleted': False}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling image_tag_set_all: args=(None, 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', ['ping', 'pong']), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning image_tag_set_all: None
+
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+glance.tests.unit.test_quota.TestImageKeystoneQuota.test_enforce_multiple_limits_over_quota
+-------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/glance/tests/unit/test_quota.py", line 884, in test_enforce_multiple_limits_over_quota
+    self.assertRaises(exception.LimitExceeded,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/glance/quota/keystone.py", line 60, in _enforce_some
+    enforcer.enforce(project_id,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 151, in enforce
+    self.model.enforce(project_id, deltas)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 225, in enforce
+    project_limits = self.get_project_limits(project_id,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 215, in get_project_limits
+    return self._utils.get_project_limits(project_id, resources_to_check)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 439, in get_project_limits
+    limit = self._get_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 452, in _get_limit
+    project_limit = (self._get_project_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-951104-951351-v1-2026-08-27/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 478, in _get_project_limit
+    limits = self.connection.limits(
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1179, in _execute_mock_call
+    result = effect(*args, **kwargs)
+
+    TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+
+No tests were successful during the run
+    2026-08-27 01:31:00,766 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'locations': [{'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning image_create: {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [{'id': '9463aa31-bf0d-419a-ad5f-05e43b641947', 'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 766968), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 766968), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning image_create: {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767298), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767298), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning wrapper: {'id': '2a4ef9e0-e7bd-4d33-807b-b7d519eb3650', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767534), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767534), 'deleted': False}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False}), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning wrapper: {'id': '66a6aae3-e78d-4bdc-b70a-355d9d58dedd', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767720), 'updated_at': datetime.datetime(2026, 8, 26, 17, 31, 0, 767720), 'deleted': False}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Calling image_tag_set_all: args=(None, 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', ['ping', 'pong']), kwargs={}
+2026-08-27 01:31:00,767 INFO [glance.db.simple.api] Returning image_tag_set_all: None
+
+
+
+======
+Totals
+======
+Ran: 1 tests in 0.0093 sec.
+ - Passed: 0
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 0.0093 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.009313

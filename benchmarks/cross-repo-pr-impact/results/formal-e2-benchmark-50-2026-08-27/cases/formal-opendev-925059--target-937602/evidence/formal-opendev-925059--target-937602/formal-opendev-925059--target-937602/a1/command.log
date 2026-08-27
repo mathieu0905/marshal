@@ -1,0 +1,193 @@
+{0} masakari.tests.unit.test_api_validation.RequiredEnableTestCase.test_validate_required_enable_fails [0.013126s] ... ok
+{1} masakari.tests.unit.test_api_validation.IntegerRangeTestCase.test_validate_integer_range_fails [0.016637s] ... ok
+{6} masakari.tests.unit.test_api_validation.StringLengthTestCase.test_validate_string_length [0.013806s] ... ok
+{2} masakari.tests.unit.test_api_validation.FormatCheckerTestCase.test_format_checker_failed [0.017762s] ... ok
+{3} masakari.tests.unit.test_api_validation.DatetimeTestCase.test_validate_datetime [0.013126s] ... ok
+{9} masakari.tests.unit.test_api_validation.IntegerTestCase.test_validate_integer_fails [0.018284s] ... ok
+{4} masakari.tests.unit.test_api_validation.StringTestCase.test_validate_string [0.015043s] ... ok
+{8} masakari.tests.unit.test_api_validation.BooleanTestCase.test_validate_boolean [0.017852s] ... ok
+{11} masakari.tests.unit.test_api_validation.AdditionalPropertiesDisableTestCase.test_validate_additionalProperties_disable [0.013236s] ... ok
+{10} masakari.tests.unit.test_api_validation.IntegerRangeTestCase.test_validate_integer_range [0.015172s] ... ok
+{7} masakari.tests.unit.test_api_validation.VersionedApiValidationTestCase.test_validate_with_proper_microversions [0.016104s] ... ok
+{14} masakari.tests.unit.test_api_validation.VersionedApiValidationTestCase.test_validate_with_improper_microversions [0.017270s] ... ok
+{13} masakari.tests.unit.test_api_validation.AdditionalPropertiesEnableTestCase.test_validate_additionalProperties_enable [0.014092s] ... ok
+{18} masakari.tests.unit.test_api_validation.ValidationRegex.test_build_regex_range [0.012448s] ... ok
+{12} masakari.tests.unit.test_api_validation.StringTestCase.test_validate_string_fails [0.016077s] ... ok
+{15} masakari.tests.unit.test_api_validation.PatternPropertiesTestCase.test_validate_patternProperties [0.013591s] ... ok
+{17} masakari.tests.unit.test_api_validation.BooleanTestCase.test_validate_boolean_fails [0.015062s] ... ok
+{19} masakari.tests.unit.test_api_validation.StringLengthTestCase.test_validate_string_length_fails [0.014354s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/api/validation/validators.py", line 180, in validate
+    self.validator.validate(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/.tox/py3/lib/python3.10/site-packages/jsonschema/validators.py", line 451, in validate
+    raise error
+
+    jsonschema.exceptions.ValidationError: '' should be non-empty
+
+Failed validating 'minLength' in schema['properties']['foo']:
+    {'type': 'string', 'minLength': 1, 'maxLength': 10}
+
+On instance:
+    ''
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/tests/unit/test_api_validation.py", line 100, in check_validation_error
+    method(body=body, req=req,)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/api/validation/__init__.py", line 54, in wrapper
+    schema_validator.validate(kwargs['body'])
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/api/validation/validators.py", line 192, in validate
+    raise exception.ValidationError(detail=detail)
+
+    masakari.exception.ValidationError: Invalid input for field/attribute foo. Value: . '' should be non-empty
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/tests/unit/test_api_validation.py", line 341, in test_validate_string_length_fails
+    self.check_validation_error(self.post, body={'foo': ''},
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/tests/unit/test_api_validation.py", line 107, in check_validation_error
+    self.assertEqual(expected_detail, ex.kwargs['detail'],
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 419, in assertEqual
+    self.assertThat(observed, matcher, message)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 509, in assertThat
+    raise mismatch_error
+
+    testtools.matchers._impl.MismatchError: !=:
+reference = "Invalid input for field/attribute foo. Value: . '' is too short"
+actual    = "Invalid input for field/attribute foo. Value: . '' should be non-empty"
+: Exception details did not match expected
+
+{5} masakari.tests.unit.test_api_validation.NameTestCase.test_validate_name_fails [0.024971s] ... ok
+{16} masakari.tests.unit.test_api_validation.RequiredDisableTestCase.test_validate_required_disable [0.014601s] ... ok
+{21} masakari.tests.unit.test_api_validation.IntegerTestCase.test_validate_integer [0.015687s] ... ok
+{22} masakari.tests.unit.test_api_validation.RequiredEnableTestCase.test_validate_required_enable [0.013797s] ... ok
+{20} masakari.tests.unit.test_api_validation.PatternPropertiesTestCase.test_validate_patternProperties_fails [0.016868s] ... ok
+{24} masakari.tests.unit.test_api_validation.AdditionalPropertiesDisableTestCase.test_validate_additionalProperties_disable_fails [0.013981s] ... ok
+{23} masakari.tests.unit.test_api_validation.NameTestCase.test_validate_name [0.024127s] ... ok
+{25} masakari.tests.unit.test_api_validation.FormatCheckerTestCase.test_format_checker_failed_with_non_string [0.018938s] ... ok
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+masakari.tests.unit.test_api_validation.StringLengthTestCase.test_validate_string_length_fails
+----------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/api/validation/validators.py", line 180, in validate
+    self.validator.validate(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/.tox/py3/lib/python3.10/site-packages/jsonschema/validators.py", line 451, in validate
+    raise error
+
+    jsonschema.exceptions.ValidationError: '' should be non-empty
+
+Failed validating 'minLength' in schema['properties']['foo']:
+    {'type': 'string', 'minLength': 1, 'maxLength': 10}
+
+On instance:
+    ''
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/tests/unit/test_api_validation.py", line 100, in check_validation_error
+    method(body=body, req=req,)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/api/validation/__init__.py", line 54, in wrapper
+    schema_validator.validate(kwargs['body'])
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/api/validation/validators.py", line 192, in validate
+    raise exception.ValidationError(detail=detail)
+
+    masakari.exception.ValidationError: Invalid input for field/attribute foo. Value: . '' should be non-empty
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/tests/unit/test_api_validation.py", line 341, in test_validate_string_length_fails
+    self.check_validation_error(self.post, body={'foo': ''},
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/masakari/tests/unit/test_api_validation.py", line 107, in check_validation_error
+    self.assertEqual(expected_detail, ex.kwargs['detail'],
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 419, in assertEqual
+    self.assertThat(observed, matcher, message)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925059-937602-v1-2026-08-26/replay-work/formal-opendev-925059--target-937602/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 509, in assertThat
+    raise mismatch_error
+
+    testtools.matchers._impl.MismatchError: !=:
+reference = "Invalid input for field/attribute foo. Value: . '' is too short"
+actual    = "Invalid input for field/attribute foo. Value: . '' should be non-empty"
+: Exception details did not match expected
+
+
+
+======
+Totals
+======
+Ran: 26 tests in 0.1286 sec.
+ - Passed: 25
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 0.4160 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.013126
+ - Worker 1 (1 tests) => 0:00:00.016637
+ - Worker 2 (1 tests) => 0:00:00.017762
+ - Worker 3 (1 tests) => 0:00:00.013126
+ - Worker 4 (1 tests) => 0:00:00.015043
+ - Worker 5 (1 tests) => 0:00:00.024971
+ - Worker 6 (1 tests) => 0:00:00.013806
+ - Worker 7 (1 tests) => 0:00:00.016104
+ - Worker 8 (1 tests) => 0:00:00.017852
+ - Worker 9 (1 tests) => 0:00:00.018284
+ - Worker 10 (1 tests) => 0:00:00.015172
+ - Worker 11 (1 tests) => 0:00:00.013236
+ - Worker 12 (1 tests) => 0:00:00.016077
+ - Worker 13 (1 tests) => 0:00:00.014092
+ - Worker 14 (1 tests) => 0:00:00.017270
+ - Worker 15 (1 tests) => 0:00:00.013591
+ - Worker 16 (1 tests) => 0:00:00.014601
+ - Worker 17 (1 tests) => 0:00:00.015062
+ - Worker 18 (1 tests) => 0:00:00.012448
+ - Worker 19 (1 tests) => 0:00:00.014354
+ - Worker 20 (1 tests) => 0:00:00.016868
+ - Worker 21 (1 tests) => 0:00:00.015687
+ - Worker 22 (1 tests) => 0:00:00.013797
+ - Worker 23 (1 tests) => 0:00:00.024127
+ - Worker 24 (1 tests) => 0:00:00.013981
+ - Worker 25 (1 tests) => 0:00:00.018938

@@ -1,0 +1,120 @@
+diff --git a/zuul.d/jobs.yaml b/zuul.d/jobs.yaml
+index 863a56b..abd8b79 100644
+--- a/zuul.d/jobs.yaml
++++ b/zuul.d/jobs.yaml
+@@ -602,6 +602,18 @@
+     nodeset: octavia-single-node-ubuntu-bionic
+ 
+ - job:
++    name: octavia-v2-dsvm-scenario-traffic-ops
++    parent: octavia-v2-dsvm-scenario
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.*traffic_ops
++
++- job:
++    name: octavia-v2-dsvm-scenario-non-traffic-ops
++    parent: octavia-v2-dsvm-scenario
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.(?!.*traffic_ops)
++
++- job:
+     name: octavia-v2-dsvm-scenario-ipv6-only
+     parent: octavia-dsvm-live-base-ipv6-only
+     vars:
+@@ -638,17 +650,54 @@
+     override-checkout: stable/yoga
+ 
+ - job:
++    name: octavia-v2-dsvm-scenario-traffic-ops-stable-yoga
++    parent: octavia-v2-dsvm-scenario-stable-yoga
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.*traffic_ops
++
++- job:
++    name: octavia-v2-dsvm-scenario-non-traffic-ops-stable-yoga
++    parent: octavia-v2-dsvm-scenario-stable-yoga
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.(?!.*traffic_ops)
++
++
++- job:
+     name: octavia-v2-dsvm-scenario-stable-xena
+     parent: octavia-v2-dsvm-scenario
+     nodeset: octavia-single-node-ubuntu-focal
+     override-checkout: stable/xena
+ 
+ - job:
++    name: octavia-v2-dsvm-scenario-traffic-ops-stable-xena
++    parent: octavia-v2-dsvm-scenario-stable-xena
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.*traffic_ops
++
++- job:
++    name: octavia-v2-dsvm-scenario-non-traffic-ops-stable-xena
++    parent: octavia-v2-dsvm-scenario-stable-xena
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.(?!.*traffic_ops)
++
++- job:
+     name: octavia-v2-dsvm-scenario-stable-wallaby
+     parent: octavia-v2-dsvm-scenario
+     nodeset: octavia-single-node-ubuntu-focal
+     override-checkout: stable/wallaby
+ 
++- job:
++    name: octavia-v2-dsvm-scenario-traffic-ops-stable-wallaby
++    parent: octavia-v2-dsvm-scenario-stable-wallaby
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.*traffic_ops
++
++- job:
++    name: octavia-v2-dsvm-scenario-non-traffic-ops-stable-wallaby
++    parent: octavia-v2-dsvm-scenario-stable-wallaby
++    vars:
++      tempest_test_regex: ^octavia_tempest_plugin.tests.scenario.v2.(?!.*traffic_ops)
++
+ # Legacy jobs for the transition to the act-stdby two node jobs
+ - job:
+     name: octavia-v2-dsvm-scenario-two-node
+diff --git a/zuul.d/projects.yaml b/zuul.d/projects.yaml
+index 1c04c0a..8d32c6c 100644
+--- a/zuul.d/projects.yaml
++++ b/zuul.d/projects.yaml
+@@ -13,10 +13,14 @@
+         - octavia-v2-dsvm-noop-api-stable-xena
+         - octavia-v2-dsvm-noop-api-stable-wallaby
+         - octavia-v2-dsvm-noop-api-keystone-default-roles
+-        - octavia-v2-dsvm-scenario
+-        - octavia-v2-dsvm-scenario-stable-yoga
+-        - octavia-v2-dsvm-scenario-stable-xena
+-        - octavia-v2-dsvm-scenario-stable-wallaby
++        - octavia-v2-dsvm-scenario-traffic-ops
++        - octavia-v2-dsvm-scenario-non-traffic-ops
++        - octavia-v2-dsvm-scenario-traffic-ops-stable-yoga
++        - octavia-v2-dsvm-scenario-non-traffic-ops-stable-yoga
++        - octavia-v2-dsvm-scenario-traffic-ops-stable-xena
++        - octavia-v2-dsvm-scenario-non-traffic-ops-stable-xena
++        - octavia-v2-dsvm-scenario-traffic-ops-stable-wallaby
++        - octavia-v2-dsvm-scenario-non-traffic-ops-stable-wallaby
+         - octavia-v2-dsvm-tls-barbican
+         - octavia-v2-dsvm-tls-barbican-stable-yoga
+         - octavia-v2-dsvm-tls-barbican-stable-xena
+@@ -57,10 +61,14 @@
+         - octavia-v2-dsvm-noop-api-stable-xena
+         - octavia-v2-dsvm-noop-api-stable-wallaby
+         - octavia-v2-dsvm-noop-api-keystone-default-roles
+-        - octavia-v2-dsvm-scenario
+-        - octavia-v2-dsvm-scenario-stable-yoga
+-        - octavia-v2-dsvm-scenario-stable-xena
+-        - octavia-v2-dsvm-scenario-stable-wallaby
++        - octavia-v2-dsvm-scenario-traffic-ops
++        - octavia-v2-dsvm-scenario-non-traffic-ops
++        - octavia-v2-dsvm-scenario-traffic-ops-stable-yoga
++        - octavia-v2-dsvm-scenario-non-traffic-ops-stable-yoga
++        - octavia-v2-dsvm-scenario-traffic-ops-stable-xena
++        - octavia-v2-dsvm-scenario-non-traffic-ops-stable-xena
++        - octavia-v2-dsvm-scenario-traffic-ops-stable-wallaby
++        - octavia-v2-dsvm-scenario-non-traffic-ops-stable-wallaby
+         - octavia-v2-dsvm-tls-barbican
+         - octavia-v2-dsvm-tls-barbican-stable-yoga
+         - octavia-v2-dsvm-tls-barbican-stable-xena

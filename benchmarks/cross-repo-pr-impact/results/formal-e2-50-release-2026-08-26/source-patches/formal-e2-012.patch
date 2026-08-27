@@ -1,0 +1,53 @@
+diff --git a/ceph/ceph/debian/deb_folder/ceph-base.ceph.init b/ceph/ceph/debian/deb_folder/ceph-base.ceph.init
+index 8c6a8ee..b93e5f4 100755
+--- a/ceph/ceph/debian/deb_folder/ceph-base.ceph.init
++++ b/ceph/ceph/debian/deb_folder/ceph-base.ceph.init
+@@ -746,17 +746,13 @@
+         exit 1  # pid is something else" "" "okfail"
+ }
+ 
+-osd_is_mounted() {
+-    findmnt -no SOURCE "/var/lib/ceph/osd/ceph-$1" > /dev/null 2>&1
+-}
+-
+ osd_is_configured() {
+     # Flag .osd_configured is created once the OSD is configured by puppet
+-    [ -f "/var/lib/ceph/osd/ceph-$1/.osd_configured" ]
++    [ -f "/var/lib/ceph/osd/.osd-$1_configured" ]
+ }
+ 
+ is_restore_in_progress() {
+-  [ -f /etc/platform/.restore_in_progress ]
++    [ -f /etc/platform/.restore_in_progress ]
+ }
+ 
+ stop_daemon() {
+@@ -992,9 +988,8 @@
+ 
+     get_conf pid_file "$run_dir/$type.$id.pid" "pid file"
+ 
+-    # Skip unconfigured OSDs only if they are already mounted.
+-    # If not mounted, let this script proceed so it can handle the mount.
+-    if [ "$type" = "osd" ] && osd_is_mounted "$id" && ! osd_is_configured "$id"; then
++    # Skip OSDs not yet configured by puppet
++    if [ "$type" = "osd" ] && ! osd_is_configured "$id" && ! is_restore_in_progress; then
+         log "$name" "INFO" "Skipping Ceph $name as it is not configured"
+         continue
+     fi
+@@ -1065,11 +1060,11 @@
+             # Check if the OSD device has the expected "ceph data" partition label.
+             # If not, Puppet hasn’t finished creating it, so skip startup to avoid errors.
+             if [ "$type" = "osd" ] && ! is_restore_in_progress; then
+-              partlabel=$(lsblk -no PARTLABEL "$first_dev")
+-              if [ "$partlabel" != "ceph data" ]; then
+-                log "$name" "INFO" "Skipping Ceph $name as it is not created"
+-                continue
+-              fi
++                partlabel=$(lsblk -no PARTLABEL "$first_dev")
++                if [ "$partlabel" != "ceph data" ]; then
++                  log "$name" "INFO" "Skipping Ceph $name as it is not created"
++                  continue
++                fi
+             fi
+ 
+ 	    # Increase max_open_files, if the configuration calls for it.

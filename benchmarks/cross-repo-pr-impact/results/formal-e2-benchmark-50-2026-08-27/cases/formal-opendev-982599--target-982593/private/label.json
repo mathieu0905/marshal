@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-982599",
+  "expected_check_paths": [
+    "neutron/api/v2/base.py",
+    "neutron/tests/unit/api/v2/test_base.py"
+  ],
+  "mechanism": "removing tenant_id aliases from neutron-lib Context makes unchanged Neutron API code dereference a missing context attribute",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/python",
+  "relation_id": "formal-opendev-982599--target-982593",
+  "repair_template": "migrate target context and resource ownership access from tenant_id to project_id",
+  "replay_adapter": "source_editable",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-selected-touched-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening neutron-lib checkout installed, the unchanged APIv2 emulated-sort test raises AttributeError because request.context no longer exposes tenant_id; the same test passes with the opening base source.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the opening neutron-lib context diff, cutoff Neutron API call site and test, the exact maintainer target patch, and the completed touched-test replay showing eight strict tests; the selected pre-existing APIv2 test has an exclusive tenant_id AttributeError in A1.",
+    "source_effect": "The opening source change removes tenant_id and tenant_name constructor compatibility, properties, policy values, and serialization aliases from neutron-lib Context.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/982593.patch",
+    "target_repair": "The maintainer target change consistently migrates production call sites and their existing tests to project_id; it does not skip or delete the selected test, and applies cleanly to the opening-cutoff target snapshot."
+  },
+  "source_change_family": "opendev-change-982599-opening",
+  "target_repository": "openstack/neutron",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

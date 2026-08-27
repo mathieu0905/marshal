@@ -1,0 +1,97 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5017,
+    "case_id": "formal-opendev-977145",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T13:54:06.504167Z",
+  "blind_prediction_created_at": "2026-08-26T13:53:53.782258Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-977145",
+  "case_id": "formal-opendev-977145--target-977217",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/nova"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T13:54:06.510842Z",
+  "mechanism": "oslo.middleware 8.0.0 changes the CORS allowed_origin configuration value consumed by Nova from a scalar string to a list, breaking the existing functional injection fixture",
+  "repair_template": "return the dependency's new list-shaped allowed_origin value from the existing target fixture",
+  "replay": {
+    "catalog_source_snapshot_commit": "f297d278f2464de6e9a7f4a4c5722a4290bfc1ff",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "testtools.matchers._impl.MismatchError: 'Access-Control-Allow-Origin' not in {'Content-Length': '516', 'Content-Type': 'application/json'}",
+    "installed_source_versions": {
+      "A0": "7.0.0",
+      "A1": "8.0.0",
+      "A2": "8.0.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "8b5138c1baee3589e25b9d63fede298d2b370dc5",
+    "source_head_commit": "7cfeb5c30f40f46e1749183b86a597f2431cfaab",
+    "source_versions": {
+      "A0": "7.0.0",
+      "A1": "8.0.0",
+      "A2": "8.0.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "f3d9188a937518e9dbfa434436ba336bc2107fc2",
+    "target_test_path": "nova/tests/functional/test_middleware.py",
+    "test_command": [
+      "stestr",
+      "--test-path=./nova/tests/functional",
+      "run",
+      "nova.tests.functional.test_middleware"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-977145--target-977217",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "nova/tests/functional/test_middleware.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/nova"
+  },
+  "semantic_review": {
+    "a1_failure": "With oslo.middleware 8.0.0, 12 of the pre-existing 21 Nova CORS functional tests fail because the scalar allowed_origin fixture is no longer consumed as a valid origin list, so the expected CORS response headers are absent.",
+    "approved": true,
+    "reviewer_basis": "Opening-cutoff replay independently installed oslo.middleware 7.0.0/8.0.0/8.0.0 for A0/A1/A2 and ran the identical 21-test Nova functional module in all arms. A0 and A2 pass; A1 has 12 mechanism-consistent missing-CORS-header failures. The maintainer patch changes one existing fixture value from string to list and does not delete or skip tests.",
+    "source_effect": "The opening source diff changes the sole oslo.middleware pin from 7.0.0 to 8.0.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-contract-triage-2026-08-26/target-patches/977217.patch",
+    "target_repair": "The maintainer changes the existing allowed_origin fixture from a scalar string to a one-element list; with oslo.middleware 8.0.0 the same 21-test functional module returns to passing."
+  },
+  "source_change_family": "opendev-change-977145-opening",
+  "status": "case_ready_for_formal_pool"
+}

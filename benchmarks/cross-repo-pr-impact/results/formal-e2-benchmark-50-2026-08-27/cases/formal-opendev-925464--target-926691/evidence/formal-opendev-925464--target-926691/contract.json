@@ -1,0 +1,58 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "candidate_id": "formal-opendev-925464",
+  "case_id": "formal-opendev-925464--target-926691",
+  "changed_distribution": "oslo.policy",
+  "command_config_path": "tox.ini",
+  "command_provenance": {
+    "commit": "f3f104079acc835572f11120b02b6bb35e842541",
+    "path": "tox.ini",
+    "repository": "openstack/barbican"
+  },
+  "failure_signature": "oslo_policy.policy.PolicyNotAuthorized: secrets:post is disallowed by policy",
+  "installed_source_versions": {
+    "A0": "4.3.0",
+    "A1": "4.4.0",
+    "A2": "4.4.0"
+  },
+  "machine_arm_verification": "passed",
+  "primary_result_channel": "pre_existing_target_test",
+  "relation_id": "formal-opendev-925464--target-926691",
+  "requirements_a1_commit": "097b9cd12349ab88048a1b4d8fdc2588da658e32",
+  "requirements_commit": "2c279bd469df43206693b27fe85565028346f042",
+  "requirements_cutoff": "2024-08-01 11:11:26.000000000",
+  "schema_version": "1.0",
+  "selected_attempt_id": "formal-opendev-925464--target-926691--test-001",
+  "source_application": "global_constraints_single_pin",
+  "source_base_commit": "2c279bd469df43206693b27fe85565028346f042",
+  "source_head_commit": "097b9cd12349ab88048a1b4d8fdc2588da658e32",
+  "source_repository": "openstack/requirements",
+  "source_subject": "update constraint for oslo.policy to new release 4.4.0",
+  "source_versions": {
+    "A0": "4.3.0",
+    "A1": "4.4.0",
+    "A2": "4.4.0"
+  },
+  "strict_touched_test_count": 3,
+  "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+  "target_base_commit": "f3f104079acc835572f11120b02b6bb35e842541",
+  "target_change": 926691,
+  "target_head_commit": "9d641cef1811180597f5bfa6066eea2e14b12b88",
+  "target_patch_evidence": "target.patch",
+  "target_repository": "openstack/barbican",
+  "target_subject": "Keep new RBAC disable by default",
+  "target_test_path": "barbican/tests/api/test_resources_policy.py",
+  "test_command": [
+    "stestr",
+    "run",
+    "barbican.tests.api.test_resources_policy.WhenTestingSecretsResource.test_should_pass_create_secret"
+  ],
+  "test_environment_keys": [],
+  "test_selector": "barbican.tests.api.test_resources_policy.WhenTestingSecretsResource.test_should_pass_create_secret",
+  "tox_environment": "py3",
+  "triage_score": 100
+}

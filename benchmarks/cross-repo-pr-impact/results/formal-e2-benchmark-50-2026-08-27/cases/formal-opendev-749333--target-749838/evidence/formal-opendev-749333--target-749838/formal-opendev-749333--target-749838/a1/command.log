@@ -1,0 +1,84 @@
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: oslo_context.context, urllib3. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+2026-08-27 04:14:38.127 3767400 INFO oslo_service.periodic_task [req-e5242b6b-0fb1-4c4a-a518-7e0aa48f1ef6 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Skipping periodic task _discover_hosts_in_cells because its interval is negative[00m
+2026-08-27 04:14:38.149 3767400 ERROR stevedore.extension [req-e5242b6b-0fb1-4c4a-a518-7e0aa48f1ef6 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Could not load 'oslo_cache.etcd3gw': No module named 'etcd3gw': ModuleNotFoundError: No module named 'etcd3gw'[00m
+2026-08-27 04:14:38.150 3767400 ERROR stevedore.extension [req-e5242b6b-0fb1-4c4a-a518-7e0aa48f1ef6 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Could not load 'oslo_cache.memcache_pool': No module named 'memcache': ModuleNotFoundError: No module named 'memcache'[00m
+{0} nova.tests.unit.test_test.IsolationTestCase.test_rpc_consumer_isolation [3.811461s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/nova/tests/unit/test_test.py", line 60, in test_rpc_consumer_isolation
+    server = rpc.get_server(messaging.Target(topic='compute',
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/nova/tests/fixtures.py", line 513, in _wrap_get_server
+    return messaging.get_rpc_server(rpc.TRANSPORT,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/.tox/py3/lib/python3.8/site-packages/oslo_messaging/rpc/server.py", line 221, in get_rpc_server
+    dispatcher = rpc_dispatcher.RPCDispatcher(endpoints, serializer,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/.tox/py3/lib/python3.8/site-packages/oslo_messaging/rpc/dispatcher.py", line 183, in __init__
+    oslo_rpc_server_ping = getattr(ep, 'oslo_rpc_server_ping', None)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/nova/tests/unit/test_test.py", line 58, in __getattribute__
+    assert False, "I should never get called. name: %s" % name
+
+    AssertionError: I should never get called. name: oslo_rpc_server_ping
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 04:14:40,607 INFO [248_add_expire_reservations_index] Skipped adding reservations_deleted_expire_idx because an equivalent index already exists.
+
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+nova.tests.unit.test_test.IsolationTestCase.test_rpc_consumer_isolation
+-----------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/nova/tests/unit/test_test.py", line 60, in test_rpc_consumer_isolation
+    server = rpc.get_server(messaging.Target(topic='compute',
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/nova/tests/fixtures.py", line 513, in _wrap_get_server
+    return messaging.get_rpc_server(rpc.TRANSPORT,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/.tox/py3/lib/python3.8/site-packages/oslo_messaging/rpc/server.py", line 221, in get_rpc_server
+    dispatcher = rpc_dispatcher.RPCDispatcher(endpoints, serializer,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/.tox/py3/lib/python3.8/site-packages/oslo_messaging/rpc/dispatcher.py", line 183, in __init__
+    oslo_rpc_server_ping = getattr(ep, 'oslo_rpc_server_ping', None)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-749333-749838-v1-2026-08-27/replay-work/formal-opendev-749333--target-749838/target-a1/nova/tests/unit/test_test.py", line 58, in __getattribute__
+    assert False, "I should never get called. name: %s" % name
+
+    AssertionError: I should never get called. name: oslo_rpc_server_ping
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 04:14:40,607 INFO [248_add_expire_reservations_index] Skipped adding reservations_deleted_expire_idx because an equivalent index already exists.
+
+
+
+======
+Totals
+======
+Ran: 1 tests in 3.8115 sec.
+ - Passed: 0
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 3.8115 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:03.811461

@@ -1,0 +1,1934 @@
+diff --git a/build-tools/stx/aptly_deb_usage.py b/build-tools/stx/aptly_deb_usage.py
+index f1d91c2..d613be9 100755
+--- a/build-tools/stx/aptly_deb_usage.py
++++ b/build-tools/stx/aptly_deb_usage.py
+@@ -33,6 +33,7 @@
+ SIGN_PASSWD = 'starlingx'
+ DEFAULT_TIMEOUT_COUNT = 1
+ STX_DIST = os.environ.get('STX_DIST')
++DEBIAN_DISTRIBUTION = os.environ.get('DEBIAN_DISTRIBUTION')
+ 
+ # Class used to manage aptly data base, it can:
+ #     create_remote: Create a repository link to a remote mirror
+@@ -332,9 +333,9 @@
+         if task_state != 'SUCCEEDED':
+             self.logger.warning('Quick publish for %s create failed: %s', publish_name, task_state)
+             return None
+-        return publish_name + ' ' + 'bullseye'
++        return publish_name + ' ' + DEBIAN_DISTRIBUTION
+ 
+-    # Publish a snap called "name" with prefix as name, "bullseye" as the distribution
++    # Publish a snap called "name" with prefix as name, DEBIAN_DISTRIBUTION as the distribution
+     # Return None or prefix/distribution
+     def __publish_snap(self, name):
+         '''Deploy a snapshot.'''
+@@ -506,8 +507,8 @@
+                 self.logger.warning('%s exists, please choose another name', local_name)
+                 return None
+ 
+-        # Static settings: bullseye main
+-        repo = self.aptly.repos.create(local_name, default_distribution='bullseye', default_component='main')
++        # Static settings: DEBIAN_DISTRIBUTION main
++        repo = self.aptly.repos.create(local_name, default_distribution=DEBIAN_DISTRIBUTION, default_component='main')
+         return repo
+ 
+     # Upload a bundle of Debian package files into a local repository.
+@@ -775,7 +776,6 @@
+         if not repo_find:
+             self.logger.warning('local repo %s not found.', name)
+             return None
+-
+         if suffix:
+             return self.__quick_publish_repo(name, suffix)
+ 
+@@ -801,7 +801,7 @@
+         for publish in publish_list:
+             # Remove all related publish including quick publish
+             if publish.prefix.startswith(name + '-') or publish.prefix == name:
+-                task = self.aptly.publish.drop(prefix=publish.prefix, distribution='bullseye', force_delete=True)
++                task = self.aptly.publish.drop(prefix=publish.prefix, distribution=DEBIAN_DISTRIBUTION, force_delete=True)
+                 task_state = self.__wait_for_task(task)
+                 if task_state != 'SUCCEEDED':
+                     self.logger.warning('Drop publish failed %s : %s', name, task_state)
+diff --git a/build-tools/stx/build-image b/build-tools/stx/build-image
+index e9fd096..419e2e0 100755
+--- a/build-tools/stx/build-image
++++ b/build-tools/stx/build-image
+@@ -39,7 +39,7 @@
+ STX_DEFAULT_DISTRO_CODENAME = discovery.STX_DEFAULT_DISTRO_CODENAME
+ 
+ ALL_DISTROS = discovery.get_all_distros()
+-ALL_LAYERS = discovery.get_all_layers(distro=STX_DEFAULT_DISTRO)
++ALL_LAYERS = discovery.get_all_layers(distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME)
+ ALL_BUILD_TYPES = discovery.get_all_build_types(distro=STX_DEFAULT_DISTRO)
+ 
+ LAT_ROOT = '/localdisk'
+@@ -246,26 +246,6 @@
+     return replace_in_yaml(main_yaml, 'rootfs-pre-scripts', 'yaml_list', stx_std_kernel, stx_rt_kernel)
+ 
+ 
+-def update_rt_kernel_in_initramfs_yaml(initramfs_yaml):
+-    ret = False
+-
+-    # Updated the name of kernel module
+-    for layer in ALL_LAYERS:
+-        pkg_dirs = discovery.package_dir_list(distro=STX_DEFAULT_DISTRO, layer=layer, build_type='rt')
+-        if not pkg_dirs:
+-            continue
+-        for pkg_dir in pkg_dirs:
+-            pkg_name = discovery.package_dir_to_package_name(pkg_dir, STX_DEFAULT_DISTRO)
+-            if pkg_name and pkg_name != 'linux-rt':
+-                if replace_in_yaml(initramfs_yaml, 'packages', 'yaml_list_suffix', pkg_name, '-rt'):
+-                    logger.debug("RT Initramfs: Updated %s with rt suffix", pkg_name)
+-                else:
+-                    logger.debug("RT Initramfs: Failed to update %s with rt suffix", pkg_name)
+-                    return ret
+-    ret = replace_in_yaml(initramfs_yaml, 'packages', 'yaml_list', stx_std_kernel, stx_rt_kernel)
+-    return ret
+-
+-
+ def include_initramfs(img_yaml, ramfs_yaml_path):
+     if not os.path.exists(img_yaml):
+         logger.error("LAT yaml file %s does not exist", img_yaml)
+@@ -304,7 +284,7 @@
+     return True
+ 
+ 
+-def add_lat_packages(img_yaml, packages):
++def add_lat_packages(img_yaml, packages, distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
+     if not os.path.exists(img_yaml):
+         logger.error(' '.join(['LAT yaml file', img_yaml, 'does not exist']))
+         return False
+@@ -314,7 +294,7 @@
+     yaml_doc['packages'].extend(packages)
+ 
+     for build_type in ALL_BUILD_TYPES:
+-        pkgs = discovery.package_iso_list(distro=STX_DEFAULT_DISTRO, layer="all", build_type=build_type)
++        pkgs = discovery.package_iso_list(distro=distro, codename=codename, layer="all", build_type=build_type)
+         yaml_doc['packages'].extend(pkgs)
+ 
+     yaml_doc['packages'] = list(set(yaml_doc['packages']))
+@@ -327,9 +307,9 @@
+     return True
+ 
+ 
+-def check_base_os_binaries(repomgr):
+-    base_bins_list = os.path.join(os.environ.get('MY_REPO_ROOT_DIR'),
+-                                  'cgcs-root/build-tools/stx/debian-image.inc')
++def check_base_os_binaries(repomgr, distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
++    base_bins_list = '{}/cgcs-root/build-tools/stx/{}-{}-image.inc'.format(os.environ.get('MY_REPO_ROOT_DIR'), 
++                                                                           distro, codename)
+     if not os.path.exists(base_bins_list):
+         logger.error(' '.join(['Base OS packages list', base_bins_list,
+                                'does not exist']))
+@@ -346,9 +326,8 @@
+     return True
+ 
+ 
+-def check_stx_binaries(repomgr, btype='std'):
+-    stx_bins_list = ''.join([PKG_LIST_DIR, '/debian/distro/os-', btype,
+-                             '.lst'])
++def check_stx_binaries(repomgr, btype='std', distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
++    stx_bins_list = '{}{}/{}/distro/os-{}.lst'.format(PKG_LIST_DIR, distro, codename, btype)
+     if not os.path.exists(stx_bins_list):
+         logger.warning(' '.join(['STX binary packages list', stx_bins_list,
+                                 'does not exist']))
+@@ -366,9 +345,8 @@
+     return True
+ 
+ 
+-def check_stx_patched(repomgr, btype='std'):
+-    stx_patched_list = ''.join([PKG_LIST_DIR, '/debian/distro/stx-', btype,
+-                                '.lst'])
++def check_stx_patched(repomgr, btype='std', distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
++    stx_patched_list = '{}{}/{}/distro/stx-{}.lst'.format(PKG_LIST_DIR, distro, codename, btype)
+     if not os.path.exists(stx_patched_list):
+         logger.warning(''.join(['STX patched packages list', stx_patched_list,
+                                 'does not exist']))
+@@ -715,7 +693,7 @@
+             logger.error('Distro "{}" is not supported. It should be one of: [{}]'.format(
+                 args.distro,
+                 ','.join(ALL_DISTROS)))
+-            logger.error("Please consult: build-pkgs --help")
++            logger.error("Please consult: build-image --help")
+             sys.exit(1)
+         distro = args.distro
+ 
+@@ -725,7 +703,7 @@
+                   args.distro_codename,
+                   distro,
+                   ','.join(discovery.STX_DISTRO_DICT[distro])))
+-              logger.error("Please consult: build-pkgs --help")
++              logger.error("Please consult: build-image --help")
+               sys.exit(1)
+         distro_codename = args.distro_codename
+ 
+@@ -736,7 +714,7 @@
+             key, val = line.partition("=")[::2]
+             os_release_dict[key.strip()] = val.strip()
+ 
+-    if distro != os_release_dict['ID'] and distro_codename != os_release_dict['VERSION_CODENAME']:
++    if distro != os_release_dict['ID'] or distro_codename != os_release_dict['VERSION_CODENAME']:
+         logger.error('Invalid tooling. You are attempting to build {}/{} with {}/{} containers'.format(
+             distro, distro_codename, os_release_dict['ID'], os_release_dict['VERSION_CODENAME']))
+         sys.exit(1)
+@@ -744,6 +722,10 @@
+         logger.info('Tooling validated. You are building {}/{} with {}/{} containers'.format(
+             distro, distro_codename, os_release_dict['ID'], os_release_dict['VERSION_CODENAME']))
+ 
++    # Reset these based on potentially new values
++    ALL_LAYERS = discovery.get_all_layers(distro=distro, codename=distro_codename)
++    ALL_BUILD_TYPES = discovery.get_all_build_types(distro=distro)
++
+     if args.rt:
+         kernel_type = 'rt'
+     else:
+@@ -760,9 +742,10 @@
+     # Upload build repository (deb-local-build) to `aptly`
+     # and create a repository URL for it.
+     repo_manager.upload_pkg(REPO_BUILD, None)
+-    build_repository_url = "deb {}{} bullseye main".format(
++    build_repository_url = "deb {}{} {} main".format(
+         os.environ.get("REPOMGR_DEPLOY_URL"),
+-        REPO_BUILD
++        REPO_BUILD,
++        distro_codename
+     )
+ 
+     # Get binary repositories that contribute binaries to the ISO.
+@@ -774,19 +757,20 @@
+     for binary_repository in binary_repositories:
+         repo_manager.upload_pkg(binary_repository, None)
+         binary_repositories_urls.append(
+-            "deb {}{} bullseye main".format(
++            "deb {}{} {} main".format(
+                 os.environ.get("REPOMGR_DEPLOY_URL"),
+-                binary_repository
++                binary_repository,
++                distro_codename
+             )
+         )
+ 
+     logger.info("\n")
+     logger.info("=====Build Image start ......")
+     logger.info("checking OS binary packages ......")
+-    base_bins_ready = check_base_os_binaries(repo_manager)
++    base_bins_ready = check_base_os_binaries(repo_manager, distro=distro, codename=distro_codename)
+ 
+     logger.info("\nchecking STX binary packages ......")
+-    stx_bins_ready = check_stx_binaries(repo_manager, "std")
++    stx_bins_ready = check_stx_binaries(repo_manager, "std", distro=distro, codename=distro_codename)
+ 
+     logger.info("\nchecking STX patched packages ......")
+     stx_patched_ready = check_stx_patched(repo_manager, "std")
+@@ -795,8 +779,8 @@
+         logger.error("Fail to get prepared to build image")
+         sys.exit(1)
+ 
+-    base_yaml = os.path.join(PKG_LIST_DIR, 'debian/common/base-bullseye.yaml')
+-    base_initramfs_yaml = os.path.join(PKG_LIST_DIR, 'debian/common/base-initramfs-bullseye.yaml')
++    base_yaml = '{}{}/{}/common/base-{}.yaml'.format(PKG_LIST_DIR, distro, distro_codename, distro_codename)
++    base_initramfs_yaml = '{}{}/{}/common/base-initramfs-{}.yaml'.format(PKG_LIST_DIR, distro, distro_codename, distro_codename)
+     os.environ["WORKSPACE_DIR"] = LAT_ROOT
+     lat_yaml = os.path.join(LAT_ROOT, "lat.yaml")
+     lat_initramfs_yaml = os.path.join(LAT_ROOT, "lat-initramfs.yaml")
+@@ -845,7 +829,7 @@
+         sys.exit(1)
+ 
+     ret = 1
+-    if not add_lat_packages(lat_yaml, img_pkgs):
++    if not add_lat_packages(lat_yaml, img_pkgs, distro=distro, codename=distro_codename):
+         logger.error("Failed to add packages into image YAML config")
+         sys.exit(ret)
+ 
+diff --git a/build-tools/stx/build-pkgs b/build-tools/stx/build-pkgs
+index a85c06c..af13459 100755
+--- a/build-tools/stx/build-pkgs
++++ b/build-tools/stx/build-pkgs
+@@ -138,7 +138,7 @@
+ STX_DEFAULT_BUILD_TYPE_LIST = discovery.STX_DEFAULT_BUILD_TYPE_LIST
+ 
+ ALL_DISTROS = discovery.get_all_distros()
+-ALL_LAYERS = discovery.get_all_layers(distro=STX_DEFAULT_DISTRO)
++ALL_LAYERS = discovery.get_all_layers(distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME)
+ ALL_BUILD_TYPES = discovery.get_all_build_types(distro=STX_DEFAULT_DISTRO)
+ 
+ logger = logging.getLogger('debcontroller')
+@@ -151,9 +151,9 @@
+     deps = deps.replace('|', ',')
+     deps = deps.replace(' ', '').split(',')
+     for pkg in deps:
+-        pkg = re.sub('\(.*?\)','', pkg)
+-        pkg = re.sub('\[.*?\]','', pkg)
+-        pkg = re.sub('\<.*?\>','', pkg)
++        pkg = re.sub(r'\(.*?\)','', pkg)
++        pkg = re.sub(r'\[.*?\]','', pkg)
++        pkg = re.sub(r'\<.*?\>','', pkg)
+         pkgs_list.append(pkg)
+     return pkgs_list
+ 
+@@ -269,7 +269,9 @@
+     return ddscs
+ 
+ 
+-def scan_all_depends(layer_pkgdirs_dscs, build_pkgdirs_dscs):
++def scan_all_depends(layer_pkgdirs_dscs, build_pkgdirs_dscs,
++                     distro=STX_DEFAULT_DISTRO,
++                     codename=STX_DEFAULT_DISTRO_CODENAME):
+     '''
+     Try to find these packages whose 'build-depend' contains the packages in build_pkgdirs_dscs
+     this function only scan depth 1 instead of recursively
+@@ -286,7 +288,7 @@
+     logger.debug("There are %d dscs in build_pkgdirs_dscs", len(build_pkgdirs_dscs))
+     for pkgdir, dsc in build_pkgdirs_dscs.items():
+         subdebs = get_dsc_binary_package_names([dsc])
+-        pkg_name = discovery.package_dir_to_package_name(pkgdir, STX_DEFAULT_DISTRO)
++        pkg_name = discovery.package_dir_to_package_name(pkgdir, distro=distro, codename=codename)
+         depender_dscs = query_who_depends(subdebs, dependency_graph)
+         if len(depender_dscs) == 0:
+             logger.debug("There are no STX packages found which depends on %s, skip", pkg_name)
+@@ -472,7 +474,8 @@
+     return []
+ 
+ 
+-def get_package_jobs(pkg_dir, distro=STX_DEFAULT_DISTRO):
++def get_package_jobs(pkg_dir, distro=STX_DEFAULT_DISTRO,
++                     codename=STX_DEFAULT_DISTRO_CODENAME):
+     '''
+     Returns the number of parallel jobs of the package
+     If the serial build is not enabled by the meta file,
+@@ -480,9 +483,10 @@
+     environment variable MAX_CPUS.
+     '''
+     jobs = os.environ.get('MAX_CPUS', 1)
+-    package = discovery.package_dir_to_package_name(pkg_dir, distro=distro)
+-    if pkg_dir:
+-        pkg_meta_yaml = os.path.join(pkg_dir, 'debian/meta_data.yaml')
++    package = discovery.package_dir_to_package_name(pkg_dir, distro=distro, codename=codename)
++    package_dir = discovery.get_relocated_package_dir(pkg_dir, distro=distro, codename=codename)
++    if package_dir:
++        pkg_meta_yaml = os.path.join(package_dir, 'meta_data.yaml')
+         try:
+             with open(pkg_meta_yaml) as f:
+                 yaml_doc = yaml.safe_load(f)
+@@ -582,10 +586,11 @@
+     'Status: fail': build fail
+     'Status: give-back': try again later
+     """
+-    def __init__(self, distro=STX_DEFAULT_DISTRO):
++    def __init__(self, distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
+         self.attrs = {
+             'mode': 'private',
+             'distro': distro,
++            'codename': codename,
+             'avoid': True,
+             'parallel': 1,
+             'exit_on_fail': False,
+@@ -788,9 +793,13 @@
+                 try:
+                     if build_type == 'rt':
+                         self.kits['dsc_maker'][build_type] = debrepack.Parser(build_dir, recipes_dir,
+-                                                                              'debug', None, 'rt')
++                                                                              'debug', None, 'rt',
++                                                                              distro=self.attrs['distro'],
++                                                                              codename=self.attrs['codename'])
+                     else:
+-                        self.kits['dsc_maker'][build_type] = debrepack.Parser(build_dir, recipes_dir, 'debug')
++                        self.kits['dsc_maker'][build_type] = debrepack.Parser(build_dir, recipes_dir, 'debug',
++                                                                              distro=self.attrs['distro'],
++                                                                              codename=self.attrs['codename'])
+                 except Exception as e:
+                     logger.error(str(e))
+                     logger.error("Failed to create dsc maker")
+@@ -960,7 +969,7 @@
+ 
+         ret = req_chroots_action('addchroot', extra_req)
+         if 'creating' in ret:
+-            key_string = "Successfully set up bullseye chroot"
++            key_string = "Successfully set up " + DISTRIBUTION + " chroot"
+             state = show_task_log(os.path.join(PKGBUILDER_ROOT, USER, PROJECT, 'chroot.log'),
+                                   10, key_string, "E: ")
+             if 'success' in state:
+@@ -1151,7 +1160,7 @@
+         status = 'fail'
+         chroot = None
+         # For serial build and parallel build, the pkg_jobs should have different value
+-        pkg_jobs = get_package_jobs(pkg_dir, self.attrs['distro'])
++        pkg_jobs = get_package_jobs(pkg_dir, self.attrs['distro'], self.attrs['codename'])
+         if pkg_jobs > self.attrs['max_make_jobs']:
+             pkg_jobs = self.attrs['max_make_jobs']
+ 
+@@ -1498,7 +1507,8 @@
+             if pkgs_can_build:
+                 dsc_path = pkgs_can_build[0]
+                 pkg_dir = get_pkg_dir_from_dsc(layer_pkgdir_dscs, dsc_path)
+-                pkg_name = discovery.package_dir_to_package_name(pkg_dir, distro=self.attrs['distro'])
++                pkg_name = discovery.package_dir_to_package_name(pkg_dir, distro=self.attrs['distro'],
++                                                                 codename=self.attrs['codename'])
+                 logger.info("Depends resolver told to build %s", pkg_name)
+                 # For layer builds, the package may has been built before in the layer with higher priority
+                 in_reuse_list = False
+@@ -1594,7 +1604,7 @@
+                     logger.debug("wait_task_done is enabled")
+ 
+                 logger.info("############################################################")
+-                logger.info("Remaing packages %d, building packages %d", dscs_count, dscs_building_count)
++                logger.info("Remaining packages %d, building packages %d", dscs_count, dscs_building_count)
+                 logger.info("------------------------------------------------------------")
+                 if self.dscs_building:
+                     for bdsc in self.dscs_building:
+@@ -1610,7 +1620,8 @@
+                 if done_dsc:
+                     repo_snapshots.release(done_dsc)
+                     done_pkg_dir = get_pkg_dir_from_dsc(layer_pkgdir_dscs, done_dsc)
+-                    done_pkg_name = discovery.package_dir_to_package_name(done_pkg_dir, distro=self.attrs['distro'])
++                    done_pkg_name = discovery.package_dir_to_package_name(done_pkg_dir, distro=self.attrs['distro'],
++                                                                          codename=self.attrs['codename'])
+                     # Removed from current building list
+                     self.dscs_building.remove(done_dsc)
+                     logger.info("Removed %s from the current building list after build done", done_pkg_name)
+@@ -1716,12 +1727,14 @@
+             logger.error('Failed to specify build_type')
+             return
+ 
+-        pkg_dirs = discovery.package_dir_list(distro=self.attrs['distro'], layer=layer, build_type=build_type)
++        pkg_dirs = discovery.package_dir_list(distro=self.attrs['distro'], codename=self.attrs['codename'], 
++                                              layer=layer, build_type=build_type)
+         layer_pkg_dirs = pkg_dirs
+         word = "all"
+         if packages:
+             word = "selected"
+-            pkg_dirs, pkgs_exist = discovery.filter_package_dirs_by_package_names(pkg_dirs, packages, distro=self.attrs['distro'])
++            pkg_dirs, pkgs_exist = discovery.filter_package_dirs_by_package_names(
++                pkg_dirs, packages, distro=self.attrs['distro'], codename=self.attrs['codename'])
+             self.save_failed_pkgs(pkgs_exist, packages, build_type)
+             layer_pkg_dirs = pkg_dirs
+             for pkg in self.lists['pkgs_not_found'].copy():
+@@ -1729,15 +1742,16 @@
+                     self.lists['pkgs_not_found'].remove(pkg)
+ 
+         if not pkg_dirs:
+-            logger.debug(' '.join(['Found no buildable packages matching selection criteria in build_type',
+-                                   build_type, 'of layer %s', layer]))
++            logger.debug('Found no buildable packages matching selection criteria '
++                         'in build_type build_type of layer {}'.format(layer))
+             return
+ 
+         logger.info(' '.join(['Start to build', word, 'packages in',
+                               'build_type', build_type,
+                               'of layer', layer]))
+ 
+-        packages = discovery.package_dirs_to_package_names(pkg_dirs)
++        packages = discovery.package_dirs_to_package_names(pkg_dirs, distro=self.attrs['distro'], 
++                                                           codename=self.attrs['codename'])
+         logger.debug(' '.join(['Building packages:',
+                                ','.join(packages)]))
+         self.build_packages(layer_pkg_dirs, pkg_dirs, layer, word, build_type=build_type)
+@@ -1765,10 +1779,14 @@
+         if not packages and 'sign' in build_types:
+             build_types.remove('sign')
+ 
+-        valid_build_type = discovery.get_layer_build_types(layer, distro=self.attrs['distro'])
++        valid_build_type = discovery.get_layer_build_types(layer,
++                                                           distro=self.attrs['distro'],
++                                                           codename=self.attrs['codename'])
+ 
+         # sort the build_type list so we build in the proper order
+-        build_types = discovery.sort_build_type_list(build_types, layer, distro=self.attrs['distro'])
++        build_types = discovery.sort_build_type_list(build_types,
++                                                     layer, distro=self.attrs['distro'],
++                                                     codename=self.attrs['codename'])
+ 
+         for build_type in build_types:
+             if build_type not in valid_build_type:
+@@ -1808,11 +1826,15 @@
+                 return
+ 
+         # sort the layer list so we build in the proper order
+-        layers = discovery.sort_layer_list(layers, distro=self.attrs['distro'])
++        layers = discovery.sort_layer_list(layers,
++                                           distro=self.attrs['distro'],
++                                           codename=self.attrs['codename'])
+ 
+         for layer in layers:
+             if build_types is None:
+-                build_types = discovery.get_layer_build_types(layer=layer, distro=self.attrs['distro'])
++                build_types = discovery.get_layer_build_types(layer,
++                                                              distro=self.attrs['distro'],
++                                                              codename=self.attrs['codename'])
+             self.build_layer(layer=layer, build_types=build_types, packages=packages)
+ 
+         return
+@@ -1859,7 +1881,8 @@
+         # layer_pkg_dirs contains all STX packages of this layer
+         for pkg_dir in layer_pkg_dirs:
+             dsc_file = ""
+-            pkg_name = discovery.package_dir_to_package_name(pkg_dir, distro=self.attrs['distro'])
++            pkg_name = discovery.package_dir_to_package_name(pkg_dir, distro=self.attrs['distro'],
++                                                             codename=self.attrs['codename'])
+             pkgs_dirs_map[pkg_name] = pkg_dir
+ 
+             status, dsc_file = self.create_dsc(pkg_name, pkg_dir, reclaim=False, build_type=build_type)
+@@ -1911,7 +1934,9 @@
+             if self.attrs['build_all'] or layer:
+                 if self.attrs['avoid'] and self.kits['dsc_cache'][build_type]:
+                     logger.info("Start to find these packages which depend on the build packages")
+-                    self.extend_deps = scan_all_depends(layer_pkgdir_dscs, need_build)
++                    self.extend_deps = scan_all_depends(layer_pkgdir_dscs, need_build,
++                                                        distro=self.attrs['distro'],
++                                                        codename=self.attrs['codename'])
+                     if len(self.extend_deps) > 0:
+                         logger.info("Found %d packages which should be rebuilt:%s", len(self.extend_deps), ','.join(self.extend_deps))
+                     else:
+@@ -1920,7 +1945,8 @@
+         if self.attrs['reuse'] and len(self.lists['reuse_pkgname_' + build_type]) > 0:
+             # Filter all that packages in dependency chain, these packages should not be reused
+             for rpkg_dir in self.extend_deps:
+-                rpkg_name = discovery.package_dir_to_package_name(rpkg_dir, distro=self.attrs['distro'])
++                rpkg_name = discovery.package_dir_to_package_name(rpkg_dir, distro=self.attrs['distro'],
++                                                                  codename=self.attrs['codename'])
+                 logger.debug("%s:%s needs to be removed from reused list", rpkg_name, rpkg_dir)
+                 if rpkg_dir in self.lists['reuse_' + build_type]:
+                     self.lists['reuse_' + build_type].remove(rpkg_dir)
+@@ -2042,7 +2068,8 @@
+             if reuse_number > 0:
+                 logger.info("Successfully reused: %d", reuse_number)
+                 for pkg_dir in sorted(reuse_list):
+-                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'])
++                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'],
++                                                                     codename=self.attrs['codename'])
+                     logger.info(pkg_name)
+ 
+             self.lists['build-needed_' + build_type] = list(set(self.lists['build-needed_' + build_type]) - set(self.lists['reuse_' + build_type]))
+@@ -2052,7 +2079,8 @@
+             if success_number > 0:
+                 logger.info("Successfully built: %d", success_number)
+                 for pkg_dir in sorted(success_list):
+-                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'])
++                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'],
++                                                                     codename=self.attrs['codename'])
+                     logger.info(pkg_name)
+ 
+             real_build_list = list(set(self.lists['real_build_' + build_type]))
+@@ -2060,7 +2088,8 @@
+             if real_build_number > 0:
+                 logger.info("Successfully built in pkgbuilder: %d", real_build_number)
+                 for pkg_dir in sorted(real_build_list):
+-                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'])
++                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'],
++                                                                     codename=self.attrs['codename'])
+                     logger.info(pkg_name)
+ 
+             success_depends_list = list(set(self.lists['success_depends_' + build_type]))
+@@ -2068,7 +2097,8 @@
+             if success_depends_number > 0:
+                 logger.info("Successfully built depended packages: %d", success_depends_number)
+                 for pkg_dir in sorted(success_depends_list):
+-                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'])
++                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'],
++                                                                     codename=self.attrs['codename'])
+                     logger.info(pkg_name)
+ 
+             failed_pkg_dirs = list(set(self.lists['build-needed_' + build_type]) - set(self.lists['success_' + build_type]))
+@@ -2077,14 +2107,16 @@
+                 ret_val = 1
+                 logger.error("Failed to build: %d", failed_number)
+                 for pkg_dir in sorted(failed_pkg_dirs):
+-                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'])
++                    pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'],
++                                                                     codename=self.attrs['codename'])
+                     logger.error(pkg_name)
+                 # self.lists['fail'] is the subset of failed_pkg_dirs
+                 # particularly refer to those failed packages reported by pkgbuilder
+                 if len(self.lists['fail_' + build_type]) > 0:
+                     logger.info("List of failed packages:")
+                     for pkg_dir in sorted(list(set(self.lists['fail_' + build_type]))):
+-                        pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'])
++                        pkg_name = discovery.package_dir_to_package_name(pkg_dir, self.attrs['distro'],
++                                                                         codename=self.attrs['codename'])
+                         logger.error(pkg_name)
+                 logger.info("For the failure reason, you can check with:")
+                 logger.info("\'cat /localdisk/builder.log | grep ERROR\' or")
+@@ -2195,7 +2227,7 @@
+             key, val = line.partition("=")[::2]
+             os_release_dict[key.strip()] = val.strip()
+ 
+-    if distro != os_release_dict['ID'] and distro_codename != os_release_dict['VERSION_CODENAME']:
++    if distro != os_release_dict['ID'] or distro_codename != os_release_dict['VERSION_CODENAME']:
+         logger.error('Invalid tooling. You are attempting to build {}/{} with {}/{} containers'.format(
+             distro, distro_codename, os_release_dict['ID'], os_release_dict['VERSION_CODENAME']))
+         sys.exit(1)
+@@ -2203,7 +2235,8 @@
+         logger.info('Tooling validated. You are building {}/{} with {}/{} containers'.format(
+             distro, distro_codename, os_release_dict['ID'], os_release_dict['VERSION_CODENAME']))
+ 
+-    ALL_LAYERS = discovery.get_all_layers(distro=distro)
++    # Reset these based on potentially new values
++    ALL_LAYERS = discovery.get_all_layers(distro=distro, codename=distro_codename)
+     ALL_BUILD_TYPES = discovery.get_all_build_types(distro=distro)
+ 
+     if args.build_types:
+@@ -2222,7 +2255,7 @@
+                 logger.error("Please consult: build-pkgs --help")
+                 sys.exit(1)
+ 
+-    build_controller = BuildController(distro=distro)
++    build_controller = BuildController(distro=distro, codename=distro_codename)
+     if args.clean:
+         build_controller.build_avoid = False
+         if not args.packages and not args.layers:
+@@ -2289,7 +2322,7 @@
+ 
+     reuse_dl_ret = 0
+     build_controller.set_reuse(os.path.join(BUILD_ROOT, 'caches'))
+-    if not build_controller.download_reused_debs('bullseye'):
++    if not build_controller.download_reused_debs(DISTRIBUTION):
+         reuse_dl_ret = 1
+ 
+     ret_value = build_controller.stop()
+diff --git a/build-tools/stx/debian-bullseye-image.inc b/build-tools/stx/debian-bullseye-image.inc
+new file mode 100644
+index 0000000..0b1cb05
+--- /dev/null
++++ b/build-tools/stx/debian-bullseye-image.inc
+@@ -0,0 +1,321 @@
++acl
++acpi-support-base
++ansible
++apache2
++apparmor-utils
++apt-utils
++auditd
++bash-completion
++bc
++bind9-dnsutils
++bind9-host
++bsdextrautils
++bsdutils
++busybox
++cdebconf
++cloud-init
++cluster-glue
++collectd
++conntrack
++conntrackd
++cracklib-runtime
++cron
++cryptsetup-bin
++curl
++dash
++dbconfig-common
++dbus-user-session
++dconf-gsettings-backend
++debconf-i18n
++diffutils
++dnf
++docker.io
++dosfstools
++eatmydata
++e2fsprogs
++efibootmgr
++eject
++elfutils
++erlang-base
++erlang-eldap
++erlang-inets
++erlang-os-mon
++erlang-parsetools
++erlang-syntax-tools
++erlang-tools
++erlang-xmerl
++expect
++fdisk
++findutils
++firmware-ath9k-htc
++firmware-atheros
++firmware-bnx2
++firmware-bnx2x
++firmware-brcm80211
++firmware-cavium
++firmware-intel-sound
++firmware-iwlwifi
++firmware-libertas
++firmware-linux
++firmware-myricom
++firmware-netronome
++firmware-netxen
++firmware-qcom-soc
++firmware-qlogic
++firmware-realtek
++firmware-samsung
++firmware-siano
++flake8
++fonts-dejavu-core
++gcc-10
++genisoimage
++gettext-base
++gnupg
++grep
++gunicorn
++gzip
++hdparm
++hostname
++ifenslave
++init
++initramfs-tools
++inotify-tools
++install-info
++iperf3
++ipmitool
++iptables-persistent
++ipxe-qemu
++iscsiuio
++iotop
++isomd5sum
++kbd
++less
++libapache2-mod-wsgi-py3
++libaprutil1-dbd-sqlite3
++libavahi-glib1
++libbabeltrace1
++libblas3
++libbluetooth3
++libboost-context1.74.0
++libboost-iostreams1.74.0
++libboost-python1.74.0
++libboost-regex1.74.0
++libc6
++libc6-dev
++libcacard0
++libcapstone4
++libcrypt1
++libdebconfclient0
++libdns-export1110
++libeinfo1
++libfam0
++libfuse2
++libgcc-s1
++libgeoip1
++libgfapi0
++libgoogle-perftools4
++libinotifytools0
++libiscsi7
++libjs-jquery-cookie
++liblapack3
++libleveldb1d
++liblognorm5
++libmm-glib0
++libndctl6
++libndp0
++libnetcf1
++libnet-ntp-perl
++libnfs13
++libnm0
++libnss-cache
++libnss-mdns
++libnss-sss
++liboath0
++libodbc1
++libopendbx1
++libpam-sss
++libpciaccess0
++librabbitmq4
++librte-vhost21
++libsanlock-client1
++libsecret-1-0
++libslirp0
++libsoup2.4-1
++libspice-server1
++libssh-4
++libsss-sudo
++libteam-utils
++libunbound8
++liburing1
++libusb-1.0-0
++libusbredirparser1
++libvdeplug2
++libvirglrenderer1
++libyajl2
++linux-cpupower
++locales-all
++logrotate
++lsb-base
++lsof
++man-db
++mawk
++mdadm
++memcached
++mokutil
++multipath-tools
++multipath-tools-boot
++nano
++ncurses-base
++ncurses-bin
++ndisc6
++netcat-openbsd
++nfs-kernel-server
++nftables
++ntp
++nvme-cli
++open-iscsi
++openssh-server
++original-awk
++ovmf
++pciutils
++pinentry-curses
++pipexec
++postgresql-13
++psmisc
++puppet-module-adrienthebo-filemapper
++puppet-module-asciiduck-sssd
++puppet-module-barbican
++puppet-module-duritong-sysctl
++puppet-module-puppetlabs-mount-core
++puppet-module-voxpupuli-collectd
++puppet-module-vswitch
++pv
++python3-amqplib
++python3-boto3
++python3-castellan
++python3-cherrypy3
++python3-contextlib2
++python3-coverage
++python3-daemon
++python3-dev
++python3-django-debreach
++python3-django-pyscss
++python3-enmerkar
++python3-falcon
++python3-fixtures
++python3-flask-restful
++python3-ipaddr
++python3-keystonemiddleware
++python3-kubernetes
++python3-ldap3
++python3-ldappool
++python3-lz4
++python3-mechanize
++python3-mysqldb
++python3-os-client-config
++python3-oslo.config
++python3-oslo.db
++python3-oslo.log
++python3-oslo.policy
++python3-oslo.rootwrap
++python3-oslo.upgradecheck
++python3-oslo.versionedobjects
++python3-osprofiler
++python3-paramiko
++python3-parted
++python3-passlib
++python3-pastescript
++python3-pecan
++python3-pexpect
++python3-pip
++python3-psutil
++python3-pyelftools
++python3-pyghmi
++python3-pymongo
++python3-pysaml2
++python3-q-text-as-data
++python3-redis
++python3-requests-toolbelt
++python3-retrying
++python3-ruamel.yaml
++python3-scapy
++python3-scrypt
++python3-semantic-version
++python3-sh
++python3-simplejson
++python3-sklearn
++python3-sortedcontainers
++python3-swiftclient
++python3-testtools
++python3-ujson
++python3-warlock
++python3-websockify
++python3-xstatic-angular-bootstrap
++python3-xstatic-angular-fileupload
++python3-xstatic-angular-gettext
++python3-xstatic-angular-lrdragndrop
++python3-xstatic-angular-schema-form
++python3-xstatic-angular-ui-router
++python3-xstatic-bootstrap-datepicker
++python3-xstatic-bootstrap-scss
++python3-xstatic-bootswatch
++python3-xstatic-d3
++python3-xstatic-font-awesome
++python3-xstatic-hogan
++python3-xstatic-jasmine
++python3-xstatic-jquery-migrate
++python3-xstatic-jquery.quicksearch
++python3-xstatic-jquery.tablesorter
++python3-xstatic-jquery-ui
++python3-xstatic-jsencrypt
++python3-xstatic-magic-search
++python3-xstatic-mdi
++python3-xstatic-objectpath
++python3-xstatic-rickshaw
++python3-xstatic-smart-table
++python3-xstatic-spin
++python3-xstatic-term.js
++python-is-python3
++rng-tools
++rpm
++rsync
++ruby-json
++screen
++seabios
++smartmontools
++socat
++spectre-meltdown-checker
++ssg-debian
++sshpass
++sssd
++sssd-tools
++startpar
++strace
++strongswan
++strongswan-swanctl
++sudo-ldap
++syslinux-utils
++syslog-ng
++sysstat
++sysvinit-utils
++targetcli-fb
++tasksel
++tasksel-data
++tcpdump
++time
++traceroute
++tuned
++tzdata
++udhcpc
++unzip
++uwsgi-plugin-apparmor
++uwsgi-plugin-python3
++vim
++vim-tiny
++vlan
++w3m
++wget
++whiptail
++xclip
++xfsprogs
++zip
+diff --git a/build-tools/stx/debian-image.inc b/build-tools/stx/debian-image.inc
+deleted file mode 100644
+index 0b1cb05..0000000
+--- a/build-tools/stx/debian-image.inc
++++ /dev/null
+@@ -1,321 +0,0 @@
+-acl
+-acpi-support-base
+-ansible
+-apache2
+-apparmor-utils
+-apt-utils
+-auditd
+-bash-completion
+-bc
+-bind9-dnsutils
+-bind9-host
+-bsdextrautils
+-bsdutils
+-busybox
+-cdebconf
+-cloud-init
+-cluster-glue
+-collectd
+-conntrack
+-conntrackd
+-cracklib-runtime
+-cron
+-cryptsetup-bin
+-curl
+-dash
+-dbconfig-common
+-dbus-user-session
+-dconf-gsettings-backend
+-debconf-i18n
+-diffutils
+-dnf
+-docker.io
+-dosfstools
+-eatmydata
+-e2fsprogs
+-efibootmgr
+-eject
+-elfutils
+-erlang-base
+-erlang-eldap
+-erlang-inets
+-erlang-os-mon
+-erlang-parsetools
+-erlang-syntax-tools
+-erlang-tools
+-erlang-xmerl
+-expect
+-fdisk
+-findutils
+-firmware-ath9k-htc
+-firmware-atheros
+-firmware-bnx2
+-firmware-bnx2x
+-firmware-brcm80211
+-firmware-cavium
+-firmware-intel-sound
+-firmware-iwlwifi
+-firmware-libertas
+-firmware-linux
+-firmware-myricom
+-firmware-netronome
+-firmware-netxen
+-firmware-qcom-soc
+-firmware-qlogic
+-firmware-realtek
+-firmware-samsung
+-firmware-siano
+-flake8
+-fonts-dejavu-core
+-gcc-10
+-genisoimage
+-gettext-base
+-gnupg
+-grep
+-gunicorn
+-gzip
+-hdparm
+-hostname
+-ifenslave
+-init
+-initramfs-tools
+-inotify-tools
+-install-info
+-iperf3
+-ipmitool
+-iptables-persistent
+-ipxe-qemu
+-iscsiuio
+-iotop
+-isomd5sum
+-kbd
+-less
+-libapache2-mod-wsgi-py3
+-libaprutil1-dbd-sqlite3
+-libavahi-glib1
+-libbabeltrace1
+-libblas3
+-libbluetooth3
+-libboost-context1.74.0
+-libboost-iostreams1.74.0
+-libboost-python1.74.0
+-libboost-regex1.74.0
+-libc6
+-libc6-dev
+-libcacard0
+-libcapstone4
+-libcrypt1
+-libdebconfclient0
+-libdns-export1110
+-libeinfo1
+-libfam0
+-libfuse2
+-libgcc-s1
+-libgeoip1
+-libgfapi0
+-libgoogle-perftools4
+-libinotifytools0
+-libiscsi7
+-libjs-jquery-cookie
+-liblapack3
+-libleveldb1d
+-liblognorm5
+-libmm-glib0
+-libndctl6
+-libndp0
+-libnetcf1
+-libnet-ntp-perl
+-libnfs13
+-libnm0
+-libnss-cache
+-libnss-mdns
+-libnss-sss
+-liboath0
+-libodbc1
+-libopendbx1
+-libpam-sss
+-libpciaccess0
+-librabbitmq4
+-librte-vhost21
+-libsanlock-client1
+-libsecret-1-0
+-libslirp0
+-libsoup2.4-1
+-libspice-server1
+-libssh-4
+-libsss-sudo
+-libteam-utils
+-libunbound8
+-liburing1
+-libusb-1.0-0
+-libusbredirparser1
+-libvdeplug2
+-libvirglrenderer1
+-libyajl2
+-linux-cpupower
+-locales-all
+-logrotate
+-lsb-base
+-lsof
+-man-db
+-mawk
+-mdadm
+-memcached
+-mokutil
+-multipath-tools
+-multipath-tools-boot
+-nano
+-ncurses-base
+-ncurses-bin
+-ndisc6
+-netcat-openbsd
+-nfs-kernel-server
+-nftables
+-ntp
+-nvme-cli
+-open-iscsi
+-openssh-server
+-original-awk
+-ovmf
+-pciutils
+-pinentry-curses
+-pipexec
+-postgresql-13
+-psmisc
+-puppet-module-adrienthebo-filemapper
+-puppet-module-asciiduck-sssd
+-puppet-module-barbican
+-puppet-module-duritong-sysctl
+-puppet-module-puppetlabs-mount-core
+-puppet-module-voxpupuli-collectd
+-puppet-module-vswitch
+-pv
+-python3-amqplib
+-python3-boto3
+-python3-castellan
+-python3-cherrypy3
+-python3-contextlib2
+-python3-coverage
+-python3-daemon
+-python3-dev
+-python3-django-debreach
+-python3-django-pyscss
+-python3-enmerkar
+-python3-falcon
+-python3-fixtures
+-python3-flask-restful
+-python3-ipaddr
+-python3-keystonemiddleware
+-python3-kubernetes
+-python3-ldap3
+-python3-ldappool
+-python3-lz4
+-python3-mechanize
+-python3-mysqldb
+-python3-os-client-config
+-python3-oslo.config
+-python3-oslo.db
+-python3-oslo.log
+-python3-oslo.policy
+-python3-oslo.rootwrap
+-python3-oslo.upgradecheck
+-python3-oslo.versionedobjects
+-python3-osprofiler
+-python3-paramiko
+-python3-parted
+-python3-passlib
+-python3-pastescript
+-python3-pecan
+-python3-pexpect
+-python3-pip
+-python3-psutil
+-python3-pyelftools
+-python3-pyghmi
+-python3-pymongo
+-python3-pysaml2
+-python3-q-text-as-data
+-python3-redis
+-python3-requests-toolbelt
+-python3-retrying
+-python3-ruamel.yaml
+-python3-scapy
+-python3-scrypt
+-python3-semantic-version
+-python3-sh
+-python3-simplejson
+-python3-sklearn
+-python3-sortedcontainers
+-python3-swiftclient
+-python3-testtools
+-python3-ujson
+-python3-warlock
+-python3-websockify
+-python3-xstatic-angular-bootstrap
+-python3-xstatic-angular-fileupload
+-python3-xstatic-angular-gettext
+-python3-xstatic-angular-lrdragndrop
+-python3-xstatic-angular-schema-form
+-python3-xstatic-angular-ui-router
+-python3-xstatic-bootstrap-datepicker
+-python3-xstatic-bootstrap-scss
+-python3-xstatic-bootswatch
+-python3-xstatic-d3
+-python3-xstatic-font-awesome
+-python3-xstatic-hogan
+-python3-xstatic-jasmine
+-python3-xstatic-jquery-migrate
+-python3-xstatic-jquery.quicksearch
+-python3-xstatic-jquery.tablesorter
+-python3-xstatic-jquery-ui
+-python3-xstatic-jsencrypt
+-python3-xstatic-magic-search
+-python3-xstatic-mdi
+-python3-xstatic-objectpath
+-python3-xstatic-rickshaw
+-python3-xstatic-smart-table
+-python3-xstatic-spin
+-python3-xstatic-term.js
+-python-is-python3
+-rng-tools
+-rpm
+-rsync
+-ruby-json
+-screen
+-seabios
+-smartmontools
+-socat
+-spectre-meltdown-checker
+-ssg-debian
+-sshpass
+-sssd
+-sssd-tools
+-startpar
+-strace
+-strongswan
+-strongswan-swanctl
+-sudo-ldap
+-syslinux-utils
+-syslog-ng
+-sysstat
+-sysvinit-utils
+-targetcli-fb
+-tasksel
+-tasksel-data
+-tcpdump
+-time
+-traceroute
+-tuned
+-tzdata
+-udhcpc
+-unzip
+-uwsgi-plugin-apparmor
+-uwsgi-plugin-python3
+-vim
+-vim-tiny
+-vlan
+-w3m
+-wget
+-whiptail
+-xclip
+-xfsprogs
+-zip
+diff --git a/build-tools/stx/debrepack.py b/build-tools/stx/debrepack.py
+index 9a68093..9b68bc6 100755
+--- a/build-tools/stx/debrepack.py
++++ b/build-tools/stx/debrepack.py
+@@ -207,7 +207,9 @@
+ 
+ class Parser():
+ 
+-    def __init__(self, basedir, output, log_level='info', srcrepo=None, btype="std"):
++    def __init__(self, basedir, output, log_level='info', srcrepo=None, btype="std",
++                 distro=discovery.STX_DEFAULT_DISTRO,
++                 codename=discovery.STX_DEFAULT_DISTRO_CODENAME):
+ 
+         self.logger = logging.getLogger(__name__)
+         if not self.logger.handlers:
+@@ -229,6 +231,9 @@
+             raise Exception(f"{output}: No such file or directory")
+         self.output = os.path.abspath(output)
+ 
++        self.distro=distro
++        self.codename=codename
++
+         self.srcrepo = srcrepo
+         self.btype = btype
+         self.meta_data = dict()
+@@ -244,12 +249,12 @@
+             raise Exception(f"{pkgpath}: No such file or directory")
+ 
+         self.pkginfo["pkgpath"] = os.path.abspath(pkgpath)
+-        self.pkginfo["pkgname"] = discovery.package_dir_to_package_name(pkgpath, 'debian')
++        self.pkginfo["pkgname"] = discovery.package_dir_to_package_name(pkgpath, self.distro, self.codename)
+         self.pkginfo["packdir"] = os.path.join(self.basedir, self.pkginfo["pkgname"])
+ 
+-        self.pkginfo["debfolder"] = os.path.join(self.pkginfo["pkgpath"], "debian")
++        self.pkginfo["debfolder"] = discovery.get_relocated_package_dir(pkgpath, self.distro, self.codename)
+         if not os.path.isdir(self.pkginfo["debfolder"]):
+-            self.logger.error("No debian folder")
++            self.logger.error("No debian folder: {}".format(self.pkginfo["debfolder"]))
+             raise Exception("No debian folder")
+ 
+         self.meta_data_file = os.path.join(self.pkginfo["debfolder"], "meta_data.yaml")
+@@ -297,10 +302,11 @@
+         self.versions["debian_revision"] = BaseVersion(self.versions["full_version"]).debian_revision
+         self.versions["epoch"] = BaseVersion(self.versions["full_version"]).epoch
+ 
+-        self.logger.info("=== Package Name: %s", self.pkginfo["pkgname"])
++        self.logger.info("=== Package Name:        %s", self.pkginfo["pkgname"])
+         self.logger.info("=== Debian Package Name: %s", self.pkginfo["debname"])
+-        self.logger.info("=== Package Version: %s", self.versions["full_version"])
+-        self.logger.info("=== Package Path: %s", self.pkginfo["pkgpath"])
++        self.logger.info("=== Package Version:     %s", self.versions["full_version"])
++        self.logger.info("=== Package Path:        %s", self.pkginfo["pkgpath"])
++        self.logger.info("=== Distro Package Path: %s", self.pkginfo["debfolder"])
+ 
+         srcdir = self.pkginfo["debname"] + "-" + self.versions["upstream_version"]
+         self.pkginfo["srcdir"] = os.path.join(self.pkginfo["packdir"], srcdir)
+@@ -339,7 +345,7 @@
+                 src_dir = os.path.join(self.pkginfo['pkgpath'], src_dir)
+             self.logger.info ("SRC_DIR = %s", src_dir)
+         else:
+-            src_dir = self.pkginfo["pkgpath"]
++            src_dir = self.pkginfo["debfolder"]
+             self.logger.info("SRC_DIR = %s (guessed)", src_dir)
+         return src_dir
+ 
+@@ -351,7 +357,14 @@
+             return dist
+ 
+         # reset the debfolder
+-        self.pkginfo["debfolder"] = os.path.join(self.pkginfo["pkgpath"], "debian")
++        #
++        # This also means that when a package is relocated to the "new style"
++        # for bullseye builds, we need to make sure that the revcount is
++        # adjusted properly for continuity of patching, this will require setting
++        # "revision.stx_patch: <number>" in the package meta_data.yaml correctly
++        #
++        self.pkginfo["debfolder"] = discovery.get_relocated_package_dir(self.pkginfo["pkgpath"],
++                                                                        self.distro, self.codename)
+ 
+         revision_data = self.meta_data["revision"]
+         if "dist" in revision_data:
+diff --git a/build-tools/stx/discovery.py b/build-tools/stx/discovery.py
+index 25ea615..7325844 100644
+--- a/build-tools/stx/discovery.py
++++ b/build-tools/stx/discovery.py
+@@ -28,13 +28,14 @@
+ # Supported distros + codenames
+ STX_DISTRO_DEBIAN = 'debian'
+ STX_DISTRO_DEBIAN_BULLSEYE = 'bullseye'
+-#STX_DISTRO_DEBIAN_TRIXIE = 'trixie'
++STX_DISTRO_DEBIAN_TRIXIE = 'trixie'
+ 
+ #STX_DISTRO_XXXX = 'XXXX'
+ 
+ STX_DISTRO_DICT = {
+     STX_DISTRO_DEBIAN : [
+         STX_DISTRO_DEBIAN_BULLSEYE,
++        STX_DISTRO_DEBIAN_TRIXIE,
+     ]
+ }
+ 
+@@ -50,7 +51,9 @@
+     distro_lst = list(STX_DISTRO_DICT.keys())
+     return sorted(distro_lst)
+ 
+-def get_build_type_priority(build_type, layer, distro="debian"):
++def get_build_type_priority(build_type, layer,
++                            distro=STX_DEFAULT_DISTRO,
++                            codename=STX_DEFAULT_DISTRO_CODENAME):
+     prio = BUILD_TYPE_PRIORITY_DEFAULT
+     if build_type is None:
+         return BUILD_TYPE_PRIORITY_DEFAULT
+@@ -60,16 +63,18 @@
+     if not os.path.isdir(dir):
+         return BUILD_TYPE_PRIORITY_DEFAULT
+     build_type_priority_file = os.path.join(dir, "stx-tools",
+-                                        "%s%s" % (distro, "-mirror-tools"),
+-                                        "config", distro, layer,
+-                                        build_type, "priority")
++                                            "%s%s" % (distro, "-mirror-tools"),
++                                            "config", distro,
++                                            codename, layer, build_type, "priority")
+     if not os.path.isfile(build_type_priority_file):
+         return BUILD_TYPE_PRIORITY_DEFAULT
+     prio = int(bc_safe_fetch(build_type_priority_file, None)[0])
+     return prio
+ 
+ 
+-def get_layer_priority(layer, distro="debian"):
++def get_layer_priority(layer,
++                       distro=STX_DEFAULT_DISTRO,
++                       codename=STX_DEFAULT_DISTRO_CODENAME):
+     prio = LAYER_PRIORITY_DEFAULT
+     if layer is None:
+         return LAYER_PRIORITY_DEFAULT
+@@ -79,18 +84,21 @@
+     if not os.path.isdir(dir):
+         return LAYER_PRIORITY_DEFAULT
+     layer_priority_file = os.path.join(dir, "stx-tools",
+-                                        "%s%s" % (distro, "-mirror-tools"),
+-                                        "config", distro, layer, "priority")
++                                       "%s%s" % (distro, "-mirror-tools"),
++                                       "config", distro,
++                                       codename, layer, "priority")
+     if not os.path.isfile(layer_priority_file):
+         return LAYER_PRIORITY_DEFAULT
+     prio = int(bc_safe_fetch(layer_priority_file, None)[0])
+     return prio
+ 
+ 
+-def sort_layer_list (layer_list, distro="debian"):
++def sort_layer_list (layer_list,
++                     distro=STX_DEFAULT_DISTRO,
++                     codename=STX_DEFAULT_DISTRO_CODENAME):
+     layer_dict = {}
+     for layer in layer_list:
+-        prio = get_layer_priority(layer, distro=distro)
++        prio = get_layer_priority(layer, distro=distro, codename=codename)
+         layer_dict[prio] = layer
+     keys = sorted(layer_dict.keys())
+     result = []
+@@ -99,7 +107,9 @@
+     return result
+ 
+ 
+-def get_all_layers (distro="debian", skip_non_buildable=True):
++def get_all_layers (distro=STX_DEFAULT_DISTRO,
++                    codename=STX_DEFAULT_DISTRO_CODENAME,
++                    skip_non_buildable=True):
+     layer_lst = []
+     project_dir_list_all = project_dir_list(distro=distro, layer="all", skip_non_buildable=skip_non_buildable)
+     for proj_dir in project_dir_list_all:
+@@ -109,24 +119,24 @@
+         layer_lst.extend(bc_safe_fetch(layer_file, None))
+ 
+     # also add any layers defined in stx-tools
+-    tools_layers_root = os.path.join(
+-            os.environ.get('MY_REPO_ROOT_DIR'),
+-            "stx-tools",
+-            "%s%s" % (distro, "-mirror-tools"),
+-            "config", distro)
++    tools_layers_root = os.path.join(os.environ.get('MY_REPO_ROOT_DIR'),
++                                     "stx-tools","%s%s" % (distro,"-mirror-tools"),
++                                     "config", distro, codename)
+     for dir_entry in os.scandir (tools_layers_root):
+         if dir_entry.name != "common":
+             layer_lst.append (dir_entry.name)
+ 
+     # remove duplicates
+     layer_lst = list(set(layer_lst))
+-    return sort_layer_list(layer_lst)
++    return sort_layer_list(layer_lst, distro=distro, codename=codename)
+ 
+ 
+-def sort_build_type_list (build_type_list, layer, distro="debian"):
++def sort_build_type_list (build_type_list, layer,
++                          distro=STX_DEFAULT_DISTRO,
++                          codename=STX_DEFAULT_DISTRO_CODENAME):
+     build_type_dict = {}
+     for build_type in build_type_list:
+-        prio = get_build_type_priority(build_type, layer, distro=distro)
++        prio = get_build_type_priority(build_type, layer, distro=distro, codename=codename)
+         build_type_dict[prio] = build_type
+     keys = sorted(build_type_dict.keys())
+     result = []
+@@ -135,18 +145,29 @@
+     return result
+ 
+ 
+-def get_layer_build_types (layer, distro="debian", skip_non_buildable=True):
++def get_layer_build_types (layer, distro=STX_DEFAULT_DISTRO,
++                           codename=STX_DEFAULT_DISTRO_CODENAME,
++                           skip_non_buildable=True):
+     bt_lst = [ "std" ]
+     project_dir_list_all = project_dir_list(distro=distro, layer=layer, skip_non_buildable=skip_non_buildable)
+     for proj_dir in project_dir_list_all:
+-        for pkg_dir_file in glob.glob("%s/%s%s" % (proj_dir, distro, "_pkg_dirs_*")):
++        # Assumes:
++        #   Old Style: {distro}_pkg_dirs_*
++        #   New Sytle: {distro}_{codename}_pkg_dirs_*
++        files_list = None
++        if codename == STX_DISTRO_DEBIAN_BULLSEYE:
++            # Look for the non-codenamed old-style file configuration
++            files_list = glob.glob("{}/{}_pkg_dirs_*".format(proj_dir,distro))
++        if not files_list:
++            files_list = glob.glob("{}/{}_{}_pkg_dirs_*".format(proj_dir,distro,codename))
++        for pkg_dir_file in files_list:
+             bt = os.path.basename(pkg_dir_file).split("_pkg_dirs_")[1]
+             if not bt in bt_lst:
+                 bt_lst.append(bt)
+-    return sort_build_type_list(bt_lst, layer)
++    return sort_build_type_list(bt_lst, layer, distro=distro, codename=codename)
+ 
+ 
+-def get_all_build_types (distro="debian", skip_non_buildable=True):
++def get_all_build_types (distro=STX_DEFAULT_DISTRO, skip_non_buildable=True):
+     bt_lst = [ "std" ]
+     project_dir_list_all = project_dir_list(distro=distro, layer="all", skip_non_buildable=skip_non_buildable)
+     for proj_dir in project_dir_list_all:
+@@ -167,7 +188,7 @@
+ # project_dir_list
+ #      Return a list of git root directories for the current project.
+ #      Optionally, the list can be filtered by distro and layer.
+-def project_dir_list (distro="debian", layer="all", skip_non_buildable=True):
++def project_dir_list (distro=STX_DEFAULT_DISTRO, layer="all", skip_non_buildable=True):
+     if layer is None:
+         layer = "all"
+     dir = os.environ.get('MY_REPO_ROOT_DIR')
+@@ -201,67 +222,126 @@
+     return [ path ]
+ 
+ 
+-def package_iso_list (distro="debian", layer="all", build_type="std", skip_non_buildable=True):
++def package_iso_list (distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME, layer="all",
++                      build_type="std", skip_non_buildable=True):
+     pkg_iso_list = []
+     if layer is None:
+         layer = "all"
+     for proj_dir in project_dir_list(distro=distro, layer=layer, skip_non_buildable=skip_non_buildable):
+-        iso_file = os.path.join(proj_dir, "%s%s%s%s" % (distro, "_iso_image_", build_type, ".inc"))
+-        if not os.path.isfile(iso_file):
+-            if build_type == "std":
+-                # It's permitted to omit the "_std" suffix from the file name
+-                iso_file = os.path.join(proj_dir, "%s%s" % (distro, "_iso_image.inc"))
+-        if not os.path.isfile(iso_file):
+-            continue
++        if codename == STX_DISTRO_DEBIAN_BULLSEYE:
++            # Look for the non-codenamed old-style file configuration for a specific build type
++            iso_file = '{}/{}_iso_image_{}.inc'.format(proj_dir, distro, build_type)
++            if not os.path.isfile(iso_file):
++                # Look for the codenamed new-style file configuration for a build type
++                iso_file = '{}/{}_{}_iso_image_{}.inc'.format(proj_dir, distro, codename, build_type)
++                if not os.path.isfile(iso_file) and build_type == "std":
++                    # Look for the non-codenamed old-style file configuration without build_type (is allowed)
++                    iso_file = '{}/{}_iso_image.inc'.format(proj_dir, distro)
++                    if not os.path.isfile(iso_file):
++                        continue
++                else:
++                    continue
++        else:
++            # Require a consistent format for all new distro/codename combos
++            iso_file = '{}/{}_{}_iso_image_{}.inc'.format(proj_dir, distro, codename, build_type)
++            if not os.path.isfile(iso_file):
++                continue
+         pkg_iso_list.extend(bc_safe_fetch(iso_file))
+     return pkg_iso_list
+ 
+ 
+-def package_dir_list (distro="debian", layer="all", build_type="std", skip_non_buildable=True):
++def package_dir_list (distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME, layer="all",
++                      build_type="std", skip_non_buildable=True):
++
+     pkg_dir_list = []
+     if layer is None:
+         layer = "all"
+     for proj_dir in project_dir_list(distro=distro, layer=layer, skip_non_buildable=skip_non_buildable):
+-        pkg_file = os.path.join(proj_dir, "%s%s%s" % (distro, "_pkg_dirs_", build_type))
+-        if not os.path.isfile(pkg_file):
+-            if build_type == "std":
+-                # It's permitted to omit the "_std" suffix from the file name
+-                pkg_file = os.path.join(proj_dir, "%s%s" % (distro, "_pkg_dirs"))
+-        if not os.path.isfile(pkg_file):
+-            continue
++        if codename == STX_DISTRO_DEBIAN_BULLSEYE:
++            # Look for the non-codenamed old-style file configuration for a specific build type
++            pkg_file = '{}/{}_pkg_dirs_{}'.format(proj_dir, distro, build_type)
++            if not os.path.isfile(pkg_file):
++                # Look for the codenamed new-style file configuration for a build type
++                pkg_file = '{}/{}_{}_pkg_dirs_{}'.format(proj_dir, distro, codename, build_type)
++                if not os.path.isfile(pkg_file) and build_type == "std":
++                    # Look for the non-codenamed old-style file configuration without build_type (is allowed)
++                    pkg_file = '{}/{}_pkg_dirs'.format(proj_dir, distro)
++                    if not os.path.isfile(pkg_file):
++                        continue
++                else:
++                    continue
++        else:
++            # Require a consistent format for all new distro/codename combos
++            pkg_file = '{}/{}_{}_pkg_dirs_{}'.format(proj_dir, distro, codename, build_type)
++            if not os.path.isfile(pkg_file):
++                continue
+         pkg_dir_list.extend(bc_safe_fetch(pkg_file, package_dir_list_handler, proj_dir))
+     return pkg_dir_list
+ 
+-def package_dir_to_package_name (pkg_dir, distro="debian"):
++
++def get_relocated_package_dir (pkg_dir, distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
++    # Looks for:
++    # - Old Syle  (debian/bullseye): pkg_dir/debian/meta_data.yaml
++    # - New Style (distro/codename): pkg_dir/debian/bullseye/meta_data.yaml
++    # - New Style (distro/all)     : pkg_dir/debian/all/meta_data.yaml
++    meta_data_file = None
++    if codename == STX_DISTRO_DEBIAN_BULLSEYE:
++        old_file = os.path.join(pkg_dir, distro, 'meta_data.yaml')
++        new_all_file = os.path.join(pkg_dir, distro, 'all', 'meta_data.yaml')
++        new_codename_file = os.path.join(pkg_dir, distro, codename, 'meta_data.yaml')
++        if os.path.isfile(old_file):
++            meta_data_file = old_file
++        elif os.path.isfile(new_all_file):
++            meta_data_file = new_all_file
++        elif os.path.isfile(new_codename_file):
++            meta_data_file = new_codename_file
++        else:
++            raise Exception(f"{pkg_dir}: No meta_data.yaml found. Valid [ {new_all_file}, {new_codename_file} ]")
++    else:
++        all_file = os.path.join(pkg_dir, distro, 'all', 'meta_data.yaml')
++        codename_file = os.path.join(pkg_dir, distro, codename, 'meta_data.yaml')
++        if os.path.isfile(all_file):
++            meta_data_file = all_file
++        elif os.path.isfile(codename_file):
++            meta_data_file = codename_file
++        else:
++            raise Exception(f"{pkg_dir}: No meta_data.yaml found. Valid [ {all_file}, {codename_file} ]")
++
++    return os.path.dirname(meta_data_file)
++
++def package_dir_to_package_name (pkg_dir, distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
+     pkg_name = os.path.basename(pkg_dir)
+-    if distro == "debian":
+-         meta_data_file = os.path.join(pkg_dir, distro, 'meta_data.yaml')
+-         if os.path.isfile(meta_data_file):
+-            with open(meta_data_file) as f:
+-                meta_data = yaml.full_load(f)
++    current_pkg_dir = get_relocated_package_dir(pkg_dir, distro=distro, codename=codename)
++    meta_data_file = os.path.join(current_pkg_dir, 'meta_data.yaml')
++    if os.path.isfile(meta_data_file):
++        with open(meta_data_file) as f:
++            meta_data = yaml.full_load(f)
+             if "debname" in meta_data:
+                 pkg_name = meta_data["debname"]
+     return pkg_name
+ 
+-def package_dirs_to_package_names (pkg_dirs, distro="debian"):
++def package_dirs_to_package_names (pkg_dirs, distro=STX_DEFAULT_DISTRO,
++                                   codename=STX_DEFAULT_DISTRO_CODENAME):
+     pkg_names = []
+     for pkg_dir in pkg_dirs:
+-        pkg_names.append(package_dir_to_package_name(pkg_dir, distro="debian"))
++        pkg_names.append(package_dir_to_package_name(pkg_dir, distro=distro, codename=codename))
+     return pkg_names
+ 
+-def package_dirs_to_names_dict (pkg_dirs, distro="debian"):
++def package_dirs_to_names_dict (pkg_dirs, distro=STX_DEFAULT_DISTRO,
++                                codename=STX_DEFAULT_DISTRO_CODENAME):
+     pkg_names = {}
+     for pkg_dir in pkg_dirs:
+-        pkg_names[pkg_dir]=package_dir_to_package_name(pkg_dir, distro="debian")
++        pkg_names[pkg_dir]=package_dir_to_package_name(pkg_dir, distro=distro, codename=codename)
+     return pkg_names
+ 
+-def filter_package_dirs_by_package_names (pkg_dirs, package_names, distro="debian"):
++def filter_package_dirs_by_package_names (pkg_dirs, package_names, distro=STX_DEFAULT_DISTRO,
++                                          codename=STX_DEFAULT_DISTRO_CODENAME):
+     pkgs_found = {}
+     if not package_names:
+         return pkg_dirs
+     filtered_pkg_dirs = []
+     for pkg_dir in pkg_dirs:
+-        pkg_name = package_dir_to_package_name(pkg_dir, distro=distro)
++        pkg_name = package_dir_to_package_name(pkg_dir, distro=distro, codename=codename)
+         if pkg_name in package_names:
+             filtered_pkg_dirs.append(pkg_dir)
+             pkgs_found[pkg_dir] = pkg_name
+diff --git a/build-tools/stx/downloader b/build-tools/stx/downloader
+index 95569be..b597af4 100755
+--- a/build-tools/stx/downloader
++++ b/build-tools/stx/downloader
+@@ -40,7 +40,8 @@
+ mirror_root = os.environ.get('OS_MIRROR')
+ stx_src_mirror = os.path.join(mirror_root, 'sources')
+ stx_bin_mirror = os.path.join(mirror_root, 'binaries')
+-all_binary_lists = ['base-bullseye.lst', 'os-std.lst', 'os-rt.lst']
++DEBIAN_DISTRIBUTION = os.environ.get('DEBIAN_DISTRIBUTION')
++all_binary_lists = ['base-' + DEBIAN_DISTRIBUTION + '.lst', 'os-std.lst', 'os-rt.lst']
+ types_pkg_dirs = ['debian_pkg_dirs', 'debian_pkg_dirs_rt', 'debian_pkg_dirs_installer']
+ 
+ logger = logging.getLogger('downloader')
+@@ -50,7 +51,7 @@
+ STX_DEFAULT_DISTRO_CODENAME = discovery.STX_DEFAULT_DISTRO_CODENAME
+ 
+ ALL_DISTROS = discovery.get_all_distros()
+-ALL_LAYERS = discovery.get_all_layers(distro=STX_DEFAULT_DISTRO)
++ALL_LAYERS = discovery.get_all_layers(distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME)
+ ALL_BUILD_TYPES = discovery.get_all_build_types(distro=STX_DEFAULT_DISTRO)
+ 
+ STX_MIRROR_STRATEGY = os.environ.get('STX_MIRROR_STRATEGY')
+@@ -119,14 +120,16 @@
+     return pkgs
+ 
+ 
+-def get_all_binary_list(distro=STX_DEFAULT_DISTRO, layers=None, build_types=None):
++def get_all_binary_list(distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME, layers=None,
++                        build_types=None):
+     """
+-    Return all binary packages listed in base-bullseye.lst, os-std.lst,os-rt.lst
++    Return all binary packages listed in base-${DEBIAN_DISTRIBUTION}.lst,
++    os-std.lst,os-rt.lst
+     """
+     layer_binaries = {}
+     stx_config = os.path.join(os.environ.get('MY_REPO_ROOT_DIR'),
+-                              'stx-tools/debian-mirror-tools/config/debian')
+-
++                              'stx-tools/debian-mirror-tools/config/{}/{}'.format(
++                                  distro, codename))
+     if layers:
+         for layer in layers:
+             if layer not in ALL_LAYERS:
+@@ -139,9 +142,9 @@
+         if layer not in layer_binaries:
+             layer_binaries[layer] = []
+         search_dir = os.path.join(stx_config, layer)
+-        all_build_types = discovery.get_layer_build_types(distro=distro, layer=layer)
++        all_build_types = discovery.get_layer_build_types(layer, distro=distro, codename=codename)
+         if not all_build_types:
+-            logger.error(' '.join(['No build_types found for distro', distro, 'layer', layer]))
++            logger.error('No build_types found for {}/{}, layer: {}'.format(distro, codename, layer))
+             return
+ 
+         if not build_types:
+@@ -149,7 +152,8 @@
+ 
+         for build_type in build_types:
+             if build_type not in all_build_types:
+-                logger.warning(' '.join([build_type, 'is not a valid build_type for distro', distro, 'of layer', layer]))
++                logger.warning('{} is not a valid build_type for {}/{} of layer: {}'.format(
++                    build_type, distro, codename, layer))
+                 continue
+ 
+             pattern=''.join(['os-',build_type,'.lst'])
+@@ -162,7 +166,7 @@
+         )
+ 
+     search_dir = os.path.join(stx_config, 'common')
+-    pattern='base-*.lst'
++    pattern='base-' + DEBIAN_DISTRIBUTION + '*.lst'
+ 
+     if "common" not in layer_binaries:
+         layer_binaries["common"] = []
+@@ -562,7 +566,7 @@
+ 
+     def start(self):
+         """Here define:
+-        the complete set of binaries = base_bullseye.lst
++        the complete set of binaries = base_${DEBIAN_DISTRIBUTION}.lst
+                                      + <layer>/os-std.lst
+                                      + <layer>/os-rt.lst
+         """
+@@ -584,9 +588,12 @@
+ 
+ 
+ class SrcDownloader(BaseDownloader):
+-    def __init__(self, arch, _dl_dir, dl_list_file, force):
++    def __init__(self, arch, _dl_dir, dl_list_file, force,
++                 distro=STX_DEFAULT_DISTRO, codename=STX_DEFAULT_DISTRO_CODENAME):
+         super(SrcDownloader, self).__init__(arch, _dl_dir, dl_list_file, force)
+         self.parser = None
++        self.distro = distro
++        self.codename =codename
+ 
+     def prepare(self):
+         build_dir = os.path.join(os.environ.get('MY_BUILD_PKG_DIR'))
+@@ -595,8 +602,8 @@
+         os.makedirs(recipes_dir, exist_ok=True)
+         if not self.parser:
+             try:
+-                self.parser = debrepack.Parser(build_dir,
+-                                               recipes_dir, log_level='debug')
++                self.parser = debrepack.Parser(build_dir, recipes_dir, log_level='debug',
++                                               distro=self.distro, codename=self.codename)
+             except Exception as e:
+                 logger.error(str(e))
+                 logger.error("Failed to create debrepack parser")
+@@ -614,7 +621,7 @@
+             logger.error("Failed to download source with %s", _pkg_path)
+             return None
+ 
+-    def download_all(self, distro=STX_DEFAULT_DISTRO, layers=None, build_types=None)->list[str]:
++    def download_all(self, layers=None, build_types=None)->list[str]:
+         logger.info("download_all, layers=%s, build_types=%s" % (layers, build_types))
+         if layers:
+             for layer in layers:
+@@ -627,9 +634,9 @@
+         pkg_dirs = []
+ 
+         for layer in layers:
+-            all_build_types = discovery.get_layer_build_types(distro=distro, layer=layer)
++            all_build_types = discovery.get_layer_build_types(layer, distro=self.distro, codename=self.codename)
+             if not all_build_types:
+-                logger.error(' '.join(['No build_types found for distro', distro, 'layer', layer]))
++                logger.error('No build_types found for {}/{}, layer {}'.format(self.distro, self.codename, layer))
+                 return
+ 
+             if not build_types:
+@@ -640,13 +647,14 @@
+                     logger.warning(' '.join([build_type, 'is not a valid build_type for distro', distro, 'of layer', layer]))
+                     continue
+ 
+-                pkg_dirs.extend(discovery.package_dir_list(distro=distro, layer=layer, build_type=build_type))
++                pkg_dirs.extend(discovery.package_dir_list(distro=self.distro, codename=self.codename, layer=layer,
++                                                           build_type=build_type))
+ 
+         if not len(pkg_dirs):
+             logger.info("No source packages found")
+             return
+ 
+-        pkg_dirs_to_names = discovery.package_dirs_to_names_dict(pkg_dirs, distro=distro)
++        pkg_dirs_to_names = discovery.package_dirs_to_names_dict(pkg_dirs, distro=self.distro, codename=self.codename)
+         for pkg_dir in pkg_dirs_to_names:
+             self.dl_need.append(pkg_dirs_to_names[pkg_dir])
+ 
+@@ -662,12 +670,12 @@
+                 if pkg_dir in pkg_dirs_to_names:
+                     self.dl_failed.append(pkg_dirs_to_names[pkg_dir])
+ 
+-    def start(self, distro=STX_DEFAULT_DISTRO, layers=None, build_types=None):
++    def start(self, layers=None, build_types=None):
+         # stx package source downloading
+         super(SrcDownloader, self).clean()
+ 
+         if self.prepare():
+-            self.download_all(distro=distro, layers=layers, build_types=build_types)
++            self.download_all(layers=layers, build_types=build_types)
+         else:
+             logger.error("Failed to initialize source downloader")
+             sys.exit(1)
+@@ -721,7 +729,6 @@
+                         help="comma separated list of all layers to build\n   %s" % ALL_LAYERS,
+                         default=None, required=False)
+ 
+-
+     args = parser.parse_args()
+     clean_mirror = args.clean_mirror
+ 
+@@ -730,7 +737,7 @@
+             logger.error('Distro "{}" is not supported. It should be one of: [{}]'.format(
+                 args.distro,
+                 ','.join(ALL_DISTROS)))
+-            logger.error("Please consult: build-pkgs --help")
++            logger.error("Please consult: downloader --help")
+             sys.exit(1)
+         distro = args.distro
+ 
+@@ -740,13 +747,13 @@
+                 args.distro_codename,
+                 distro, 
+                 ','.join(discovery.STX_DISTRO_DICT[distro])))
+-            logger.error("Please consult: build-pkgs --help")
++            logger.error("Please consult: downloader --help")
+             sys.exit(1)
+         distro_codename = args.distro_codename
+ 
+     if args.build_types:
+         build_types = args.build_types.strip().split(',')
+-        logger.debug("The required types to download:%s", ','.join(build_types))
++        logger.debug("The required types to download: %s", ','.join(build_types))
+         for build_type in build_types:
+             if build_type not in ALL_BUILD_TYPES:
+                 logger.error(' '.join(['Build_type', build_type, 'not in', ','.join(ALL_BUILD_TYPES)]))
+@@ -760,7 +767,7 @@
+             key, val = line.partition("=")[::2]
+             os_release_dict[key.strip()] = val.strip()
+ 
+-    if distro != os_release_dict['ID'] and distro_codename != os_release_dict['VERSION_CODENAME']:
++    if distro != os_release_dict['ID'] or distro_codename != os_release_dict['VERSION_CODENAME']:
+         logger.error('Invalid tooling. You are attempting to download {}/{} with {}/{} containers'.format(
+             distro, distro_codename, os_release_dict['ID'], os_release_dict['VERSION_CODENAME']))
+         sys.exit(1)
+@@ -768,6 +775,10 @@
+         logger.info('Tooling validated. You are downloading {}/{} with {}/{} containers'.format(
+             distro, distro_codename, os_release_dict['ID'], os_release_dict['VERSION_CODENAME']))
+ 
++    # Reset these based on potentially new values
++    ALL_LAYERS = discovery.get_all_layers(distro=distro, codename=distro_codename)
++    ALL_BUILD_TYPES = discovery.get_all_build_types(distro=distro)
++
+     if args.layers:
+         layers = args.layers.strip().split(',')
+         for layer in layers:
+@@ -789,7 +800,7 @@
+         shutil.rmtree(dl_list_dir)
+     os.makedirs(dl_list_dir, exist_ok=True)
+     if args.download_binary:
+-        all_binary_lists = get_all_binary_list(distro=distro, layers=layers, build_types=build_types)
++        all_binary_lists = get_all_binary_list(distro=distro, codename=distro_codename, layers=layers, build_types=build_types)
+         dl_list_file_bin = '%s/binaries.txt' % dl_list_dir
+         binary_dl = DebDownloader(DEFAULT_ARCH, stx_bin_mirror, dl_list_file_bin, clean_mirror, all_binary_lists)
+         if not binary_dl.create_binary_repo():
+@@ -797,13 +808,14 @@
+ 
+     if args.download_source:
+         dl_list_file_src = '%s/sources.txt' % dl_list_dir
+-        source_dl = SrcDownloader(DEFAULT_ARCH, stx_src_mirror, dl_list_file_src, clean_mirror)
++        source_dl = SrcDownloader(DEFAULT_ARCH, stx_src_mirror, dl_list_file_src, clean_mirror,
++                                  distro=distro, codename=distro_codename)
+ 
+     dl_register_signal_handler()
+     if binary_dl:
+         binary_dl.start()
+     if source_dl:
+-        source_dl.start(distro=distro, layers=layers, build_types=build_types)
++        source_dl.start(layers=layers, build_types=build_types)
+ 
+     if binary_dl:
+         binary_ret = binary_dl.reports()
+diff --git a/build-tools/stx/dsc_depend.py b/build-tools/stx/dsc_depend.py
+index 43128e4..9c41d45 100644
+--- a/build-tools/stx/dsc_depend.py
++++ b/build-tools/stx/dsc_depend.py
+@@ -31,10 +31,12 @@
+ import shutil
+ from debian import deb822
+ 
++DEBIAN_DISTRIBUTION = os.environ.get('DEBIAN_DISTRIBUTION')
++
+ # Debian repository. You can also choose a nearby mirror site, see web page below:
+ # https://www.debian.org/mirror/list
+-mirror_0 = 'http://deb.debian.org/debian/ bullseye main contrib'
+-mirror_1 = 'http://security.debian.org/debian-security bullseye-security main contrib'
++mirror_0 = 'http://deb.debian.org/debian/ ' + DEBIAN_DISTRIBUTION + ' main contrib'
++mirror_1 = 'http://security.debian.org/debian-security ' + DEBIAN_DISTRIBUTION + '-security main contrib'
+ mirrors = [mirror_0, mirror_1]
+ apt_rootdir = '/tmp/dsc_depend'
+ DEFAULT_CIRCULAR_CONFIG = os.path.join(os.environ.get('MY_BUILD_TOOLS_DIR'), 'stx/circular_dep.conf')
+diff --git a/build-tools/stx/repo_manage.py b/build-tools/stx/repo_manage.py
+index dbe0cc3..dac8384 100755
+--- a/build-tools/stx/repo_manage.py
++++ b/build-tools/stx/repo_manage.py
+@@ -495,7 +495,7 @@
+ 
+     # Construct a repository mirror to an upstream Debian repository
+     # kwargs:url: URL of the upstream repo (http://deb.debian.org/debian)
+-    # kwargs:distribution: the distribution of the repo (bullseye)
++    # kwargs:distribution: the distribution of the repo (DEBIAN_DISTRIBUTION)
+     # kwargs:component: component of the repo (main)
+     # kwargs:architecture: architecture of the repo, "all" is always enabled. (amd64)
+     # kwargs:with_sources: include source packages, default is False.
+diff --git a/build-tools/stx/utils.py b/build-tools/stx/utils.py
+index 7f38a01..5837135 100755
+--- a/build-tools/stx/utils.py
++++ b/build-tools/stx/utils.py
+@@ -98,9 +98,9 @@
+         with open(lst_file, 'r') as flist:
+             lines = list(line for line in (p.strip() for p in flist) if line)
+     except IOError as e:
+-        logger.error(str(e))
++        raise e
+     except Exception as e:
+-        logger.error(str(e))
++        raise e
+     else:
+         for entry in lines:
+             entry = entry.strip()

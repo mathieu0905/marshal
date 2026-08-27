@@ -1,0 +1,28 @@
+{
+  "candidate_id": "formal-opendev-925058",
+  "expected_check_paths": [
+    "octavia/controller/worker/v2/tasks/compute_tasks.py",
+    "octavia/controller/worker/v2/tasks/network_tasks.py",
+    "octavia/tests/unit/controller/worker/v2/tasks/test_compute_tasks.py",
+    "octavia/tests/unit/controller/worker/v2/tasks/test_network_tasks.py"
+  ],
+  "mechanism": "tenacity 8.5 moves retry statistics from the retry controller to the decorated function, while Octavia reads the old retry.statistics location",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-925058--target-924126",
+  "repair_template": "read retry statistics from the decorated function with compatibility fallback to the prior location",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-925058-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Octavia opening-cutoff snapshot, both pre-existing retry tests fail only with tenacity 8.5.0 because retry.statistics no longer contains attempt_number; the selected compute test has the stable failure signature KeyError: 'attempt_number'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes, and both tests' three-arm logs; both selectors independently produced 0/1/0, and the repair changes production retry-statistics lookup without deleting or skipping tests.",
+    "source_effect": "The opening source change updates the only changed upper-constraints pin from tenacity 8.3.0 to 8.5.0, whose decorated-function wrapper exposes current retry statistics on the function rather than the prior retry controller location used by Octavia.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/924126.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Octavia snapshot and reads statistics from each decorated execute function, retaining an AttributeError compatibility fallback to execute.retry.statistics in both compute and network deletion tasks."
+  },
+  "source_change_family": "opendev-change-925058-opening",
+  "target_repository": "openstack/octavia",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

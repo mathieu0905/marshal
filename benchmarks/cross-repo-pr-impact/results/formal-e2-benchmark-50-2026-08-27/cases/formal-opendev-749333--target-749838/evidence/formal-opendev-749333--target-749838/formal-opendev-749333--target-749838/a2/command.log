@@ -1,0 +1,22 @@
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+2026-08-27 04:16:19.135 3780893 INFO oslo_service.periodic_task [req-602a4381-cbfa-478d-96df-5f6368d45358 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Skipping periodic task _discover_hosts_in_cells because its interval is negative[00m
+2026-08-27 04:16:19.157 3780893 ERROR stevedore.extension [req-602a4381-cbfa-478d-96df-5f6368d45358 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Could not load 'oslo_cache.etcd3gw': No module named 'etcd3gw': ModuleNotFoundError: No module named 'etcd3gw'[00m
+2026-08-27 04:16:19.158 3780893 ERROR stevedore.extension [req-602a4381-cbfa-478d-96df-5f6368d45358 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Could not load 'oslo_cache.memcache_pool': No module named 'memcache': ModuleNotFoundError: No module named 'memcache'[00m
+{0} nova.tests.unit.test_test.IsolationTestCase.test_rpc_consumer_isolation [3.748002s] ... ok
+
+======
+Totals
+======
+Ran: 1 tests in 3.7480 sec.
+ - Passed: 1
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 3.7480 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:03.748002

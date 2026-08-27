@@ -1,0 +1,210 @@
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: urllib3, oslo_context.context. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: oslo_context.context, urllib3. This warning can usually be ignored if the caller is only importing and not executing nova code.
+2026-08-27 03:18:08.086 3358496 INFO oslo_service.periodic_task [req-6a113a35-4218-4146-8e74-7813ac50b53f fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Skipping periodic task _discover_hosts_in_cells because its interval is negative[00m
+2026-08-27 03:18:08.106 3358495 INFO oslo_service.periodic_task [req-1296455d-3d05-45bf-91c9-ed6270d6f8f9 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Skipping periodic task _discover_hosts_in_cells because its interval is negative[00m
+2026-08-27 03:18:08.110 3358496 ERROR stevedore.extension [req-6a113a35-4218-4146-8e74-7813ac50b53f fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Could not load 'oslo_cache.memcache_pool': No module named 'memcache': ModuleNotFoundError: No module named 'memcache'[00m
+2026-08-27 03:18:08.130 3358495 ERROR stevedore.extension [req-1296455d-3d05-45bf-91c9-ed6270d6f8f9 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Could not load 'oslo_cache.memcache_pool': No module named 'memcache': ModuleNotFoundError: No module named 'memcache'[00m
+2026-08-27 03:18:08.181 3358497 INFO oslo_service.periodic_task [req-5569bce3-7a36-4cf0-a199-ddd471dafd32 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Skipping periodic task _discover_hosts_in_cells because its interval is negative[00m
+2026-08-27 03:18:08.205 3358497 ERROR stevedore.extension [req-5569bce3-7a36-4cf0-a199-ddd471dafd32 fake_user 6a6a9c9eee154e9cb8cec487b98d36ab - - -] Could not load 'oslo_cache.memcache_pool': No module named 'memcache': ModuleNotFoundError: No module named 'memcache'[00m
+{1} nova.tests.unit.compute.test_compute.ComputeAPITestCase.test_attach_interface_with_qos [0.903695s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 1346, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/nova/tests/unit/compute/test_compute.py", line 10328, in test_attach_interface_with_qos
+    mock_lock.assert_called_once_with(lock_name, mock.ANY, mock.ANY,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 926, in assert_called_once_with
+    return self.assert_called_with(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 913, in assert_called_with
+    raise AssertionError(_error_message()) from cause
+
+    AssertionError: expected call not found.
+Expected: lock('interface-4c29a445-d66c-43cc-a9d9-3da6d4d15474-d2b500a5-5fd6-432a-9614-8c6dc9df8e60', <ANY>, <ANY>, <ANY>, delay=<ANY>, do_log=<ANY>, fair=<ANY>, semaphores=<ANY>)
+Actual: lock('interface-4c29a445-d66c-43cc-a9d9-3da6d4d15474-d2b500a5-5fd6-432a-9614-8c6dc9df8e60', 'nova-', False, None, do_log=False, semaphores=None, delay=0.01, fair=False, blocking=True)
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:18:08,842 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:08,887 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:08,928 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:09,235 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:09,329 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,329 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,330 WARNING [oslo_policy.policy] Policy Rules ['os_compute_api:extensions', 'os_compute_api:os-floating-ip-pools', 'os_compute_api:os-quota-sets:defaults', 'os_compute_api:os-availability-zone:list', 'os_compute_api:limits', 'system_admin_api', 'system_reader_api', 'project_admin_api', 'project_member_api', 'project_reader_api', 'system_admin_or_owner', 'system_or_project_reader', 'os_compute_api:limits:other_project', 'os_compute_api:os-lock-server:unlock:unlock_override', 'os_compute_api:servers:create:zero_disk_flavor', 'compute:servers:resize:cross_cell'] specified in policy files are the same as the defaults provided by the service. You can remove these rules from policy files which will make maintenance easier. You can detect these redundant rules by ``oslopolicy-list-redundant`` tool also.
+2026-08-27 03:18:09,338 INFO [nova.virt.driver] Loading compute driver 'fake.SmallFakeDriver'
+2026-08-27 03:18:09,358 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,360 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,361 INFO [nova.compute.manager] Deleting orphan compute node 2 hypervisor host is fake_phyp1, nodes are {'fakenode1', 'fakenode2'}
+2026-08-27 03:18:09,448 ERROR [nova.compute.manager] Failed to delete compute node resource provider for compute node 18804cf0-00ae-4932-8dd7-9c466dd82cb5: An auth plugin is required to determine endpoint URL
+2026-08-27 03:18:09,453 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode1
+2026-08-27 03:18:09,456 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode1 with uuid: 9394c4b0-500e-43c0-9752-e50d2fd32106
+2026-08-27 03:18:09,483 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode2
+2026-08-27 03:18:09,485 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode2 with uuid: 287e99ee-f77a-456b-8c03-117339c30bc3
+
+{2} nova.tests.unit.compute.test_compute.ComputeAPITestCase.test_attach_interface [0.951952s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 1346, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/nova/tests/unit/compute/test_compute.py", line 10260, in test_attach_interface
+    mock_lock.assert_called_once_with(lock_name, mock.ANY, mock.ANY,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 926, in assert_called_once_with
+    return self.assert_called_with(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 913, in assert_called_with
+    raise AssertionError(_error_message()) from cause
+
+    AssertionError: expected call not found.
+Expected: lock('interface-199b8ef3-e213-4a49-83ef-9da168c4480d-404db39a-d82c-4579-ad23-3a32f6e5d5f4', <ANY>, <ANY>, <ANY>, delay=<ANY>, do_log=<ANY>, fair=<ANY>, semaphores=<ANY>)
+Actual: lock('interface-199b8ef3-e213-4a49-83ef-9da168c4480d-404db39a-d82c-4579-ad23-3a32f6e5d5f4', 'nova-', False, None, do_log=False, semaphores=None, delay=0.01, fair=False, blocking=True)
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:18:09,031 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:09,073 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:09,116 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:09,426 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:09,529 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,529 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,530 WARNING [oslo_policy.policy] Policy Rules ['os_compute_api:extensions', 'os_compute_api:os-floating-ip-pools', 'os_compute_api:os-quota-sets:defaults', 'os_compute_api:os-availability-zone:list', 'os_compute_api:limits', 'system_admin_api', 'system_reader_api', 'project_admin_api', 'project_member_api', 'project_reader_api', 'system_admin_or_owner', 'system_or_project_reader', 'os_compute_api:limits:other_project', 'os_compute_api:os-lock-server:unlock:unlock_override', 'os_compute_api:servers:create:zero_disk_flavor', 'compute:servers:resize:cross_cell'] specified in policy files are the same as the defaults provided by the service. You can remove these rules from policy files which will make maintenance easier. You can detect these redundant rules by ``oslopolicy-list-redundant`` tool also.
+2026-08-27 03:18:09,539 INFO [nova.virt.driver] Loading compute driver 'fake.SmallFakeDriver'
+2026-08-27 03:18:09,544 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,547 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,548 INFO [nova.compute.manager] Deleting orphan compute node 2 hypervisor host is fake_phyp1, nodes are {'fakenode1', 'fakenode2'}
+2026-08-27 03:18:09,640 ERROR [nova.compute.manager] Failed to delete compute node resource provider for compute node a9d54860-1998-4fb9-85de-289cb2a8e1e9: An auth plugin is required to determine endpoint URL
+2026-08-27 03:18:09,646 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode1
+2026-08-27 03:18:09,649 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode1 with uuid: 8de59e71-6829-484b-8c5f-0997c8f843e2
+2026-08-27 03:18:09,679 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode2
+2026-08-27 03:18:09,681 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode2 with uuid: 034fba72-4893-49c3-8929-32ef874f4da3
+
+{0} nova.tests.unit.compute.test_compute.ComputeAPITestCase.test_attach_interface_failed [1.185728s] ... ok
+
+==============================
+Failed 2 tests - output below:
+==============================
+
+nova.tests.unit.compute.test_compute.ComputeAPITestCase.test_attach_interface_with_qos
+--------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 1346, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/nova/tests/unit/compute/test_compute.py", line 10328, in test_attach_interface_with_qos
+    mock_lock.assert_called_once_with(lock_name, mock.ANY, mock.ANY,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 926, in assert_called_once_with
+    return self.assert_called_with(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 913, in assert_called_with
+    raise AssertionError(_error_message()) from cause
+
+    AssertionError: expected call not found.
+Expected: lock('interface-4c29a445-d66c-43cc-a9d9-3da6d4d15474-d2b500a5-5fd6-432a-9614-8c6dc9df8e60', <ANY>, <ANY>, <ANY>, delay=<ANY>, do_log=<ANY>, fair=<ANY>, semaphores=<ANY>)
+Actual: lock('interface-4c29a445-d66c-43cc-a9d9-3da6d4d15474-d2b500a5-5fd6-432a-9614-8c6dc9df8e60', 'nova-', False, None, do_log=False, semaphores=None, delay=0.01, fair=False, blocking=True)
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 03:18:08,842 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:08,887 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:08,928 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:09,235 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:09,329 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,329 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,330 WARNING [oslo_policy.policy] Policy Rules ['os_compute_api:extensions', 'os_compute_api:os-floating-ip-pools', 'os_compute_api:os-quota-sets:defaults', 'os_compute_api:os-availability-zone:list', 'os_compute_api:limits', 'system_admin_api', 'system_reader_api', 'project_admin_api', 'project_member_api', 'project_reader_api', 'system_admin_or_owner', 'system_or_project_reader', 'os_compute_api:limits:other_project', 'os_compute_api:os-lock-server:unlock:unlock_override', 'os_compute_api:servers:create:zero_disk_flavor', 'compute:servers:resize:cross_cell'] specified in policy files are the same as the defaults provided by the service. You can remove these rules from policy files which will make maintenance easier. You can detect these redundant rules by ``oslopolicy-list-redundant`` tool also.
+2026-08-27 03:18:09,338 INFO [nova.virt.driver] Loading compute driver 'fake.SmallFakeDriver'
+2026-08-27 03:18:09,358 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,360 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,361 INFO [nova.compute.manager] Deleting orphan compute node 2 hypervisor host is fake_phyp1, nodes are {'fakenode1', 'fakenode2'}
+2026-08-27 03:18:09,448 ERROR [nova.compute.manager] Failed to delete compute node resource provider for compute node 18804cf0-00ae-4932-8dd7-9c466dd82cb5: An auth plugin is required to determine endpoint URL
+2026-08-27 03:18:09,453 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode1
+2026-08-27 03:18:09,456 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode1 with uuid: 9394c4b0-500e-43c0-9752-e50d2fd32106
+2026-08-27 03:18:09,483 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode2
+2026-08-27 03:18:09,485 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode2 with uuid: 287e99ee-f77a-456b-8c03-117339c30bc3
+
+
+nova.tests.unit.compute.test_compute.ComputeAPITestCase.test_attach_interface
+-----------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 1346, in patched
+    return func(*newargs, **newkeywargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/nova/tests/unit/compute/test_compute.py", line 10260, in test_attach_interface
+    mock_lock.assert_called_once_with(lock_name, mock.ANY, mock.ANY,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 926, in assert_called_once_with
+    return self.assert_called_with(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-814889-815940-v1-2026-08-27/replay-work/formal-opendev-814889--target-815940/target-a1/.tox/py3/lib/python3.8/site-packages/mock/mock.py", line 913, in assert_called_with
+    raise AssertionError(_error_message()) from cause
+
+    AssertionError: expected call not found.
+Expected: lock('interface-199b8ef3-e213-4a49-83ef-9da168c4480d-404db39a-d82c-4579-ad23-3a32f6e5d5f4', <ANY>, <ANY>, <ANY>, delay=<ANY>, do_log=<ANY>, fair=<ANY>, semaphores=<ANY>)
+Actual: lock('interface-199b8ef3-e213-4a49-83ef-9da168c4480d-404db39a-d82c-4579-ad23-3a32f6e5d5f4', 'nova-', False, None, do_log=False, semaphores=None, delay=0.01, fair=False, blocking=True)
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+[93mReadline features including tab completion have been disabled because
+no supported version of readline was found. To resolve this, install
+pyreadline on Windows or gnureadline on Mac.
+
+[39m    2026-08-27 03:18:09,031 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:09,073 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:09,116 INFO [nova.db.migration] Applying migration(s)
+2026-08-27 03:18:09,426 INFO [nova.db.migration] Migration(s) applied
+2026-08-27 03:18:09,529 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,529 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-08-27 03:18:09,530 WARNING [oslo_policy.policy] Policy Rules ['os_compute_api:extensions', 'os_compute_api:os-floating-ip-pools', 'os_compute_api:os-quota-sets:defaults', 'os_compute_api:os-availability-zone:list', 'os_compute_api:limits', 'system_admin_api', 'system_reader_api', 'project_admin_api', 'project_member_api', 'project_reader_api', 'system_admin_or_owner', 'system_or_project_reader', 'os_compute_api:limits:other_project', 'os_compute_api:os-lock-server:unlock:unlock_override', 'os_compute_api:servers:create:zero_disk_flavor', 'compute:servers:resize:cross_cell'] specified in policy files are the same as the defaults provided by the service. You can remove these rules from policy files which will make maintenance easier. You can detect these redundant rules by ``oslopolicy-list-redundant`` tool also.
+2026-08-27 03:18:09,539 INFO [nova.virt.driver] Loading compute driver 'fake.SmallFakeDriver'
+2026-08-27 03:18:09,544 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,547 INFO [nova.compute.provider_config] No provider configs found in /etc/nova/provider_config/. If files are present, ensure the Nova process has access.
+2026-08-27 03:18:09,548 INFO [nova.compute.manager] Deleting orphan compute node 2 hypervisor host is fake_phyp1, nodes are {'fakenode1', 'fakenode2'}
+2026-08-27 03:18:09,640 ERROR [nova.compute.manager] Failed to delete compute node resource provider for compute node a9d54860-1998-4fb9-85de-289cb2a8e1e9: An auth plugin is required to determine endpoint URL
+2026-08-27 03:18:09,646 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode1
+2026-08-27 03:18:09,649 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode1 with uuid: 8de59e71-6829-484b-8c5f-0997c8f843e2
+2026-08-27 03:18:09,679 WARNING [nova.compute.resource_tracker] No compute node record for fake-mini:fakenode2
+2026-08-27 03:18:09,681 INFO [nova.compute.resource_tracker] Compute node record created for fake-mini:fakenode2 with uuid: 034fba72-4893-49c3-8929-32ef874f4da3
+
+
+
+======
+Totals
+======
+Ran: 3 tests in 1.2098 sec.
+ - Passed: 1
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 2
+Sum of execute time for each test: 3.0414 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:01.185728
+ - Worker 1 (1 tests) => 0:00:00.903695
+ - Worker 2 (1 tests) => 0:00:00.951952

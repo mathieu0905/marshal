@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5122,
+    "case_id": "formal-opendev-925059",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T13:15:07.233171Z",
+  "blind_prediction_created_at": "2026-08-26T13:14:56.100437Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-925059",
+  "case_id": "formal-opendev-925059--target-937602",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/masakari"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T13:15:07.239468Z",
+  "mechanism": "jsonschema 4.23.0 changes the canonical validation message for an empty string from 'too short' to 'should be non-empty', invalidating an exact target API error assertion",
+  "repair_template": "accept the dependency's old and new semantically equivalent validation messages in the existing target assertion",
+  "replay": {
+    "catalog_source_snapshot_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "jsonschema.exceptions.ValidationError: '' should be non-empty",
+    "installed_source_versions": {
+      "A0": "4.19.2",
+      "A1": "4.23.0",
+      "A2": "4.23.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+    "source_head_commit": "c60449dae96692e8ed8845800810b8b6a686785a",
+    "source_versions": {
+      "A0": "4.19.2",
+      "A1": "4.23.0",
+      "A2": "4.23.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "d6bd0ae227b765683c7d966513b7de9a3b024fbf",
+    "target_test_path": "masakari/tests/unit/test_api_validation.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "masakari.tests.unit.test_api_validation"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-925059--target-937602",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "masakari/tests/unit/test_api_validation.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/masakari"
+  },
+  "semantic_review": {
+    "a1_failure": "With jsonschema 4.23.0 installed against the unchanged target, the empty-string validation test receives the new 'should be non-empty' detail instead of the exact 'is too short' string and one of 26 tests fails; A0 and A2 pass all 26 tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff target validation test, maintainer patch, three isolated tox environments, installed-version probes proving 4.19.2/4.23.0/4.23.0, identical stestr command, and complete A0/A1/A2 logs showing 26 pass / 25 pass plus one exact-message mismatch / 26 pass.",
+    "source_effect": "The opening source diff changes the sole jsonschema pin from 4.19.2 to 4.23.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/937602.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target extends only the existing validation-detail expectation to accept the dependency's old and new semantically equivalent empty-string messages; the same 26-test module returns to zero without deletion or skipping."
+  },
+  "source_change_family": "opendev-change-925059-opening",
+  "status": "case_ready_for_formal_pool"
+}

@@ -1,0 +1,316 @@
+diff --git a/modules/puppet-fm/debian/trixie/src/fm/manifests/db.pp b/modules/puppet-fm/debian/trixie/src/fm/manifests/db.pp
+index f82d7c1..782ba36 100644
+--- a/modules/puppet-fm/debian/trixie/src/fm/manifests/db.pp
++++ b/modules/puppet-fm/debian/trixie/src/fm/manifests/db.pp
+@@ -13,12 +13,10 @@
+ #   Url used to connect to database.
+ #   (Optional) Defaults to "sqlite:////var/lib/fm/fm.sqlite".
+ #
+-# [*database_idle_timeout*]
+-#   Timeout when db connections should be reaped.
+-#   (Optional) Defaults to $::os_service_default.
+-#
+-# [*database_min_pool_size*]
+-#   Minimum number of SQL connections to keep open in a pool.
++# [*connection_recycle_time*]
++#   Connections which have been present in the connection pool longer than
++#   this number of seconds will be replaced with a new one the next time
++#   they are checked out from the pool.
+ #   (Optional) Defaults to $::os_service_default.
+ #
+ # [*database_max_pool_size*]
+@@ -39,35 +37,32 @@
+ #   (Optional) Defaults to $::os_service_default.
+ #
+ class fm::db (
+-  $database_db_max_retries = $::os_service_default,
+-  $database_connection     = 'sqlite:////var/lib/fm/fm.sqlite',
+-  $database_idle_timeout   = $::os_service_default,
+-  $database_min_pool_size  = $::os_service_default,
+-  $database_max_pool_size  = $::os_service_default,
+-  $database_max_retries    = $::os_service_default,
+-  $database_retry_interval = $::os_service_default,
+-  $database_max_overflow   = $::os_service_default,
++  $database_db_max_retries          = $::os_service_default,
++  $database_connection              = 'sqlite:////var/lib/fm/fm.sqlite',
++  $database_connection_recycle_time = $::os_service_default,
++  $database_max_pool_size           = $::os_service_default,
++  $database_max_retries             = $::os_service_default,
++  $database_retry_interval          = $::os_service_default,
++  $database_max_overflow            = $::os_service_default,
+ ) {
+ 
+   include ::fm::deps
+ 
+   $database_connection_real = pick($::fm::database_connection, $database_connection)
+-  $database_idle_timeout_real = pick($::fm::database_idle_timeout, $database_idle_timeout)
+-  $database_min_pool_size_real = pick($::fm::database_min_pool_size, $database_min_pool_size)
++  $database_connection_recycle_time = pick($::fm::connection_recycle_time, $database_connection_recycle_time)
+   $database_max_pool_size_real = pick($::fm::database_max_pool_size, $database_max_pool_size)
+   $database_max_retries_real = pick($::fm::database_max_retries, $database_max_retries)
+   $database_retry_interval_real = pick($::fm::database_retry_interval, $database_retry_interval)
+   $database_max_overflow_real = pick($::fm::database_max_overflow, $database_max_overflow)
+ 
+   oslo::db { 'fm_config':
+-    db_max_retries => $database_db_max_retries,
+-    connection     => $database_connection_real,
+-    idle_timeout   => $database_idle_timeout_real,
+-    min_pool_size  => $database_min_pool_size_real,
+-    max_pool_size  => $database_max_pool_size_real,
+-    max_retries    => $database_max_retries_real,
+-    retry_interval => $database_retry_interval_real,
+-    max_overflow   => $database_max_overflow_real,
++    db_max_retries          => $database_db_max_retries,
++    connection              => $database_connection_real,
++    connection_recycle_time => $database_connection_recycle_time,
++    max_pool_size           => $database_max_pool_size_real,
++    max_retries             => $database_max_retries_real,
++    retry_interval          => $database_retry_interval_real,
++    max_overflow            => $database_max_overflow_real,
+   }
+ 
+   # set up the connection string for FM Manager
+diff --git a/modules/puppet-fm/debian/trixie/src/fm/manifests/init.pp b/modules/puppet-fm/debian/trixie/src/fm/manifests/init.pp
+index 014ab18..a87caa1 100644
+--- a/modules/puppet-fm/debian/trixie/src/fm/manifests/init.pp
++++ b/modules/puppet-fm/debian/trixie/src/fm/manifests/init.pp
+@@ -38,18 +38,16 @@
+ #   (optional) Maximum database connection retries during startup.
+ #   Defaults to undef.
+ #
+-# [*database_idle_timeout*]
+-#   (optional) Timeout before idle database connections are reaped.
+-#   Defaults to undef.
++# [*connection_recycle_time*]
++#   (optional) Connections which have been present in the connection pool
++#   longer than this number of seconds will be replaced with a new one the
++#   next time they are checked out from the pool.
++#   Defaults to: undef.
+ #
+ # [*database_retry_interval*]
+ #   (optional) Interval between retries of opening a database connection.
+ #   Defaults to undef.
+ #
+-# [*database_min_pool_size*]
+-#   (optional) Minimum number of SQL connections to keep open in a pool.
+-#   Defaults to undef.
+-#
+ # [*database_max_pool_size*]
+ #   (optional) Maximum number of SQL connections to keep open in a pool.
+ #   Defaults to undef.
+@@ -66,8 +64,7 @@
+   $log_facility                       = undef,
+   $log_dir                            = undef,
+   $database_connection                = undef,
+-  $database_idle_timeout              = undef,
+-  $database_min_pool_size             = undef,
++  $connection_recycle_time            = undef,
+   $database_max_pool_size             = undef,
+   $database_max_retries               = undef,
+   $database_retry_interval            = undef,
+@@ -96,7 +93,7 @@
+   $real_connection = regsubst($database_connection,'^postgresql:','postgresql+psycopg2:')
+   fm_config {
+     'database/connection':               value => $real_connection, secret => true;
+-    'database/connection_recycle_time':  value => $database_idle_timeout;
++    'database/connection_recycle_time':  value => $connection_recycle_time;
+     'database/max_pool_size':            value => $database_max_pool_size;
+     'database/max_overflow':             value => $database_max_overflow;
+   }
+diff --git a/modules/puppet-sysinv/debian/trixie/src/sysinv/manifests/init.pp b/modules/puppet-sysinv/debian/trixie/src/sysinv/manifests/init.pp
+index 8b6f84a..facdc4e 100644
+--- a/modules/puppet-sysinv/debian/trixie/src/sysinv/manifests/init.pp
++++ b/modules/puppet-sysinv/debian/trixie/src/sysinv/manifests/init.pp
+@@ -1,7 +1,7 @@
+ #
+ # Files in this package are licensed under Apache; see LICENSE file.
+ #
+-# Copyright (c) 2013-2021 Wind River Systems, Inc.
++# Copyright (c) 2013-2021,2026 Wind River Systems, Inc.
+ #
+ # SPDX-License-Identifier: Apache-2.0
+ #
+@@ -19,7 +19,7 @@
+ 
+ class sysinv (
+   $database_connection         = '',
+-  $database_idle_timeout       = 3600,
++  $connection_recycle_time     = 3600,
+   $database_max_pool_size      = 5,
+   $database_max_overflow       = 10,
+   $journal_max_size            = 51200,
+@@ -163,7 +163,7 @@
+ 
+   sysinv_config {
+     'database/connection':               value => $real_connection, secret => true;
+-    'database/connection_recycle_time':  value => $database_idle_timeout;
++    'database/connection_recycle_time':  value => $connection_recycle_time;
+     'database/max_pool_size':            value => $database_max_pool_size;
+     'database/max_overflow':             value => $database_max_overflow;
+   }
+diff --git a/puppet-manifests/debian/trixie/src/hieradata/controller.yaml b/puppet-manifests/debian/trixie/src/hieradata/controller.yaml
+index a7f23ea..0ac8e35 100644
+--- a/puppet-manifests/debian/trixie/src/hieradata/controller.yaml
++++ b/puppet-manifests/debian/trixie/src/hieradata/controller.yaml
+@@ -233,7 +233,7 @@
+ fm::log_facility: 'local2'
+ fm::api::enable_proxy_headers_parsing: true
+ fm::db::sync::user: 'root'
+-fm::database_idle_timeout: 60
++fm::connection_recycle_time: 60
+ fm::database_max_overflow: 20
+ fm::database_max_pool_size: 1
+ 
+diff --git a/puppet-manifests/debian/trixie/src/hieradata/global.yaml b/puppet-manifests/debian/trixie/src/hieradata/global.yaml
+index 3dd48d0..c962074 100644
+--- a/puppet-manifests/debian/trixie/src/hieradata/global.yaml
++++ b/puppet-manifests/debian/trixie/src/hieradata/global.yaml
+@@ -17,7 +17,7 @@
+ platform::mtce::params::sm_client_port: 2224
+ 
+ # sysinv
+-sysinv::database_idle_timeout: 60
++sysinv::connection_recycle_time: 60
+ sysinv::database_max_overflow: 64
+ sysinv::database_max_pool_size: 1
+ sysinv::use_syslog: true
+diff --git a/puppet-manifests/debian/trixie/src/modules/platform/manifests/fm.pp b/puppet-manifests/debian/trixie/src/modules/platform/manifests/fm.pp
+index 3f88949..059c8d7 100644
+--- a/puppet-manifests/debian/trixie/src/modules/platform/manifests/fm.pp
++++ b/puppet-manifests/debian/trixie/src/modules/platform/manifests/fm.pp
+@@ -13,20 +13,20 @@
+   # systemcontroller on DC)
+   if ($::platform::params::system_type == 'All-in-one' and
+       $::platform::params::distributed_cloud_role != 'systemcontroller') {
+-    $db_idle_timeout = 60
++    $db_connection_recycle_time = 60
+     $db_pool_size = 1
+     $db_over_size = 5
+   } else {
+-    $db_idle_timeout = undef
++    $db_connection_recycle_time = undef
+     $db_pool_size = undef
+     $db_over_size = undef
+   }
+ }
+ 
+ class platform::fm::custom::params (
+-  $db_idle_timeout = undef,
+-  $db_pool_size    = undef,
+-  $db_over_size    = undef,
++  $db_connection_recycle_time = undef,
++  $db_pool_size               = undef,
++  $db_over_size               = undef,
+ ) {}
+ 
+ class platform::fm::config
+@@ -36,10 +36,10 @@
+   # Decides between -in order- (1) custom: defined by system parameters,
+   # (2) AIO values defined on params class, or (3) the default values defined
+   # on personality yaml
+-  if $::platform::fm::custom::params::db_idle_timeout {
+-    $db_idle_timeout = $::platform::fm::custom::params::db_idle_timeout
++  if $::platform::fm::custom::params::db_connection_recycle_time {
++    $db_connection_recycle_time = $::platform::fm::custom::params::db_connection_recycle_time
+   } else {
+-    $db_idle_timeout = $::platform::fm::params::db_idle_timeout
++    $db_connection_recycle_time = $::platform::fm::params::db_connection_recycle_time
+   }
+ 
+   if $::platform::fm::custom::params::db_pool_size {
+@@ -55,15 +55,14 @@
+   }
+ 
+   class { '::fm':
+-    region_name            => $region_name,
+-    system_name            => $system_name,
+-    sysinv_catalog_info    => $sysinv_catalog_info,
+-    snmp_enabled           => $snmp_enabled,
+-    snmp_trap_server_port  => $snmp_trap_server_port,
+-    database_idle_timeout  => $db_idle_timeout,
+-    database_max_pool_size => $db_pool_size,
+-    database_min_pool_size => $db_pool_size,
+-    database_max_overflow  => $db_over_size,
++    region_name              => $region_name,
++    system_name              => $system_name,
++    sysinv_catalog_info      => $sysinv_catalog_info,
++    snmp_enabled             => $snmp_enabled,
++    snmp_trap_server_port    => $snmp_trap_server_port,
++    connection_recycle_time  => $db_connection_recycle_time,
++    database_max_pool_size   => $db_pool_size,
++    database_max_overflow    => $db_over_size,
+   }
+ }
+ 
+@@ -130,24 +129,6 @@
+     $assigned_workers = $::platform::params::eng_workers
+   }
+ 
+-  # override the configuration of fm-api.service
+-  $fmapi_override_dir = '/etc/systemd/system/fm-api.service.d'
+-
+-  file { $fmapi_override_dir:
+-    ensure => 'directory',
+-    owner  => 'root',
+-    group  => 'root',
+-    mode   => '0755',
+-  }
+-
+-  -> file { "${fmapi_override_dir}/fm-api-stx-override.conf":
+-    ensure  => 'present',
+-    owner   => 'root',
+-    group   => 'root',
+-    mode    => '0644',
+-    content => template('platform/fm-api-stx-override.conf.erb'),
+-  }
+-
+   if $service_enabled {
+     if ($::platform::fm::service_create and
+         $::platform::params::init_keystone) {
+diff --git a/puppet-manifests/debian/trixie/src/modules/platform/manifests/sysinv.pp b/puppet-manifests/debian/trixie/src/modules/platform/manifests/sysinv.pp
+index 22e21d2..aa64b33 100644
+--- a/puppet-manifests/debian/trixie/src/modules/platform/manifests/sysinv.pp
++++ b/puppet-manifests/debian/trixie/src/modules/platform/manifests/sysinv.pp
+@@ -11,20 +11,20 @@
+   # systemcontroller on DC)
+   if ($::platform::params::system_type == 'All-in-one' and
+       $::platform::params::distributed_cloud_role != 'systemcontroller') {
+-    $db_idle_timeout = 60
++    $db_connection_recycle_time = 60
+     $db_pool_size = 1
+     $db_over_size = 5
+   } else {
+-    $db_idle_timeout = undef
++    $db_connection_recycle_time = undef
+     $db_pool_size = undef
+     $db_over_size = undef
+   }
+ }
+ 
+ class platform::sysinv::custom::params (
+-  $db_idle_timeout = undef,
+-  $db_pool_size    = undef,
+-  $db_over_size    = undef,
++  $db_connection_recycle_time = undef,
++  $db_pool_size               = undef,
++  $db_over_size               = undef,
+ ) {}
+ 
+ class platform::sysinv
+@@ -91,13 +91,13 @@
+ 
+   # On AIO systems, restrict the connection pool size
+   # If database information doesn't exist in yaml file, use default values
+-  if $::platform::sysinv::custom::params::db_idle_timeout {
++  if $::platform::sysinv::custom::params::db_connection_recycle_time {
+     Sysinv_config <| title == 'database/connection_recycle_time' |> {
+-      value => $::platform::sysinv::custom::params::db_idle_timeout,
++      value => $::platform::sysinv::custom::params::db_connection_recycle_time,
+     }
+   } else {
+     Sysinv_config <| title == 'database/connection_recycle_time' |> {
+-      value => $::platform::sysinv::params::db_idle_timeout,
++      value => $::platform::sysinv::params::db_connection_recycle_time,
+     }
+   }
+ 

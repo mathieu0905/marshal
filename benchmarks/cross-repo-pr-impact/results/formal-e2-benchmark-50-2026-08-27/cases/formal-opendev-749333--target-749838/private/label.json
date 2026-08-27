@@ -1,0 +1,30 @@
+{
+  "bootstrap_constraints": [
+    "Cython<3"
+  ],
+  "candidate_id": "formal-opendev-749333",
+  "expected_check_paths": [
+    "nova/tests/unit/test_test.py"
+  ],
+  "mechanism": "oslo.messaging 12.4.0 probes endpoint attribute oslo_rpc_server_ping; Nova isolation sentinel rejects the newly introduced access",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38-2021/bin/python",
+  "relation_id": "formal-opendev-749333--target-749838",
+  "repair_template": "Allow the new oslo_rpc_server_ping capability probe in the existing endpoint-isolation test sentinel",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-749333-nova-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the global constraint changed to oslo.messaging 12.4.0, the pre-existing isolation test exits 1 with the exclusive assertion 'I should never get called. name: oslo_rpc_server_ping'.",
+    "approved": true,
+    "reviewer_basis": "The opening source diff changes exactly the oslo.messaging pin; the real cutoff test replays 0/1/0 with installed versions 12.3.0/12.4.0/12.4.0; the A1 signature is exclusive; and inspection of the maintainer patch shows a narrow sentinel allowlist addition without deleting, skipping, or weakening the test objective.",
+    "source_effect": "oslo.messaging 12.4.0 adds a capability probe for oslo_rpc_server_ping on RPC endpoints, introducing an attribute access absent under 12.3.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-749333-target-patches-2026-08-27/749838.patch",
+    "target_repair": "The maintainer patch permits only the new oslo_rpc_server_ping probe alongside the already permitted target probe in the existing NeverCalled sentinel, preserving failure for every other endpoint access."
+  },
+  "source_change_family": "opendev-change-749333-opening",
+  "target_repository": "openstack/nova",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner-py38-2021/bin/tox",
+  "virtualenv_pip_version": "21.1.3",
+  "virtualenv_setuptools_version": "49.6.0"
+}

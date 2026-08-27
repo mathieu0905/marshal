@@ -1,0 +1,34 @@
+{
+  "ant": ".work/toolchains/ant-1.10.15/apache-ant-1.10.15/bin/ant",
+  "candidate_id": "formal-github-derby-6945",
+  "expected_check_paths": [
+    "src/test/java/com/github/susom/database/test/VertxLoggingTest.java"
+  ],
+  "junit": ".work/toolchains/junit-3.8.2/junit-3.8.2.jar",
+  "maven": "/home/zhihao/.local/maven/bin/mvn",
+  "maven_seed_repository": ".work/derby-susom-cutoff-pilot.r4812i/m2-parent",
+  "mechanism": "The Derby opening moves org.apache.derby.jdbc, including EmbeddedDriver, from derby.jar into derbytools.jar; the cutoff target declares only derby and its existing integration test can no longer load the configured driver.",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-derby-susom-mirrors-2026-08-27",
+  "python": "/data/zhihao/miniconda3/bin/python",
+  "relation_id": "formal-github-derby-6945--target-susom-database",
+  "repair_template": "Add the matching derbytools artifact alongside the existing derby test dependency without changing the target command or test.",
+  "replay_adapter": "ant_source_maven_target",
+  "replay_environment": {
+    "JAVA_TOOL_OPTIONS": "-XX:UseAVX=2"
+  },
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-derby-susom-reconstruction-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the source opening substituted, the pre-existing VertxLoggingTest method executes and fails because the configured org.apache.derby.jdbc.EmbeddedDriver class cannot be loaded; the signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the complete direct source diff, parent/child JAR inventories, target cutoff snapshot and existing Maven test, maintainer dependency-only repair, and a true-cutoff pilot. Formal approval remains contingent on this package rebuilding both source commits and independently parsing the complete A0/A1/A2 evidence.",
+    "source_effect": "The direct source opening changes the built JAR inventory: EmbeddedDriver.class is present in the parent derby.jar, absent from the child derby.jar, and present in the child derbytools.jar.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-derby-susom-reconstruction-2026-08-27/target-patches/susom-cutoff-derbytools.patch",
+    "target_repair": "Maintainer commit 811158529d847bde72fc97c5701d411301f395b4 adds derbytools next to the matching derby dependency. The ported patch changes only the dependency version to the exact locally built source version required by the three-arm replay and applies to the source-opening cutoff target."
+  },
+  "source_change_family": "github-derby-6945-jdbc-package-artifact-move",
+  "source_java_home": ".work/jdks/adoptopenjdk9/jdk-9+181",
+  "target_java_home": ".work/jdks/adoptopenjdk9/jdk-9+181",
+  "target_repository": "susom/database",
+  "tox": "/home/zhihao/.local/bin/tox"
+}

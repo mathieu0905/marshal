@@ -1,0 +1,84 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5008,
+    "case_id": "formal-opendev-1000682",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T12:31:57.954177Z",
+  "blind_prediction_created_at": "2026-08-26T12:31:50.955142Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-1000682",
+  "case_id": "formal-opendev-1000682--target-1000685",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/openstacksdk",
+    "openstack/python-openstackclient"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T12:31:57.961022Z",
+  "mechanism": "a new SDK resource field changes the columns exposed to the target CLI's generic show path before the target has formatting and expected-column support",
+  "repair_template": "add target formatting and expected output columns for a new dependency resource field",
+  "replay": {
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "testtools.matchers._impl.MismatchError: !=:",
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "requirements_cutoff_commit": "377f367109c44aaaefc73aa8776e314810e3ad37",
+    "schema_version": "1.0",
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "f7b6d14b9886435d0af02dddc2c5a41230c3e1db",
+    "target_test_path": "openstackclient/tests/unit/network/v2/test_ip_availability.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "openstackclient.tests.unit.network.v2.test_ip_availability"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-1000682--target-1000685",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "openstackclient/network/v2/ip_availability.py",
+      "openstackclient/tests/unit/network/v2/test_ip_availability.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/python-openstackclient"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the opening OpenStackSDK change installed, the unchanged target show test fails because the new ip_availability_details resource field appears in the actual generic show columns but is absent from the target's expected columns; the same six-test module passes in A0 and the seven-test repaired module passes in A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source opening diff, cutoff target test and tox command, maintainer target patch, editable-install logs, and complete A0/A1/A2 stestr logs showing 6 pass / 5 pass plus 1 mismatch / 7 pass.",
+    "source_effect": "The source opening diff adds ip_availability_details as a real NetworkIPAvailability body field and its source tests.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/1000685.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target adds a DictColumn formatter, detailed list columns with extension-absent fallback behavior, and matching unit expectations for the newly exposed SDK field; the exact pre-existing unit-module command returns to zero."
+  },
+  "source_change_family": "opendev-change-1000682-opening",
+  "status": "case_ready_for_formal_pool"
+}

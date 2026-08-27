@@ -1,0 +1,97 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5100,
+    "case_id": "formal-opendev-933257",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T18:44:02.008263Z",
+  "blind_prediction_created_at": "2026-08-26T18:43:50.574598Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-933257",
+  "case_id": "formal-opendev-933257--target-937527",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/neutron"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T18:44:02.014995Z",
+  "mechanism": "eventlet 0.37.0 makes Neutron's repeated monkey-patch initialization fail during existing unit-test discovery with an un-acquired-lock notification error",
+  "repair_template": "make target process-wide dependency initialization idempotent and defer imports until the first guarded initialization",
+  "replay": {
+    "catalog_source_snapshot_commit": "a4bd2f5ea001173a9bd840c5884f7e7998a49fd1",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "RuntimeError: cannot notify on un-acquired lock",
+    "installed_source_versions": {
+      "A0": "0.36.1",
+      "A1": "0.37.0",
+      "A2": "0.37.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "3b73ff32f098faef2d3c50175b37b928df25fc09",
+    "source_head_commit": "276377c727f579b8b53c0a796eacde604264a3a4",
+    "source_versions": {
+      "A0": "0.36.1",
+      "A1": "0.37.0",
+      "A2": "0.37.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "4b032bdbb2a6843b776c367486d1620ea6ae71a5",
+    "target_test_path": "neutron/tests/unit/agent/dhcp/test_agent.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "neutron.tests.unit.agent.dhcp.test_agent"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-933257--target-937527",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "neutron/common/eventlet_utils.py",
+      "neutron/tests/unit/agent/dhcp/test_agent.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/neutron"
+  },
+  "semantic_review": {
+    "a1_failure": "On the unchanged Neutron opening-cutoff snapshot, the pre-existing DHCP-agent unit module runs 144 tests with eventlet 0.36.1, but eventlet 0.37.0 makes repeated monkey_patch initialization fail with RuntimeError: cannot notify on un-acquired lock. The exact target patch restores all 144 tests under 0.37.0.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the single-pin source opening diff, exact one-file maintainer target diff, cutoff tox.ini command provenance, installed-version probes proving eventlet 0.36.1/0.37.0/0.37.0, patch applicability, and complete three-arm logs. The same existing 144-test module runs in all arms; only A1 fails and its signature is absent from A0 and A2. No test is changed, deleted, or skipped.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, eventlet 0.36.1 to 0.37.0; repeated process monkey-patching then triggers the observed lock-notification failure during target test discovery.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/937527.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Neutron snapshot and guards eventlet.monkey_patch plus pyroute2 asyncio initialization so they run only once per process; it changes production initialization only and touches no tests."
+  },
+  "source_change_family": "opendev-change-933257-opening",
+  "status": "case_ready_for_formal_pool"
+}

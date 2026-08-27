@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-wandertracks-symbol-spacing",
+  "command_config_path": ".zuul.yaml",
+  "command_config_repository": "target",
+  "expected_check_paths": [
+    "app/src/main/assets/basemaps/wandertracks.json"
+  ],
+  "mechanism": "Moving symbol-spacing into the canonical style layout makes the unchanged Android vendored JSON fail the existing cross-repository parity check.",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-wandertracks-parity-mirrors-2026-08-27",
+  "python": "/usr/bin/python3",
+  "relation_id": "formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android",
+  "repair_template": "Refresh the Android vendored basemap from the canonical source style without changing or skipping the parity check.",
+  "replay_adapter": "cross_repo_command",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-wandertracks-parity-reconstruction-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the source checkout changed, the target's pre-existing parity script reports wandertracks.json as different and exits nonzero after checking all five basemaps.",
+    "approved": true,
+    "reviewer_basis": "Full source and target diffs, Gerrit change chronology and maintainer message, the pre-existing Zuul parity job and script, and an independently run 0/1/0 pilot with five basemap checks per arm.",
+    "source_effect": "The opening source revision moves three stray layer-level symbol-spacing keys into their corresponding layout objects in the canonical wandertracks style.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-wandertracks-parity-reconstruction-2026-08-27/target-patches/1002513.patch",
+    "target_repair": "The maintainer target change updates only the vendored wandertracks.json copy to the new canonical structure; it does not modify or skip the parity script."
+  },
+  "source_change_family": "opendev-change-1002510-opening",
+  "target_repository": "wandertracks/wandertracks-android"
+}

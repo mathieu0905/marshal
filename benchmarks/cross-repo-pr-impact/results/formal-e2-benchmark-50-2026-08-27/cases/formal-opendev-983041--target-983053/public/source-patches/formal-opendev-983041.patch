@@ -1,0 +1,52 @@
+diff --git a/openstack/network/v2/agent.py b/openstack/network/v2/agent.py
+index 181d10d..03f1a88 100644
+--- a/openstack/network/v2/agent.py
++++ b/openstack/network/v2/agent.py
+@@ -83,6 +83,12 @@
+     #: The HA state of the L3 agent. This is one of 'active', 'standby' or
+     #: 'fault' for HA routers, or None for other types of routers.
+     ha_state = resource.Body('ha_state')
++    #: The HA chassis priority for this agent in the router's
++    #: HA_Chassis_Group (OVN). Higher values indicate higher priority;
++    #: the highest priority chassis is the active gateway. None for
++    #: non-OVN backends.
++    #: *Type: int*
++    ha_chassis_priority = resource.Body('ha_chassis_priority', type=int)
+ 
+     def add_agent_to_network(self, session, network_id):
+         body = {'network_id': network_id}
+diff --git a/openstack/tests/unit/network/v2/test_agent.py b/openstack/tests/unit/network/v2/test_agent.py
+index 16ad82b..128a0ce 100644
+--- a/openstack/tests/unit/network/v2/test_agent.py
++++ b/openstack/tests/unit/network/v2/test_agent.py
+@@ -33,6 +33,7 @@
+     'started_at': '2016-07-09T12:14:57.233772',
+     'topic': 'test-topic',
+     'ha_state': 'active',
++    'ha_chassis_priority': 5,
+ }
+ 
+ 
+@@ -65,6 +66,8 @@
+         self.assertEqual(EXAMPLE['started_at'], sot.started_at)
+         self.assertEqual(EXAMPLE['topic'], sot.topic)
+         self.assertEqual(EXAMPLE['ha_state'], sot.ha_state)
++        self.assertEqual(
++            EXAMPLE['ha_chassis_priority'], sot.ha_chassis_priority)
+ 
+     def test_add_agent_to_network(self):
+         # Add agent to network
+diff --git a/releasenotes/notes/l3-agent-scheduler-ha-chassis-priority-a1b2c3d4e5f6.yaml b/releasenotes/notes/l3-agent-scheduler-ha-chassis-priority-a1b2c3d4e5f6.yaml
+new file mode 100644
+index 0000000..d9fb452
+--- /dev/null
++++ b/releasenotes/notes/l3-agent-scheduler-ha-chassis-priority-a1b2c3d4e5f6.yaml
+@@ -0,0 +1,8 @@
++---
++features:
++  - |
++    Added ``ha_chassis_priority`` attribute to the network ``Agent``
++    resource. This field is populated by the Neutron
++    ``l3-agent-scheduler-ha-priority`` API extension and indicates the
++    OVN HA_Chassis failover priority for each gateway chassis hosting
++    a router. The value is ``None`` for non-OVN mechanism drivers.

@@ -1,0 +1,53 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "candidate_id": "formal-opendev-934430",
+  "case_id": "formal-e2-028",
+  "contract_mode": "removed_token",
+  "contract_token": "mysqladmin",
+  "eligible": true,
+  "quality": 15,
+  "replayed_at": "2026-08-26T04:29:56.042097Z",
+  "revealed_at": "2026-08-26T04:19:15.423750Z",
+  "selected_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 1,
+    "target_head": 0
+  },
+  "signature_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 1,
+    "target_head": 0
+  },
+  "source_base_commit": "fa6f50ddccf94956f21f1c166d66847d7c374afa",
+  "source_change": 934430,
+  "source_head_commit": "87cf8b64c35e4d990bb0c6a73ff5b8a5023b4856",
+  "source_path": "scripts/upgrade-utilities/galera-cluster-rolling-restart.yml",
+  "source_repository": "openstack/openstack-ansible",
+  "source_signature": "shell: \"/usr/bin/mysqladmin extended-status | egrep '(wsrep_local_state_comment)'\"",
+  "source_subject": "Use mariadb-admin instead of mysqladmin",
+  "target_base_commit": "bfb7999346a8cafee9bb1d6a2e50c315cce3d075",
+  "target_change": 922377,
+  "target_head_commit": "ef1bb11cb3e9e10639f99a09cf69dfcca6d0c5d6",
+  "target_path": "templates/galera_secure_node.j2",
+  "target_repository": "openstack/openstack-ansible-galera_server",
+  "target_signature": "if mysqladmin --no-defaults --port=3306 --socket=/var/run/mysqld/mysqld.sock --host=127.0.0.1 --user=root password \"{{ galera_root_password }}\"; then",
+  "target_subject": "Update mariadb to 11.4.4",
+  "token_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 1,
+    "target_head": 0
+  },
+  "urls": {
+    "source_base": "https://opendev.org/openstack/openstack-ansible/raw/commit/fa6f50ddccf94956f21f1c166d66847d7c374afa/scripts/upgrade-utilities/galera-cluster-rolling-restart.yml",
+    "source_head": "https://opendev.org/openstack/openstack-ansible/raw/commit/87cf8b64c35e4d990bb0c6a73ff5b8a5023b4856/scripts/upgrade-utilities/galera-cluster-rolling-restart.yml",
+    "target_base": "https://opendev.org/openstack/openstack-ansible-galera_server/raw/commit/bfb7999346a8cafee9bb1d6a2e50c315cce3d075/templates/galera_secure_node.j2",
+    "target_head": "https://opendev.org/openstack/openstack-ansible-galera_server/raw/commit/ef1bb11cb3e9e10639f99a09cf69dfcca6d0c5d6/templates/galera_secure_node.j2"
+  }
+}

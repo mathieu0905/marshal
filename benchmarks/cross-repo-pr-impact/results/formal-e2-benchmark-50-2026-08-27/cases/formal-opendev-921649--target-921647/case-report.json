@@ -1,0 +1,89 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5144,
+    "case_id": "formal-opendev-921649",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T12:48:59.541106Z",
+  "blind_prediction_created_at": "2026-08-26T12:48:48.101133Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-921649",
+  "case_id": "formal-opendev-921649--target-921647",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/neutron-lib",
+    "openstack/neutron"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T12:48:59.547489Z",
+  "mechanism": "a neutron-lib request-population change stops injecting project identifiers for flavor resources whose schemas no longer declare them, invalidating target API tests that post explicit tenant fields without request context",
+  "repair_template": "adapt existing target API tests to authenticated request context and tolerate dependency-version project-field injection",
+  "replay": {
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/service_profiles.json)",
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "requirements_cutoff_commit": "c1131bbdcfbf778816dd5bf838cdae9d84c17674",
+    "schema_version": "1.0",
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "a8b6080cdf220a49d03276ffb2a90ff7ff20c6f1",
+    "target_test_path": "neutron/tests/unit/extensions/test_flavors.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "neutron.tests.unit.extensions.test_flavors"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-921649--target-921647",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "neutron/tests/unit/extensions/test_flavors.py"
+    ],
+    "mean_reciprocal_rank": 0.3333333333333333,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "neutron/extensions/project_id.py",
+      "neutron/plugins/ml2/drivers/l2pop/mech_driver.py",
+      "neutron/plugins/ml2/drivers/ovn/mech_driver/ovsdb/ovn_client.py",
+      "neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovn_client.py",
+      "releasenotes/notes/project_id-d5ea7a42be428230.yaml"
+    ],
+    "rank": 3,
+    "recall_at_1": 0.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "openstack/neutron"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the opening neutron-lib change installed, three unchanged flavor-extension create requests return 400 because the affected resource schemas no longer cause implicit project identifiers to be populated and the tests provide neither the new request context nor compatible payloads; A0 and A2 pass all 48 tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source request-population and schema diff, cutoff target API tests, maintainer patch, editable-install logs, and complete A0/A1/A2 runs of the identical 48-test stestr module showing 48 pass / 45 pass plus 3 HTTP failures / 48 pass.",
+    "source_effect": "The source opening diff makes project-id population conditional on resource schemas and removes tenant_id from flavor and QoS definitions.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-next300-contract-triage-2026-08-26/target-patches/921647.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target supplies an authenticated admin context, removes obsolete explicit tenant fields, and keeps mock assertions compatible across dependency versions; the same 48-test module returns to zero without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-921649-opening",
+  "status": "case_ready_for_formal_pool"
+}

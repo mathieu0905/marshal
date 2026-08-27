@@ -1,0 +1,537 @@
+diff --git a/glance_store/_drivers/swift/connection_manager.py b/glance_store/_drivers/swift/connection_manager.py
+index 0d9ab24..dd73a9c 100644
+--- a/glance_store/_drivers/swift/connection_manager.py
++++ b/glance_store/_drivers/swift/connection_manager.py
+@@ -78,8 +78,8 @@
+             # we are refreshing token only and if only connection manager
+             # re-authentication is allowed. Token refreshing is setup by
+             # connection manager users. Also we disable re-authentication
+-            # if there is not way to execute it (cannot initialize trusts for
+-            # multi-tenant or auth_version is not 3)
++            # if there is no way to execute it (cannot initialize trusts for
++            # multi-tenant)
+             auth_ref = self.client.session.auth.auth_ref
+             # if connection token is going to expire soon (keystone checks
+             # is token is going to expire or expired already)
+@@ -153,29 +153,18 @@
+         if self.store.conf_endpoint:
+             return self.store.conf_endpoint
+ 
+-        if self.store.auth_version == '3':
+-            try:
+-                return self.client.session.get_endpoint(
+-                    service_type=self.store.service_type,
+-                    interface=self.store.endpoint_type,
+-                    region_name=self.store.region
+-                )
+-            except Exception as e:
+-                # do the same that swift driver does
+-                # when catching ClientException
+-                msg = _("Cannot find swift service endpoint : "
+-                        "%s") % encodeutils.exception_to_unicode(e)
+-                raise exceptions.BackendException(msg)
+-
+-    def _init_connection(self):
+-        if self.store.auth_version == '3':
+-            return super(SingleTenantConnectionManager,
+-                         self)._init_connection()
+-        else:
+-            # no re-authentication for v1 and v2
+-            self.allow_reauth = False
+-            # use good old connection initialization
+-            return self.store.get_connection(self.location, self.context)
++        try:
++            return self.client.session.get_endpoint(
++                service_type=self.store.service_type,
++                interface=self.store.endpoint_type,
++                region_name=self.store.region
++            )
++        except Exception as e:
++            # do the same that swift driver does
++            # when catching ClientException
++            msg = _("Cannot find swift service endpoint : "
++                    "%s") % encodeutils.exception_to_unicode(e)
++            raise exceptions.BackendException(msg)
+ 
+ 
+ class MultiTenantConnectionManager(SwiftConnectionManager):
+diff --git a/glance_store/_drivers/swift/store.py b/glance_store/_drivers/swift/store.py
+index ab8b49f..2d1833a 100644
+--- a/glance_store/_drivers/swift/store.py
++++ b/glance_store/_drivers/swift/store.py
+@@ -149,8 +149,6 @@
+ This string value indicates the endpoint type to use to fetch the
+ Swift endpoint. The endpoint type determines the actions the user will
+ be allowed to perform, for instance, reading and writing to the Store.
+-This setting is only used if swift_store_auth_version is greater than
+-1.
+ 
+ Possible values:
+     * publicURL
+@@ -170,11 +168,6 @@
+ storing images while using Swift backend storage. The default
+ service type is set to ``object-store``.
+ 
+-NOTE: If ``swift_store_auth_version`` is set to 2, the value for
+-this configuration option needs to be ``object-store``. If using
+-a higher version of Keystone or a different auth scheme, this
+-option may be modified.
+-
+ Possible values:
+     * A string representing a valid service type for Swift storage.
+ 
+@@ -1272,6 +1265,10 @@
+             self.scheme = 'swift+https'
+ 
+         self.auth_version = default_swift_reference.get('auth_version')
++        if self.auth_version != '3':
++            reason = _("Only 3 is supported as auth_version.")
++            raise exceptions.BadStoreConfiguration(message=reason)
++
+         self.user = default_swift_reference.get('user')
+         self.key = default_swift_reference.get('key')
+         self.user_domain_id = default_swift_reference.get('user_domain_id')
+@@ -1394,17 +1391,13 @@
+         if not auth_url.endswith('/'):
+             auth_url += '/'
+ 
+-        if self.auth_version in ('2', '3'):
+-            try:
+-                tenant_name, user = location.user.split(':')
+-            except ValueError:
+-                reason = (_("Badly formed tenant:user '%(user)s' in "
+-                            "Swift URI") % {'user': location.user})
+-                LOG.info(reason)
+-                raise exceptions.BadStoreUri(message=reason)
+-        else:
+-            tenant_name = None
+-            user = location.user
++        try:
++            tenant_name, user = location.user.split(':')
++        except ValueError:
++            reason = (_("Badly formed tenant:user '%(user)s' in "
++                        "Swift URI") % {'user': location.user})
++            LOG.info(reason)
++            raise exceptions.BadStoreUri(message=reason)
+ 
+         os_options = {}
+         if self.region:
+diff --git a/glance_store/_drivers/swift/utils.py b/glance_store/_drivers/swift/utils.py
+index 812ef2f..17cdd74 100644
+--- a/glance_store/_drivers/swift/utils.py
++++ b/glance_store/_drivers/swift/utils.py
+@@ -40,10 +40,10 @@
+     * None
+ 
+ """),
+-    cfg.StrOpt('swift_store_auth_version', default='2',
++    cfg.StrOpt('swift_store_auth_version', default='3',
++               choices=['3'],
+                help='Version of the authentication service to use. '
+-                    'Valid versions are 2 and 3 for keystone and 1 '
+-                    '(deprecated) for swauth and rackspace.',
++                    'Valid versions is 3.',
+                deprecated_for_removal=True,
+                deprecated_reason="""
+ The option 'auth_version' in the Swift back-end configuration file is
+diff --git a/glance_store/tests/unit/test_connection_manager.py b/glance_store/tests/unit/test_connection_manager.py
+index ac1ab91..1fb5e5c 100644
+--- a/glance_store/tests/unit/test_connection_manager.py
++++ b/glance_store/tests/unit/test_connection_manager.py
+@@ -42,8 +42,7 @@
+                                          service_type="swift",
+                                          endpoint_type="internal",
+                                          region=None,
+-                                         conf=self.conf,
+-                                         auth_version='3')
++                                         conf=self.conf)
+ 
+         store.backend_group = None
+         store.conf_endpoint = None
+diff --git a/glance_store/tests/unit/test_swift_store.py b/glance_store/tests/unit/test_swift_store.py
+index 74d4b83..ab9a610 100644
+--- a/glance_store/tests/unit/test_swift_store.py
++++ b/glance_store/tests/unit/test_swift_store.py
+@@ -1386,27 +1386,26 @@
+         self.assertEqual(main_client, client)
+ 
+ 
+-class TestStoreAuthV1(base.StoreBaseTest, SwiftTests,
++class TestStoreAuthV3(base.StoreBaseTest, SwiftTests,
+                       test_store_capabilities.TestStoreCapabilitiesChecking):
+ 
+     _CONF = cfg.CONF
+ 
+     def getConfig(self):
+         conf = SWIFT_CONF.copy()
+-        conf['swift_store_auth_version'] = '1'
+         conf['swift_store_user'] = 'tenant:user1'
+         return conf
+ 
+     def setUp(self):
+         """Establish a clean test environment."""
+-        super(TestStoreAuthV1, self).setUp()
++        super(TestStoreAuthV3, self).setUp()
+         conf = self.getConfig()
+ 
+         conf_file = 'glance-swift.conf'
+         self.swift_config_file = self.copy_data_file(conf_file, self.test_dir)
+         conf.update({'swift_store_config_file': self.swift_config_file})
+ 
+-        self.stub_out_swiftclient(conf['swift_store_auth_version'])
++        self.stub_out_swiftclient('3')
+         self.mock_keystone_client()
+         self.store = Store(self.conf)
+         self.config(**conf)
+@@ -1414,38 +1413,6 @@
+         self.register_store_schemes(self.store, 'swift')
+         self.addCleanup(self.conf.reset)
+ 
+-
+-class TestStoreAuthV2(TestStoreAuthV1):
+-
+-    def getConfig(self):
+-        conf = super(TestStoreAuthV2, self).getConfig()
+-        conf['swift_store_auth_version'] = '2'
+-        conf['swift_store_user'] = 'tenant:user1'
+-        return conf
+-
+-    def test_v2_with_no_tenant(self):
+-        uri = "swift://failme:key@auth_address/glance/%s" % (FAKE_UUID)
+-        loc = location.get_location_from_uri(uri, conf=self.conf)
+-        self.assertRaises(exceptions.BadStoreUri,
+-                          self.store.get,
+-                          loc)
+-
+-    def test_v2_multi_tenant_location(self):
+-        conf = self.getConfig()
+-        conf['swift_store_multi_tenant'] = True
+-        uri = "swift://auth_address/glance/%s" % (FAKE_UUID)
+-        loc = location.get_location_from_uri(uri, conf=self.conf)
+-        self.assertEqual('swift', loc.store_name)
+-
+-
+-class TestStoreAuthV3(TestStoreAuthV1):
+-
+-    def getConfig(self):
+-        conf = super(TestStoreAuthV3, self).getConfig()
+-        conf['swift_store_auth_version'] = '3'
+-        conf['swift_store_user'] = 'tenant:user1'
+-        return conf
+-
+     @mock.patch("glance_store._drivers.swift.store.ks_identity")
+     @mock.patch("glance_store._drivers.swift.store.ks_session")
+     @mock.patch("glance_store._drivers.swift.store.ks_client")
+@@ -1564,7 +1531,7 @@
+         self.store = swift.SingleTenantStore(self.conf)
+         self.store.configure()
+         specs = {'scheme': 'swift',
+-                 'auth_or_store_url': 'example.com/v2/',
++                 'auth_or_store_url': 'example.com/v3/',
+                  'user': 'tenant:user1',
+                  'key': 'key1',
+                  'container': 'cont',
+@@ -1572,79 +1539,32 @@
+         self.location = swift.StoreLocation(specs, self.conf)
+         self.addCleanup(self.conf.reset)
+ 
+-    def test_basic_connection(self):
+-        connection = self.store.get_connection(self.location)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
+-        self.assertEqual('2', connection.auth_version)
+-        self.assertEqual('user1', connection.user)
+-        self.assertEqual('tenant', connection.tenant_name)
+-        self.assertEqual('key1', connection.key)
+-        self.assertIsNone(connection.preauthurl)
+-        self.assertFalse(connection.insecure)
+-        self.assertEqual({'service_type': 'object-store',
+-                          'endpoint_type': 'publicURL'},
+-                         connection.os_options)
+-
+-    def test_connection_with_conf_endpoint(self):
+-        ctx = mock.MagicMock(user='tenant:user1', tenant='tenant')
+-        self.config(swift_store_endpoint='https://internal.com')
+-        self.store.configure()
+-        connection = self.store.get_connection(self.location, context=ctx)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
+-        self.assertEqual('2', connection.auth_version)
+-        self.assertEqual('user1', connection.user)
+-        self.assertEqual('tenant', connection.tenant_name)
+-        self.assertEqual('key1', connection.key)
+-        self.assertEqual('https://internal.com', connection.preauthurl)
+-        self.assertFalse(connection.insecure)
+-        self.assertEqual({'service_type': 'object-store',
+-                          'endpoint_type': 'publicURL'},
+-                         connection.os_options)
+-
+-    def test_connection_with_conf_endpoint_no_context(self):
+-        self.config(swift_store_endpoint='https://internal.com')
+-        self.store.configure()
+-        connection = self.store.get_connection(self.location)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
+-        self.assertEqual('2', connection.auth_version)
+-        self.assertEqual('user1', connection.user)
+-        self.assertEqual('tenant', connection.tenant_name)
+-        self.assertEqual('key1', connection.key)
+-        self.assertEqual('https://internal.com', connection.preauthurl)
+-        self.assertFalse(connection.insecure)
+-        self.assertEqual({'service_type': 'object-store',
+-                          'endpoint_type': 'publicURL'},
+-                         connection.os_options)
+-
+     @mock.patch("keystoneauth1.session.Session.get_endpoint")
+     @mock.patch("keystoneauth1.session.Session.get_auth_headers",
+                 new=mock.Mock())
+     def _test_connection_manager_authv3_conf_endpoint(
+             self, mock_ep, expected_endpoint="https://from-catalog.com"):
+-        self.config(swift_store_auth_version='3')
+         mock_ep.return_value = "https://from-catalog.com"
+-        ctx = mock.MagicMock()
+         self.store.configure()
+         connection_manager = manager.SingleTenantConnectionManager(
+             store=self.store,
+             store_location=self.location,
+-            context=ctx
+         )
+         conn = connection_manager._init_connection()
+         self.assertEqual(expected_endpoint, conn.preauthurl)
+ 
+-    def test_connection_manager_authv3_without_conf_endpoint(self):
++    def test_connection_manager_without_conf_endpoint(self):
+         self._test_connection_manager_authv3_conf_endpoint()
+ 
+-    def test_connection_manager_authv3_with_conf_endpoint(self):
++    def test_connection_manager_with_conf_endpoint(self):
+         self.config(swift_store_endpoint='http://localhost')
+         self._test_connection_manager_authv3_conf_endpoint(
+             expected_endpoint='http://localhost')
+ 
+     def test_connection_with_no_trailing_slash(self):
+-        self.location.auth_or_store_url = 'example.com/v2'
++        self.location.auth_or_store_url = 'example.com/v3'
+         connection = self.store.get_connection(self.location)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
++        self.assertEqual('https://example.com/v3/', connection.authurl)
+ 
+     def test_connection_insecure(self):
+         self.config(swift_store_auth_insecure=True)
+@@ -1652,15 +1572,6 @@
+         connection = self.store.get_connection(self.location)
+         self.assertTrue(connection.insecure)
+ 
+-    def test_connection_with_auth_v1(self):
+-        self.config(swift_store_auth_version='1')
+-        self.store.configure()
+-        self.location.user = 'auth_v1_user'
+-        connection = self.store.get_connection(self.location)
+-        self.assertEqual('1', connection.auth_version)
+-        self.assertEqual('auth_v1_user', connection.user)
+-        self.assertIsNone(connection.tenant_name)
+-
+     def test_connection_invalid_user(self):
+         self.store.configure()
+         self.location.user = 'invalid:format:user'
+@@ -1720,8 +1631,7 @@
+                           self.location.uri)
+ 
+     def test_ref_overrides_defaults(self):
+-        self.config(swift_store_auth_version='2',
+-                    swift_store_user='testuser',
++        self.config(swift_store_user='testuser',
+                     swift_store_key='testpass',
+                     swift_store_auth_address='testaddress',
+                     swift_store_endpoint_type='internalURL',
+diff --git a/glance_store/tests/unit/test_swift_store_multibackend.py b/glance_store/tests/unit/test_swift_store_multibackend.py
+index d8bfcf7..a4a1770 100644
+--- a/glance_store/tests/unit/test_swift_store_multibackend.py
++++ b/glance_store/tests/unit/test_swift_store_multibackend.py
+@@ -1356,7 +1356,7 @@
+         self.assertEqual(main_client, client)
+ 
+ 
+-class TestStoreAuthV1(base.MultiStoreBaseTest, SwiftTests,
++class TestStoreAuthV3(base.MultiStoreBaseTest, SwiftTests,
+                       test_store_capabilities.TestStoreCapabilitiesChecking):
+ 
+     # NOTE(flaper87): temporary until we
+@@ -1366,13 +1366,13 @@
+ 
+     def getConfig(self):
+         conf = SWIFT_CONF.copy()
+-        conf['swift_store_auth_version'] = '1'
++        conf['swift_store_auth_version'] = '3'
+         conf['swift_store_user'] = 'tenant:user1'
+         return conf
+ 
+     def setUp(self):
+         """Establish a clean test environment."""
+-        super(TestStoreAuthV1, self).setUp()
++        super(TestStoreAuthV3, self).setUp()
+         enabled_backends = {
+             "swift1": "swift",
+             "swift2": "swift",
+@@ -1407,41 +1407,6 @@
+         self.register_store_backend_schemes(self.store, 'swift', 'swift1')
+         self.addCleanup(self.conf.reset)
+ 
+-
+-class TestStoreAuthV2(TestStoreAuthV1):
+-
+-    def getConfig(self):
+-        config = super(TestStoreAuthV2, self).getConfig()
+-        config['swift_store_auth_version'] = '2'
+-        config['swift_store_user'] = 'tenant:user1'
+-        return config
+-
+-    def test_v2_with_no_tenant(self):
+-        uri = "swift://failme:key@auth_address/glance/%s" % (FAKE_UUID)
+-        loc = location.get_location_from_uri_and_backend(
+-            uri, "swift1", conf=self.conf)
+-        self.assertRaises(exceptions.BadStoreUri,
+-                          self.store.get,
+-                          loc)
+-
+-    def test_v2_multi_tenant_location(self):
+-        config = self.getConfig()
+-        config['swift_store_multi_tenant'] = True
+-        self.config(group="swift1", **config)
+-        uri = "swift://auth_address/glance/%s" % (FAKE_UUID)
+-        loc = location.get_location_from_uri_and_backend(
+-            uri, "swift1", conf=self.conf)
+-        self.assertEqual('swift', loc.store_name)
+-
+-
+-class TestStoreAuthV3(TestStoreAuthV1):
+-
+-    def getConfig(self):
+-        config = super(TestStoreAuthV3, self).getConfig()
+-        config['swift_store_auth_version'] = '3'
+-        config['swift_store_user'] = 'tenant:user1'
+-        return config
+-
+     @mock.patch("glance_store._drivers.swift.store.ks_identity")
+     @mock.patch("glance_store._drivers.swift.store.ks_session")
+     @mock.patch("glance_store._drivers.swift.store.ks_client")
+@@ -1584,7 +1549,7 @@
+         self.store = swift.SingleTenantStore(self.conf, backend="swift1")
+         self.store.configure()
+         specs = {'scheme': 'swift',
+-                 'auth_or_store_url': 'example.com/v2/',
++                 'auth_or_store_url': 'example.com/v3/',
+                  'user': 'tenant:user1',
+                  'key': 'key1',
+                  'container': 'cont',
+@@ -1595,56 +1560,32 @@
+         self.register_store_backend_schemes(self.store, 'swift', 'swift1')
+         self.addCleanup(self.conf.reset)
+ 
+-    def test_basic_connection(self):
+-        connection = self.store.get_connection(self.location)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
+-        self.assertEqual('2', connection.auth_version)
+-        self.assertEqual('user1', connection.user)
+-        self.assertEqual('tenant', connection.tenant_name)
+-        self.assertEqual('key1', connection.key)
+-        self.assertIsNone(connection.preauthurl)
+-        self.assertFalse(connection.insecure)
+-        self.assertEqual({'service_type': 'object-store',
+-                          'endpoint_type': 'publicURL'},
+-                         connection.os_options)
+-
+-    def test_connection_with_conf_endpoint(self):
+-        ctx = mock.MagicMock(user='tenant:user1', tenant='tenant')
+-        self.config(group="swift1",
+-                    swift_store_endpoint='https://internal.com')
++    @mock.patch("keystoneauth1.session.Session.get_endpoint")
++    @mock.patch("keystoneauth1.session.Session.get_auth_headers",
++                new=mock.Mock())
++    def _test_connection_manager_authv3_conf_endpoint(
++            self, mock_ep, expected_endpoint="https://from-catalog.com"):
++        mock_ep.return_value = "https://from-catalog.com"
+         self.store.configure()
+-        connection = self.store.get_connection(self.location, context=ctx)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
+-        self.assertEqual('2', connection.auth_version)
+-        self.assertEqual('user1', connection.user)
+-        self.assertEqual('tenant', connection.tenant_name)
+-        self.assertEqual('key1', connection.key)
+-        self.assertEqual('https://internal.com', connection.preauthurl)
+-        self.assertFalse(connection.insecure)
+-        self.assertEqual({'service_type': 'object-store',
+-                          'endpoint_type': 'publicURL'},
+-                         connection.os_options)
++        connection_manager = manager.SingleTenantConnectionManager(
++            store=self.store,
++            store_location=self.location,
++        )
++        conn = connection_manager._init_connection()
++        self.assertEqual(expected_endpoint, conn.preauthurl)
+ 
+-    def test_connection_with_conf_endpoint_no_context(self):
+-        self.config(group="swift1",
+-                    swift_store_endpoint='https://internal.com')
+-        self.store.configure()
+-        connection = self.store.get_connection(self.location)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
+-        self.assertEqual('2', connection.auth_version)
+-        self.assertEqual('user1', connection.user)
+-        self.assertEqual('tenant', connection.tenant_name)
+-        self.assertEqual('key1', connection.key)
+-        self.assertEqual('https://internal.com', connection.preauthurl)
+-        self.assertFalse(connection.insecure)
+-        self.assertEqual({'service_type': 'object-store',
+-                          'endpoint_type': 'publicURL'},
+-                         connection.os_options)
++    def test_connection_manager_without_conf_endpoint(self):
++        self._test_connection_manager_authv3_conf_endpoint()
++
++    def test_connection_manager_with_conf_endpoint(self):
++        self.config(group="swift1", swift_store_endpoint='http://localhost')
++        self._test_connection_manager_authv3_conf_endpoint(
++            expected_endpoint='http://localhost')
+ 
+     def test_connection_with_no_trailing_slash(self):
+-        self.location.auth_or_store_url = 'example.com/v2'
++        self.location.auth_or_store_url = 'example.com/v3'
+         connection = self.store.get_connection(self.location)
+-        self.assertEqual('https://example.com/v2/', connection.authurl)
++        self.assertEqual('https://example.com/v3/', connection.authurl)
+ 
+     def test_connection_insecure(self):
+         self.config(group="swift1", swift_store_auth_insecure=True)
+@@ -1652,15 +1593,6 @@
+         connection = self.store.get_connection(self.location)
+         self.assertTrue(connection.insecure)
+ 
+-    def test_connection_with_auth_v1(self):
+-        self.config(group="swift1", swift_store_auth_version='1')
+-        self.store.configure()
+-        self.location.user = 'auth_v1_user'
+-        connection = self.store.get_connection(self.location)
+-        self.assertEqual('1', connection.auth_version)
+-        self.assertEqual('auth_v1_user', connection.user)
+-        self.assertIsNone(connection.tenant_name)
+-
+     def test_connection_invalid_user(self):
+         self.store.configure()
+         self.location.user = 'invalid:format:user'
+@@ -1720,7 +1652,7 @@
+                           self.location.uri)
+ 
+     def test_ref_overrides_defaults(self):
+-        self.config(group="swift1", swift_store_auth_version='2',
++        self.config(group="swift1",
+                     swift_store_user='testuser',
+                     swift_store_key='testpass',
+                     swift_store_auth_address='testaddress',
+diff --git a/releasenotes/notes/swift-remove-auth-version-v1-and-v2-d2372f9feea42f2c.yaml b/releasenotes/notes/swift-remove-auth-version-v1-and-v2-d2372f9feea42f2c.yaml
+new file mode 100644
+index 0000000..0cb4f04
+--- /dev/null
++++ b/releasenotes/notes/swift-remove-auth-version-v1-and-v2-d2372f9feea42f2c.yaml
+@@ -0,0 +1,5 @@
++---
++upgrade:
++  - |
++    Swift store driver no longer supports auth_version less thant 3. Now
++    the driver uses identity v3 API by default.

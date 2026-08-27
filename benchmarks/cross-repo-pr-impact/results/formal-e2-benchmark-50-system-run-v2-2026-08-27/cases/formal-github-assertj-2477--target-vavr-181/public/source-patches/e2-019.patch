@@ -1,0 +1,190 @@
+diff --git a/pom.xml b/pom.xml
+index 649040f9195..b65d0d1339d 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -11,7 +11,6 @@
+ 
+   <artifactId>assertj-core</artifactId>
+   <version>3.22.1-SNAPSHOT</version>
+-  <packaging>jar</packaging>
+ 
+   <name>AssertJ fluent assertions</name>
+   <description>Rich and fluent assertions for testing for Java</description>
+@@ -357,81 +356,20 @@
+           </excludes>
+         </configuration>
+       </plugin>
+-      <plugin>
+-        <groupId>org.apache.maven.plugins</groupId>
+-        <artifactId>maven-shade-plugin</artifactId>
+-        <version>3.2.4</version>
+-        <executions>
+-          <!-- STEP 2: execute maven shade to rename bytebuddy -->
+-          <execution>
+-            <id>bytebuddy</id>
+-            <phase>package</phase>
+-            <goals>
+-              <goal>shade</goal>
+-            </goals>
+-            <configuration>
+-              <createDependencyReducedPom>true</createDependencyReducedPom>
+-              <relocations>
+-                <relocation>
+-                  <pattern>net.bytebuddy</pattern>
+-                  <shadedPattern>org.assertj.core.internal.bytebuddy</shadedPattern>
+-                  <excludes>
+-                    <exclude>net/bytebuddy/experimental</exclude>
+-                  </excludes>
+-                </relocation>
+-              </relocations>
+-              <filters>
+-                <filter>
+-                  <artifact>net.bytebuddy:*</artifact>
+-                  <excludes>
+-                    <exclude>META-INF/**</exclude>
+-                  </excludes>
+-                </filter>
+-              </filters>
+-            </configuration>
+-          </execution>
+-        </executions>
+-      </plugin>
+-      <!-- Unpack the shaded jar so that the maven-bundle-plugin can analyze the packages to import and to export -->
+-      <plugin>
+-        <groupId>org.apache.maven.plugins</groupId>
+-        <artifactId>maven-dependency-plugin</artifactId>
+-        <executions>
+-          <!-- STEP 3: unpack the shaded classes back into the build dir -->
+-          <execution>
+-            <id>unpack-shade</id>
+-            <phase>package</phase>
+-            <goals>
+-              <goal>unpack</goal>
+-            </goals>
+-            <configuration>
+-              <artifactItems>
+-                <artifactItem>
+-                  <groupId>${project.groupId}</groupId>
+-                  <artifactId>${project.artifactId}</artifactId>
+-                  <version>${project.version}</version>
+-                </artifactItem>
+-              </artifactItems>
+-              <outputDirectory>${project.build.directory}/classes</outputDirectory>
+-            </configuration>
+-          </execution>
+-        </executions>
+-      </plugin>
+       <plugin>
+         <groupId>biz.aQute.bnd</groupId>
+         <artifactId>bnd-maven-plugin</artifactId>
+         <version>${bnd.version}</version>
+         <executions>
+-          <!-- STEP 4: analyze & collect OSGi metadata -->
+           <execution>
+-            <id>bundle-after-unpack-shaded</id>
+-            <phase>package</phase>
++            <id>bnd-process</id>
+             <goals>
+               <goal>bnd-process</goal>
+             </goals>
+             <configuration>
+               <bnd><![CDATA[
+                 Import-Package:\
++                  net.bytebuddy.*,\
+                   !org.assertj.core.*,\
+                   *;resolution:="optional"
+                 Multi-Release: true
+@@ -450,7 +388,6 @@
+           <!-- Integration Test Configuration -->
+           <execution>
+             <id>bnd-process-tests</id>
+-            <phase>process-test-classes</phase>
+             <goals>
+               <goal>bnd-process-tests</goal>
+             </goals>
+@@ -466,70 +403,17 @@
+           </execution>
+         </executions>
+       </plugin>
+-      <plugin>
+-        <groupId>org.apache.maven.plugins</groupId>
+-        <artifactId>maven-antrun-plugin</artifactId>
+-        <version>3.0.0</version><!--$NO-MVN-MAN-VER$ -->
+-        <executions>
+-          <!-- STEP 5: detach the primary artifact so we can re-execute maven-jar-plugin -->
+-          <execution>
+-            <id>remove-primary-artifact</id>
+-            <phase>package</phase>
+-            <goals>
+-              <goal>run</goal>
+-            </goals>
+-            <configuration>
+-              <target>
+-                <script language="beanshell">
+-                  project.getReference("maven.project").getArtifact().setFile(null);
+-                </script>
+-              </target>
+-            </configuration>
+-          </execution>
+-        </executions>
+-        <dependencies>
+-          <dependency>
+-            <groupId>org.beanshell</groupId>
+-            <artifactId>bsh</artifactId>
+-            <version>2.0b5</version>
+-          </dependency>
+-        </dependencies>
+-      </plugin>
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-jar-plugin</artifactId>
++        <configuration>
++          <archive>
++            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
++          </archive>
++        </configuration>
+         <executions>
+-          <execution>
+-            <!-- STEP 1: create the initial JAR during prepare-package phase -->
+-            <id>default-jar</id>
+-            <phase>prepare-package</phase>
+-            <goals>
+-              <goal>jar</goal>
+-            </goals>
+-            <configuration>
+-              <archive>
+-                <manifestEntries>
+-                  <Multi-Release>true</Multi-Release>
+-                </manifestEntries>
+-              </archive>
+-            </configuration>
+-          </execution>
+-          <execution>
+-            <!-- STEP 6: finally jar including shading and OSGi metadata -->
+-            <id>final-jar</id>
+-            <phase>package</phase>
+-            <goals>
+-              <goal>jar</goal>
+-            </goals>
+-            <configuration>
+-              <archive>
+-                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+-              </archive>
+-            </configuration>
+-          </execution>
+           <execution>
+             <id>test-jar</id>
+-            <phase>package</phase>
+             <goals>
+               <goal>test-jar</goal>
+             </goals>
+diff --git a/verify.bndrun b/verify.bndrun
+index 38b8d7681f6..8ef60217885 100644
+--- a/verify.bndrun
++++ b/verify.bndrun
+@@ -37,4 +37,5 @@
+ 	junit-platform-commons;version='[1.8.2,1.8.3)',\
+ 	junit-platform-engine;version='[1.8.2,1.8.3)',\
+ 	junit-platform-launcher;version='[1.8.2,1.8.3)',\
++	net.bytebuddy.byte-buddy;version='[1.12.7,1.12.8)',\
+ 	org.opentest4j;version='[1.2.0,1.2.1)'

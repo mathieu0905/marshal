@@ -1,0 +1,135 @@
+diff --git a/playbookconfig/src/playbooks/roles/prestage/prepare-env/tasks/prepare-sw-packages-prestage-env.yml b/playbookconfig/src/playbooks/roles/prestage/prepare-env/tasks/prepare-sw-packages-prestage-env.yml
+index 1319823..00993ef 100644
+--- a/playbookconfig/src/playbooks/roles/prestage/prepare-env/tasks/prepare-sw-packages-prestage-env.yml
++++ b/playbookconfig/src/playbooks/roles/prestage/prepare-env/tasks/prepare-sw-packages-prestage-env.yml
+@@ -120,7 +120,8 @@
+       register: host_software_dir_result
+ 
+     - name: Check if any minor upgrades have been applied
+-      shell: software list --release {{ software_major_release }} | tail +4 | grep -c -E '^\| '
++      shell: software list --release {{ software_major_release }} --state deployed | \
++             tail +4 | grep -c -E '^\| '
+       register: system_controller_software_num_releases
+       delegate_to: localhost
+ 
+diff --git a/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/files/ostree-metadata-sync.sh b/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/files/ostree-metadata-sync.sh
+index 90eae75..800a011 100755
+--- a/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/files/ostree-metadata-sync.sh
++++ b/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/files/ostree-metadata-sync.sh
+@@ -403,39 +403,41 @@
+     # Returns a list of: <metadata_file>:<ostree_commit_hash>
+     # for the local metadata tree.
+     #
+-    # If the metadata does not specify a commit-id then we use '-'
+     # The list is sorted by version, from lowest to highest.
+     # This ensures that versions can be processed in the correct numerical order.
+     #
+     local sw_version=${1:-$SW_VERSION}
+     local metadata_dir=${2:-$METADATA_DIR}
+     local number_of_commits metadata_file
++    local release_state="unavailable"
+     for metadata_file in $(find_metadata_files_for_release_sorted "${sw_version}" "${metadata_dir}"); do
+         if [ ! -f "${metadata_file}" ]; then
+             return
+         fi
+-        number_of_commits=$(get_simple_xml_attrib_from_metadata "${metadata_file}" "number_of_commits")
+ 
+-        # TODO Testing with multiple commits in an update is incomplete
+-        # remove this when fully tested:
+-        if [ -n "${number_of_commits}" ] && [ "${number_of_commits}" -gt 1 ]; then
+-            log_warn "Update has ${number_of_commits} commits: not tested yet"
+-        fi
++        release_state=$(get_usm_state_from_path "${metadata_file}")
++        if [ "$release_state" = "deployed" ]; then
++            number_of_commits=$(get_simple_xml_attrib_from_metadata "${metadata_file}" "number_of_commits")
+ 
+-        local commit_hashes=()
+-        get_commit_hashes_from_metadata commit_hashes "${metadata_file}"
+-        if [ "${#commit_hashes[@]}" -eq 0 ]; then
+-            echo "${metadata_file}:-"
+-        else
+-            if [ "${number_of_commits}" -ne "${#commit_hashes[@]}" ]; then
+-                # Unexpected, and we should fail here
+-                die "Update has number_of_commits=${number_of_commits} but only found ${#commit_hashes[@]} commits"
++            # TODO Testing with multiple commits in an update is incomplete
++            # remove this when fully tested:
++            if [ -n "${number_of_commits}" ] && [ "${number_of_commits}" -gt 1 ]; then
++                log_warn "Update has ${number_of_commits} commits: not tested yet"
+             fi
+ 
+-            # We only need to supply the first commit here.
+-            # See how the sync_subcloud_metadata algorithm works - it only uses the first commit
+-            # TODO: do we actually need to supply the commit at all?
+-            echo "${metadata_file}:${commit_hashes[0]}"
++            local commit_hashes=()
++            get_commit_hashes_from_metadata commit_hashes "${metadata_file}"
++            if [ "${#commit_hashes[@]}" -gt 0 ]; then
++                if [ "${number_of_commits}" -ne "${#commit_hashes[@]}" ]; then
++                    # Unexpected, and we should fail here
++                    die "Update has number_of_commits=${number_of_commits} but only found ${#commit_hashes[@]} commits"
++                fi
++
++                # We only need to supply the first commit here.
++                # See how the sync_subcloud_metadata algorithm works - it only uses the first commit
++                # TODO: do we actually need to supply the commit at all?
++                echo "${metadata_file}:${commit_hashes[0]}"
++            fi
+         fi
+     done
+ }
+diff --git a/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/tasks/main.yml b/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/tasks/main.yml
+index 81ffe12..0c5a992 100644
+--- a/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/tasks/main.yml
++++ b/playbookconfig/src/playbooks/roles/prestage/sync-software-metadata/tasks/main.yml
+@@ -57,23 +57,25 @@
+   command: ostree --repo={{ ostree_feed_repo_dir }} rev-parse {{ ostree_rev }}
+   register: ostree_commit_subcloud
+ 
+-- name: Gather system controller software list
+-  shell: software list --release {{ software_major_release }} | grep {{ software_version }} | grep -E '(available|deploy)'
++- name: Gather system controller deployed software list
++  shell: software list --release {{ software_major_release }} --state deployed | \
++         grep {{ software_version }} | \ sed 's/ //g;'
+   register: system_controller_software_list
+   failed_when: false
+   delegate_to: localhost
+ 
+-- name: Show system controller software list for release {{ software_version }}
++- name: Show system controller deployed software list for release {{ software_version }}
+   debug:
+     var: system_controller_software_list.stdout
+ 
+-- name: Gather subcloud software list
+-  shell: software list --release {{ software_major_release }} | grep {{ software_version }} | grep -E '(available|deploy)'
++- name: Gather subcloud deployed software list
++  shell: software list --release {{ software_major_release }} --state deployed | \
++         grep {{ software_version }} | sed 's/ //g;'
+   register: subcloud_software_list
+   failed_when: false
+   become: true
+ 
+-- name: Show subcloud software list for release {{ software_version }}
++- name: Show subcloud deployed software list for release {{ software_version }}
+   debug:
+     var: subcloud_software_list.stdout
+ 
+@@ -116,8 +118,8 @@
+     exec 3>/tmp/ostree_metadata_commits_central.lock
+     flock --exclusive --timeout 180 3 || echo "ERROR: flock failed: $?"
+     if [ ! -f "{{ ostree_metadata_commits_central }}" ] \
+-      || diff -q <(ostree --repo="{{ ostree_feed_repo_dir }}" rev-parse "{{ ostree_rev }}") \
+-                 <(tail --lines=1 "{{ ostree_metadata_commits_central }}" | awk -F':' '{ print $2; }'); then
++      || ! diff -q <(ostree --repo="{{ ostree_feed_repo_dir }}" rev-parse "{{ ostree_rev }}") \
++      <(tail --lines=1 "{{ ostree_metadata_commits_central }}" | awk -F':' '{ print $2; }') > /dev/null 2>&1 ; then
+       /usr/share/ansible/stx-ansible/playbooks/roles/prestage/sync-software-metadata/files/ostree-metadata-sync.sh \
+       --sw-version "{{ software_version }}" --output "{{ ostree_metadata_commits_central }}" get-commits
+     else
+@@ -141,7 +143,7 @@
+   debug:
+     var: subcloud_software_metadata_commits
+ 
+-- name: Decide if software metadata synchronization is required
++- name: Decide if software metadata synchronization is required for sw deploy
+   set_fact:
+     software_sync_required: true
+   when: (system_controller_software_metadata_commits.stdout != subcloud_software_metadata_commits.stdout)

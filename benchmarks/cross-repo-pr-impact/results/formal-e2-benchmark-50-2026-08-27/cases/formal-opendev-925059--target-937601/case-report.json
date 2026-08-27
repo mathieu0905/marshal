@@ -1,0 +1,99 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5122,
+    "case_id": "formal-opendev-925059",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T18:29:22.415444Z",
+  "blind_prediction_created_at": "2026-08-26T18:29:10.641195Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-925059",
+  "case_id": "formal-opendev-925059--target-937601",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/placement"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T18:29:22.418273Z",
+  "mechanism": "jsonschema 4.23.0 changes the canonical minProperties validation message from 'does not have enough properties' to 'should be non-empty', invalidating four existing Placement gabbi expectations",
+  "repair_template": "accept the dependency's old and new semantically equivalent minProperties messages in the existing target functional expectations",
+  "replay": {
+    "catalog_source_snapshot_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "AssertionError: 'does not have enough properties' not found in {",
+    "installed_source_versions": {
+      "A0": "4.19.2",
+      "A1": "4.23.0",
+      "A2": "4.23.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+    "source_head_commit": "c60449dae96692e8ed8845800810b8b6a686785a",
+    "source_versions": {
+      "A0": "4.19.2",
+      "A1": "4.23.0",
+      "A2": "4.23.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "0736c6105699941d1e7493477fc21e5eef6ddccd",
+    "target_test_path": "placement/tests/functional/test_api.py",
+    "test_command": [
+      "stestr",
+      "--test-path=./placement/tests/functional",
+      "run",
+      "placement.tests.functional.test_api"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-925059--target-937601",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "placement/tests/functional/gabbits/allocations-1-12.yaml",
+      "placement/tests/functional/gabbits/allocations-bug-1714072.yaml",
+      "placement/tests/functional/gabbits/allocations-mappings.yaml"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/placement"
+  },
+  "semantic_review": {
+    "a1_failure": "With jsonschema 4.23.0 installed against the unchanged opening-cutoff Placement snapshot, the existing 1,313-test functional gabbi suite has exactly four failures: each expected the old minProperties wording while the dependency emitted 'should be non-empty'. A0 and A2 pass all 1,313 tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, all three changed maintainer gabbi files, cutoff tox.ini command provenance, installed-version probes proving jsonschema 4.19.2/4.23.0/4.23.0, patch applicability, and complete A0/A1/A2 logs. The same pre-existing 1,313-test functional command ran in every arm; A1 alone has four mechanism-specific assertion failures. No test is deleted or skipped.",
+    "source_effect": "The opening source diff changes exactly one upper-constraints pin, jsonschema 4.19.2 to 4.23.0, whose minProperties diagnostic wording changed.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/937601.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Placement snapshot and changes only four existing gabbi expectations to accept the old and new semantically equivalent minProperties messages; it does not delete, skip, or replace any test."
+  },
+  "source_change_family": "opendev-change-925059-opening",
+  "status": "case_ready_for_formal_pool"
+}

@@ -1,0 +1,1666 @@
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modulebuildsignconfigs.kmm.sigs.x-k8s.io.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modulebuildsignconfigs.kmm.sigs.x-k8s.io.yaml
+index 3914f77..dc7c3f7 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modulebuildsignconfigs.kmm.sigs.x-k8s.io.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modulebuildsignconfigs.kmm.sigs.x-k8s.io.yaml
+@@ -2,7 +2,7 @@
+ kind: CustomResourceDefinition
+ metadata:
+   annotations:
+-    controller-gen.kubebuilder.io/version: v0.16.1
++    controller-gen.kubebuilder.io/version: v0.20.1
+   labels:
+     app.kubernetes.io/component: kmm
+     app.kubernetes.io/name: kmm
+@@ -161,6 +161,11 @@
+                       required:
+                       - dockerfileConfigMap
+                       type: object
++                    dirName:
++                      default: /opt
++                      description: DirName is the root directory for modules, used
++                        during signing.
++                      type: string
+                     image:
+                       description: image
+                       type: string
+@@ -200,8 +205,9 @@
+                           type: object
+                           x-kubernetes-map-type: atomic
+                         filesToSign:
+-                          description: paths inside the image for the kernel modules
+-                            to sign (if ommited all kmods are signed)
++                          description: |-
++                            Paths inside the image for the kernel modules to sign.
++                            Full path to explicit files are required or any globs supported by the `Ash` shell
+                           items:
+                             type: string
+                           type: array
+@@ -242,12 +248,63 @@
+                       - certSecret
+                       - keySecret
+                       type: object
++                    skipWaitMissingImage:
++                      description: |-
++                        SkipWaitMissingImage signals to MIC to stop waiting for image to be present
++                        in case Build andSign not define, and report the image as DoesNotExist
++                      type: boolean
+                   required:
+                   - action
+                   - image
+                   - kernelVersion
+                   type: object
+                 type: array
++              pushBuiltImage:
++                description: |-
++                  Boolean flag that determines whether images built must also
++                  be pushed to a defined repository
++                type: boolean
++              tolerations:
++                description: Tolerations specifies the tolerations for build/sign
++                  pods.
++                items:
++                  description: |-
++                    The pod this Toleration is attached to tolerates any taint that matches
++                    the triple <key,value,effect> using the matching operator <operator>.
++                  properties:
++                    effect:
++                      description: |-
++                        Effect indicates the taint effect to match. Empty means match all taint effects.
++                        When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
++                      type: string
++                    key:
++                      description: |-
++                        Key is the taint key that the toleration applies to. Empty means match all taint keys.
++                        If the key is empty, operator must be Exists; this combination means to match all values and all keys.
++                      type: string
++                    operator:
++                      description: |-
++                        Operator represents a key's relationship to the value.
++                        Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal.
++                        Exists is equivalent to wildcard for value, so that a pod can
++                        tolerate all taints of a particular category.
++                        Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).
++                      type: string
++                    tolerationSeconds:
++                      description: |-
++                        TolerationSeconds represents the period of time the toleration (which must be
++                        of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default,
++                        it is not set, which means tolerate the taint forever (do not evict). Zero and
++                        negative values will be treated as 0 (evict immediately) by the system.
++                      format: int64
++                      type: integer
++                    value:
++                      description: |-
++                        Value is the taint value the toleration matches to.
++                        If the operator is Exists, the value should be empty, otherwise just a regular string.
++                      type: string
++                  type: object
++                type: array
+             required:
+             - images
+             type: object
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/moduleimagesconfigs.kmm.sigs.x-k8s.io.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/moduleimagesconfigs.kmm.sigs.x-k8s.io.yaml
+index ed85b69..00ed7ef 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/moduleimagesconfigs.kmm.sigs.x-k8s.io.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/moduleimagesconfigs.kmm.sigs.x-k8s.io.yaml
+@@ -2,7 +2,7 @@
+ kind: CustomResourceDefinition
+ metadata:
+   annotations:
+-    controller-gen.kubebuilder.io/version: v0.16.1
++    controller-gen.kubebuilder.io/version: v0.20.1
+   labels:
+     app.kubernetes.io/component: kmm
+     app.kubernetes.io/name: kmm
+@@ -47,6 +47,16 @@
+               ModuleImagesConfigSpec describes the images of the Module whose status needs to be verified
+               More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+             properties:
++              imagePullPolicy:
++                default: IfNotPresent
++                description: ImagePullPolicy defines the pull policy used for verifying
++                  the presence of the image
++                type: string
++              imageRebuildTriggerGeneration:
++                description: |-
++                  ImageRebuildTriggerGeneration is an optional counter that, when incremented, triggers a re-verification
++                  and potential rebuild of all module images. Propagated from Module.spec.imageRebuildTriggerGeneration.
++                type: integer
+               imageRepoSecret:
+                 description: ImageRepoSecret contains pull secret for the image's
+                   repo, if needed
+@@ -156,6 +166,11 @@
+                       required:
+                       - dockerfileConfigMap
+                       type: object
++                    dirName:
++                      default: /opt
++                      description: DirName is the root directory for modules, used
++                        during signing.
++                      type: string
+                     image:
+                       description: image
+                       type: string
+@@ -195,8 +210,9 @@
+                           type: object
+                           x-kubernetes-map-type: atomic
+                         filesToSign:
+-                          description: paths inside the image for the kernel modules
+-                            to sign (if ommited all kmods are signed)
++                          description: |-
++                            Paths inside the image for the kernel modules to sign.
++                            Full path to explicit files are required or any globs supported by the `Ash` shell
+                           items:
+                             type: string
+                           type: array
+@@ -237,17 +253,74 @@
+                       - certSecret
+                       - keySecret
+                       type: object
++                    skipWaitMissingImage:
++                      description: |-
++                        SkipWaitMissingImage signals to MIC to stop waiting for image to be present
++                        in case Build andSign not define, and report the image as DoesNotExist
++                      type: boolean
+                   required:
+                   - image
+                   - kernelVersion
+                   type: object
+                 type: array
++              pushBuiltImage:
++                description: |-
++                  Boolean flag that determines whether images built must also
++                  be pushed to a defined repository
++                type: boolean
++              tolerations:
++                description: Tolerations specifies the tolerations for build/sign
++                  pods.
++                items:
++                  description: |-
++                    The pod this Toleration is attached to tolerates any taint that matches
++                    the triple <key,value,effect> using the matching operator <operator>.
++                  properties:
++                    effect:
++                      description: |-
++                        Effect indicates the taint effect to match. Empty means match all taint effects.
++                        When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
++                      type: string
++                    key:
++                      description: |-
++                        Key is the taint key that the toleration applies to. Empty means match all taint keys.
++                        If the key is empty, operator must be Exists; this combination means to match all values and all keys.
++                      type: string
++                    operator:
++                      description: |-
++                        Operator represents a key's relationship to the value.
++                        Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal.
++                        Exists is equivalent to wildcard for value, so that a pod can
++                        tolerate all taints of a particular category.
++                        Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).
++                      type: string
++                    tolerationSeconds:
++                      description: |-
++                        TolerationSeconds represents the period of time the toleration (which must be
++                        of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default,
++                        it is not set, which means tolerate the taint forever (do not evict). Zero and
++                        negative values will be treated as 0 (evict immediately) by the system.
++                      format: int64
++                      type: integer
++                    value:
++                      description: |-
++                        Value is the taint value the toleration matches to.
++                        If the operator is Exists, the value should be empty, otherwise just a regular string.
++                      type: string
++                  type: object
++                type: array
+             type: object
+           status:
+             description: |-
+               ModuleImagesConfigStatus describes the status of the images that need to be verified (defined in the spec)
+               More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+             properties:
++              imageRebuildTriggerGeneration:
++                description: |-
++                  ImageRebuildTriggerGeneration contains the last value of spec.imageRebuildTriggerGeneration that was applied.
++                  When spec.imageRebuildTriggerGeneration differs from this value, all image statuses will be cleared
++                  to trigger re-verification and potential rebuilds.
++                type: integer
+               imagesStates:
+                 items:
+                   properties:
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modules.kmm.sigs.x-k8s.io.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modules.kmm.sigs.x-k8s.io.yaml
+index c43405d..795d76b 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modules.kmm.sigs.x-k8s.io.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/modules.kmm.sigs.x-k8s.io.yaml
+@@ -2,7 +2,7 @@
+ kind: CustomResourceDefinition
+ metadata:
+   annotations:
+-    controller-gen.kubebuilder.io/version: v0.16.1
++    controller-gen.kubebuilder.io/version: v0.20.1
+   labels:
+     app.kubernetes.io/component: kmm
+     app.kubernetes.io/name: kmm
+@@ -48,6 +48,13 @@
+                   DevicePlugin allows overriding some properties of the container that deploys the device plugin on the node.
+                   Name is ignored and is set automatically by the KMM Operator.
+                 properties:
++                  automountServiceAccountToken:
++                    description: |-
++                      AutomountServiceAccountToken is used to disable the auto-mounting of the projected volume
++                      into device plugin pod. This volume includes as files: SA token, CAs' file etc'
++                      setting AutomountServiceAccountToken to false, will disale auto-mounting, and will allow user to mount
++                      whatever configmaps and tokens he deems necessary for the device plugin application
++                    type: boolean
+                   container:
+                     properties:
+                       args:
+@@ -85,8 +92,9 @@
+                             in a Container.
+                           properties:
+                             name:
+-                              description: Name of the environment variable. Must
+-                                be a C_IDENTIFIER.
++                              description: |-
++                                Name of the environment variable.
++                                May consist of any printable ASCII characters except '='.
+                               type: string
+                             value:
+                               description: |-
+@@ -144,6 +152,43 @@
+                                   - fieldPath
+                                   type: object
+                                   x-kubernetes-map-type: atomic
++                                fileKeyRef:
++                                  description: |-
++                                    FileKeyRef selects a key of the env file.
++                                    Requires the EnvFiles feature gate to be enabled.
++                                  properties:
++                                    key:
++                                      description: |-
++                                        The key within the env file. An invalid key will prevent the pod from starting.
++                                        The keys defined within a source may consist of any printable ASCII characters except '='.
++                                        During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
++                                      type: string
++                                    optional:
++                                      default: false
++                                      description: |-
++                                        Specify whether the file or its key must be defined. If the file or key
++                                        does not exist, then the env var is not published.
++                                        If optional is set to true and the specified key does not exist,
++                                        the environment variable will not be set in the Pod's containers.
++
++                                        If optional is set to false and the specified key does not exist,
++                                        an error will be returned during Pod creation.
++                                      type: boolean
++                                    path:
++                                      description: |-
++                                        The path within the volume from which to select the file.
++                                        Must be relative and may not contain the '..' path or start with '..'.
++                                      type: string
++                                    volumeName:
++                                      description: The name of the volume mount containing
++                                        the env file.
++                                      type: string
++                                  required:
++                                  - key
++                                  - path
++                                  - volumeName
++                                  type: object
++                                  x-kubernetes-map-type: atomic
+                                 resourceFieldRef:
+                                   description: |-
+                                     Selects a resource of the container: only resources limits and requests
+@@ -221,7 +266,339 @@
+                               Claims lists the names of resources, defined in spec.resourceClaims,
+                               that are used by this container.
+ 
+-                              This is an alpha field and requires enabling the
++                              This field depends on the
++                              DynamicResourceAllocation feature gate.
++
++                              This field is immutable. It can only be set for containers.
++                            items:
++                              description: ResourceClaim references one entry in PodSpec.ResourceClaims.
++                              properties:
++                                name:
++                                  description: |-
++                                    Name must match the name of one entry in pod.spec.resourceClaims of
++                                    the Pod where this field is used. It makes that resource available
++                                    inside a container.
++                                  type: string
++                                request:
++                                  description: |-
++                                    Request is the name chosen for a request in the referenced claim.
++                                    If empty, everything from the claim is made available, otherwise
++                                    only the result of this request.
++                                  type: string
++                              required:
++                              - name
++                              type: object
++                            type: array
++                            x-kubernetes-list-map-keys:
++                            - name
++                            x-kubernetes-list-type: map
++                          limits:
++                            additionalProperties:
++                              anyOf:
++                              - type: integer
++                              - type: string
++                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
++                              x-kubernetes-int-or-string: true
++                            description: |-
++                              Limits describes the maximum amount of compute resources allowed.
++                              More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
++                            type: object
++                          requests:
++                            additionalProperties:
++                              anyOf:
++                              - type: integer
++                              - type: string
++                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
++                              x-kubernetes-int-or-string: true
++                            description: |-
++                              Requests describes the minimum amount of compute resources required.
++                              If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
++                              otherwise to an implementation-defined value. Requests cannot exceed Limits.
++                              More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
++                            type: object
++                        type: object
++                      volumeMounts:
++                        description: VolumeMounts is a list of volume mounts that
++                          are appended to the default ones.
++                        items:
++                          description: VolumeMount describes a mounting of a Volume
++                            within a container.
++                          properties:
++                            mountPath:
++                              description: |-
++                                Path within the container at which the volume should be mounted.  Must
++                                not contain ':'.
++                              type: string
++                            mountPropagation:
++                              description: |-
++                                mountPropagation determines how mounts are propagated from the host
++                                to container and the other way around.
++                                When not set, MountPropagationNone is used.
++                                This field is beta in 1.10.
++                                When RecursiveReadOnly is set to IfPossible or to Enabled, MountPropagation must be None or unspecified
++                                (which defaults to None).
++                              type: string
++                            name:
++                              description: This must match the Name of a Volume.
++                              type: string
++                            readOnly:
++                              description: |-
++                                Mounted read-only if true, read-write otherwise (false or unspecified).
++                                Defaults to false.
++                              type: boolean
++                            recursiveReadOnly:
++                              description: |-
++                                RecursiveReadOnly specifies whether read-only mounts should be handled
++                                recursively.
++
++                                If ReadOnly is false, this field has no meaning and must be unspecified.
++
++                                If ReadOnly is true, and this field is set to Disabled, the mount is not made
++                                recursively read-only.  If this field is set to IfPossible, the mount is made
++                                recursively read-only, if it is supported by the container runtime.  If this
++                                field is set to Enabled, the mount is made recursively read-only if it is
++                                supported by the container runtime, otherwise the pod will not be started and
++                                an error will be generated to indicate the reason.
++
++                                If this field is set to IfPossible or Enabled, MountPropagation must be set to
++                                None (or be unspecified, which defaults to None).
++
++                                If this field is not specified, it is treated as an equivalent of Disabled.
++                              type: string
++                            subPath:
++                              description: |-
++                                Path within the volume from which the container's volume should be mounted.
++                                Defaults to "" (volume's root).
++                              type: string
++                            subPathExpr:
++                              description: |-
++                                Expanded path within the volume from which the container's volume should be mounted.
++                                Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment.
++                                Defaults to "" (volume's root).
++                                SubPathExpr and SubPath are mutually exclusive.
++                              type: string
++                          required:
++                          - mountPath
++                          - name
++                          type: object
++                        type: array
++                    required:
++                    - image
++                    type: object
++                  initContainer:
++                    description: InitContainer allows defines the init container that
++                      will be used by the device plugin
++                    properties:
++                      args:
++                        description: |-
++                          Arguments to the entrypoint.
++                          The container image's CMD is used if this is not provided.
++                          Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
++                          cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
++                          to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
++                          produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless
++                          of whether the variable exists or not. Cannot be updated.
++                          More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
++                        items:
++                          type: string
++                        type: array
++                      command:
++                        description: |-
++                          Entrypoint array. Not executed within a shell.
++                          The container image's ENTRYPOINT is used if this is not provided.
++                          Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
++                          cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
++                          to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
++                          produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless
++                          of whether the variable exists or not. Cannot be updated.
++                          More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
++                        items:
++                          type: string
++                        type: array
++                      env:
++                        description: |-
++                          List of environment variables to set in the container.
++                          Cannot be updated.
++                        items:
++                          description: EnvVar represents an environment variable present
++                            in a Container.
++                          properties:
++                            name:
++                              description: |-
++                                Name of the environment variable.
++                                May consist of any printable ASCII characters except '='.
++                              type: string
++                            value:
++                              description: |-
++                                Variable references $(VAR_NAME) are expanded
++                                using the previously defined environment variables in the container and
++                                any service environment variables. If a variable cannot be resolved,
++                                the reference in the input string will be unchanged. Double $$ are reduced
++                                to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
++                                "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
++                                Escaped references will never be expanded, regardless of whether the variable
++                                exists or not.
++                                Defaults to "".
++                              type: string
++                            valueFrom:
++                              description: Source for the environment variable's value.
++                                Cannot be used if value is not empty.
++                              properties:
++                                configMapKeyRef:
++                                  description: Selects a key of a ConfigMap.
++                                  properties:
++                                    key:
++                                      description: The key to select.
++                                      type: string
++                                    name:
++                                      default: ""
++                                      description: |-
++                                        Name of the referent.
++                                        This field is effectively required, but due to backwards compatibility is
++                                        allowed to be empty. Instances of this type with an empty value here are
++                                        almost certainly wrong.
++                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
++                                      type: string
++                                    optional:
++                                      description: Specify whether the ConfigMap or
++                                        its key must be defined
++                                      type: boolean
++                                  required:
++                                  - key
++                                  type: object
++                                  x-kubernetes-map-type: atomic
++                                fieldRef:
++                                  description: |-
++                                    Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
++                                    spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
++                                  properties:
++                                    apiVersion:
++                                      description: Version of the schema the FieldPath
++                                        is written in terms of, defaults to "v1".
++                                      type: string
++                                    fieldPath:
++                                      description: Path of the field to select in
++                                        the specified API version.
++                                      type: string
++                                  required:
++                                  - fieldPath
++                                  type: object
++                                  x-kubernetes-map-type: atomic
++                                fileKeyRef:
++                                  description: |-
++                                    FileKeyRef selects a key of the env file.
++                                    Requires the EnvFiles feature gate to be enabled.
++                                  properties:
++                                    key:
++                                      description: |-
++                                        The key within the env file. An invalid key will prevent the pod from starting.
++                                        The keys defined within a source may consist of any printable ASCII characters except '='.
++                                        During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
++                                      type: string
++                                    optional:
++                                      default: false
++                                      description: |-
++                                        Specify whether the file or its key must be defined. If the file or key
++                                        does not exist, then the env var is not published.
++                                        If optional is set to true and the specified key does not exist,
++                                        the environment variable will not be set in the Pod's containers.
++
++                                        If optional is set to false and the specified key does not exist,
++                                        an error will be returned during Pod creation.
++                                      type: boolean
++                                    path:
++                                      description: |-
++                                        The path within the volume from which to select the file.
++                                        Must be relative and may not contain the '..' path or start with '..'.
++                                      type: string
++                                    volumeName:
++                                      description: The name of the volume mount containing
++                                        the env file.
++                                      type: string
++                                  required:
++                                  - key
++                                  - path
++                                  - volumeName
++                                  type: object
++                                  x-kubernetes-map-type: atomic
++                                resourceFieldRef:
++                                  description: |-
++                                    Selects a resource of the container: only resources limits and requests
++                                    (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
++                                  properties:
++                                    containerName:
++                                      description: 'Container name: required for volumes,
++                                        optional for env vars'
++                                      type: string
++                                    divisor:
++                                      anyOf:
++                                      - type: integer
++                                      - type: string
++                                      description: Specifies the output format of
++                                        the exposed resources, defaults to "1"
++                                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
++                                      x-kubernetes-int-or-string: true
++                                    resource:
++                                      description: 'Required: resource to select'
++                                      type: string
++                                  required:
++                                  - resource
++                                  type: object
++                                  x-kubernetes-map-type: atomic
++                                secretKeyRef:
++                                  description: Selects a key of a secret in the pod's
++                                    namespace
++                                  properties:
++                                    key:
++                                      description: The key of the secret to select
++                                        from.  Must be a valid secret key.
++                                      type: string
++                                    name:
++                                      default: ""
++                                      description: |-
++                                        Name of the referent.
++                                        This field is effectively required, but due to backwards compatibility is
++                                        allowed to be empty. Instances of this type with an empty value here are
++                                        almost certainly wrong.
++                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
++                                      type: string
++                                    optional:
++                                      description: Specify whether the Secret or its
++                                        key must be defined
++                                      type: boolean
++                                  required:
++                                  - key
++                                  type: object
++                                  x-kubernetes-map-type: atomic
++                              type: object
++                          required:
++                          - name
++                          type: object
++                        type: array
++                      image:
++                        description: Image is the name of the container image that
++                          the device plugin container will run.
++                        type: string
++                      imagePullPolicy:
++                        description: |-
++                          Image pull policy.
++                          One of Always, Never, IfNotPresent.
++                          Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
++                          Cannot be updated.
++                          More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
++                        type: string
++                      resources:
++                        description: |-
++                          Compute Resources required by this container.
++                          Cannot be updated.
++                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
++                        properties:
++                          claims:
++                            description: |-
++                              Claims lists the names of resources, defined in spec.resourceClaims,
++                              that are used by this container.
++
++                              This field depends on the
+                               DynamicResourceAllocation feature gate.
+ 
+                               This field is immutable. It can only be set for containers.
+@@ -933,7 +1310,7 @@
+                                     resources:
+                                       description: |-
+                                         resources represents the minimum resources the volume should have.
+-                                        If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements
++                                        Users are allowed to specify resource requirements
+                                         that are lower than previous value but must still be higher than capacity recorded in the
+                                         status field of the claim.
+                                         More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
+@@ -1021,15 +1398,13 @@
+                                         volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
+                                         If specified, the CSI driver will create or update the volume with the attributes defined
+                                         in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
+-                                        it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
+-                                        will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
+-                                        If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
+-                                        will be set by the persistentvolume controller if it exists.
++                                        it can be changed after the claim is created. An empty string or nil value indicates that no
++                                        VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
++                                        this field can be reset to its previous value (including nil) to cancel the modification.
+                                         If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
+                                         set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
+                                         exists.
+                                         More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
+-                                        (Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
+                                       type: string
+                                     volumeMode:
+                                       description: |-
+@@ -1211,12 +1586,10 @@
+                           description: |-
+                             glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
+                             Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
+-                            More info: https://examples.k8s.io/volumes/glusterfs/README.md
+                           properties:
+                             endpoints:
+-                              description: |-
+-                                endpoints is the endpoint name that details Glusterfs topology.
+-                                More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
++                              description: endpoints is the endpoint name that details
++                                Glusterfs topology.
+                               type: string
+                             path:
+                               description: |-
+@@ -1270,7 +1643,7 @@
+                             The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
+                             The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
+                             The volume will be mounted read-only (ro) and non-executable files (noexec).
+-                            Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
++                            Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
+                             The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
+                           properties:
+                             pullPolicy:
+@@ -1295,7 +1668,7 @@
+                           description: |-
+                             iscsi represents an ISCSI Disk resource that is attached to a
+                             kubelet's host machine and then exposed to the pod.
+-                            More info: https://examples.k8s.io/volumes/iscsi/README.md
++                            More info: https://kubernetes.io/docs/concepts/storage/volumes/#iscsi
+                           properties:
+                             chapAuthDiscovery:
+                               description: chapAuthDiscovery defines whether support
+@@ -1717,6 +2090,129 @@
+                                         type: array
+                                         x-kubernetes-list-type: atomic
+                                     type: object
++                                  podCertificate:
++                                    description: |-
++                                      Projects an auto-rotating credential bundle (private key and certificate
++                                      chain) that the pod can use either as a TLS client or server.
++
++                                      Kubelet generates a private key and uses it to send a
++                                      PodCertificateRequest to the named signer.  Once the signer approves the
++                                      request and issues a certificate chain, Kubelet writes the key and
++                                      certificate chain to the pod filesystem.  The pod does not start until
++                                      certificates have been issued for each podCertificate projected volume
++                                      source in its spec.
++
++                                      Kubelet will begin trying to rotate the certificate at the time indicated
++                                      by the signer using the PodCertificateRequest.Status.BeginRefreshAt
++                                      timestamp.
++
++                                      Kubelet can write a single file, indicated by the credentialBundlePath
++                                      field, or separate files, indicated by the keyPath and
++                                      certificateChainPath fields.
++
++                                      The credential bundle is a single file in PEM format.  The first PEM
++                                      entry is the private key (in PKCS#8 format), and the remaining PEM
++                                      entries are the certificate chain issued by the signer (typically,
++                                      signers will return their certificate chain in leaf-to-root order).
++
++                                      Prefer using the credential bundle format, since your application code
++                                      can read it atomically.  If you use keyPath and certificateChainPath,
++                                      your application must make two separate file reads. If these coincide
++                                      with a certificate rotation, it is possible that the private key and leaf
++                                      certificate you read may not correspond to each other.  Your application
++                                      will need to check for this condition, and re-read until they are
++                                      consistent.
++
++                                      The named signer controls chooses the format of the certificate it
++                                      issues; consult the signer implementation's documentation to learn how to
++                                      use the certificates it issues.
++                                    properties:
++                                      certificateChainPath:
++                                        description: |-
++                                          Write the certificate chain at this path in the projected volume.
++
++                                          Most applications should use credentialBundlePath.  When using keyPath
++                                          and certificateChainPath, your application needs to check that the key
++                                          and leaf certificate are consistent, because it is possible to read the
++                                          files mid-rotation.
++                                        type: string
++                                      credentialBundlePath:
++                                        description: |-
++                                          Write the credential bundle at this path in the projected volume.
++
++                                          The credential bundle is a single file that contains multiple PEM blocks.
++                                          The first PEM block is a PRIVATE KEY block, containing a PKCS#8 private
++                                          key.
++
++                                          The remaining blocks are CERTIFICATE blocks, containing the issued
++                                          certificate chain from the signer (leaf and any intermediates).
++
++                                          Using credentialBundlePath lets your Pod's application code make a single
++                                          atomic read that retrieves a consistent key and certificate chain.  If you
++                                          project them to separate files, your application code will need to
++                                          additionally check that the leaf certificate was issued to the key.
++                                        type: string
++                                      keyPath:
++                                        description: |-
++                                          Write the key at this path in the projected volume.
++
++                                          Most applications should use credentialBundlePath.  When using keyPath
++                                          and certificateChainPath, your application needs to check that the key
++                                          and leaf certificate are consistent, because it is possible to read the
++                                          files mid-rotation.
++                                        type: string
++                                      keyType:
++                                        description: |-
++                                          The type of keypair Kubelet will generate for the pod.
++
++                                          Valid values are "RSA3072", "RSA4096", "ECDSAP256", "ECDSAP384",
++                                          "ECDSAP521", and "ED25519".
++                                        type: string
++                                      maxExpirationSeconds:
++                                        description: |-
++                                          maxExpirationSeconds is the maximum lifetime permitted for the
++                                          certificate.
++
++                                          Kubelet copies this value verbatim into the PodCertificateRequests it
++                                          generates for this projection.
++
++                                          If omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver
++                                          will reject values shorter than 3600 (1 hour).  The maximum allowable
++                                          value is 7862400 (91 days).
++
++                                          The signer implementation is then free to issue a certificate with any
++                                          lifetime *shorter* than MaxExpirationSeconds, but no shorter than 3600
++                                          seconds (1 hour).  This constraint is enforced by kube-apiserver.
++                                          `kubernetes.io` signers will never issue certificates with a lifetime
++                                          longer than 24 hours.
++                                        format: int32
++                                        type: integer
++                                      signerName:
++                                        description: Kubelet's generated CSRs will
++                                          be addressed to this signer.
++                                        type: string
++                                      userAnnotations:
++                                        additionalProperties:
++                                          type: string
++                                        description: |-
++                                          userAnnotations allow pod authors to pass additional information to
++                                          the signer implementation.  Kubernetes does not restrict or validate this
++                                          metadata in any way.
++
++                                          These values are copied verbatim into the `spec.unverifiedUserAnnotations` field of
++                                          the PodCertificateRequest objects that Kubelet creates.
++
++                                          Entries are subject to the same validation as object metadata annotations,
++                                          with the addition that all keys must be domain-prefixed. No restrictions
++                                          are placed on values, except an overall size limitation on the entire field.
++
++                                          Signers should document the keys and values they support. Signers should
++                                          deny requests that contain keys they do not recognize.
++                                        type: object
++                                    required:
++                                    - keyType
++                                    - signerName
++                                    type: object
+                                   secret:
+                                     description: secret information about the secret
+                                       data to project
+@@ -1851,7 +2347,6 @@
+                           description: |-
+                             rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
+                             Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
+-                            More info: https://examples.k8s.io/volumes/rbd/README.md
+                           properties:
+                             fsType:
+                               description: |-
+@@ -2138,6 +2633,12 @@
+                 required:
+                 - container
+                 type: object
++              imageRebuildTriggerGeneration:
++                description: |-
++                  ImageRebuildTriggerGeneration is an optional counter that can be incremented to trigger a rebuild of the module images.
++                  When this value changes (compared to the value stored in status), KMM will re-verify and potentially rebuild
++                  all module images.
++                type: integer
+               imageRepoSecret:
+                 description: |-
+                   ImageRepoSecret is an optional secret that is used to pull both the module loader and the device plugin, and
+@@ -2434,8 +2935,9 @@
+                                   type: object
+                                   x-kubernetes-map-type: atomic
+                                 filesToSign:
+-                                  description: paths inside the image for the kernel
+-                                    modules to sign (if ommited all kmods are signed)
++                                  description: |-
++                                    Paths inside the image for the kernel modules to sign.
++                                    Full path to explicit files are required or any globs supported by the `Ash` shell
+                                   items:
+                                     type: string
+                                   type: array
+@@ -2601,8 +3103,9 @@
+                             type: object
+                             x-kubernetes-map-type: atomic
+                           filesToSign:
+-                            description: paths inside the image for the kernel modules
+-                              to sign (if ommited all kmods are signed)
++                            description: |-
++                              Paths inside the image for the kernel modules to sign.
++                              Full path to explicit files are required or any globs supported by the `Ash` shell
+                             items:
+                               type: string
+                             type: array
+@@ -2687,9 +3190,10 @@
+                     operator:
+                       description: |-
+                         Operator represents a key's relationship to the value.
+-                        Valid operators are Exists and Equal. Defaults to Equal.
++                        Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal.
+                         Exists is equivalent to wildcard for value, so that a pod can
+                         tolerate all taints of a particular category.
++                        Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).
+                       type: string
+                     tolerationSeconds:
+                       description: |-
+@@ -2707,7 +3211,6 @@
+                   type: object
+                 type: array
+             required:
+-            - moduleLoader
+             - selector
+             type: object
+           status:
+@@ -2731,6 +3234,11 @@
+                     format: int32
+                     type: integer
+                 type: object
++              imageRebuildTriggerGeneration:
++                description: |-
++                  ImageRebuildTriggerGeneration contains the last value of spec.imageRebuildTriggerGeneration that was applied.
++                  When this differs from spec.imageRebuildTriggerGeneration, all module images will be re-verified and potentially rebuilt.
++                type: integer
+               moduleLoader:
+                 description: ModuleLoader contains the status of the ModuleLoader
+                   daemonset
+@@ -2748,8 +3256,6 @@
+                     format: int32
+                     type: integer
+                 type: object
+-            required:
+-            - moduleLoader
+             type: object
+         type: object
+     served: true
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/nodemodulesconfigs.kmm.sigs.x-k8s.io.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/nodemodulesconfigs.kmm.sigs.x-k8s.io.yaml
+index e520deb..28a66f6 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/nodemodulesconfigs.kmm.sigs.x-k8s.io.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/nodemodulesconfigs.kmm.sigs.x-k8s.io.yaml
+@@ -2,7 +2,7 @@
+ kind: CustomResourceDefinition
+ metadata:
+   annotations:
+-    controller-gen.kubebuilder.io/version: v0.16.1
++    controller-gen.kubebuilder.io/version: v0.20.1
+   labels:
+     app.kubernetes.io/component: kmm
+     app.kubernetes.io/name: kmm
+@@ -206,9 +206,10 @@
+                           operator:
+                             description: |-
+                               Operator represents a key's relationship to the value.
+-                              Valid operators are Exists and Equal. Defaults to Equal.
++                              Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal.
+                               Exists is equivalent to wildcard for value, so that a pod can
+                               tolerate all taints of a particular category.
++                              Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).
+                             type: string
+                           tolerationSeconds:
+                             description: |-
+@@ -225,6 +226,10 @@
+                             type: string
+                         type: object
+                       type: array
++                    version:
++                      description: Version is the version of the kernel module that
++                        should be loaded
++                      type: string
+                   required:
+                   - config
+                   - name
+@@ -399,9 +404,10 @@
+                           operator:
+                             description: |-
+                               Operator represents a key's relationship to the value.
+-                              Valid operators are Exists and Equal. Defaults to Equal.
++                              Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal.
+                               Exists is equivalent to wildcard for value, so that a pod can
+                               tolerate all taints of a particular category.
++                              Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).
+                             type: string
+                           tolerationSeconds:
+                             description: |-
+@@ -418,6 +424,10 @@
+                             type: string
+                         type: object
+                       type: array
++                    version:
++                      description: Version is the version of the kernel module that
++                        should be loaded
++                      type: string
+                   required:
+                   - name
+                   - namespace
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/preflightvalidations.kmm.sigs.x-k8s.io.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/preflightvalidations.kmm.sigs.x-k8s.io.yaml
+index c51f9ab..4efe38f 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/preflightvalidations.kmm.sigs.x-k8s.io.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/crds/preflightvalidations.kmm.sigs.x-k8s.io.yaml
+@@ -3,7 +3,7 @@
+ metadata:
+   annotations:
+     cert-manager.io/inject-ca-from: kmm-operator-system/kmm-operator-serving-cert
+-    controller-gen.kubebuilder.io/version: v0.16.1
++    controller-gen.kubebuilder.io/version: v0.20.1
+   labels:
+     app.kubernetes.io/component: kmm
+     app.kubernetes.io/name: kmm
+@@ -35,8 +35,9 @@
+     name: v1beta1
+     schema:
+       openAPIV3Schema:
+-        description: PreflightValidation initiates a preflight validations for all
+-          Modules on the current Kubernetes cluster.
++        description: |-
++          PreflightValidation initiates a preflight validations for all Modules on the current Kubernetes cluster.
++          Deprecated in favor of v1beta2.
+         properties:
+           apiVersion:
+             description: |-
+@@ -98,9 +99,6 @@
+                         image (image existence verification), build(build process verification)
+                       enum:
+                       - Image
+-                      - Build
+-                      - Sign
+-                      - Requeued
+                       - Done
+                       type: string
+                     verificationStatus:
+@@ -108,8 +106,9 @@
+                         Status of Module CR verification: true (verified), false (verification failed),
+                         error (error during verification process), unknown (verification has not started yet)
+                       enum:
+-                      - "True"
+-                      - "False"
++                      - Success
++                      - Failure
++                      - InProgress
+                       type: string
+                   required:
+                   - lastTransitionTime
+@@ -201,9 +200,6 @@
+                         image (image existence verification), build(build process verification)
+                       enum:
+                       - Image
+-                      - Build
+-                      - Sign
+-                      - Requeued
+                       - Done
+                       type: string
+                     verificationStatus:
+@@ -211,8 +207,9 @@
+                         Status of Module CR verification: true (verified), false (verification failed),
+                         error (error during verification process), unknown (verification has not started yet)
+                       enum:
+-                      - "True"
+-                      - "False"
++                      - Success
++                      - Failure
++                      - InProgress
+                       type: string
+                   required:
+                   - lastTransitionTime
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/certificate.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/certificate.yaml
+index 69376c6..53e1968 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/certificate.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/certificate.yaml
+@@ -17,5 +17,4 @@
+   issuerRef:
+     kind: Issuer
+     name: kmm-operator-selfsigned-issuer
+-  secretName: kmm-operator-webhook-server-cert
+----
+\ No newline at end of file
++  secretName: kmm-operator-webhook-server-cert
+\ No newline at end of file
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrole.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrole.yaml
+index d0fa81f..4b9235a 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrole.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrole.yaml
+@@ -25,36 +25,6 @@
+   name: kmm-operator-manager-role
+ rules:
+ - apiGroups:
+-  - apps
+-  resources:
+-  - daemonsets
+-  verbs:
+-  - create
+-  - delete
+-  - get
+-  - list
+-  - patch
+-  - watch
+-- apiGroups:
+-  - cluster.open-cluster-management.io
+-  resources:
+-  - clusterclaims
+-  verbs:
+-  - create
+-  - get
+-  - list
+-  - watch
+-- apiGroups:
+-  - cluster.open-cluster-management.io
+-  resourceNames:
+-  - kernel-versions.kmm.node.kubernetes.io
+-  resources:
+-  - clusterclaims
+-  verbs:
+-  - delete
+-  - patch
+-  - update
+-- apiGroups:
+   - ""
+   resources:
+   - configmaps
+@@ -86,11 +56,43 @@
+   - patch
+   - watch
+ - apiGroups:
++  - apps
++  resources:
++  - daemonsets
++  verbs:
++  - create
++  - delete
++  - get
++  - list
++  - patch
++  - watch
++- apiGroups:
++  - cluster.open-cluster-management.io
++  resources:
++  - clusterclaims
++  verbs:
++  - create
++  - get
++  - list
++  - watch
++- apiGroups:
++  - cluster.open-cluster-management.io
++  resourceNames:
++  - kernel-versions.kmm.node.kubernetes.io
++  resources:
++  - clusterclaims
++  verbs:
++  - delete
++  - patch
++  - update
++- apiGroups:
+   - kmm.sigs.x-k8s.io
+   resources:
+   - modulebuildsignconfigs
++  - preflightvalidations
+   verbs:
+   - create
++  - delete
+   - get
+   - list
+   - patch
+@@ -100,6 +102,7 @@
+   - kmm.sigs.x-k8s.io
+   resources:
+   - modulebuildsignconfigs/status
++  - moduleimagesconfigs/status
+   - modules/status
+   - preflightvalidations/status
+   verbs:
+@@ -134,18 +137,6 @@
+   - nodemodulesconfigs/status
+   verbs:
+   - patch
+-- apiGroups:
+-  - kmm.sigs.x-k8s.io
+-  resources:
+-  - preflightvalidations
+-  verbs:
+-  - create
+-  - delete
+-  - get
+-  - list
+-  - patch
+-  - update
+-  - watch
+ ---
+ apiVersion: rbac.authorization.k8s.io/v1
+ kind: ClusterRole
+@@ -182,4 +173,3 @@
+   - subjectaccessreviews
+   verbs:
+   - create
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrolebinding.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrolebinding.yaml
+index b3f90f0..1fab45e 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrolebinding.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/clusterrolebinding.yaml
+@@ -48,4 +48,3 @@
+ - kind: ServiceAccount
+   name: kmm-operator-controller
+   namespace: {{ .Release.Namespace }}
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/configmap.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/configmap.yaml
+deleted file mode 100644
+index 372ea88..0000000
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/configmap.yaml
++++ /dev/null
+@@ -1,25 +0,0 @@
+-apiVersion: v1
+-data:
+-  controller_config.yaml: |
+-    healthProbeBindAddress: :8081
+-    webhookPort: 9443
+-    leaderElection:
+-      enabled: true
+-      resourceID: kmm.sigs.x-k8s.io
+-    metrics:
+-      enableAuthnAuthz: true
+-      bindAddress: 0.0.0.0:8443
+-      secureServing: true
+-    worker:
+-      runAsUser: 0
+-      seLinuxType: spc_t
+-      firmwareHostPath: /lib/firmware
+-kind: ConfigMap
+-metadata:
+-  labels:
+-    app.kubernetes.io/component: kmm
+-    app.kubernetes.io/name: kmm
+-    app.kubernetes.io/part-of: kmm
+-  name: kmm-operator-manager-config
+-  namespace: {{ .Release.Namespace }}
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/deployment.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/deployment.yaml
+index ad6a84a..6090da7 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/deployment.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/deployment.yaml
+@@ -30,27 +30,28 @@
+     spec:
+       affinity:
+         nodeAffinity:
+-          requiredDuringSchedulingIgnoredDuringExecution:
+-            nodeSelectorTerms:
+-            - matchExpressions:
++          preferredDuringSchedulingIgnoredDuringExecution:
++          - preference:
++              matchExpressions:
+               - key: node-role.kubernetes.io/control-plane
+                 operator: Exists
+-            - matchExpressions:
+-              - key: node-role.kubernetes.io/control-plane
++            weight: 1
++          - preference:
++              matchExpressions:
++              - key: node-role.kubernetes.io/master
+                 operator: Exists
+-            - matchExpressions:
+-              - key: kmm.node.kubernetes.io/control-plane
+-                operator: Exists
++            weight: 1
++      # Check what is this:
+       {{- if .Values.imagePullSecrets }}
+       imagePullSecrets:
+       {{- range .Values.imagePullSecrets }}
+         - name: {{ . }}
+       {{- end }}
+       {{- end }}
+-      priorityClassName: system-node-critical
++      # end
+       containers:
+       - args:
+-        - --config=controller_config.yaml
++        - --config=kmm-operator-manager-config
+         env:
+         - name: RELATED_IMAGE_WORKER
+           value: {{ .Values.worker.image }}
+@@ -89,10 +90,10 @@
+             memory: {{ .Values.controller.deployment.requests.memory }}
+         securityContext:
+           allowPrivilegeEscalation: false
+-        volumeMounts:
+-        - mountPath: /controller_config.yaml
+-          name: manager-config
+-          subPath: controller_config.yaml
++          capabilities:
++            drop:
++            - ALL
++          readOnlyRootFilesystem: true
+       securityContext:
+         runAsNonRoot: true
+       serviceAccountName: kmm-operator-controller
+@@ -104,10 +105,6 @@
+       - effect: NoSchedule
+         key: node-role.kubernetes.io/control-plane
+         operator: Equal
+-      volumes:
+-      - configMap:
+-          name: kmm-operator-manager-config
+-        name: manager-config
+ ---
+ apiVersion: apps/v1
+ kind: Deployment
+@@ -141,27 +138,34 @@
+     spec:
+       affinity:
+         nodeAffinity:
+-          requiredDuringSchedulingIgnoredDuringExecution:
+-            nodeSelectorTerms:
+-            - matchExpressions:
++          preferredDuringSchedulingIgnoredDuringExecution:
++          - preference:
++              matchExpressions:
+               - key: node-role.kubernetes.io/control-plane
+                 operator: Exists
+-            - matchExpressions:
+-              - key: kmm.node.kubernetes.io/control-plane
++            weight: 1
++          - preference:
++              matchExpressions:
++              - key: node-role.kubernetes.io/master
+                 operator: Exists
++            weight: 1
+       {{- if .Values.imagePullSecrets }}
+       imagePullSecrets:
+       {{- range .Values.imagePullSecrets }}
+         - name: {{ . }}
+       {{- end }}
+       {{- end }}
+-      priorityClassName: system-node-critical
+       containers:
+       - args:
+-        - --config=controller_config.yaml
++        - --config=kmm-operator-manager-config
+         - --enable-module
+         - --enable-namespace
+         - --enable-preflightvalidation
++        env:
++        - name: OPERATOR_NAMESPACE
++          valueFrom:
++            fieldRef:
++              fieldPath: metadata.namespace
+         image: {{ .Values.webhook.deployment.image }}
+         livenessProbe:
+           httpGet:
+@@ -189,13 +193,14 @@
+             memory: {{ .Values.webhook.deployment.requests.memory }}
+         securityContext:
+           allowPrivilegeEscalation: false
++          capabilities:
++            drop:
++            - ALL
++          readOnlyRootFilesystem: true
+         volumeMounts:
+         - mountPath: /tmp/k8s-webhook-server/serving-certs
+           name: cert
+           readOnly: true
+-        - mountPath: /controller_config.yaml
+-          name: manager-config
+-          subPath: controller_config.yaml
+       securityContext:
+         runAsNonRoot: true
+       serviceAccountName: kmm-operator-controller
+@@ -212,7 +217,3 @@
+         secret:
+           defaultMode: 420
+           secretName: kmm-operator-webhook-server-cert
+-      - configMap:
+-          name: kmm-operator-manager-config
+-        name: manager-config
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/issuer.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/issuer.yaml
+index 7ea1d10..6820de6 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/issuer.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/issuer.yaml
+@@ -12,4 +12,3 @@
+   namespace: {{ .Release.Namespace }}
+ spec:
+   selfSigned: {}
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/role.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/role.yaml
+index 4a87445..4b6b8ba 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/role.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/role.yaml
+@@ -32,4 +32,3 @@
+   - update
+   - patch
+   - delete
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/rolebinding.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/rolebinding.yaml
+index 660d872..17a6619 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/rolebinding.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/rolebinding.yaml
+@@ -15,4 +15,3 @@
+ - kind: ServiceAccount
+   name: kmm-operator-controller
+   namespace: {{ .Release.Namespace }}
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/service.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/service.yaml
+index 9d41d2f..592aaf4 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/service.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/service.yaml
+@@ -42,4 +42,3 @@
+     app.kubernetes.io/name: kmm
+     app.kubernetes.io/part-of: kmm
+     control-plane: webhook-server
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/serviceaccount.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/serviceaccount.yaml
+index 6dd2b34..870794a 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/serviceaccount.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/serviceaccount.yaml
+@@ -7,4 +7,3 @@
+     app.kubernetes.io/part-of: kmm
+   name: kmm-operator-controller
+   namespace: {{ .Release.Namespace }}
+----
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/validatingwebhookconfiguration.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/validatingwebhookconfiguration.yaml
+index ea5a103..42a7329 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/validatingwebhookconfiguration.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/templates/validatingwebhookconfiguration.yaml
+@@ -14,7 +14,7 @@
+   clientConfig:
+     service:
+       name: kmm-operator-webhook-service
+-      namespace: {{ .Release.Namespace }}
++      namespace: kmm-operator-system
+       path: /validate--v1-namespace
+   failurePolicy: Fail
+   name: namespace-deletion.kmm.sigs.k8s.io
+@@ -51,4 +51,23 @@
+     resources:
+     - modules
+   sideEffects: None
+----
++- admissionReviewVersions:
++  - v1
++  clientConfig:
++    service:
++      name: kmm-operator-webhook-service
++      namespace: {{ .Release.Namespace }}
++      path: /validate-kmm-sigs-x-k8s-io-v1beta2-preflightvalidation
++  failurePolicy: Fail
++  name: vpreflightvalidation.kb.io
++  rules:
++  - apiGroups:
++    - kmm.sigs.x-k8s.io
++    apiVersions:
++    - v1beta2
++    operations:
++    - CREATE
++    - UPDATE
++    resources:
++    - preflightvalidations
++  sideEffects: None
+diff --git a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/values.yaml b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/values.yaml
+index 112ff68..0b66ad9 100644
+--- a/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/values.yaml
++++ b/helm-charts/custom/kernel-module-management-helm/kernel-module-management-helm/kernel-module-management/values.yaml
+@@ -4,7 +4,7 @@
+ 
+ controller:
+   deployment:
+-    image: docker.io/starlingx/kmm-operator:stx.12.0-v2.3.0-g732308d
++    image: quay.io/kubernetes-sigs/kernel-module-management-operator:v2.5.0
+     requests:
+       cpu: 0
+       memory: 0
+@@ -15,19 +15,19 @@
+     protocol: TCP
+     targetPort: 9443
+   deployment:
+-    image: docker.io/starlingx/kmm-webhook:stx.12.0-v2.3.0-g732308d
++    image: quay.io/kubernetes-sigs/kernel-module-management-webhook-server:v2.5.0
+     requests:
+       cpu: 0
+       memory: 0
+ 
+ sign:
+-  image: docker.io/starlingx/kmm-signimage:stx.12.0-v2.3.0-g732308d
++  image: quay.io/kubernetes-sigs/kernel-module-management-signimage:v2.5.0
+ 
+ worker:
+-  image: docker.io/starlingx/kmm-worker:stx.12.0-v2.3.0-g732308d
++  image: quay.io/kubernetes-sigs/kernel-module-management-worker:v2.5.0
+ 
+ executor:
+-  image: gcr.io/kaniko-project/executor:236ba5690eda9170d0157aa8137ebbeb09d38685
++  image: gcr.io/kaniko-project/executor:latest
+ 
+ labels:
+   isApplication: false
+diff --git a/stx-kernel-module-management-images/debian/all/build.sh b/stx-kernel-module-management-images/debian/all/build.sh
+deleted file mode 100755
+index 6d2fdd7..0000000
+--- a/stx-kernel-module-management-images/debian/all/build.sh
++++ /dev/null
+@@ -1,80 +0,0 @@
+-#!/usr/bin/env bash
+-#
+-# Copyright (c) 2026 Wind River Systems, Inc.
+-#
+-# SPDX-License-Identifier: Apache-2.0
+-#
+-
+-
+-SCRIPT_NAME=$1
+-IMAGE_TAG=$2
+-IMAGE_NAME="${IMAGE_TAG%:*}"
+-TAG="${IMAGE_TAG##*:}"
+-
+-BUILDER_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+-
+-
+-install_go() {
+-    cd ../
+-    WORKROOT="$PWD/stx-kernel-module-management-images/debian/all"
+-    mkdir -p "$WORKROOT"
+-    cd "$WORKROOT"
+-    WORKDIR="$WORKROOT/work_kmm"
+-    mkdir -p "$WORKDIR"
+-    if [ -d $WORKDIR ] && [ -z "$(ls -A $WORKDIR)" ]; then
+-        mv "$BUILDER_ROOT" "$WORKDIR"
+-    fi
+-
+-    echo "$PWD"
+-    ls "$WORKDIR"
+-    cd "$WORKDIR"
+-    mkdir -p ./tools
+-    cd ./tools || exit 1
+-
+-    wget https://go.dev/dl/go1.23.4.linux-amd64.tar.gz
+-    tar -xvzpf go1.23.4.linux-amd64.tar.gz
+-    export GOROOT=$PWD/go
+-    export PATH=$GOROOT/bin:$WORKDIR/bin:$PATH
+-    cd "$WORKDIR/kernel-module-management" || exit 1
+-}
+-
+-build_images() {
+-    local MAKE_ARG
+-    local MAKE_OPERATION
+-
+-    case "$SCRIPT_NAME" in
+-        kmm-operator)
+-            MAKE_ARG="IMAGE_TAG_BASE"
+-            MAKE_OPERATION="docker-build"
+-        ;;
+-        kmm-worker)
+-            MAKE_ARG="WORKER_IMAGE_TAG_BASE"
+-            MAKE_OPERATION="workerimage-build"
+-        ;;
+-        kmm-webhook)
+-            MAKE_ARG="WEBHOOK_IMAGE_TAG_BASE"
+-            MAKE_OPERATION="webhookimage-build"
+-        ;;
+-        kmm-signimage)
+-            MAKE_ARG="SIGNER_IMAGE_TAG_BASE"
+-            MAKE_OPERATION="signimage-build"
+-        ;;
+-        *)
+-        return 1
+-        ;;
+-    esac
+-
+-    mkdir -p bin
+-    BINDIR=$PWD/bin/ ./hack/download-kustomize
+-    export PATH=$PATH:$(go env GOPATH)/bin
+-    make fmt vet lint mockgen controller-gen generate manifests
+-    make IMAGE_TAG="$TAG" "$MAKE_ARG=$IMAGE_NAME" "$MAKE_OPERATION"
+-}
+-
+-
+-main() {
+-    install_go
+-    build_images
+-}
+-
+-main
+diff --git a/stx-kernel-module-management-images/debian/all/files/patch_kmm.patch b/stx-kernel-module-management-images/debian/all/files/patch_kmm.patch
+deleted file mode 100644
+index 1d9879f..0000000
+--- a/stx-kernel-module-management-images/debian/all/files/patch_kmm.patch
++++ /dev/null
+@@ -1,31 +0,0 @@
+-From 7bd08f274757374e564a50d49db7aa119a5a3c1b Mon Sep 17 00:00:00 2001
+-From: Babak Sarashki <babak.sarashki@windriver.com>
+-Date: Tue, 4 Nov 2025 20:48:37 +0000
+-Subject: [PATCH] experimental add imagePullSecrets to build Pod
+-
+-Without this patch, kmm started build-Pod fails to pull secret from
+-a private registry.
+-
+-Signed-off-by: Babak Sarashki <babak.sarashki@windriver.com>
+----
+- internal/build/pod/maker.go | 5 +++++
+- 1 file changed, 5 insertions(+)
+-
+-diff --git a/internal/build/pod/maker.go b/internal/build/pod/maker.go
+-index f76915c..9fcd22c 100644
+---- a/internal/build/pod/maker.go
+-+++ b/internal/build/pod/maker.go
+-@@ -135,6 +135,11 @@ func (m *maker) podSpec(mld *api.ModuleLoaderData, containerImage string, pushIm
+- 		Volumes:       volumes(mld.ImageRepoSecret, buildConfig),
+- 		NodeSelector:  selector,
+- 		Tolerations:   mld.Tolerations,
+-+		ImagePullSecrets: []v1.LocalObjectReference{
+-+			{
+-+				Name: mld.ImageRepoSecret.Name,
+-+			},
+-+		},
+- 	}
+- }
+-
+---
+-2.39.5
+\ No newline at end of file
+diff --git a/stx-kernel-module-management-images/debian/all/operator.stable_docker_image b/stx-kernel-module-management-images/debian/all/operator.stable_docker_image
+deleted file mode 100644
+index da99ef0..0000000
+--- a/stx-kernel-module-management-images/debian/all/operator.stable_docker_image
++++ /dev/null
+@@ -1,8 +0,0 @@
+-BUILDER=script
+-LABEL=kmm-operator
+-SOURCE_REPO=https://github.com/kubernetes-sigs/kernel-module-management.git
+-SOURCE_PATCHES="files/patch_kmm.patch"
+-SOURCE_REF=732308db891d01b3c66c7624493605e4dfc3eb32
+-COMMAND=bash
+-SCRIPT=build.sh
+-ARGS=kmm-operator
+diff --git a/stx-kernel-module-management-images/debian/all/signimage.stable_docker_image b/stx-kernel-module-management-images/debian/all/signimage.stable_docker_image
+deleted file mode 100644
+index 5491caa..0000000
+--- a/stx-kernel-module-management-images/debian/all/signimage.stable_docker_image
++++ /dev/null
+@@ -1,8 +0,0 @@
+-BUILDER=script
+-LABEL=kmm-signimage
+-SOURCE_REPO=https://github.com/kubernetes-sigs/kernel-module-management.git
+-SOURCE_PATCHES="files/patch_kmm.patch"
+-SOURCE_REF=732308db891d01b3c66c7624493605e4dfc3eb32
+-COMMAND=bash
+-SCRIPT=build.sh
+-ARGS=kmm-signimage
+diff --git a/stx-kernel-module-management-images/debian/all/webhook.stable_docker_image b/stx-kernel-module-management-images/debian/all/webhook.stable_docker_image
+deleted file mode 100644
+index 754478e..0000000
+--- a/stx-kernel-module-management-images/debian/all/webhook.stable_docker_image
++++ /dev/null
+@@ -1,8 +0,0 @@
+-BUILDER=script
+-LABEL=kmm-webhook
+-SOURCE_REPO=https://github.com/kubernetes-sigs/kernel-module-management.git
+-SOURCE_PATCHES="files/patch_kmm.patch"
+-SOURCE_REF=732308db891d01b3c66c7624493605e4dfc3eb32
+-COMMAND=bash
+-SCRIPT=build.sh
+-ARGS=kmm-webhook
+diff --git a/stx-kernel-module-management-images/debian/all/worker.stable_docker_image b/stx-kernel-module-management-images/debian/all/worker.stable_docker_image
+deleted file mode 100644
+index 5c02846..0000000
+--- a/stx-kernel-module-management-images/debian/all/worker.stable_docker_image
++++ /dev/null
+@@ -1,8 +0,0 @@
+-BUILDER=script
+-LABEL=kmm-worker
+-SOURCE_REPO=https://github.com/kubernetes-sigs/kernel-module-management.git
+-SOURCE_PATCHES="files/patch_kmm.patch"
+-SOURCE_REF=732308db891d01b3c66c7624493605e4dfc3eb32
+-COMMAND=bash
+-SCRIPT=build.sh
+-ARGS=kmm-worker

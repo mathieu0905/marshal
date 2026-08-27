@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-995651",
+  "expected_check_paths": [
+    "cinder/tests/unit/test_coordination.py"
+  ],
+  "mechanism": "a newly constrained tooz version passes timeout to a target lock override whose old signature does not accept it",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-995651--target-995691",
+  "repair_template": "extend an existing target test-double method signature to match the changed dependency interface",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff target and tooz 9.0.0 installed, test_coordinator_lock fails when tooz.locking.Lock.__enter__ passes blocking, shared, and timeout to the old one-argument MockToozLock.acquire override; the signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff target test, maintainer target diff, installed-version probes, identical three-arm stestr command, and all A0/A1/A2 logs.",
+    "source_effect": "The opening source diff changes the sole tooz pin from 8.1.0 to 9.0.0 in upper-constraints.txt.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/995691.patch",
+    "target_repair": "The maintainer adds shared and timeout parameters to the existing MockToozLock.acquire override. A2 applies only that patch to the cutoff target, retains tooz 9.0.0, and restores all 18 tests without deleting or skipping any test."
+  },
+  "source_change_family": "opendev-change-995651-opening",
+  "target_repository": "openstack/cinder",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}

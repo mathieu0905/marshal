@@ -1,0 +1,860 @@
+diff --git a/mtce/centos/mtce.spec b/mtce/centos/mtce.spec
+index 04bd994..9903847 100644
+--- a/mtce/centos/mtce.spec
++++ b/mtce/centos/mtce.spec
+@@ -350,8 +350,8 @@
+ # TODO: Init hack. Should move to proper module
+ install -m 755 -p -D %{_buildsubdir}/scripts/hwclock.sh %{buildroot}%{_sysconfdir}/init.d/hwclock.sh
+ install -m 644 -p -D %{_buildsubdir}/scripts/hwclock.service %{buildroot}%{_unitdir}/hwclock.service
+-install -m 755 -p -D %{_buildsubdir}/scripts/crashDumpMgr %{buildroot}%{_sysconfdir}/init.d/crashDumpMgr
+-install -m 644 -p -D %{_buildsubdir}/scripts/crashDumpMgr.service %{buildroot}%{_unitdir}/crashDumpMgr.service
++install -m 755 -p -D %{_buildsubdir}/scripts/crash-dump-manager %{buildroot}%{_sysconfdir}/init.d/crash-dump-manager
++install -m 644 -p -D %{_buildsubdir}/scripts/crash-dump-manager.service %{buildroot}%{_unitdir}/crash-dump-manager.service
+ 
+ # systemd service files
+ install -m 644 -p -D %{_buildsubdir}/fsmon/scripts/fsmon.service %{buildroot}%{_unitdir}/fsmon.service
+@@ -435,7 +435,7 @@
+ /bin/systemctl enable rsyncd.service
+ /bin/systemctl enable goenabled.service
+ /bin/systemctl enable mtcalarm.service
+-/bin/systemctl enable crashDumpMgr.service
++/bin/systemctl enable crash-dump-manager.service
+ 
+ %post -n mtce-hostw
+ /bin/systemctl enable hostw.service
+@@ -509,7 +509,7 @@
+ %{_sysconfdir}/init.d/mtcClient
+ %{_sysconfdir}/init.d/mtcalarm
+ %{_sysconfdir}/init.d/hwclock.sh
+-%{_sysconfdir}/init.d/crashDumpMgr
++%{_sysconfdir}/init.d/crash-dump-manager
+ 
+ %{_unitdir}/runservices.service
+ %{_unitdir}/goenabled.service
+@@ -519,7 +519,7 @@
+ %{_unitdir}/mtcClient.service
+ %{_unitdir}/hbsClient.service
+ %{_unitdir}/hwclock.service
+-%{_unitdir}/crashDumpMgr.service
++%{_unitdir}/crash-dump-manager.service
+ 
+ # Binaries
+ %{local_bindir}/mtcAgent
+diff --git a/mtce/debian/deb_folder/crash-dump-manager.service b/mtce/debian/deb_folder/crash-dump-manager.service
+new file mode 100644
+index 0000000..0b1dcf8
+--- /dev/null
++++ b/mtce/debian/deb_folder/crash-dump-manager.service
+@@ -0,0 +1,14 @@
++[Unit]
++Description=Crash Dump Manager
++After=network.target config.target
++Before=sshd.service
++DefaultEnabled=true
++
++[Service]
++Type=oneshot
++RemainAfterExit=no
++EnvironmentFile=/etc/default/crash-dump-manager
++ExecStart=/usr/sbin/crash-dump-manager --max-size $MAX_SIZE --max-files $MAX_FILES --max-used $MAX_USED --min-available $MIN_AVAILABLE
++
++[Install]
++WantedBy=multi-user.target
+diff --git a/mtce/debian/deb_folder/crashDumpMgr.service b/mtce/debian/deb_folder/crashDumpMgr.service
+deleted file mode 100644
+index bec36c0..0000000
+--- a/mtce/debian/deb_folder/crashDumpMgr.service
++++ /dev/null
+@@ -1,12 +0,0 @@
+-[Unit]
+-Description=Crash Dump Manager
+-After=network.target
+-Before=sshd.service
+-
+-[Service]
+-Type=oneshot
+-RemainAfterExit=no
+-ExecStart=/etc/init.d/crashDumpMgr --max-size 5Gi
+-
+-[Install]
+-WantedBy=multi-user.target
+diff --git a/mtce/debian/deb_folder/mtce.install b/mtce/debian/deb_folder/mtce.install
+index 3a6dd36..b30cf33 100644
+--- a/mtce/debian/deb_folder/mtce.install
++++ b/mtce/debian/deb_folder/mtce.install
+@@ -2,7 +2,7 @@
+ etc/bmc/server_profiles.d/sensor_hp380_v1_ilo_v4.profile
+ etc/bmc/server_profiles.d/sensor_quanta_v1_ilo_v4.profile
+ etc/collect.d/collect_bmc
+-etc/init.d/crashDumpMgr
++etc/default/crash-dump-manager
+ etc/init.d/fsmon
+ etc/init.d/goenabled
+ etc/init.d/hbsClient
+@@ -22,6 +22,7 @@
+ etc/services.d/storage/mtcTest
+ etc/services.d/worker/mtcTest
+ etc/syslog-ng/conf.d/mtce.conf
++etc/systemd/system-preset/
+ usr/lib/ocf/resource.d/platform/mtcAgent
+ usr/local/bin/fsmond
+ usr/local/bin/hbsAgent
+@@ -31,6 +32,7 @@
+ usr/local/bin/mtcalarmd
+ usr/local/bin/mtclogd
+ usr/local/bin/wipedisk
++usr/sbin/crash-dump-manager
+ usr/sbin/dmemchk.sh
+ usr/sbin/fsync
+ usr/share/mtce/hwclock.service
+diff --git a/mtce/debian/deb_folder/rules b/mtce/debian/deb_folder/rules
+index d377ffd..3929f92 100644
+--- a/mtce/debian/deb_folder/rules
++++ b/mtce/debian/deb_folder/rules
+@@ -36,6 +36,7 @@
+ 
+ 	# Configuration files
+ 	install -m 600 -p -D scripts/mtc.ini $(SYSCONFDIR)/mtc.ini
++	install -m 600 -p -D scripts/crash-dump-manager_envfile $(SYSCONFDIR)/default/crash-dump-manager
+ 	install -m 600 -p -D scripts/mtc.conf $(SYSCONFDIR)/mtc.conf
+ 	install -m 600 -p -D fsmon/scripts/fsmond.conf $(SYSCONFDIR)/mtc/fsmond.conf
+ 	install -m 600 -p -D hwmon/scripts/hwmond.conf $(SYSCONFDIR)/mtc/hwmond.conf
+@@ -65,13 +66,13 @@
+ 	install -m 755 -d $(SBINDIR)
+ 	install -m 700 -p -D fsync/fsync $(SBINDIR)/fsync
+ 	install -m 755 -d $(SBINDIR)
++	install -m 755 -p -D scripts/crash-dump-manager $(SBINDIR)/crash-dump-manager
+ 	install -m 700 -p -D pmon/scripts/pmon-restart $(LOCAL_SBINDIR)/pmon-restart
+ 	install -m 700 -p -D pmon/scripts/pmon-start $(LOCAL_SBINDIR)/pmon-start
+ 	install -m 700 -p -D pmon/scripts/pmon-stop $(LOCAL_SBINDIR)/pmon-stop
+ 
+ 	# init script files
+ 	install -m 755 -d $(INITDIR)
+-	install -m 755 -p -D scripts/crashDumpMgr $(INITDIR)/crashDumpMgr
+ 	install -m 700 -p -D scripts/mtcClient $(INITDIR)/mtcClient
+ 	install -m 700 -p -D scripts/hbsClient $(INITDIR)/hbsClient
+ 	install -m 700 -p -D hwmon/scripts/lsb/hwmon $(INITDIR)/hwmon
+@@ -148,8 +149,12 @@
+ 	install -m 755 -d $(ROOT)/var
+ 	install -m 755 -d $(ROOT)/var/run
+ 
++	# Presets
++	install -d $(SYSCONFDIR)/systemd/system-preset
++	install -m 544 scripts/55-crash-dump-manager.preset $(SYSCONFDIR)/systemd/system-preset
++
+ override_dh_installsystemd:
+-	dh_installsystemd --name crashDumpMgr
++	dh_installsystemd --name crash-dump-manager
+ 	dh_installsystemd --name fsmon
+ 	dh_installsystemd --name goenabled
+ 	dh_installsystemd --name hbsClient
+diff --git a/mtce/src/scripts/55-crash-dump-manager.preset b/mtce/src/scripts/55-crash-dump-manager.preset
+new file mode 100644
+index 0000000..e0949dd
+--- /dev/null
++++ b/mtce/src/scripts/55-crash-dump-manager.preset
+@@ -0,0 +1 @@
++enable crash-dump-manager.service
+diff --git a/mtce/src/scripts/crash-dump-manager b/mtce/src/scripts/crash-dump-manager
+new file mode 100644
+index 0000000..794a4e2
+--- /dev/null
++++ b/mtce/src/scripts/crash-dump-manager
+@@ -0,0 +1,318 @@
++#!/bin/bash
++#
++# Copyright (c) 2020-2023 Wind River Systems, Inc.
++#
++# SPDX-License-Identifier: Apache-2.0
++#
++
++CRASHDUMPMGR_TAG=${CRASHDUMPMGR_TAG:-"crash-dump-manager"}
++
++RETVAL=0
++
++# Default values and constants
++DEFAULT_MAX_SIZE=5368709120 # "5GiB"
++DEFAULT_MAX_FILES=4
++UNLIMITED="unlimited"
++DEFAULT="default"
++DEFAULT_MAX_USED="${UNLIMITED}"  # Assign UNLIMITED to DEFAULT_MAX_USED
++DEFAULT_MIN_REMAINDER_PERCENT=10
++MIN_REMAINDER_MINIMUM=1073741824  # 1GiB in bytes
++
++# number format to/from human readable commands.
++NUMFMT_TO_HR="/usr/bin/numfmt --to=iec"
++NUMFMT_FROM_HR="/usr/bin/numfmt --from=auto"
++
++#############################################################################
++# Log message to syslog
++#############################################################################
++
++function log()
++{
++    logger -t "${CRASHDUMPMGR_TAG}" "$@"
++}
++
++#############################################################################
++#
++# Name   : manage_crash_dumps
++#
++# Purpose: Prevent crash dumps from filling up the root fs
++#
++# The kernel directs new crash dump bundles to
++# /var/crash/<dated vmcore bundle>. Crash dump
++# bundles are quite large and, if too many occur,
++# can fill up its target filesystem.
++#
++# This function manages the crash dump bundles, creating tar archives for
++# storage, handling maximum file count and storage limits, and preserving
++# summaries of the crash dumps.
++#
++# The first bundle is tar'ed as vmcore_first.tar and preserved.
++# Subsequent crash bundles are nicely tar'ed as vmcore_<date>.tar.
++#
++# Save the crash dump vmcore summary for all crash dumps.
++#
++# Assumptions: log rotation is used to compress these bundles in the background
++#
++# Parameters:
++#   $1 = max_size ; maximum vmcore size to keep (human-readable size or "unlimited")
++#   $2 = max_files ; maximum number of crash dump files to keep
++#   $3 = max_used ; maximum used storage size (human-readable size or "unlimited")
++#   $4 = min_available ; minimum available storage size (human-readable size)
++#
++############################################################################
++
++
++function manage_crash_dumps()
++{
++    CRASH_DIR="/var/crash"
++    CRASH_BUNDLE_DIR="/var/log/crash"
++    OTHER_BUNDLE="${CRASH_BUNDLE_DIR}/vmcore"
++    FIRST_BUNDLE="${CRASH_BUNDLE_DIR}/vmcore_first.tar"
++    FIRST_BUNDLE_ROTATED="${CRASH_BUNDLE_DIR}/vmcore_first.tar.1.gz"
++    CRASH_BUNDLE_SUMMARY="vmcore-dmesg.txt"
++    CRASH_BUNDLE_SUMMARY_DEB="dmesg."
++
++    if [ "${4}" = "" ] ; then
++        # Get the size of the filesystem assigned to /var/log/crash in bytes
++        fs_size=$(df -B1 ${CRASH_BUNDLE_DIR} | awk 'NR==2 {print $2}')
++        # Calculate min_available as the percentage of the filesystem size
++        min_available=$((${fs_size} * ${DEFAULT_MIN_REMAINDER_PERCENT} / 100))
++    else
++        min_available=${4}
++    fi
++
++    # Set a minimum value for min_available
++    if [ ${min_available} -lt ${MIN_REMAINDER_MINIMUM} ]; then
++        min_available=${MIN_REMAINDER_MINIMUM}
++    fi
++
++    max_size_hr=""
++    max_used_hr=""
++    if [ "${max_size}" != "${UNLIMITED}" ]; then
++        max_size_hr="($(${NUMFMT_TO_HR} ${max_size}))"
++    fi
++    if [ "${max_used}" != "${UNLIMITED}" ]; then
++        max_used_hr="($(${NUMFMT_TO_HR} ${max_used}))"
++    fi
++    min_available_hr=$(${NUMFMT_TO_HR} ${min_available})
++
++    log "max crash dump files set to ${max_files}"
++    log "max crash dump vmcore size is ${max_size} ${max_size_hr}"
++    log "max used storage size is ${max_used} ${max_used_hr}"
++    log "minimum available storage size is ${min_available} (${min_available_hr})"
++
++    # tar command and nice levels
++    TAR_CMD="tar -cf"
++    NICE_CMD="/usr/bin/nice -n19"
++    IONICE_CMD="/usr/bin/ionice -c2 -n7"
++
++    log "managing ${CRASH_DIR}"
++
++    # create dir if it does not exist
++    if [ ! -d ${CRASH_BUNDLE_DIR} ] ; then
++        mkdir ${CRASH_BUNDLE_DIR}
++    fi
++    for entry in $(ls -rt ${CRASH_DIR}/);
++    do
++        entry=${CRASH_DIR}/${entry}
++        remove_entry=false
++        max_files_saved=false
++        if [ -d "${entry}" ] ; then
++            time=${entry##*/}
++            if [ -e "${entry}/${CRASH_BUNDLE_SUMMARY_DEB}${time}" ] ; then
++                log "saving summary: ${CRASH_DIR}/$(basename ${time})_${CRASH_BUNDLE_SUMMARY_DEB}${time}"
++
++                # save the crash dump dmesg.<date> for debian for all crash dumps
++                cp -a ${entry}/${CRASH_BUNDLE_SUMMARY_DEB}${time} ${CRASH_DIR}/$(basename ${time})_${CRASH_BUNDLE_SUMMARY_DEB}${time}
++            fi
++            if [ -e "${entry}/${CRASH_BUNDLE_SUMMARY}" ] ; then
++                log "saving summary: ${CRASH_DIR}/$(basename ${entry})_${CRASH_BUNDLE_SUMMARY}"
++
++                # save the crash dump vmcore summary for all crash dumps
++                cp -a ${entry}/${CRASH_BUNDLE_SUMMARY} ${CRASH_DIR}/$(basename ${entry})_${CRASH_BUNDLE_SUMMARY}
++            fi
++            if [ -e "${entry}/dump.${time}" ] || [ -e "${entry}/vmcore" ] ; then
++
++                # get the size of this vmcore file ; raw and human readable
++                if [ -e "${entry}/dump.${time}" ] ; then
++                    vmcore_size=$(stat --format='%s' ${entry}/dump.${time})
++                else
++                    vmcore_size=$(stat --format='%s' ${entry}/vmcore)
++                fi
++                vmcore_size_hr=$(${NUMFMT_TO_HR} ${vmcore_size})
++
++                # Manage max number of files
++                files_in_crash_bundle_dir=$(ls -A ${CRASH_BUNDLE_DIR} | wc -l)
++                num_files_to_remove=$((files_in_crash_bundle_dir-max_files+1))
++
++                if [ "${num_files_to_remove}" -ge 1 ]; then
++                    files_to_remove=$(ls -t ${CRASH_BUNDLE_DIR} | tail -$((num_files_to_remove+1)) | head -$((num_files_to_remove)))
++                    files_to_remove_size=0
++                    for file in ${files_to_remove}; do
++                        files_to_remove_size+=$(stat --format='%s' ${file})
++                    done
++                    max_files_saved=true
++                fi
++
++                # get available ${CRASH_BUNDLE_DIR} fs space in bytes
++                available=$(df -B1 ${CRASH_BUNDLE_DIR} | grep -v Available | awk '{ print $4 }')
++
++                # get the current used space in the ${CRASH_BUNDLE_DIR} fs
++                used_space=$(du -sb ${CRASH_BUNDLE_DIR} | awk '{print $1}')
++
++                # if the ${CRASH_BUNDLE_DIR} contains the maximum number of files, the available and used_space
++                # need to be updated to the value after deleting the oldest crash dump file.
++                if [ "${max_files_saved}" = true ] ; then
++                    available=$((available+files_to_remove_size))
++                    used_space=$((used_space-files_to_remove_size))
++                fi
++                available_hr=$(${NUMFMT_TO_HR} ${available})
++                log "new vmcore detected (size:${vmcore_size}:${vmcore_size_hr}) ;" \
++                "${CRASH_BUNDLE_DIR} avail:${available}:${available_hr}"
++
++                # Don't save this crash dump if it would leave the
++                # ${CRASH_BUNDLE_DIR} filesystem with less than 1GiB.
++                if [ ${available} -gt ${vmcore_size} ]; then
++                    remaining=$((available-vmcore_size))
++                else
++                    remaining=0
++                fi
++
++                # Check if adding the file would exceed the maximum used space limit
++                total_used_space=$((used_space + file_size))
++                if [ "${max_used}" != "$UNLIMITED" ] && [ ${total_used_space} -gt ${max_used} ]; then
++
++                     log "The last crash dump is not saved because it would exceed the maximum" \
++                     "used space limit specified in the max_used parameter (${max_used} bytes)."
++                    remove_entry=true
++
++                # check for min required 'remaining' ${CRASH_BUNDLE_DIR} filesystem space
++                elif [ ${remaining} -lt ${min_available} ] ; then
++                    log "insufficient space in ${CRASH_BUNDLE_DIR} for ${vmcore_size_hr} ${entry};" \
++                    "would leave only ${remaining} bytes"
++                    remove_entry=true
++
++                # create a new crash bundle if the vmcore file isn't oversized
++                elif [ ${vmcore_size} -lt ${max_size} ] || [ "${max_size}" = "${UNLIMITED}" ] ; then
++
++                    if [ ! -e "${FIRST_BUNDLE}" ] && [ ! -e "${FIRST_BUNDLE_ROTATED}" ]; then
++                        log "creating first bundle from ${entry}"
++                        ${IONICE_CMD} ${NICE_CMD} ${TAR_CMD} ${FIRST_BUNDLE} -C ${CRASH_DIR} $(basename ${entry})
++
++                    else
++                        if [ "${max_files_saved}" = true ] ; then
++                            for file in ${files_to_remove}; do
++                                # delete old vmcore file
++                                log "removing old vmcore file: ${file}"
++                                rm -rf "${CRASH_BUNDLE_DIR}/${file}"
++                            done
++                        fi
++                        log "creating bundle from ${entry}"
++                        ${IONICE_CMD} ${NICE_CMD} ${TAR_CMD} ${OTHER_BUNDLE}_${time}.tar -C ${CRASH_DIR} $(basename ${entry})
++                    fi
++                    remove_entry=true
++                else
++                    log "deleting oversize (${vmcore_size_hr}) vmcore file $(basename ${entry})"
++                    remove_entry=true
++                fi
++            elif [[ "$entry" == *"_dmesg."* ]] || [[ "$entry" == *"_vmcore-dmesg.txt"* ]] ; then
++                log "saved old $entry summary"
++            elif [[ "$entry" != "$CRASH_DIR/*"  ]] ; then
++                # removes vmcore files not named properly
++                # i.e vmcore.incomplete
++                remove_entry=true
++            fi
++        elif [[ "$entry" != *"_dmesg."* ]] && [[ "$entry" != *"_vmcore-dmesg.txt"* ]] ; then
++            # removes files in /var/crash that are not crash dumps related
++            remove_entry=true
++        fi
++
++        if [ "${remove_entry}" = true ] ; then
++            log "removing ${entry}"
++            rm -rf "${entry}"
++        fi
++    done
++}
++
++function print_help() {
++    echo "Usage: $(basename "$0") [OPTIONS]"
++    echo "Options:"
++    echo "  --max-size <size>     Set maximum vmcore size (human-readable size or \"$UNLIMITED\")"
++    echo "  --max-files <number>  Set maximum number of crash dump files"
++    echo "  --max-used <size>     Set maximum used storage size (human-readable size or \"$UNLIMITED\")"
++    echo "  --min-available <size> Set minimum available storage size (human-readable size)"
++}
++
++normalize_size_format() {
++    echo "$1" | tr ',' '.'
++}
++
++# Initialize default values
++max_size="${DEFAULT_MAX_SIZE}"
++max_files="${DEFAULT_MAX_FILES}"
++max_used="${DEFAULT_MAX_USED}"
++min_available=""
++
++# Initialize a flag to indicate if help has been shown
++help_shown=false
++
++# Parse the command line
++while [[ $# -gt 0 ]]; do
++    case "${1}" in
++        -h|--help)
++            print_help
++            help_shown=true
++            shift
++            ;;
++
++        --max-size)
++            shift
++            if [ "${1}" = "${UNLIMITED}" ]; then
++                max_size=${UNLIMITED}
++            else
++                max_size=$(${NUMFMT_FROM_HR} "$(normalize_size_format "${1}")")
++            fi
++            shift
++            ;;
++
++        --max-files)
++            shift
++            max_files="${1}"
++            shift
++            ;;
++
++        --max-used)
++            shift
++            if [ "${1}" = "${UNLIMITED}" ]; then
++                max_used=${UNLIMITED}
++            else
++                max_used=$(${NUMFMT_FROM_HR} "$(normalize_size_format "${1}")")
++            fi
++            shift
++            ;;
++
++        --min-available)
++            shift
++            if [ "${1}" = "${DEFAULT}" ]; then
++                min_available=""
++            else
++                min_available=$(${NUMFMT_FROM_HR} "$(normalize_size_format "${1}")")
++            fi
++            shift
++            ;;
++
++        *)
++            if [ "${help_shown}" = false ]; then
++                print_help
++                help_shown=true
++            else
++                # Handle unknown options or arguments
++                shift
++            fi
++            ;;
++    esac
++done
++
++manage_crash_dumps ${max_size} ${max_files} ${max_used} ${min_available}
++
++exit $RETVAL
+diff --git a/mtce/src/scripts/crash-dump-manager.service b/mtce/src/scripts/crash-dump-manager.service
+new file mode 100644
+index 0000000..8cc78c8
+--- /dev/null
++++ b/mtce/src/scripts/crash-dump-manager.service
+@@ -0,0 +1,13 @@
++[Unit]
++Description=Crash Dump Manager
++After=network.target config.target
++Before=sshd.service
++
++[Service]
++Type=oneshot
++RemainAfterExit=no
++EnvironmentFile=/etc/default/crash-dump-manager
++ExecStart=/usr/sbin/crash-dump-manager --max-size $MAX_SIZE --max-files $MAX_FILES --max-used $MAX_USED --min-available $MIN_AVAILABLE
++
++[Install]
++WantedBy=multi-user.target
+diff --git a/mtce/src/scripts/crash-dump-manager_envfile b/mtce/src/scripts/crash-dump-manager_envfile
+new file mode 100644
+index 0000000..6edab55
+--- /dev/null
++++ b/mtce/src/scripts/crash-dump-manager_envfile
+@@ -0,0 +1,4 @@
++MAX_FILES=4
++MAX_SIZE=5Gi
++MAX_USED=unlimited
++MIN_AVAILABLE=default
+diff --git a/mtce/src/scripts/crashDumpMgr b/mtce/src/scripts/crashDumpMgr
+deleted file mode 100644
+index a59ec9a..0000000
+--- a/mtce/src/scripts/crashDumpMgr
++++ /dev/null
+@@ -1,305 +0,0 @@
+-#!/bin/bash
+-#
+-# Copyright (c) 2020-2023 Wind River Systems, Inc.
+-#
+-# SPDX-License-Identifier: Apache-2.0
+-#
+-
+-CRASHDUMPMGR_TAG=${CRASHDUMPMGR_TAG:-"crashDumpMgr"}
+-
+-RETVAL=0
+-
+-# Default values and constants
+-DEFAULT_MAX_SIZE=5368709120 # "5GiB"
+-DEFAULT_MAX_FILES=4
+-UNLIMITED="unlimited"
+-DEFAULT_MAX_USED="${UNLIMITED}"  # Assign UNLIMITED to DEFAULT_MAX_USED
+-DEFAULT_MIN_REMAINDER_PERCENT=10
+-MIN_REMAINDER_MINIMUM=1073741824  # 1GiB in bytes
+-
+-# number format to/from human readable commands.
+-NUMFMT_TO_HR="/usr/bin/numfmt --to=iec"
+-NUMFMT_FROM_HR="/usr/bin/numfmt --from=auto"
+-
+-#############################################################################
+-# Log message to syslog
+-#############################################################################
+-
+-function log()
+-{
+-    logger -t "${CRASHDUMPMGR_TAG}" "$@"
+-}
+-
+-#############################################################################
+-#
+-# Name   : manage_crash_dumps
+-#
+-# Purpose: Prevent crash dumps from filling up the root fs
+-#
+-# The kernel directs new crash dump bundles to
+-# /var/crash/<dated vmcore bundle>. Crash dump
+-# bundles are quite large and, if too many occur,
+-# can fill up its target filesystem.
+-#
+-# This function manages the crash dump bundles, creating tar archives for
+-# storage, handling maximum file count and storage limits, and preserving
+-# summaries of the crash dumps.
+-#
+-# The first bundle is tar'ed as vmcore_first.tar and preserved.
+-# Subsequent crash bundles are nicely tar'ed as vmcore_<date>.tar.
+-#
+-# Save the crash dump vmcore summary for all crash dumps.
+-#
+-# Assumptions: log rotation is used to compress these bundles in the background
+-#
+-# Parameters:
+-#   $1 = max_size ; maximum vmcore size to keep (human-readable size or "unlimited")
+-#   $2 = max_files ; maximum number of crash dump files to keep
+-#   $3 = max_used ; maximum used storage size (human-readable size or "unlimited")
+-#   $4 = min_available ; minimum available storage size (human-readable size)
+-#
+-############################################################################
+-
+-
+-function manage_crash_dumps()
+-{
+-    CRASH_DIR="/var/crash"
+-    CRASH_BUNDLE_DIR="/var/log/crash"
+-    OTHER_BUNDLE="${CRASH_BUNDLE_DIR}/vmcore"
+-    FIRST_BUNDLE="${CRASH_BUNDLE_DIR}/vmcore_first.tar"
+-    FIRST_BUNDLE_ROTATED="${CRASH_BUNDLE_DIR}/vmcore_first.tar.1.gz"
+-    CRASH_BUNDLE_SUMMARY="vmcore-dmesg.txt"
+-    CRASH_BUNDLE_SUMMARY_DEB="dmesg."
+-
+-    if [ "${4}" = "" ] ; then
+-        # Get the size of the filesystem assigned to /var/log/crash in bytes
+-        fs_size=$(df -B1 ${CRASH_BUNDLE_DIR} | awk 'NR==2 {print $2}')
+-        # Calculate min_available as the percentage of the filesystem size
+-        min_available=$((${fs_size} * ${DEFAULT_MIN_REMAINDER_PERCENT} / 100))
+-    else
+-        min_available=${4}
+-    fi
+-
+-    # Set a minimum value for min_available
+-    if [ ${min_available} -lt ${MIN_REMAINDER_MINIMUM} ]; then
+-        min_available=${MIN_REMAINDER_MINIMUM}
+-    fi
+-
+-    max_size_hr=""
+-    max_used_hr=""
+-    if [ "${max_size}" != "${UNLIMITED}" ]; then
+-        max_size_hr="($(${NUMFMT_TO_HR} ${max_size}))"
+-    fi
+-    if [ "${max_used}" != "${UNLIMITED}" ]; then
+-        max_used_hr="($(${NUMFMT_TO_HR} ${max_used}))"
+-    fi
+-    min_available_hr=$(${NUMFMT_TO_HR} ${min_available})
+-
+-    log "max crash dump files set to ${max_files}"
+-    log "max crash dump vmcore size is ${max_size} ${max_size_hr}"
+-    log "max used storage size is ${max_used} ${max_used_hr}"
+-    log "minimum available storage size is ${min_available} (${min_available_hr})"
+-
+-    # tar command and nice levels
+-    TAR_CMD="tar -cf"
+-    NICE_CMD="/usr/bin/nice -n19"
+-    IONICE_CMD="/usr/bin/ionice -c2 -n7"
+-
+-    log "managing ${CRASH_DIR}"
+-
+-    # create dir if it does not exist
+-    if [ ! -d ${CRASH_BUNDLE_DIR} ] ; then
+-        mkdir ${CRASH_BUNDLE_DIR}
+-    fi
+-    for entry in $(ls -rt ${CRASH_DIR}/);
+-    do
+-        entry=${CRASH_DIR}/${entry}
+-        remove_entry=false
+-        max_files_saved=false
+-        if [ -d "${entry}" ] ; then
+-            time=${entry##*/}
+-            if [ -e "${entry}/${CRASH_BUNDLE_SUMMARY_DEB}${time}" ] ; then
+-                log "saving summary: ${CRASH_DIR}/$(basename ${time})_${CRASH_BUNDLE_SUMMARY_DEB}${time}"
+-
+-                # save the crash dump dmesg.<date> for debian for all crash dumps
+-                cp -a ${entry}/${CRASH_BUNDLE_SUMMARY_DEB}${time} ${CRASH_DIR}/$(basename ${time})_${CRASH_BUNDLE_SUMMARY_DEB}${time}
+-            fi
+-            if [ -e "${entry}/${CRASH_BUNDLE_SUMMARY}" ] ; then
+-                log "saving summary: ${CRASH_DIR}/$(basename ${entry})_${CRASH_BUNDLE_SUMMARY}"
+-
+-                # save the crash dump vmcore summary for all crash dumps
+-                cp -a ${entry}/${CRASH_BUNDLE_SUMMARY} ${CRASH_DIR}/$(basename ${entry})_${CRASH_BUNDLE_SUMMARY}
+-            fi
+-            if [ -e "${entry}/dump.${time}" ] || [ -e "${entry}/vmcore" ] ; then
+-
+-                # get the size of this vmcore file ; raw and human readable
+-                if [ -e "${entry}/dump.${time}" ] ; then
+-                    vmcore_size=$(stat --format='%s' ${entry}/dump.${time})
+-                else
+-                    vmcore_size=$(stat --format='%s' ${entry}/vmcore)
+-                fi
+-                vmcore_size_hr=$(${NUMFMT_TO_HR} ${vmcore_size})
+-
+-                # Manage max number of files
+-                if [ "$(ls -A ${CRASH_BUNDLE_DIR} | wc -l)" -ge "${max_files}" ]; then
+-                    oldest_vmcore=$(ls -t ${CRASH_BUNDLE_DIR} | tail -2 | head -1)
+-                    oldest_vmcore_size=$(stat --format='%s' ${oldest_vmcore})
+-                    max_files_saved=true
+-                fi
+-
+-                # get available ${CRASH_BUNDLE_DIR} fs space in bytes
+-                available=$(df -B1 ${CRASH_BUNDLE_DIR} | grep -v Available | awk '{ print $4 }')
+-
+-                # get the current used space in the ${CRASH_BUNDLE_DIR} fs
+-                used_space=$(du -sb ${CRASH_BUNDLE_DIR} | awk '{print $1}')
+-
+-                # if the ${CRASH_BUNDLE_DIR} contains the maximum number of files, the available and used_space
+-                # need to be updated to the value after deleting the oldest crash dump file.
+-                if [ "${max_files_saved}" = true ] ; then
+-                    available=$((available+oldest_vmcore_size))
+-                    used_space=$((used_space-oldest_vmcore_size))
+-                fi
+-                available_hr=$(${NUMFMT_TO_HR} ${available})
+-                log "new vmcore detected (size:${vmcore_size}:${vmcore_size_hr}) ;" \
+-                "${CRASH_BUNDLE_DIR} avail:${available}:${available_hr}"
+-
+-                # Don't save this crash dump if it would leave the
+-                # ${CRASH_BUNDLE_DIR} filesystem with less than 1GiB.
+-                if [ ${available} -gt ${vmcore_size} ]; then
+-                    remaining=$((available-vmcore_size))
+-                else
+-                    remaining=0
+-                fi
+-
+-                # Check if adding the file would exceed the maximum used space limit
+-                total_used_space=$((used_space + file_size))
+-                if [ "${max_used}" != "$UNLIMITED" ] && [ ${total_used_space} -gt ${max_used} ]; then
+-
+-                     log "The last crash dump is not saved because it would exceed the maximum" \
+-                     "used space limit specified in the max_used parameter (${max_used} bytes)."
+-                    remove_entry=true
+-
+-                # check for min required 'remaining' ${CRASH_BUNDLE_DIR} filesystem space
+-                elif [ ${remaining} -lt ${min_available} ] ; then
+-                    log "insufficient space in ${CRASH_BUNDLE_DIR} for ${vmcore_size_hr} ${entry};" \
+-                    "would leave only ${remaining} bytes"
+-                    remove_entry=true
+-
+-                # create a new crash bundle if the vmcore file isn't oversized
+-                elif [ ${vmcore_size} -lt ${max_size} ] || [ "${max_size}" = "${UNLIMITED}" ] ; then
+-
+-                    if [ ! -e "${FIRST_BUNDLE}" ] && [ ! -e "${FIRST_BUNDLE_ROTATED}" ]; then
+-                        log "creating first bundle from ${entry}"
+-                        ${IONICE_CMD} ${NICE_CMD} ${TAR_CMD} ${FIRST_BUNDLE} -C ${CRASH_DIR} $(basename ${entry})
+-
+-                    else
+-                        if [ "${max_files_saved}" = true ] ; then
+-                            # delete oldest vmcore file
+-                            log "removing oldest vmcore file: ${oldest_vmcore}"
+-                            rm -rf "${CRASH_BUNDLE_DIR}/${oldest_vmcore}"
+-                        fi
+-                        log "creating bundle from ${entry}"
+-                        ${IONICE_CMD} ${NICE_CMD} ${TAR_CMD} ${OTHER_BUNDLE}_${time}.tar -C ${CRASH_DIR} $(basename ${entry})
+-                    fi
+-                    remove_entry=true
+-                else
+-                    log "deleting oversize (${vmcore_size_hr}) vmcore file $(basename ${entry})"
+-                    remove_entry=true
+-                fi
+-            elif [[ "$entry" == *"_dmesg."* ]] || [[ "$entry" == *"_vmcore-dmesg.txt"* ]] ; then
+-                log "saved old $entry summary"
+-            elif [[ "$entry" != "$CRASH_DIR/*"  ]] ; then
+-                # removes vmcore files not named properly
+-                # i.e vmcore.incomplete
+-                remove_entry=true
+-            fi
+-        elif [[ "$entry" != *"_dmesg."* ]] && [[ "$entry" != *"_vmcore-dmesg.txt"* ]] ; then
+-            # removes files in /var/crash that are not crash dumps related
+-            remove_entry=true
+-        fi
+-
+-        if [ "${remove_entry}" = true ] ; then
+-            log "removing ${entry}"
+-            rm -rf "${entry}"
+-        fi
+-    done
+-}
+-
+-function print_help() {
+-    echo "Usage: $(basename "$0") [OPTIONS]"
+-    echo "Options:"
+-    echo "  --max-size <size>     Set maximum vmcore size (human-readable size or \"$UNLIMITED\")"
+-    echo "  --max-files <number>  Set maximum number of crash dump files"
+-    echo "  --max-used <size>     Set maximum used storage size (human-readable size or \"$UNLIMITED\")"
+-    echo "  --min-available <size> Set minimum available storage size (human-readable size)"
+-}
+-
+-normalize_size_format() {
+-    echo "$1" | tr ',' '.'
+-}
+-
+-# Initialize default values
+-max_size="${DEFAULT_MAX_SIZE}"
+-max_files="${DEFAULT_MAX_FILES}"
+-max_used="${DEFAULT_MAX_USED}"
+-min_available=""
+-
+-# Initialize a flag to indicate if help has been shown
+-help_shown=false
+-
+-# Parse the command line
+-while [[ $# -gt 0 ]]; do
+-    case "${1}" in
+-        -h|--help)
+-            print_help
+-            help_shown=true
+-            shift
+-            ;;
+-
+-        --max-size)
+-            shift
+-            if [ "${1}" = "${UNLIMITED}" ]; then
+-                max_size=${UNLIMITED}
+-            else
+-                max_size=$(${NUMFMT_FROM_HR} "$(normalize_size_format "${1}")")
+-            fi
+-            shift
+-            ;;
+-
+-        --max-files)
+-            shift
+-            max_files="${1}"
+-            shift
+-            ;;
+-
+-        --max-used)
+-            shift
+-            if [ "${1}" = "${UNLIMITED}" ]; then
+-                max_used=${UNLIMITED}
+-            else
+-                max_used=$(${NUMFMT_FROM_HR} "$(normalize_size_format "${1}")")
+-            fi
+-            shift
+-            ;;
+-
+-        --min-available)
+-            shift
+-            min_available=$(${NUMFMT_FROM_HR} "$(normalize_size_format "${1}")")
+-            shift
+-            ;;
+-
+-        *)
+-            if [ "${help_shown}" = false ]; then
+-                print_help
+-                help_shown=true
+-            else
+-                # Handle unknown options or arguments
+-                shift
+-            fi
+-            ;;
+-    esac
+-done
+-
+-manage_crash_dumps ${max_size} ${max_files} ${max_used} ${min_available}
+-
+-exit $RETVAL
+diff --git a/mtce/src/scripts/crashDumpMgr.service b/mtce/src/scripts/crashDumpMgr.service
+deleted file mode 100644
+index bec36c0..0000000
+--- a/mtce/src/scripts/crashDumpMgr.service
++++ /dev/null
+@@ -1,12 +0,0 @@
+-[Unit]
+-Description=Crash Dump Manager
+-After=network.target
+-Before=sshd.service
+-
+-[Service]
+-Type=oneshot
+-RemainAfterExit=no
+-ExecStart=/etc/init.d/crashDumpMgr --max-size 5Gi
+-
+-[Install]
+-WantedBy=multi-user.target
+diff --git a/mtce/src/scripts/crashdump.logrotate b/mtce/src/scripts/crashdump.logrotate
+index ca8e84c..c8fa0fe 100644
+--- a/mtce/src/scripts/crashdump.logrotate
++++ b/mtce/src/scripts/crashdump.logrotate
+@@ -1,14 +1,12 @@
+ #
+-# Copyright (c) 2020-2021 Wind River Systems, Inc.
++# Copyright (c) 2020-2021,2023 Wind River Systems, Inc.
+ #
+ # SPDX-License-Identifier: Apache-2.0
+ 
+-/var/log/crash/vmcore.tar
+-/var/log/crash/vmcore_first.tar
++/var/log/crash/vmcore_*.tar
+ {
+     size 1K
+     start 1
+-    rotate 1
+     missingok
+     notifempty
+     compress

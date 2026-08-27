@@ -1,0 +1,98 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 213,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5084,
+    "case_id": "formal-opendev-690097",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T20:30:27.961429Z",
+  "blind_prediction_created_at": "2026-08-26T20:30:17.128620Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-690097",
+  "case_id": "formal-opendev-690097--target-690134",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/horizon"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T20:30:27.967501Z",
+  "mechanism": "python-novaclient 16.0 removes novaclient.v2.list_extensions, causing Horizon API module import failure before an existing Nova API unit test",
+  "repair_template": "Remove the obsolete novaclient list_extensions import and route, and use the existing extension support surface",
+  "replay": {
+    "catalog_source_snapshot_commit": "94e035e36eea0a3ad813596f9d0cc21da5493613",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "ImportError: cannot import name 'list_extensions' from 'novaclient.v2' (/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-690097-690134-v1-2026-08-27/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/novaclient/v2/__init__.py)",
+    "installed_source_versions": {
+      "A0": "15.1.0",
+      "A1": "16.0.0",
+      "A2": "16.0.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "94e035e36eea0a3ad813596f9d0cc21da5493613",
+    "source_head_commit": "4f36953354ab36910ae16a99b3c16c176229f114",
+    "source_versions": {
+      "A0": "15.1.0",
+      "A1": "16.0.0",
+      "A2": "16.0.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "85a1dddf126691921924edcecaee5c054c7df6c2",
+    "target_test_path": "openstack_dashboard/test/unit/api/test_nova.py",
+    "test_command": [
+      "bash",
+      "tools/unit_tests.sh",
+      "python",
+      ".",
+      "openstack_dashboard.test.unit.api.test_nova.ComputeApiTests.test_server_reboot"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-690097--target-690134",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "openstack_dashboard/test/unit/api/test_nova.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/horizon"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the global constraint changed to python-novaclient 16.0.0, importing Horizon's Nova API module fails because novaclient.v2.list_extensions no longer exists; the existing ComputeApiTests.test_server_reboot command exits nonzero before test execution.",
+    "approved": true,
+    "reviewer_basis": "The source opening changes exactly the python-novaclient pin from 15.1.0 to 16.0.0; the cutoff target replays 0/1/0 with installed versions 15.1.0/16.0.0/16.0.0; the ImportError is exclusive to A1; and the maintainer patch removes the obsolete production dependency while leaving the selected pre-existing test intact.",
+    "source_effect": "python-novaclient 16.0.0 removes the novaclient.v2.list_extensions API imported by Horizon at module load time.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-690097-target-patches-2026-08-27/690134.patch",
+    "target_repair": "The maintainer patch removes Horizon's obsolete list_extensions import and REST helper and uses Horizon's existing extension support path; it does not delete, skip, or weaken the selected ComputeApiTests.test_server_reboot test."
+  },
+  "source_change_family": "opendev-change-690097-opening",
+  "status": "case_ready_for_formal_pool"
+}

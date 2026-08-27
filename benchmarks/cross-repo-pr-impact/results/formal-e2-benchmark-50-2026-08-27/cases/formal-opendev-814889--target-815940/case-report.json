@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5093,
+    "case_id": "formal-opendev-814889",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T19:14:48.413940Z",
+  "blind_prediction_created_at": "2026-08-26T19:14:37.299191Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-814889",
+  "case_id": "formal-opendev-814889--target-815940",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/nova"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T19:14:48.420293Z",
+  "mechanism": "oslo.concurrency 4.5 adds the blocking keyword to lock(), invalidating Nova tests that mock and assert the dependency's full private call signature",
+  "repair_template": "mock Nova's stable synchronized wrapper and assert only its lock-name contract instead of the dependency's evolving internal signature",
+  "replay": {
+    "catalog_source_snapshot_commit": "fcfd8eedf7706384df4b75d9ae89d26f6d051372",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "AssertionError: expected call not found.",
+    "installed_source_versions": {
+      "A0": "4.4.1",
+      "A1": "4.5.0",
+      "A2": "4.5.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "fcfd8eedf7706384df4b75d9ae89d26f6d051372",
+    "source_head_commit": "d06bc5119b79a91a2c224f27a9d97ebec9a38d8a",
+    "source_versions": {
+      "A0": "4.4.1",
+      "A1": "4.5.0",
+      "A2": "4.5.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "14e43f385e6d243b6efd11a777d082e63b66367c",
+    "target_test_path": "nova/tests/unit/compute/test_compute.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "nova.tests.unit.compute.test_compute.ComputeAPITestCase.test_attach_interface"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-814889--target-815940",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "nova/tests/unit/compute/test_compute.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/nova"
+  },
+  "semantic_review": {
+    "a1_failure": "On the unchanged Nova opening-cutoff snapshot, the pre-existing interface-attach selector runs three tests with oslo.concurrency 4.4.1. With 4.5.0, two tests fail because their exact lock() call assertions omit the new blocking keyword; the exact maintainer patch restores all three tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, exact one-file maintainer target diff, cutoff tox command, installed-version probes proving oslo.concurrency 4.4.1/4.5.0/4.5.0, patch applicability, and complete three-arm logs. The same three pre-existing tests run in every arm; only A1 has two mechanism-specific expected-call failures. The Python 3.8/tox 3/virtualenv 20 runner and source-era build constraints are identical across arms and only restore opening-era dependency installation.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, oslo.concurrency 4.4.1 to 4.5.0; version 4.5 extends lock() with the blocking keyword, changing the full call observed by Nova's low-level mock.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-814889-target-patches-2026-08-27/815940.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Nova snapshot and moves three existing mocks from oslo_concurrency.lockutils.lock to Nova's stable synchronized wrapper, asserting only the target-owned lock-name contract. It deletes or skips no test and changes no production code."
+  },
+  "source_change_family": "opendev-change-814889-opening",
+  "status": "case_ready_for_formal_pool"
+}

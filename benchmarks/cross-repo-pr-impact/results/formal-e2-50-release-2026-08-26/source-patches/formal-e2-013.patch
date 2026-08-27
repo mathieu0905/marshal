@@ -1,0 +1,192 @@
+diff --git a/defaults/main.yml b/defaults/main.yml
+index f7596a3..9c01907 100644
+--- a/defaults/main.yml
++++ b/defaults/main.yml
+@@ -285,13 +285,19 @@
+ nova_libvirt_live_migration_inbound_addr: '{{ (nova_management_address == "localhost") | ternary("127.0.0.1", nova_management_address) }}'
+ 
+ ## Nova console
+-# Set the console type. Presently the only options are ["spice", "novnc", "serialconsole", "disabled"].
++# Set the console type for the compute host. Presently the only options are ["spice", "novnc", "serialconsole", "disabled"].
+ nova_console_type: "{{ (ansible_facts['architecture'] == 'aarch64') | ternary('serialconsole', 'novnc') }}"
+ 
+ ## Nova ironic console
+ # Set the console type. Presently the only options are ["serialconsole", "disabled"].
+ nova_ironic_console_type: "disabled"
+ 
++## Nova console proxies
++# Set the console proxy types.
++nova_console_proxy_types:
++  - "{{ nova_console_type }}"
++  - "{{ nova_ironic_console_type }}"
++
+ # Nova console ssl info, presently only used by novnc console type
+ nova_console_ssl_dir: "/etc/nova/ssl"
+ nova_console_ssl_cert: "{{ nova_console_ssl_dir }}/nova-console.pem"
+@@ -479,7 +485,7 @@
+     group: nova_console
+     service_name: nova-novncproxy
+     init_config_overrides: "{{ nova_novncproxy_init_overrides }}"
+-    condition: "{{ nova_console_type == 'novnc' }}"
++    condition: "{{ 'novnc' in nova_console_proxy_types }}"
+     start_order: 5
+     execstarts: "{{ nova_bin }}/nova-novncproxy {{ nova_backend_ssl | ternary('--ssl_only --cert ' ~ nova_ssl_cert ~ ' --key ' ~ nova_ssl_key, '') }}"
+   nova-scheduler:
+@@ -493,21 +499,21 @@
+     group: nova_console
+     service_name: nova-spicehtml5proxy
+     init_config_overrides: "{{ {'Install': {'Alias': 'nova-spiceproxy.service'}} | combine(nova_spicehtml5proxy_init_overrides, recursive=True) }}"
+-    condition: "{{ nova_console_type == 'spice' }}"
++    condition: "{{ 'spice' in nova_console_proxy_types }}"
+     start_order: 5
+     execstarts: "{{ nova_bin }}/nova-spicehtml5proxy {{ nova_backend_ssl | ternary('--ssl_only --cert ' ~ nova_ssl_cert ~ ' --key ' ~ nova_ssl_key, '') }}"
+   nova-serialconsole-proxy:
+     group: nova_console
+     service_name: nova-serialproxy
+     init_config_overrides: "{{ nova_serialproxy_init_overrides }}"
+-    condition: "{{ nova_console_type == 'serialconsole' }}"
++    condition: "{{ 'serialconsole' in nova_console_proxy_types }}"
+     start_order: 5
+     execstarts: "{{ nova_bin }}/nova-serialproxy {{ nova_backend_ssl | ternary('--ssl_only --cert ' ~ nova_ssl_cert ~ ' --key ' ~ nova_ssl_key, '') }}"
+   nova_ironic_sericalconsole-proxy:
+     group: ironic_console
+     service_name: nova-serialproxy
+     init_config_overrides: "{{ nova_serialproxy_init_overrides }}"
+-    condition: "{{ nova_ironic_console_type == 'serialconsole' }}"
++    condition: "{{ 'serialconsole' in nova_console_proxy_types }}"
+     start_order: 5
+     execstarts: "{{ nova_bin }}/nova-serialproxy {{ nova_backend_ssl | ternary('--ssl_only --cert ' ~ nova_ssl_cert ~ ' --key ' ~ nova_ssl_key, '') }}"
+ 
+@@ -696,7 +702,7 @@
+       - keyEncipherment
+     extended_key_usage:
+       - clientAuth
+-    condition: "{{ nova_qemu_vnc_tls == 1 and nova_console_type == 'novnc' }}"
++    condition: "{{ nova_qemu_vnc_tls == 1 and 'novnc' in nova_console_proxy_types }}"
+ 
+ # Installation details for SSL certificates for console hosts
+ nova_pki_console_install_certificates:
+diff --git a/tasks/nova_install.yml b/tasks/nova_install.yml
+index be692cf..40f83a0 100644
+--- a/tasks/nova_install.yml
++++ b/tasks/nova_install.yml
+@@ -78,7 +78,8 @@
+     - "nova_services['nova-novncproxy']['group'] in group_names or
+         nova_services['nova-spicehtml5proxy']['group'] in group_names or
+         nova_services['nova-serialconsole-proxy']['group'] in group_names"
+-    - "nova_console_type not in ['serialconsole', 'disabled']"
++    - "'novnc' in nova_console_proxy_types or
++        'spice' in nova_console_proxy_types"
+   args:
+     apply:
+       tags:
+@@ -123,7 +124,7 @@
+     name: "{{ item.service }}"
+     enabled: no
+     state: stopped
+-  when: (item.condition | bool) and item.type != nova_console_type
++  when: (item.condition | bool) and item.type not in nova_console_proxy_types
+   loop:
+     - service: "nova-novncproxy.service"
+       condition: "{{ novnc_proxy_enabled.rc is defined and novnc_proxy_enabled.rc == 0 }}"
+diff --git a/templates/nova.conf.j2 b/templates/nova.conf.j2
+index b37b982..3674a74 100644
+--- a/templates/nova.conf.j2
++++ b/templates/nova.conf.j2
+@@ -80,25 +80,19 @@
+ os_region_name = {{ nova_service_region }}
+ auth_section = keystone_authtoken
+ 
+-{% if nova_console_type == 'spice' %}
+ [spice]
+ agent_enabled = {{ nova_spice_console_agent_enabled }}
+-enabled = True
+-# Console Url and binds
++enabled = {{ (nova_console_type == 'spice') | ternary(True, False) }}
++{% if 'spice' in nova_console_proxy_types %}
+ html5proxy_base_url = {{ nova_spice_html5proxy_base_url }}
+ html5proxy_host = {% if nova_management_address == 'localhost' %}127.0.0.1{% else %}{{ nova_management_address }}{% endif %}
+-
+ server_listen = {% if nova_management_address == 'localhost' %}127.0.0.1{% else %}{{ nova_management_address }}{% endif %}
+-
+ server_proxyclient_address = {% if nova_management_address == 'localhost' %}127.0.0.1{% else %}{{ nova_management_address }}{% endif %}
+-
++{% endif %}
+ 
+ [vnc]
+-enabled = False
+-
+-{% elif nova_console_type == 'novnc' %}
+-[vnc]
+-enabled = True
++enabled = {{ (nova_console_type == 'novnc') | ternary(True, False) }}
++{% if 'novnc' in nova_console_proxy_types %}
+ novncproxy_base_url = {{ nova_novncproxy_base_url }}
+ novncproxy_host = {{ nova_novncproxy_host }}
+ novncproxy_port = {{ nova_novncproxy_port }}
+@@ -111,28 +105,18 @@
+ vencrypt_client_cert={{ nova_vencrypt_client_cert }}
+ vencrypt_ca_certs={{ nova_vencrypt_ca_certs }}
+ {% endif %}
++{% endif %}
+ 
+-{% elif nova_console_type == 'serialconsole' %}
+ [serial_console]
+-enabled = True
+-# Console Url and binds
++enabled = {{ (nova_console_type == 'serialconsole') | ternary(True, False) }}
++{% if 'serialconsole' in nova_console_proxy_types %}
+ base_url= {{ nova_serialconsoleproxy_base_url }}
+ proxyclient_address = {% if nova_management_address == 'localhost' +%}127.0.0.1{% else +%}{{ nova_management_address }}{% endif +%}
+ port_range = {{ nova_serialconsoleproxy_port_range }}
+-{% if nova_services['nova-serialconsole-proxy']['group'] %}
+ serialproxy_host= {{ nova_serialconsoleproxy_serialconsole_proxyserver_proxyclient_address }}
+ serialproxy_port= {{ nova_serialconsoleproxy_port }}
+ {% endif %}
+ 
+-[vnc]
+-enabled = False
+-
+-{% elif nova_console_type == 'disabled' %}
+-[vnc]
+-enabled = False
+-
+-{% endif %}
+-
+ # Glance
+ [glance]
+ insecure = {{ keystone_service_internaluri_insecure | bool }}
+diff --git a/vars/distro_install.yml b/vars/distro_install.yml
+index f5d5a51..1c60acb 100644
+--- a/vars/distro_install.yml
++++ b/vars/distro_install.yml
+@@ -23,13 +23,13 @@
+   {% if nova_services['nova-novncproxy']['group'] in group_names or
+       nova_services['nova-spicehtml5proxy']['group'] in group_names or
+       nova_services['nova-serialconsole-proxy']['group'] in group_names %}
+-  {%   if nova_console_type == 'novnc' %}
++  {%   if 'novnc' in nova_console_proxy_types %}
+   {%     set _ = packages.extend(nova_service_extra_distro_packages['novnc']) %}
+   {%   endif %}
+-  {%   if nova_console_type == 'spice' %}
++  {%   if 'spice' in nova_console_proxy_types %}
+   {%     set _ = packages.extend(nova_service_extra_distro_packages['spice']) %}
+   {%   endif %}
+-  {%   if nova_console_type == 'serialconsole' %}
++  {%   if 'serialconsole' in nova_console_proxy_types %}
+   {%     set _ = packages.extend(nova_service_extra_distro_packages['serialconsole']) %}
+   {%   endif %}
+   {% endif %}
+diff --git a/vars/main.yml b/vars/main.yml
+index 7ec1ded..9f54f4f 100644
+--- a/vars/main.yml
++++ b/vars/main.yml
+@@ -20,7 +20,7 @@
+   {%- if nova_oslomsg_amqp1_enabled | bool %}
+   {%-   set _ = pkg_list.extend(nova_optional_oslomsg_amqp1_pip_packages) %}
+   {%- endif %}
+-  {%- if (nova_console_type == 'novnc') %}
++  {%- if ('novnc' in nova_console_proxy_types) %}
+   {%-   set _ = pkg_list.extend(nova_novnc_pip_packages) %}
+   {%- endif %}
+   {%- if (nova_services['nova-compute']['group'] in group_names) %}

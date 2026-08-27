@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5100,
+    "case_id": "formal-opendev-938500",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T13:48:10.082120Z",
+  "blind_prediction_created_at": "2026-08-26T13:47:58.334552Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-938500",
+  "case_id": "formal-opendev-938500--target-977684",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/designate"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T13:48:10.088365Z",
+  "mechanism": "infoblox-client 0.6.2 changes InfobloxTimeoutError construction from a positional message to required response and reason parameters, breaking existing Designate backend tests",
+  "repair_template": "construct the dependency exception with its new response and reason interface in existing target tests",
+  "replay": {
+    "catalog_source_snapshot_commit": "7df5135d58aa77132b26658300f945c595ff76b1",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "KeyError: 'reason'",
+    "installed_source_versions": {
+      "A0": "0.6.1",
+      "A1": "0.6.2",
+      "A2": "0.6.2"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "49139646a3cea3396de45746482db2e5fd2efb5f",
+    "source_head_commit": "40d22df6c90df0ab2e619b3379df8bde650923d6",
+    "source_versions": {
+      "A0": "0.6.1",
+      "A1": "0.6.2",
+      "A2": "0.6.2"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "35be2ac4e90a6ab5d661609f6aa758a1c1c3894c",
+    "target_test_path": "designate/tests/unit/backend/test_infoblox.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "designate.tests.unit.backend.test_infoblox"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-938500--target-977684",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "designate/tests/unit/backend/test_infoblox.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/designate"
+  },
+  "semantic_review": {
+    "a1_failure": "With infoblox-client 0.6.2, two of the pre-existing 27 Designate backend tests fail with KeyError 'reason' when constructing InfobloxTimeoutError using the old positional-message interface.",
+    "approved": true,
+    "reviewer_basis": "Opening-cutoff replay independently installed infoblox-client 0.6.1/0.6.2/0.6.2 for A0/A1/A2 and ran the identical 27-test Designate backend module in all arms. A0 and A2 pass; A1 has exactly the two constructor-interface failures repaired by the maintainer patch. The patch changes existing test fixtures without deleting or skipping tests.",
+    "source_effect": "The opening source diff changes the sole infoblox-client pin from 0.6.1 to 0.6.2.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/977684.patch",
+    "target_repair": "The maintainer updates the two existing mocked timeout exceptions to pass response and reason; with infoblox-client 0.6.2 the same 27-test module returns to passing."
+  },
+  "source_change_family": "opendev-change-938500-opening",
+  "status": "case_ready_for_formal_pool"
+}

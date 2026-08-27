@@ -1,0 +1,29 @@
+{
+  "candidate_id": "e2-002",
+  "expected_check_paths": [
+    "src/test/java/com/jcabi/s3/AwsOcketITCase.java",
+    "src/test/java/com/jcabi/s3/BucketRule.java"
+  ],
+  "java_home": "/usr/lib/jvm/java-11-openjdk-amd64",
+  "maven": "/home/zhihao/.local/maven/bin/mvn",
+  "maven_seed_repository": ".work/assertj-fse/m2",
+  "mechanism": "The opening removes com.jcabi.aspects.Tv, so the unchanged target test sources no longer compile against the new source artifact",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-github-jcabi-mirrors-2026-08-27",
+  "python": "/data/zhihao/miniconda3/bin/python",
+  "relation_id": "formal-github-jcabi-aspects-336--target-jcabi-s3-tv-removal",
+  "repair_template": "Replace removed numeric test constants with their exact literal values while preserving the tests",
+  "replay_adapter": "maven_source",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-jcabi-tv-reconstruction-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening source artifact substituted, Maven test compilation fails exclusively in A1 because AwsOcketITCase and BucketRule import and reference the deleted Tv class.",
+    "approved": true,
+    "reviewer_basis": "The source base/head are built from the opening commits; all arms run the same repository-native Maven test suite; the missing-Tv signature must be exclusive to A1; A2 applies only the exact maintainer repair to the cutoff target.",
+    "source_effect": "The source opening deletes the Tv utility class and its constants from the built jcabi-aspects artifact.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/jcabi-s3-tv-removal-target-repair.patch",
+    "target_repair": "The maintainer-authored repair removes only the obsolete imports and substitutes 100_000 and 5 for the same test data sizes; it does not delete, skip, or weaken either test."
+  },
+  "source_change_family": "github-jcabi-aspects-336-opening",
+  "target_repository": "jcabi/jcabi-s3",
+  "tox": "/home/zhihao/.local/bin/tox"
+}

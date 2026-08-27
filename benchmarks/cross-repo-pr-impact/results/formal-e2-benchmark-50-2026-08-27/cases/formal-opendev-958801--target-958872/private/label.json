@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-958801",
+  "expected_check_paths": [
+    "openstackclient/volume/v3/volume.py",
+    "openstackclient/tests/unit/volume/v3/test_volume.py"
+  ],
+  "mechanism": "openstacksdk adds backup_id to the Volume resource schema, so python-openstackclient's generic volume-create output gains an unexpected column",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-958801--target-958872",
+  "repair_template": "exclude the newly exposed SDK field from python-openstackclient's generic volume output until the target intentionally supports it",
+  "replay_adapter": "source_editable",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-source-plan-958801-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged python-openstackclient opening-cutoff snapshot, the pre-existing minimum-options volume-create test passes with the old openstacksdk source and fails only after openstacksdk adds backup_id: the actual output columns contain backup_id while the target's established expected columns do not; the stable exclusive signature is testtools.matchers._impl.MismatchError: !=:.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the opening source diff, exact maintainer target diff, cutoff tox.ini command provenance, editable source installation probes, patch applicability, and all three arm logs. The same pre-existing one-test stestr command ran in every arm, with 1/1 passing in A0 and A2 and exactly that test failing in A1. The target patch changes production output-column filtering only and does not alter, delete, or skip tests.",
+    "source_effect": "The source opening adds backup_id as a declared openstacksdk Volume field. python-openstackclient derives generic output columns from that resource schema, so the unchanged target exposes an additional backup_id column in A1.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-958801-target-patches-2026-08-27/958872.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff python-openstackclient snapshot and adds backup_id to the production ignored_columns set, removing only that newly exposed field from generic output; it makes no test-file changes."
+  },
+  "source_change_family": "opendev-change-958801-opening",
+  "target_repository": "openstack/python-openstackclient",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

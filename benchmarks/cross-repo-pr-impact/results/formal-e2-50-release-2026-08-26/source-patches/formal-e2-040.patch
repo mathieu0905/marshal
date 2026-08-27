@@ -1,0 +1,26 @@
+diff --git a/apt_ostree/cmd/options.py b/apt_ostree/cmd/options.py
+index d4b97aa..9e0e61b 100644
+--- a/apt_ostree/cmd/options.py
++++ b/apt_ostree/cmd/options.py
+@@ -155,7 +155,7 @@
+         nargs=1,
+         required=True,
+         callback=callback,
+-        type=click.Choice(["bookworm", "bullseye"]),
++        type=click.Choice(["bookworm", "bullseye", "trixie"]),
+     )(f)
+ 
+ 
+diff --git a/apt_ostree/repo.py b/apt_ostree/repo.py
+index aa67cc4..1fce913 100644
+--- a/apt_ostree/repo.py
++++ b/apt_ostree/repo.py
+@@ -147,7 +147,7 @@
+ 
+             if utils.remove_component_from_config(config, component):
+                 dist_component = self.repo.joinpath(
+-                    f"dists/bullseye/{component}")
++                    f"dists/{self.state.release}/{component}")
+                 pool_component = self.repo.joinpath(f"pool/{component}")
+ 
+                 try:

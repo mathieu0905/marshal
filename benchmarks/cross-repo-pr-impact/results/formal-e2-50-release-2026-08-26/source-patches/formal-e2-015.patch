@@ -1,0 +1,36 @@
+diff --git a/inventory/group_vars/all/nova.yml b/inventory/group_vars/all/nova.yml
+index a5ed5ec..8cf9ca9 100644
+--- a/inventory/group_vars/all/nova.yml
++++ b/inventory/group_vars/all/nova.yml
+@@ -25,7 +25,7 @@
+ 
+ # Default nova console proxy types
+ nova_console_type_mapping:
+-  x86_64: "{{ nova_console_type | default('novnc') }}"
++  x86_64: novnc
+   ppc64le: novnc
+   aarch64: serialconsole
+   disabled: disabled
+diff --git a/releasenotes/notes/console_type_mapping-494aadc1f0ac9533.yaml b/releasenotes/notes/console_type_mapping-494aadc1f0ac9533.yaml
+new file mode 100644
+index 0000000..284ef26
+--- /dev/null
++++ b/releasenotes/notes/console_type_mapping-494aadc1f0ac9533.yaml
+@@ -0,0 +1,17 @@
++---
++upgrade:
++  - |
++    In order to configure SPICE frontend/backend on the loadbalancer use
++    ``nova_console_type_mapping`` instead of ``nova_console_type``.
++
++    For example:
++
++    .. code-block:: yaml
++
++      nova_console_type_mapping:
++        x86_64: spice
++        ppc64le: novnc
++        aarch64: serialconsole
++
++    Variable ``nova_console_type`` is compute-specific and is not used to
++    calculate configuration for the Load Balancer.

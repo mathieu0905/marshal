@@ -1,0 +1,129 @@
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+{0} magnum.tests.unit.common.test_utils.ExecuteTestCase.test_unknown_kwargs_raises_error [0.045127s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/magnum/tests/unit/common/test_utils.py", line 119, in test_unknown_kwargs_raises_error
+    self.assertRaises(processutils.UnknownArgumentError,
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      utils.execute,
+                      ^^^^^^^^^^^^^^
+                      '/usr/bin/env', 'true',
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+                      this_is_not_a_valid_kwarg=True)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+    ~~~~~~~^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/magnum/common/utils.py", line 87, in execute
+    result = processutils.execute(*cmd, **kwargs)
+
+    TypeError: execute() got an unexpected keyword argument 'this_is_not_a_valid_kwarg'
+
+
+No tests were successful during the run
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+magnum.tests.unit.common.test_utils.ExecuteTestCase.test_unknown_kwargs_raises_error
+------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/magnum/tests/unit/common/test_utils.py", line 119, in test_unknown_kwargs_raises_error
+    self.assertRaises(processutils.UnknownArgumentError,
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      utils.execute,
+                      ^^^^^^^^^^^^^^
+                      '/usr/bin/env', 'true',
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+                      this_is_not_a_valid_kwarg=True)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+    ~~~~~~~^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/.tox/py3/lib/python3.13/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-972691-973723-v1-2026-08-27/replay-work/formal-opendev-972691--target-973723/target-a1/magnum/common/utils.py", line 87, in execute
+    result = processutils.execute(*cmd, **kwargs)
+
+    TypeError: execute() got an unexpected keyword argument 'this_is_not_a_valid_kwarg'
+
+
+
+======
+Totals
+======
+Ran: 1 tests in 0.0451 sec.
+ - Passed: 0
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 0.0451 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.045127

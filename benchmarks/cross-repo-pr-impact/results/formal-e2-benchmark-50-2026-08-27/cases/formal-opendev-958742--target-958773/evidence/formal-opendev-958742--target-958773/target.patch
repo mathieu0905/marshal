@@ -1,0 +1,50 @@
+diff --git a/heat/engine/service.py b/heat/engine/service.py
+index 5d05627faf..e8c140da8c 100644
+--- a/heat/engine/service.py
++++ b/heat/engine/service.py
+@@ -30,8 +30,8 @@ from oslo_context import context as oslo_context
+ from oslo_log import log as logging
+ import oslo_messaging as messaging
+ from oslo_serialization import jsonutils
+-from oslo_service.backend.threading import threadgroup
+ from oslo_service import service
++from oslo_service import threadgroup
+ from oslo_utils import timeutils
+ from oslo_utils import uuidutils
+ from osprofiler import profiler
+diff --git a/heat/tests/common.py b/heat/tests/common.py
+index 96999ad666..9d26f2e202 100644
+--- a/heat/tests/common.py
++++ b/heat/tests/common.py
+@@ -11,12 +11,17 @@
+ #    License for the specific language governing permissions and limitations
+ #    under the License.
+ 
++# flake8: noqa: E402
++
+ import os
+ import sys
+ 
+ import fixtures
+ from oslo_config import cfg
+ from oslo_log import log as logging
++from oslo_service import backend
++backend.init_backend(backend.BackendType.THREADING)
++
+ import testscenarios
+ import testtools
+ 
+diff --git a/tox.ini b/tox.ini
+index 74f713f306..be1efb1137 100644
+--- a/tox.ini
++++ b/tox.ini
+@@ -112,7 +112,8 @@ show-source = true
+ # E123 closing bracket does not match indentation of opening bracket's line
+ # W503 line break before binary operator
+ # W504 line break after binary operator
+-ignore = E123,W503,W504
++# TODO(tkajinam): Check why Nnnn checks from neutron-lib are enabled
++ignore = E123,W503,W504,N
+ exclude=.*,dist,*lib/python*,*egg,build,*convergence/scenarios/*
+ max-complexity=23
+ 

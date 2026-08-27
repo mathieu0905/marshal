@@ -1,0 +1,188 @@
+diff --git a/ansible-collection-requirements.yml b/ansible-collection-requirements.yml
+index 283686f..b64fecd 100644
+--- a/ansible-collection-requirements.yml
++++ b/ansible-collection-requirements.yml
+@@ -48,6 +48,14 @@
+   source: https://github.com/ansible-collections/openvswitch.openvswitch
+   type: git
+   version: 2.1.1
++- name: vexxhost.containers
++  source: https://github.com/vexxhost/ansible-collection-containers
++  type: git
++  version: v1.6.4
++- name: vexxhost.kubernetes
++  source: https://github.com/vexxhost/ansible-collection-kubernetes
++  type: git
++  version: v2.5.0
+ - name: osa_ops.mcapi_vexxhost
+   source: https://opendev.org/openstack/openstack-ansible-ops#/mcapi_vexxhost
+   type: git
+diff --git a/etc/openstack_deploy/conf.d/k8s.yml.aio b/etc/openstack_deploy/conf.d/k8s.yml.aio
+deleted file mode 100644
+index 3829c70..0000000
+--- a/etc/openstack_deploy/conf.d/k8s.yml.aio
++++ /dev/null
+@@ -1,9 +0,0 @@
+----
+-cluster-api_hosts:
+-  aio1:
+-    ip: {{ bootstrap_host_public_address }}
+-    management_ip: {{ bootstrap_host_management_address }}
+-{% if 'k8sHA' in bootstrap_host_scenarios_expanded %}
+-    affinity:
+-      k8s_container: 3
+-{% endif %}
+diff --git a/etc/openstack_deploy/openstack_user_config.yml.aio.j2 b/etc/openstack_deploy/openstack_user_config.yml.aio.j2
+index 2825d78..7b9474f 100644
+--- a/etc/openstack_deploy/openstack_user_config.yml.aio.j2
++++ b/etc/openstack_deploy/openstack_user_config.yml.aio.j2
+@@ -238,3 +238,14 @@
+       zookeeper_container: 3
+ {% endif %}
+ {% endif %}
++
++{% if 'k8s' in bootstrap_host_scenarios_expanded %}
++cluster-api_hosts:
++  aio1:
++    ip: {{ bootstrap_host_public_address }}
++    management_ip: {{ bootstrap_host_management_address }}
++{% if 'k8sHA' in bootstrap_host_scenarios_expanded %}
++    affinity:
++      k8s_container: 3
++{% endif %}
++{% endif %}
+diff --git a/inventory/group_vars/k8s_all.yml b/inventory/group_vars/k8s_all.yml
+new file mode 100644
+index 0000000..abd3bc4
+--- /dev/null
++++ b/inventory/group_vars/k8s_all.yml
+@@ -0,0 +1,82 @@
++---
++# Copyright 2026, BBC R&D
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++# Pick a range of addresses for cilium that do not collide with anything else
++cilium_ipv4_cidr: 172.29.200.0/22
++
++# Set a clusterctl version. Supported list can be found in defaults:
++# https://github.com/vexxhost/ansible-collection-kubernetes/blob/main/roles/clusterctl/defaults/main.yml
++clusterctl_version: 1.10.5
++cluster_api_version: 1.10.5
++cluster_api_infrastructure_provider: openstack
++cluster_api_infrastructure_version: 0.12.4
++
++# wire OSA group, host and network addresses into k8s deployment
++kubelet_hostname: "{{ ansible_facts['hostname'] | lower }}"
++kubelet_node_ip: "{{ management_address }}"
++kubernetes_control_plane_group: k8s_container
++kubernetes_hostname: "{{ internal_lb_vip_address }}"
++kubernetes_non_init_namespace: true
++
++# Define k8s version for the control cluster
++kubernetes_version: 1.33.5
++
++# Define LXC container overrides
++lxc_container_config_list:
++  - "lxc.apparmor.profile=unconfined"
++
++lxc_container_mount_auto:
++  - "proc:rw"
++  - "sys:rw"
++
++# Set this manually, or kube-proxy will try to do this - not possible
++# in a non-init namespace and will fail in LXC
++openstack_host_nf_conntrack_max: 1572864
++
++# OSA containers dont run ssh by default so cannot use synchronize
++upload_helm_chart_method: copy
++
++# Enable periodic cluster API state collection (note: this is not a guaranteed functional backup)
++# See https://cluster-api.sigs.k8s.io/clusterctl/commands/move
++cluster_api_backups_enabled: False
++
++haproxy_k8s_service:
++  haproxy_service_name: k8s
++  haproxy_backend_nodes: "{{ groups['k8s_all'] | default([]) }}"
++  haproxy_ssl: false
++  haproxy_ssl_all_vips: false
++  haproxy_port: 6443
++  haproxy_balance_type: tcp
++  haproxy_balance_alg: leastconn
++  haproxy_interval: '15000'
++  haproxy_backend_port: 6443
++  haproxy_backend_rise: 2
++  haproxy_backend_fall: 2
++  haproxy_timeout_server: '15m'
++  haproxy_timeout_client: '5m'
++  haproxy_backend_options:
++    - tcplog
++    - ssl-hello-chk
++    - log-health-checks
++    - httpchk GET /healthz
++  haproxy_backend_httpcheck_options:
++    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth GET uri /healthz'
++  haproxy_backend_server_options:
++    - check-ssl
++    - verify none
++  haproxy_service_enabled: "{{ groups['k8s_all'] is defined and groups['k8s_all'] | length > 0 }}"
++
++k8s_haproxy_services:
++  - "{{ haproxy_k8s_service | combine(haproxy_k8s_service_overrides | default({})) }}"
+diff --git a/playbooks/k8s-install.yml b/playbooks/k8s-install.yml
+new file mode 100644
+index 0000000..cd366ff
+--- /dev/null
++++ b/playbooks/k8s-install.yml
+@@ -0,0 +1,17 @@
++---
++# Copyright 2026, BBC R&D
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++- name: Importing k8s playbook
++  import_playbook: openstack.osa.k8s
+diff --git a/requirements.txt b/requirements.txt
+index 1aa7871..d01afa4 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -15,3 +15,7 @@
+ 
+ # We use this for the parallel git clone
+ GitPython>=1.0.1
++
++# We use this for the kubernetes cluster when deployed
++docker-image-py
++kubernetes
+diff --git a/zuul.d/jobs.yaml b/zuul.d/jobs.yaml
+index b8996a8..4228df1 100644
+--- a/zuul.d/jobs.yaml
++++ b/zuul.d/jobs.yaml
+@@ -354,6 +354,7 @@
+       - ^playbooks\/haproxy(-install)?\.yml
+       - ^playbooks\/utility(-install|_host)\.yml
+       - ^playbooks\/zookeeper-(-install)?\.yml
++      - ^playbooks\/k8s-(-install)?\.yml
+ 
+ # Running linters check
+ 

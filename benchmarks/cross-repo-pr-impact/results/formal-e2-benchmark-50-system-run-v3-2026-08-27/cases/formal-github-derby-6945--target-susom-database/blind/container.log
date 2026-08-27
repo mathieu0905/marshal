@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/runner/run_formal_e2_candidate_code_blind.py", line 518, in main
+    for future in concurrent.futures.as_completed(futures):
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 245, in as_completed
+    waiter.event.wait(wait_timeout)
+  File "/usr/local/lib/python3.10/threading.py", line 607, in wait
+    signaled = self._cond.wait(timeout)
+  File "/usr/local/lib/python3.10/threading.py", line 320, in wait
+    waiter.acquire()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/runner/run_formal_e2_candidate_code_blind.py", line 568, in <module>
+    raise SystemExit(main())
+  File "/runner/run_formal_e2_candidate_code_blind.py", line 503, in main
+    with concurrent.futures.ThreadPoolExecutor(max_workers=args.case_workers) as executor:
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 649, in __exit__
+    self.shutdown(wait=True)
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 235, in shutdown
+    t.join()
+  File "/usr/local/lib/python3.10/threading.py", line 1096, in join
+    self._wait_for_tstate_lock()
+  File "/usr/local/lib/python3.10/threading.py", line 1116, in _wait_for_tstate_lock
+    if lock.acquire(block, timeout):
+KeyboardInterrupt

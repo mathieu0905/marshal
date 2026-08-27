@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-933257",
+  "expected_check_paths": [
+    "neutron/common/eventlet_utils.py",
+    "neutron/tests/unit/agent/dhcp/test_agent.py"
+  ],
+  "mechanism": "eventlet 0.37.0 makes Neutron's repeated monkey-patch initialization fail during existing unit-test discovery with an un-acquired-lock notification error",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-933257--target-937527",
+  "repair_template": "make target process-wide dependency initialization idempotent and defer imports until the first guarded initialization",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-933257-neutron-monkeypatch-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Neutron opening-cutoff snapshot, the pre-existing DHCP-agent unit module runs 144 tests with eventlet 0.36.1, but eventlet 0.37.0 makes repeated monkey_patch initialization fail with RuntimeError: cannot notify on un-acquired lock. The exact target patch restores all 144 tests under 0.37.0.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the single-pin source opening diff, exact one-file maintainer target diff, cutoff tox.ini command provenance, installed-version probes proving eventlet 0.36.1/0.37.0/0.37.0, patch applicability, and complete three-arm logs. The same existing 144-test module runs in all arms; only A1 fails and its signature is absent from A0 and A2. No test is changed, deleted, or skipped.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, eventlet 0.36.1 to 0.37.0; repeated process monkey-patching then triggers the observed lock-notification failure during target test discovery.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/937527.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Neutron snapshot and guards eventlet.monkey_patch plus pyroute2 asyncio initialization so they run only once per process; it changes production initialization only and touches no tests."
+  },
+  "source_change_family": "opendev-change-933257-opening",
+  "target_repository": "openstack/neutron",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

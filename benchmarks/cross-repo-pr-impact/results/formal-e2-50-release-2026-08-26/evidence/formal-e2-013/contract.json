@@ -1,0 +1,53 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "candidate_id": "formal-opendev-890521",
+  "case_id": "formal-e2-013",
+  "contract_mode": "removed_reference_signature",
+  "contract_token": "nova_console_type",
+  "eligible": true,
+  "quality": 21,
+  "replayed_at": "2026-08-26T04:29:56.042097Z",
+  "revealed_at": "2026-08-26T04:19:15.423750Z",
+  "selected_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 1,
+    "target_head": 0
+  },
+  "signature_counts": {
+    "source_base": 1,
+    "source_head": 0,
+    "target_base": 1,
+    "target_head": 0
+  },
+  "source_base_commit": "c90a5c2b927b955aaa82d78e65548423b24f2ecc",
+  "source_change": 890521,
+  "source_head_commit": "ae0801d036baf39bb2f0ce637022c460208d1440",
+  "source_path": "defaults/main.yml",
+  "source_repository": "openstack/openstack-ansible-os_nova",
+  "source_signature": "condition: \"{{ nova_console_type == 'novnc' }}\"",
+  "source_subject": "Enable multiple console proxies where requried in deployments",
+  "target_base_commit": "8111839099114b33080a0a5b0c51971cb26c8837",
+  "target_change": 890522,
+  "target_head_commit": "66d0dc7626656457b259a142c06bf8428a00c0b5",
+  "target_path": "inventory/group_vars/all/nova.yml",
+  "target_repository": "openstack/openstack-ansible",
+  "target_signature": "nova_console_type: \"{{ (ansible_facts['architecture'] == 'aarch64') | ternary('serialconsole', 'novnc') }}\"",
+  "target_subject": "Enable multiple console proxies when required in deployments",
+  "token_counts": {
+    "source_base": 8,
+    "source_head": 5,
+    "target_base": 1,
+    "target_head": 1
+  },
+  "urls": {
+    "source_base": "https://opendev.org/openstack/openstack-ansible-os_nova/raw/commit/c90a5c2b927b955aaa82d78e65548423b24f2ecc/defaults/main.yml",
+    "source_head": "https://opendev.org/openstack/openstack-ansible-os_nova/raw/commit/ae0801d036baf39bb2f0ce637022c460208d1440/defaults/main.yml",
+    "target_base": "https://opendev.org/openstack/openstack-ansible/raw/commit/8111839099114b33080a0a5b0c51971cb26c8837/inventory/group_vars/all/nova.yml",
+    "target_head": "https://opendev.org/openstack/openstack-ansible/raw/commit/66d0dc7626656457b259a142c06bf8428a00c0b5/inventory/group_vars/all/nova.yml"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-996511",
+  "expected_check_paths": [
+    "magnum/tests/unit/common/policies/base.py",
+    "magnum/tests/unit/common/policies/test_stats_policy.py"
+  ],
+  "mechanism": "The oslo.policy 6.0 constraint removes enforce_scope, so the unchanged Magnum policy-test base raises NoSuchOptError during existing policy tests.",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-996511--target-996540",
+  "repair_template": "Remove only the obsolete enforce_scope override while retaining new-default enforcement and the existing target policy tests.",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-magnum-policy-reconstruction-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff Magnum checkout and oslo.policy 6.0.0 installed, all three existing stats policy tests fail in their shared setup with NoSuchOptError for oslo_policy.enforce_scope; the signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, target cutoff policy-test base and selected stats policy module, exact one-line maintainer patch, installed-version probes proving 5.1.0/6.0.0/6.0.0, and complete identical-command A0/A1/A2 logs with three tests attempted per arm.",
+    "source_effect": "The opening source diff changes the sole oslo.policy upper-constraint pin from 5.1.0 to 6.0.0, whose release removes the enforce_scope option.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-magnum-policy-reconstruction-2026-08-27/target-patches/996540.patch",
+    "target_repair": "The exact maintainer patch removes only the obsolete enforce_scope override from the shared policy-test setup. It retains enforce_new_defaults, the selected module, and all three selected tests; no test or assertion is deleted or skipped."
+  },
+  "source_change_family": "opendev-change-996511-opening",
+  "target_repository": "openstack/magnum",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}
