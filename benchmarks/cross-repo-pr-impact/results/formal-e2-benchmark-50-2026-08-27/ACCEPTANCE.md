@@ -36,4 +36,4 @@ python3 .agents/skills/marshal-e2-case-builder/scripts/verify_frozen_benchmark.p
 
 ## Git anchoring
 
-The dataset, frozen run, ramp-up runs, withdrawn history, skill, and governing documents are committed together; the dataset content anchor is the first commit containing `results/formal-e2-benchmark-50-2026-08-27/`. This acceptance note and the README release-carving section postdate that commit and do not alter machine-verified evidence.
+The dataset, frozen run, ramp-up runs, withdrawn history, skill, and governing documents are committed together; the dataset content anchor is commit `ff97315` ("data: freeze formal candidate-bounded strict-E2 benchmark (50 cases) with frozen run v4"). This acceptance-note edit and any later documentation errata do not alter the machine-verified evidence anchored there.
