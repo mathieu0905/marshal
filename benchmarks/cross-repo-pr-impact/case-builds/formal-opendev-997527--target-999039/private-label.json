@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-997527",
+  "expected_check_paths": [
+    "oslo_service/tests/backend/threading/test_launcher.py"
+  ],
+  "mechanism": "oslo.config 10.6.0 changes ConfigOpts serialization behavior exposed by oslo.service's automatic spawn-context selection, breaking existing launcher tests and requiring an explicit multiprocessing policy",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/python",
+  "relation_id": "formal-opendev-997527--target-999039",
+  "repair_template": "preserve fork as the default where available and make spawn an explicit validated target behavior",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "Pending full opening-cutoff replay confirmation.",
+    "approved": false,
+    "reviewer_basis": "The one-pin opening diff and maintainer production patch identify a serialization and multiprocessing-context compatibility relation; independent old/new/new probes and three-arm logs are pending.",
+    "source_effect": "The opening source diff changes the sole oslo.config pin from 10.5.0 to 10.6.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-contract-triage-2026-08-26/target-patches/999039.patch",
+    "target_repair": "The maintainer changes launcher context selection and updates or adds corresponding tests; replay confirmation and no-test-loss comparison are pending."
+  },
+  "source_change_family": "opendev-change-997527-opening",
+  "target_repository": "openstack/oslo.service",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-902133",
+  "expected_check_paths": [
+    "neutron/common/utils.py",
+    "neutron/tests/unit/agent/l2/extensions/test_fdb_population.py"
+  ],
+  "mechanism": "removal of retired neutron-lib LBaaS device-owner constants leaves target production logic and its existing tests referencing absent attributes",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-902133--target-902048",
+  "repair_template": "remove target logic and tests for the retired dependency constants and feature path",
+  "replay_adapter": "source_editable",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening neutron-lib change installed, the unchanged FDB population module raises AttributeError when its retired-LBaaS test reads DEVICE_OWNER_LOADBALANCER; A0 passes all 12 tests, A1 passes 11 and fails one, and A2 passes all 11 still-applicable tests.",
+    "approved": false,
+    "reviewer_basis": "Reviewed the source constant-removal diff, cutoff target production and test code, maintainer patch, editable-install logs, identical stestr module command, and complete A0/A1/A2 logs. Although the deletion is the maintainer's matching retired-feature cleanup, A2 removes the selected failing test and reduces the module from 12 to 11 tests, so the skill's no-test-deletion rule rejects it from the formal pool.",
+    "source_effect": "The source opening diff removes the two retired LBaaS device-owner constants from neutron-lib.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/902048.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target removes obsolete LBaaS device-owner production branches and the corresponding retired-feature tests across the target; the same module command returns to zero with all remaining tests passing."
+  },
+  "source_change_family": "opendev-change-902133-opening",
+  "target_repository": "openstack/neutron",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

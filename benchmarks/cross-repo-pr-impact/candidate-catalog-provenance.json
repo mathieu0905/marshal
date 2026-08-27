@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "observed_construction": {
+    "kind": "known_targets_union_manual_distractors",
+    "source": "materialize_impact_discovery_set.py",
+    "label_independent": false,
+    "note": "The current repository lists were materialized from the union of known targets and hand-maintained DISTRACTORS. This record describes the current data, not a formal catalog source."
+  },
+  "catalogs": {
+    "drizzle": {
+      "proposed_rule": null,
+      "sources": [],
+      "priority": "sensitivity_only"
+    },
+    "ethereum": {
+      "current_source_snapshot": "catalog-source-snapshots.json#ethereum-protocol-specs-and-clients",
+      "proposed_rule": "Canonical protocol specification/API repositories plus maintained execution and consensus clients listed by the Ethereum project.",
+      "sources": [
+        "https://ethereum.org/developers/docs/nodes-and-clients/",
+        "https://github.com/ethereum/execution-specs"
+      ],
+      "priority": "rebuild"
+    },
+    "kubernetes": {
+      "proposed_rule": "Repositories named by Kubernetes project governance as core APIs, official client libraries, or SIG-governed implementation projects, intersected with repositories for which an observation-time snapshot can be collected.",
+      "sources": [
+        "https://kubernetes.io/docs/reference/using-api/client-libraries/",
+        "https://github.com/kubernetes/community/tree/master/sig-list.md"
+      ],
+      "priority": "rebuild"
+    },
+    "opencontainers-image": {
+      "proposed_rule": null,
+      "sources": [],
+      "priority": "sensitivity_only"
+    },
+    "opencontainers-runtime": {
+      "proposed_rule": "Runtime-spec implementations and conformance/tooling repositories named by the Open Container Initiative ecosystem, intersected with repositories for which an observation-time snapshot can be collected.",
+      "sources": [
+        "https://opencontainers.org/"
+      ],
+      "priority": "rebuild"
+    },
+    "openstack": {
+      "proposed_rule": "Official OpenStack governance deliverables participating in the same release constraints, API, deployment, or client surface, selected without consulting the case target labels and intersected with observation-time snapshot availability.",
+      "sources": [
+        "https://governance.openstack.org/tc/reference/projects/"
+      ],
+      "priority": "rebuild"
+    },
+    "opentelemetry": {
+      "current_source_snapshot": "catalog-source-snapshots.json#opentelemetry-language-sdks-and-collectors",
+      "proposed_rule": "Official OpenTelemetry language implementations and collector repositories listed by the project, intersected with repositories for which an observation-time snapshot can be collected.",
+      "sources": [
+        "https://opentelemetry.io/docs/languages/",
+        "https://github.com/open-telemetry/community/blob/main/projects.md"
+      ],
+      "priority": "rebuild"
+    },
+    "python": {
+      "proposed_rule": "Python language, typing, and packaging repositories named by the corresponding PSF or PyPA governance surfaces, intersected with repositories for which an observation-time snapshot can be collected.",
+      "sources": [
+        "https://www.python.org/psf/",
+        "https://www.pypa.io/en/latest/members/"
+      ],
+      "priority": "rebuild"
+    },
+    "rust": {
+      "current_source_snapshot": "catalog-source-snapshots.json#rust-governed-toolchain",
+      "proposed_rule": "Rust toolchain and language implementation repositories governed by rust-lang teams, intersected with repositories for which an observation-time snapshot can be collected.",
+      "sources": [
+        "https://www.rust-lang.org/governance/teams"
+      ],
+      "priority": "rebuild"
+    },
+    "starlingx": {
+      "proposed_rule": "Repositories listed as StarlingX project deliverables by project governance, intersected with repositories for which an observation-time snapshot can be collected.",
+      "sources": [
+        "https://docs.starlingx.io/"
+      ],
+      "priority": "rebuild"
+    },
+    "wandertracks": {
+      "proposed_rule": null,
+      "sources": [],
+      "priority": "sensitivity_only"
+    },
+    "zuul": {
+      "proposed_rule": null,
+      "sources": [],
+      "priority": "sensitivity_only"
+    }
+  }
+}

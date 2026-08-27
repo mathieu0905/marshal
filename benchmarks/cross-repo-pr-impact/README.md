@@ -1,10 +1,12 @@
 # Marshal 跨仓评测体系
 
-本目录包含两条独立轨道。现有 100 条正式案例是“规范采纳与跨仓适配校准轨道”：评测输入包含源 PR 创建时的差异，以及同一观察截止时间之前各候选仓库的代码版本；隐藏标签保存公开历史中已核验的实现和适配目标。
+本数据集采用已知候选仓设定：输入直接提供项目级候选仓目录、源 PR 差异和各候选仓在观察截止时间的代码，受测系统负责候选仓排序、影响定位和可选执行验证，不负责从整个托管平台发现相关仓库。
 
-正在建设的“跨仓破坏影响发现旗舰轨道”只接收真实失败到配套修复的执行对照。两条轨道禁止混合计分或解释。完整任务边界和因果准入条件见 `TASK_DEFINITION.md`，执行证据来源的实测取舍见 `CAUSAL_SOURCE_ASSESSMENT.md`。
+历史适配 E1 与可执行因果破坏 E2 使用相同输出接口，但必须分别计分和解释；有界负例 E3 和兼容变化 E4 是独立证据层，不是每条 E2 正例的准入条件。完整设计见 `CANDIDATE_BOUNDED_DESIGN.md`，任务边界见 `TASK_DEFINITION.md`。
 
-校准轨道不是完整因果影响集合。它适合评价候选仓排序和已知适配找回能力，不适合计算误报率或证明某个未标注仓库不受影响。
+`results/formal-e2-50-release-2026-08-26/` 的正式声明已撤回。目录中的 50 个 0/1/0 是后验生成的引用表面检查，不是目标仓预先存在的构建或测试任务，因此只能作为 development 候选。新采集正式 strict-E2 当前为 0/50；OpenStack（216 仓）与 StarlingX（75 仓）目录、opening diff 和时点快照基础设施仍可复用。
+
+现有 100 条案例及其时点快照继续保留。Ethereum、OpenTelemetry 与 Rust 目录已按独立项目来源重建，覆盖 71 条案例；其他目录仍由已知目标与手工干扰仓合并生成，或属于单例 sensitivity 目录。100 条原始索引仍标为 `test`，不能产生全数据正式无泄漏主分数。在三个重建目录内，已逐条完成 71 条候选、154 条目标关系的本地和实时记录核对，并按项目隔离选出 50 条最终 E1 数据：OpenTelemetry 25、Ethereum 21、Rust 4，共 107 条已验证目标关系。权威入口是 `results/final-dataset-verification-2026-08-25/final-index.jsonl`；它验证的是历史采纳/适配标签，不表示已经运行 Marshal，也不把 E1 冒充 A0/A1/A2 因果 E2。
 
 ## 规模与组成
 
@@ -17,7 +19,7 @@
 
 旧的 99 条“规范仓固定映射到单一实现仓”数据保存在 `cases-spec-retrieval-v1/`，不再进入正式索引。
 
-旗舰轨道当前有 6 个通过初次语义复核的 OpenDev 因果储备：历史回挖保留 2 个，滚动窗口新增 4 个。扩大到 2026-08-01 之后的窗口共检查 394 个变更、20 个依赖转换和 27 个结构通过任务；扣除已复核重复项后，20 个新任务中只有 5 个支持源差异导致的跨仓修复，对应 3 个新案例。Prow 约 90 天预提交历史另扫描 35,805 次执行，从 1,090 个状态窗口收紧到 11 个结构候选，但代码树与失败语义复核后接受 0 个。通用 Prow 历史因此不作为主体来源；完整漏斗见 `results/prow-three-arm-scan-2026-08-23.json`。独立的 Crater 版本化生态破坏子轨已完成 4 条三臂重放，不并入仓库级旗舰分数。
+E2 层当前有 6 个通过初次语义复核的 OpenDev 因果储备：历史回挖保留 2 个，滚动窗口新增 4 个。扩大到 2026-08-01 之后的窗口共检查 394 个变更、20 个依赖转换和 27 个结构通过任务；扣除已复核重复项后，20 个新任务中只有 5 个支持源差异导致的跨仓修复，对应 3 个新案例。Prow 约 90 天预提交历史另扫描 35,805 次执行，从 1,090 个状态窗口收紧到 11 个结构候选，但代码树和失败语义复核后接受 0 个。通用 Prow 历史因此不作为主体来源；完整漏斗见 `results/prow-three-arm-scan-2026-08-23.json`。独立的 Crater 版本化生态破坏子轨已完成 4 条三臂重放，等待按 E2 口径迁移。
 
 2026-08-25 的后续滚动检查覆盖 2026-08-24 以来 81 个含协调说明的变更和 2 个窗口内依赖转换。一个转换因源代码变化被结构拒绝；另一个在 4 个任务上通过组合核验，但四个失败都发生在 Ceph 仓库变化执行前的 PBR 与旧 Pip 环境，目标补丁只升级 Pip，因此语义拒绝。OpenDev 因果储备仍为 6 条；14 个去重转换、33 个任务已统一进入不含初次决定的盲审材料。
 
@@ -66,6 +68,16 @@ AssertJ Core 3.18.1 到 3.19.0 的 8 条 FSE 记录经根仓与仓库迁移去�
 org.json 20090211 到 20131018 的两条 FSE 记录对应 Alchemy-API 与 open311_java 两个根仓。发布二进制和源提交均确认 `JSONObject.getString` 不再把非字符串值经 `toString()` 强制转换，而是抛出 `JSONException`；但两仓全部远程历史始终固定 20090211，工作簿也没有保存精确目标修订，固定 20131018 的维护者 A2 为 0。因此在三臂前拒绝，不用手工类型转换制造恢复。
 
 Elemental2 DOM 1.0.0-RC1 到 1.1.0 的两条候选对应 gwt-ol 与 rxjava-gwt 两个根仓、4 个异常观察。公开工作簿只保留要求查看前序日志的顶层 GWT 编译异常，无法隔离 208 个提交发布跨度中的具体源机制；gwt-ol 从未采用 1.1.0，rxjava-gwt 的首次采用又同时变更 Java、GWT、RxJava、JUnit 和构建插件，没有可分离的目标修复。两条均在重放前拒绝，接纳 0 条。
+
+Hazelcast 4.1 的两条记录来自同一仓库的两个历史模块；`hazelcast-stabilizer` 已重定向到 `hazelcast-simulator`，按 GitHub 仓库编号折叠后只有 1 个根仓。构建过滤会把 Maven 项目版本写入 `GeneratedBuildProperties.VERSION`，客户端继续解析 minor，因此 4.0 的期望 0 在 4.1 下得到 1；但全部 1,479 个远程引用都没有固定 4.1 的声明或 minor=1 的维护者修复，FSE 也没有保存目标修订。为避免把后来的 Hazelcast 5 major 修复错接到这次 minor 失败，本组不重放并接纳 0 条。
+
+EqualsVerifier 3.7.2 到 3.8 的两条记录对应 IEXTrading4j 与 Twilio Java 两个独立根仓。精确源提交新增 `BigDecimalFieldCheck` 与 `Warning.BIGDECIMAL_EQUALITY`，公开错误分别点名 `CeoCompensation.salary` 和 `Yesterday.price`。IEXTrading4j 从未采用 3.8；Twilio 只以 POM 单文件提交采用 3.8.2，未修改失败测试或 BigDecimal 相等实现，且 3.8.2 的检查与 3.8 相同。两仓都没有固定 3.8 的维护者 A2，因此不合成修复、不重放并接纳 0 条。
+
+PowerMock API Mockito 1.6.1 到 1.6.2 的完整关系框包含 CasperJS Runner、Sonatype Goodies 和 uaiMockServer 三个根仓、4 个失败观察；CasperJS 的项目声明仍是 1.5.5，但其最后通过探针为 1.6.1，不能按声明版本漏掉。源提交对 Goodies 的缺类失败可精确解释：PowerMock 改用重打包 MockMaker 并链接 Mockito 1.10.19 才有的 `MockitoSerializationIssue`，而 Goodies 固定 1.9.5；其余两条公开日志不足以锁定源 hunk。三仓全部分支和标签均未采用固定 1.6.2，也没有维护者 A2，因此不重放并接纳 0 条。
+
+Jackson Core 2.9.10 到 2.10.0 的正确候选是 openrest4j 与 json-rules 两条，而不是预筛时误列的 `jackson-datatype-jdk8` 记录。两个客户端都用一个属性同步升级多个 Jackson 构件：json-rules 的实际失败来自 Databind 把 `valueToTree(null)` 改为返回 `NullNode`，openrest4j 则是 Databind 2.10.0 与 Scala module 2.9.5 的 minor 版本保护冲突，均不能归为纯 `jackson-core` 源变化。openrest4j 从未采用 2.10.0；json-rules 唯一采用是无后继修复的未合并 Dependabot PR，后来同合同修复已使用 2.13.1。因此不重放并接纳 0 条。
+
+Log4j Core 2.14.1 到 2.15.0 的两仓组接纳 `gdv.xport` 1 条严格三臂正关系。Core 2.15.0 改读 API 2.15.0 新增的 `Constants.EMPTY_BYTE_ARRAY`；维护者只升级 Core 的合并提交使原生任务在测试发现前复现公开 `ServiceConfigurationError`，Surefire dump 补出内层 `NoSuchFieldError`。A0 与只应用下一笔维护者 API 同步行的 A2 均为 1070 项通过；完整维护者提交另含 SmokeRunner 删除并触发不同测试错误，已单列诊断而未冒充 A2。HTTP-Proxy-Servlet 只有未合并的 2.15.0 PR、无固定输入修复，故拒绝。本族无限定负例和 A3，不计完整项目包。
 
 EclipseLink 3.0.0-M1 的 4 条记录、12 个失败观察对应 dbunit-rules、Fluent JDBC、RSQL JPA 与 Random JPA 四个根仓。四条真实旧版本分别为 2.5.2、2.5.2、2.6.0-M3 和 2.6.4，不能合并成统一旧臂；`javax.persistence` 到 `jakarta.persistence` 的提供者注册边界能解释主要失败。四仓全历史均未采用固定 3.0.0-M1，后续 Jakarta 迁移都改用 4.x 且范围更宽，因此不重放并接纳 0 条。
 
@@ -121,17 +133,18 @@ Socket.IO 1.4.0 把内部套接字集合从数组改成对象后，Karma 0.13.18
 - 分生态候选仓目录引用；
 - `repository-snapshots.jsonl` 中对应案例的候选仓时点代码引用。
 
-候选仓清单分为 12 个项目或生态目录，每条案例只使用所属目录。时点清单共记录 1078 个“案例与候选仓”组合：1045 个在截止时间前有可获取提交，33 个当时尚未创建，没有抓取失败。每个已知目标仓都有截止时间前版本，每条案例也至少有一个可用的非目标干扰仓。
+候选仓清单分为 12 个项目或生态目录，每条案例只使用所属目录。时点清单共记录 1113 个“案例与候选仓”组合：1080 个在截止时间前有可获取提交，33 个当时尚未创建，没有抓取失败。新增的 35 个组合来自独立 OpenTelemetry 清单中的 Ruby SDK。每个已知目标仓都有截止时间前版本，每条案例也至少有一个可用的非目标候选仓。
 
 运行前用 `prepare_case_inputs.py` 下载源补丁并展开所有可用候选仓代码。正式推理阶段关闭网络，且不得读取 `cases/`、`candidates/`、目标 PR、托管平台关系接口、持续集成记录或 `results/`。
 
 ```bash
 python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
   opendev-991000-semantic-impact \
-  --output-dir .work/marshal-cross-repo-inputs
+  --output-dir .work/marshal-cross-repo-inputs \
+  --archive-cache .work/marshal-cross-repo-archive-cache
 ```
 
-上述案例已实际准备成功：源补丁 17723 字节，4 个候选仓共展开 8278 个文件。完整输入约束见 `INPUT_SPEC.md`。
+`--archive-cache` 以仓库和提交复用只读源码包，适合多案例 development 运行；不提供时保持原来的临时下载行为。上述案例已实际准备成功：源补丁 17723 字节，4 个候选仓共展开 8278 个文件。完整输入约束见 `INPUT_SPEC.md`。
 
 ## 主指标
 
@@ -154,7 +167,8 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 | 文件 | 内容 |
 |---|---|
 | `INPUT_SPEC.md` | 可见输入、时间边界和网络限制 |
-| `TASK_DEFINITION.md` | 校准轨道与因果旗舰轨道的独立任务定义 |
+| `CANDIDATE_BOUNDED_DESIGN.md` | 已知候选仓主任务、目录规则、证据层、split 和指标设计 |
+| `TASK_DEFINITION.md` | 统一输出接口及 E0-E4 的独立结论边界 |
 | `CAUSAL_SOURCE_ASSESSMENT.md` | Zuul、Prow、Crater、FSE 2024、GitLab 等执行来源的实测产率与取舍 |
 | `ACTIVE_PROJECT_PACKAGE_ASSESSMENT.md` | 主动四臂项目包的候选、执行结果和剩余条件 |
 | `PROJECT_PACKAGE_RESERVE.md` | 已执行项目包、OpenDev 储备和 BUMP 多消费仓搜索框 |
@@ -164,12 +178,20 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 | `NPM_CAUSAL_SOURCE_ASSESSMENT.md` | NoRegrets、npm 客户端恢复数据和首个 Node.js 三臂筛选结果 |
 | `MARSHAL_EVALUATION_PROTOCOL.md` | 当前配置覆盖与离线多仓审查的分离实测协议 |
 | `COMPETITOR_RUNNABILITY.md` | CodeRabbit、Qodo、Greptile、Bito 的输入边界、运行限制和公平比较方式 |
-| `schema.json`、`cases/*.json` | 正式案例和隐藏标签 |
+| `schema.json`、`cases/*.json` | 当前 100 条开发案例和隐藏标签 |
 | `input-schema.json`、`inputs.jsonl` | 受测系统可见的源输入 |
 | `candidate-repositories.json` | 12 个分生态候选仓目录 |
+| `candidate-catalog-provenance.json`、`catalog-source-snapshots.json` | 当前目录污染审计、独立成员来源和单例处置 |
 | `repository-snapshots.jsonl` | 每条案例在截止时间前的候选仓提交和源码地址 |
 | `prepare_case_inputs.py` | 下载并展开一条或多条完整评测输入 |
-| `index.jsonl` | 100 条正式案例索引 |
+| `select_development_slice.py` | 仅按目录、观察时点和 case ID 选择可复现 development 切片 |
+| `materialize_data_ready_set.py` | 为选定案例汇总目录 provenance 与观察时点快照完整性，并显式区分数据就绪和 Marshal 执行 |
+| `verify_final_e1_dataset.py` | 逐条交叉核对目录、快照、人工判定、持久化审计与实时 GitHub 记录，并按项目配额生成最终 E1 索引 |
+| `verify_final_e2_dataset.py` | 物化并验证 50 条严格 A0/A1/A2 E2 开发集，保留关系去重、证据审计和 split 提案 |
+| `candidate_bounded_foundation.py` | 生成目录审计、关系组、split 提案和保守 E0-E4 证据清单 |
+| `rebuild_candidate_catalogs.py` | 只从独立来源清单重建目录，并补充观察时点快照；标签仅在成员确定后用于覆盖审计 |
+| `candidate_code_ranker.py` | 从源补丁与候选仓时点代码生成离线开发排序；不读取隐藏标签 |
+| `index.jsonl` | 当前 100 条未隔离 split 的案例索引 |
 | `candidates/` | 搜索框、人工决定、时间恢复和证据审计记录 |
 | `score.py`、`prediction-schema.json` | 评分器和预测格式 |
 | `validate.py`、`test_score.py` | 数据校验和评分判例 |
@@ -198,8 +220,14 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 python benchmarks/cross-repo-pr-impact/validate.py --expected-count 100
 python -m unittest discover -s benchmarks/cross-repo-pr-impact -p 'test_*.py' -v
 python benchmarks/cross-repo-pr-impact/score.py --self-check
+python benchmarks/cross-repo-pr-impact/candidate_bounded_foundation.py \
+  --output-dir benchmarks/cross-repo-pr-impact/results/candidate-bounded-foundation-2026-08-25
 python benchmarks/cross-repo-pr-impact/audit.py --sample-size 20
 ```
+
+切片试运行可重复传入 `score.py --case-id <id>`，使缺失预测只在明确选择的案例集合内统计；不提供该参数时仍评价全部 100 条。
+
+首轮 D0-D3 产物位于 `results/candidate-bounded-foundation-2026-08-25/` 和 `results/candidate-code-pilot-2026-08-25/`。OpenTelemetry 与 Rust 的首轮目录重建见 `results/catalog-rebuild-2026-08-25/`，Ethereum 重建和 50 条 data-ready 清单见 `results/ethereum-catalog-rebuild-2026-08-25/`。最终 50 条逐项验证结果见 `results/final-dataset-verification-2026-08-25/`。12 条代码排序结果仍只是开发测量，不是 Marshal 产品成绩或最终集正式分数。
 
 ## 解释边界
 
@@ -207,9 +235,9 @@ python benchmarks/cross-repo-pr-impact/audit.py --sample-size 20
 - 规范案例依赖公开历史 PR，存在训练语料污染风险，离线推理不能消除模型记忆；
 - GitHub 搜索只覆盖目标 PR 正文中的完整源 PR 链接，不覆盖裸编号、提交说明或间接引用；
 - 101 条可恢复 GitHub 候选中只选择 85 条：全部 59 条多目标案例优先保留，单目标案例按仓库关系轮转补齐；
-- 100 条校准轨道没有可靠无影响对照，不能评价误报率和停止能力；旗舰主动轨道的限定负例只在各自执行合同内成立；
+- 100 条 E1 材料没有可靠无影响对照，不能评价误报率和停止能力；E3 限定负例只在各自执行合同内成立；
 - Cinder 对照只有一次失败和一次成功，仍可能受持续集成环境漂移影响；
-- OpenDev 因果试采只有 6 个通过初次语义复核的储备，且全部来自 2026 年；主动项目包虽已扩到其他生态，但模型质检只接受 4 个完整四臂候选，仍不足以支撑产品优劣结论；
+- OpenDev 因果试采只有 6 个通过初次语义复核的储备，且全部来自 2026 年；主动项目包材料将按 E2-E4 重新分类，当前仍不足以支撑产品优劣结论；
 - 14 个去重转换的盲审材料已经生成，但独立复核者尚未提交结果，不能把材料准备当作复核完成；
 - Prow 历史扫描从当前仍配置的 104 个多仓预提交任务出发，不包含已退役或改名任务；35,805 次执行没有产生语义成立的因果案例；
 - 198 个持续集成候选因历史执行清单归档缺失而无法判断，当前 OpenDev 历史不能直接扩成数百条强因果案例；

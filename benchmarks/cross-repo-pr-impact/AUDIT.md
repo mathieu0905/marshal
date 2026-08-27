@@ -98,7 +98,7 @@ GitHub Actions 公共日志最长保留 90 天，且平台接口没有标准多�
 
 ## 候选仓时点代码
 
-候选仓按 12 个项目或生态目录组织，每个目录同时包含真实目标和同领域干扰仓。`repository-snapshots.jsonl` 有 1078 个候选组合：1045 个 `available`，33 个 `not_created_by_cutoff`，0 个抓取失败。
+候选仓按 12 个项目或生态目录组织。OpenTelemetry 与 Rust 目录已按独立项目来源重建；其余目录仍是开发或 sensitivity 材料。`repository-snapshots.jsonl` 有 1113 个候选组合：1080 个 `available`，33 个 `not_created_by_cutoff`，0 个抓取失败。
 
 校验器逐案例检查：目录与时点清单完全一致；提交时间不晚于截止时间；所有已知目标都可用；至少一个非目标候选可用；提交号和源码地址格式有效。
 

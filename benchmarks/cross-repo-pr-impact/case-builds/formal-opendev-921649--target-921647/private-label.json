@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-921649",
+  "expected_check_paths": [
+    "neutron/tests/unit/extensions/test_flavors.py"
+  ],
+  "mechanism": "a neutron-lib request-population change stops injecting project identifiers for flavor resources whose schemas no longer declare them, invalidating target API tests that post explicit tenant fields without request context",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-921649--target-921647",
+  "repair_template": "adapt existing target API tests to authenticated request context and tolerate dependency-version project-field injection",
+  "replay_adapter": "source_editable",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-next300-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening neutron-lib change installed, three unchanged flavor-extension create requests return 400 because the affected resource schemas no longer cause implicit project identifiers to be populated and the tests provide neither the new request context nor compatible payloads; A0 and A2 pass all 48 tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source request-population and schema diff, cutoff target API tests, maintainer patch, editable-install logs, and complete A0/A1/A2 runs of the identical 48-test stestr module showing 48 pass / 45 pass plus 3 HTTP failures / 48 pass.",
+    "source_effect": "The source opening diff makes project-id population conditional on resource schemas and removes tenant_id from flavor and QoS definitions.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-next300-contract-triage-2026-08-26/target-patches/921647.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target supplies an authenticated admin context, removes obsolete explicit tenant fields, and keeps mock assertions compatible across dependency versions; the same 48-test module returns to zero without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-921649-opening",
+  "target_repository": "openstack/neutron",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

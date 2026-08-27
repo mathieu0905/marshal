@@ -1,0 +1,28 @@
+{
+  "candidate_id": "e2-001",
+  "expected_check_paths": [
+    "cinder/tests/unit/db/test_migrations.py"
+  ],
+  "mechanism": "Alembic constraint-reflection change exposes existing model-versus-migration CHECK-constraint differences in the target MySQL sync test",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/python",
+  "relation_id": "formal-opendev-1001023--target-1000516",
+  "repair_template": "adapt the target migration consistency test to ignore reflected CHECK constraints handled outside the modeled schema",
+  "replay_adapter": "requirements_constraint",
+  "replay_environment": {
+    "OS_TEST_DBAPI_ADMIN_CONNECTION": "mysql+pymysql://openstack_citest:openstack_citest@127.0.0.1:33317/"
+  },
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-reconstructed-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening constraint pin changed to Alembic 1.19.1, the unchanged target MySQL model-sync test reports twelve remove_constraint differences; the identical command passes with 1.18.5.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the single-pin opening diff, cutoff Cinder test, exact maintainer patch, prior real 0/1/0 MySQL replay logs, installed Alembic versions, and exclusive remove_constraint failure; the new package independently recreates all three tox environments against the same local database service.",
+    "source_effect": "The opening requirements diff changes only Alembic 1.18.5 to 1.19.1, whose MySQL reflection behavior exposes CHECK constraints to the target consistency comparison.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-reconstructed-plan-2026-08-26/target-patches/1000516.patch",
+    "target_repair": "The maintainer patch adds an explicit CHECK-constraint filter for the twelve affected tables in the existing migration consistency test; it does not delete or skip the test, and the same command returns to zero."
+  },
+  "source_change_family": "opendev-change-1001023-opening",
+  "target_repository": "openstack/cinder",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

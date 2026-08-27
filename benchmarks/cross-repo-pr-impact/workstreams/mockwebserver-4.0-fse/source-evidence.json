@@ -1,0 +1,119 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0178",
+      "fse2024-behavioral-0179"
+    ],
+    "candidate_records": 2,
+    "failure_observations": 2,
+    "unique_github_repository_ids": 2,
+    "exact_target_revisions_recorded": 0,
+    "frame_rule": "Include every record for com.squareup.okhttp3:mockwebserver whose previous_version contains 3.14.9 and breaking_version is 4.0.0; current_version is not an exclusion filter."
+  },
+  "source_repository": {
+    "repository": "square/okhttp",
+    "github_repository_id": 5152285,
+    "all_refs": 6021,
+    "heads": 37,
+    "tags": 142,
+    "pull_refs": 5842,
+    "reachable_commits": 15455,
+    "last_passing_probe": {
+      "version": "3.14.9",
+      "tag_commit": "ad97bd3df34376eec85aa187dc8f45cfde8a2c01",
+      "date": "2020-05-17T12:50:54-04:00"
+    },
+    "breaking_probe": {
+      "version": "4.0.0",
+      "tag_commit": "911c5bf5b27e8378f209861a16a9da4cc54cfff7",
+      "date": "2019-06-26T19:30:33-07:00"
+    },
+    "merge_base": {
+      "commit": "0f87d95c7de96ae028fb403f57ade0c7f8fca33f",
+      "date": "2019-03-14T00:24:22-04:00",
+      "subject": "OkHttp 3.14 is out"
+    },
+    "chronology_note": "The FSE probe order is not release chronology: 4.0.0 was released in 2019, while the 3.x maintenance tag 3.14.9 was released in 2020 from the sibling branch."
+  },
+  "mechanisms": [
+    {
+      "candidate_id": "fse2024-behavioral-0178",
+      "source_commit": "6d872df83bd9e377c6309e4cb1365faf60fffbd5",
+      "date": "2019-05-14T20:25:18-04:00",
+      "subject": "Promote some Util functions to be extensions",
+      "mechanism": "MockWebServer construction now invokes Kotlin top-level immutableListOf. The released 4.0.0 bytecode calls okhttp3.internal.Util.immutableListOf(Object[]), which is absent from OkHttp 3.12.0.",
+      "target_dependency_shape": "Retrofit 2.5.0 is declared before MockWebServer and brings OkHttp 3.12.0; replacing only MockWebServer with 4.0.0 leaves its constructor linked to the older OkHttp binary.",
+      "probe": {
+        "aligned": [
+          "SETUP=PASS",
+          "CLEANUP=PASS"
+        ],
+        "skewed": [
+          "SETUP=java.lang.NoSuchMethodError: java.util.List okhttp3.internal.Util.immutableListOf(java.lang.Object[])",
+          "CLEANUP=java.lang.NullPointerException"
+        ]
+      }
+    },
+    {
+      "candidate_id": "fse2024-behavioral-0179",
+      "source_commit": "e2cfcb35ea52b28dc443c24760d1cf2325d60f07",
+      "date": "2019-03-29T21:54:10+00:00",
+      "subject": "Okio upgrade post kotlin (#4814)",
+      "mechanism": "OkHttp moves from Okio 1.17.2 to 2.2.2. OkHttp 4.0.0's okhttp3.internal.Util static initializer links okio.Options.Companion, which does not exist in Okio 1.17.5.",
+      "target_dependency_shape": "The JavaSDK 3.14.9 snapshot fixes okhttp.version at 3.14.9 and okio.version at 1.17.5; changing the shared OkHttp version to 4.0.0 retains the incompatible Okio pin.",
+      "probe": {
+        "aligned": [
+          "FIRST=https://api.opengamma.com/ application/json",
+          "SECOND=https://api.opengamma.com/ application/json"
+        ],
+        "skewed": [
+          "FIRST=java.lang.NoSuchFieldError: okio.Options$Companion Companion",
+          "SECOND=java.lang.NoClassDefFoundError: Could not initialize class ServiceInvokerStaticProbe$ServiceShape"
+        ]
+      }
+    }
+  ],
+  "root_identity": [
+    {
+      "repository": "jasminb/jsonapi-converter",
+      "github_repository_id": 52023675,
+      "candidate_ids": [
+        "fse2024-behavioral-0178"
+      ]
+    },
+    {
+      "repository": "OpenGamma/JavaSDK",
+      "github_repository_id": 81832169,
+      "candidate_ids": [
+        "fse2024-behavioral-0179"
+      ]
+    }
+  ],
+  "fixed_version_scan": {
+    "scope": "Every commit reachable from every fetched head, tag and pull-request ref.",
+    "parser": "Namespace-agnostic XPath over Maven POM dependency and property elements; modelVersion 4.0.0 is excluded.",
+    "outputs": {
+      ".work/mockwebserver-4.0-fse/jsonapi-converter-fixed-4.0.0.tsv": 0,
+      ".work/mockwebserver-4.0-fse/JavaSDK-fixed-4.0.0.tsv": 2
+    },
+    "fixed_version_commits": 2,
+    "fixed_version_roots": 1,
+    "fixed_version_maintainer_repairs": 0
+  },
+  "admission_result": {
+    "candidate_records": 2,
+    "unique_root_relations": 2,
+    "source_mechanisms_reproduced": 2,
+    "exact_target_revisions": 0,
+    "roots_with_any_fixed_4_0_0_revision": 1,
+    "exact_maintainer_repairs": 0,
+    "client_replay_allowed": false,
+    "client_replays_performed": 0,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}

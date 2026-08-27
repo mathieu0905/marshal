@@ -1,0 +1,30 @@
+{
+  "candidate_id": "e2-019",
+  "expected_check_paths": [
+    "src/main/java/org/assertj/vavr/api/ClassLoadingStrategyFactory.java",
+    "src/main/java/org/assertj/vavr/api/VavrAssumptions.java",
+    "pom.xml"
+  ],
+  "java_home": "/usr/lib/jvm/java-11-openjdk-amd64",
+  "maven": "/home/zhihao/.local/maven/bin/mvn",
+  "maven_seed_repository": ".work/assertj-fse/m2-formal",
+  "mechanism": "removing shaded Byte Buddy packages makes the target imports unresolved",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-github-assertj-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-github-assertj-2477--target-vavr-181",
+  "repair_template": "migrate target imports to public Byte Buddy packages and update the source dependency",
+  "replay_adapter": "maven_source",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-reconstructed-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the source opening head installed under the cutoff target's declared 3.22.0 coordinate, the unchanged target fails compilation because org.assertj.core.internal.bytebuddy packages no longer exist.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source opening diff, exact maintainer target diff, opening-cutoff target code, and the formal full Maven replay: A0 passed all 689 tests, A1 failed at the removed internal Byte Buddy imports, and A2 passed all 689 tests.",
+    "source_effect": "The assertj-core opening removes its Byte Buddy shading and therefore removes the org.assertj.core.internal.bytebuddy package surface consumed by assertj-vavr.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-reconstructed-plan-2026-08-26/target-patches/181.patch",
+    "target_repair": "The maintainer patch updates assertj-core from 3.22.0 to 3.23.1 and migrates the two production imports to public net.bytebuddy packages; it does not delete or skip the selected test suite."
+  },
+  "source_change_family": "github-pr-2477-opening",
+  "target_repository": "assertj/assertj-vavr",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

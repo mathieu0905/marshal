@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-936100",
+  "expected_check_paths": [
+    "heat/tests/constraints/test_common_constraints.py"
+  ],
+  "mechanism": "croniter 5.0.1 changes validation exception wording for invalid out-of-range and short-column CRON expressions, invalidating Heat's exact and phrase-level assertions",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-936100--target-936159",
+  "repair_template": "retain the invalid-expression behavior while checking only Heat's stable error prefix",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-next300-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With croniter 5.0.1, the pre-existing 43-test Heat constraint module has one failure: the short-column CRON assertion expects 'Exactly 5 or 6 columns' while croniter now reports 'Exactly 5, 6 or 7 columns'.",
+    "approved": true,
+    "reviewer_basis": "Opening-cutoff replay independently installed croniter 2.0.7/5.0.1/5.0.1 for A0/A1/A2 and ran the identical 43-test Heat constraint module in all arms. A0 and A2 pass; A1 has one stable dependency-message assertion failure. The maintainer patch updates the existing assertions and neither deletes nor skips the selected test.",
+    "source_effect": "The opening source diff changes the sole croniter pin from 2.0.7 to 5.0.1.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-next300-contract-triage-2026-08-26/target-patches/936159.patch",
+    "target_repair": "The maintainer changes the two existing assertions to accept the stable Heat invalid-CRON prefix; with croniter 5.0.1 the same 43-test module returns to passing."
+  },
+  "source_change_family": "opendev-change-936100-opening",
+  "target_repository": "openstack/heat",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

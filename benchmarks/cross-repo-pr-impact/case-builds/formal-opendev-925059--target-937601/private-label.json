@@ -1,0 +1,27 @@
+{
+  "candidate_id": "formal-opendev-925059",
+  "expected_check_paths": [
+    "placement/tests/functional/gabbits/allocations-1-12.yaml",
+    "placement/tests/functional/gabbits/allocations-bug-1714072.yaml",
+    "placement/tests/functional/gabbits/allocations-mappings.yaml"
+  ],
+  "mechanism": "jsonschema 4.23.0 changes the canonical minProperties validation message from 'does not have enough properties' to 'should be non-empty', invalidating four existing Placement gabbi expectations",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-925059--target-937601",
+  "repair_template": "accept the dependency's old and new semantically equivalent minProperties messages in the existing target functional expectations",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-925059-placement-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With jsonschema 4.23.0 installed against the unchanged opening-cutoff Placement snapshot, the existing 1,313-test functional gabbi suite has exactly four failures: each expected the old minProperties wording while the dependency emitted 'should be non-empty'. A0 and A2 pass all 1,313 tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, all three changed maintainer gabbi files, cutoff tox.ini command provenance, installed-version probes proving jsonschema 4.19.2/4.23.0/4.23.0, patch applicability, and complete A0/A1/A2 logs. The same pre-existing 1,313-test functional command ran in every arm; A1 alone has four mechanism-specific assertion failures. No test is deleted or skipped.",
+    "source_effect": "The opening source diff changes exactly one upper-constraints pin, jsonschema 4.19.2 to 4.23.0, whose minProperties diagnostic wording changed.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/937601.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Placement snapshot and changes only four existing gabbi expectations to accept the old and new semantically equivalent minProperties messages; it does not delete, skip, or replace any test."
+  },
+  "source_change_family": "opendev-change-925059-opening",
+  "target_repository": "openstack/placement",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

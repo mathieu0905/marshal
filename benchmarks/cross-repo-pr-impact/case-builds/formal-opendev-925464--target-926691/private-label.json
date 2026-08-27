@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-925464",
+  "expected_check_paths": [
+    "barbican/common/policy.py",
+    "barbican/tests/api/test_resources_policy.py"
+  ],
+  "mechanism": "oslo.policy 4.4 enables scope and new-default enforcement by default, invalidating Barbican tests and behavior that still assume legacy RBAC defaults",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-925464--target-926691",
+  "repair_template": "override oslo.policy scope and new-default enforcement to false until the target adopts new RBAC",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-925464-barbican-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Barbican opening-cutoff snapshot, the pre-existing secret-create policy test passes with oslo.policy 4.3.0 and fails only with 4.4.0 because the newly enabled policy defaults reject its legacy project-scoped credentials; the stable exclusive signature is oslo_policy.policy.PolicyNotAuthorized: secrets:post is disallowed by policy.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes, patch applicability, and three-arm logs. The selected existing secret-create test passes in A0 and A2 and fails in A1; the target patch changes policy defaults and a minimum dependency only, without deleting or skipping tests.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, oslo.policy 4.3.0 to 4.4.0; version 4.4 enables enforce_scope and enforce_new_defaults by default, changing authorization for Barbican's legacy RBAC configuration.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-925464-target-patches-2026-08-27/926691.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Barbican snapshot and explicitly restores both oslo.policy defaults to false in barbican/common/policy.py until Barbican adopts new RBAC; it does not delete, skip, weaken, or replace the selected tests."
+  },
+  "source_change_family": "opendev-change-925464-opening",
+  "target_repository": "openstack/barbican",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

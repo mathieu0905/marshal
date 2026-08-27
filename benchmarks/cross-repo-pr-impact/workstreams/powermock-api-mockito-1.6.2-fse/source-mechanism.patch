@@ -1,0 +1,123 @@
+From d9615ecf221413b1661a891d02de43175f460b6b Mon Sep 17 00:00:00 2001
+From: Brice Dutheil <brice.dutheil@gmail.com>
+Date: Thu, 29 Jan 2015 12:32:05 +0100
+Subject: [PATCH] Move PowerMock onto repackaged Mockito 1.10.19 internals
+
+This evidence patch keeps the call-chain and version-bearing subset of
+upstream commit d9615ecf221413b1661a891d02de43175f460b6b. The full commit
+adds 924 lines of vendored Mockito implementation. In that omitted vendored
+body, AcrossJVMSerializationFeature directly imports and throws
+org.mockito.exceptions.base.MockitoSerializationIssue. This is source
+evidence, not an independently applicable client repair.
+
+diff --git a/api/mockito/src/main/java/org/powermock/api/mockito/internal/mockmaker/PowerMockMaker.java b/api/mockito/src/main/java/org/powermock/api/mockito/internal/mockmaker/PowerMockMaker.java
+index 1aa72dcc..aa30a149 100644
+--- a/api/mockito/src/main/java/org/powermock/api/mockito/internal/mockmaker/PowerMockMaker.java
++++ b/api/mockito/src/main/java/org/powermock/api/mockito/internal/mockmaker/PowerMockMaker.java
+@@ -16,7 +16,6 @@
+ package org.powermock.api.mockito.internal.mockmaker;
+ 
+ import org.mockito.internal.InternalMockHandler;
+-import org.mockito.internal.creation.CglibMockMaker;
+ import org.mockito.internal.creation.MockSettingsImpl;
+ import org.mockito.internal.stubbing.InvocationContainer;
+ import org.mockito.internal.util.MockNameImpl;
+@@ -26,18 +25,21 @@ import org.mockito.mock.MockCreationSettings;
+ import org.mockito.plugins.MockMaker;
+ import org.mockito.stubbing.Answer;
+ import org.mockito.stubbing.VoidMethodStubbable;
++import org.powermock.api.mockito.repackaged.CglibMockMaker;
+ 
+ import java.util.List;
+ 
+ /**
+- * A PowerMock implementation of the MockMaker. Right now it simply delegates to the
+- * {@link org.mockito.internal.creation.CglibMockMaker} but in the future we may use it more properly.
+- * The reason for its existence is that the CglibMockMaker throws exception for when getting the name
+- * from of a mock that is created by PowerMock but not know for Mockito. This is trigged when by the MockUtil class.
++ * A PowerMock implementation of the MockMaker. Right now it simply delegates to the default Mockito
++ * {@link org.mockito.plugins.MockMaker} via {@link org.mockito.internal.configuration.plugins.Plugins#getMockMaker()}
++ * but in the future we may use it more properly.
++ * The reason for its existence is that the current Mockito MockMaker throws exception when getting the name
++ * from of a mock that is created by PowerMock but not know for Mockito. This is triggered when by the
++ * {@link org.mockito.internal.util.MockUtil} class.
+  * For more details see the {@link org.powermock.api.mockito.internal.invocation.ToStringGenerator}.
+  */
+ public class PowerMockMaker implements MockMaker {
+-    private final CglibMockMaker cglibMockMaker = new CglibMockMaker();
++    private final MockMaker cglibMockMaker = new CglibMockMaker();
+ 
+     public <T> T createMock(MockCreationSettings<T> settings, MockHandler handler) {
+         return cglibMockMaker.createMock(settings, handler);
+diff --git a/api/mockito/src/main/java/org/powermock/api/mockito/repackaged/CglibMockMaker.java b/api/mockito/src/main/java/org/powermock/api/mockito/repackaged/CglibMockMaker.java
+new file mode 100644
+index 00000000..82cdb76a
+--- /dev/null
++++ b/api/mockito/src/main/java/org/powermock/api/mockito/repackaged/CglibMockMaker.java
+@@ -0,0 +1,51 @@
++/*
++ * Copyright (c) 2007 Mockito contributors
++ * This program is made available under the terms of the MIT License.
++ */
++package org.powermock.api.mockito.repackaged;
++
++import org.mockito.cglib.proxy.Callback;
++import org.mockito.cglib.proxy.Factory;
++import org.mockito.exceptions.base.MockitoException;
++import org.mockito.internal.InternalMockHandler;
++import org.mockito.internal.creation.instance.InstantiatorProvider;
++import org.mockito.invocation.MockHandler;
++import org.mockito.mock.MockCreationSettings;
++import org.mockito.plugins.MockMaker;
++
++/**
++ * A MockMaker that uses cglib to generate mocks on a JVM.
++ */
++public class CglibMockMaker implements MockMaker {
++
++    public <T> T createMock(MockCreationSettings<T> settings, MockHandler handler) {
++        InternalMockHandler mockitoHandler = cast(handler);
++        new AcrossJVMSerializationFeature().enableSerializationAcrossJVM(settings);
++        return new ClassImposterizer(new InstantiatorProvider().getInstantiator(settings)).imposterise(
++                new MethodInterceptorFilter(mockitoHandler, settings), settings.getTypeToMock(), settings.getExtraInterfaces());
++    }
++
++    private InternalMockHandler cast(MockHandler handler) {
++        if (!(handler instanceof InternalMockHandler)) {
++            throw new MockitoException("At the moment you cannot provide own implementations of MockHandler." +
++                    "\nPlease see the javadocs for the MockMaker interface.");
++        }
++        return (InternalMockHandler) handler;
++    }
++
++    public void resetMock(Object mock, MockHandler newHandler, MockCreationSettings settings) {
++        ((Factory) mock).setCallback(0, new MethodInterceptorFilter(cast(newHandler), settings));
++    }
++
++    public MockHandler getHandler(Object mock) {
++        if (!(mock instanceof Factory)) {
++            return null;
++        }
++        Factory factory = (Factory) mock;
++        Callback callback = factory.getCallback(0);
++        if (!(callback instanceof MethodInterceptorFilter)) {
++            return null;
++        }
++        return ((MethodInterceptorFilter) callback).getHandler();
++    }
++}
+diff --git a/pom.xml b/pom.xml
+index 80a6b838..c3b704c4 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -83,7 +83,7 @@
+     </modules>
+     <properties>
+         <easymock.version>3.3</easymock.version>
+-        <mockito.version>1.10.8</mockito.version>
++        <mockito.version>1.10.19</mockito.version>
+     </properties>
+     <build>
+         <plugins>
+-- 
+2.43.0

@@ -1,0 +1,80 @@
+{
+  "observed_at": "2026-08-25",
+  "id_audit": {
+    "requested_ids": [
+      "fse2024-behavioral-0045",
+      "fse2024-behavioral-0046"
+    ],
+    "matching_ids_for_coordinate_and_roots": [
+      "fse2024-behavioral-0025",
+      "fse2024-behavioral-0026"
+    ],
+    "boundary": "0045 is an OpenTripPlanner jackson-datatype-jdk8 2.11 record; 0046 is json-rules under jackson-datatype-jdk8. They are not the two jackson-core records."
+  },
+  "declared_source_repository": {
+    "repository": "FasterXML/jackson-core",
+    "github_repository_id": 3037907,
+    "before": {
+      "tag": "jackson-core-2.9.10",
+      "commit": "d4bfe205405caf948de35b4380f2d3221cdad072",
+      "committed_at": "2019-09-21T10:49:45-07:00"
+    },
+    "after": {
+      "tag": "jackson-core-2.10.0",
+      "commit": "2ce88904df6c60ef0c4708f6c514885cef850409",
+      "committed_at": "2019-09-25T19:22:26-07:00"
+    },
+    "causal_boundary": "Neither published failure is isolated to a jackson-core source change. Both clients use one property to upgrade multiple Jackson artifacts, and the effective mechanisms below occur outside jackson-core."
+  },
+  "json_rules_effective_source": {
+    "repository": "FasterXML/jackson-databind",
+    "before_tag": {
+      "name": "jackson-databind-2.9.10",
+      "commit": "5b33f88541a25999e1c43ca2eda1aeacacd6d13d"
+    },
+    "after_tag": {
+      "name": "jackson-databind-2.10.0",
+      "commit": "a1eedfdeea46f2a8da0ed23f06e7e1d39050499b"
+    },
+    "mechanism_commit": {
+      "commit": "6c3144dfa2856c9ba1c3a2d4089258337bae2b4b",
+      "parent": "2c64915c1775dcacf2ddee744ccc8cbcf690405b",
+      "committed_at": "2019-08-22T20:17:19-07:00",
+      "subject": "Fix #2430",
+      "ancestor_of_2_9_10": false,
+      "ancestor_of_2_10_0": true,
+      "before": "ObjectMapper.valueToTree(null) returns Java null.",
+      "after": "ObjectMapper.valueToTree(null) returns a non-null NullNode.",
+      "upstream_test": "testConversionsOfNull asserts that valueToTree(null) is non-null and isNull()."
+    },
+    "client_path": {
+      "missing_json_path": "$.value1",
+      "old_result": "Java null is caught by jsonNode == null and the expression returns false.",
+      "new_result": "NullNode bypasses the Java-null check, is neither integral nor floating point, and triggers IllegalArgumentException: Operand is not a number."
+    }
+  },
+  "openrest4j_effective_source": {
+    "compatibility_provider_repository": "FasterXML/jackson-module-scala",
+    "module_tag": "jackson-module-scala-2.9.5",
+    "module_commit": "4c2924584cad04fa0c7d49ce1c98da71d32c579c",
+    "guard_blob": "99e0aa114f3e7529a2ed3bcfa66a70eb734a871d",
+    "guard": "JacksonModule.setupModule accepts only a mapper whose major and minor equal the module's own major and minor; otherwise it throws JsonMappingException.",
+    "client_dependency": {
+      "artifact": "com.wix.restaurants:wix-restaurants-json:1.7.0",
+      "source_commit": "05d10947262aa12b14803d1feb241de9f685c57c",
+      "jackson_version": "2.9.5",
+      "static_path": "Json initializes ObjectMapper and registers DefaultScalaModule."
+    },
+    "failure_path": "The openrest4j shared property supplies Databind 2.10.0 while wix-restaurants-json still supplies Scala module 2.9.5. Module registration throws JsonMappingException, surfaced by LocaleTest as ExceptionInInitializerError."
+  },
+  "admission_result": {
+    "raw_candidate_records": 2,
+    "unique_root_repositories": 2,
+    "pure_jackson_core_mechanisms": 0,
+    "effective_cross_artifact_mechanisms": 2,
+    "roots_with_fixed_2_10_0_revision": 1,
+    "exact_maintainer_repairs_under_fixed_2_10_0": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0
+  }
+}

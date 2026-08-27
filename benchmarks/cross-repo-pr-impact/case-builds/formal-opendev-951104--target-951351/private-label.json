@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-951104",
+  "expected_check_paths": [
+    "glance/tests/unit/fixtures.py",
+    "glance/tests/unit/test_quota.py"
+  ],
+  "mechanism": "oslo.limit 2.7 changes limit retrieval used by Glance, while its custom KeystoneQuotaFixture mocks the removed internal enforcement path",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-951104--target-951351",
+  "repair_template": "subclass the public oslo.limit LimitFixture so Glance tests inherit the current limit retrieval behavior",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-951104-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Glance opening-cutoff snapshot, its pre-existing Keystone quota tests fail only with oslo.limit 2.7.0 when the custom fake limits callback is invoked through the changed retrieval path; the stable signature is TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes, and all three real replay logs; four independently recorded selectors produced 0/1/0, and the repair replaces only custom fixture internals without deleting or skipping tests.",
+    "source_effect": "The opening source change updates the only changed upper-constraints pin from oslo.limit 2.6.1 to 2.7.0, which changes the limit retrieval call surface exercised by Glance's custom quota fixture.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-contract-triage-2026-08-26/target-patches/951351.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Glance snapshot and makes KeystoneQuotaFixture subclass oslo.limit's public LimitFixture, removing the stale hand-built SDK and limits callback so the tests inherit the library's current behavior."
+  },
+  "source_change_family": "opendev-change-951104-opening",
+  "target_repository": "openstack/glance",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

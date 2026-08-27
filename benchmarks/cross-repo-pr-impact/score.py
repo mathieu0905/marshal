@@ -403,8 +403,15 @@ def main() -> int:
     parser.add_argument("predictions", nargs="?", type=Path)
     parser.add_argument("--self-check", action="store_true")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--case-id", action="append", dest="case_ids")
     args = parser.parse_args()
     cases = load_cases()
+    if args.case_ids:
+        requested = set(args.case_ids)
+        unknown = sorted(requested - {case["case_id"] for case in cases})
+        if unknown:
+            raise SystemExit(f"unknown --case-id values: {', '.join(unknown)}")
+        cases = [case for case in cases if case["case_id"] in requested]
     if args.self_check:
         predictions = oracle_predictions(cases)
     elif args.predictions:

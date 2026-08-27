@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-996511",
+  "expected_check_paths": [
+    "cinder/tests/unit/policies/base.py",
+    "cinder/tests/unit/policies/test_attachments.py"
+  ],
+  "mechanism": "the constrained oslo.policy 6.0 release removes the enforce_scope configuration option while target policy-test setup still overrides and threads that option",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-996511--target-995405",
+  "repair_template": "remove target policy-test setup for a dependency configuration option deleted in the new major release",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff target and oslo.policy 6.0.0 installed, all 78 attachment policy tests fail during shared setup with NoSuchOptError because enforce_scope no longer exists; all 78 pass with 5.1.0 in A0 and with 6.0.0 plus the maintainer patch in A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff target policy-test base and attachment module, maintainer patch, independent tox environments, installed-version probes proving 5.1.0/6.0.0/6.0.0, identical stestr command, and complete A0/A1/A2 logs.",
+    "source_effect": "The opening source diff changes the sole oslo.policy pin from 5.1.0 to 6.0.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/995405.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target removes only the deleted enforce_scope option's shared setup plumbing and affected call arguments; the identical 78-test attachment module returns to zero with oslo.policy 6.0.0."
+  },
+  "source_change_family": "opendev-change-996511-opening",
+  "target_repository": "openstack/cinder",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}

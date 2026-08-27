@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-972691",
+  "expected_check_paths": [
+    "magnum/common/utils.py",
+    "magnum/tests/unit/common/test_utils.py"
+  ],
+  "mechanism": "oslo.concurrency 7.3 lets Python reject unsupported execute keyword arguments with TypeError instead of raising the legacy UnknownArgumentError expected by Magnum",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/python",
+  "relation_id": "formal-opendev-972691--target-973723",
+  "repair_template": "translate the dependency TypeError back to the target-facing UnknownArgumentError contract",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-972691-magnum-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Magnum opening-cutoff snapshot, the pre-existing unknown-keyword contract test fails only with oslo.concurrency 7.3.0 because processutils.execute now exposes Python's TypeError instead of the expected UnknownArgumentError; the stable signature is TypeError: execute() got an unexpected keyword argument 'this_is_not_a_valid_kwarg'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes, and the three real replay logs; the unchanged selector produced 0/1/0, and the production-code repair neither deletes nor skips tests.",
+    "source_effect": "The opening source change updates the only changed upper-constraints pin from oslo.concurrency 7.2.0 to 7.3.0, whose explicit processutils.execute signature changes the exception observed for unsupported keywords.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/973723.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Magnum snapshot and translates the dependency TypeError at its execute wrapper into the target-facing processutils.UnknownArgumentError contract."
+  },
+  "source_change_family": "opendev-change-972691-opening",
+  "target_repository": "openstack/magnum",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

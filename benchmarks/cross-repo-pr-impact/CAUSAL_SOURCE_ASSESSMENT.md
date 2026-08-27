@@ -171,6 +171,16 @@ org.json 20090211 到 20131018 的双仓组说明精确源机制仍不足以接�
 
 Elemental2 DOM 1.0.0-RC1 到 1.1.0 的双仓组缺少更靠前的一层证据。gwt-ol 与 rxjava-gwt 的 4 个公开观察都只保留顶层 `UnableToCompleteException`，异常所指的前序 GWT 编译诊断已经丢失；跨 208 个源提交、89 个新增源条目和多项 JsInterop 依赖变化，不能凭顶层栈指定一个源机制。目标历史也不提供严格恢复：前者从未采用 1.1.0，后者只在同时升级 Java、GWT、RxJava、JUnit 和构建插件的宽提交中采用。两条关系均在重放前拒绝，接纳 0 条。
 
+Hazelcast 4.1 的两条模块记录经仓库身份核验后只有一个根仓：`hazelcast-stabilizer` 请求重定向到 `hazelcast-simulator`，两者具有相同 GitHub 仓库编号、HEAD 和历史。源端不是解析算法变更，而是 Maven 过滤把项目版本写入未变的 `GeneratedBuildProperties.VERSION`；客户端解析第二段，所以 4.1 使硬编码 minor=0 的断言得到 1。完整 1,479 个远程引用中没有固定 4.1 的目标声明或 minor=1 修复；一笔标题相近的提交实际修复 Hazelcast 5 的 major，不能跨输入拼成 A2。本组不重放并接纳 0 条。
+
+EqualsVerifier 3.7.2 到 3.8 的双仓组有精确源机制：提交 `9af8359a` 新增 `BigDecimalFieldCheck` 与可抑制的 `Warning.BIGDECIMAL_EQUALITY`，两条公开失败分别点名 IEXTrading4j 的 `salary` 和 Twilio 的 `price`。IEXTrading4j 全历史没有 3.8 采用；Twilio 的维护者只用 POM 单文件升级到 3.8.2，未修改失败测试或字段相等实现，而 3.8.2 与 3.8 的检查内容相同。后续宽生成代码更新仍保留相同 `Objects.equals`，故固定 3.8 的维护者 A2 为 0，本组在重放前接纳 0 条。
+
+PowerMock API Mockito 1.6.1 到 1.6.2 的筛选必须把项目声明仍为 1.5.5、但最后通过探针为 1.6.1 的 CasperJS 记录纳入；完整框因此是 3 条记录、4 个观察和 3 个根仓。源提交 `d9615ecf` 改用重打包 MockMaker，并进入直接链接 `MockitoSerializationIssue` 的序列化路径，能精确解释 Goodies 固定 Mockito 1.9.5 时的缺类失败；uaiMockServer 的 `NoSuchMethodError` 缺 owner 与签名，CasperJS 只留下清理空指针，二者不能强行归到同一 hunk。三仓完整分支和标签历史都没有固定 1.6.2 的采用或维护者恢复，故不运行作者合成的三臂并接纳 0 条。
+
+Jackson Core 2.9.10 到 2.10.0 的完整坐标框实际是 openrest4j 与 json-rules 两条，预筛时列出的 `0045/0046` 属于 `jackson-datatype-jdk8`。两仓都用共享属性同时替换 core、databind 等构件，所以坐标记录不能自动当作纯 core 变化。json-rules 的失败精确来自 Databind #2430 将 `valueToTree(null)` 改为 `NullNode`；openrest4j 则由 Databind 2.10.0 与遗留 Scala module 2.9.5 的 minor 保护触发。openrest4j 全历史没有 2.10.0，json-rules 唯一的 2.10.0 是未合并且没有后继修复的 Dependabot PR；2021 年同合同修复已固定 2.13.1，不能回接为 A2。本组不重放并接纳 0 条。
+
+Log4j Core 2.14.1 到 2.15.0 的双仓组产生 1 条执行正关系。精确源提交让 Core `ConfigurationSource` 读取 API 新增的 `Constants.EMPTY_BYTE_ARRAY`；`gdv.xport` 维护者先只升级 Core，原生任务由 1070 项通过变为测试发现前的公开 `ServiceConfigurationError`，Surefire dump 显示内层正是 `NoSuchFieldError: EMPTY_BYTE_ARRAY`。在相同 A1 树上只应用下一笔维护者提交中 API 2.14.1 到 2.15.0 的原样一行后，1070 项恢复。完整维护者提交还删除 SmokeRunner，并因历史测试栈重复发现测试而出现一个不同错误，故只作混合变化诊断。HTTP-Proxy-Servlet 的唯一 2.15.0 Core 更新是未合并 PR，完整历史无同输入 A2，公开 HTTP 500 也缺后端机制证据，因此拒绝。本族仍无限定负例和 A3。
+
 Script Security 1.71 到 1.72 的三条记录又展示了“错误消息给出明显修法”仍不等于维护者恢复。三个独立 Jenkins 插件仓都在插件启动时因最低核心提高到 2.176.4 而失败，源 POM 修改和完整堆栈一致；但工作簿没有目标修订，三个仓的全部远程引用都没有固定 1.72 的采用或维护者 A2。后续维护实际跳到 1.75、现代流水号或 BOM 管理版本。手工提高 Jenkins 基线虽然很可能恢复，却只能证明作者合成组合，因此本组不执行三臂并接纳 0 条。
 
 JUnit 4.11 到 4.12 的八仓筛选在执行前停止：七仓没有维护者恢复，PIT 只有一条 2023 年未重放修复线索。五个 PowerMock 客户端的字段错误也不能归到虚构的单次字段改名；真实 JUnit 历史是先删除 `MethodValidator`，再做全仓字段风格迁移，最后按新字段名恢复该类。该家族接纳 0 条，PIT 只保留单仓后续线索，其余仓继续保持未知。

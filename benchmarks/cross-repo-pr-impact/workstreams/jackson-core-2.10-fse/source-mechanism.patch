@@ -1,0 +1,25 @@
+diff --git a/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java b/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java
+index b7231cf830..9900a2b6e2 100644
+--- a/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java
++++ b/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java
+@@ -2900,13 +2907,18 @@ public class ObjectMapper
+      * @param <T> Actual node type; usually either basic {@link JsonNode} or
+      *  {@link com.fasterxml.jackson.databind.node.ObjectNode}
+      * @param fromValue Bean value to convert
+-     * @return Root node of the resulting JSON tree
++     *
++     * @return (non-null) Root node of the resulting JSON tree: in case of {@code null} value,
++     *    node for which {@link JsonNode#isNull()} returns {@code true}.
+      */
+     @SuppressWarnings({ "unchecked", "resource" })
+     public <T extends JsonNode> T valueToTree(Object fromValue)
+         throws IllegalArgumentException
+     {
+-        if (fromValue == null) return null;
++        // [databind#2430]: `null` should become "null node":
++        if (fromValue == null) {
++            return (T) getNodeFactory().nullNode();
++        }
+         TokenBuffer buf = new TokenBuffer(this, false);
+         if (isEnabled(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)) {
+             buf = buf.forceUseOfBigDecimal(true);

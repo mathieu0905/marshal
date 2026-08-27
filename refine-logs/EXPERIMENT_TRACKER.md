@@ -1,51 +1,44 @@
 # 实验任务表
 
-| 编号 | 阶段 | 目的 | 数据或系统 | 输出 | 优先级 | 状态 | 备注 |
-|---|---|---|---|---|---|---|---|
-| R001 | M0 | OpenDev 历史候选全量筛选 | 1055 个链独立源候选 | 286 个结构候选及完整排除记录 | 必须 | 完成 | 2 个历史强因果储备 |
-| R002 | M0 | 近期滚动采集 | 2026-08-01 至 2026-08-23 | 394 个变更、20 个转换、4 个新增强因果案例 | 必须 | 完成 | 15/20 个新任务语义拒绝 |
-| R003 | M0 | 当日补充采集 | 2026-08-23 15:48 UTC 快照 | 9 个变更、0 个窗口内转换 | 必须 | 完成 | 零产率完整保留 |
-| R004 | M0 | 因果输入物化 | 6 条 OpenDev 储备 | 86 个时点快照、12 项远程审计 | 必须 | 完成 | 全部可获取 |
-| R005 | M1 | 独立盲复核 | 6 个接受项、7 个拒绝项 | 判断、一致率、分歧和裁决 | 必须 | 待执行 | 材料已就绪，不能由同一标注者替代 |
-| R006 | M2 | 主动项目包筛选 | OpenDev、BUMP/Maven 及外部真实项目 | 至少 3 个具备 4 至 8 个可执行候选仓的项目包 | 必须 | 进行中 | 五个执行包经模型语义质检只接受 Alembic、SnakeYAML 两个完整四臂候选；正式人工接受数仍为 0 |
-| R007 | M2 | 四臂试验包一 | A0/A1/A2/A3，各 3 次 | 正例、限定负例、无影响源案例 | 必须 | A3 拒绝 | jcabi 的破坏三臂和 60 条执行记录保留；两轮 A3 均未获四仓共同变化表面覆盖，永久降为三臂案例 |
-| R008 | M2 | 四臂试验包二 | 不同契约类型 | 同上 | 必须 | 完成 | requirements 六仓三轮 90 条命令方向、版本和目标测试执行均为 90/90；标签接受仍待独立复核 |
-| R009 | M2 | 四臂试验包三 | 不同语言或构建系统 | 同上 | 必须 | 待补仓 | SLF4J 四仓五配置执行 60 条；RabbitMQ 负标签撤销后只剩三个已判定仓，不计完整项目包 |
-| R010 | M3 | 首批可再生储备 | 10 个独立项目包 | 产率、淘汰原因和分布 | 必须 | 进行中 | 按一个项目包一个并发任务推进；不以候选数或执行命令数覆盖质量 |
-| R011 | M3 | 正式规模储备 | 30 至 50 个独立项目包 | 150 至 250 条主动案例候选 | 必须 | 待执行 | 按关系与模板隔离 |
-| R012 | M3 | 数据划分 | 开发、正式、保留 | 无关系和模板泄漏的分组 | 必须 | 待执行 | 项目包是统计单位 |
-| R013 | M4 | 当前配置覆盖 | 100 条校准案例 | 配置命中与分数 | 必须 | 完成 | 0/100，仅代表 Cowboy 配置 |
-| R014 | M4 | Marshal 离线多仓试运行 | 无目标线索的十四仓开发输入 | 排序输出、失败类型和运行记录 | 必须 | 完成 | 原生入口完成实测：配置未命中，候选仓读取 0/14，无排序接口，三条审查提示中两条仍是 Cowboy 专用；这是接口不支持和领域适配缺口，不记无影响或零分 |
-| R015 | M5 | Marshal 正式与保留测量 | 因果正式集和保留集 | 主指标、主动闭集指标、稳定性 | 必须 | 待执行 | 不从正式标签调规则 |
-| R016 | M5 | Bito 检索组件对照 | 同一离线目录、同一模型 | 普通文件与本地索引差异 | 后续 | 待执行 | 不能写成完整 Bito 产品成绩 |
-| R017 | M6 | Greptile 最小托管沙箱 | 1 源、1 目标、2 干扰仓 | 实际上下文、JSON 和发现 | 后续 | 待授权 | 与离线主表分开 |
-| R018 | M6 | CodeRabbit/Qodo 沙箱可行性 | 计划上限内的最小案例 | 仓库截断、上下文和原生发现 | 后续 | 待授权 | 需要账号与仓库管理权限 |
-| R019 | M6 | 综合失败分析 | Marshal 与可比运行 | 关系定位、排序、证据、执行和输入失败 | 必须 | 待执行 | 不把运行失败写成无影响 |
-| R020 | M3 | 非 Maven 因果来源调查 | NoRegrets 与 npm 客户端恢复复现包 | 64 条恢复搜索框、来源产率和多目标 Node.js 因果储备 | 必须 | 完成 | escope 保留三臂锚点；test-machinepack、node-minify 与 fis3-plugins 按证据拒绝；terser 四仓统一 4.3.0 后三轮 51 条命令方向与版本 51/51，去结论复核材料已就绪但独立复核未完成 |
-| R021 | M3 | 非 Maven 四臂单正例筛选 | window-stream 0.5.3 到 Godot | 真实破坏、精确恢复、兼容变化和边界 | 必须 | 完成 | 21 项合同下 A0/A2/A3 通过，A1 期望 10 实际 20；只接受单正例锚点，缺多仓负空间、重复与独立复核 |
-| R022 | M3 | Plexus Utils 项目包筛选 | 4.0 XML 拆分与四个真实消费仓 | 两个正例、两个限定负例和 A3 判定 | 必须 | 完成 | 两个 A0/A1/A2 与维护者修复一致；plexus-io 两臂各 49 项通过，build-helper 两臂各 55 项单测加 14 项定向集成测试通过；3.4.2 到 3.5.0 未被四仓检查共同触及，拒绝充当 A3，故只保留三臂候选 |
-| R023 | M3 | SnakeYAML 项目包筛选与重复 | 1.32 到 2.0 与四个真实消费仓 | 两个正例、两个限定负例和真实覆盖的 A3 | 必须 | 完成 | 三轮 60 条命令版本与方向 60/60；两个正例各三次破坏与恢复，两个限定负例和 A3 稳定通过；四仓单次覆盖均命中新增 3 MB 判断；Polyglot 因无真实 A0 淘汰。待独立复核，不接受正式标签 |
-| R024 | M2 | 已执行五包模型语义质检 | Alembic、jcabi、SLF4J、terser、SnakeYAML | 独立于执行过程的标签边界审计 | 必须 | 完成 | 接受 Alembic、SnakeYAML；撤销 jcabi、terser A3 和 RabbitMQ 负标签；模型质检不冒充第二位人工复核 |
-| R025 | M3 | Jackson Databind 项目包筛选 | 完整 33 条、13 仓候选框 | 正例、限定负例和 A3 覆盖 | 必须 | 锚点完成 | Splunk 单正例、两个有覆盖限定负例、四仓 A3；Dropwizard 无维护者精确修复，故不升多正例旗舰包 |
-| R026 | M3 | Log4j Core 项目包筛选 | 完整 7 条、5 仓失败框及外部干扰仓 | 真实三臂、限定负例和 A3 覆盖 | 必须 | 三仓锚点 | Neqsim 合并三臂成立；archifacts、elimu-ai 命中同一 `ServiceLoaderUtil` 调用；缺第四个可接受仓 |
-| R027 | M3 | AssertJ Core 项目包筛选 | 完整 12 条、5 仓候选框 | 两个正例、两个限定负例和 A3 判定 | 必须 | A3 拒绝 | 两条精确修复正例和两个有覆盖负例成立；两轮 A3 均不合格，不计完整项目包 |
-| R028 | M3 | Commons IO 项目包筛选 | 完整 34 条、25 仓候选框 | 真实恢复锚点和完整漏斗 | 必须 | 锚点完成 | Cucumber Reporting、jcabi Maven Plugin 两个单正例三臂锚点；无可靠负空间与 A3，31 条未复现保持未知 |
-| R029 | M3 | Logback Classic 项目包筛选 | 完整 20 条、4 仓候选框 | 三臂、干扰仓和 A3 覆盖 | 必须 | 锚点收口中 | HTML2POP3 单正例三臂成立；两个 Gradle 仓自动连带解析 Core/SLF4J，不能作同一输入负例；A3 也因传递版本不同拒绝 |
-| R030 | M3 | Checkstyle 项目包筛选 | 完整 307 条、53 仓候选框 | 三臂、干扰仓和 A3 覆盖 | 必须 | A3 拒绝 | Gauge、WSS4J 两个强正例和两个有 `FinalClassCheck` 覆盖的限定负例成立；10.12.2 到 10.12.3 未进入真实修复路径 |
-| R031 | M3 | Mockito Core 项目包筛选 | 完整 55 条、15 仓候选框 | 三臂、干扰仓和 A3 覆盖 | 必须 | 锚点完成 | Apache BVal 与 junit-quickcheck 两个不同源输入的单正例三臂锚点成立；无可靠负空间与 A3 |
-| R032 | M3 | Spring Core 项目包筛选 | 完整 32 条、7 仓候选框 | 三臂、干扰仓和 A3 覆盖 | 必须 | 筛选拒绝 | 20 条已复现失败均跨 Java 17 基线；无维护者精确恢复，LPVS 后续大迁移不可拆成 A2；正式接受数 0 |
-| R033 | M3 | request 到 polyclay 关系筛选 | npm 客户端恢复线索 | 三臂归因、负空间与 A3 | 必须 | 语义拒绝 | 重放显示 request 2.18.0 修复旧版空响应崩溃；PolyClay 1.4.0 删除 Couch 适配器，不是同一合同恢复，公开标签方向被推翻 |
-| R034 | M3 | imagemin-optipng 关系筛选 | npm 客户端恢复线索 | 仓库迁移恢复、三臂归因、负空间与 A3 | 必须 | 锚点完成 | A0 8/8、A1 3/8 精确字节失败、只应用维护者两处期望更新后 A2 8/8；限定负例 0，兼容变化只作单目标控制 |
-| R035 | M3 | Ironic Python Agent 到 requirements | OpenDev hardware 登记对照 | 主动三臂、同规则负空间与 A3 | 必须 | 锚点完成 | 历史组合证据与本地 A0/A1/A2 均成立；只应用 Requirements 两行维护者登记后恢复，限定负例 0、A3 0 |
-| R036 | M3 | BreakBot 影响来源测量 | Zenodo 7475823 原始 CSV | 源变化、客户端命中与证据缺口 | 必须 | 完成 | 3786 个合并请求中 83 个命中静态破坏客户端，来自 37 个源仓；累计 481 个客户端命中，只作后续修复挖掘框 |
-| R037 | M3 | babel-preset-es2015 到 rollup preset | npm 客户端恢复线索 | 代码修复与版本调整的分别贡献 | 必须 | 锚点完成 | A0/A1/A2 为通过、失败、恢复；代码或辅助依赖单独均失败，联合后恢复；公开旧目标 1.1.0 更正为可稳定复现的 1.1.1，限定负例与 A3 均为 0 |
-| R038 | M3 | React Redux 到 React Redux Provide | npm 客户端恢复线索 | 精确内部模块删除、维护者修复与 A3 | 必须 | 四臂锚点 | A0/A2 原生 6 项通过，A1 在被删除的生产导入处失败；A3 命中同一导出合同。限定负例 0，待重复和盲审 |
-| R039 | M3 | ESLint 到 TestCafe | npm 客户端恢复线索 | 中间依赖传播、真实修复位置与三臂归因 | 必须 | 锚点完成 | A0/A1/A2 为通过、单一 no-control-regex 失败、恢复；gulp-eslint 4.0.2 三臂不变，真实修复仓为 TestCafe，限定负例和 A3 均为 0 |
-| R040 | M3 | FSE 2024 行为破坏来源测量 | 两个去重测试失败工作簿 | 执行失败搜索框、来源产率和证据缺口 | 必须 | 候选框完成 | 1043 条测试失败聚合为 703 个依赖升级与客户端候选，涉及 323 个源依赖；缺精确仓库修订和维护者修复，逐关系恢复 A0/A1/A2 前不计因果案例 |
-| R041 | M3 | Backbone、MongoDB 到 Backbone Mongo 关系族 | 共享目标的两条 npm 恢复线索 | 精确源拉取请求、共同必要目标与错误公开标签 | 必须 | 锚点完成 | Backbone PR 2878 单行差异复现 A1，Backbone Mongo 与 Backbone ORM 两个维护者修复共同加入后恢复，计 1 条多目标锚点；MongoDB 标签无 A1/A2，拒绝 |
-| R042 | M3 | PowerMock 到 ViSearch 筛选 | FSE 2024 多客户端同签名关系 | 严格 A0、公开失败复现与维护者恢复充分性 | 必须 | 筛选拒绝 | 恢复环境下 A0 71 项通过、A1 复现报告器缺失、A2 同签名失败；严格 A0 另受缺失聚合 JAR 阻挡，接纳 0 条，七条同源记录保持未知 |
-| R043 | M3 | H2 MVCC 多客户端关系族 | FSE 2024 五条模块记录 | 精确源提交、根仓去重与维护者最小恢复 | 必须 | 两正例锚点 | Database Rider 与 CloudSlang Score 均完成原生 A0/A1/A2；五条公开记录折叠为两个根仓、两条正关系，限定负例和 A3 均为 0 |
-| R044 | M3 | JUnit 4.11 到 4.12 多仓筛选 | FSE 2024 八个独立客户端仓 | 单一源边界、维护者恢复和重放准入 | 必须 | 历史筛选拒绝 | 七仓无维护者 A2，PIT 仅有一条未重放线索；真实源历史不是单提交字段改名，接纳 0 条且不执行八套重型环境 |
-| R045 | M3 | JAX-RS 2.0.1 到 2.1-m08 关系族筛选 | FSE 2024 八条目录记录 | 根仓去重、单一源边界和维护者恢复 | 必须 | 历史筛选拒绝 | 八条记录折叠为 Fastjson、Microbule 两个根仓；源提交可隔离，但两仓均无维护者精确 A2，接纳 0 条且不执行重型三臂 |
-| R046 | M3 | Socket.IO 到 Karma 关系筛选 | npm 客户端恢复线索与公开问题记录 | 对象化源变化、生产代码恢复和发布元数据消融 | 必须 | 锚点完成 | 91 项原生浏览器合同下 A0 正常退出，A1 与对象化代码消融臂同签名失败，只应用维护者生产适配后恢复；限定负例和 A3 均为 0 |
-| R047 | M3 | H2 2.0 高密度关系族筛选 | FSE 2024 十六条发布记录 | 根仓折叠、精确关键字提交和维护者恢复 | 必须 | 单正例锚点 | 十六条折叠为十个根仓；只接纳 Fluent JDBC 的 VALUE 关键字三臂，USER 两仓簇均无 A2；与既有 H2 关系共享根仓，不增加独立项目包数 |
+日期：2026-08-25
+
+| 编号 | 阶段 | 目的 | 输入 | 输出 | 状态 |
+|---|---|---|---|---|---|
+| N001 | D0 | 候选目录来源审计 | 12 个目录、生成脚本、项目名录 | provenance 与目录处置 | 完成；OpenTelemetry、Rust 已按独立来源重建，2 个目录可进入 development 测量 |
+| N002 | D0 | 单例目录敏感性处置 | drizzle、opencontainers-image、wandertracks、zuul | development/sensitivity 清单 | 完成；4 个均限制为 development/sensitivity |
+| N003 | D1 | 根仓与关系分组 | 100 条 case、46 种有向关系 | group manifest | 完成；保守形成 12 个 project connected groups |
+| N004 | D1 | split 提案 | group manifest | development/evaluation/holdout 统计 | 提案完成；46/32/22，正式启用阻塞于目录重建 |
+| N005 | D2 | E1 迁移 | specification/implementation labels | E1 manifest | 完成；190 个关系记录进入 E1 |
+| N006 | D2 | E2 复核 | OpenDev、执行锚点、workstreams | 三臂复核 manifest | 部分完成；1 个严格 A0/A1/A2 关系进入 E2，18 个含执行臂或项目包结果的 summary 待逐项复核 |
+| N007 | D2 | E3/E4 盘点 | 限定负例和合格 A3 日志 | execution evidence manifest | 初步盘点完成；当前 0 个自动准入，未用文件名或状态词升级 |
+| N008 | D3 | 小型离线排序 | development 输入 | 可解析 prediction 与失败记录 | 完成；1 个 sensitivity case，读取 3 仓代码，目标 rank=1 |
+| N009 | D4 | development 测量 | baselines、Marshal 适配 | 分层指标与失败分析 | 12 条主测量与单次大小归一化消融完成；全局大小惩罚失败，停止调参并转入新评分规则设计 |
+| N010 | D5 | evaluation/holdout | 固定系统设置 | 正式分层结果 | 仍阻塞于其余五个多案例目录 provenance 与正式 split 启用 |
+| N011 | D0 | 50 条数据就绪 | 第三个独立目录、时点快照、确定性清单 | 50-case data-ready manifest | 完成；Ethereum 重建后合格池 71 条，清单固定 50 条，Marshal 执行为 0 条 |
+| N012 | release verification | 50 条最终 E1 数据集 | 71 条独立目录候选、本地证据、实时 GitHub 记录 | 最终索引、逐项审计与项目隔离 split | 完成；71/71 候选和 154/154 目标关系通过，发布 50 条、107 个目标关系，Marshal 执行为 0 条 |
+
+## 已有资产
+
+| 资产 | 状态 | 新设计中的位置 |
+|---|---|---|
+| 100 条历史适配案例和时点快照 | 完成 | E1 development material，待 N001-N005 |
+| 6 条 OpenDev 因果储备 | 已物化，待独立复核 | E2 candidates |
+| Alembic、SnakeYAML、SLF4J、Log4j 等执行材料 | 日志保留 | N006-N007 重分类 |
+| jcabi、terser、AssertJ、Checkstyle 等三臂或 A3 拒绝材料 | 日志保留 | E2/E3 或拒绝记录，不再因缺 A3 整体淘汰 |
+| Marshal 当前配置覆盖 | 完成 | applicability diagnostic |
+| Marshal 十四仓原生接口诊断 | 完成 | 证明当前入口不读取候选代码 |
+
+旧 R001-R047 的逐候选状态保存在 `EXPERIMENT_TRACKER_20260823_235036.md` 及各 workstream，不删除、不重写；从本表开始按 candidate-bounded 设计推进。
+
+## 2026-08-25 D0-D3 实施记录
+
+- 基础审计与清单：`benchmarks/cross-repo-pr-impact/results/candidate-bounded-foundation-2026-08-25/`
+- 代码读取试运行：`benchmarks/cross-repo-pr-impact/results/candidate-code-pilot-2026-08-25/`
+- 目录重建：`benchmarks/cross-repo-pr-impact/results/catalog-rebuild-2026-08-25/`
+- 当前决定：Ethereum、OpenTelemetry 与 Rust 的 71 条材料具备独立目录 provenance，其中 50 条已进入 data-ready 清单；全数据 evaluation/holdout 不启用。其余九个目录仍保留重建前或敏感性状态。
+- 当前下一步：独立规定一个基于查询词覆盖/特异性的评分规则，不在已完成的 12 条标签上继续搜索大小归一化参数；其间可继续人工复核 18 个含执行臂或项目包结果的 summary，但不得按文件名批量提升到 E2-E4。
+- D4 smoke：`benchmarks/cross-repo-pr-impact/results/candidate-code-eligible-smoke-2026-08-25/`；两条案例读取 21 个候选仓，宏召回与 MRR 均为 0.667，结果只证明两项目执行路径，不作为 development 主结果。
+- D4 development slice：`benchmarks/cross-repo-pr-impact/results/candidate-code-development-12-2026-08-25/`；12 条案例、131 个候选仓时点组合、276,013 个文件。代码排序 top-3 的 MRR/Recall@1/Recall@3 为 0.444/0.194/0.431，非语义全排序对照为 0.380/0.111/0.139。Rust 有明显增益，OpenTelemetry MRR 未超过对照，因此不直接扩到 39 条。
+- D4 analysis-lite：同切片 `sqrt(files_read)` 归一化使 OpenTelemetry MRR 0.167→0.375，但 Rust 1.0→0.125，总体 0.444→0.292。复合成功条件失败；不再在这 12 条标签上搜索其他指数，后续评分设计必须把仓库大小留作诊断而非单调惩罚。
+- 50-case data-ready：`benchmarks/cross-repo-pr-impact/results/ethereum-catalog-rebuild-2026-08-25/`。Ethereum 独立目录重建成功，三个目录的合格池增至 71；固定清单为 35 OpenTelemetry + 4 Rust + 11 Ethereum，共 50 条、663 个时点组合、0 fetch failure。该记录显式标记 `marshal_execution_completed=false`。
+- Final 50 E1 verification：`benchmarks/cross-repo-pr-impact/results/final-dataset-verification-2026-08-25/`。统一审计 71 条候选和 154 条目标关系，全部通过本地与实时记录对照；最终发布 25 OpenTelemetry + 21 Ethereum + 4 Rust，共 50 条、107 条目标关系，项目不跨 split。该集合只支持 E1 历史采纳/适配，不支持 50 条 E2 或 Marshal 实跑结论。

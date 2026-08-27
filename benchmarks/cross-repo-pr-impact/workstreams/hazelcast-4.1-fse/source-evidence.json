@@ -1,0 +1,66 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0157",
+      "fse2024-behavioral-0158"
+    ],
+    "raw_candidate_records": 2,
+    "failure_observations": 2,
+    "unique_modules": 2,
+    "unique_root_repositories": 1,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "hazelcast/hazelcast",
+    "github_repository_id": 3786237,
+    "versions": {
+      "4.0": {
+        "tag": "v4.0",
+        "commit": "8b959f580ab91d42c071eac142feb04c5acea72f",
+        "committed_at": "2019-12-17T09:38:17+01:00",
+        "root_pom_version": "4.0"
+      },
+      "4.0.6": {
+        "tag": "v4.0.6",
+        "commit": "32f20b11ad3c02547120927ca8e55c100c48755a",
+        "committed_at": "2022-02-11T12:15:43+00:00",
+        "root_pom_version": "4.0.6",
+        "boundary": "This patch-line release postdates v4.1 chronologically but remains a minor-zero input in the FSE candidate frame."
+      },
+      "4.1": {
+        "tag": "v4.1",
+        "commit": "072dc5e1b279e651fc6af9b64397c9ca99b2faa1",
+        "committed_at": "2020-11-04T07:45:55+00:00",
+        "root_pom_version": "4.1"
+      }
+    }
+  },
+  "version_metadata_path": {
+    "template_path": "hazelcast/src/main/template/com/hazelcast/instance/GeneratedBuildProperties.java",
+    "template_blob_in_v4_0_v4_0_6_v4_1": "d2f88ee416dec2f00b781cd1ba5f7e51295d7bd9",
+    "template_field": "public static final String VERSION = \"${project.version}\";",
+    "generation": "During process-sources, hazelcast/pom.xml runs maven-resources-plugin copy-resources with filtering=true from src/main/template to src/main/java.",
+    "provider_path": "hazelcast/src/main/java/com/hazelcast/instance/BuildInfoProvider.java",
+    "provider_blob_in_v4_0_v4_0_6_v4_1": "8bfeadff216e59fcf01bdebdf8ce7f9045e872a5",
+    "provider_behavior": "BuildInfoProvider reads GeneratedBuildProperties.VERSION by reflection and passes it unchanged into BuildInfo.",
+    "client_behavior": "BuildInfoUtils.getMinorVersion() obtains BuildInfo.getVersion(), parses the dotted version, and returns token 1.",
+    "conclusion": "The observed 0-to-1 result is caused by Maven project-version metadata entering an unchanged generated-property and provider path, not by a new 4.1 runtime parsing algorithm."
+  },
+  "isolated_mechanism": {
+    "development_line_commit": "b01417639a16b9be41c4a34396bc502fc0257eae",
+    "development_line_parent": "5cfa1d4b924f0f228101fc06cad0b4c04adcd7e6",
+    "committed_at": "2020-01-27T13:31:55+00:00",
+    "subject": "4.1-SNAPSHOT",
+    "change": "The root and hazelcast module POM versions change from 4.0-SNAPSHOT to 4.1-SNAPSHOT, which changes the value filtered into GeneratedBuildProperties.VERSION.",
+    "ancestor_of_v4_0": false,
+    "ancestor_of_v4_0_6": false,
+    "ancestor_of_v4_1": true,
+    "release_commit": "072dc5e1b279e651fc6af9b64397c9ca99b2faa1",
+    "release_parent": "2a1a47760c81d13c53e213c7064499802c7a8aee",
+    "release_change": "The same POM versions change from 4.1-SNAPSHOT to 4.1.",
+    "patch_boundary": "source-mechanism.patch contains only the two actual maintainer POM hunks from the development-line commit; it is source-side evidence, not a target repair."
+  }
+}

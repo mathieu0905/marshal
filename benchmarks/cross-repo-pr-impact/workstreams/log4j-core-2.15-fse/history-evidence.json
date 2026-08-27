@@ -1,0 +1,113 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0337",
+      "fse2024-behavioral-0338"
+    ],
+    "raw_candidate_records": 2,
+    "failure_observations": 2,
+    "unique_root_repositories": 2,
+    "exact_target_revisions_recorded": 0
+  },
+  "source_repository": {
+    "repository": "apache/logging-log4j2",
+    "before_release": {
+      "tag": "rel/2.14.1",
+      "annotated_tag_object": "d2d40d51efeb033f961882b79cddd05b54337fed",
+      "commit": "be881e503e14b267fb8a8f94b6d15eddba7ed8c4",
+      "tagged_at": "2021-03-11T22:47:52-07:00"
+    },
+    "after_release": {
+      "tag": "rel/2.15.0",
+      "annotated_tag_object": "636ce10d676202b2ea4aa2bab9924a5a8c6dd401",
+      "commit": "c30a1398a6697fb832c650870c44284d0052103e",
+      "tagged_at": "2021-12-10T23:20:33-07:00"
+    },
+    "release_delta": {
+      "commits": 187,
+      "files_changed": 455,
+      "insertions": 17038,
+      "deletions": 3611,
+      "boundary": "The broad security release delta and its Log4Shell label are not used as causal evidence for these failures."
+    },
+    "exact_mechanism": {
+      "commit": "97ec707d69280ef57aed8fd5831dc4f3a75f7715",
+      "committed_at": "2021-07-28T11:05:20-04:00",
+      "subject": "Add and resuse constants to avoid creating empty arrays over and over.",
+      "in_before_release": false,
+      "in_after_release": true,
+      "api_change": "Adds public static final byte[] Constants.EMPTY_BYTE_ARRAY.",
+      "core_change": "ConfigurationSource.NULL_SOURCE and COMPOSITE_SOURCE now read Constants.EMPTY_BYTE_ARRAY during static initialization.",
+      "failure_when_only_core_is_updated": "log4j-core 2.15.0 links to a field absent from log4j-api 2.14.1, producing NoSuchFieldError: EMPTY_BYTE_ARRAY."
+    }
+  },
+  "target_repositories": [
+    {
+      "repository": "oboehm/gdv.xport",
+      "default_branch": "develop",
+      "observed_remote_head": "7820c991bd81e55a19955ef1650a6073accc4cf2",
+      "reachable_ref_count": 142,
+      "reachable_heads_tags_commits": 2711,
+      "reachable_all_refs_commits": 2733,
+      "a0_commit": "3f806a2a37029b6d2a0afbc716917dacc19bea17",
+      "core_pr_head": "bafd4c86fe95ce761e31d206d64fe5358451ff77",
+      "a1_merge_commit": "3bf9996a0afdbf426e920e03aafe069cab4e2491",
+      "strict_repair_source": {
+        "commit": "a84175f220b8a7925a97ce22f211303d47960ba6",
+        "author": "Oli B <o.oboehm@optica.de>",
+        "committed_at": "2021-12-11T22:52:15+01:00",
+        "parent_is_a1": true,
+        "isolated_hunk": "pom.xml log4j-api 2.14.1 to 2.15.0",
+        "retains_log4j_core": "2.15.0",
+        "other_commit_changes": "Removes two PatternTesting dependencies and SmokeRunner/IntegrationTest annotations from target tests."
+      },
+      "runtime_failure_detail": {
+        "public_wrapper": "java.util.ServiceConfigurationError: org.junit.platform.launcher.TestExecutionListener: Provider patterntesting.runtime.junit.extension.SmokeTestExtension could not be instantiated",
+        "recovered_inner_cause": "java.lang.NoSuchFieldError: EMPTY_BYTE_ARRAY",
+        "first_source_frame": "org.apache.logging.log4j.core.config.ConfigurationSource.<clinit>(ConfigurationSource.java:56)"
+      }
+    },
+    {
+      "repository": "mitre/HTTP-Proxy-Servlet",
+      "repository_aliases": [
+        "dsmiley/HTTP-Proxy-Servlet"
+      ],
+      "default_branch": "master",
+      "observed_remote_head": "9a522c5c021e6941cd951941ed49d96ff996f1eb",
+      "alias_head_matches": true,
+      "reachable_ref_count": 156,
+      "reachable_heads_tags_commits": 275,
+      "reachable_all_refs_commits": 441,
+      "only_2_15_0_commit": {
+        "commit": "ef87a33a2f2c6cb4be0f2afed48762e775ed2ceb",
+        "parent": "c17fb9f2915ab7820266c4950e8c005b1fa41cb4",
+        "changed_paths": [
+          "pom.xml"
+        ],
+        "change": "test-scope log4j-core 2.14.1 to 2.15.0",
+        "contained_by_head_or_tag": false
+      },
+      "later_mainline_upgrade": {
+        "commit": "5f7eab2504da024ed4f017e6624526e8acb9c973",
+        "change": "Synchronizes log4j-jcl and log4j-core from 2.14.1 directly to 2.16.0."
+      },
+      "strict_maintainer_a2_under_2_15_0": null,
+      "failure_specificity": "The workbook preserves only the proxy client's HTTP 500 response and no backend or Log4j cause."
+    }
+  ],
+  "admission_result": {
+    "raw_records": 2,
+    "candidate_relations": 2,
+    "unique_root_relations": 2,
+    "exact_source_mechanisms": 1,
+    "strict_maintainer_repairs": 1,
+    "replayed_relations": 1,
+    "accepted_relations": 1,
+    "rejected_relations": 1,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}

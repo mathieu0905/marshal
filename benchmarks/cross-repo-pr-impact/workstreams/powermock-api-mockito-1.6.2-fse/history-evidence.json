@@ -1,0 +1,135 @@
+{
+  "observed_at": "2026-08-25",
+  "source_frame": {
+    "doi": "10.5281/zenodo.10678852",
+    "record_url": "https://zenodo.org/records/11498333",
+    "matching_candidate_ids": [
+      "fse2024-behavioral-0604",
+      "fse2024-behavioral-0605",
+      "fse2024-behavioral-0606"
+    ],
+    "candidate_records": 3,
+    "failure_observations": 4,
+    "unique_root_repositories": 3,
+    "exact_target_revisions_recorded": 0,
+    "frame_rule": "Include every record whose previous_version is 1.6.1 and breaking_version is 1.6.2; current_version is not used as an exclusion filter."
+  },
+  "source_repository": {
+    "repository": "powermock/powermock",
+    "remote_ref_count": 9,
+    "tag_count": 44,
+    "reachable_commit_count": 1653,
+    "last_passing_probe": {
+      "version": "1.6.1",
+      "tag_commit": "a1d86e75a40e741b48c6ed9d4093d7b2ff4c6805",
+      "date": "2015-01-03T08:22:10+01:00"
+    },
+    "breaking_probe": {
+      "version": "1.6.2",
+      "tag_commit": "b468c05a045e6ed942aa63f814242dc2dceb4be0",
+      "date": "2015-03-16T10:57:17+01:00"
+    },
+    "isolated_commit": {
+      "commit": "d9615ecf221413b1661a891d02de43175f460b6b",
+      "parent": "5e30d46c137a15f884a3a43db130f5cbd5dee91d",
+      "date": "2015-01-29T12:32:05+01:00",
+      "subject": "Fixes Mockito 1.10.9+ incompatibility, by repackaging CGLIB MockMaker",
+      "mechanism": "PowerMock replaces Mockito's internal CglibMockMaker with a vendored copy, invokes AcrossJVMSerializationFeature during mock creation, directly links MockitoSerializationIssue, and changes its managed Mockito version from 1.10.8 to 1.10.19."
+    },
+    "binary_symbol_check": {
+      "symbol": "org/mockito/exceptions/base/MockitoSerializationIssue.class",
+      "mockito_core_1_9_5": "absent",
+      "mockito_core_1_10_19": "present",
+      "mockito_all_1_9_5": "absent",
+      "mockito_all_1_10_19": "present"
+    },
+    "attribution_boundary": "The isolated commit exactly explains fse2024-behavioral-0605. The truncated NoSuchMethodError in 0606 and cleanup-only NullPointerException in 0604 do not preserve enough information to assign them to this commit rather than another 1.6.2 change."
+  },
+  "fixed_version_scan": {
+    "scope": "Every commit reachable from every fetched remote branch and tag in each client repository.",
+    "match": "A build-configuration blob pairing org.powermock:powermock-api-mockito with literal version 1.6.2.",
+    "working_directory": ".work/powermock-api-mockito-1.6.2-fse",
+    "outputs": {
+      "goodies-fixed-1.6.2.tsv": 0,
+      "uaiMockServer-fixed-1.6.2.tsv": 0,
+      "casperjs-runner-maven-plugin-fixed-1.6.2.tsv": 0
+    }
+  },
+  "target_repositories": [
+    {
+      "repository": "sonatype/goodies",
+      "default_branch": "main",
+      "remote_head": "2d7420e7e9753073892e41643287995df0b4a5ad",
+      "remote_ref_count": 9,
+      "tag_count": 51,
+      "reachable_commit_count": 651,
+      "version_history": [
+        {
+          "commit": "a235648aeaf0a7114517e5da18526d9827b66a81",
+          "date": "2015-02-05T14:01:25+01:00",
+          "before": "1.5",
+          "after": "1.6.1"
+        },
+        {
+          "commit": "ade92866b12e65d826e43158f138ec3ce7c410a6",
+          "date": "2022-02-16T19:49:52-05:00",
+          "change": "Remove PowerMock and move to mockito-inline 4.3.1"
+        }
+      ],
+      "compatibility_shape": "The PowerMock dependency excludes mockito-all while dependency management pins mockito-core 1.9.5.",
+      "commits_declaring_powermock_api_mockito_1_6_2": 0,
+      "exact_maintainer_repair_under_1_6_2": null
+    },
+    {
+      "repository": "uaihebert/uaiMockServer",
+      "default_branch": "master",
+      "remote_head": "8b0090d4018c2f430cfbbb3ae249347652802f2b",
+      "remote_ref_count": 4,
+      "tag_count": 8,
+      "reachable_commit_count": 310,
+      "version_history": [
+        {
+          "commit": "e102bdea899c1c831e3ab4261885f81c51bc38a9",
+          "date": "2015-02-16T21:47:12-02:00",
+          "change": "Introduce powermock.version 1.6.1 and the PowerMock test dependencies"
+        },
+        {
+          "commit": "9fac9876b873f7f8bbb3aae53cae15c55ec2e4bb",
+          "date": "2015-04-13T15:26:25-03:00",
+          "change": "Add explicit mockito-all 1.10.19 while retaining powermock.version 1.6.1"
+        }
+      ],
+      "commits_declaring_powermock_api_mockito_1_6_2": 0,
+      "exact_maintainer_repair_under_1_6_2": null
+    },
+    {
+      "repository": "linsolas/casperjs-runner-maven-plugin",
+      "default_branch": "master",
+      "remote_head": "dbc2c26a86a19c157045553da856ebba02f819fa",
+      "remote_ref_count": 3,
+      "tag_count": 2,
+      "reachable_commit_count": 120,
+      "version_history": [
+        {
+          "commit": "39815ad102cf9fb40244f34b26ad55268b0c5390",
+          "date": "2014-08-19T17:26:02+02:00",
+          "change": "Introduce powermock-module-junit4 and powermock-api-mockito at 1.5.5"
+        }
+      ],
+      "commits_declaring_powermock_api_mockito_1_6_2": 0,
+      "exact_maintainer_repair_under_1_6_2": null
+    }
+  ],
+  "admission_result": {
+    "candidate_records": 3,
+    "unique_root_relations": 3,
+    "exact_source_mechanisms_identified": 1,
+    "candidate_failures_explained_by_exact_source_mechanism": 1,
+    "exact_target_revisions": 0,
+    "exact_maintainer_repairs": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0,
+    "limited_negatives": 0,
+    "a3_relations": 0
+  }
+}

@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java b/src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java
+index 392cdb539..aeed52e39 100644
+--- a/src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java
++++ b/src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java
+@@ -23,6 +23,7 @@
+ import java.util.ArrayList;
+ import java.util.Arrays;
+ import java.util.Collection;
++import java.util.Comparator;
+ import java.util.List;
+ 
+ import org.apache.commons.lang3.ArrayUtils;
+@@ -639,7 +640,9 @@ protected void appendFieldsIn(final Class<?> clazz) {
+             this.reflectionAppendArray(this.getObject());
+             return;
+         }
++        // The elements in the returned array are not sorted and are not in any particular order.
+         final Field[] fields = clazz.getDeclaredFields();
++        Arrays.sort(fields, Comparator.comparing(Field::getName));
+         AccessibleObject.setAccessible(fields, true);
+         for (final Field field : fields) {
+             final String fieldName = field.getName();

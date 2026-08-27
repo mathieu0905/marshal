@@ -1,0 +1,61 @@
+{
+  "observed_at": "2026-08-25",
+  "candidate_frame": {
+    "query": {
+      "coordinate": "org.apache.commons:commons-lang3",
+      "last_passing_version": "3.9",
+      "breaking_version": "3.10"
+    },
+    "candidate_ids": [
+      "fse2024-behavioral-0299",
+      "fse2024-behavioral-0300"
+    ],
+    "raw_candidate_records": 2,
+    "unique_root_repositories_after_github_id_deduplication": 2
+  },
+  "source_repository": {
+    "repository": "apache/commons-lang",
+    "github_repository_id": 206378,
+    "before": {
+      "tag": "commons-lang-3.9",
+      "commit": "abb39c22c0e538fff03ea4e53d78ee60c6c08092",
+      "committed_at": "2019-04-10T21:25:46-04:00"
+    },
+    "after": {
+      "tag": "rel/commons-lang-3.10",
+      "commit": "e0b474c0d015f89a52c4cf8866fa157dd89e7d1c",
+      "committed_at": "2020-03-23T09:14:11-04:00"
+    },
+    "mechanism_commit": {
+      "commit": "1dabf262c90d76958175e98f7ac9d0189fd7fbf2",
+      "parent": "182b2506b304463f8f1a9ad765c6db0420fa356f",
+      "authored_at": "2019-11-23T20:51:32-06:00",
+      "subject": "sort fields in ReflectionToStringBuilder for deterministic order (#481)",
+      "ancestor_of_3_9": false,
+      "ancestor_of_3_10": true,
+      "production_path": "src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java",
+      "before": "appendFieldsIn iterates Class.getDeclaredFields() in the JVM-provided order.",
+      "after": "appendFieldsIn sorts the Field array by Field.getName() before appending values.",
+      "upstream_test_evidence": "The same commit rewrites ReflectionToStringBuilder expectations into alphabetic field-name order."
+    }
+  },
+  "failure_mapping": [
+    {
+      "candidate_id": "fse2024-behavioral-0299",
+      "mapping": "allowNewAssignment sorts before name, exactly matching the published Wasabi actual value."
+    },
+    {
+      "candidate_id": "fse2024-behavioral-0300",
+      "mapping": "almostPI sorts before first, second and third, exactly matching the new runtime value embedded in the published assertion message."
+    }
+  ],
+  "strict_a2_screen": {
+    "roots_with_fixed_3_10_revision": 1,
+    "fixed_3_10_revisions": [
+      "a80e9937ab374e0fc81f7f1ba1604b56ad3e1d1f"
+    ],
+    "exact_maintainer_repairs_under_fixed_3_10": 0,
+    "replay_allowed": false,
+    "accepted_relations": 0
+  }
+}

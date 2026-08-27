@@ -83,6 +83,12 @@ DISTRACTORS = {
     },
 }
 
+INDEPENDENT_CATALOG_SOURCES = {
+    "ethereum": "ethereum-protocol-specs-and-clients",
+    "opentelemetry": "opentelemetry-language-sdks-and-collectors",
+    "rust": "rust-governed-toolchain",
+}
+
 OPENDEV_IMPACT_KINDS = {
     "shared_runtime_metadata": "data_schema",
     "deployment_configuration": "deployment_configuration",
@@ -385,9 +391,16 @@ def main() -> int:
         target_repositories.setdefault(catalog_for(case), set()).update(
             target["repository"] for target in case["targets"]
         )
+    source_snapshots = json.loads(
+        (ROOT / "catalog-source-snapshots.json").read_text(encoding="utf-8")
+    )["sources"]
     catalogs = {}
     for project, targets in sorted(target_repositories.items()):
-        repositories = sorted({*targets, *DISTRACTORS[project]})
+        source_id = INDEPENDENT_CATALOG_SOURCES.get(project)
+        if source_id:
+            repositories = sorted(source_snapshots[source_id]["repositories"])
+        else:
+            repositories = sorted({*targets, *DISTRACTORS[project]})
         catalogs[project] = {"repositories": repositories}
         if not targets <= set(repositories):
             raise SystemExit(f"catalog {project} omits a target repository")

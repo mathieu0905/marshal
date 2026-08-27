@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-972691",
+  "expected_check_paths": [
+    "cinder/tests/unit/test_utils.py"
+  ],
+  "mechanism": "a newly constrained oslo.concurrency version enforces the processutils.execute signature against target tests that pass an unsupported keyword",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-972691--target-973693",
+  "repair_template": "adapt existing target tests to the dependency's enforced call signature",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff target and oslo.concurrency 7.3.0 installed, test_execute_root_and_helper fails because the dependency's autospecced processutils.execute rejects the target test's unsupported foo keyword; the TypeError is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff target tests, maintainer target diff, installed-version probes, identical three-arm stestr command, and all A0/A1/A2 logs.",
+    "source_effect": "The opening source diff changes the sole oslo.concurrency pin from 7.2.0 to 7.3.0 in upper-constraints.txt.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/973693.patch",
+    "target_repair": "The maintainer autospecs the existing processutils.execute mocks and replaces only the unsupported foo calls and expectations with the real check_exit_code parameter. A2 retains oslo.concurrency 7.3.0 and restores all 148 tests without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-972691-opening",
+  "target_repository": "openstack/cinder",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}
