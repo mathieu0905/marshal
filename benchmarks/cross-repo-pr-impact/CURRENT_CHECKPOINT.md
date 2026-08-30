@@ -1,6 +1,6 @@
 # Candidate-bounded implementation checkpoint
 
-日期：2026-08-27
+日期：2026-08-30
 
 ## Current route
 
@@ -10,7 +10,9 @@
 
 ## Current active node
 
-权威集合是 `results/formal-e2-benchmark-50-2026-08-27/`，权威冻结后系统运行是 `results/formal-e2-benchmark-50-system-run-v4-2026-08-27/`。前者的 `verification.json` 独立重解析全部三臂证据与分组，后者的 `verification.json` 独立重算 50 条分数并检查统一标签揭示边界。`results/formal-e2-50-release-2026-08-26/` 仍只保留为 withdrawn diagnostic 历史材料。
+权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，权威冻结后系统运行是 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/`。前者的 `verification.json` 独立重解析全部三臂证据与分组，后者的 `verification.json` 独立重算 50 条分数并检查统一标签揭示边界。2026-08-27 的首个正式集合仍是有效历史证据，但已被本轮全量重建和重跑取代；`results/formal-e2-50-release-2026-08-26/` 仍只保留为 withdrawn diagnostic 历史材料。
+
+专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。它当前仍停在 2026-08-27 的抽取提交 `a1db7b4`；在同步本轮 release、冻结运行和文档，并在抽取布局重新运行两个 verifier 之前，marshal 主仓仍是唯一权威来源。
 
 ## Node history
 
@@ -22,9 +24,10 @@
 
 - 可保留的基础设施：两个目录均先于标签审查生成并跨案例复用；OpenStack 目录 216 仓，StarlingX 目录 75 仓。436 条 opening 源事件、纯代码 diff 和候选仓时点解析可继续用于真实目标任务筛选。
 - 被撤回的结果：50 条后验引用检查、`formal_release_ready=true`、`formal_release_verified=true` 和 native Marshal 正式零分均不得作为正式结论。
-- 正式集合结果：50/50 条均为机器复验的 A0=0、A1!=0、A2=0，50/50 有语义批准、catalog target membership 和 cutoff target snapshot；50 个 `(source_change_family, target)` 唯一关系来自 25 个有向仓对，按 16 个连通组分为 development/evaluation/holdout = 30/10/10，四个分组轴的跨 split 泄漏为 0。
-- 冻结后系统运行：50/50 个 blind 容器均为 network none、标签存储挂载数为 0、推理期标签读取数为 0，且全部预测完成时间早于统一标签读取时间；系统实际读取 14,291 个候选仓和 328,717 个文本文件。独立 verifier 重算全部 50 条逐例及聚合分数后通过。
-- 正式分数：evaluation 的 MRR/Recall@1/@3/@5 为 0.2833/0.2/0.4/0.4；holdout 为 0.125/0.1/0.1/0.2。系统没有提出可运行检查，因此 runnable check rate 为 0，50 条 execution result 均保持 `not_assessed`；这不改变数据标签本身已经由独立真实三臂 replay 验证的事实。
+- 正式集合结果：50/50 条均为机器复验的 A0=0、A1!=0、A2=0，50/50 有语义批准、catalog target membership 和 cutoff target snapshot；50 个 `(source_change_family, target)` 唯一关系来自 23 个有向仓对，按 15 个连通组分为 development/evaluation/holdout = 30/10/10，四个分组轴的跨 split 泄漏为 0。
+- 冻结后系统运行：50/50 个 blind 容器均为 network none、标签存储挂载数为 0、推理期标签读取数为 0，且全部预测完成时间早于统一标签读取时间；系统实际读取 14,367 个候选仓和 331,351 个文本文件。独立 verifier 重算全部 50 条逐例及聚合分数后通过。
+- 正式分数：development 的 MRR/Recall@1/@3/@5 为 0.0722/0/0.1667/0.1667；evaluation 为 0.2333/0.2/0.3/0.3；holdout 为 0.25/0.2/0.3/0.3。系统没有提出可运行检查，因此 runnable check rate 为 0，50 条 execution result 均保持 `not_assessed`；这不改变数据标签本身已经由独立真实三臂 replay 验证的事实。
+- 本轮验收加固：blind 可见 manifest 改用包内相对路径并拒绝关系标签泄漏；多 pin opening diff 必须完整记录且 routed pin 与三臂安装版本一致；同一 catalog 只有 `constructed_at` 不同时才允许确定性合并，成员、provenance 或其他定义差异仍整体拒绝。
 - 新增结果：OpenTelemetry 与 Rust 目录精确匹配独立来源清单，覆盖 39 条案例；OpenTelemetry 新增 Ruby SDK 的 35 个时点快照均成功解析。
 - 单条正式池进度：50 条已完成 opening-cutoff public input、断网且标签未挂载的 blind prediction、真实 `0/1/0` 三臂、失败签名排他检查、维护者补丁施加到 cutoff target、语义批准与 verifier。最后补齐的三条是 Wandertracks vendored basemap parity、OpenStack requirements→Magnum 的 `oslo.policy` `enforce_scope` 移除，以及同一 source opening 对 Octavia 的独立目标修复；三条均保持目标仓原生命令与原难度。`formal-opendev-902133--target-902048` 虽机器为 `0/1/0`，但 A2 删除选中失败测试并使模块由 12 项降为 11 项，按 skill 的 no-test-deletion 规则不进入正式池。
 - 新一轮批量筛选：34 条剩余 touched-test 关系中仅两条得到机器 `0/1/0`；其中 `982599→982593` 通过语义验收并已计入，`902133→902048` 因删除选中测试拒绝。其余 27 条方向不符、5 条环境建立失败，均未降级准入。旧 `e2-041` 的维护者补丁不能施加到 opening-cutoff target；旧 `e2-018` 也存在同一问题，均拒绝。
@@ -55,17 +58,17 @@
 
 ## Next resume step
 
-数据集构造目标已完成。后续若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split；不得局部手改权威索引。若研究 ranker，只在 development 上选择规则，再以预先声明的方式运行 evaluation/holdout，并继续保持冻结后统一揭示标签的执行边界。
+数据集构造目标已完成。当前发布工作是把 2026-08-30 的权威集合、冻结运行、skill 和治理文档同步到专用数据仓库，并在该抽取布局重新运行两个 verifier。后续若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split；不得局部手改权威索引。若研究 ranker，只在 development 上选择规则，再以预先声明的方式运行 evaluation/holdout，并继续保持冻结后统一揭示标签的执行边界。
 
 ## First-read files
 
 1. `CURRENT_CHECKPOINT.md`
-2. `results/formal-e2-benchmark-50-2026-08-27/README.md`
-3. `results/formal-e2-benchmark-50-2026-08-27/verification.json`
-4. `results/formal-e2-benchmark-50-2026-08-27/metrics.json`
-5. `results/formal-e2-benchmark-50-2026-08-27/final-index.jsonl`
-6. `results/formal-e2-benchmark-50-system-run-v4-2026-08-27/verification.json`
-7. `results/formal-e2-benchmark-50-system-run-v4-2026-08-27/metrics.json`
+2. `results/formal-e2-benchmark-50-v2-2026-08-30/README.md`
+3. `results/formal-e2-benchmark-50-v2-2026-08-30/ACCEPTANCE.md`
+4. `results/formal-e2-benchmark-50-v2-2026-08-30/verification.json`
+5. `results/formal-e2-benchmark-50-v2-2026-08-30/final-index.jsonl`
+6. `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/verification.json`
+7. `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/metrics.json`
 8. `.agents/skills/marshal-e2-case-builder/SKILL.md`
 9. `TASK_DEFINITION.md`
 

@@ -1,8 +1,14 @@
 # 跨仓影响评测数据集计划
 
-日期：2026-08-25
+日期：2026-08-30
 
-## 当前决定
+## 2026-08-30 完成状态
+
+candidate-bounded strict-E2 数据集构造、组级 split、正式发布和首次冻结运行已经闭环。当前权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，包含 50 条 verifier-clean strict-E2、15 个隔离组和 30/10/10 split；匹配的 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/` 完成 50 个断网盲容器和统一揭签后的全量计分复核。两个 verifier 均为 `verified=true`、`blockers=[]`。
+
+后续默认工作从“继续扩采”切换为发布维护：同步专用私有数据仓库 `mathieu0905/cross-repo-breakage-benchmark`，在抽取布局重新验收，并在替换任何 case 时通过单条 skill 后重新生成整个 release。E3、E4、A3 和开放世界仓库发现仍不是当前 E2 主集的补齐目标。
+
+## 2026-08-25 原始决定（保留执行审计）
 
 数据集采用 candidate-bounded 任务：候选仓由数据集提供，系统负责在候选仓内进行目标排序、影响定位和可选执行验证。开放世界仓库发现不进入当前主任务。
 
@@ -19,7 +25,7 @@
 5. 多个真实 A0/A1/A2 锚点、部分 E3 有界负例和部分合格 A3；原始日志与拒绝记录完整保留。
 6. Marshal 当前 Cowboy 配置覆盖和单仓接口缺口的实测记录。
 
-## 当前缺口
+## 2026-08-25 当时缺口
 
 ### P0：候选目录来源
 
@@ -128,3 +134,12 @@ Ethereum 目录按 ethereum.org 的 execution/consensus client 表以及 `ethere
 正式输入口径另行收紧：34 条没有可证明的 PR opening-state 因果输入，37 条仍使用 outcome-conditioned 目录。当前只有 5 条同时满足 opening cutoff 和正式目录，其中 4 条属于 development；holdout 的 `e2-041` 已用 736 仓目录、617 个可用时点快照断网实跑，目标全排名 174，Recall@1/3/5、MRR 和检查位置找回均为 0。该单例是可复现的正式结果，不是 50 条正式总分。
 
 六个其余非 development opening case 的目录路线已完成排查。Mockito 完整反向依赖查询覆盖 25,642 个包和 8,501 个 GitHub 仓，仍缺已知目标；四个 Rust case 的官方 Crater 全量实验能确认 registry 执行对象，但目标均不是顶层仓候选，把回归行用作目录会依赖结果；ASM 的共享 Maven 目录缺目标，单独构造 ASM 目录又无法跨案例复用。因此这六条保留 development/diagnostic，并在 `results/e2-opening-catalog-resolution-2026-08-26/` 留下逐条排除依据。后续只有出现新的标签无关治理/构建目录或完整 Crater 输入到仓库快照的全量映射时，才重新物化新增正式 case。
+
+## 2026-08-30 formal benchmark v2
+
+- 50/50 条通过当前 `build_case.py verify`，均有真实 A0=0/A1!=0/A2=0、排他失败签名、完整维护者 A2 补丁和语义批准。
+- 50/50 条目标仓位于标签独立 Domain Pack，opening-cutoff target snapshot 可用；catalog 定义冲突不得靠合并成员解决，只有其他字段完全相同的重建时间差可以确定性归一。
+- 50 条按有向关系、source change family、规范化机制和 repair template 形成 15 个连通组，分配为 30 development、10 evaluation、10 holdout，跨 split 泄漏为 0。
+- 冻结运行读取 14,367 个候选仓、331,351 个文本文件；50 个容器均断网且不挂载标签，所有预测完成后才统一读取标签，逐例和聚合分数重算一致。
+- 非目标候选继续为 `unjudged`，不报告 precision、F1、误报率或 specificity；系统没有提出可运行检查，因此执行结论保持 `not_assessed`。
+- marshal commit `7ebe4624` 已提交数据集和冻结运行。专用数据仓库尚停在 2026-08-27 抽取版，完成同步和抽取布局复验前不得把它写成当前权威镜像。

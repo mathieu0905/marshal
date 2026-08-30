@@ -4,7 +4,9 @@
 
 历史适配 E1 与可执行因果破坏 E2 使用相同输出接口，但必须分别计分和解释；有界负例 E3 和兼容变化 E4 是独立证据层，不是每条 E2 正例的准入条件。完整设计见 `CANDIDATE_BOUNDED_DESIGN.md`，任务边界见 `TASK_DEFINITION.md`。
 
-`results/formal-e2-50-release-2026-08-26/` 的正式声明已撤回。目录中的 50 个 0/1/0 是后验生成的引用表面检查，不是目标仓预先存在的构建或测试任务，因此只能作为 development 候选。新采集正式 strict-E2 当前为 0/50；OpenStack（216 仓）与 StarlingX（75 仓）目录、opening diff 和时点快照基础设施仍可复用。
+当前权威 E2 集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`：50/50 条均通过当前单条流水线和集合 verifier，具备标签独立且可复用的候选目录、opening-cutoff snapshot、断网盲预测、真实 A0=0/A1!=0/A2=0、A1 排他失败签名、完整维护者 A2 补丁和语义批准。集合按 15 个连通组分为 30/10/10，四个声明分组轴的跨 split 泄漏为 0。匹配的冻结运行位于 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/`；50 个预测全部早于统一揭签，推理期标签挂载和读取均为 0。
+
+`results/formal-e2-50-release-2026-08-26/` 的正式声明仍为撤回状态。2026-08-27 的首个正式集合保留为历史证据，但已被 2026-08-30 的全量重建和冻结运行取代。验收命令、存储边界和不支持的声明见当前 release 的 `ACCEPTANCE.md`。专用私有数据仓库为 `mathieu0905/cross-repo-breakage-benchmark`；它尚未同步本轮 release，因此当前仍以 marshal 主仓为准。
 
 现有 100 条案例及其时点快照继续保留。Ethereum、OpenTelemetry 与 Rust 目录已按独立项目来源重建，覆盖 71 条案例；其他目录仍由已知目标与手工干扰仓合并生成，或属于单例 sensitivity 目录。100 条原始索引仍标为 `test`，不能产生全数据正式无泄漏主分数。在三个重建目录内，已逐条完成 71 条候选、154 条目标关系的本地和实时记录核对，并按项目隔离选出 50 条最终 E1 数据：OpenTelemetry 25、Ethereum 21、Rust 4，共 107 条已验证目标关系。权威入口是 `results/final-dataset-verification-2026-08-25/final-index.jsonl`；它验证的是历史采纳/适配标签，不表示已经运行 Marshal，也不把 E1 冒充 A0/A1/A2 因果 E2。
 
@@ -19,7 +21,7 @@
 
 旧的 99 条“规范仓固定映射到单一实现仓”数据保存在 `cases-spec-retrieval-v1/`，不再进入正式索引。
 
-E2 层当前有 6 个通过初次语义复核的 OpenDev 因果储备：历史回挖保留 2 个，滚动窗口新增 4 个。扩大到 2026-08-01 之后的窗口共检查 394 个变更、20 个依赖转换和 27 个结构通过任务；扣除已复核重复项后，20 个新任务中只有 5 个支持源差异导致的跨仓修复，对应 3 个新案例。Prow 约 90 天预提交历史另扫描 35,805 次执行，从 1,090 个状态窗口收紧到 11 个结构候选，但代码树和失败语义复核后接受 0 个。通用 Prow 历史因此不作为主体来源；完整漏斗见 `results/prow-three-arm-scan-2026-08-23.json`。独立的 Crater 版本化生态破坏子轨已完成 4 条三臂重放，等待按 E2 口径迁移。
+以下采集漏斗是形成当前正式集之前的历史记录，不表示当前完成数。2026-08-23 时，E2 层有 6 个通过初次语义复核的 OpenDev 因果储备：历史回挖保留 2 个，滚动窗口新增 4 个。扩大到 2026-08-01 之后的窗口共检查 394 个变更、20 个依赖转换和 27 个结构通过任务；扣除已复核重复项后，20 个新任务中只有 5 个支持源差异导致的跨仓修复，对应 3 个新案例。Prow 约 90 天预提交历史另扫描 35,805 次执行，从 1,090 个状态窗口收紧到 11 个结构候选，但代码树和失败语义复核后接受 0 个。通用 Prow 历史因此不作为主体来源；完整漏斗见 `results/prow-three-arm-scan-2026-08-23.json`。独立的 Crater 版本化生态破坏子轨完成了 4 条三臂重放，并在后续正式化阶段按新口径重新处理。
 
 2026-08-25 的后续滚动检查覆盖 2026-08-24 以来 81 个含协调说明的变更和 2 个窗口内依赖转换。一个转换因源代码变化被结构拒绝；另一个在 4 个任务上通过组合核验，但四个失败都发生在 Ceph 仓库变化执行前的 PBR 与旧 Pip 环境，目标补丁只升级 Pip，因此语义拒绝。OpenDev 因果储备仍为 6 条；14 个去重转换、33 个任务已统一进入不含初次决定的盲审材料。
 
@@ -166,6 +168,9 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 
 | 文件 | 内容 |
 |---|---|
+| `results/formal-e2-benchmark-50-v2-2026-08-30/` | 当前 50 条 candidate-bounded strict-E2 权威集合、完整逐例证据、30/10/10 split 与验收说明 |
+| `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/` | 当前 50 容器冻结运行、统一揭签边界、预测、逐例分数与重算验证 |
+| `results/INDEX.md`、`CURRENT_CHECKPOINT.md` | 发布链导航、被取代/撤回材料和当前恢复入口 |
 | `INPUT_SPEC.md` | 可见输入、时间边界和网络限制 |
 | `CANDIDATE_BOUNDED_DESIGN.md` | 已知候选仓主任务、目录规则、证据层、split 和指标设计 |
 | `TASK_DEFINITION.md` | 统一输出接口及 E0-E4 的独立结论边界 |
@@ -206,7 +211,7 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 | `candidates/fse2024-behavioral-breakage-frame.jsonl` | 703 个待恢复仓库修订与维护者修复的执行失败候选 |
 | `results/crater-replay-*.json` | 4 条版本化包三臂重放、可比性、排除尝试和限制 |
 
-## Marshal 当前实测
+## Marshal 历史实测（2026-08-22）
 
 当前 `CowboyPack` 只对预登记的 Cowboy 仓库、路径和跨仓契约产生目标仓。把 100 条外部校准案例的源仓别名与修改路径交给现有配置后，契约命中为 0/100，已知目标宏平均召回、平均倒数排名和前 1/3/5 项召回均为 0，平均预测仓数为 0。结果位于 `results/current-marshal-score-2026-08-22.json`。
 
@@ -217,6 +222,11 @@ python benchmarks/cross-repo-pr-impact/prepare_case_inputs.py \
 ## 验证
 
 ```bash
+python3 .agents/skills/marshal-e2-case-builder/scripts/verify_formal_release.py \
+  --release-dir benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-v2-2026-08-30
+python3 .agents/skills/marshal-e2-case-builder/scripts/verify_frozen_benchmark.py \
+  --release-dir benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-v2-2026-08-30 \
+  --output-dir benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-system-run-v3-2026-08-30
 python benchmarks/cross-repo-pr-impact/validate.py --expected-count 100
 python -m unittest discover -s benchmarks/cross-repo-pr-impact -p 'test_*.py' -v
 python benchmarks/cross-repo-pr-impact/score.py --self-check
