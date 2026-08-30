@@ -6,7 +6,7 @@
 
 candidate-bounded strict-E2 数据集构造、组级 split、正式发布和首次冻结运行已经闭环。当前权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，包含 50 条 verifier-clean strict-E2、15 个隔离组和 30/10/10 split；匹配的 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/` 完成 50 个断网盲容器和统一揭签后的全量计分复核。两个 verifier 均为 `verified=true`、`blockers=[]`。
 
-后续默认工作从“继续扩采”切换为发布维护：同步专用私有数据仓库 `mathieu0905/cross-repo-breakage-benchmark`，在抽取布局重新验收，并在替换任何 case 时通过单条 skill 后重新生成整个 release。E3、E4、A3 和开放世界仓库发现仍不是当前 E2 主集的补齐目标。
+后续默认工作从“继续扩采”切换为发布维护：专用私有数据仓库 `mathieu0905/cross-repo-breakage-benchmark` 已在 commit `75875e4` 完成本轮同步和抽取布局复验；替换任何 case 时仍须先通过单条 skill，再重新生成整个 release 并整体同步。E3、E4、A3 和开放世界仓库发现仍不是当前 E2 主集的补齐目标。
 
 ## 2026-08-25 原始决定（保留执行审计）
 
@@ -142,4 +142,4 @@ Ethereum 目录按 ethereum.org 的 execution/consensus client 表以及 `ethere
 - 50 条按有向关系、source change family、规范化机制和 repair template 形成 15 个连通组，分配为 30 development、10 evaluation、10 holdout，跨 split 泄漏为 0。
 - 冻结运行读取 14,367 个候选仓、331,351 个文本文件；50 个容器均断网且不挂载标签，所有预测完成后才统一读取标签，逐例和聚合分数重算一致。
 - 非目标候选继续为 `unjudged`，不报告 precision、F1、误报率或 specificity；系统没有提出可运行检查，因此执行结论保持 `not_assessed`。
-- marshal commit `7ebe4624` 已提交数据集和冻结运行。专用数据仓库尚停在 2026-08-27 抽取版，完成同步和抽取布局复验前不得把它写成当前权威镜像。
+- marshal commit `7ebe4624` 已提交数据集和冻结运行；专用数据仓库已在 commit `75875e4` 同步，并在推送前通过两个 acceptance verifier、50 项 skill 测试和 6 项 Python replay 测试。

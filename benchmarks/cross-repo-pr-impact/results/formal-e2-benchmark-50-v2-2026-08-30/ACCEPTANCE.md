@@ -33,4 +33,4 @@ python3 .agents/skills/marshal-e2-case-builder/scripts/verify_frozen_benchmark.p
 
 ## Version and repository location
 
-The marshal source-of-truth commit for this release and frozen run is `7ebe4624`. The separate private dataset repository is `mathieu0905/cross-repo-breakage-benchmark`; at the time of this note it still contains the superseded 2026-08-27 extraction and must not be described as carrying this release until it is synchronized and reverified in that layout.
+The marshal source-of-truth commit for this release and frozen run is `7ebe4624`. The private distribution repository `mathieu0905/cross-repo-breakage-benchmark` carries the synchronized extraction at commit `75875e4`; both acceptance verifiers passed in that layout before it was pushed to `main`.

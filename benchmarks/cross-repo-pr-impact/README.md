@@ -6,7 +6,7 @@
 
 当前权威 E2 集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`：50/50 条均通过当前单条流水线和集合 verifier，具备标签独立且可复用的候选目录、opening-cutoff snapshot、断网盲预测、真实 A0=0/A1!=0/A2=0、A1 排他失败签名、完整维护者 A2 补丁和语义批准。集合按 15 个连通组分为 30/10/10，四个声明分组轴的跨 split 泄漏为 0。匹配的冻结运行位于 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/`；50 个预测全部早于统一揭签，推理期标签挂载和读取均为 0。
 
-`results/formal-e2-50-release-2026-08-26/` 的正式声明仍为撤回状态。2026-08-27 的首个正式集合保留为历史证据，但已被 2026-08-30 的全量重建和冻结运行取代。验收命令、存储边界和不支持的声明见当前 release 的 `ACCEPTANCE.md`。专用私有数据仓库为 `mathieu0905/cross-repo-breakage-benchmark`；它尚未同步本轮 release，因此当前仍以 marshal 主仓为准。
+`results/formal-e2-50-release-2026-08-26/` 的正式声明仍为撤回状态。2026-08-27 的首个正式集合保留为历史证据，但已被 2026-08-30 的全量重建和冻结运行取代。验收命令、存储边界和不支持的声明见当前 release 的 `ACCEPTANCE.md`。专用私有数据仓库 `mathieu0905/cross-repo-breakage-benchmark` 已在 commit `75875e4` 同步本轮 release，并在抽取布局通过两个 acceptance verifier。
 
 现有 100 条案例及其时点快照继续保留。Ethereum、OpenTelemetry 与 Rust 目录已按独立项目来源重建，覆盖 71 条案例；其他目录仍由已知目标与手工干扰仓合并生成，或属于单例 sensitivity 目录。100 条原始索引仍标为 `test`，不能产生全数据正式无泄漏主分数。在三个重建目录内，已逐条完成 71 条候选、154 条目标关系的本地和实时记录核对，并按项目隔离选出 50 条最终 E1 数据：OpenTelemetry 25、Ethereum 21、Rust 4，共 107 条已验证目标关系。权威入口是 `results/final-dataset-verification-2026-08-25/final-index.jsonl`；它验证的是历史采纳/适配标签，不表示已经运行 Marshal，也不把 E1 冒充 A0/A1/A2 因果 E2。
 

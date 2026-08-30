@@ -12,7 +12,7 @@
 
 权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，权威冻结后系统运行是 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/`。前者的 `verification.json` 独立重解析全部三臂证据与分组，后者的 `verification.json` 独立重算 50 条分数并检查统一标签揭示边界。2026-08-27 的首个正式集合仍是有效历史证据，但已被本轮全量重建和重跑取代；`results/formal-e2-50-release-2026-08-26/` 仍只保留为 withdrawn diagnostic 历史材料。
 
-专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。它当前仍停在 2026-08-27 的抽取提交 `a1db7b4`；在同步本轮 release、冻结运行和文档，并在抽取布局重新运行两个 verifier 之前，marshal 主仓仍是唯一权威来源。
+专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支 commit `75875e4`；两个 acceptance verifier 和 50 项 skill 测试均在抽取布局通过后才推送。marshal 主仓保留构造源，私有仓作为分发副本。
 
 ## Node history
 
@@ -58,7 +58,7 @@
 
 ## Next resume step
 
-数据集构造目标已完成。当前发布工作是把 2026-08-30 的权威集合、冻结运行、skill 和治理文档同步到专用数据仓库，并在该抽取布局重新运行两个 verifier。后续若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split；不得局部手改权威索引。若研究 ranker，只在 development 上选择规则，再以预先声明的方式运行 evaluation/holdout，并继续保持冻结后统一揭示标签的执行边界。
+数据集构造和专用仓库发布目标均已完成。后续若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。若研究 ranker，只在 development 上选择规则，再以预先声明的方式运行 evaluation/holdout，并继续保持冻结后统一揭示标签的执行边界。
 
 ## First-read files
 
