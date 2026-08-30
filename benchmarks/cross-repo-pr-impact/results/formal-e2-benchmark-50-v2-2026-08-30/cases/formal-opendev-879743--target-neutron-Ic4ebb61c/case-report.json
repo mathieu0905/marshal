@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 261,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 6177,
+    "case_id": "formal-opendev-879743",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T05:22:08.781522Z",
+  "blind_prediction_created_at": "2026-08-30T05:21:39.900171Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-879743",
+  "case_id": "formal-opendev-879743--target-neutron-Ic4ebb61c",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/neutron"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T05:22:08.792007Z",
+  "mechanism": "SQLAlchemy 2.0 URL rendering hides the database password during Neutron migration configuration handoff, so the unchanged migration test cannot reconnect to MySQL",
+  "repair_template": "render SQLAlchemy URLs explicitly with hide_password=False at migration connection handoffs, retaining a SQLAlchemy 1.x fallback",
+  "replay": {
+    "catalog_source_snapshot_commit": "b44da90728ae3db63b95c4ea6291b072b41ff2a6",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "pymysql.err.OperationalError: (1045, \"Access denied for user 'openstack_citest'@'127.0.0.1' (using password: YES)\")",
+    "installed_source_versions": {
+      "A0": "1.4.41",
+      "A1": "2.0.9",
+      "A2": "2.0.9"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_full_opening_diff",
+    "source_base_commit": "b44da90728ae3db63b95c4ea6291b072b41ff2a6",
+    "source_head_commit": "d0cfa5b3e56b650d093ea9db0df280c06ef0bbab",
+    "source_versions": {
+      "A0": "1.4.41",
+      "A1": "2.0.9",
+      "A2": "2.0.9"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "208421910d2bb3c71b0947254d5eca1326c184d0",
+    "target_test_path": "neutron/tests/functional/db/test_migrations.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "neutron.tests.functional.db.test_migrations.TestModelsMigrationsMySQL.test_upgrade_expand_branch"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-879743--target-neutron-Ic4ebb61c",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "neutron/tests/functional/db/test_migrations.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/neutron"
+  },
+  "semantic_review": {
+    "a1_failure": "With the unchanged Neutron cutoff snapshot and the complete opening constraints, the existing MySQL expand-migration selector changes from pass to a PyMySQL authentication failure: Access denied for user 'openstack_citest'@'localhost' (using password: YES). The signature is absent from A0 and from the repaired A2 run.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the code-only source base-to-opening-head diff, the exact maintainer parent-to-head target patch, the Neutron cutoff tox.ini functional command, the existing migration selector, patch applicability to the public cutoff, installed-version probes, and real MySQL three-arm evidence. The command and test selection are identical in all arms; the patch deletes or skips no test.",
+    "source_effect": "The full opening diff changes SQLAlchemy 1.4.41 to 2.0.9, oslo.db 12.3.1 to 13.0.0, and removes sqlalchemy-migrate. The selected routed source is SQLAlchemy: the 2.0 URL string representation masks the password before Neutron stores the URL in database.connection, and the subsequent real MySQL connection uses the masked value.",
+    "target_patch": ".work/fresh_879743_neutron/case-inputs/target-patches/neutron-Ic4ebb61c.patch",
+    "target_repair": "Maintainer commit 0959e452d358597c005630f3aab3948ba6c1d26f adds render_url_str(), calls URL.render_as_string(hide_password=False) for SQLAlchemy 2.x with a SQLAlchemy 1.x fallback, and uses it at the migration connection handoffs. Its complete one-file parent-to-head patch applies cleanly to the public cutoff and changes no test selection, deletion, or skip."
+  },
+  "source_change_family": "opendev-change-879743-opening",
+  "status": "case_ready_for_formal_pool"
+}

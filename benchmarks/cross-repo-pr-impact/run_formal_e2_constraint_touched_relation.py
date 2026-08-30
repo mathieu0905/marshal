@@ -51,18 +51,50 @@ def read_pins(path: Path) -> dict[str, str]:
     return pins
 
 
-def changed_pin(old: Path, new: Path) -> tuple[str, str, str]:
+def changed_pin_rows(
+    old: Path, new: Path
+) -> list[tuple[str, str | None, str | None]]:
     old_pins = read_pins(old)
     new_pins = read_pins(new)
-    changed = [
+    return [
         (name, old_pins.get(name), new_pins.get(name))
         for name in sorted(old_pins.keys() | new_pins.keys())
         if old_pins.get(name) != new_pins.get(name)
     ]
+
+
+def changed_pin(old: Path, new: Path) -> tuple[str, str, str]:
+    changed = changed_pin_rows(old, new)
     if len(changed) != 1 or changed[0][1] is None or changed[0][2] is None:
         raise ValueError(f"expected exactly one changed pinned distribution, got {changed}")
     name, old_version, new_version = changed[0]
     return name, old_version, new_version
+
+
+def selected_changed_pin(
+    old: Path, new: Path, distribution: str
+) -> tuple[str, str, str]:
+    """Select one routed pin while preserving every opening constraint change."""
+    key = distribution.lower()
+    changed = changed_pin_rows(old, new)
+    matches = [row for row in changed if row[0] == key]
+    if len(matches) != 1 or matches[0][1] is None or matches[0][2] is None:
+        raise ValueError(
+            f"selected distribution must have one old/new exact pin change: "
+            f"distribution={distribution!r}, changed={changed}"
+        )
+    name, old_version, new_version = matches[0]
+    return name, old_version, new_version
+
+
+def constraint_source_application(
+    changes: list[tuple[str, str | None, str | None]],
+) -> str:
+    return (
+        "global_constraints_single_pin"
+        if len(changes) == 1
+        else "global_constraints_full_opening_diff"
+    )
 
 
 def installed_version(python: Path, distribution: str, cwd: Path, environment: dict[str, str]) -> tuple[int, str]:
@@ -221,10 +253,20 @@ def main() -> int:
         requirements_a1,
         plan["source_head_commit"],
     )
-    distribution, old_version, new_version = changed_pin(
-        requirements_a0 / "upper-constraints.txt",
-        requirements_a1 / "upper-constraints.txt",
-    )
+    old_constraints = requirements_a0 / "upper-constraints.txt"
+    new_constraints = requirements_a1 / "upper-constraints.txt"
+    constraint_changes = changed_pin_rows(old_constraints, new_constraints)
+    selected_distribution = plan.get("changed_distribution")
+    if selected_distribution:
+        distribution, old_version, new_version = selected_changed_pin(
+            old_constraints, new_constraints, selected_distribution
+        )
+        source_application = constraint_source_application(constraint_changes)
+    else:
+        distribution, old_version, new_version = changed_pin(
+            old_constraints, new_constraints
+        )
+        source_application = "global_constraints_single_pin"
     a0_pins = read_pins(requirements_a0 / "upper-constraints.txt")
     a1_pins = read_pins(requirements_a1 / "upper-constraints.txt")
     historical_setuptools = a0_pins.get("setuptools")
@@ -410,7 +452,15 @@ def main() -> int:
             "path": "tox.ini",
         },
         "tox_environment": tox_environment,
-        "source_application": "global_constraints_single_pin",
+        "source_application": source_application,
+        "opening_constraint_changes": [
+            {
+                "distribution": name,
+                "old_version": old,
+                "new_version": new,
+            }
+            for name, old, new in constraint_changes
+        ],
         "changed_distribution": distribution,
         "source_versions": {"A0": old_version, "A1": new_version, "A2": new_version},
         "installed_source_versions": installed_versions,

@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-905246",
+  "expected_check_paths": [
+    "nova/tests/fixtures/conf.py",
+    "nova/tests/unit/limit/test_local.py"
+  ],
+  "mechanism": "oslo.limit 2.3 requires oslo_limit.endpoint_id during unified-limit enforcement, while the unchanged Nova test fixture leaves it unset",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-905246--target-905314",
+  "repair_template": "set a shared default endpoint_id in the existing Nova test configuration fixture",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "On the unchanged Nova opening-cutoff snapshot, its pre-existing unified-limit tests fail only with oslo.limit 2.3.0 at Enforcer construction with ValueError: endpoint_id is not configured; the same selectors pass with 2.2.0.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the single-pin source diff, exact maintainer target diff, command provenance from the cutoff Nova tox.ini, installed-version probes, and all three real replay logs; all three selected pre-existing tests independently produced 0/1/0, and the target patch neither deletes nor skips tests.",
+    "source_effect": "The opening source change updates the only changed upper-constraints pin from oslo.limit 2.2.0 to 2.3.0, so Nova's otherwise unchanged test environment consumes the new endpoint validation behavior.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/905314.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Nova snapshot and sets a shared oslo_limit.endpoint_id default in nova/tests/fixtures/conf.py before configuration parsing, restoring the unchanged unified-limit tests under oslo.limit 2.3.0."
+  },
+  "source_change_family": "opendev-change-905246-opening",
+  "target_repository": "openstack/nova",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

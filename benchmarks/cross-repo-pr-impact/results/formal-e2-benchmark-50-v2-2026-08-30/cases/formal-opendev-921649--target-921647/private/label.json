@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-921649",
+  "expected_check_paths": [
+    "neutron/tests/unit/extensions/test_flavors.py"
+  ],
+  "mechanism": "The neutron-lib opening change makes request project-identifier population conditional on the resource schema and removes tenant_id from flavor schemas, so Neutron's unchanged flavor API tests no longer receive the formerly injected identifiers and their create requests fail.",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": ".work/rebuild_921649_921647/runner/bin/python",
+  "relation_id": "formal-opendev-921649--target-921647",
+  "repair_template": "Adapt existing target API tests to authenticated request context, remove obsolete explicit tenant fields, and make mock assertions tolerate dependency-version project-field injection.",
+  "replay_adapter": "source_editable",
+  "replay_plan": ".work/rebuild_921649_921647/inputs/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening neutron-lib change installed, the unchanged flavor extension tests issue create requests without the authenticated request context now needed to supply project ownership; the affected requests return HTTP 400 while the identical module passes with the old source.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the code-only source opening diff, the full maintainer target patch, the cutoff target test and tox provenance, and the prior package only as intake; this fresh run independently replays the same existing 48-test module in all three arms and is accepted only if its new evidence verifies 0/nonzero/0 with an A1-exclusive signature.",
+    "source_effect": "The source opening diff restricts project-id population to schemas declaring tenant_id or project_id and removes tenant_id from the flavor and QoS resource definitions.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-921649--target-921647/evidence/formal-opendev-921649--target-921647/target.patch",
+    "target_repair": "The complete maintainer patch adds one admin request context in setUp, removes obsolete explicit tenant/project fields from the posted flavor and service-profile bodies, and normalizes mock assertions across dependency versions without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-921649-opening",
+  "target_repository": "openstack/neutron",
+  "tox": ".work/rebuild_921649_921647/runner/bin/tox"
+}

@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5017,
+    "case_id": "formal-opendev-972691",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:23:22.964482Z",
+  "blind_prediction_created_at": "2026-08-30T04:23:09.938996Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-972691",
+  "case_id": "formal-opendev-972691--target-973693",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/cinder"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:23:22.971445Z",
+  "mechanism": "oslo.concurrency 7.3.0 replaces permissive processutils keyword forwarding with an explicit execute signature, exposing a Cinder unit test that passes unsupported foo",
+  "repair_template": "autospec the existing processutils.execute mocks and replace unsupported dummy keywords with the supported check_exit_code parameter",
+  "replay": {
+    "catalog_source_snapshot_commit": "dfcad1d7fe24ad7a6f664eef2fe787a8c990fc83",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "TypeError: got an unexpected keyword argument 'foo'",
+    "installed_source_versions": {
+      "A0": "7.2.0",
+      "A1": "7.3.0",
+      "A2": "7.3.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "dfcad1d7fe24ad7a6f664eef2fe787a8c990fc83",
+    "source_head_commit": "e144bb97d5c453a95b435bab0edf61b485433bd9",
+    "source_versions": {
+      "A0": "7.2.0",
+      "A1": "7.3.0",
+      "A2": "7.3.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "9555cc8b6fcddf73b9eef705b4797c3374982d4d",
+    "target_test_path": "cinder/tests/unit/test_utils.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "cinder.tests.unit.test_utils"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-972691--target-973693",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "cinder/tests/unit/test_utils.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/cinder"
+  },
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff Cinder tree and oslo.concurrency 7.3.0, the existing test_execute_root_and_helper autospec rejects foo with TypeError: got an unexpected keyword argument 'foo'. The same 148-test command passes on 7.2.0, and this signature occurs only in A1.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin opening diff, installed signatures and versions, all fresh A0/A1/A2 command logs and summaries, the exclusive A1 traceback, identical 148-test command provenance, and the byte-exact complete maintainer parent-to-head patch.",
+    "source_effect": "The opening revision changes exactly the oslo.concurrency constraint from 7.2.0 to 7.3.0; fresh probes show execute changing from (*cmd, **kwargs) to an explicit keyword signature.",
+    "target_patch": "/home/zhihao/hdd/marshal/.work/rebuild_972691_973693/intake/target-patches/973693.patch",
+    "target_repair": "The complete maintainer parent-to-head change autospecs all three existing processutils.execute mocks and replaces foo with the supported check_exit_code argument. With 7.3.0 still installed, A2 runs the same 148 tests successfully without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-972691-opening",
+  "status": "case_ready_for_formal_pool"
+}

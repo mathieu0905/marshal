@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-972691",
+  "expected_check_paths": [
+    "cinder/tests/unit/test_utils.py"
+  ],
+  "mechanism": "oslo.concurrency 7.3.0 replaces permissive processutils keyword forwarding with an explicit execute signature, exposing a Cinder unit test that passes unsupported foo",
+  "mirror_root": "/home/zhihao/hdd/marshal/.work/rebuild_972691_973693/mirrors",
+  "python": "/home/zhihao/hdd/marshal/.work/rebuild_972691_973693/runner/bin/python",
+  "relation_id": "formal-opendev-972691--target-973693",
+  "repair_template": "autospec the existing processutils.execute mocks and replace unsupported dummy keywords with the supported check_exit_code parameter",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "/home/zhihao/hdd/marshal/.work/rebuild_972691_973693/intake/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff Cinder tree and oslo.concurrency 7.3.0, the existing test_execute_root_and_helper autospec rejects foo with TypeError: got an unexpected keyword argument 'foo'. The same 148-test command passes on 7.2.0, and this signature occurs only in A1.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin opening diff, installed signatures and versions, all fresh A0/A1/A2 command logs and summaries, the exclusive A1 traceback, identical 148-test command provenance, and the byte-exact complete maintainer parent-to-head patch.",
+    "source_effect": "The opening revision changes exactly the oslo.concurrency constraint from 7.2.0 to 7.3.0; fresh probes show execute changing from (*cmd, **kwargs) to an explicit keyword signature.",
+    "target_patch": "/home/zhihao/hdd/marshal/.work/rebuild_972691_973693/intake/target-patches/973693.patch",
+    "target_repair": "The complete maintainer parent-to-head change autospecs all three existing processutils.execute mocks and replaces foo with the supported check_exit_code argument. With 7.3.0 still installed, A2 runs the same 148 tests successfully without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-972691-opening",
+  "target_repository": "openstack/cinder",
+  "tox": "/home/zhihao/hdd/marshal/.work/rebuild_972691_973693/runner/bin/tox"
+}

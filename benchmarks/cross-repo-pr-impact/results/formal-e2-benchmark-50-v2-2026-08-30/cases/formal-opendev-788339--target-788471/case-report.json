@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5090,
+    "case_id": "formal-opendev-788339",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T05:17:07.686090Z",
+  "blind_prediction_created_at": "2026-08-30T05:16:43.636073Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-788339",
+  "case_id": "formal-opendev-788339--target-788471",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/nova"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T05:17:18.697782Z",
+  "mechanism": "SQLAlchemy 1.4 makes URL objects immutable, so Nova's existing cell0 connection helper can no longer assign to url.database",
+  "repair_template": "replace in-place mutation of a dependency-owned immutable value object with its compatibility-preserving functional setter",
+  "replay": {
+    "catalog_source_snapshot_commit": "752d36658db9c836e8cebb4bdd748f84c3165807",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "AttributeError: can't set attribute",
+    "installed_source_versions": {
+      "A0": "1.3.23",
+      "A1": "1.4.11",
+      "A2": "1.4.11"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "752d36658db9c836e8cebb4bdd748f84c3165807",
+    "source_head_commit": "b3e8ca510799b2a7e9ee25f2f3b976a42d2a37d5",
+    "source_versions": {
+      "A0": "1.3.23",
+      "A1": "1.4.11",
+      "A2": "1.4.11"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "eba9d596daa91d8f702b719afb88cb89f2d5bb32",
+    "target_test_path": "nova/tests/unit/cmd/test_manage.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "nova.tests.unit.cmd.test_manage.CellV2CommandsTestCase.test_map_cell0_default_database"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-788339--target-788471",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "nova/tests/unit/cmd/test_manage.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/nova"
+  },
+  "semantic_review": {
+    "a1_failure": "At the freshly resolved Nova first-parent cutoff eba9d596daa91d8f702b719afb88cb89f2d5bb32, the same pre-existing selector runs six parameterized checks. All six pass with SQLAlchemy 1.3.23, all six fail with SQLAlchemy 1.4.11 at url.database assignment with the exclusive normalized signature AttributeError: can't set attribute, and all six pass after the exact maintainer patch.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the freshly resolved first-parent cutoff, complete one-pin source opening diff, byte-exact complete maintainer parent-to-head diff, clean application to the cutoff, fixed command provenance, installed-version probes proving 1.3.23/1.4.11/1.4.11, and complete A0/A1/A2 logs. The command and six pre-existing checks are identical across arms; only A1 contains the immutable-URL failure signature. The Python 3.8/tox 3 runner, setuptools seed, Cython build constraint, and pip seed are identical across arms and only restore opening-era packaging compatibility.",
+    "source_effect": "The complete opening diff changes exactly one upper-constraints pin, SQLAlchemy 1.3.23 to 1.4.11; SQLAlchemy 1.4 makes URL attributes immutable and provides URL.set for functional updates.",
+    "target_patch": "/home/zhihao/hdd/marshal/.work/fresh_788339_nova/output/input/target-patches/788471.patch",
+    "target_repair": "The complete maintainer parent 294b30b281dde4a7c438cc1b9fa4842927394a17 to head 39a617752f71cb8fe7188baee08b1c2ba48ad066 diff changes only nova/cmd/manage.py. It uses URL.set when available and retains the SQLAlchemy 1.3 assignment fallback; it changes, deletes, or skips no test and applies cleanly to the fresh cutoff snapshot."
+  },
+  "source_change_family": "opendev-change-788339-opening",
+  "status": "case_ready_for_formal_pool"
+}

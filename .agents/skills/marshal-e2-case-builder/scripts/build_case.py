@@ -472,7 +472,7 @@ def prepare_public(root: Path, manifest: dict[str, Any], output: Path) -> dict[s
         "catalogs": {catalog_id: catalog},
     })
     shutil.copy2(patch, public / "source-patches" / patch.name)
-    write_json(public / "manifest.json", manifest)
+    write_json(public / "manifest.json", packaged_public_manifest(manifest))
     write_json(public / "validation.json", {
         "schema_version": "1.0",
         "candidate_id": candidate_id,
@@ -506,6 +506,32 @@ def path_within(child: Path, parent: Path) -> bool:
         return True
     except ValueError:
         return False
+
+
+def packaged_public_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
+    """Keep execution settings while removing host intake paths from blind input."""
+
+    packaged = dict(manifest)
+    packaged.update({
+        "inputs": "inputs.jsonl",
+        "snapshots": "repository-snapshots.jsonl",
+        "catalogs": "candidate-repositories.json",
+        "patch_dir": "source-patches",
+    })
+    return packaged
+
+
+def public_manifest_leaks_relation(output: Path, private: dict[str, Any]) -> bool:
+    serialized = json.dumps(
+        read_json(output / "public" / "manifest.json"),
+        ensure_ascii=False,
+        sort_keys=True,
+    )
+    relation_id = private["relation_id"]
+    forbidden = {relation_id}
+    if "--target-" in relation_id:
+        forbidden.add("target-" + relation_id.split("--target-", 1)[1])
+    return any(token in serialized for token in forbidden)
 
 
 def run_blind(
@@ -846,6 +872,58 @@ def run_replay(root: Path, private: dict[str, Any], resolved: dict[str, Any], ou
     return result.returncode
 
 
+def verify_constraint_source_application(contract: dict[str, Any]) -> None:
+    application = contract.get("source_application")
+    if application == "global_constraints_single_pin":
+        changes = contract.get("opening_constraint_changes")
+        if changes is not None and (not isinstance(changes, list) or len(changes) != 1):
+            raise ValueError("single-pin constraint replay recorded a non-single opening diff")
+        return
+    if application != "global_constraints_full_opening_diff":
+        raise ValueError("constraint replay did not record its source application")
+
+    changes = contract.get("opening_constraint_changes")
+    if not isinstance(changes, list) or len(changes) < 2:
+        raise ValueError("full-opening constraint replay did not record every changed pin")
+    normalized_changes: list[tuple[str, str | None, str | None]] = []
+    for row in changes:
+        if not isinstance(row, dict):
+            raise ValueError("full-opening constraint replay contains an invalid change row")
+        distribution = row.get("distribution")
+        old_version = row.get("old_version")
+        new_version = row.get("new_version")
+        if (
+            not isinstance(distribution, str)
+            or not distribution
+            or old_version == new_version
+            or (old_version is not None and not isinstance(old_version, str))
+            or (new_version is not None and not isinstance(new_version, str))
+        ):
+            raise ValueError("full-opening constraint replay contains an invalid change row")
+        normalized_changes.append((distribution.casefold(), old_version, new_version))
+    if len({distribution for distribution, _, _ in normalized_changes}) != len(normalized_changes):
+        raise ValueError("full-opening constraint replay contains duplicate distributions")
+
+    routed_distribution = contract.get("changed_distribution")
+    source_versions = contract.get("source_versions")
+    if not isinstance(routed_distribution, str) or not isinstance(source_versions, dict):
+        raise ValueError("full-opening constraint replay did not identify its routed pin")
+    routed = [
+        row for row in normalized_changes if row[0] == routed_distribution.casefold()
+    ]
+    expected = (
+        routed_distribution.casefold(),
+        source_versions.get("A0"),
+        source_versions.get("A1"),
+    )
+    if (
+        len(routed) != 1
+        or routed[0] != expected
+        or source_versions.get("A1") != source_versions.get("A2")
+    ):
+        raise ValueError("full-opening constraint replay routed pin does not match old/new/new versions")
+
+
 def verify_replay(output: Path, private: dict[str, Any]) -> dict[str, Any]:
     evidence = output / "evidence" / private["relation_id"]
     contract_path = evidence / "contract.json"
@@ -892,8 +970,7 @@ def verify_replay(output: Path, private: dict[str, Any]) -> dict[str, Any]:
     if replay_adapter == "requirements_constraint":
         if contract.get("requirements_commit") != public_input["source"]["base_commit"]:
             raise ValueError("A0 constraints are not the public opening base")
-        if contract.get("source_application") != "global_constraints_single_pin":
-            raise ValueError("constraint replay did not record its source application")
+        verify_constraint_source_application(contract)
         if contract.get("requirements_a1_commit") != public_input["source"]["candidate_commit"]:
             raise ValueError("A1/A2 constraints are not the public opening candidate")
         source_versions = contract.get("source_versions")
@@ -1099,6 +1176,8 @@ def build_report(output: Path, private: dict[str, Any], revealed_at: str) -> dic
     chronology_ok = timestamp(isolation["completed_at"]) <= timestamp(revealed_at)
     semantic = private["semantic_review"]
     blockers = []
+    if public_manifest_leaks_relation(output, private):
+        blockers.append("public_manifest_leaks_relation_label")
     if not chronology_ok:
         blockers.append("label_revealed_before_blind_completion")
     if semantic.get("approved") is not True:
@@ -1202,7 +1281,7 @@ def resume_after_blind(args: argparse.Namespace) -> int:
         raise ValueError("cannot resume after the private label has been revealed")
     supplied_public = read_json(public_path)
     stored_public = read_json(output / "public" / "manifest.json")
-    if supplied_public != stored_public:
+    if packaged_public_manifest(supplied_public) != stored_public:
         raise ValueError("stored public package does not match the supplied manifest")
     candidate_id = supplied_public["candidate_id"]
     inputs = read_jsonl(output / "public" / "inputs.jsonl")

@@ -1,0 +1,125 @@
+diff --git a/openstack_dashboard/api/nova.py b/openstack_dashboard/api/nova.py
+index 55efd67..b566a19 100644
+--- a/openstack_dashboard/api/nova.py
++++ b/openstack_dashboard/api/nova.py
+@@ -30,7 +30,6 @@ from django.conf import settings
+ from novaclient import api_versions
+ from novaclient import exceptions as nova_exceptions
+ from novaclient.v2 import instance_action as nova_instance_action
+-from novaclient.v2 import list_extensions as nova_list_extensions
+ from novaclient.v2 import servers as nova_servers
+ 
+ from horizon import exceptions as horizon_exceptions
+@@ -1009,29 +1008,18 @@ def server_group_delete(request, server_group_id):
+ 
+ @profiler.trace
+ @memoized.memoized
+-def list_extensions(request):
+-    """List all nova extensions, except the ones in the blacklist."""
+-    blacklist = set(settings.OPENSTACK_NOVA_EXTENSIONS_BLACKLIST)
+-    nova_api = _nova.novaclient(request)
+-    return tuple(
+-        extension for extension in
+-        nova_list_extensions.ListExtManager(nova_api).show_all()
+-        if extension.name not in blacklist
+-    )
+-
+-
+-@profiler.trace
+-@memoized.memoized
+ def extension_supported(extension_name, request):
+     """Determine if nova supports a given extension name.
+ 
+     Example values for the extension_name include AdminActions, ConsoleOutput,
+     etc.
+     """
+-    for ext in list_extensions(request):
+-        if ext.name == extension_name:
+-            return True
+-    return False
++    # Nova removed the ability to enable/disable API extensions in the
++    # Liberty release so all API extensions are enabled. Therefore we do not
++    # need to call the GET /extensions API in nova and just filter extensions
++    # based on our configurable blacklist.
++    blacklist = set(settings.OPENSTACK_NOVA_EXTENSIONS_BLACKLIST)
++    return extension_name not in blacklist
+ 
+ 
+ @profiler.trace
+diff --git a/openstack_dashboard/api/rest/nova.py b/openstack_dashboard/api/rest/nova.py
+index 6608d71..0fefd27 100644
+--- a/openstack_dashboard/api/rest/nova.py
++++ b/openstack_dashboard/api/rest/nova.py
+@@ -503,25 +503,6 @@ class ServerGroups(generic.View):
+ 
+ 
+ @urls.register
+-class Extensions(generic.View):
+-    """API for nova extensions."""
+-    url_regex = r'nova/extensions/$'
+-
+-    @rest_utils.ajax()
+-    def get(self, request):
+-        """Get a list of extensions.
+-
+-        The listing result is an object with property "items". Each item is
+-        an image.
+-
+-        Example GET:
+-        http://localhost/api/nova/extensions
+-        """
+-        result = api.nova.list_extensions(request)
+-        return {'items': [e.to_dict() for e in result]}
+-
+-
+-@urls.register
+ class Flavors(generic.View):
+     """API for nova flavors."""
+     url_regex = r'nova/flavors/$'
+diff --git a/openstack_dashboard/test/unit/api/rest/test_nova.py b/openstack_dashboard/test/unit/api/rest/test_nova.py
+index e3792c1..d5eaece 100644
+--- a/openstack_dashboard/test/unit/api/rest/test_nova.py
++++ b/openstack_dashboard/test/unit/api/rest/test_nova.py
+@@ -484,25 +484,6 @@ class NovaRestTestCase(test.TestCase):
+         )
+ 
+     #
+-    # Extensions
+-    #
+-    @test.create_mocks({api.nova: ['list_extensions']})
+-    @mock.patch.object(settings,
+-                       'OPENSTACK_NOVA_EXTENSIONS_BLACKLIST', ['baz'])
+-    def _test_extension_list(self):
+-        request = self.mock_rest_request()
+-        self.mock_list_extensions.return_value = [
+-            mock.Mock(**{'to_dict.return_value': {'name': 'foo'}}),
+-            mock.Mock(**{'to_dict.return_value': {'name': 'bar'}}),
+-            mock.Mock(**{'to_dict.return_value': {'name': 'baz'}}),
+-        ]
+-        response = nova.Extensions().get(request)
+-        self.assertStatusCode(response, 200)
+-        self.assertEqual({"items": [{"name": "foo"}, {"name": "bar"}]},
+-                         response.json)
+-        self.mock_list_extensions.assert_called_once_with(request)
+-
+-    #
+     # Flavors
+     #
+ 
+diff --git a/openstack_dashboard/test/unit/api/test_nova.py b/openstack_dashboard/test/unit/api/test_nova.py
+index 744d7dd..af05a10 100644
+--- a/openstack_dashboard/test/unit/api/test_nova.py
++++ b/openstack_dashboard/test/unit/api/test_nova.py
+@@ -72,6 +72,12 @@ class NovaApiTests(test.APIMockTestCase):
+         # To handle upgrade_api
+         mock_novaclient.api_version = api_versions.APIVersion(version)
+ 
++    @mock.patch.object(settings, 'OPENSTACK_NOVA_EXTENSIONS_BLACKLIST',
++                       ['baz'])
++    def test_extension_supported(self):
++        self.assertTrue(api.nova.extension_supported('foo'))
++        self.assertFalse(api.nova.extension_supported('baz'))
++
+     @mock.patch.object(api._nova, 'novaclient')
+     def test_server_reboot(self, mock_novaclient):
+         server = self.servers.first()

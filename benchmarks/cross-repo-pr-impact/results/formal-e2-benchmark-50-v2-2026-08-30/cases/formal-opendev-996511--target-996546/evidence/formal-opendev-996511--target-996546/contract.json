@@ -1,0 +1,68 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "bootstrap_constraints": [
+    "setuptools==75.6.0"
+  ],
+  "candidate_id": "formal-opendev-996511",
+  "case_id": "formal-opendev-996511--target-996546",
+  "changed_distribution": "oslo.policy",
+  "command_provenance": {
+    "commit": "9686d904a02adf167213b9a8969f36fd68559892",
+    "path": "tox.ini",
+    "repository": "openstack/octavia"
+  },
+  "failure_signature": "oslo_config.cfg.NoSuchOptError: no such option enforce_scope in group [oslo_policy]",
+  "installed_source_versions": {
+    "A0": "5.1.0",
+    "A1": "6.0.0",
+    "A2": "6.0.0"
+  },
+  "machine_arm_verification": "passed",
+  "opening_constraint_changes": [
+    {
+      "distribution": "oslo.policy",
+      "new_version": "6.0.0",
+      "old_version": "5.1.0"
+    }
+  ],
+  "primary_result_channel": "pre_existing_target_test",
+  "relation_id": "formal-opendev-996511--target-996546",
+  "requirements_a1_commit": "21177a92da0ccdb0ec62e37e1b844f5e2bad1ca1",
+  "requirements_commit": "7a04938e7e6f130a007e17750e880b6ec3eadd07",
+  "schema_version": "1.0",
+  "selected_attempt_id": "formal-opendev-996511--target-996546",
+  "setup_environment_keys": [],
+  "source_application": "global_constraints_single_pin",
+  "source_base_commit": "7a04938e7e6f130a007e17750e880b6ec3eadd07",
+  "source_head_commit": "21177a92da0ccdb0ec62e37e1b844f5e2bad1ca1",
+  "source_repository": "openstack/requirements",
+  "source_subject": "update constraint for oslo.policy to new release 6.0.0",
+  "source_versions": {
+    "A0": "5.1.0",
+    "A1": "6.0.0",
+    "A2": "6.0.0"
+  },
+  "strict_touched_test_count": 1,
+  "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+  "target_base_commit": "9686d904a02adf167213b9a8969f36fd68559892",
+  "target_change": 996546,
+  "target_head_commit": "78d38afc126c37e2ec65859e8cfc770eb5457075",
+  "target_patch_evidence": "target.patch",
+  "target_repository": "openstack/octavia",
+  "target_subject": "Remove setting of oslo_policy[enforce_scope] flag",
+  "target_test_path": "octavia/tests/unit/common/test_policy.py",
+  "test_command": [
+    "stestr",
+    "run",
+    "octavia.tests.unit.common.test_policy.PolicyTestCase.test_check_is_admin_with_system_scope_token"
+  ],
+  "test_environment_keys": [],
+  "test_selector": "octavia.tests.unit.common.test_policy.PolicyTestCase.test_check_is_admin_with_system_scope_token",
+  "tox_environment": "py3",
+  "virtualenv_pip_version": null,
+  "virtualenv_setuptools_version": null
+}

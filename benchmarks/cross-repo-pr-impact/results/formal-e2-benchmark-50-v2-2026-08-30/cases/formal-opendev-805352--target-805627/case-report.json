@@ -1,0 +1,102 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5090,
+    "case_id": "formal-opendev-805352",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:39:44.898676Z",
+  "blind_prediction_created_at": "2026-08-30T04:39:25.457046Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-805352",
+  "case_id": "formal-opendev-805352--target-805627",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/neutron"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:39:44.903018Z",
+  "mechanism": "neutron-lib 2.14 moves packet_rate_limit into its QoS rule list, so Neutron appends the same type twice and changes the serialized QosRuleType object hash",
+  "repair_template": "append the transitional target-owned QoS rule type only when the dependency does not already provide it",
+  "replay": {
+    "catalog_source_snapshot_commit": "6562d0824f15990c01e2c1f8067c1853b595a534",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "testtools.matchers._impl.MismatchError: !=:",
+    "installed_source_versions": {
+      "A0": "2.13.0",
+      "A1": "2.14.0",
+      "A2": "2.14.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "6562d0824f15990c01e2c1f8067c1853b595a534",
+    "source_head_commit": "16330bb2b51579bb07d80140988f76d36818a11b",
+    "source_versions": {
+      "A0": "2.13.0",
+      "A1": "2.14.0",
+      "A2": "2.14.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "9ee5722c04a44b87950b479055826afe795bd135",
+    "target_test_path": "neutron/tests/unit/objects/test_objects.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "neutron.tests.unit.objects.test_objects"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-805352--target-805627",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "neutron/tests/unit/objects/test_objects.py"
+    ],
+    "mean_reciprocal_rank": 0.5,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "etc/oslo-config-generator/neutron.conf",
+      "neutron/db/migration/alembic_migrations/versions/newton/contract/2e0d7a8a1586_add_binding_index_to_routerl3agentbinding.py",
+      "neutron/db/migration/alembic_migrations/versions/ussuri/expand/c3e9d13c4367_add_binding_index_to_.py",
+      "neutron/tests/common/machine_fixtures.py",
+      "neutron/tests/functional/db/migrations/test_c3e9d13c4367_add_binding_index_to_.py"
+    ],
+    "rank": 2,
+    "recall_at_1": 0.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "openstack/neutron"
+  },
+  "semantic_review": {
+    "a1_failure": "On the unchanged Neutron opening-cutoff snapshot, the pre-existing TestObjectVersions.test_versions check passes with neutron-lib 2.13.0. With 2.14.0, the duplicated packet_rate_limit entry changes QosRuleType's computed hash from 1.4-a5b870dfa6f510a91f5cb0216873064e to 1.4-7597954348a8f6e3f59f0e1420ce5fd1, and the single test fails; the exact maintainer patch restores it.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the pure one-pin opening diff, the cutoff Neutron constants and pre-existing object-version test, the complete one-file maintainer commit patch (matching stable patch-id 2c0c9f3c9d940016111c58000d38b82c9f53106d), the cutoff tox command, and prior complete three-arm evidence. The fresh pipeline replay and independent verifier must reconfirm 2.13.0/2.14.0/2.14.0 consumption, 0/nonzero/0 exits, one executed test in every arm, and an A1-exclusive hash mismatch. The Python 3.8/tox 3/virtualenv 20 runner and source-era build constraints are identical across arms and only restore opening-era installation.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, neutron-lib 2.13.0 to 2.14.0. In neutron-lib 2.14, packet_rate_limit is dependency-owned in VALID_RULE_TYPES, while the unchanged cutoff Neutron constants still append that same string unconditionally.",
+    "target_patch": ".work/rebuild_805352_805627/intake/target-patches/805627.patch",
+    "target_repair": "The complete maintainer change modifies only neutron/services/qos/constants.py and conditionally appends the transitional target-owned rule when neutron-lib does not already expose it. It preserves stable ordering and uniqueness under both dependency versions and deletes or skips no test."
+  },
+  "source_change_family": "opendev-change-805352-opening",
+  "status": "case_ready_for_formal_pool"
+}

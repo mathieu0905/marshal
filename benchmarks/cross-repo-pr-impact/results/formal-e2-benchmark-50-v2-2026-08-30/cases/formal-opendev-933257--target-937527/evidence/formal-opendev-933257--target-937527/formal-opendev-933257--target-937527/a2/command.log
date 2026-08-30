@@ -1,0 +1,439 @@
+{128} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_driver_failure_ipv6_ipv4_network [37.051988s] ... ok
+{94} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_subnet_update_end [37.742426s] ... ok
+{130} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_create_dhcp_port_no_update_or_create [37.313588s] ... ok
+{0} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_change_gateway_outside_subnet [38.503305s] ... ok
+{5} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_update [38.536239s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unable to foo dhcp for 1.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/agent/dhcp/agent.py", line 251, in _call_driver
+    rv = getattr(driver, action)(**action_kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+Exception
+   ERROR [neutron.agent.linux.dhcp] Unable to plug DHCP port for network 12345678-1234-5678-1234567890ab. Releasing port.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/agent/linux/dhcp.py", line 1853, in setup
+    self.plug(network, port, interface_name)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/agent/linux/dhcp.py", line 1808, in plug
+    self.driver.plug(network.id,
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+OSError
+{5} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_failure [0.053814s] ... ok
+{112} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_safe_configure_dhcp_for_network [37.610407s] ... ok
+{99} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_plug_exception [38.274401s] ... ok
+{47} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_driver_failure [38.551691s] ... ok
+{69} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_get_metadata_bind_interface_returns_segments [37.576527s] ... ok
+{0} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_ipv6_network [0.055476s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{46} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_isolated_metadata_proxy_with_dist_network [38.092566s] ... ok
+{79} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_outside_subnet [37.979121s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{73} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_delete_network_already_deleted [38.463908s] ... ok
+{4} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_ipv6 [38.546292s] ... ok
+{30} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy_with_dist_network [37.743534s] ... ok
+{126} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_update_dhcp_port_raises_conflict [37.292788s] ... ok
+{20} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_exception_during_rpc [38.638111s] ... ok
+   ERROR [neutron_lib.utils.runtime] Error loading class by alias
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/neutron_lib/utils/runtime.py", line 113, in load_class_by_alias_or_classname
+    mgr = driver.DriverManager(
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/stevedore/driver.py", line 54, in __init__
+    super(DriverManager, self).__init__(
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/stevedore/named.py", line 89, in __init__
+    self._init_plugins(extensions)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/stevedore/driver.py", line 113, in _init_plugins
+    raise NoMatches('No %r driver found, looking for %r' %
+stevedore.exception.NoMatches: No 'neutron.interface_drivers' driver found, looking for 'foo.bar'
+   ERROR [neutron_lib.utils.runtime] Error loading class by class name
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/neutron_lib/utils/runtime.py", line 113, in load_class_by_alias_or_classname
+    mgr = driver.DriverManager(
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/stevedore/driver.py", line 54, in __init__
+    super(DriverManager, self).__init__(
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/stevedore/named.py", line 89, in __init__
+    self._init_plugins(extensions)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/stevedore/driver.py", line 113, in _init_plugins
+    raise NoMatches('No %r driver found, looking for %r' %
+stevedore.exception.NoMatches: No 'neutron.interface_drivers' driver found, looking for 'foo.bar'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/neutron_lib/utils/runtime.py", line 120, in load_class_by_alias_or_classname
+    class_to_load = importutils.import_class(name)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/.tox/py3/lib/python3.10/site-packages/oslo_utils/importutils.py", line 30, in import_class
+    __import__(mod_str)
+ModuleNotFoundError: No module named 'foo'
+   ERROR [neutron.agent.common.utils] Error loading interface driver 'foo.bar'
+{4} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_dhcp_helper_driver_failure [0.078412s] ... ok
+{43} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_nonexistent_interface_driver [38.435623s] ... ok
+{142} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpPluginApiProxy.test_update_dhcp_port [37.624404s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unable to foo dhcp for 1.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/agent/dhcp/agent.py", line 251, in _call_driver
+    rv = getattr(driver, action)(**action_kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+oslo_messaging.rpc.client.RemoteError: Remote error: IpAddressGenerationFailure None
+None.
+{29} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_ip_address_generation_failure [38.753437s] ... ok
+{68} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_down_network [38.141844s] ... ok
+{95} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpPluginApiProxy.test_get_network_info [37.813872s] ... ok
+{86} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_get_interface_name [37.833527s] ... ok
+{65} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_change_gateway [38.180795s] ... ok
+{50} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper [38.551801s] ... ok
+{133} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_destroy_with_none [37.833176s] ... ok
+{9} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_create_dhcp_port_raise_conflict [38.748814s] ... ok
+{27} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_create_duplicate_ip_on_dhcp_agents_same_network [38.879655s] ... ok
+{71} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy_with_metadata_network_dvr_ipv6 [38.750925s] ... ok
+{9} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_no_gateway [0.104131s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{75} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_dhcp_metadata_destroy [38.592829s] ... ok
+{122} neutron.tests.unit.agent.dhcp.test_agent.TestDHCPResourceUpdate.test__lt__port_fixed_ips_matching [38.500410s] ... ok
+{137} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_init_resync_throttle_conf [37.916852s] ... ok
+{97} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpPluginApiProxy.test_release_dhcp_port [38.349035s] ... ok
+{38} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_get_port_by_id [39.054911s] ... ok
+{91} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_subnet_create_end [38.618523s] ... ok
+{118} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy_with_dist_network_ipv6 [38.295066s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{37} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy_with_metadata_network [38.825394s] ... ok
+{143} neutron.tests.unit.agent.dhcp.test_agent.TestDHCPResourceUpdate.test__lt__no_port_event_timestamp [37.305105s] ... ok
+{110} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_dhcp_ready_ports_loop_with_limit_ports_per_call [38.736961s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{76} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_isolated_metadata_proxy_with_metadata_network [39.338005s] ... ok
+{16} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_get_metadata_bind_interface_returns [39.625746s] ... ok
+{135} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_two_subnets [38.661621s] ... ok
+{64} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_do_nothing [39.686087s] ... ok
+{23} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_populate_cache_on_start [39.676641s] ... ok
+{51} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_sync_state_for_one_network_plugin_error [39.407526s] ... ok
+{14} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_dhcp_helper_driver_failure_isolated_metadata [39.728616s] ... ok
+{102} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_get_network_by_id [38.737258s] ... ok
+{90} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_delete_end_unknown_port [39.449335s] ... ok
+{57} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_configure_dhcp_for_network_no_subnets_with_dhcp_enabled [38.570488s] ... ok
+{131} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_subnet_update_end_delete_payload [38.817069s] ... ok
+{111} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_update_on_dhcp_agents_port_no_ip_change [38.144359s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{35} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_remote_error_net_not_found [39.051016s] ... ok
+{31} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_enable_metadata_no_gateway [39.884455s] ... ok
+{18} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_create_dhcp_port_update_add_subnet [40.004163s] ... ok
+{41} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_create_end_no_resync_if_same_port_already_in_cache [40.017657s] ... ok
+{24} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup [39.752433s] ... ok
+{32} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_update_of_deleted_port_ignored [40.027232s] ... ok
+{70} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_create_dhcp_port [40.108873s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{81} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_enable_metadata_isolated_network [39.853675s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{39} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_agent_start_restarts_metadata_proxy [40.130630s] ... ok
+{58} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_network_delete_end [40.236990s] ... ok
+{21} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_conflict [39.487861s] ... ok
+{26} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_no_subnet_delete_gateway [40.078722s] ... ok
+{25} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_network_not_found [40.249776s] ... ok
+{138} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_device_is_ready [38.724534s] ... ok
+{101} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_remove_network [39.010034s] ... ok
+{100} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_put_network_existing [40.101390s] ... ok
+{78} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_start_ready_ports_loop [39.794130s] ... ok
+{13} neutron.tests.unit.agent.dhcp.test_agent.TestDHCPResourceUpdate.test__lt__port_fixed_ips_not_matching [40.528533s] ... ok
+{108} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_ovn_network_with_enable_isolated_metadata [40.066882s] ... ok
+{82} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_get_port_ids_limited_nets [39.884450s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{13} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_enable_metadata_ipv6_ipv4_network [0.049383s] ... ok
+   ERROR [neutron_lib.utils.runtime] Alias or class name is not set
+   ERROR [neutron.agent.common.utils] Error loading interface driver 'None'
+{11} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_none_interface_driver [40.514827s] ... ok
+{117} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_destroy [40.063115s] ... ok
+{11} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_delete_end_agents_port [0.049348s] ... ok
+{96} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route [40.427033s] ... ok
+{89} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpPluginApiProxy.test_create_dhcp_port [39.918605s] ... ok
+{67} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_update_end [39.907179s] ... ok
+{2} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test__check_dhcp_port_subnet_port_missing_subnet [40.839656s] ... ok
+{59} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_put_network [40.609053s] ... ok
+{2} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_configure_dhcp_for_network [0.052935s] ... ok
+{17} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_init_host [40.853178s] ... ok
+{124} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_refresh_dhcp_helper_no_dhcp_enabled_networks [39.962235s] ... ok
+{74} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_cleanup_deleted_ports_no_old_ports [40.777498s] ... ok
+{83} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_network_create_end [40.510495s] ... ok
+{12} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_enable_metadata_nonisolated_dist_network [40.888129s] ... ok
+   ERROR [neutron.agent.dhcp.agent] 
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/common/utils.py", line 182, in call
+    return func(*args, **kwargs)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/agent/dhcp/agent.py", line 402, in _periodic_resync_helper
+    self.sync_state(list(reasons.keys()))
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+RuntimeError
+{61} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_periodic_resync_helper_with_event [39.967175s] ... ok
+{12} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy_with_metadata_network_ipv6 [0.048329s] ... ok
+{113} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_no_network [40.029238s] ... ok
+{105} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_update_change_subnet_on_dhcp_agents_port [40.651283s] ... ok
+{49} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_set_default_route_no_subnet [41.123140s] ... ok
+{119} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_dhcp_port_with_non_enable_dhcp_subnet [40.231619s] ... ok
+{115} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_create_dhcp_port_create_new [40.512693s] ... ok
+{60} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test__check_dhcp_port_subnet [41.044303s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{121} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_sync_state_disabled_net [40.608734s] ... ok
+{10} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_report_state_revival_logic [40.965406s] ... ok
+{120} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy_with_metadata_network_dvr [40.758869s] ... ok
+{44} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_create_end [41.161456s] ... ok
+{85} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_calls_fill_dhcp_udp_checksums_v4 [41.043167s] ... ok
+{10} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_sync_state_same [0.048406s] ... ok
+{77} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_safe_configure_dhcp_for_network_exception [41.131499s] ... ok
+{22} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_update_change_ip_on_port [41.428528s] ... ok
+{66} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_run_completes_single_pass [41.391500s] ... ok
+{116} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_get_network_ids [40.496860s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{19} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy [41.481730s] ... ok
+{125} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_reload_allocations [41.020972s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{53} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_periodic_resync [41.411106s] ... ok
+{28} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_enable_metadata_empty_network [41.422959s] ... ok
+{55} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_sync_state_initial [41.299173s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Timeout notifying server of ports ready. Retrying...
+   ERROR [neutron.agent.dhcp.agent] Timeout notifying server of ports ready. Retrying...
+{62} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test__dhcp_ready_ports_doesnt_log_exception_on_timeout [41.228053s] ... ok
+{1} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_refresh_dhcp_helper_exception_during_rpc [41.427938s] ... ok
+{56} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_delete_end [41.645535s] ... ok
+{1} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_remove_port_existing [0.042694s] ... ok
+{127} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_dhcp_ready_ports_loop_with_limit_ports_per_call_prio [40.270579s] ... ok
+{8} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_enable_metadata_nonisolated_network [41.634782s] ... ok
+{8} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_update_change_ip_on_dhcp_agents_port_cache_miss [0.047546s] ... ok
+{34} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_subnet_update_dhcp [42.013084s] ... ok
+{40} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_populate_cache_on_start_without_active_networks_support [41.818866s] ... ok
+{87} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver_enable_with_segments [41.625496s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Failure notifying DHCP server of ready DHCP ports. Will retry on next iteration.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/agent/dhcp/agent.py", line 353, in dhcp_ready_ports_loop
+    self.plugin_rpc.dhcp_ready_on_ports(prio_ports_to_send |
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1177, in _execute_mock_call
+    raise result
+RuntimeError
+{134} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test__dhcp_ready_ports_loop [41.442771s] ... ok
+{42} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_enable_metadata_ovn_network [42.506858s] ... ok
+{52} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_update_change_ip_on_dhcp_agents_port [42.485291s] ... ok
+{63} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_calls_fill_dhcp_udp_checksums_v6 [42.379367s] ... ok
+{136} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_stale_update_ignored [41.940290s] ... ok
+{93} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_get_network_by_port_id [41.920913s] ... ok
+{88} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_network_update_end_admin_state_down [42.302940s] ... ok
+{114} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_network_update_end_admin_state_up [41.389102s] ... ok
+{104} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_get_network_by_subnet_id [42.236419s] ... ok
+{33} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_dhcp_ready_ports_updates_after_enable_dhcp [42.620876s] ... ok
+{139} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_sync_state_waitall [41.173919s] ... ok
+{15} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_sync_state_for_all_networks_plugin_error [42.532514s] ... ok
+{109} neutron.tests.unit.agent.dhcp.test_agent.TestDHCPResourceUpdate.test__lt__no_port_event [42.111852s] ... ok
+{6} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_without_ipv6_enabled [42.620417s] ... ok
+{132} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_port_delete_end_no_network_id [42.161116s] ... ok
+{141} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_subnet_update_end_restart [41.572519s] ... ok
+{6} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_cleanup_deleted_ports_no_ports [0.045822s] ... ok
+{72} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_dhcp_agent_manager [42.279055s] ... ok
+{98} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_get_port_ids [42.326647s] ... ok
+{123} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_dhcp_helper_known_network_isolated_metadata [42.220975s] ... ok
+{92} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_cleanup_deleted_ports_loop_call [42.699356s] ... ok
+{45} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpPluginApiProxy.test_get_active_networks_info [42.974144s] ... ok
+{106} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_dhcp_helper_known_network [42.158749s] ... ok
+   ERROR [neutron.agent.dhcp.agent] Unexpected number of DHCP interfaces for metadata proxy, expected 1, got 0
+{80} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_isolated_metadata_proxy_with_metadata_network_dvr [43.049548s] ... ok
+{129} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_get_device_id [42.098333s] ... ok
+{54} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_put_port_existing [43.239262s] ... ok
+{48} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_subnet_delete_end_no_network_id [43.191804s] ... ok
+{103} neutron.tests.unit.agent.dhcp.test_agent.TestDeviceManager.test_setup_dhcp_port_doesnt_orphan_devices [42.831202s] ... ok
+{36} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_isolated_metadata_proxy_with_2_agents_network_ipv6 [42.978602s] ... ok
+{84} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_call_driver [42.922762s] ... ok
+{140} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_put_port [42.626117s] ... ok
+{7} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_enable_dhcp_helper_network_none [42.755869s] ... ok
+{7} neutron.tests.unit.agent.dhcp.test_agent.TestNetworkCache.test_cleanup_deleted_ports [0.041387s] ... ok
+{3} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_dhcp_helper_unknown_network [42.622310s] ... ok
+{3} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgentEventHandler.test_disable_isolated_metadata_proxy [0.045803s] ... ok
+   ERROR [neutron.agent.dhcp.agent] 
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/common/utils.py", line 182, in call
+    return func(*args, **kwargs)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_933257_937527/output-v2/replay-work/formal-opendev-933257--target-937527/target-a2/neutron/agent/dhcp/agent.py", line 402, in _periodic_resync_helper
+    self.sync_state(list(reasons.keys()))
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+RuntimeError
+{107} neutron.tests.unit.agent.dhcp.test_agent.TestDhcpAgent.test_periodic_resync_helper [43.326810s] ... ok
+
+======
+Totals
+======
+Ran: 158 tests in 44.1815 sec.
+ - Passed: 158
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 0
+Sum of execute time for each test: 5795.0750 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (2 tests) => 0:00:38.559147
+ - Worker 1 (2 tests) => 0:00:41.470965
+ - Worker 2 (2 tests) => 0:00:40.893133
+ - Worker 3 (2 tests) => 0:00:42.668299
+ - Worker 4 (2 tests) => 0:00:38.625003
+ - Worker 5 (2 tests) => 0:00:38.590253
+ - Worker 6 (2 tests) => 0:00:42.667225
+ - Worker 7 (2 tests) => 0:00:42.797578
+ - Worker 8 (2 tests) => 0:00:41.682599
+ - Worker 9 (2 tests) => 0:00:38.853287
+ - Worker 10 (2 tests) => 0:00:41.014084
+ - Worker 11 (2 tests) => 0:00:40.564681
+ - Worker 12 (2 tests) => 0:00:40.936832
+ - Worker 13 (2 tests) => 0:00:40.578351
+ - Worker 14 (1 tests) => 0:00:39.728616
+ - Worker 15 (1 tests) => 0:00:42.532514
+ - Worker 16 (1 tests) => 0:00:39.625746
+ - Worker 17 (1 tests) => 0:00:40.853178
+ - Worker 18 (1 tests) => 0:00:40.004163
+ - Worker 19 (1 tests) => 0:00:41.481730
+ - Worker 20 (1 tests) => 0:00:38.638111
+ - Worker 21 (1 tests) => 0:00:39.487861
+ - Worker 22 (1 tests) => 0:00:41.428528
+ - Worker 23 (1 tests) => 0:00:39.676641
+ - Worker 24 (1 tests) => 0:00:39.752433
+ - Worker 25 (1 tests) => 0:00:40.249776
+ - Worker 26 (1 tests) => 0:00:40.078722
+ - Worker 27 (1 tests) => 0:00:38.879655
+ - Worker 28 (1 tests) => 0:00:41.422959
+ - Worker 29 (1 tests) => 0:00:38.753437
+ - Worker 30 (1 tests) => 0:00:37.743534
+ - Worker 31 (1 tests) => 0:00:39.884455
+ - Worker 32 (1 tests) => 0:00:40.027232
+ - Worker 33 (1 tests) => 0:00:42.620876
+ - Worker 34 (1 tests) => 0:00:42.013084
+ - Worker 35 (1 tests) => 0:00:39.051016
+ - Worker 36 (1 tests) => 0:00:42.978602
+ - Worker 37 (1 tests) => 0:00:38.825394
+ - Worker 38 (1 tests) => 0:00:39.054911
+ - Worker 39 (1 tests) => 0:00:40.130630
+ - Worker 40 (1 tests) => 0:00:41.818866
+ - Worker 41 (1 tests) => 0:00:40.017657
+ - Worker 42 (1 tests) => 0:00:42.506858
+ - Worker 43 (1 tests) => 0:00:38.435623
+ - Worker 44 (1 tests) => 0:00:41.161456
+ - Worker 45 (1 tests) => 0:00:42.974144
+ - Worker 46 (1 tests) => 0:00:38.092566
+ - Worker 47 (1 tests) => 0:00:38.551691
+ - Worker 48 (1 tests) => 0:00:43.191804
+ - Worker 49 (1 tests) => 0:00:41.123140
+ - Worker 50 (1 tests) => 0:00:38.551801
+ - Worker 51 (1 tests) => 0:00:39.407526
+ - Worker 52 (1 tests) => 0:00:42.485291
+ - Worker 53 (1 tests) => 0:00:41.411106
+ - Worker 54 (1 tests) => 0:00:43.239262
+ - Worker 55 (1 tests) => 0:00:41.299173
+ - Worker 56 (1 tests) => 0:00:41.645535
+ - Worker 57 (1 tests) => 0:00:38.570488
+ - Worker 58 (1 tests) => 0:00:40.236990
+ - Worker 59 (1 tests) => 0:00:40.609053
+ - Worker 60 (1 tests) => 0:00:41.044303
+ - Worker 61 (1 tests) => 0:00:39.967175
+ - Worker 62 (1 tests) => 0:00:41.228053
+ - Worker 63 (1 tests) => 0:00:42.379367
+ - Worker 64 (1 tests) => 0:00:39.686087
+ - Worker 65 (1 tests) => 0:00:38.180795
+ - Worker 66 (1 tests) => 0:00:41.391500
+ - Worker 67 (1 tests) => 0:00:39.907179
+ - Worker 68 (1 tests) => 0:00:38.141844
+ - Worker 69 (1 tests) => 0:00:37.576527
+ - Worker 70 (1 tests) => 0:00:40.108873
+ - Worker 71 (1 tests) => 0:00:38.750925
+ - Worker 72 (1 tests) => 0:00:42.279055
+ - Worker 73 (1 tests) => 0:00:38.463908
+ - Worker 74 (1 tests) => 0:00:40.777498
+ - Worker 75 (1 tests) => 0:00:38.592829
+ - Worker 76 (1 tests) => 0:00:39.338005
+ - Worker 77 (1 tests) => 0:00:41.131499
+ - Worker 78 (1 tests) => 0:00:39.794130
+ - Worker 79 (1 tests) => 0:00:37.979121
+ - Worker 80 (1 tests) => 0:00:43.049548
+ - Worker 81 (1 tests) => 0:00:39.853675
+ - Worker 82 (1 tests) => 0:00:39.884450
+ - Worker 83 (1 tests) => 0:00:40.510495
+ - Worker 84 (1 tests) => 0:00:42.922762
+ - Worker 85 (1 tests) => 0:00:41.043167
+ - Worker 86 (1 tests) => 0:00:37.833527
+ - Worker 87 (1 tests) => 0:00:41.625496
+ - Worker 88 (1 tests) => 0:00:42.302940
+ - Worker 89 (1 tests) => 0:00:39.918605
+ - Worker 90 (1 tests) => 0:00:39.449335
+ - Worker 91 (1 tests) => 0:00:38.618523
+ - Worker 92 (1 tests) => 0:00:42.699356
+ - Worker 93 (1 tests) => 0:00:41.920913
+ - Worker 94 (1 tests) => 0:00:37.742426
+ - Worker 95 (1 tests) => 0:00:37.813872
+ - Worker 96 (1 tests) => 0:00:40.427033
+ - Worker 97 (1 tests) => 0:00:38.349035
+ - Worker 98 (1 tests) => 0:00:42.326647
+ - Worker 99 (1 tests) => 0:00:38.274401
+ - Worker 100 (1 tests) => 0:00:40.101390
+ - Worker 101 (1 tests) => 0:00:39.010034
+ - Worker 102 (1 tests) => 0:00:38.737258
+ - Worker 103 (1 tests) => 0:00:42.831202
+ - Worker 104 (1 tests) => 0:00:42.236419
+ - Worker 105 (1 tests) => 0:00:40.651283
+ - Worker 106 (1 tests) => 0:00:42.158749
+ - Worker 107 (1 tests) => 0:00:43.326810
+ - Worker 108 (1 tests) => 0:00:40.066882
+ - Worker 109 (1 tests) => 0:00:42.111852
+ - Worker 110 (1 tests) => 0:00:38.736961
+ - Worker 111 (1 tests) => 0:00:38.144359
+ - Worker 112 (1 tests) => 0:00:37.610407
+ - Worker 113 (1 tests) => 0:00:40.029238
+ - Worker 114 (1 tests) => 0:00:41.389102
+ - Worker 115 (1 tests) => 0:00:40.512693
+ - Worker 116 (1 tests) => 0:00:40.496860
+ - Worker 117 (1 tests) => 0:00:40.063115
+ - Worker 118 (1 tests) => 0:00:38.295066
+ - Worker 119 (1 tests) => 0:00:40.231619
+ - Worker 120 (1 tests) => 0:00:40.758869
+ - Worker 121 (1 tests) => 0:00:40.608734
+ - Worker 122 (1 tests) => 0:00:38.500410
+ - Worker 123 (1 tests) => 0:00:42.220975
+ - Worker 124 (1 tests) => 0:00:39.962235
+ - Worker 125 (1 tests) => 0:00:41.020972
+ - Worker 126 (1 tests) => 0:00:37.292788
+ - Worker 127 (1 tests) => 0:00:40.270579
+ - Worker 128 (1 tests) => 0:00:37.051988
+ - Worker 129 (1 tests) => 0:00:42.098333
+ - Worker 130 (1 tests) => 0:00:37.313588
+ - Worker 131 (1 tests) => 0:00:38.817069
+ - Worker 132 (1 tests) => 0:00:42.161116
+ - Worker 133 (1 tests) => 0:00:37.833176
+ - Worker 134 (1 tests) => 0:00:41.442771
+ - Worker 135 (1 tests) => 0:00:38.661621
+ - Worker 136 (1 tests) => 0:00:41.940290
+ - Worker 137 (1 tests) => 0:00:37.916852
+ - Worker 138 (1 tests) => 0:00:38.724534
+ - Worker 139 (1 tests) => 0:00:41.173919
+ - Worker 140 (1 tests) => 0:00:42.626117
+ - Worker 141 (1 tests) => 0:00:41.572519
+ - Worker 142 (1 tests) => 0:00:37.624404
+ - Worker 143 (1 tests) => 0:00:37.305105

@@ -1,0 +1,99 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 13,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 260,
+    "case_id": "e2-019",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:36:28.174665Z",
+  "blind_prediction_created_at": "2026-08-30T04:36:27.459876Z",
+  "blockers": [],
+  "candidate_id": "e2-019",
+  "case_id": "formal-github-assertj-2477--target-vavr-181",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "assertj/assertj-core",
+    "assertj/assertj-vavr"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:36:28.177061Z",
+  "mechanism": "Removing shaded Byte Buddy packages makes the target's internal AssertJ imports unresolved.",
+  "repair_template": "Migrate target imports to public Byte Buddy packages and update the source dependency.",
+  "replay": {
+    "built_source_commits": {
+      "A0": "27ef21c4ed3c97eb62129bc88160f56516753606",
+      "A1": "463004be40302f0543e8c3ba5d73515d50527d10",
+      "A2": "463004be40302f0543e8c3ba5d73515d50527d10"
+    },
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "package org.assertj.core.internal.bytebuddy does not exist",
+    "machine_strict_e2": true,
+    "primary_result_channel": "project_build_or_test",
+    "schema_version": "1.0",
+    "source_application": "maven_local_artifact_from_opening_checkout",
+    "source_artifact_versions": {
+      "A0": "3.22.0",
+      "A1": "3.22.0",
+      "A2": "3.23.1"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "c767d94c2fafddb9245a31a1c00db47e433ad28b",
+    "target_test_path": "src/main/java/org/assertj/vavr/api/VavrAssumptions.java",
+    "test_command": [
+      "mvn",
+      "clean",
+      "test"
+    ],
+    "tests_run": {
+      "A0": 689,
+      "A2": 689
+    }
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-github-assertj-2477--target-vavr-181",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "pom.xml",
+      "src/main/java/org/assertj/vavr/api/ClassLoadingStrategyFactory.java",
+      "src/main/java/org/assertj/vavr/api/VavrAssumptions.java"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "assertj/assertj-vavr"
+  },
+  "semantic_review": {
+    "a1_failure": "With the source opening head built and installed under the cutoff target's declared 3.22.0 coordinate, the unchanged target must fail compilation because org.assertj.core.internal.bytebuddy packages no longer exist; fresh Maven logs must prove the signature is exclusive to A1.",
+    "approved": true,
+    "reviewer_basis": "Independently reviewed the source opening diff, opening-cutoff target POM and production imports, complete maintainer parent-to-head diff and metadata, and will retain approval only if fresh source builds plus the same Maven command prove A0/A1/A2=0/nonzero/0 and successful A0/A2 test counts.",
+    "source_effect": "The assertj-core opening removes its Byte Buddy shading and therefore removes the org.assertj.core.internal.bytebuddy package surface consumed by assertj-vavr.",
+    "target_patch": ".work/root-rebuild-assertj2477-vavr181/intake/private/target.patch",
+    "target_repair": "The complete maintainer patch updates assertj-core from 3.22.0 to 3.23.1 and migrates the two production sources to public net.bytebuddy packages. It deletes or skips no test and retains the full Maven test command."
+  },
+  "source_change_family": "github-pr-2477-opening",
+  "status": "case_ready_for_formal_pool"
+}

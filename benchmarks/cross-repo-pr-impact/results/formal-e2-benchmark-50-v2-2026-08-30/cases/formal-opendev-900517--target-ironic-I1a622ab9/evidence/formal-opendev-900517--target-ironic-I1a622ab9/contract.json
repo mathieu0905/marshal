@@ -1,0 +1,72 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "bootstrap_constraints": [
+    "setuptools==75.6.0"
+  ],
+  "candidate_id": "formal-opendev-900517",
+  "case_id": "formal-opendev-900517--target-ironic-I1a622ab9",
+  "changed_distribution": "oslo.utils",
+  "command_provenance": {
+    "commit": "b9baf7dbc8d1b32f7bf4bafe48da02ded32078be",
+    "path": "tox.ini",
+    "repository": "openstack/ironic"
+  },
+  "failure_signature": "TypeError: expected string or bytes-like object",
+  "installed_source_versions": {
+    "A0": "6.2.1",
+    "A1": "6.3.0",
+    "A2": "6.3.0"
+  },
+  "machine_arm_verification": "passed",
+  "opening_constraint_changes": [
+    {
+      "distribution": "oslo.utils",
+      "new_version": "6.3.0",
+      "old_version": "6.2.1"
+    }
+  ],
+  "primary_result_channel": "pre_existing_target_test",
+  "relation_id": "formal-opendev-900517--target-ironic-I1a622ab9",
+  "requirements_a1_commit": "4e5f8db60144dad3dc9d18862d949d20b65c8b59",
+  "requirements_commit": "1a2d1998e655e5b5b0afb96018f1ee04f289642f",
+  "schema_version": "1.0",
+  "selected_attempt_id": "formal-opendev-900517--target-ironic-I1a622ab9--check-ironic-tests-unit-objects-test_objects",
+  "setup_environment_keys": [],
+  "source_application": "global_constraints_single_pin",
+  "source_base_commit": "1a2d1998e655e5b5b0afb96018f1ee04f289642f",
+  "source_head_commit": "4e5f8db60144dad3dc9d18862d949d20b65c8b59",
+  "source_repository": "openstack/requirements",
+  "source_subject": "update constraint for oslo.utils to new release 6.3.0",
+  "source_versions": {
+    "A0": "6.2.1",
+    "A1": "6.3.0",
+    "A2": "6.3.0"
+  },
+  "strict_touched_test_count": 1,
+  "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+  "target_base_commit": "b9baf7dbc8d1b32f7bf4bafe48da02ded32078be",
+  "target_change": "I1a622ab9c766d46b7eb4442848e91f25b26f6c61",
+  "target_head_commit": "fa8df69194be12b9fe97253d8dd14013381ca92a",
+  "target_patch_evidence": "target.patch",
+  "target_repository": "openstack/ironic",
+  "target_subject": "Fix unit tests broken by oslo.utils",
+  "target_test_path": "ironic/tests/unit/objects/test_objects.py",
+  "test_command": [
+    "stestr",
+    "run",
+    "--slowest",
+    "--parallel-class",
+    "--exclude-regex",
+    "TestMigrationsMySQL",
+    "ironic.tests.unit.objects.test_objects"
+  ],
+  "test_environment_keys": [],
+  "test_selector": "ironic.tests.unit.objects.test_objects",
+  "tox_environment": "py3",
+  "virtualenv_pip_version": null,
+  "virtualenv_setuptools_version": null
+}

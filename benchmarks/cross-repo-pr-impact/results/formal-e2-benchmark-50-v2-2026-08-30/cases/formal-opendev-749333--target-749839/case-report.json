@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 214,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5066,
+    "case_id": "formal-opendev-749333",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:36:56.864183Z",
+  "blind_prediction_created_at": "2026-08-30T04:36:47.521099Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-749333",
+  "case_id": "formal-opendev-749333--target-749839",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/cinder"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:36:56.871094Z",
+  "mechanism": "oslo.messaging 12.4.0 probes endpoint attribute oslo_rpc_server_ping; Cinder isolation sentinel recursively handles the unexpected probe",
+  "repair_template": "Allow the new oslo_rpc_server_ping capability probe in the existing endpoint-isolation test sentinel",
+  "replay": {
+    "catalog_source_snapshot_commit": "d9089c8eed9d3eeb698e50df3fcc0020c9c72fa4",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "RecursionError: maximum recursion depth exceeded in comparison",
+    "installed_source_versions": {
+      "A0": "12.3.0",
+      "A1": "12.4.0",
+      "A2": "12.4.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "5b2ee12846e05722a45cd7ca616f8254b7ed1ec1",
+    "source_head_commit": "ae1cbff86800e1e70a2ae5be75c3f2e784750805",
+    "source_versions": {
+      "A0": "12.3.0",
+      "A1": "12.4.0",
+      "A2": "12.4.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "977ff8105cc8ddc3167f34672dc1f0d9639f1b5b",
+    "target_test_path": "cinder/tests/unit/test_test.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "cinder.tests.unit.test_test.IsolationTestCase.test_rpc_consumer_isolation"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-749333--target-749839",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "cinder/tests/unit/test_test.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/cinder"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the global constraint changed to oslo.messaging 12.4.0, the pre-existing isolation test is expected to enter NeverCalled.__getattribute__ for oslo_rpc_server_ping and fail with the replay's exclusive RecursionError; the fresh three-arm replay independently gates that expectation.",
+    "approved": true,
+    "reviewer_basis": "Direct inspection of the 12.3.0-to-12.4.0 oslo.messaging dispatcher diff, the Cinder cutoff test, and the complete maintainer commit diff establishes the mechanism and narrow repair; the generated package still requires fresh 0/nonzero/0 replay, exclusive-signature parsing, scoring, and independent verification.",
+    "source_effect": "oslo.messaging 12.4.0 adds RPCDispatcher getattr(ep, 'oslo_rpc_server_ping', None) capability probing that is absent in 12.3.0.",
+    "target_patch": ".work/rebuild_749333_749839/intake/target-patches/749839.patch",
+    "target_repair": "The complete maintainer patch allows only oslo_rpc_server_ping in the existing NeverCalled sentinel, retains the original test and its fail-on-any-other-access behavior, and makes no skip or deletion."
+  },
+  "source_change_family": "opendev-change-749333-opening",
+  "status": "case_ready_for_formal_pool"
+}

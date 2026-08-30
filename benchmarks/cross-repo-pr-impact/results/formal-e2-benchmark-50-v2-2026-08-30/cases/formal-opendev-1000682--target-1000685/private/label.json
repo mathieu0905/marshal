@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-1000682",
+  "expected_check_paths": [
+    "openstackclient/network/v2/ip_availability.py",
+    "openstackclient/tests/unit/network/v2/test_ip_availability.py"
+  ],
+  "mechanism": "A new SDK resource field changes the columns exposed to the target CLI's generic show path before the target has formatting and expected-column support.",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-1000682--target-1000685",
+  "repair_template": "Add target formatting and expected output columns for a new dependency resource field.",
+  "replay_adapter": "source_editable",
+  "replay_plan": ".work/root-rebuild-1000682-1000685/intake/private/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening OpenStackSDK checkout changed, the unchanged target unit module must fail because the new ip_availability_details field appears in generic show columns but is absent from the target's expected columns; fresh logs must prove an A1-exclusive mismatch signature.",
+    "approved": true,
+    "reviewer_basis": "Independently reviewed the source opening diff, public cutoff target code and test, full maintainer parent-to-head patch and metadata, cutoff tox command, and will retain approval only if fresh A0/A1/A2 logs prove the same real module with 0/nonzero/0 and an A1-exclusive signature.",
+    "source_effect": "The source opening adds ip_availability_details as a real NetworkIPAvailability response-body field and includes source-side tests and release notes for that field.",
+    "target_patch": ".work/root-rebuild-1000682-1000685/intake/private/target.patch",
+    "target_repair": "The complete five-file maintainer patch adds the formatter, detailed list columns, extension-absent fallback behavior, matching unit and functional coverage, and release note. It deletes or skips no test and the fixed pre-existing unit module remains the same command."
+  },
+  "setuptools_version": "80.9.0",
+  "source_change_family": "opendev-change-1000682-opening",
+  "target_repository": "openstack/python-openstackclient",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}

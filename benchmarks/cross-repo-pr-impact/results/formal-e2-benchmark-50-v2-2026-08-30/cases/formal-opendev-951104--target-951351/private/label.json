@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-951104",
+  "expected_check_paths": [
+    "glance/tests/unit/fixtures.py",
+    "glance/tests/unit/test_quota.py"
+  ],
+  "mechanism": "oslo.limit 2.7 changes the limit retrieval call surface used by Glance, while the cutoff KeystoneQuotaFixture mocks the former internal SDK connection and callback shape",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": ".work/rebuild_951104_951351/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-951104--target-951351",
+  "repair_template": "replace the hand-built internal-path test fixture with the public oslo.limit LimitFixture subclass",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/rebuild_951104_951351/intake/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "All four pre-existing Glance quota selectors pass with oslo.limit 2.6.1, fail only in A1 with oslo.limit 2.7.0, and expose the exclusive stable signature TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the exact one-pin opening diff, the complete base-to-maintainer-head target diff, cutoff tox.ini command provenance, fresh installed-version probes, all twelve fresh arm logs, exclusive normalized failure signature, and zero-skip A0/A2 test totals.",
+    "source_effect": "The opening changes exactly the oslo.limit upper-constraint from 2.6.1 to 2.7.0. Fresh probes confirm 2.6.1/2.7.0/2.7.0 in A0/A1/A2; in 2.7.0 the SDK limits query no longer passes resource_name, which is incompatible with Glance's cutoff fake_limits callback that requires it.",
+    "target_patch": ".work/rebuild_951104_951351/intake/951351.patch",
+    "target_repair": "The complete maintainer diff applies cleanly to the cutoff Glance commit and only replaces the stale hand-built SDK/enforcer fixture internals with a subclass of oslo_limit.fixture.LimitFixture. The same four selectors pass in A2 with no skips, so recovery follows the changed public fixture behavior rather than deleting or bypassing tests."
+  },
+  "source_change_family": "opendev-change-951104-opening",
+  "target_repository": "openstack/glance",
+  "tox": ".work/rebuild_951104_951351/tox4-runner/bin/tox"
+}

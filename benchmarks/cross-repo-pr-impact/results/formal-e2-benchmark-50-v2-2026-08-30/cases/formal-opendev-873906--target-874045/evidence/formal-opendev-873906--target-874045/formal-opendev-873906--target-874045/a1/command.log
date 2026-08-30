@@ -1,0 +1,753 @@
+{8} heat.tests.clients.test_barbican_client.BarbicanClientPluginTest.test_get_secret_by_ref_not_found [0.276029s] ... ok
+{2} heat.tests.clients.test_barbican_client.ContainerConstraintTest.test_validation [0.280440s] ... ok
+{7} heat.tests.clients.test_barbican_client.BarbicanClientPluginTest.test_get_secret_payload_by_ref [0.253294s] ... ok
+{1} heat.tests.clients.test_barbican_client.SecretConstraintTest.test_validation [0.293246s] ... ok
+{3} heat.tests.clients.test_barbican_client.BarbicanClientPluginTest.test_get_secret_payload_by_ref_not_found [0.282578s] ... ok
+{4} heat.tests.clients.test_barbican_client.SecretConstraintTest.test_validation_error [0.242729s] ... ok
+{6} heat.tests.clients.test_barbican_client.BarbicanClientPluginTest.test_get_secret_by_ref [0.243709s] ... ok
+{0} heat.tests.clients.test_barbican_client.ContainerConstraintTest.test_validation_error [0.294848s] ... ok
+{5} heat.tests.clients.test_barbican_client.BarbicanClientPluginTest.test_create [1.848874s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+
+    socket.gaierror: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 398, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 239, in request
+    super(HTTPConnection, self).request(method, url, body=body, headers=headers)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 205, in connect
+    conn = self._new_conn()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+
+    urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+
+    urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1022, in _send_request
+    resp = self.session.request(method, url, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 565, in send
+    raise ConnectionError(e, request=request)
+
+    requests.exceptions.ConnectionError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1038, in _send_request
+    raise exceptions.ConnectFailure(msg)
+
+    keystoneauth1.exceptions.connection.ConnectFailure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+
+    socket.gaierror: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 398, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 239, in request
+    super(HTTPConnection, self).request(method, url, body=body, headers=headers)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 205, in connect
+    conn = self._new_conn()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+
+    urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+
+    urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1022, in _send_request
+    resp = self.session.request(method, url, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 565, in send
+    raise ConnectionError(e, request=request)
+
+    requests.exceptions.ConnectionError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1038, in _send_request
+    raise exceptions.ConnectFailure(msg)
+
+    keystoneauth1.exceptions.connection.ConnectFailure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+
+    socket.gaierror: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 398, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 239, in request
+    super(HTTPConnection, self).request(method, url, body=body, headers=headers)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 205, in connect
+    conn = self._new_conn()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+
+    urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+
+    urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1022, in _send_request
+    resp = self.session.request(method, url, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 565, in send
+    raise ConnectionError(e, request=request)
+
+    requests.exceptions.ConnectionError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/heat/tests/clients/test_barbican_client.py", line 38, in test_create
+    client = plugin.client()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/heat/engine/clients/client_plugin.py", line 73, in client
+    self._client_instances[version] = self._create()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/heat/engine/clients/os/barbican.py", line 35, in _create
+    client = barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 931, in request
+    resp = send(**kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1053, in _send_request
+    return self._send_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1053, in _send_request
+    return self._send_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1038, in _send_request
+    raise exceptions.ConnectFailure(msg)
+
+    keystoneauth1.exceptions.connection.ConnectFailure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+        INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 0.5s.
+    INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 1.0s.
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+        INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 0.5s.
+    INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 1.0s.
+
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+heat.tests.clients.test_barbican_client.BarbicanClientPluginTest.test_create
+----------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+
+    socket.gaierror: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 398, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 239, in request
+    super(HTTPConnection, self).request(method, url, body=body, headers=headers)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 205, in connect
+    conn = self._new_conn()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+
+    urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+
+    urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1022, in _send_request
+    resp = self.session.request(method, url, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 565, in send
+    raise ConnectionError(e, request=request)
+
+    requests.exceptions.ConnectionError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1038, in _send_request
+    raise exceptions.ConnectFailure(msg)
+
+    keystoneauth1.exceptions.connection.ConnectFailure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+
+    socket.gaierror: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 398, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 239, in request
+    super(HTTPConnection, self).request(method, url, body=body, headers=headers)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 205, in connect
+    conn = self._new_conn()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+
+    urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+
+    urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1022, in _send_request
+    resp = self.session.request(method, url, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 565, in send
+    raise ConnectionError(e, request=request)
+
+    requests.exceptions.ConnectionError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1038, in _send_request
+    raise exceptions.ConnectFailure(msg)
+
+    keystoneauth1.exceptions.connection.ConnectFailure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+
+    socket.gaierror: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 398, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 239, in request
+    super(HTTPConnection, self).request(method, url, body=body, headers=headers)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 205, in connect
+    conn = self._new_conn()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+
+    urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+
+    urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1022, in _send_request
+    resp = self.session.request(method, url, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/requests/adapters.py", line 565, in send
+    raise ConnectionError(e, request=request)
+
+    requests.exceptions.ConnectionError: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/heat/tests/clients/test_barbican_client.py", line 38, in test_create
+    client = plugin.client()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/heat/engine/clients/client_plugin.py", line 73, in client
+    self._client_instances[version] = self._create()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/heat/engine/clients/os/barbican.py", line 35, in _create
+    client = barbican_client.Client(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 47, in __init__
+    normalized_microversion = self._get_max_supported_version(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 88, in _get_max_supported_version
+    min_ver, max_ver = self._get_min_max_server_supported_microversion(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 119, in _get_min_max_server_supported_microversion
+    return self._get_min_max_version(session, endpoint, '1.1')
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/barbicanclient/v1/client.py", line 125, in _get_min_max_version
+    resp = discover.get_version_data(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/discover.py", line 107, in get_version_data
+    resp = session.get(url, headers=headers, authenticated=authenticated)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1141, in get
+    return self.request(url, 'GET', **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 931, in request
+    resp = send(**kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1053, in _send_request
+    return self._send_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1053, in _send_request
+    return self._send_request(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-873906-874045-v2-2026-08-27/replay-work/formal-opendev-873906--target-874045/target-a1/.tox/py3/lib/python3.10/site-packages/keystoneauth1/session.py", line 1038, in _send_request
+    raise exceptions.ConnectFailure(msg)
+
+    keystoneauth1.exceptions.connection.ConnectFailure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15e590>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+        INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 0.5s.
+    INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 1.0s.
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+        INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15c280>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 0.5s.
+    INFO [keystoneauth.session] Failure: Unable to establish connection to http://server.test:5000/v3: HTTPConnectionPool(host='server.test', port=5000): Max retries exceeded with url: /v3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7103cb15de70>: Failed to establish a new connection: [Errno -2] Name or service not known')). Retrying in 1.0s.
+
+
+
+======
+Totals
+======
+Ran: 9 tests in 1.8568 sec.
+ - Passed: 8
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 4.0157 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.294848
+ - Worker 1 (1 tests) => 0:00:00.293246
+ - Worker 2 (1 tests) => 0:00:00.280440
+ - Worker 3 (1 tests) => 0:00:00.282578
+ - Worker 4 (1 tests) => 0:00:00.242729
+ - Worker 5 (1 tests) => 0:00:01.848874
+ - Worker 6 (1 tests) => 0:00:00.243709
+ - Worker 7 (1 tests) => 0:00:00.253294
+ - Worker 8 (1 tests) => 0:00:00.276029

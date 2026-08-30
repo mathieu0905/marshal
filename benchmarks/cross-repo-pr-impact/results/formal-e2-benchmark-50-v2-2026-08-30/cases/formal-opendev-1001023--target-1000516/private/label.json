@@ -1,0 +1,27 @@
+{
+  "candidate_id": "e2-001",
+  "expected_check_paths": [
+    "cinder/tests/unit/db/test_migrations.py"
+  ],
+  "mechanism": "Alembic's constraint-reflection change exposes existing model-versus-migration CHECK-constraint differences in the target MySQL sync test.",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/python",
+  "relation_id": "formal-opendev-1001023--target-1000516",
+  "repair_template": "Adapt the target migration-consistency test to ignore reflected CHECK constraints intentionally handled outside the modeled schema.",
+  "replay_adapter": "requirements_constraint",
+  "replay_environment": {
+    "OS_TEST_DBAPI_ADMIN_CONNECTION": "mysql+pymysql://openstack_citest:openstack_citest@127.0.0.1:33317/"
+  },
+  "replay_plan": ".work/root-rebuild-1001023-1000516/intake/private/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening pin changed to Alembic 1.19.1, the unchanged selected MySQL model-sync test must report remove_constraint differences; the identical command with 1.18.5 must pass and fresh logs must establish an A1-exclusive failure signature.",
+    "approved": true,
+    "reviewer_basis": "Independently reviewed the single-pin opening diff, cutoff Cinder test and tox command, complete maintainer parent-to-head patch and metadata, and local MySQL endpoint; approval remains conditional on a fresh same-command 0/nonzero/0 replay with installed-version probes and an A1-exclusive signature.",
+    "source_effect": "The source opening changes the sole Alembic constraint from 1.18.5 to 1.19.1, whose MySQL reflection behavior exposes CHECK constraints to the target consistency comparison.",
+    "target_patch": ".work/root-rebuild-1001023-1000516/intake/private/target.patch",
+    "target_repair": "The complete one-file maintainer patch adds an explicit CHECK-constraint filter for the twelve affected tables in the existing migration-consistency test. It neither deletes nor skips the test, and A2 must run the identical selector."
+  },
+  "source_change_family": "opendev-change-1001023-opening",
+  "target_repository": "openstack/cinder",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

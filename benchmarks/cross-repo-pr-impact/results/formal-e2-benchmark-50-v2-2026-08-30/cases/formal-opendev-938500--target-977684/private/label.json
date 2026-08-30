@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-938500",
+  "expected_check_paths": [
+    "designate/tests/unit/backend/test_infoblox.py"
+  ],
+  "mechanism": "infoblox-client 0.6.2 changes InfobloxTimeoutError construction from a positional message to required response and reason parameters, breaking existing Designate backend tests",
+  "mirror_root": "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "/home/zhihao/hdd/marshal/.work/rebuild_938500_977684/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-938500--target-977684",
+  "repair_template": "construct the dependency exception with its new response and reason interface in existing target tests",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "/home/zhihao/hdd/marshal/.work/rebuild_938500_977684/intake/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the source constraint changed to infoblox-client 0.6.2, the same 27-test Designate backend command exits 1: test_create_zone_handle_error and test_delete_zone_handle_error construct InfobloxTimeoutError with the old positional form and both fail with the A1-exclusive KeyError: 'reason'. A0 exits 0 with 27 passed, and the signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Fresh source and complete maintainer diffs; installed dependency source and version probes; all three command logs and summaries; exclusive-signature checks; target patch application evidence; and the cutoff tox.ini provenance showing the pre-existing stestr command.",
+    "source_effect": "The opening diff changes only the infoblox-client upper-constraint from 0.6.1 to 0.6.2. The replay independently observes those installed versions, and 0.6.2 changes InfobloxTimeoutError's message template to require the reason keyword while the inherited constructor still treats the old positional value as response.",
+    "target_patch": "/home/zhihao/hdd/marshal/.work/rebuild_938500_977684/intake/target-patches/977684.patch",
+    "target_repair": "The complete maintainer diff changes exactly the two pre-existing exception fixtures to provide response and reason. It deletes or skips no tests; under the unchanged infoblox-client 0.6.2 constraint, the identical command exits 0 with all 27 tests passing."
+  },
+  "source_change_family": "opendev-change-938500-opening",
+  "target_repository": "openstack/designate",
+  "tox": "/home/zhihao/hdd/marshal/.work/rebuild_938500_977684/tox4-runner/bin/tox"
+}

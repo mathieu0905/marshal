@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-982599",
+  "expected_check_paths": [
+    "neutron/tests/unit/api/v2/test_base.py"
+  ],
+  "mechanism": "The selected pre-existing APIv2 test reaches Controller._items, whose cutoff code reads request.context.tenant_id; the neutron-lib opening removes that Context alias, so this one selector raises AttributeError in A1.",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/python",
+  "relation_id": "formal-opendev-982599--target-982593",
+  "repair_template": "Apply the complete maintainer target patch, whose exercised APIv2 call site reads project_id instead of tenant_id.",
+  "replay_adapter": "source_editable",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/private/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only neutron-lib changed from b9b52ce9 to 9c23ef3a, neutron.tests.unit.api.v2.test_base.APIv2TestCase.test_emulated_sort_without_sort_field exits nonzero with AttributeError: 'Context' object has no attribute 'tenant_id'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the opening source diff, cutoff Controller._items call site, the selected pre-existing test, the fresh one-selector A0/A1/A2 logs, and verified that applying the complete stored target patch to 4f5c8f81 reproduces the 50b4a10c target tree.",
+    "source_effect": "The opening source diff removes the Context.tenant_id property alias consumed by the selected selector's Controller._items path.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/evidence/formal-opendev-982599--target-982593/target.patch",
+    "target_repair": "The complete maintainer patch changes the exercised Controller._items access from request.context.tenant_id to request.context.project_id. Only this one pre-existing selector is claimed as executed evidence; A2 runs that same selector successfully."
+  },
+  "source_change_family": "opendev-change-982599-opening",
+  "target_repository": "openstack/neutron",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

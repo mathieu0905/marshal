@@ -1,0 +1,84 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5008,
+    "case_id": "formal-opendev-983041",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T12:40:36.825008Z",
+  "blind_prediction_created_at": "2026-08-26T12:40:30.401120Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-983041",
+  "case_id": "formal-opendev-983041--target-983053",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/openstacksdk",
+    "openstack/python-openstackclient"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T12:40:36.827757Z",
+  "mechanism": "a newly exposed SDK Agent field enters the target CLI generic show columns before the target defines an explicit stable output mapping",
+  "repair_template": "replace generic SDK field enumeration with an explicit target-owned output mapping and expectation",
+  "replay": {
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "testtools.matchers._impl.MismatchError: !=:",
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "requirements_cutoff_commit": "9b81b64dc9a780b056dabc4907ac0a482446dd95",
+    "schema_version": "1.0",
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "b031b7d9ab8204ce337032832efaa57c8d0c4a84",
+    "target_test_path": "openstackclient/tests/unit/network/v2/test_network_agent.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "openstackclient.tests.unit.network.v2.test_network_agent"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-983041--target-983053",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "openstackclient/network/v2/network_agent.py",
+      "openstackclient/tests/unit/network/v2/test_network_agent.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/python-openstackclient"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the opening SDK change installed, the unchanged target's generic show mapping exposes ha_chassis_priority and the existing Agent output assertion fails with that sole extra column; all 23 tests pass in A0 and A2, while A1 has 22 passes and one mismatch.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source opening diff, cutoff target tox task and test, maintainer patch, editable-install logs proving base/head/head source revisions, and complete A0/A1/A2 module logs showing 23/23, 22/23, and 23/23 passing.",
+    "source_effect": "The source opening diff adds ha_chassis_priority as a real Network Agent resource field.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-contract-triage-2026-08-26/target-patches/983053.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target replaces generic SDK field enumeration with an explicit target-owned Agent output mapping and records ha_chassis_priority in the existing expectation; the identical module command returns to zero without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-983041-opening",
+  "status": "case_ready_for_formal_pool"
+}

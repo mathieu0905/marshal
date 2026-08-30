@@ -1,0 +1,30 @@
+{
+  "candidate_id": "formal-github-jackson-core-mock-interception",
+  "expected_check_paths": [
+    "src/test/java/com/internetitem/logback/elasticsearch/PropertySerializerTest.java"
+  ],
+  "java_home": ".work/rebuild_jackson_mock_logback/tools/temurin8",
+  "maven": ".work/rebuild_jackson_mock_logback/tools/maven-3.9.8/bin/mvn",
+  "maven_seed_repository": ".work/rebuild_jackson_mock_logback/maven-seed",
+  "mechanism": "The Jackson Core opening removes final from JsonGenerator writeXxxField convenience methods. Mockito in the cutoff target can then intercept the field-level call instead of executing the wrapper and recording its primitive write calls, invalidating the existing interaction assertions.",
+  "mirror_root": ".work/rebuild_jackson_mock_logback/mirrors",
+  "python": "/data/zhihao/miniconda3/bin/python3",
+  "relation_id": "formal-github-jackson-core-mock-interception--target-logback-elasticsearch",
+  "repair_template": "Update the existing target interaction assertions to verify the named writeXxxField calls exposed to Mockito, using the maintainer's complete test-only commit patch.",
+  "replay_adapter": "maven_source",
+  "replay_plan": ".work/rebuild_jackson_mock_logback/manifests/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "The fresh replay ran the same existing PropertySerializerTest command in all three arms. A0 ran eight tests with zero failures, A1 ran the same eight tests with eight failures and the exclusive 'Wanted but not invoked:' Mockito signature, and A2 ran eight tests with zero failures. The A1 assertions still expect primitive writeObject, writeNumber, or writeBoolean calls rather than intercepted writeXxxField calls.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the complete direct source diff, complete maintainer parent-to-head target diff, cutoff target test and POM provenance, clean patch application, fresh A0/A1/A2 command logs, exclusive failure signature, zero skipped tests, score, blind isolation boundary, and independent package verification.",
+    "source_effect": "The complete direct Jackson Core opening diff changes the writeBinaryField, writeBooleanField, writeNullField, writeStringField, writeNumberField, writeArrayFieldStart, writeObjectFieldStart, and writeObjectField methods from final to overridable while preserving their method bodies. With the target's Mockito version this changes which invocation boundary is observable.",
+    "target_patch": ".work/rebuild_jackson_mock_logback/intake/target-patches/logback-elasticsearch-19890de.patch",
+    "target_repair": "Maintainer commit 19890dee0d3ec4839658c3973a8c1aa2dba7eb8e changes only PropertySerializerTest relative to its actual parent 20de83750d38118433e27efd47ebced8f37a1c21: it assigns field names and verifies writeObjectField, writeNumberField, or writeBooleanField. The complete parent-to-head diff applies cleanly to the source-opening cutoff target without deleting or skipping tests."
+  },
+  "source_change_family": "github-jackson-core-4ca96e5-mock-interception",
+  "source_java_home": ".work/rebuild_jackson_mock_logback/tools/temurin8",
+  "target_java_home": ".work/rebuild_jackson_mock_logback/tools/temurin8",
+  "target_repository": "internetitem/logback-elasticsearch-appender",
+  "tox": "/home/zhihao/.local/bin/tox"
+}

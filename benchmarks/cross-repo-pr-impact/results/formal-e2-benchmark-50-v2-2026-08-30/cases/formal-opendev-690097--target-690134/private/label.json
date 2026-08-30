@@ -1,0 +1,30 @@
+{
+  "bootstrap_constraints": [
+    "Cython<3"
+  ],
+  "candidate_id": "formal-opendev-690097",
+  "expected_check_paths": [
+    "openstack_dashboard/test/unit/api/test_nova.py"
+  ],
+  "mechanism": "python-novaclient 16.0 removes novaclient.v2.list_extensions, causing Horizon API module import failure before an existing Nova API unit test",
+  "mirror_root": "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/replay-mirrors",
+  "python": "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/tooling/tox3-runner-py38-2021/bin/python",
+  "relation_id": "formal-opendev-690097--target-690134",
+  "repair_template": "Remove the obsolete novaclient list_extensions import and route, and use the existing extension support surface",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/input/private/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only that constraint revision, importing Horizon's Nova API module raises ImportError for novaclient.v2.list_extensions before the unchanged existing ComputeApiTests.test_server_reboot body can run; the same command must pass with 15.1.0 and after the maintainer repair.",
+    "approved": true,
+    "reviewer_basis": "Independent inspection of the one-line source constraint diff, the complete four-file maintainer diff, cutoff command provenance in tox.ini, and fresh three-arm command logs with installed versions 15.1.0/16.0.0/16.0.0 and an A1-exclusive normalized ImportError signature.",
+    "source_effect": "The opening revision changes only the python-novaclient global constraint from 15.1.0 to 16.0.0; version 16.0.0 no longer exports novaclient.v2.list_extensions, which the cutoff Horizon Nova API module imports at module load time.",
+    "target_patch": "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/input/private/690134.patch",
+    "target_repair": "The full maintainer patch removes the obsolete production import and REST route, implements extension_supported through the already-valid blacklist surface, and adds a discovered test for that behavior. It neither deletes nor skips the selected pre-existing server reboot test; the removed underscore-prefixed _test_extension_list helper was not a discovered test."
+  },
+  "source_change_family": "opendev-change-690097-opening",
+  "target_repository": "openstack/horizon",
+  "tox": "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/tooling/tox3-runner-py38-2021/bin/tox",
+  "virtualenv_pip_version": "21.1.3",
+  "virtualenv_setuptools_version": "41.4.0"
+}

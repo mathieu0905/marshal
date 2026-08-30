@@ -29,6 +29,21 @@ class FailureSignatureTest(unittest.TestCase):
             extract_failure_signature(output),
         )
 
+    def test_extracts_bare_exception_from_stestr_failed_section(self) -> None:
+        output = """Failed 1 tests - output below:
+test.case
+    fixtures._fixtures.timeout.TimeoutException
+"""
+        self.assertEqual(
+            "fixtures._fixtures.timeout.TimeoutException",
+            extract_failure_signature(output),
+        )
+
+    def test_ignores_bare_exception_without_stestr_failed_section(self) -> None:
+        self.assertIsNone(
+            extract_failure_signature("fixtures._fixtures.timeout.TimeoutException\n")
+        )
+
     def test_does_not_treat_test_summary_as_signature(self) -> None:
         self.assertIsNone(extract_failure_signature("Ran: 12 tests\n - Failed: 1\n"))
 

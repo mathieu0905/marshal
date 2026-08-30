@@ -1,0 +1,30 @@
+{
+  "bootstrap_constraints": [
+    "Cython<3"
+  ],
+  "candidate_id": "formal-opendev-749333",
+  "expected_check_paths": [
+    "cinder/tests/unit/test_test.py"
+  ],
+  "mechanism": "oslo.messaging 12.4.0 probes endpoint attribute oslo_rpc_server_ping; Cinder isolation sentinel recursively handles the unexpected probe",
+  "mirror_root": ".work/rebuild_749333_749839/candidate-mirrors",
+  "python": ".work/rebuild_749333_749839/runner/bin/python",
+  "relation_id": "formal-opendev-749333--target-749839",
+  "repair_template": "Allow the new oslo_rpc_server_ping capability probe in the existing endpoint-isolation test sentinel",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/rebuild_749333_749839/intake/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the global constraint changed to oslo.messaging 12.4.0, the pre-existing isolation test is expected to enter NeverCalled.__getattribute__ for oslo_rpc_server_ping and fail with the replay's exclusive RecursionError; the fresh three-arm replay independently gates that expectation.",
+    "approved": true,
+    "reviewer_basis": "Direct inspection of the 12.3.0-to-12.4.0 oslo.messaging dispatcher diff, the Cinder cutoff test, and the complete maintainer commit diff establishes the mechanism and narrow repair; the generated package still requires fresh 0/nonzero/0 replay, exclusive-signature parsing, scoring, and independent verification.",
+    "source_effect": "oslo.messaging 12.4.0 adds RPCDispatcher getattr(ep, 'oslo_rpc_server_ping', None) capability probing that is absent in 12.3.0.",
+    "target_patch": ".work/rebuild_749333_749839/intake/target-patches/749839.patch",
+    "target_repair": "The complete maintainer patch allows only oslo_rpc_server_ping in the existing NeverCalled sentinel, retains the original test and its fail-on-any-other-access behavior, and makes no skip or deletion."
+  },
+  "source_change_family": "opendev-change-749333-opening",
+  "target_repository": "openstack/cinder",
+  "tox": ".work/rebuild_749333_749839/runner/bin/tox",
+  "virtualenv_pip_version": "21.1.3",
+  "virtualenv_setuptools_version": "49.6.0"
+}

@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-995651",
+  "expected_check_paths": [
+    "manila/coordination.py",
+    "manila/tests/test_coordination.py"
+  ],
+  "mechanism": "tooz 9.0.0 passes shared and timeout through the lock interface, while the cutoff Manila lock wrapper and its existing test double accept only blocking",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-995651--target-manila-I1fab32db",
+  "repair_template": "extend the production lock wrapper and existing test-double acquire signatures with shared and timeout parameters",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/fresh_995651_manila/case-build-v2/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the tooz pin changed, the pre-existing Manila coordination tests exercise the old MockToozLock.acquire signature and fail when tooz supplies blocking, shared, and timeout; the fresh replay must prove that signature is exclusive to A1.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, the complete maintainer parent-to-head diff and patch identity, the cutoff tox command provenance, the cutoff production and test signatures, and the Domain Pack semantic record. Final package approval additionally requires the fresh isolated blind run, fresh A0/A1/A2 replay, scoring, and official verification.",
+    "source_effect": "The opening diff changes exactly one upper-constraints.txt pin, tooz 8.1.0 to 9.0.0.",
+    "target_patch": ".work/domain-pack-e2-candidate-builds-2026-08-28/formal-opendev-995651--target-manila-I1fab32db/evidence/patches/target.patch",
+    "target_repair": "The complete maintainer commit patch changes only Lock.acquire and MockToozLock.acquire to accept shared and timeout; it applies cleanly to the public cutoff commit and neither removes nor skips tests."
+  },
+  "source_change_family": "opendev-change-995651-opening",
+  "target_repository": "openstack/manila",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}

@@ -1,0 +1,219 @@
+diff --git a/openstackclient/network/v2/ip_availability.py b/openstackclient/network/v2/ip_availability.py
+index 5288c16d2b..d0da39d848 100644
+--- a/openstackclient/network/v2/ip_availability.py
++++ b/openstackclient/network/v2/ip_availability.py
+@@ -28,8 +28,18 @@ from openstackclient.identity import common as identity_common
+ 
+ _formatters = {
+     'subnet_ip_availability': format_columns.ListDictColumn,
++    'ip_availability_details': format_columns.DictColumn,
+ }
+ 
++# Keys of the 'ip_availability_details' attribute, added by the
++# 'network-ip-availability-details' extension.
++_DETAIL_FIELDS = (
++    'total_ips_in_subnet',
++    'total_ips_in_allocation_pool',
++    'used_ips_in_subnet',
++    'used_ips_in_allocation_pool',
++)
++
+ 
+ def _get_columns(
+     item: _ip_availability.NetworkIPAvailability,
+@@ -40,6 +50,18 @@ def _get_columns(
+     )
+ 
+ 
++def _get_detail(
++    item: _ip_availability.NetworkIPAvailability, field: str
++) -> Any:
++    """Return a single key of the 'ip_availability_details' attribute.
++
++    The attribute is only present when the 'network-ip-availability-details'
++    extension is enabled, so fall back to an empty value.
++    """
++    details = getattr(item, 'ip_availability_details', None) or {}
++    return details.get(field, '')
++
++
+ class ListIPAvailability(command.Lister):
+     _description = _("List IP availability for network")
+ 
+@@ -85,6 +107,10 @@ class ListIPAvailability(command.Lister):
+             'Network Name',
+             'Total IPs',
+             'Used IPs',
++            'Total IPs in Subnet',
++            'Total IPs in Allocation Pool',
++            'Used IPs in Subnet',
++            'Used IPs in Allocation Pool',
+         )
+ 
+         filters = {}
+@@ -113,6 +139,7 @@ class ListIPAvailability(command.Lister):
+                     s,
+                     columns,
+                 )
++                + tuple(_get_detail(s, field) for field in _DETAIL_FIELDS)
+                 for s in data
+             ),
+         )
+diff --git a/openstackclient/tests/functional/network/v2/test_ip_availability.py b/openstackclient/tests/functional/network/v2/test_ip_availability.py
+index be1df9108a..bbe9907dba 100644
+--- a/openstackclient/tests/functional/network/v2/test_ip_availability.py
++++ b/openstackclient/tests/functional/network/v2/test_ip_availability.py
+@@ -75,3 +75,39 @@ class IPAvailabilityTests(common.NetworkTests):
+             self.NETWORK_NAME,
+             cmd_output['network_name'],
+         )
++
++    def test_ip_availability_details(self):
++        """Test the network-ip-availability-details extension fields"""
++        if not self.is_extension_enabled('network-ip-availability-details'):
++            self.skipTest("No network-ip-availability-details extension")
++
++        cmd_output = self.openstack(
++            'ip availability show ' + self.NETWORK_NAME,
++            parse_output=True,
++        )
++        details = cmd_output['ip_availability_details']
++        # 10.10.10.0/24 minus the network and broadcast addresses
++        self.assertEqual(254, details['total_ips_in_subnet'])
++        self.assertGreaterEqual(
++            details['total_ips_in_subnet'],
++            details['total_ips_in_allocation_pool'],
++        )
++        self.assertGreaterEqual(
++            details['used_ips_in_subnet'],
++            details['used_ips_in_allocation_pool'],
++        )
++
++        cmd_output = self.openstack(
++            'ip availability list',
++            parse_output=True,
++        )
++        network = next(
++            x for x in cmd_output if x['Network Name'] == self.NETWORK_NAME
++        )
++        self.assertEqual(
++            details['total_ips_in_subnet'], network['Total IPs in Subnet']
++        )
++        self.assertEqual(
++            details['total_ips_in_allocation_pool'],
++            network['Total IPs in Allocation Pool'],
++        )
+diff --git a/openstackclient/tests/unit/network/v2/fakes.py b/openstackclient/tests/unit/network/v2/fakes.py
+index 837a1f71a3..2bfb8b157a 100644
+--- a/openstackclient/tests/unit/network/v2/fakes.py
++++ b/openstackclient/tests/unit/network/v2/fakes.py
+@@ -901,6 +901,12 @@ def create_one_ip_availability(attrs=None):
+         'subnet_ip_availability': [],
+         'total_ips': 254,
+         'used_ips': 6,
++        'ip_availability_details': {
++            'total_ips_in_subnet': 254,
++            'total_ips_in_allocation_pool': 253,
++            'used_ips_in_subnet': 6,
++            'used_ips_in_allocation_pool': 4,
++        },
+         'location': 'MUNCHMUNCHMUNCH',
+     }
+     network_ip_attrs.update(attrs)
+diff --git a/openstackclient/tests/unit/network/v2/test_ip_availability.py b/openstackclient/tests/unit/network/v2/test_ip_availability.py
+index 31e9186b80..cd9af3dbc5 100644
+--- a/openstackclient/tests/unit/network/v2/test_ip_availability.py
++++ b/openstackclient/tests/unit/network/v2/test_ip_availability.py
+@@ -29,6 +29,10 @@ class TestListIPAvailability(network_fakes.TestNetworkV2):
+         'Network Name',
+         'Total IPs',
+         'Used IPs',
++        'Total IPs in Subnet',
++        'Total IPs in Allocation Pool',
++        'Used IPs in Subnet',
++        'Used IPs in Allocation Pool',
+     )
+     data = []
+     for net in _ip_availability:
+@@ -38,6 +42,10 @@ class TestListIPAvailability(network_fakes.TestNetworkV2):
+                 net.network_name,
+                 net.total_ips,
+                 net.used_ips,
++                net.ip_availability_details['total_ips_in_subnet'],
++                net.ip_availability_details['total_ips_in_allocation_pool'],
++                net.ip_availability_details['used_ips_in_subnet'],
++                net.ip_availability_details['used_ips_in_allocation_pool'],
+             )
+         )
+ 
+@@ -124,6 +132,37 @@ class TestListIPAvailability(network_fakes.TestNetworkV2):
+         self.assertEqual(self.columns, columns)
+         self.assertCountEqual(self.data, list(data))
+ 
++    def test_list_without_ip_availability_details(self):
++        # The 'network-ip-availability-details' extension may not be
++        # enabled, in which case the detail columns are left empty.
++        ip_availability = network_fakes.create_one_ip_availability(
++            attrs={'ip_availability_details': None}
++        )
++        self.network_client.network_ip_availabilities.return_value = [
++            ip_availability
++        ]
++
++        parsed_args = self.check_parser(self.cmd, [], [])
++
++        columns, data = self.cmd.take_action(parsed_args)
++
++        self.assertEqual(self.columns, columns)
++        self.assertEqual(
++            [
++                (
++                    ip_availability.network_id,
++                    ip_availability.network_name,
++                    ip_availability.total_ips,
++                    ip_availability.used_ips,
++                    '',
++                    '',
++                    '',
++                    '',
++                )
++            ],
++            list(data),
++        )
++
+ 
+ class TestShowIPAvailability(network_fakes.TestNetworkV2):
+     _network = network_fakes.create_one_network()
+@@ -132,6 +171,7 @@ class TestShowIPAvailability(network_fakes.TestNetworkV2):
+     )
+ 
+     columns = (
++        'ip_availability_details',
+         'network_id',
+         'network_name',
+         'project_id',
+@@ -140,6 +180,7 @@ class TestShowIPAvailability(network_fakes.TestNetworkV2):
+         'used_ips',
+     )
+     data = (
++        format_columns.DictColumn(_ip_availability.ip_availability_details),
+         _ip_availability.network_id,
+         _ip_availability.network_name,
+         _ip_availability.project_id,
+diff --git a/releasenotes/notes/network-ip-availability-details-96f0ce3d822a47be.yaml b/releasenotes/notes/network-ip-availability-details-96f0ce3d822a47be.yaml
+new file mode 100644
+index 0000000000..8fcebd32c5
+--- /dev/null
++++ b/releasenotes/notes/network-ip-availability-details-96f0ce3d822a47be.yaml
+@@ -0,0 +1,11 @@
++---
++features:
++  - |
++    The ``ip availability show`` command now reports the
++    ``ip_availability_details`` attribute and the ``ip availability list``
++    command now shows the ``Total IPs in Subnet``, ``Total IPs in Allocation
++    Pool``, ``Used IPs in Subnet`` and ``Used IPs in Allocation Pool``
++    columns. These report the total and used IP counts separately for the
++    subnet CIDRs and for the subnet allocation pools, and require the
++    ``network-ip-availability-details`` extension. The new columns are empty
++    when the extension is not enabled.

@@ -1,0 +1,89 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5144,
+    "case_id": "formal-opendev-921649",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:27:06.318208Z",
+  "blind_prediction_created_at": "2026-08-30T04:26:51.165018Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-921649",
+  "case_id": "formal-opendev-921649--target-921647",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/neutron-lib",
+    "openstack/neutron"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:27:06.324293Z",
+  "mechanism": "The neutron-lib opening change makes request project-identifier population conditional on the resource schema and removes tenant_id from flavor schemas, so Neutron's unchanged flavor API tests no longer receive the formerly injected identifiers and their create requests fail.",
+  "repair_template": "Adapt existing target API tests to authenticated request context, remove obsolete explicit tenant fields, and make mock assertions tolerate dependency-version project-field injection.",
+  "replay": {
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/flavors.json)",
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "requirements_cutoff_commit": "c1131bbdcfbf778816dd5bf838cdae9d84c17674",
+    "schema_version": "1.0",
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "6af25b2588ac3af438bd5a4de680e940f38844a4",
+    "target_test_path": "neutron/tests/unit/extensions/test_flavors.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "neutron.tests.unit.extensions.test_flavors"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-921649--target-921647",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "neutron/tests/unit/extensions/test_flavors.py"
+    ],
+    "mean_reciprocal_rank": 0.3333333333333333,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "neutron/extensions/project_id.py",
+      "neutron/plugins/ml2/drivers/l2pop/mech_driver.py",
+      "neutron/plugins/ml2/drivers/ovn/mech_driver/ovsdb/ovn_client.py",
+      "neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovn_client.py",
+      "releasenotes/notes/project_id-d5ea7a42be428230.yaml"
+    ],
+    "rank": 3,
+    "recall_at_1": 0.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "openstack/neutron"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the opening neutron-lib change installed, the unchanged flavor extension tests issue create requests without the authenticated request context now needed to supply project ownership; the affected requests return HTTP 400 while the identical module passes with the old source.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the code-only source opening diff, the full maintainer target patch, the cutoff target test and tox provenance, and the prior package only as intake; this fresh run independently replays the same existing 48-test module in all three arms and is accepted only if its new evidence verifies 0/nonzero/0 with an A1-exclusive signature.",
+    "source_effect": "The source opening diff restricts project-id population to schemas declaring tenant_id or project_id and removes tenant_id from the flavor and QoS resource definitions.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-921649--target-921647/evidence/formal-opendev-921649--target-921647/target.patch",
+    "target_repair": "The complete maintainer patch adds one admin request context in setUp, removes obsolete explicit tenant/project fields from the posted flavor and service-profile bodies, and normalizes mock assertions across dependency versions without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-921649-opening",
+  "status": "case_ready_for_formal_pool"
+}

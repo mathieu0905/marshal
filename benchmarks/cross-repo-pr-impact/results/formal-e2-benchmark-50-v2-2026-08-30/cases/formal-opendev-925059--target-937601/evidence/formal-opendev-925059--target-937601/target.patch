@@ -1,0 +1,50 @@
+diff --git a/placement/tests/functional/gabbits/allocations-1-12.yaml b/placement/tests/functional/gabbits/allocations-1-12.yaml
+index 0b95134..f29ab47 100644
+--- a/placement/tests/functional/gabbits/allocations-1-12.yaml
++++ b/placement/tests/functional/gabbits/allocations-1-12.yaml
+@@ -63,7 +63,8 @@
+   status: 400
+   response_strings:
+       - JSON does not validate
+-      - does not have enough properties
++      #    jsonschema < 4.23.0               jsonschema >= 4.23.0
++      - "/(does not have enough properties)|(should be non-empty)/"
+ 
+ - name: put unused field
+   PUT: /allocations/a0b15655-273a-4b3d-9792-2e579b7d5ad9
+diff --git a/placement/tests/functional/gabbits/allocations-bug-1714072.yaml b/placement/tests/functional/gabbits/allocations-bug-1714072.yaml
+index fa25935..dcb0b4b 100644
+--- a/placement/tests/functional/gabbits/allocations-bug-1714072.yaml
++++ b/placement/tests/functional/gabbits/allocations-bug-1714072.yaml
+@@ -62,7 +62,8 @@
+       user_id: 66cb2f29-c86d-47c3-8af5-69ae7b778c70
+   status: 400
+   response_strings:
+-      - does not have enough properties
++      #    jsonschema < 4.23.0               jsonschema >= 4.23.0
++      - "/(does not have enough properties)|(should be non-empty)/"
+ 
+ # The next two tests confirm that the bug identified by
+ # this file's name is not present in the PUT /allocations/{consumer_uuid}
+@@ -94,4 +95,5 @@
+       user_id: 66cb2f29-c86d-47c3-8af5-69ae7b778c70
+   status: 400
+   response_strings:
+-      - does not have enough properties
++      #    jsonschema < 4.23.0               jsonschema >= 4.23.0
++      - "/(does not have enough properties)|(should be non-empty)/"
+diff --git a/placement/tests/functional/gabbits/allocations-mappings.yaml b/placement/tests/functional/gabbits/allocations-mappings.yaml
+index 6583c01..f993368 100644
+--- a/placement/tests/functional/gabbits/allocations-mappings.yaml
++++ b/placement/tests/functional/gabbits/allocations-mappings.yaml
+@@ -81,8 +81,8 @@
+       user_id: 8c974f9a-f266-42f7-8613-a8017cbfb87F
+       project_id: b2e599e0-ded8-47fd-b8ab-ceb7fca578bd
+   status: 400
+-  response_json_paths:
+-      $.errors[0].detail: "/JSON does not validate: {} does not have enough properties/"
++  response_json_paths:                                # jsonschema < 4.23.0               jsonschema >= 4.23.0
++      $.errors[0].detail: "/JSON does not validate: {} (does not have enough properties)|(should be non-empty)/"
+ 
+ - name: post allocation with results
+   POST: /allocations

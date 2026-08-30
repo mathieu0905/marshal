@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "approved": true,
+  "source_effect_confirmed": true,
+  "a2_eliminates_same_mechanism": true,
+  "same_command_all_arms": true,
+  "exit_codes": {
+    "A0": 0,
+    "A1": 1,
+    "A2": 0
+  },
+  "tests_run": {
+    "A0": 8,
+    "A1": 8,
+    "A2": 8
+  },
+  "failures": {
+    "A0": 0,
+    "A1": 8,
+    "A2": 0
+  },
+  "skipped": {
+    "A0": 0,
+    "A1": 0,
+    "A2": 0
+  },
+  "exclusive_failure_signature": "Wanted but not invoked:",
+  "target_patch_is_complete_maintainer_parent_to_head_diff": true,
+  "tests_deleted": false,
+  "tests_skipped_by_patch": false,
+  "reason": "Removing final makes Mockito intercept the writeXxxField wrapper itself, so the cutoff assertions for primitive write calls fail only in A1. The maintainer's complete one-file commit patch changes those existing assertions to the named field-level calls; A2 restores the same eight-test command without deletion or skipping."
+}

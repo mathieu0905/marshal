@@ -1,0 +1,22 @@
+diff --git a/designate/tests/unit/backend/test_infoblox.py b/designate/tests/unit/backend/test_infoblox.py
+index 2a76f56c2..3ae15fd81 100644
+--- a/designate/tests/unit/backend/test_infoblox.py
++++ b/designate/tests/unit/backend/test_infoblox.py
+@@ -293,7 +293,7 @@ class BasicInfobloxBackendTestCase(InfobloxBackendTestCase):
+ 
+     def test_create_zone_handle_error(self):
+         self.backend.infoblox.create_dns_zone.side_effect = (
+-            infoblox_exceptions.InfobloxTimeoutError('error')
++            infoblox_exceptions.InfobloxTimeoutError(response='', reason='')
+         )
+ 
+         self.assertRaisesRegex(
+@@ -362,7 +362,7 @@ class BasicInfobloxBackendTestCase(InfobloxBackendTestCase):
+ 
+     def test_delete_zone_handle_error(self):
+         self.backend.infoblox.delete_dns_zone.side_effect = (
+-            infoblox_exceptions.InfobloxTimeoutError('error')
++            infoblox_exceptions.InfobloxTimeoutError(response='', reason='')
+         )
+ 
+         self.assertRaisesRegex(

@@ -1,0 +1,99 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5122,
+    "case_id": "formal-opendev-925058",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T17:14:39.924107Z",
+  "blind_prediction_created_at": "2026-08-26T17:14:29.546730Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-925058",
+  "case_id": "formal-opendev-925058--target-924126",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/octavia"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T17:14:39.926698Z",
+  "mechanism": "tenacity 8.5 moves retry statistics from the retry controller to the decorated function, while Octavia reads the old retry.statistics location",
+  "repair_template": "read retry statistics from the decorated function with compatibility fallback to the prior location",
+  "replay": {
+    "catalog_source_snapshot_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "KeyError: 'attempt_number'",
+    "installed_source_versions": {
+      "A0": "8.3.0",
+      "A1": "8.5.0",
+      "A2": "8.5.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+    "source_head_commit": "7f94a7b92aaa8afac89e41356d8b4c1bdc299a7d",
+    "source_versions": {
+      "A0": "8.3.0",
+      "A1": "8.5.0",
+      "A2": "8.5.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "c9b15db3db1bba6f2173bff639c14705dd3a5387",
+    "target_test_path": "octavia/tests/unit/controller/worker/v2/tasks/test_compute_tasks.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "octavia.tests.unit.controller.worker.v2.tasks.test_compute_tasks.TestComputeTasks.test_compute_delete"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-925058--target-924126",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "octavia/controller/worker/v2/tasks/compute_tasks.py",
+      "octavia/controller/worker/v2/tasks/network_tasks.py",
+      "octavia/tests/unit/controller/worker/v2/tasks/test_compute_tasks.py",
+      "octavia/tests/unit/controller/worker/v2/tasks/test_network_tasks.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/octavia"
+  },
+  "semantic_review": {
+    "a1_failure": "On the unchanged Octavia opening-cutoff snapshot, both pre-existing retry tests fail only with tenacity 8.5.0 because retry.statistics no longer contains attempt_number; the selected compute test has the stable failure signature KeyError: 'attempt_number'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes, and both tests' three-arm logs; both selectors independently produced 0/1/0, and the repair changes production retry-statistics lookup without deleting or skipping tests.",
+    "source_effect": "The opening source change updates the only changed upper-constraints pin from tenacity 8.3.0 to 8.5.0, whose decorated-function wrapper exposes current retry statistics on the function rather than the prior retry controller location used by Octavia.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-1000-contract-triage-2026-08-26/target-patches/924126.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Octavia snapshot and reads statistics from each decorated execute function, retaining an AttributeError compatibility fallback to execute.retry.statistics in both compute and network deletion tasks."
+  },
+  "source_change_family": "opendev-change-925058-opening",
+  "status": "case_ready_for_formal_pool"
+}

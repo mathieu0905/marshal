@@ -1,0 +1,135 @@
+{0} glance.tests.unit.test_quota.TestImageKeystoneQuota.test_enforce_multiple_limits_under_quota [0.009374s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/glance/tests/unit/test_quota.py", line 873, in test_enforce_multiple_limits_under_quota
+    ks_quota._enforce_some(context, context.owner,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/glance/quota/keystone.py", line 60, in _enforce_some
+    enforcer.enforce(project_id,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 151, in enforce
+    self.model.enforce(project_id, deltas)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 225, in enforce
+    project_limits = self.get_project_limits(project_id,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 215, in get_project_limits
+    return self._utils.get_project_limits(project_id, resources_to_check)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 439, in get_project_limits
+    limit = self._get_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 452, in _get_limit
+    project_limit = (self._get_project_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 478, in _get_project_limit
+    limits = self.connection.limits(
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1179, in _execute_mock_call
+    result = effect(*args, **kwargs)
+
+    TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 12:30:01,611 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'locations': [{'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning image_create: {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [{'id': 'a6d67eaf-e8db-467d-8d0a-300e3b01e196', 'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612162), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612162), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning image_create: {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612492), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612492), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning wrapper: {'id': '2a4a4ace-4ace-47a9-bb8b-857fef6b574c', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612728), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612728), 'deleted': False}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning wrapper: {'id': 'e73704ce-d67a-4132-91a1-df60effabeae', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612906), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612906), 'deleted': False}
+2026-08-30 12:30:01,613 INFO [glance.db.simple.api] Calling image_tag_set_all: args=(None, 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', ['ping', 'pong']), kwargs={}
+2026-08-30 12:30:01,613 INFO [glance.db.simple.api] Returning image_tag_set_all: None
+
+
+No tests were successful during the run
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+glance.tests.unit.test_quota.TestImageKeystoneQuota.test_enforce_multiple_limits_under_quota
+--------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/glance/tests/unit/test_quota.py", line 873, in test_enforce_multiple_limits_under_quota
+    ks_quota._enforce_some(context, context.owner,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/glance/quota/keystone.py", line 60, in _enforce_some
+    enforcer.enforce(project_id,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 151, in enforce
+    self.model.enforce(project_id, deltas)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 225, in enforce
+    project_limits = self.get_project_limits(project_id,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 215, in get_project_limits
+    return self._utils.get_project_limits(project_id, resources_to_check)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 439, in get_project_limits
+    limit = self._get_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 452, in _get_limit
+    project_limit = (self._get_project_limit(project_id, resource_name)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_951104_951351/output4/replay-work/formal-opendev-951104--target-951351/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_limit/limit.py", line 478, in _get_project_limit
+    limits = self.connection.limits(
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+
+      File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/mock.py", line 1179, in _execute_mock_call
+    result = effect(*args, **kwargs)
+
+    TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 12:30:01,611 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'locations': [{'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning image_create: {'id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [{'id': 'a6d67eaf-e8db-467d-8d0a-300e3b01e196', 'url': 'http://storeurl.com/container/c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'metadata': {}, 'status': 'queued'}], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612162), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612162), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Calling image_create: args=(None, {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'status': 'queued', 'disk_format': 'raw', 'container_format': 'bare'}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning image_create: {'id': '971ec09a-8067-4bc8-a91f-ae3557f1c4c7', 'name': None, 'owner': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'locations': [], 'status': 'queued', 'protected': False, 'visibility': 'shared', 'container_format': 'bare', 'disk_format': 'raw', 'min_ram': 0, 'min_disk': 0, 'size': None, 'virtual_size': None, 'checksum': None, 'os_hash_algo': None, 'os_hash_value': None, 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612492), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612492), 'deleted_at': None, 'deleted': False, 'os_hidden': False, 'properties': []}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning wrapper: {'id': '2a4a4ace-4ace-47a9-bb8b-857fef6b574c', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '6838eb7b-6ded-434a-882c-b344c77fe8df', 'can_share': True, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612728), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612728), 'deleted': False}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Calling wrapper: args=(None, {'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False}), kwargs={}
+2026-08-30 12:30:01,612 INFO [glance.db.simple.api] Returning wrapper: {'id': 'e73704ce-d67a-4132-91a1-df60effabeae', 'image_id': 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', 'member': '2c014f32-55eb-467d-8fcb-4bd706012f81', 'can_share': False, 'status': 'pending', 'created_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612906), 'updated_at': datetime.datetime(2026, 8, 30, 4, 30, 1, 612906), 'deleted': False}
+2026-08-30 12:30:01,613 INFO [glance.db.simple.api] Calling image_tag_set_all: args=(None, 'c80a1a6c-bd1f-41c5-90ee-81afedb1d58d', ['ping', 'pong']), kwargs={}
+2026-08-30 12:30:01,613 INFO [glance.db.simple.api] Returning image_tag_set_all: None
+
+
+
+======
+Totals
+======
+Ran: 1 tests in 0.0094 sec.
+ - Passed: 0
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 0.0094 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.009374

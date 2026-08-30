@@ -22,6 +22,10 @@ FAILURE = re.compile(
     r"(?m)^\s*((?:[A-Za-z_]\w*\.)*[A-Za-z_]\w*"
     r"(?:Error|Exception|Forbidden|NotAuthorized):[^\n]+)"
 )
+BARE_FAILURE = re.compile(
+    r"(?m)^\s*((?:[A-Za-z_]\w*\.)*[A-Za-z_]\w*"
+    r"(?:Error|Exception|Forbidden|NotAuthorized))\s*$"
+)
 COMMAND_FAILURE = re.compile(r"(?m)^\s*([A-Za-z0-9_.-]+: error: [^\n]+)")
 FAILED_SECTION = re.compile(r"(?m)^Failed [1-9][0-9]* tests? - output below:\s*$")
 ADDRESS = re.compile(r"0x[0-9a-fA-F]+")
@@ -39,7 +43,11 @@ def normalize_failure_text(value: str) -> str:
 def extract_failure_signature(output: str) -> str | None:
     failed = FAILED_SECTION.search(output)
     search_space = output[failed.end():] if failed else output
-    for pattern in (FAILURE, COMMAND_FAILURE):
+    patterns = (FAILURE, COMMAND_FAILURE, BARE_FAILURE) if failed else (
+        FAILURE,
+        COMMAND_FAILURE,
+    )
+    for pattern in patterns:
         match = pattern.search(search_space)
         if match:
             return normalize_failure_text(match.group(1).strip())
@@ -71,7 +79,7 @@ def write_arm(root: Path, arm: str, command: list[str], code: int, output: str, 
     (destination / "summary.json").write_text(json.dumps({
         "schema_version": "1.0", "arm": arm, "command": command,
         "exit_code": code, "elapsed_seconds": elapsed,
-        "finished_at": dt.datetime.now(dt.UTC).isoformat().replace("+00:00", "Z"),
+        "finished_at": dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z"),
     }, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 

@@ -1,0 +1,26 @@
+diff --git a/manila/coordination.py b/manila/coordination.py
+index 5e73d8de2b..22fbee926a 100644
+--- a/manila/coordination.py
++++ b/manila/coordination.py
+@@ -128,7 +128,7 @@ class Lock(locking.Lock):
+             raise ValueError(_('Not a valid string: %s') % lock_name)
+         return self.coordinator.get_lock(lock_name.format(**lock_data))
+ 
+-    def acquire(self, blocking=None):
++    def acquire(self, blocking=None, shared=False, timeout=None):
+         """Attempts to acquire lock.
+ 
+         :param blocking: If True, blocks until the lock is acquired. If False,
+diff --git a/manila/tests/test_coordination.py b/manila/tests/test_coordination.py
+index 843528711a..03546faa8e 100644
+--- a/manila/tests/test_coordination.py
++++ b/manila/tests/test_coordination.py
+@@ -30,7 +30,7 @@ class Locked(Exception):
+ class MockToozLock(tooz_locking.Lock):
+     active_locks = set()
+ 
+-    def acquire(self, blocking=True):
++    def acquire(self, blocking=True, shared=False, timeout=None):
+         if self.name not in self.active_locks:
+             self.active_locks.add(self.name)
+             return True

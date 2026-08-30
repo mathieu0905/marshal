@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-977145",
+  "expected_check_paths": [
+    "nova/tests/functional/test_middleware.py"
+  ],
+  "mechanism": "oslo.middleware 8.0.0 changes the CORS allowed_origin configuration value consumed by Nova from a scalar string to a list, breaking the existing functional injection fixture",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-977145--target-977217",
+  "repair_template": "return the dependency's new list-shaped allowed_origin value from the existing target fixture",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/case-builds/formal-opendev-977145--target-977217/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With oslo.middleware 8.0.0, 12 of the pre-existing 21 Nova CORS functional tests fail because the scalar allowed_origin fixture is no longer consumed as a valid origin list, so the expected CORS response headers are absent.",
+    "approved": true,
+    "reviewer_basis": "Opening-cutoff replay independently installed oslo.middleware 7.0.0/8.0.0/8.0.0 for A0/A1/A2 and ran the identical 21-test Nova functional module in all arms. A0 and A2 pass; A1 has 12 mechanism-consistent missing-CORS-header failures. The maintainer patch changes one existing fixture value from string to list and does not delete or skip tests.",
+    "source_effect": "The opening source diff changes the sole oslo.middleware pin from 7.0.0 to 8.0.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-contract-triage-2026-08-26/target-patches/977217.patch",
+    "target_repair": "The maintainer changes the existing allowed_origin fixture from a scalar string to a one-element list; with oslo.middleware 8.0.0 the same 21-test functional module returns to passing."
+  },
+  "source_change_family": "opendev-change-977145-opening",
+  "target_repository": "openstack/nova",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

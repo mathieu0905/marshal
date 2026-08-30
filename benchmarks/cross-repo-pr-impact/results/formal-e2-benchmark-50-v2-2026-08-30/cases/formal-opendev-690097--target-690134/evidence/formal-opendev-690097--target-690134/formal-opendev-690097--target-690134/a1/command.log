@@ -1,0 +1,83 @@
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+Operations to perform:
+  Synchronize unmigrated apps: admin, compressor, horizon, humanize, identity, messages, openstack_auth, openstack_dashboard, project, settings, staticfiles
+  Apply all migrations: auth, contenttypes, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Creating table openstack_auth_user
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying sessions.0001_initial... OK
+Traceback (most recent call last):
+  File "./manage.py", line 23, in <module>
+    execute_from_command_line(sys.argv)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/__init__.py", line 371, in execute_from_command_line
+    utility.execute()
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/__init__.py", line 365, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/commands/test.py", line 26, in run_from_argv
+    super().run_from_argv(argv)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/base.py", line 288, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/base.py", line 335, in execute
+    output = self.handle(*args, **options)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/commands/test.py", line 59, in handle
+    failures = test_runner.run_tests(test_labels)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/test/runner.py", line 602, in run_tests
+    self.run_checks()
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/test/runner.py", line 564, in run_checks
+    call_command('check', verbosity=self.verbosity)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/__init__.py", line 141, in call_command
+    return command.execute(*args, **defaults)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/base.py", line 335, in execute
+    output = self.handle(*args, **options)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/commands/check.py", line 60, in handle
+    self.check(
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/base.py", line 361, in check
+    all_issues = self._run_checks(
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/management/base.py", line 351, in _run_checks
+    return checks.run_checks(**kwargs)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/checks/registry.py", line 73, in run_checks
+    new_errors = check(app_configs=app_configs)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/checks/urls.py", line 40, in check_url_namespaces_unique
+    all_namespaces = _load_all_namespaces(resolver)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/core/checks/urls.py", line 57, in _load_all_namespaces
+    url_patterns = getattr(resolver, 'url_patterns', [])
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/utils/functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/urls/resolvers.py", line 540, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/utils/functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/django/urls/resolvers.py", line 533, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.8.20-linux-x86_64-gnu/lib/python3.8/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1014, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 991, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 975, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 671, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 843, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/openstack_dashboard/test/urls.py", line 30, in <module>
+    from openstack_dashboard.api import rest
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/openstack_dashboard/api/__init__.py", line 38, in <module>
+    from openstack_dashboard.api import network
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/openstack_dashboard/api/network.py", line 23, in <module>
+    from openstack_dashboard.api import neutron
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/openstack_dashboard/api/neutron.py", line 39, in <module>
+    from openstack_dashboard.api import nova
+  File "/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/openstack_dashboard/api/nova.py", line 33, in <module>
+    from novaclient.v2 import list_extensions as nova_list_extensions
+ImportError: cannot import name 'list_extensions' from 'novaclient.v2' (/home/zhihao/hdd/marshal/.work/rebuild_690097_690134/case-output-v2/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/novaclient/v2/__init__.py)

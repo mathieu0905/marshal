@@ -1,0 +1,98 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5122,
+    "case_id": "formal-opendev-925464",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T18:10:03.295212Z",
+  "blind_prediction_created_at": "2026-08-26T18:09:52.002671Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-925464",
+  "case_id": "formal-opendev-925464--target-925532",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/octavia"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T18:10:03.302022Z",
+  "mechanism": "oslo.policy 4.4 enables scope and new-default enforcement by default, changing Octavia policy checks that were initialized under legacy defaults",
+  "repair_template": "explicitly preserve legacy oslo.policy defaults in Octavia until the target completes its RBAC transition",
+  "replay": {
+    "catalog_source_snapshot_commit": "ed046c41533a13e6acccbf8f4409ba23a71cfd6d",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "AssertionError: False is not true",
+    "installed_source_versions": {
+      "A0": "4.3.0",
+      "A1": "4.4.0",
+      "A2": "4.4.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "2c279bd469df43206693b27fe85565028346f042",
+    "source_head_commit": "097b9cd12349ab88048a1b4d8fdc2588da658e32",
+    "source_versions": {
+      "A0": "4.3.0",
+      "A1": "4.4.0",
+      "A2": "4.4.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "47b8c360e9e5035002c8bbd5559cf5e4af5ea0e3",
+    "target_test_path": "octavia/tests/unit/common/test_policy.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "octavia.tests.unit.common.test_policy.PolicyTestCase.test_check_is_admin"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-925464--target-925532",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "octavia/common/config.py",
+      "octavia/common/policy.py",
+      "octavia/tests/unit/common/test_policy.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/octavia"
+  },
+  "semantic_review": {
+    "a1_failure": "On the unchanged Octavia opening-cutoff snapshot, the pre-existing test_check_is_admin_new_defaults policy test passes with oslo.policy 4.3.0 and fails only with 4.4.0 because the enforcer initialized under the new defaults no longer recognizes the expected admin context; the stable exclusive signature is AssertionError: False is not true.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes, patch applicability, and three-arm logs. The pilot command that includes the selected pre-existing test produced 3/3 passing in A0 and A2 and only test_check_is_admin_new_defaults failing in A1; the target patch changes production defaults and a minimum dependency only, without deleting or skipping tests.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, oslo.policy 4.3.0 to 4.4.0; version 4.4 enables enforce_scope and enforce_new_defaults by default and therefore changes Octavia's policy-enforcer initialization.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-925464-target-patches-2026-08-27/925532.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Octavia snapshot and explicitly restores both oslo.policy defaults to false in Octavia's configuration and policy initialization until its RBAC transition is complete; it does not delete, skip, weaken, or replace the selected test."
+  },
+  "source_change_family": "opendev-change-925464-opening",
+  "status": "case_ready_for_formal_pool"
+}

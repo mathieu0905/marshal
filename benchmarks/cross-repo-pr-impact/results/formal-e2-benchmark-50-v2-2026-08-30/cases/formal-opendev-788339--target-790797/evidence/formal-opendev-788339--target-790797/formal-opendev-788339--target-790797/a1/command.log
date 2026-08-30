@@ -1,0 +1,870 @@
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+{6} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_version_not_matched_1_volumes [3.735039s] ... ok
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/coercions.py:307: SAWarning: implicitly coercing SELECT object to scalar subquery; please use the .scalar_subquery() method to produce a scalar subquery.
+  util.warn(
+{0} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_version_not_matched_2_volumes_detail [3.726795s] ... ok
+{3} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_5 [3.647410s] ... ok
+{4} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_6 [3.727768s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:35,140 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:35,142 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:35,142 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:35,144 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,883 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,886 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,889 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,895 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,898 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:38,001 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+{5} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_4 [3.647776s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:35,184 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:35,187 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:35,187 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:35,189 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,887 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,894 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,897 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,902 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,905 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:38,006 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+{1} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_2 [3.724954s] ... ok
+{2} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_1 [3.741973s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:34,479 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:34,481 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:34,481 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:34,483 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,882 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,885 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,888 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,894 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,897 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:37,995 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+{7} cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_3 [3.723985s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:35,142 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:35,144 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:35,144 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:35,146 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,894 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,897 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,900 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,903 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,906 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:38,008 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+==============================
+Failed 4 tests - output below:
+==============================
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_6
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:35,140 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:35,142 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:35,142 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:35,144 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,883 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,886 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,889 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,895 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,898 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:38,001 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_4
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:35,184 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:35,187 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:35,187 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:35,189 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,887 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,894 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,897 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,902 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,905 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:38,006 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_1
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:34,479 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:34,481 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:34,481 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:34,483 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,882 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,885 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,888 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,894 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,897 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:37,995 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param_3
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/tests/unit/api/v3/test_volumes.py", line 283, in test_list_volume_with_count_param
+    res_dict = self.controller._get_volumes(req, is_detail=is_detail)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/api/v3/volumes.py", line 171, in _get_volumes
+    total_count = self.volume_api.calculate_resource_count(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/volume/api.py", line 587, in calculate_resource_count
+    return db.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/api.py", line 285, in calculate_resource_count
+    return IMPL.calculate_resource_count(context, resource_type, filters)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/cinder/db/sqlalchemy/api.py", line 2387, in calculate_resource_count
+    return query.with_entities(func.count()).scalar()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2819, in scalar
+    ret = self.one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2796, in one
+    return self._iter().one()
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 2834, in _iter
+    result = self.session.execute(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1670, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1521, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 313, in _execute_on_connection
+    return connection._execute_clauseelement(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1382, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 535, in _compile_w_cache
+    compiled_sql = self._compiler(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 570, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 766, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 455, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+
+[93mReadline features including tab completion have been disabled because
+no supported version of readline was found. To resolve this, install
+pyreadline on Windows or gnureadline on Mac.
+
+[39m      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 490, in process
+    return obj._compiler_dispatch(self, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/visitors.py", line 81, in _compiler_dispatch
+    return meth(self, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/compiler.py", line 2980, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/sql/base.py", line 501, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/context.py", line 579, in create_for_statement
+    opt.process_compile_state(self)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 185, in process_compile_state
+    self._process(compile_state, not bool(compile_state.current_path))
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 711, in _process
+    val._bind_loader(
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 858, in _bind_loader
+    entity = self._find_entity_basestring(entities, token, raiseerr)
+
+      File "/home/zhihao/hdd/marshal/.work/fresh_788339_cinder/output/replay-work/formal-opendev-788339--target-790797/target-a1/.tox/py3/lib/python3.8/site-packages/sqlalchemy/orm/strategy_options.py", line 989, in _find_entity_basestring
+    raise sa_exc.ArgumentError(
+
+    sqlalchemy.exc.ArgumentError: Query has only expression-based entities - can't find property named "volume_metadata".
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-30 13:29:35,142 INFO [keystonemiddleware.auth_token] Starting Keystone auth_token middleware
+2026-08-30 13:29:35,144 WARNING [keystonemiddleware._common.config] The option "auth_url" is not known to keystonemiddleware
+2026-08-30 13:29:35,144 WARNING [keystonemiddleware.auth_token] AuthToken middleware is set with keystone_authtoken.service_token_roles_required set to False. This is backwards compatible but deprecated behaviour. Please set this to True.
+2026-08-30 13:29:35,146 WARNING [keystonemiddleware.auth_token] Configuring www_authenticate_uri to point to the public identity endpoint is required; clients may not be able to authenticate against an admin endpoint
+2026-08-30 13:29:37,891 INFO [cinder.rpc] Automatically selected cinder-scheduler objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,894 INFO [cinder.rpc] Automatically selected cinder-scheduler RPC version 3.12 as minimum service version.
+2026-08-30 13:29:37,897 INFO [cinder.rpc] Automatically selected cinder-volume objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,900 INFO [cinder.rpc] Automatically selected cinder-volume RPC version 3.16 as minimum service version.
+2026-08-30 13:29:37,903 INFO [cinder.rpc] Automatically selected cinder-backup objects version 1.38 as minimum service version.
+2026-08-30 13:29:37,906 INFO [cinder.rpc] Automatically selected cinder-backup RPC version 2.2 as minimum service version.
+2026-08-30 13:29:38,008 INFO [cinder.volume.api] Get all volumes completed successfully.
+
+
+
+======
+Totals
+======
+Ran: 8 tests in 3.7428 sec.
+ - Passed: 4
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 4
+Sum of execute time for each test: 29.6757 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:03.726795
+ - Worker 1 (1 tests) => 0:00:03.724954
+ - Worker 2 (1 tests) => 0:00:03.741973
+ - Worker 3 (1 tests) => 0:00:03.647410
+ - Worker 4 (1 tests) => 0:00:03.727768
+ - Worker 5 (1 tests) => 0:00:03.647776
+ - Worker 6 (1 tests) => 0:00:03.735039
+ - Worker 7 (1 tests) => 0:00:03.723985

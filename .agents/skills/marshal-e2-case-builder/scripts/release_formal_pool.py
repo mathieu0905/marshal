@@ -51,6 +51,26 @@ def normalized(value: str) -> str:
     return " ".join(value.casefold().split())
 
 
+def merge_catalog_definitions(left: dict[str, Any], right: dict[str, Any]) -> dict[str, Any]:
+    """Merge only rebuild-time timestamps for otherwise identical catalogs."""
+
+    left_semantics = {key: value for key, value in left.items() if key != "constructed_at"}
+    right_semantics = {key: value for key, value in right.items() if key != "constructed_at"}
+    if left_semantics != right_semantics:
+        raise ValueError("catalog definitions differ beyond constructed_at")
+    left_has_timestamp = "constructed_at" in left
+    right_has_timestamp = "constructed_at" in right
+    if left_has_timestamp != right_has_timestamp:
+        raise ValueError("catalog constructed_at presence differs")
+    merged = dict(left_semantics)
+    if left_has_timestamp:
+        timestamps = (left["constructed_at"], right["constructed_at"])
+        if any(not isinstance(value, str) or not value for value in timestamps):
+            raise ValueError("catalog constructed_at is invalid")
+        merged["constructed_at"] = min(timestamps)
+    return merged
+
+
 class UnionFind:
     def __init__(self, values: Iterable[str]) -> None:
         self.parent = {value: value for value in values}
@@ -241,9 +261,17 @@ def release(args: argparse.Namespace) -> dict[str, Any]:
         prediction = read_jsonl(package / "blind" / "predictions.jsonl")[0]
         catalog_document = read_json(package / "public" / "candidate-repositories.json")
         for catalog_id, catalog in catalog_document["catalogs"].items():
-            if catalog_id in catalogs and catalogs[catalog_id] != catalog:
-                raise ValueError(f"catalog id has conflicting definitions: {catalog_id}")
-            catalogs[catalog_id] = catalog
+            if catalog_id in catalogs:
+                try:
+                    catalogs[catalog_id] = merge_catalog_definitions(
+                        catalogs[catalog_id], catalog
+                    )
+                except ValueError as error:
+                    raise ValueError(
+                        f"catalog id has conflicting definitions: {catalog_id}: {error}"
+                    ) from error
+            else:
+                catalogs[catalog_id] = catalog
         input_row = {
             **public_input,
             "case_id": case_id,

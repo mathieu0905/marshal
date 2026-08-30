@@ -1,0 +1,172 @@
+diff --git a/nova/tests/functional/test_report_client.py b/nova/tests/functional/test_report_client.py
+index a5da9f87b46c..a1270723515b 100644
+--- a/nova/tests/functional/test_report_client.py
++++ b/nova/tests/functional/test_report_client.py
+@@ -1325,8 +1325,16 @@ class SchedulerReportClientTests(test.TestCase):
+         try:
+             self.client._reshape(self.context, {}, {})
+         except exception.ReshapeFailed as e:
+-            self.assertIn('JSON does not validate: {} does not have '
+-                          'enough properties', e.kwargs['error'])
++            # NOTE(gibi): jsonschema 4.23.0 changed the error message, but we
++            # need to pass with both older and newer jsonschema. If the
++            # minimum jsonschema is bumped to 4.23.0 or higher than this can
++            # be simplified.
++            self.assertRegex(
++                e.kwargs['error'],
++                'JSON does not validate: {} '
++                '(does not have enough properties)|'  # jsonschema < 4.23.0
++                '(should be non-empty)'  # jsonschema >= 4.23.0
++            )
+ 
+         # Okay, do some real stuffs. We're just smoke-testing that we can
+         # hit a good path to the API here; real testing of the API happens
+diff --git a/nova/tests/unit/api/openstack/compute/test_keypairs.py b/nova/tests/unit/api/openstack/compute/test_keypairs.py
+index 48689522c404..79842487c68d 100644
+--- a/nova/tests/unit/api/openstack/compute/test_keypairs.py
++++ b/nova/tests/unit/api/openstack/compute/test_keypairs.py
+@@ -126,9 +126,11 @@ class KeypairsTestV21(test.TestCase):
+ 
+     def test_keypair_create_with_empty_name(self):
+         body = {'keypair': {'name': ''}}
+-        self._test_keypair_create_bad_request_case(body,
+-                                                   self.validation_error,
+-                                                   'is too short')
++        self._test_keypair_create_bad_request_case(
++            body,
++            self.validation_error,
++            '(is too short)|'  # jsonschema < 4.23.0
++            '(should be non-empty)')  # jsonschema >= 4.23.0
+ 
+     def test_keypair_create_with_name_too_long(self):
+         body = {
+diff --git a/nova/tests/unit/api/openstack/compute/test_servers.py b/nova/tests/unit/api/openstack/compute/test_servers.py
+index 83395321484e..62fa8f6aa652 100644
+--- a/nova/tests/unit/api/openstack/compute/test_servers.py
++++ b/nova/tests/unit/api/openstack/compute/test_servers.py
+@@ -3670,7 +3670,10 @@ class ServersControllerRebuildTestV263(ControllerTest):
+         ex = self.assertRaises(exception.ValidationError,
+                                self.controller._action_rebuild,
+                                self.req, FAKE_UUID, body=self.body)
+-        self.assertIn('is too short', str(ex))
++        self.assertRegex(
++            str(ex),
++            '(is too short)|'  # jsonschema < 4.23.0
++            '(should be non-empty)')  # jsonschema >= 4.23.0
+ 
+     def test_rebuild_server_with_empty_trusted_certs(self):
+         """Make sure that we can't rebuild with an empty array of IDs"""
+@@ -3679,7 +3682,10 @@ class ServersControllerRebuildTestV263(ControllerTest):
+         ex = self.assertRaises(exception.ValidationError,
+                                self.controller._action_rebuild,
+                                self.req, FAKE_UUID, body=self.body)
+-        self.assertIn('is too short', str(ex))
++        self.assertRegex(
++            str(ex),
++            '(is too short)|'  # jsonschema < 4.23.0
++            '(should be non-empty)')  # jsonschema >= 4.23.0
+ 
+     def test_rebuild_server_with_too_many_trusted_certs(self):
+         """Make sure that we can't rebuild with an array of >50 unique IDs"""
+@@ -7172,7 +7178,10 @@ class ServersControllerCreateTestV263(_ServersControllerCreateTest):
+         ex = self.assertRaises(
+             exception.ValidationError, self.controller.create, self.req,
+             body=self.body)
+-        self.assertIn('is too short', str(ex))
++        self.assertRegex(
++            str(ex),
++            '(is too short)|'  # jsonschema < 4.23.0
++            '(should be non-empty)')  # jsonschema >= 4.23.0
+ 
+     def test_create_instance_with_empty_trusted_certs(self):
+         """Make sure we can't create with an empty array of IDs"""
+@@ -7183,7 +7192,10 @@ class ServersControllerCreateTestV263(_ServersControllerCreateTest):
+         ex = self.assertRaises(
+             exception.ValidationError, self.controller.create, self.req,
+             body=self.body)
+-        self.assertIn('is too short', str(ex))
++        self.assertRegex(
++            str(ex),
++            '(is too short)|'  # jsonschema < 4.23.0
++            '(should be non-empty)')  # jsonschema >= 4.23.0
+ 
+     def test_create_instance_with_too_many_trusted_certs(self):
+         """Make sure we can't create with an array of >50 unique IDs"""
+diff --git a/nova/tests/unit/compute/provider_config_data/v1/validation_error_test_data.yaml b/nova/tests/unit/compute/provider_config_data/v1/validation_error_test_data.yaml
+index ac0b61a2074b..498793170a35 100644
+--- a/nova/tests/unit/compute/provider_config_data/v1/validation_error_test_data.yaml
++++ b/nova/tests/unit/compute/provider_config_data/v1/validation_error_test_data.yaml
+@@ -71,7 +71,7 @@ provider_empty_name:
+     providers:
+       - identification:
+           name: ''
+-  expected_messages: ["'' is too short"]
++  expected_message_regex: "'' (is too short)|(should be non-empty)"
+ provider_null_name:
+   config:
+     meta:
+@@ -190,7 +190,7 @@ traits_multiple_additional_traits_two_invalid:
+             - TRAIT1: invalid
+             - TRAIT2
+             - TRAIT3: invalid
+-  expected_messages: ["{'TRAIT1': 'invalid'} is not of type 'string'"]
++  expected_message_regex: "{'TRAIT[13]': 'invalid'} is not of type 'string'"
+ traits_invalid_trait_name:
+   config:
+     meta:
+diff --git a/nova/tests/unit/compute/test_provider_config.py b/nova/tests/unit/compute/test_provider_config.py
+index 39f706da5ee5..901ab1b66d92 100644
+--- a/nova/tests/unit/compute/test_provider_config.py
++++ b/nova/tests/unit/compute/test_provider_config.py
+@@ -61,6 +61,15 @@ class SchemaValidationMixin(base.BaseTestCase):
+         for msg in expected_messages:
+             self.assertIn(msg, actual_msg)
+ 
++    def run_test_validation_errors_regex(self, config, pattern):
++        self.set_config(config=config)
++
++        actual_msg = self.assertRaises(
++            nova_exc.ProviderConfigException,
++            provider_config._parse_provider_yaml, 'test_path').message
++
++        self.assertRegex(actual_msg, pattern)
++
+     def run_test_validation_success(self, config):
+         reference = self.set_config(config=config)
+ 
+@@ -116,8 +125,14 @@ class SchemaValidationTestCasesV1(SchemaValidationMixin):
+ 
+     @ddt.unpack
+     @ddt.file_data('provider_config_data/v1/validation_error_test_data.yaml')
+-    def test_validation_errors(self, config, expected_messages):
+-        self.run_test_validation_errors(config, expected_messages)
++    def test_validation_errors(
++        self, config, expected_messages=None, expected_message_regex=None
++    ):
++        if expected_message_regex is None:
++            self.run_test_validation_errors(config, expected_messages)
++        else:
++            self.run_test_validation_errors_regex(
++                config, expected_message_regex)
+ 
+     @ddt.unpack
+     @ddt.file_data('provider_config_data/v1/validation_success_test_data.yaml')
+diff --git a/nova/tests/unit/test_api_validation.py b/nova/tests/unit/test_api_validation.py
+index e53cabd4f10d..ad3faea98eab 100644
+--- a/nova/tests/unit/test_api_validation.py
++++ b/nova/tests/unit/test_api_validation.py
+@@ -500,8 +500,12 @@ class StringLengthTestCase(APIValidationTestCase):
+                          'Validation succeeded.')
+ 
+     def test_validate_string_length_fails(self):
+-        detail = ("Invalid input for field/attribute foo. Value: ."
+-                  " '' is too short")
++        detail = [
++            "Invalid input for field/attribute foo. Value: . '' "
++            "is too short",  # jsonschema < 4.23.0
++            "Invalid input for field/attribute foo. Value: . '' "
++            "should be non-empty",  # jsonschema >= 4.23.0
++        ]
+         self.check_validation_error(self.post, body={'foo': ''},
+                                     expected_detail=detail)
+ 

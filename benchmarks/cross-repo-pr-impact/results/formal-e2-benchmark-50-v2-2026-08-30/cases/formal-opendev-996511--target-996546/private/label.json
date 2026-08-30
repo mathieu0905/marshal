@@ -1,0 +1,27 @@
+{
+  "bootstrap_constraints": [
+    "setuptools==75.6.0"
+  ],
+  "candidate_id": "formal-opendev-996511",
+  "expected_check_paths": [
+    "octavia/tests/unit/common/test_policy.py"
+  ],
+  "mechanism": "The oslo.policy 6.0 constraint removes enforce_scope, so the unchanged Octavia system-scope administrator test raises NoSuchOptError before its existing assertion.",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/python",
+  "relation_id": "formal-opendev-996511--target-996546",
+  "repair_template": "Remove only the obsolete enforce_scope setting while retaining new-default enforcement and the original policy assertion.",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/root-rebuild-996511-996546/intake/private/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff Octavia checkout and oslo.policy 6.0.0 installed, the selected existing system-scope administrator test fails before its assertion with NoSuchOptError for oslo_policy.enforce_scope; the replay must prove that signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Independently reviewed the one-pin opening diff, cutoff target test, exact maintainer parent-to-head diff and commit metadata, fixed tox/stestr command, and will admit the case only if fresh A0/A1/A2 logs prove one real selected test with exit codes 0/nonzero/0 and an A1-exclusive signature.",
+    "source_effect": "The opening source diff changes the sole oslo.policy upper-constraint pin from 5.1.0 to 6.0.0; the latter removes the enforce_scope option consumed by the selected cutoff test setup.",
+    "target_patch": ".work/root-rebuild-996511-996546/intake/private/target.patch",
+    "target_repair": "The complete maintainer patch removes only the obsolete enforce_scope setting from the selected existing test while retaining enforce_new_defaults, the test method, and its administrator-policy assertion; it does not delete or skip the test."
+  },
+  "source_change_family": "opendev-change-996511-opening",
+  "target_repository": "openstack/octavia",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox-py313-runner/bin/tox"
+}

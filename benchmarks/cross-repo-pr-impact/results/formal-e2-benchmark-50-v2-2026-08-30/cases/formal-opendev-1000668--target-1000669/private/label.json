@@ -1,0 +1,26 @@
+{
+  "candidate_id": "e2-006",
+  "expected_check_paths": [
+    "global-requirements.txt",
+    "playbooks/files/project-requirements-change.py",
+    "upper-constraints.txt"
+  ],
+  "mechanism": "A new optional hardware dependency is rejected because it is absent from the shared requirements registry.",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/python",
+  "relation_id": "formal-opendev-1000668--target-1000669",
+  "repair_template": "Register the new dependency and its upper constraint in the shared requirements repository.",
+  "replay_adapter": "requirements_registration",
+  "replay_plan": ".work/root-rebuild-1000668-1000669/intake/private/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "The unchanged requirements checker must process the opening source's new extra-hardware dependency and exit nonzero because hardware>=0.24.0 is absent from the cutoff requirements repository; the same command must pass against the source base and show an A1-exclusive registration signature.",
+    "approved": true,
+    "reviewer_basis": "Independently reviewed the source opening diff, cutoff project-requirements-change implementation, complete maintainer parent-to-head requirements diff and metadata, and will retain approval only if fresh isolated Git checkouts prove same-command 0/nonzero/0 with an A1-exclusive signature.",
+    "source_effect": "The source opening moves hardware>=0.24.0 into the extra-hardware optional dependency set, causing the existing governance checker to validate that dependency.",
+    "target_patch": ".work/root-rebuild-1000668-1000669/intake/private/target.patch",
+    "target_repair": "The complete maintainer patch adds hardware to global-requirements.txt and pins hardware===0.32.0 in upper-constraints.txt, satisfying the same existing checker without deleting or skipping any test."
+  },
+  "source_change_family": "opendev-change-1000668-opening",
+  "target_repository": "openstack/requirements",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner-py313/bin/tox"
+}

@@ -1,0 +1,102 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5140,
+    "case_id": "formal-opendev-880278",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:24:44.419416Z",
+  "blind_prediction_created_at": "2026-08-30T04:24:05.068743Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-880278",
+  "case_id": "formal-opendev-880278--target-880338",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/neutron"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:24:44.424830Z",
+  "mechanism": "a newly constrained neutron-lib version changes the context object reaching metering RPC calls and invalidates exact-object mock assertions",
+  "repair_template": "preserve RPC payload assertions while accepting the dependency-provided request context object",
+  "replay": {
+    "catalog_source_snapshot_commit": "b44da90728ae3db63b95c4ea6291b072b41ff2a6",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "AssertionError: expected call not found.",
+    "installed_source_versions": {
+      "A0": "3.4.0",
+      "A1": "3.5.0",
+      "A2": "3.5.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "b44da90728ae3db63b95c4ea6291b072b41ff2a6",
+    "source_head_commit": "d565b7e726e58ea589c55afc5fd0f288bb08bee3",
+    "source_versions": {
+      "A0": "3.4.0",
+      "A1": "3.5.0",
+      "A2": "3.5.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "4de993c25bee02772c28661b8aacaae842418f76",
+    "target_test_path": "neutron/tests/unit/services/metering/test_metering_plugin.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "neutron.tests.unit.services.metering.test_metering_plugin"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-880278--target-880338",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "neutron/tests/unit/services/metering/test_metering_plugin.py"
+    ],
+    "mean_reciprocal_rank": 1.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "etc/oslo-config-generator/neutron.conf",
+      "neutron/db/migration/alembic_migrations/versions/2023.1/expand/fc153938cdc1_update_segment_networks_constraint.py",
+      "neutron/db/migration/alembic_migrations/versions/newton/contract/2e0d7a8a1586_add_binding_index_to_routerl3agentbinding.py",
+      "neutron/db/migration/alembic_migrations/versions/ussuri/expand/c3e9d13c4367_add_binding_index_to_.py",
+      "neutron/tests/common/machine_fixtures.py"
+    ],
+    "rank": 1,
+    "recall_at_1": 1.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "openstack/neutron"
+  },
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff target and neutron-lib 3.5.0 installed, six of twenty tests fail with stable 'AssertionError: expected call not found.' messages: RPC payloads match, while expected and actual FakeContext objects have different identities. The signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Fresh review of the one-pin source opening diff, cutoff metering tests, complete maintainer target diff, installed-version probes, identical three-arm stestr command, and all fresh A0/A1/A2 logs.",
+    "source_effect": "The opening source diff changes the sole neutron-lib pin from 3.4.0 to 3.5.0 in upper-constraints.txt.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-880278--target-880338/evidence/formal-opendev-880278--target-880338/target.patch",
+    "target_repair": "The maintainer changes only the context argument of affected RPC mock assertions to mock.ANY while preserving exact payload assertions. A2 retains neutron-lib 3.5.0 and restores all twenty tests without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-880278-opening",
+  "status": "case_ready_for_formal_pool"
+}

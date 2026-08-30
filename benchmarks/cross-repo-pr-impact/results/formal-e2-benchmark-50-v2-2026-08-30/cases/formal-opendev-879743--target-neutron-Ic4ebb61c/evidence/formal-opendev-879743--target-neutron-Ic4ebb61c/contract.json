@@ -1,0 +1,89 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "bootstrap_constraints": [
+    "setuptools==75.6.0"
+  ],
+  "candidate_id": "formal-opendev-879743",
+  "case_id": "formal-opendev-879743--target-neutron-Ic4ebb61c",
+  "changed_distribution": "sqlalchemy",
+  "command_provenance": {
+    "commit": "208421910d2bb3c71b0947254d5eca1326c184d0",
+    "path": "tox.ini",
+    "repository": "openstack/neutron"
+  },
+  "failure_signature": "pymysql.err.OperationalError: (1045, \"Access denied for user 'openstack_citest'@'127.0.0.1' (using password: YES)\")",
+  "installed_source_versions": {
+    "A0": "1.4.41",
+    "A1": "2.0.9",
+    "A2": "2.0.9"
+  },
+  "machine_arm_verification": "passed",
+  "opening_constraint_changes": [
+    {
+      "distribution": "oslo.db",
+      "new_version": "13.0.0",
+      "old_version": "12.3.1"
+    },
+    {
+      "distribution": "sqlalchemy",
+      "new_version": "2.0.9",
+      "old_version": "1.4.41"
+    },
+    {
+      "distribution": "sqlalchemy-migrate",
+      "new_version": null,
+      "old_version": "0.13.0"
+    }
+  ],
+  "primary_result_channel": "pre_existing_target_test",
+  "relation_id": "formal-opendev-879743--target-neutron-Ic4ebb61c",
+  "requirements_a1_commit": "d0cfa5b3e56b650d093ea9db0df280c06ef0bbab",
+  "requirements_commit": "b44da90728ae3db63b95c4ea6291b072b41ff2a6",
+  "schema_version": "1.0",
+  "selected_attempt_id": "formal-opendev-879743--target-neutron-Ic4ebb61c",
+  "setup_environment_keys": [],
+  "source_application": "global_constraints_full_opening_diff",
+  "source_base_commit": "b44da90728ae3db63b95c4ea6291b072b41ff2a6",
+  "source_head_commit": "d0cfa5b3e56b650d093ea9db0df280c06ef0bbab",
+  "source_repository": "openstack/requirements",
+  "source_subject": "Update SQLAlchemy and oslo.db, drop sqlalchemy-migrate",
+  "source_versions": {
+    "A0": "1.4.41",
+    "A1": "2.0.9",
+    "A2": "2.0.9"
+  },
+  "strict_touched_test_count": 1,
+  "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+  "target_base_commit": "208421910d2bb3c71b0947254d5eca1326c184d0",
+  "target_change": "neutron-Ic4ebb61c",
+  "target_head_commit": "0959e452d358597c005630f3aab3948ba6c1d26f",
+  "target_patch_base_commit": "ae4084c1735f63de7fc685ee51502f5d0d9db67c",
+  "target_patch_evidence": "target.patch",
+  "target_repository": "openstack/neutron",
+  "target_subject": "[sqlalchemy-20] Retrieve the URL string with the password",
+  "target_test_path": "neutron/tests/functional/db/test_migrations.py",
+  "test_command": [
+    "stestr",
+    "run",
+    "neutron.tests.functional.db.test_migrations.TestModelsMigrationsMySQL.test_upgrade_expand_branch"
+  ],
+  "test_environment_keys": [
+    "OS_FAIL_ON_MISSING_DEPS",
+    "OS_LOG_CAPTURE",
+    "OS_STDERR_CAPTURE",
+    "OS_STDOUT_CAPTURE",
+    "OS_TEST_DBAPI_ADMIN_CONNECTION",
+    "OS_TEST_PATH",
+    "OS_TEST_TIMEOUT",
+    "PYTHONHASHSEED",
+    "PYTHONWARNINGS"
+  ],
+  "test_selector": "neutron.tests.functional.db.test_migrations.TestModelsMigrationsMySQL.test_upgrade_expand_branch",
+  "tox_environment": "functional",
+  "virtualenv_pip_version": null,
+  "virtualenv_setuptools_version": null
+}

@@ -1,0 +1,100 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5140,
+    "case_id": "formal-opendev-900517",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T05:23:08.256664Z",
+  "blind_prediction_created_at": "2026-08-30T05:22:49.717105Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-900517",
+  "case_id": "formal-opendev-900517--target-ironic-I1a622ab9",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/ironic"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T05:23:08.259601Z",
+  "mechanism": "oslo.utils 6.3.0 performs string prerelease normalization on an accidental MagicMock VERSION in two existing Ironic registry tests",
+  "repair_template": "remove the accidentally mocked registry entry before registering the real versioned object class",
+  "replay": {
+    "catalog_source_snapshot_commit": "4e5f8db60144dad3dc9d18862d949d20b65c8b59",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "TypeError: expected string or bytes-like object",
+    "installed_source_versions": {
+      "A0": "6.2.1",
+      "A1": "6.3.0",
+      "A2": "6.3.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "1a2d1998e655e5b5b0afb96018f1ee04f289642f",
+    "source_head_commit": "4e5f8db60144dad3dc9d18862d949d20b65c8b59",
+    "source_versions": {
+      "A0": "6.2.1",
+      "A1": "6.3.0",
+      "A2": "6.3.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "b9baf7dbc8d1b32f7bf4bafe48da02ded32078be",
+    "target_test_path": "ironic/tests/unit/objects/test_objects.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "--slowest",
+      "--parallel-class",
+      "--exclude-regex",
+      "TestMigrationsMySQL",
+      "ironic.tests.unit.objects.test_objects"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-900517--target-ironic-I1a622ab9",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "ironic/tests/unit/objects/test_objects.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/ironic"
+  },
+  "semantic_review": {
+    "a1_failure": "With only oslo.utils changed to 6.3.0, the unchanged cutoff module runs the two registry hook tests through convert_version_to_tuple and is expected to emit the exclusive signature 'TypeError: expected string or bytes-like object'; the fresh replay must prove the same command fails only in A1.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the code-only source opening diff, the complete exact target commit diff, target-parent ancestry, clean application to the cutoff commit, cutoff tox command provenance, and prior replay solely as intake evidence; final acceptance depends on the fresh isolated blind run, fresh A0/A1/A2 replay, semantic package checks, and independent official verification.",
+    "source_effect": "The source opening changes exactly one upper-constraints.txt pin, oslo.utils 6.2.1 to 6.3.0. The new version passes the supplied version through string prerelease normalization before tuple conversion, so the accidental MagicMock VERSION exposed by the patched ironic.objects.base.objects namespace reaches a string-only operation.",
+    "target_patch": ".work/domain-pack-e2-candidate-builds-2026-08-28/formal-opendev-900517--target-ironic-I1a622ab9/target.patch",
+    "target_repair": "The complete maintainer commit adds 'del mock_objects.MyObj' before registry initialization in each failing test, removing the unintentionally auto-created mocked registry entry so the real class and string VERSION are registered. It does not delete, skip, narrow, or relax either test; fresh A2 must retain the same command and test count."
+  },
+  "source_change_family": "opendev-change-900517-opening",
+  "status": "case_ready_for_formal_pool"
+}

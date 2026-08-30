@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-933257",
+  "expected_check_paths": [
+    "neutron/common/eventlet_utils.py",
+    "neutron/tests/unit/agent/dhcp/test_agent.py"
+  ],
+  "mechanism": "eventlet 0.37.0 makes Neutron's repeated monkey-patch initialization fail during existing unit-test discovery with an un-acquired-lock notification error",
+  "mirror_root": ".work/rebuild_933257_937527/candidate-mirrors",
+  "python": ".work/rebuild_933257_937527/runner/bin/python",
+  "relation_id": "formal-opendev-933257--target-937527",
+  "repair_template": "make target process-wide dependency initialization idempotent and defer imports until the first guarded initialization",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/rebuild_933257_937527/artifacts/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged Neutron opening-cutoff snapshot, selecting eventlet 0.37.0 for the existing DHCP-agent unit module triggers RuntimeError: cannot notify on un-acquired lock during test discovery; the same command with 0.36.1 passes, and the guarded A2 initialization is expected to restore it.",
+    "approved": true,
+    "reviewer_basis": "Independently reviewed the code-only one-pin source opening diff, the complete one-file maintainer diff from its Gerrit parent, its clean applicability to the cutoff snapshot, the cutoff tox.ini command, all cutoff monkey_patch call sites, and prior replay logs solely as a semantic pilot. The fresh pipeline must independently establish installed versions, 0/nonzero/0 exits, positive test counts, and an exclusive normalized failure signature before this approval can yield a ready case.",
+    "source_effect": "The opening changes only the eventlet upper-constraint from 0.36.1 to 0.37.0. The cutoff Neutron code invokes eventlet_utils.monkey_patch from both unit-test package initialization and other process entry points without a process-wide guard, exposing repeated eventlet monkey-patch initialization under the new pin.",
+    "target_patch": ".work/rebuild_933257_937527/artifacts/target-patches/937527.patch",
+    "target_repair": "The complete maintainer patch changes only neutron/common/eventlet_utils.py: it adds a process-wide guard around eventlet.monkey_patch and pyroute2 asyncio initialization and defers the import inside that first guarded call. It does not delete, alter, or skip tests and directly prevents the repeated initialization mechanism."
+  },
+  "source_change_family": "opendev-change-933257-opening",
+  "target_repository": "openstack/neutron",
+  "tox": ".work/rebuild_933257_937527/runner/bin/tox"
+}

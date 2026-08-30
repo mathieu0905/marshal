@@ -1,0 +1,1541 @@
+diff --git a/neutron/api/v2/base.py b/neutron/api/v2/base.py
+index b2920de..6f73669 100644
+--- a/neutron/api/v2/base.py
++++ b/neutron/api/v2/base.py
+@@ -263,7 +263,7 @@
+                                pluralized=self._collection)
+                 ret_value = getattr(self._plugin, name)(*arg_list, **kwargs)
+                 # It is simply impossible to predict whether one of this
+-                # actions alters resource usage. For instance a tenant port
++                # actions alters resource usage. For instance a project port
+                 # is created when a router interface is added. Therefore it is
+                 # important to mark as dirty resources whose counters have
+                 # been altered by this operation
+@@ -347,7 +347,7 @@
+             collection[self._collection + "_links"] = pagination_links
+         # Synchronize usage trackers, if needed
+         resource_registry.resync_resource(
+-            request.context, self._resource, request.context.tenant_id)
++            request.context, self._resource, request.context.project_id)
+         return collection
+ 
+     def _item(self, request, id, do_authz=False, field_list=None,
+@@ -463,7 +463,7 @@
+             items = body[self._collection]
+         else:
+             items = [body]
+-        # Store requested resource amounts grouping them by tenant
++        # Store requested resource amounts grouping them by project
+         # This won't work with multiple resources. However because of the
+         # current structure of this controller there will hardly be more than
+         # one resource for which reservations are being made
+@@ -481,18 +481,18 @@
+                            action,
+                            item[self._resource],
+                            pluralized=self._collection)
+-            if 'tenant_id' not in item[self._resource]:
+-                # no tenant_id - no quota check
++            if 'project_id' not in item[self._resource]:
++                # no project_id - no quota check
+                 continue
+-            tenant_id = item[self._resource]['tenant_id']
+-            request_deltas[tenant_id] += 1
++            project_id = item[self._resource]['project_id']
++            request_deltas[project_id] += 1
+         # Quota enforcement
+         reservations = []
+         try:
+-            for (tenant, delta) in request_deltas.items():
++            for (project, delta) in request_deltas.items():
+                 reservation = quota.QUOTAS.make_reservation(
+                     request.context,
+-                    tenant,
++                    project,
+                     {self._resource: delta},
+                     self._plugin)
+                 if reservation:
+@@ -695,7 +695,7 @@
+         obj = obj_updater(request.context, id, **kwargs)
+         # Usually an update operation does not alter resource usage, but as
+         # there might be side effects it might be worth checking for changes
+-        # in resource usage here as well (e.g: a tenant port is created when a
++        # in resource usage here as well (e.g: a project port is created when a
+         # router interface is added)
+         resource_registry.set_resources_dirty(request.context)
+ 
+@@ -791,7 +791,7 @@
+ 
+         network_owner = network['project_id']
+ 
+-        if network_owner != resource_item['tenant_id']:
++        if network_owner != resource_item['project_id']:
+             # NOTE(kevinbenton): we raise a 404 to hide the existence of the
+             # network from the project since they don't have access to it.
+             msg = _('The resource could not be found.')
+diff --git a/neutron/db/_utils.py b/neutron/db/_utils.py
+index b782c64..58a867c 100644
+--- a/neutron/db/_utils.py
++++ b/neutron/db/_utils.py
+@@ -83,7 +83,7 @@
+     # define basic filter condition for model query
+     query_filter = None
+     if db_utils.model_query_scope_is_project(context, model):
+-        query_filter = (model.tenant_id == context.tenant_id)
++        query_filter = (model.project_id == context.project_id)
+ 
+     if query_filter is not None:
+         query = query.filter(query_filter)
+diff --git a/neutron/db/db_base_plugin_v2.py b/neutron/db/db_base_plugin_v2.py
+index 9f9cfba..46e0900 100644
+--- a/neutron/db/db_base_plugin_v2.py
++++ b/neutron/db/db_base_plugin_v2.py
+@@ -248,7 +248,7 @@
+         On creation, verify that the creator is an admin or that it owns the
+         network it is sharing.
+ 
+-        On update and delete, make sure the tenant losing access does not have
++        On update and delete, make sure the project losing access does not have
+         resources that depend on that access.
+         """
+         object_type = payload.metadata.get('object_type')
+diff --git a/neutron/db/external_net_db.py b/neutron/db/external_net_db.py
+index 1ccc714..bc7ea84 100644
+--- a/neutron/db/external_net_db.py
++++ b/neutron/db/external_net_db.py
+@@ -111,7 +111,7 @@
+         if external:
+             net_obj.ExternalNetwork(
+                 context, network_id=net_data['id']).create()
+-            net_rbac_args = {'project_id': net_data['tenant_id'],
++            net_rbac_args = {'project_id': net_data['project_id'],
+                              'object_id': net_data['id'],
+                              'action': rbac_db_models.ACCESS_EXTERNAL,
+                              'target_project': '*'}
+@@ -132,7 +132,7 @@
+                 context, network_id=net_id).create()
+             net_data[extnet_apidef.EXTERNAL] = True
+             if allow_all:
+-                net_rbac_args = {'project_id': net_data['tenant_id'],
++                net_rbac_args = {'project_id': net_data['project_id'],
+                                  'object_id': net_id,
+                                  'action': rbac_db_models.ACCESS_EXTERNAL,
+                                  'target_project': '*'}
+@@ -169,7 +169,7 @@
+                 policy['action'] != rbac_db_models.ACCESS_EXTERNAL):
+             return
+         net = self.get_network(context, policy['object_id'])
+-        if not context.is_admin and net['tenant_id'] != context.tenant_id:
++        if not context.is_admin and net['project_id'] != context.project_id:
+             msg = _("Only admins can manipulate policies on networks they "
+                     "do not own")
+             raise n_exc.InvalidInput(error_message=msg)
+@@ -200,8 +200,8 @@
+ 
+     @registry.receives(resources.RBAC_POLICY, (events.BEFORE_UPDATE,
+                                                events.BEFORE_DELETE))
+-    def _validate_ext_not_in_use_by_tenant(self, resource, event, trigger,
+-                                           payload=None):
++    def _validate_ext_not_in_use_by_project(self, resource, event, trigger,
++                                            payload=None):
+         object_type = payload.metadata.get('object_type')
+         policy = payload.latest_state
+         context = payload.context
+@@ -213,7 +213,7 @@
+         if event == events.BEFORE_UPDATE:
+             new_project = payload.request_body['target_project']
+             if new_project == policy['target_project']:
+-                # nothing to validate if the tenant didn't change
++                # nothing to validate if the project didn't change
+                 return
+ 
+         gw_ports = port_obj.Port.get_gateway_port_ids_by_network(
+@@ -231,7 +231,7 @@
+                 return
+             router_exist = l3_obj.Router.objects_exist(context, **filters)
+         else:
+-            # deleting the wildcard is okay as long as the tenants with
++            # deleting the wildcard is okay as long as the projects with
+             # attached routers have their own entries and the network is
+             # not the default external network.
+             if net_obj.ExternalNetwork.objects_exist(
+diff --git a/neutron/db/l3_agentschedulers_db.py b/neutron/db/l3_agentschedulers_db.py
+index 6353e87..c3f3e89 100644
+--- a/neutron/db/l3_agentschedulers_db.py
++++ b/neutron/db/l3_agentschedulers_db.py
+@@ -147,7 +147,7 @@
+                 if router.get('ha'):
+                     self.router_scheduler.create_ha_port_and_bind(
+                         plugin, context, router['id'],
+-                        router['tenant_id'], agent,
++                        router['project_id'], agent,
+                         is_manual_scheduling=True)
+                 else:
+                     self.router_scheduler.bind_router(
+diff --git a/neutron/db/network_ip_availability_db.py b/neutron/db/network_ip_availability_db.py
+index 21df9c2..14771ab 100644
+--- a/neutron/db/network_ip_availability_db.py
++++ b/neutron/db/network_ip_availability_db.py
+@@ -27,7 +27,7 @@
+ SUPPORTED_FILTERS = {
+     NETWORK_ID: mod.Network.id,
+     NETWORK_NAME: mod.Network.name,
+-    'tenant_id': mod.Network.tenant_id,
++    'tenant_id': mod.Network.project_id,
+     'project_id': mod.Network.project_id,
+     'ip_version': mod.Subnet.ip_version,
+ }
+diff --git a/neutron/db/securitygroups_db.py b/neutron/db/securitygroups_db.py
+index 3dc3921..5712c11 100644
+--- a/neutron/db/securitygroups_db.py
++++ b/neutron/db/securitygroups_db.py
+@@ -167,7 +167,15 @@
+         # GETS. TODO(arosen)  context handling can probably be improved here.
+         filters = filters or {}
+         if not default_sg and context.project_id:
+-            project_id = filters.get('project_id') or filters.get('tenant_id')
++            # TODO(haleyb): migrate "tenant_id" to "project_id", remove in G+2
++            project_id = filters.get('project_id')
++            if not project_id and filters.get('tenant_id'):
++                project_id = filters['tenant_id']
++                LOG.warning('project_id key not found in filters, using '
++                            'tenant_id instead. This support has been '
++                            'deprecated and will be removed in a future '
++                            'release.')
++
+             if project_id:
+                 project_id = project_id[0]
+             else:
+@@ -1036,7 +1044,14 @@
+         pager = base_obj.Pager(
+             sorts=sorts, marker=marker, limit=limit, page_reverse=page_reverse)
+ 
+-        project_id = filters.get('project_id') or filters.get('tenant_id')
++        # TODO(haleyb): migrate "tenant_id" to "project_id", remove in G+2
++        project_id = filters.get('project_id')
++        if not project_id and filters.get('tenant_id'):
++            project_id = filters['tenant_id']
++            LOG.warning('project_id key not found in filters, using tenant_id '
++                        'instead. This support has been deprecated and will '
++                        'be removed in a future release.')
++
+         if project_id:
+             project_id = project_id[0]
+         else:
+diff --git a/neutron/extensions/qos.py b/neutron/extensions/qos.py
+index ccb2c8b..37e91e6 100644
+--- a/neutron/extensions/qos.py
++++ b/neutron/extensions/qos.py
+@@ -153,7 +153,7 @@
+                   u'bandwidth_limit_rule':
+                   { 'max_burst_kbps': 0,
+                     u'max_kbps': u'100',
+-                    'tenant_id': u'a8a31c9434ff431cb789c809777505ec'}
++                    'project_id': u'a8a31c9434ff431cb789c809777505ec'}
+                   },
+               'policy_id': u'46985da5-9684-402e-b0d7-b7adac909c3a'
+             }
+diff --git a/neutron/extensions/rbac.py b/neutron/extensions/rbac.py
+index 2568753..aaa3552 100644
+--- a/neutron/extensions/rbac.py
++++ b/neutron/extensions/rbac.py
+@@ -110,7 +110,7 @@
+     @classmethod
+     def get_description(cls):
+         return ("Allows creation and modification of policies that control "
+-                "tenant access to resources.")
++                "project access to resources.")
+ 
+     @classmethod
+     def get_updated(cls):
+diff --git a/neutron/extensions/tagging.py b/neutron/extensions/tagging.py
+index 586fc40..049b54b 100644
+--- a/neutron/extensions/tagging.py
++++ b/neutron/extensions/tagging.py
+@@ -28,6 +28,7 @@
+ from neutron_lib.plugins import directory
+ from neutron_lib import rpc as n_rpc
+ from neutron_lib.services import base as service_base
++from oslo_log import log as logging
+ 
+ from neutron._i18n import _
+ from neutron.api import extensions
+@@ -43,6 +44,8 @@
+ from neutron.objects import trunk as trunk_obj
+ from neutron import policy
+ 
++LOG = logging.getLogger(__name__)
++
+ 
+ TAG = 'tag'
+ TAGS = TAG + 's'
+@@ -175,10 +178,17 @@
+                 for f_name, f_value in obj.to_dict().items():
+                     if f_name in field_list:
+                         obj_dict[f_name] = f_value
++                # TODO(haleyb): migrate "tenant_id" to "project_id",
++                # remove in G+2
+                 project_id = obj_dict.get('project_id')
+                 if not project_id:
+                     project_id = obj_dict.get('tenant_id')
+                     obj_dict['project_id'] = project_id
++                    if project_id:
++                        LOG.warning('project_id key not found in request, '
++                                    'using tenant_id instead. This support '
++                                    'has been deprecated and will be removed '
++                                    'in a future release.')
+             except IndexError:
+                 return EMPTY_RESOURCE_INFO
+ 
+diff --git a/neutron/pecan_wsgi/controllers/quota.py b/neutron/pecan_wsgi/controllers/quota.py
+index 28df4b3..9a9aed3 100644
+--- a/neutron/pecan_wsgi/controllers/quota.py
++++ b/neutron/pecan_wsgi/controllers/quota.py
+@@ -27,12 +27,13 @@
+ from neutron.quota import resource_registry
+ 
+ RESOURCE_NAME = "quota"
+-TENANT_ID_ATTR = {'tenant_id':
+-                  {'allow_post': False,
+-                   'allow_put': False,
+-                   'required_by_policy': True,
+-                   'validate': {'type:string': db_const.PROJECT_ID_FIELD_SIZE},
+-                   'is_visible': True}}
++PROJECT_ID_ATTR = {'project_id':
++                   {'allow_post': False,
++                    'allow_put': False,
++                    'required_by_policy': True,
++                    'validate': {'type:string':
++                                 db_const.PROJECT_ID_FIELD_SIZE},
++                    'is_visible': True}}
+ 
+ 
+ class QuotasController(utils.NeutronPecanController):
+@@ -50,8 +51,8 @@
+             raise n_exc.AdminRequired(reason=reason)
+ 
+     @utils.expose()
+-    def _lookup(self, tenant_id, *remainder):
+-        return QuotaController(self._driver, tenant_id), remainder
++    def _lookup(self, project_id, *remainder):
++        return QuotaController(self._driver, project_id), remainder
+ 
+     @utils.expose(generic=True)
+     def index(self):
+@@ -75,9 +76,9 @@
+ 
+ class QuotaController(utils.NeutronPecanController):
+ 
+-    def __init__(self, _driver, tenant_id):
++    def __init__(self, _driver, project_id):
+         self._driver = _driver
+-        self._tenant_id = tenant_id
++        self._project_id = project_id
+ 
+         super().__init__(
+             "%ss" % RESOURCE_NAME, RESOURCE_NAME)
+@@ -92,14 +93,14 @@
+                 'validate': {
+                     'type:range': [-1, db_const.DB_INTEGER_MAX_VALUE]},
+                 'is_visible': True}
+-        # The quota resource must always declare a tenant_id attribute,
++        # The quota resource must always declare a project_id attribute,
+         # otherwise the attribute will be stripped off when generating the
+         # response
+-        attr_dict.update(TENANT_ID_ATTR)
++        attr_dict.update(PROJECT_ID_ATTR)
+ 
+     @utils.expose(generic=True)
+     def index(self):
+-        return get_tenant_quotas(self._tenant_id, self._driver)
++        return get_project_quotas(self._project_id, self._driver)
+ 
+     @utils.when(index, method='PUT')
+     def put(self, *args, **kwargs):
+@@ -108,40 +109,40 @@
+         quota_data = request.context['resources'][0]
+         for key, value in quota_data.items():
+             self._driver.update_quota_limit(
+-                neutron_context, self._tenant_id, key, value)
+-        return get_tenant_quotas(self._tenant_id, self._driver)
++                neutron_context, self._project_id, key, value)
++        return get_project_quotas(self._project_id, self._driver)
+ 
+     @utils.when_delete(index)
+     def delete(self):
+         neutron_context = request.context.get('neutron_context')
+-        self._driver.delete_tenant_quota(neutron_context,
+-                                         self._tenant_id)
++        self._driver.delete_project_quota(neutron_context,
++                                         self._project_id)
+ 
+     @utils.when(index, method='POST')
+     def not_supported(self):
+         pecan.abort(405)
+ 
+ 
+-def get_tenant_quotas(tenant_id, driver=None):
++def get_project_quotas(project_id, driver=None):
+     if not driver:
+         driver = importutils.import_class(cfg.CONF.QUOTAS.quota_driver)
+ 
+     neutron_context = request.context.get('neutron_context')
+-    if tenant_id == 'tenant':
++    if project_id == 'tenant':
+         # NOTE(salv-orlando): Read the following before the code in order
+         # to avoid puking.
+         # There is a weird undocumented behaviour of the Neutron quota API
+         # as 'tenant' is used as an API action to return the identifier
+-        # of the tenant in the request context. This is used exclusively
++        # of the project in the request context. This is used exclusively
+         # for interaction with python-neutronclient and is a possibly
+         # unnecessary 'whoami' API endpoint. Pending resolution of this
+         # API issue, this controller will just treat the magic string
+         # 'tenant' (and only that string) and return the response expected
+         # by python-neutronclient
+-        return {'tenant': {'tenant_id': neutron_context.tenant_id}}
+-    tenant_quotas = driver.get_tenant_quotas(
++        return {'project': {'project_id': neutron_context.project_id}}
++    project_quotas = driver.get_project_quotas(
+         neutron_context,
+         resource_registry.get_all_resources(),
+-        tenant_id)
+-    tenant_quotas['tenant_id'] = tenant_id
+-    return {RESOURCE_NAME: tenant_quotas}
++        project_id)
++    project_quotas['project_id'] = project_id
++    return {RESOURCE_NAME: project_quotas}
+diff --git a/neutron/pecan_wsgi/hooks/ownership_validation.py b/neutron/pecan_wsgi/hooks/ownership_validation.py
+index 45e93d6..3311e02 100644
+--- a/neutron/pecan_wsgi/hooks/ownership_validation.py
++++ b/neutron/pecan_wsgi/hooks/ownership_validation.py
+@@ -28,9 +28,9 @@
+         if state.request.method != 'POST':
+             return
+         for item in state.request.context.get('resources', []):
+-            self._validate_network_tenant_ownership(state, item)
++            self._validate_network_project_ownership(state, item)
+ 
+-    def _validate_network_tenant_ownership(self, state, resource_item):
++    def _validate_network_project_ownership(self, state, resource_item):
+         # TODO(salvatore-orlando): consider whether this check can be folded
+         # in the policy engine
+         neutron_context = state.request.context.get('neutron_context')
+@@ -45,12 +45,12 @@
+         if network.get('shared'):
+             return
+ 
+-        network_owner = network['tenant_id']
++        network_owner = network['project_id']
+ 
+-        if network_owner != resource_item['tenant_id']:
+-            msg = _("Tenant %(tenant_id)s not allowed to "
++        if network_owner != resource_item['project_id']:
++            msg = _("Project %(project_id)s not allowed to "
+                     "create %(resource)s on this network")
+             raise webob.exc.HTTPForbidden(msg % {
+-                "tenant_id": resource_item['tenant_id'],
++                "project_id": resource_item['project_id'],
+                 "resource": resource,
+             })
+diff --git a/neutron/pecan_wsgi/hooks/policy_enforcement.py b/neutron/pecan_wsgi/hooks/policy_enforcement.py
+index 0213e15..378ed6d 100644
+--- a/neutron/pecan_wsgi/hooks/policy_enforcement.py
++++ b/neutron/pecan_wsgi/hooks/policy_enforcement.py
+@@ -35,7 +35,7 @@
+ def _custom_getter(resource, resource_id):
+     """Helper function to retrieve resources not served by any plugin."""
+     if resource == quotasv2.RESOURCE_NAME:
+-        return quota.get_tenant_quotas(resource_id)[quotasv2.RESOURCE_NAME]
++        return quota.get_project_quotas(resource_id)[quotasv2.RESOURCE_NAME]
+ 
+ 
+ def fetch_resource(method, neutron_context, controller,
+@@ -131,7 +131,7 @@
+             except (oslo_policy.PolicyNotAuthorized, oslo_policy.InvalidScope):
+                 with excutils.save_and_reraise_exception() as ctxt:
+                     controller = utils.get_controller(state)
+-                    # If a tenant is modifying it's own object, it's safe to
++                    # If a project is modifying it's own object, it's safe to
+                     # return a 403. Otherwise, pretend that it doesn't exist
+                     # to avoid giving away information.
+                     # It is also safe to return 403 if it's POST (CREATE)
+@@ -227,8 +227,8 @@
+         """
+         attributes_to_exclude = []
+         for attr_name in list(data):
+-            # TODO(amotoki): All attribute maps have tenant_id and
+-            # it determines excluded attributes based on tenant_id.
++            # TODO(amotoki): All attribute maps have project_id and
++            # it determines excluded attributes based on project_id.
+             # We need to migrate tenant_id to project_id later
+             # as attr_info is referred to in various places and we need
+             # to check all logs carefully.
+diff --git a/neutron/pecan_wsgi/hooks/quota_enforcement.py b/neutron/pecan_wsgi/hooks/quota_enforcement.py
+index 2f83087..7e3a130 100644
+--- a/neutron/pecan_wsgi/hooks/quota_enforcement.py
++++ b/neutron/pecan_wsgi/hooks/quota_enforcement.py
+@@ -56,16 +56,17 @@
+         # Perform quota enforcement
+         reservations = []
+         neutron_context = state.request.context.get('neutron_context')
+-        for (tenant_id, delta) in deltas.items():
++        for (project_id, delta) in deltas.items():
+             try:
+                 reservation = quota.QUOTAS.make_reservation(
+                     neutron_context,
+-                    tenant_id,
++                    project_id,
+                     {resource: delta},
+                     plugin)
+-                LOG.debug("Made reservation on behalf of %(tenant_id)s "
++                LOG.debug("Made reservation on behalf of %(project_id)s "
+                           "for: %(delta)s",
+-                          {'tenant_id': tenant_id, 'delta': {resource: delta}})
++                          {'project_id': project_id,
++                           'delta': {resource: delta}})
+                 if reservation:
+                     reservations.append(reservation)
+             except exceptions.QuotaResourceUnknown as e:
+@@ -85,7 +86,7 @@
+         if state.request.method == 'GET' and collection:
+             # resync on list operations to preserve behavior of old API
+             resource_registry.resync_resource(
+-                neutron_context, resource, neutron_context.tenant_id)
++                neutron_context, resource, neutron_context.project_id)
+         # Commit reservation(s)
+         reservations = state.request.context.get('reservations') or []
+         if not reservations and state.request.method != 'DELETE':
+diff --git a/neutron/plugins/ml2/drivers/ovn/mech_driver/mech_driver.py b/neutron/plugins/ml2/drivers/ovn/mech_driver/mech_driver.py
+index 90c55b9..60798013 100644
+--- a/neutron/plugins/ml2/drivers/ovn/mech_driver/mech_driver.py
++++ b/neutron/plugins/ml2/drivers/ovn/mech_driver/mech_driver.py
+@@ -1535,7 +1535,7 @@
+             for azone in azones:
+                 azs[azone] = {'name': azone, 'resource': 'router',
+                               'state': 'available',
+-                              'tenant_id': context.project_id}
++                              'project_id': context.project_id}
+         return azs
+ 
+     def responsible_for_ports_allocation(self, context):
+diff --git a/neutron/quota/__init__.py b/neutron/quota/__init__.py
+index 587a08f..e2bdf82 100644
+--- a/neutron/quota/__init__.py
++++ b/neutron/quota/__init__.py
+@@ -72,7 +72,7 @@
+ 
+         return res.count(context, *args, **kwargs)
+ 
+-    def make_reservation(self, context, tenant_id, deltas, plugin):
++    def make_reservation(self, context, project_id, deltas, plugin):
+         # Verify that resources are managed by the quota engine
+         # Ensure no value is less than zero
+         unders = [key for key, val in deltas.items() if val < 0]
+@@ -94,7 +94,7 @@
+         # APIs request them, this will be sorted out with a different patch.
+         return self.get_driver().make_reservation(
+             context,
+-            tenant_id,
++            project_id,
+             all_resources,
+             deltas,
+             plugin)
+@@ -105,7 +105,7 @@
+     def cancel_reservation(self, context, reservation_id):
+         self.get_driver().cancel_reservation(context, reservation_id)
+ 
+-    def limit_check(self, context, tenant_id, **values):
++    def limit_check(self, context, project_id, **values):
+         """Check simple quota limits.
+ 
+         For limits--those quotas for which there is no usage
+@@ -119,12 +119,12 @@
+         given resource is unknown or if it is not a countable resource.
+ 
+         If any of the proposed values exceeds the respective quota defined
+-        for the tenant, an OverQuota exception will be raised.
++        for the project, an OverQuota exception will be raised.
+         The exception will include a sorted list with the resources
+         which exceed the quota limit. Otherwise, the method returns nothing.
+ 
+         :param context: Request context
+-        :param tenant_id: Tenant for which the quota limit is being checked
++        :param project_id: Project for which the quota limit is being checked
+         :param values: Dict specifying requested deltas for each resource
+         """
+         # TODO(salv-orlando): Deprecate calls to this API
+@@ -141,7 +141,7 @@
+                 unknown=sorted(unknown_resources))
+ 
+         return self.get_driver().limit_check(
+-            context, tenant_id, resource_registry.get_all_resources(), values)
++            context, project_id, resource_registry.get_all_resources(), values)
+ 
+     def quota_limit_check(self, context, project_id, **deltas):
+         return self.get_driver().quota_limit_check(
+diff --git a/neutron/quota/resource_registry.py b/neutron/quota/resource_registry.py
+index fa756c7..afcd414 100644
+--- a/neutron/quota/resource_registry.py
++++ b/neutron/quota/resource_registry.py
+@@ -60,7 +60,7 @@
+ 
+     This routine scans all registered resources, and, for those whose
+     dirty status is True, sets the dirty bit to True in the database
+-    for the appropriate tenants.
++    for the appropriate projects.
+ 
+     :param context: a Neutron request context with a DB session
+     """
+@@ -73,14 +73,14 @@
+                 res.mark_dirty(context)
+ 
+ 
+-def resync_resource(context, resource_name, tenant_id):
++def resync_resource(context, resource_name, project_id):
+     if not cfg.CONF.QUOTAS.track_quota_usage:
+         return
+ 
+     if is_tracked(resource_name):
+         res = get_resource(resource_name)
+         # If the resource is tracked count supports the resync_usage parameter
+-        res.resync(context, tenant_id)
++        res.resync(context, project_id)
+ 
+ 
+ def mark_resources_dirty(f):
+diff --git a/neutron/services/auto_allocate/db.py b/neutron/services/auto_allocate/db.py
+index 9d958e9..9229ac9 100644
+--- a/neutron/services/auto_allocate/db.py
++++ b/neutron/services/auto_allocate/db.py
+@@ -201,7 +201,6 @@
+             raise exceptions.AutoAllocationFailure(
+                 reason=_("No default subnetpools defined"))
+         return {'id': 'dry-run=pass',
+-                'tenant_id': project_id,
+                 'project_id': project_id}
+ 
+     def _validate(self, context, project_id):
+@@ -233,7 +232,7 @@
+         """Build response for auto-allocated network."""
+         res = {
+             'id': network_id,
+-            'tenant_id': project_id
++            'project_id': project_id
+         }
+         return db_utils.resource_fields(res, fields)
+ 
+diff --git a/neutron/services/ndp_proxy/plugin.py b/neutron/services/ndp_proxy/plugin.py
+index d4a7392..0662243 100644
+--- a/neutron/services/ndp_proxy/plugin.py
++++ b/neutron/services/ndp_proxy/plugin.py
+@@ -341,9 +341,15 @@
+                 ext_address_scope=ext_address_scope,
+                 internal_address_scope=internal_address_scope)
+ 
++        # TODO(haleyb): "tenant_id" reference should be removed
+         tenant_id = ndp_proxy.pop('tenant_id', None)
+         if not ndp_proxy.get('project_id', None):
+             ndp_proxy['project_id'] = tenant_id
++            if tenant_id:
++                LOG.warning('project_id key not found in ndp_proxy '
++                            'dictionary, using tenant_id instead. This '
++                            'support has been deprecated and will be '
++                            'removed in a future release.')
+ 
+         with db_api.CONTEXT_WRITER.using(context):
+             np_obj = np.NDPProxy(context, **ndp_proxy)
+diff --git a/neutron/tests/functional/api/test_policies.py b/neutron/tests/functional/api/test_policies.py
+index 03741c5..381e9f0 100644
+--- a/neutron/tests/functional/api/test_policies.py
++++ b/neutron/tests/functional/api/test_policies.py
+@@ -53,7 +53,7 @@
+                 'status': 'up',
+                 'admin_state_up': True,
+                 'shared': False,
+-                'tenant_id': 'admin',
++                'project_id': 'admin',
+                 'id': 'test_network',
+                 'router:external': True}
+ 
+diff --git a/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovn_db_resources.py b/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovn_db_resources.py
+index c4d3301..4eab6a0 100644
+--- a/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovn_db_resources.py
++++ b/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovn_db_resources.py
+@@ -790,7 +790,7 @@
+             'network':
+                 {'name': 'foo',
+                  'dns_domain': 'foo.com.',
+-                 'tenant_id': self._project_id}}
++                 'project_id': self._project_id}}
+         req = self.new_create_request('networks', data, self.fmt)
+         res = req.get_response(self.api)
+         net = self.deserialize(self.fmt, res)['network']
+diff --git a/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovsdb_monitor.py b/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovsdb_monitor.py
+index f117048..d2f65d7 100644
+--- a/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovsdb_monitor.py
++++ b/neutron/tests/functional/plugins/ml2/drivers/ovn/mech_driver/ovsdb/test_ovsdb_monitor.py
+@@ -214,7 +214,7 @@
+             {'subnet_id': port['fixed_ips'][0]['subnet_id']})
+         r1_f2 = self.l3_plugin.create_floatingip(
+             self.context, {'floatingip': {
+-                'tenant_id': self._project_id,
++                'project_id': self._project_id,
+                 'floating_network_id': e1['network']['id'],
+                 'subnet_id': None,
+                 'floating_ip_address': fip_address,
+diff --git a/neutron/tests/functional/services/l3_router/test_l3_dvr_router_plugin.py b/neutron/tests/functional/services/l3_router/test_l3_dvr_router_plugin.py
+index f0b9aef..925938d 100644
+--- a/neutron/tests/functional/services/l3_router/test_l3_dvr_router_plugin.py
++++ b/neutron/tests/functional/services/l3_router/test_l3_dvr_router_plugin.py
+@@ -377,7 +377,7 @@
+             floating_ip = {'floating_network_id': ext_net_id,
+                            'router_id': router['id'],
+                            'port_id': int_port['port']['id'],
+-                           'tenant_id': int_port['port']['project_id'],
++                           'project_id': int_port['port']['project_id'],
+                            'dns_name': '', 'dns_domain': ''}
+             with mock.patch.object(
+                     self.l3_plugin, '_l3_rpc_notifier') as l3_notif:
+@@ -468,7 +468,7 @@
+             floating_ip = {'floating_network_id': ext_net_id,
+                            'router_id': router1['id'],
+                            'port_id': int_port1['port']['id'],
+-                           'tenant_id': int_port1['port']['project_id'],
++                           'project_id': int_port1['port']['project_id'],
+                            'dns_name': '', 'dns_domain': ''}
+             floating_ip = self.l3_plugin.create_floatingip(
+                 self.context, {'floatingip': floating_ip})
+@@ -576,7 +576,7 @@
+             floating_ip = {'floating_network_id': ext_net_id,
+                            'router_id': router['id'],
+                            'port_id': int_port['port']['id'],
+-                           'tenant_id': int_port['port']['project_id'],
++                           'project_id': int_port['port']['project_id'],
+                            'dns_name': '', 'dns_domain': ''}
+             floating_ip = self.l3_plugin.create_floatingip(
+                 self.context, {'floatingip': floating_ip})
+@@ -803,7 +803,7 @@
+                 floating_ip = {'floating_network_id': ext_net['network']['id'],
+                                'router_id': router['id'],
+                                'port_id': vrrp_port['port']['id'],
+-                               'tenant_id': vrrp_port['port']['project_id']}
++                               'project_id': vrrp_port['port']['project_id']}
+                 floating_ip = self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': floating_ip})
+                 expected_routers_updated_calls = [
+@@ -874,7 +874,7 @@
+                 fip1 = {'floating_network_id': ext_net['network']['id'],
+                         'router_id': router['id'],
+                         'port_id': int_port1['port']['id'],
+-                        'tenant_id': int_port1['port']['project_id']}
++                        'project_id': int_port1['port']['project_id']}
+                 self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': fip1})
+                 expected_routers_updated_calls = [
+@@ -885,7 +885,7 @@
+                 fip2 = {'floating_network_id': ext_net['network']['id'],
+                         'router_id': router['id'],
+                         'port_id': int_port2['port']['id'],
+-                        'tenant_id': int_port2['port']['project_id']}
++                        'project_id': int_port2['port']['project_id']}
+                 self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': fip2})
+                 router_info = (
+@@ -953,7 +953,7 @@
+                 floating_ip = {'floating_network_id': ext_net['network']['id'],
+                                'router_id': router['id'],
+                                'port_id': int_port1['port']['id'],
+-                               'tenant_id': int_port1['port']['project_id']}
++                               'project_id': int_port1['port']['project_id']}
+                 floating_ip = self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': floating_ip})
+ 
+@@ -1037,7 +1037,7 @@
+                 floating_ip = {'floating_network_id': ext_net['network']['id'],
+                                'router_id': router['id'],
+                                'port_id': vm_port['id'],
+-                               'tenant_id': vm_port['project_id']}
++                               'project_id': vm_port['project_id']}
+                 floating_ip = self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': floating_ip})
+ 
+@@ -1173,7 +1173,7 @@
+                 floating_ip = {'floating_network_id': ext_net['network']['id'],
+                                'router_id': router['id'],
+                                'port_id': vrrp_port['port']['id'],
+-                               'tenant_id': vrrp_port['port']['project_id']}
++                               'project_id': vrrp_port['port']['project_id']}
+                 floating_ip = self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': floating_ip})
+ 
+@@ -1312,7 +1312,7 @@
+                 floating_ip = {'floating_network_id': ext_net['network']['id'],
+                                'router_id': router['id'],
+                                'port_id': vrrp_port['port']['id'],
+-                               'tenant_id': vrrp_port['port']['project_id']}
++                               'project_id': vrrp_port['port']['project_id']}
+                 floating_ip = self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': floating_ip})
+                 vrrp_port_db = self.core_plugin.get_port(
+@@ -1534,7 +1534,7 @@
+                 floating_ip = {'floating_network_id': ext_net_id,
+                                'router_id': router['id'],
+                                'port_id': vm_port['port']['id'],
+-                               'tenant_id': vm_port['port']['project_id'],
++                               'project_id': vm_port['port']['project_id'],
+                                'dns_name': '', 'dns_domain': ''}
+                 floating_ip = self.l3_plugin.create_floatingip(
+                     self.context, {'floatingip': floating_ip})
+diff --git a/neutron/tests/functional/services/trunk/drivers/ovn/test_trunk_driver.py b/neutron/tests/functional/services/trunk/drivers/ovn/test_trunk_driver.py
+index 9e8d406..6666607 100644
+--- a/neutron/tests/functional/services/trunk/drivers/ovn/test_trunk_driver.py
++++ b/neutron/tests/functional/services/trunk/drivers/ovn/test_trunk_driver.py
+@@ -78,7 +78,7 @@
+                     project_id = uuidutils.generate_uuid()
+                     trunk = {'trunk': {
+                         'port_id': parent_port['port']['id'],
+-                        'tenant_id': project_id, 'project_id': project_id,
++                        'project_id': project_id,
+                         'admin_state_up': True,
+                         'name': 'trunk', 'sub_ports': sub_ports}}
+                     trunk = self.trunk_plugin.create_trunk(self.context, trunk)
+diff --git a/neutron/tests/unit/api/v2/test_base.py b/neutron/tests/unit/api/v2/test_base.py
+index 2614f7e..fc70bf9 100644
+--- a/neutron/tests/unit/api/v2/test_base.py
++++ b/neutron/tests/unit/api/v2/test_base.py
+@@ -276,8 +276,8 @@
+         instance.get_networks.return_value = []
+ 
+         self.api.get(_get_path('networks'), {'name': 'bar',
+-                                             'tenant_id': 'bar2'})
+-        filters = {'name': ['bar'], 'tenant_id': ['bar2']}
++                                             'project_id': 'bar2'})
++        filters = {'name': ['bar'], 'project_id': ['bar2']}
+         kwargs = self._get_collection_kwargs(filters=filters)
+         instance.get_networks.assert_called_once_with(mock.ANY, **kwargs)
+ 
+@@ -508,6 +508,7 @@
+         api.get(_get_path('networks'), {'sort_key': ['name', 'status'],
+                                         'sort_dir': ['desc', 'asc'],
+                                         'fields': ['subnets']})
++        # TODO(haleyb): "tenant_id" reference should be removed.
+         kwargs = self._get_collection_kwargs(
+             skipargs=['sorts', 'limit', 'marker', 'page_reverse'],
+             fields=_ArgMatcher(_list_cmp, ['name',
+@@ -590,14 +591,14 @@
+                        'name': 'net1',
+                        'admin_state_up': True,
+                        'status': "ACTIVE",
+-                       'tenant_id': '',
++                       'project_id': '',
+                        'shared': False,
+                        'subnets': []}
+         input_dict2 = {'id': id2,
+                        'name': 'net2',
+                        'admin_state_up': True,
+                        'status': "ACTIVE",
+-                       'tenant_id': '',
++                       'project_id': '',
+                        'shared': False,
+                        'subnets': []}
+         return_value = [input_dict1, input_dict2]
+@@ -643,7 +644,7 @@
+                       'name': 'net1',
+                       'admin_state_up': True,
+                       'status': "ACTIVE",
+-                      'tenant_id': '',
++                      'project_id': '',
+                       'shared': False,
+                       'subnets': []}
+         return_value = [input_dict]
+@@ -704,7 +705,7 @@
+                       'name': 'net1',
+                       'admin_state_up': True,
+                       'status': "ACTIVE",
+-                      'tenant_id': '',
++                      'project_id': '',
+                       'shared': False,
+                       'subnets': []}
+         return_value = [input_dict]
+@@ -764,7 +765,7 @@
+     def test_create(self):
+         net_id = _uuid()
+         data = {'network': {'name': 'net1', 'admin_state_up': True,
+-                            'tenant_id': _uuid()}}
++                            'project_id': _uuid()}}
+         return_value = {'subnets': [], 'status': "ACTIVE",
+                         'id': net_id}
+         return_value.update(data['network'].copy())
+@@ -934,13 +935,13 @@
+         self._test_create_failure_bad_request('networks', {'networks': []})
+ 
+     def test_create_bulk_missing_attr(self):
+-        data = {'ports': [{'what': 'who', 'tenant_id': _uuid()}]}
++        data = {'ports': [{'what': 'who', 'project_id': _uuid()}]}
+         self._test_create_failure_bad_request('ports', data)
+ 
+     def test_create_bulk_partial_body(self):
+         data = {'ports': [{'device_id': 'device_1',
+-                           'tenant_id': _uuid()},
+-                          {'tenant_id': _uuid()}]}
++                           'project_id': _uuid()},
++                          {'project_id': _uuid()}]}
+         self._test_create_failure_bad_request('ports', data)
+ 
+     def test_create_attr_not_specified(self):
+@@ -948,7 +949,6 @@
+         project_id = _uuid()
+         device_id = _uuid()
+         initial_input = {'port': {'name': '', 'network_id': net_id,
+-                                  'tenant_id': project_id,
+                                   'project_id': project_id,
+                                   'device_id': device_id,
+                                   'admin_state_up': True}}
+@@ -964,6 +964,9 @@
+                         'device_owner': ''}
+         return_value.update(initial_input['port'])
+ 
++        # TODO(haleyb): "tenant_id" reference should be removed.
++        full_input['port'].update({'tenant_id': project_id})
++
+         instance = self.plugin.return_value
+         instance.get_network.return_value = {
+             'project_id': str(project_id)
+@@ -1188,11 +1191,11 @@
+ 
+     def test_port(self):
+         keys = ('id', 'network_id', 'mac_address', 'fixed_ips',
+-                'device_id', 'admin_state_up', 'tenant_id', 'status')
++                'device_id', 'admin_state_up', 'project_id', 'status')
+         self._view(keys, 'ports', 'port')
+ 
+     def test_subnet(self):
+-        keys = ('id', 'network_id', 'tenant_id', 'gateway_ip',
++        keys = ('id', 'network_id', 'project_id', 'gateway_ip',
+                 'ip_version', 'cidr', 'enable_dhcp')
+         self._view(keys, 'subnets', 'subnet')
+ 
+@@ -1374,7 +1377,6 @@
+                                      'v2attrs:something_else': "abc"}}
+         data = {'network': {'admin_state_up': True, 'shared': False}}
+         data['network'].update(initial_input['network'])
+-        # data['network'].update({'tenant_id': project_id})
+ 
+         return_value = {'subnets': [], 'status': "ACTIVE",
+                         'id': net_id,
+@@ -1454,7 +1456,7 @@
+     def test_get_sorts_with_project_id(self):
+         path = '/?sort_key=project_id&sort_dir=desc'
+         request = webob.Request.blank(path)
+-        attr_info = {'tenant_id': {'key': 'val', 'is_sort_key': True}}
++        attr_info = {'project_id': {'key': 'val', 'is_sort_key': True}}
+         expect_val = [('project_id', False)]
+         actual_val = api_common.get_sorts(request, attr_info)
+         self.assertEqual(expect_val, actual_val)
+@@ -1504,10 +1506,11 @@
+     def test_attr_info_with_project_info_populated(self):
+         path = '/?foo=4&bar=3&baz=2&qux=1'
+         request = webob.Request.blank(path)
+-        attr_info = {'tenant_id': {'key': 'val'}}
++        attr_info = {'project_id': {'key': 'val'}}
+         expect_val = {'foo': ['4'], 'bar': ['3'], 'baz': ['2'], 'qux': ['1']}
+         actual_val = api_common.get_filters(request, attr_info)
+         self.assertEqual(expect_val, actual_val)
++        # TODO(haleyb): "tenant_id" reference should be removed.
+         expect_attr_info = {'tenant_id': {'key': 'val'},
+                             'project_id': {'key': 'val'}}
+         self.assertEqual(expect_attr_info, attr_info)
+diff --git a/neutron/tests/unit/db/test_rbac_db_mixin.py b/neutron/tests/unit/db/test_rbac_db_mixin.py
+index ab9ec27..8811013 100644
+--- a/neutron/tests/unit/db/test_rbac_db_mixin.py
++++ b/neutron/tests/unit/db/test_rbac_db_mixin.py
+@@ -55,8 +55,7 @@
+                               'admin_state_up': True,
+                               'device_id': 'device_id',
+                               'device_owner': 'device_owner',
+-                              'project_id': target_project,
+-                              'tenant_id': target_project}}
++                              'project_id': target_project}}
+ 
+         port = self.plugin.create_port(self.context, test_port)
+         return netrbac, port
+@@ -77,10 +76,10 @@
+             self._assert_external_net_state(net_id, is_external=True)
+ 
+     def test_create_network_rbac_shared_existing(self):
+-        tenant = 'test-tenant'
++        project = 'test-project'
+         with self.network() as net:
+             policy = self._make_networkrbac(net,
+-                                            tenant,
++                                            project,
+                                             rbac_db_models.ACCESS_SHARED)
+             self.plugin.create_rbac_policy(self.context, policy)
+             with testtools.ExpectedException(
+@@ -88,8 +87,8 @@
+                 self.plugin.create_rbac_policy(self.context, policy)
+ 
+     def test_update_network_rbac_external_valid(self):
+-        orig_target = 'test-tenant-2'
+-        new_target = 'test-tenant-3'
++        orig_target = 'test-project-2'
++        new_target = 'test-project-3'
+ 
+         with self.network() as ext_net:
+             policy = self._make_networkrbac(ext_net,
+@@ -123,12 +122,12 @@
+             net_id = ext_net['network']['id']
+             self._assert_external_net_state(net_id, is_external=False)
+             policy1 = self._make_networkrbac(ext_net,
+-                                             'test-tenant-1',
++                                             'test-project-1',
+                                              rbac_db_models.ACCESS_EXTERNAL)
+             net_rbac1 = self.plugin.create_rbac_policy(self.context, policy1)
+             self._assert_external_net_state(net_id, is_external=True)
+             policy2 = self._make_networkrbac(ext_net,
+-                                             'test-tenant-2',
++                                             'test-project-2',
+                                              rbac_db_models.ACCESS_EXTERNAL)
+             self.plugin.create_rbac_policy(self.context, policy2)
+             self._assert_external_net_state(net_id, is_external=True)
+@@ -142,15 +141,15 @@
+                 self.context, net_id,
+                 {'network': {'router:external': True}})
+             self._assert_external_net_state(net_id, is_external=True)
+-            policy = self._make_networkrbac(ext_net, 'test-tenant-2')
++            policy = self._make_networkrbac(ext_net, 'test-project-2')
+             net_rbac = self.plugin.create_rbac_policy(self.context, policy)
+             self.plugin.delete_rbac_policy(self.context, net_rbac['id'])
+             # Make sure that external attribute not changed.
+             self._assert_external_net_state(net_id, is_external=True)
+ 
+     def test_update_networkrbac_valid(self):
+-        orig_target = 'test-tenant-2'
+-        new_target = 'test-tenant-3'
++        orig_target = 'test-project-2'
++        new_target = 'test-project-3'
+ 
+         with self.network() as net:
+             policy = self._make_networkrbac(net, orig_target)
+@@ -168,7 +167,7 @@
+     def test_delete_networkrbac_in_use_fail(self):
+         with self.network() as net:
+             netrbac, _ = self._setup_networkrbac_and_port(
+-                network=net, target_project='test-tenant-2')
++                network=net, target_project='test-project-2')
+ 
+             self.assertRaises(ext_rbac.RbacPolicyInUse,
+                               self.plugin.delete_rbac_policy,
+@@ -195,7 +194,7 @@
+                               self.plugin.delete_rbac_policy,
+                               self.context, wild_policy['id'])
+ 
+-            # similarly, we can't update the policy to a different tenant
++            # similarly, we can't update the policy to a different project
+             update_policy = {'rbac_policy': {'target_project': 'bob'}}
+             self.assertRaises(ext_rbac.RbacPolicyInUse,
+                               self.plugin.update_rbac_policy,
+@@ -215,7 +214,7 @@
+ 
+     def test_delete_networkrbac_self_share(self):
+         net_id = 'my-network'
+-        net_owner = 'my-tenant-id'
++        net_owner = 'my-project-id'
+         # NOTE(ralonsoh): keep "tenant_id" for compatibility purposes in
+         # NeutronDbPluginV2.validate_network_rbac_policy_change()
+         net = {'network': {'id': net_id,
+@@ -237,7 +236,7 @@
+ 
+     def test_update_self_share_networkrbac(self):
+         net_id = 'my-network'
+-        net_owner = 'my-tenant-id'
++        net_owner = 'my-project-id'
+         # NOTE(ralonsoh): keep "tenant_id" for compatibility purposes in
+         # NeutronDbPluginV2.validate_network_rbac_policy_change()
+         net = {'network': {'id': net_id,
+@@ -251,7 +250,7 @@
+             get_net.return_value = net['network']
+             payload = events.DBEventPayload(
+                 self.context, states=(policy,),
+-                request_body={'target_project': 'new-target-tenant'},
++                request_body={'target_project': 'new-target-project'},
+                 metadata={'object_type': 'network'})
+             self.plugin.validate_network_rbac_policy_change(
+                 None, events.BEFORE_UPDATE, None,
+diff --git a/neutron/tests/unit/dummy_plugin.py b/neutron/tests/unit/dummy_plugin.py
+index 1c830be..2ebe6ef 100644
+--- a/neutron/tests/unit/dummy_plugin.py
++++ b/neutron/tests/unit/dummy_plugin.py
+@@ -39,9 +39,9 @@
+         'name': {'allow_post': True, 'allow_put': True,
+                  'validate': {'type:string': None},
+                  'is_visible': True, 'default': ''},
+-        'tenant_id': {'allow_post': True, 'allow_put': False,
+-                      'required_by_policy': True,
+-                      'is_visible': True},
++        'project_id': {'allow_post': True, 'allow_put': False,
++                       'required_by_policy': True,
++                       'is_visible': True},
+         'service_type': {'allow_post': True,
+                          'allow_put': False,
+                          'validate': {'type:servicetype_ref': None},
+diff --git a/neutron/tests/unit/extensions/test_address_group.py b/neutron/tests/unit/extensions/test_address_group.py
+index c6daf9e..03974bc 100644
+--- a/neutron/tests/unit/extensions/test_address_group.py
++++ b/neutron/tests/unit/extensions/test_address_group.py
+@@ -121,7 +121,7 @@
+ 
+     def test_create_address_group_without_description_or_addresses(self):
+         expected_ag = {'name': 'foo',
+-                       'tenant_id': self._project_id,
++                       'project_id': self._project_id,
+                        'description': '',
+                        'addresses': []}
+         self._test_create_address_group(name='foo',
+@@ -130,7 +130,7 @@
+     def test_create_address_group_with_description_and_addresses(self):
+         expected_ag = {'name': 'foo',
+                        'description': 'bar',
+-                       'tenant_id': self._project_id,
++                       'project_id': self._project_id,
+                        'addresses': ['10.0.1.0/24', '192.168.0.1/32']}
+         self._test_create_address_group(name='foo', description='bar',
+                                         addresses=['10.0.1.0/24',
+diff --git a/neutron/tests/unit/extensions/test_quotasv2.py b/neutron/tests/unit/extensions/test_quotasv2.py
+index 1ff7d54..1ffbb4c 100644
+--- a/neutron/tests/unit/extensions/test_quotasv2.py
++++ b/neutron/tests/unit/extensions/test_quotasv2.py
+@@ -397,7 +397,7 @@
+     def test_quotas_get_project_from_empty_request_context_returns_400(self):
+         env = {'neutron.context': context.Context('', '',
+                                                   is_admin=True)}
+-        res = self.api.get(_get_path('quotas/tenant', fmt=self.fmt),
++        res = self.api.get(_get_path('quotas/project', fmt=self.fmt),
+                            extra_environ=env, expect_errors=True)
+         self.assertEqual(400, res.status_int)
+ 
+diff --git a/neutron/tests/unit/objects/qos/test_policy.py b/neutron/tests/unit/objects/qos/test_policy.py
+index 8f0d9a5..a8a4e56 100644
+--- a/neutron/tests/unit/objects/qos/test_policy.py
++++ b/neutron/tests/unit/objects/qos/test_policy.py
+@@ -289,7 +289,7 @@
+ 
+         port1_id = self._port['id']
+         port2 = db_api.create_object(port_obj.Port, self.context,
+-                                     {'tenant_id': 'fake_project_id',
++                                     {'project_id': 'fake_project_id',
+                                       'name': 'test-port2',
+                                       'network_id': self._network_id,
+                                       'mac_address': 'fake_mac2',
+diff --git a/neutron/tests/unit/plugins/ml2/drivers/ovn/mech_driver/test_mech_driver.py b/neutron/tests/unit/plugins/ml2/drivers/ovn/mech_driver/test_mech_driver.py
+index f57867d..62f265a 100644
+--- a/neutron/tests/unit/plugins/ml2/drivers/ovn/mech_driver/test_mech_driver.py
++++ b/neutron/tests/unit/plugins/ml2/drivers/ovn/mech_driver/test_mech_driver.py
+@@ -5500,11 +5500,11 @@
+ 
+         azs = self.mech_driver.list_availability_zones(self.context)
+         expected_azs = {'az0': {'name': 'az0', 'resource': 'router',
+-                                'state': 'available', 'tenant_id': mock.ANY},
++                                'state': 'available', 'project_id': mock.ANY},
+                         'az1': {'name': 'az1', 'resource': 'router',
+-                                'state': 'available', 'tenant_id': mock.ANY},
++                                'state': 'available', 'project_id': mock.ANY},
+                         'az2': {'name': 'az2', 'resource': 'router',
+-                                'state': 'available', 'tenant_id': mock.ANY}}
++                                'state': 'available', 'project_id': mock.ANY}}
+         self.assertEqual(expected_azs, azs)
+ 
+     def test_list_availability_zones_no_azs(self):
+diff --git a/neutron/tests/unit/plugins/ml2/test_plugin.py b/neutron/tests/unit/plugins/ml2/test_plugin.py
+index 8714fb8..3665757 100644
+--- a/neutron/tests/unit/plugins/ml2/test_plugin.py
++++ b/neutron/tests/unit/plugins/ml2/test_plugin.py
+@@ -1003,16 +1003,16 @@
+                                                   filters=['device_id',
+                                                            'device_owner'])
+         self._assert_object_list_queries_constant(self.make_port, 'ports',
+-                                                  filters=['tenant_id',
++                                                  filters=['project_id',
+                                                            'name',
+                                                            'device_id'])
+ 
+ 
+-class TestMl2DbOperationBoundsTenant(TestMl2DbOperationBounds):
++class TestMl2DbOperationBoundsProject(TestMl2DbOperationBounds):
+     admin = False
+ 
+ 
+-class TestMl2DbOperationBoundsTenantRbac(TestMl2DbOperationBoundsTenant):
++class TestMl2DbOperationBoundsProjectRbac(TestMl2DbOperationBoundsProject):
+ 
+     def make_port_in_shared_network(self):
+         context_ = self._get_context()
+@@ -3850,7 +3850,7 @@
+     def _reserve_segment(self, network, seg_id=None):
+         segment = {'id': 'fake_id',
+                    'network_id': network['network']['id'],
+-                   'tenant_id': network['network']['project_id'],
++                   'project_id': network['network']['project_id'],
+                    driver_api.NETWORK_TYPE: 'vlan',
+                    driver_api.PHYSICAL_NETWORK: self.physnet}
+         if seg_id:
+diff --git a/neutron/tests/unit/services/auto_allocate/test_db.py b/neutron/tests/unit/services/auto_allocate/test_db.py
+index 2c34670..5f3ee0e 100644
+--- a/neutron/tests/unit/services/auto_allocate/test_db.py
++++ b/neutron/tests/unit/services/auto_allocate/test_db.py
+@@ -473,7 +473,6 @@
+             result = self.mixin._check_requirements(self.ctx, 'foo_project')
+             expected = {
+                 'id': 'dry-run=pass',
+-                'tenant_id': 'foo_project',
+                 'project_id': 'foo_project'}
+             self.assertEqual(expected, result)
+ 
+diff --git a/neutron/tests/unit/test_policy.py b/neutron/tests/unit/test_policy.py
+index 0249a0c..e1ba586 100644
+--- a/neutron/tests/unit/test_policy.py
++++ b/neutron/tests/unit/test_policy.py
+@@ -43,7 +43,7 @@
+     def setUp(self):
+         super().setUp()
+         self.context = context.Context('fake', 'fake', is_admin=False)
+-        self.target = {'tenant_id': 'fake'}
++        self.target = {'project_id': 'fake'}
+ 
+     def test_modified_policy_reloads(self):
+         tmpfilename = self.get_temp_file_path('policy')
+@@ -55,7 +55,7 @@
+         with open(tmpfilename, "w") as policyfile:
+             policyfile.write("""{"example:test": "!"}""")
+         policy.refresh(policy_file=tmpfilename)
+-        self.target = {'tenant_id': 'fake_project'}
++        self.target = {'project_id': 'fake_project'}
+         self.assertRaises(oslo_policy.PolicyNotAuthorized,
+                           policy.enforce,
+                           self.context,
+@@ -72,7 +72,8 @@
+             "example:allowed": '@',
+             "example:denied": '!',
+             "example:get_http": "http:http://www.example.com",
+-            "example:my_file": "role:compute_admin or tenant_id:%(tenant_id)s",
++            "example:my_file": (
++                "role:compute_admin or project_id:%(project_id)s"),
+             "example:early_and_fail": "! and @",
+             "example:early_or_success": "@ or !",
+             "example:lowercase_admin": "role:admin or role:sysadmin",
+@@ -80,7 +81,7 @@
+             "example:only_system_admin_allowed": (
+                 "role:admin and system_scope:all"),
+             "example:only_project_user_allowed": (
+-                "role:reader and tenant_id:%(tenant_id)s")
++                "role:reader and project_id:%(project_id)s")
+         }
+         policy.refresh()
+         self._register_default_rules()
+@@ -234,8 +235,8 @@
+             policy.enforce, system_admin_ctx, action, target)
+ 
+     def test_templatized_enforcement(self):
+-        target_mine = {'tenant_id': 'fake'}
+-        target_not_mine = {'tenant_id': 'another'}
++        target_mine = {'project_id': 'fake'}
++        target_not_mine = {'project_id': 'another'}
+         action = "example:my_file"
+         policy.enforce(self.context, action, target_mine)
+         self.assertRaises(oslo_policy.PolicyNotAuthorized, policy.enforce,
+@@ -357,7 +358,7 @@
+         self.assertEqual(check_a.regex, check_b.regex)
+ 
+     def test_owner_check_deepcopy(self):
+-        check_a = policy.OwnerCheck('tenant_id', '%(tenant_id)s')
++        check_a = policy.OwnerCheck('project_id', '%(project_id)s')
+         check_b = copy.deepcopy(check_a)
+ 
+         self.assertIsNot(check_a, check_b)
+@@ -392,9 +393,9 @@
+             "context_is_admin": "role:admin",
+             "context_is_advsvc": "role:advsvc",
+             "admin_or_network_owner": "rule:context_is_admin or "
+-                                      "tenant_id:%(network:tenant_id)s",
++                                      "project_id:%(network:project_id)s",
+             "admin_or_owner": ("rule:context_is_admin or "
+-                               "tenant_id:%(tenant_id)s"),
++                               "project_id:%(project_id)s"),
+             "admin_only": "rule:context_is_admin",
+             "regular_user": "role:user",
+             "shared": "field:networks:shared=True",
+@@ -440,7 +441,7 @@
+     def _test_action_on_attr(self, context, action, obj, attr, value,
+                              exception=None, **kwargs):
+         action = f"{action}_{obj}"
+-        target = {'tenant_id': 'the_owner', attr: value}
++        target = {'project_id': 'the_owner', attr: value}
+         if kwargs:
+             target.update(kwargs)
+         if exception:
+@@ -495,7 +496,7 @@
+     def test_create_port_fixed_ips_on_shared_network(self):
+ 
+         def fakegetnetwork(*args, **kwargs):
+-            return {'tenant_id': 'fake',
++            return {'project_id': 'fake',
+                     'shared': True}
+ 
+         kwargs = {'network_id': _uuid()}
+@@ -514,7 +515,7 @@
+     def test_create_port_fixed_ips_on_nonshared_network(self):
+ 
+         def fakegetnetwork(*args, **kwargs):
+-            return {'tenant_id': 'fake',
++            return {'project_id': 'fake',
+                     'shared': False}
+ 
+         kwargs = {'network_id': _uuid()}
+@@ -583,7 +584,7 @@
+ 
+     def test_enforce_adminonly_attribute_nonadminctx_returns_403(self):
+         action = "create_network"
+-        target = {'shared': True, 'tenant_id': 'somebody_else'}
++        target = {'shared': True, 'project_id': 'somebody_else'}
+         self.assertRaises(oslo_policy.PolicyNotAuthorized, policy.enforce,
+                           self.context, action, target)
+ 
+@@ -592,7 +593,7 @@
+         FAKE_RESOURCES['%ss' % FAKE_RESOURCE_NAME]['attr']['validate'] = (
+             validate_value)
+         action = "create_" + FAKE_RESOURCE_NAME
+-        target = {'tenant_id': 'fake', 'attr': {'sub_attr_1': 'x'}}
++        target = {'project_id': 'fake', 'attr': {'sub_attr_1': 'x'}}
+         self.assertFalse(policy._build_subattr_match_rule(
+             'attr',
+             FAKE_RESOURCES['%ss' % FAKE_RESOURCE_NAME]['attr'],
+@@ -613,7 +614,7 @@
+                  {'sub_attr_str': 'y', 'sub_attr_bool': True},
+                  {'sub_attr_bool': False},
+                  {}]
+-        target = {'tenant_id': 'fake', 'attr': attrs}
++        target = {'project_id': 'fake', 'attr': attrs}
+         result_policy = policy._build_subattr_match_rule(
+             'attr',
+             FAKE_RESOURCES['%ss' % FAKE_RESOURCE_LIST_OF_DICTS]['attr'],
+@@ -630,7 +631,7 @@
+         action = 'create_' + FAKE_RESOURCE_LIST_OF_DICTS
+         attrs = [{'sub_attr_str': 'x', 'sub_attr_int': 1},
+                  {'sub_attr_str': 'y'}]
+-        target = {'tenant_id': 'fake', 'attr': attrs}
++        target = {'project_id': 'fake', 'attr': attrs}
+         result_policy = policy._build_subattr_match_rule(
+             'attr',
+             FAKE_RESOURCES['%ss' % FAKE_RESOURCE_LIST_OF_DICTS]['attr'],
+@@ -645,7 +646,7 @@
+     def test__build_subattr_match_rule_list_of_dict_rule_empty_list(self):
+         action = 'create_' + FAKE_RESOURCE_LIST_OF_DICTS
+         attrs = []
+-        target = {'tenant_id': 'fake', 'attr': attrs}
++        target = {'project_id': 'fake', 'attr': attrs}
+         result_policy = policy._build_subattr_match_rule(
+             'attr',
+             FAKE_RESOURCES['%ss' % FAKE_RESOURCE_LIST_OF_DICTS]['attr'],
+@@ -656,7 +657,7 @@
+     def test__build_subattr_match_rule_list_of_dict_rule_empty_dict(self):
+         action = 'create_' + FAKE_RESOURCE_LIST_OF_DICTS
+         attrs = [{}]
+-        target = {'tenant_id': 'fake', 'attr': attrs}
++        target = {'project_id': 'fake', 'attr': attrs}
+         result_policy = policy._build_subattr_match_rule(
+             'attr',
+             FAKE_RESOURCES['%ss' % FAKE_RESOURCE_LIST_OF_DICTS]['attr'],
+@@ -685,13 +686,13 @@
+ 
+     def test_enforce_subattribute(self):
+         action = "create_" + FAKE_RESOURCE_NAME
+-        target = {'tenant_id': 'fake', 'attr': {'sub_attr_1': 'x'}}
++        target = {'project_id': 'fake', 'attr': {'sub_attr_1': 'x'}}
+         result = policy.enforce(self.context, action, target, None)
+         self.assertTrue(result)
+ 
+     def test_enforce_admin_only_subattribute(self):
+         action = "create_" + FAKE_RESOURCE_NAME
+-        target = {'tenant_id': 'fake', 'attr': {'sub_attr_1': 'x',
++        target = {'project_id': 'fake', 'attr': {'sub_attr_1': 'x',
+                                                 'sub_attr_2': 'y'}}
+         result = policy.enforce(context.get_admin_context(),
+                                 action, target, None)
+@@ -699,28 +700,28 @@
+ 
+     def test_enforce_admin_only_subattribute_nonadminctx_returns_403(self):
+         action = "create_" + FAKE_RESOURCE_NAME
+-        target = {'tenant_id': 'fake', 'attr': {'sub_attr_1': 'x',
++        target = {'project_id': 'fake', 'attr': {'sub_attr_1': 'x',
+                                                 'sub_attr_2': 'y'}}
+         self.assertRaises(oslo_policy.PolicyNotAuthorized, policy.enforce,
+                           self.context, action, target, None)
+ 
+     def test_enforce_regularuser_on_read(self):
+         action = "get_network"
+-        target = {'shared': True, 'tenant_id': 'somebody_else'}
++        target = {'shared': True, 'project_id': 'somebody_else'}
+         result = policy.enforce(self.context, action, target)
+         self.assertTrue(result)
+ 
+-    def test_enforce_tenant_id_check(self):
++    def test_enforce_project_id_check(self):
+         # Trigger a policy with rule admin_or_owner
+         action = "create_network"
+-        target = {'tenant_id': 'fake'}
++        target = {'project_id': 'fake'}
+         result = policy.enforce(self.context, action, target)
+         self.assertTrue(result)
+ 
+-    def test_enforce_tenant_id_check_parent_resource(self):
++    def test_enforce_project_id_check_parent_resource(self):
+ 
+         def fakegetnetwork(*args, **kwargs):
+-            return {'tenant_id': 'fake'}
++            return {'project_id': 'fake'}
+ 
+         action = "create_port:mac"
+         with mock.patch.object(directory.get_plugin(),
+@@ -750,7 +751,7 @@
+     def test_enforce_subattribute_as_list(self):
+         action = "create_" + FAKE_RESOURCE_NAME
+         target = {
+-            'tenant_id': 'fake',
++            'project_id': 'fake',
+             'list_attr': [{'user_element': 'x'}]}
+         result = policy.enforce(self.context,
+                                 action, target, None)
+@@ -759,7 +760,7 @@
+     def test_enforce_subattribute_as_list_forbiden(self):
+         action = "create_" + FAKE_RESOURCE_NAME
+         target = {
+-            'tenant_id': 'fake',
++            'project_id': 'fake',
+             'list_attr': [{'admin_element': 'x'}]}
+         self.assertRaises(oslo_policy.PolicyNotAuthorized, policy.enforce,
+                           self.context, action, target, None)
+@@ -778,14 +779,14 @@
+             except exceptions.NetworkNotFound:
+                 self.assertEqual(2, get_network_mock.call_count)
+ 
+-    def test_enforce_tenant_id_check_parent_resource_bw_compatibility(self):
++    def test_enforce_project_id_check_parent_resource_bw_compatibility(self):
+ 
+         def fakegetnetwork(*args, **kwargs):
+-            return {'tenant_id': 'fake'}
++            return {'project_id': 'fake'}
+ 
+         self._set_rules(
+             admin_or_network_owner="role:admin or "
+-                                   "tenant_id:%(network_tenant_id)s")
++                                   "project_id:%(network_project_id)s")
+         action = "create_port:mac"
+         with mock.patch.object(directory.get_plugin(),
+                                'get_network', new=fakegetnetwork):
+@@ -793,39 +794,40 @@
+             result = policy.enforce(self.context, action, target)
+             self.assertTrue(result)
+ 
+-    def test_tenant_id_check_no_target_field_raises(self):
++    def test_project_id_check_no_target_field_raises(self):
+         # Try and add a bad rule
+         self.assertRaises(
+             exceptions.PolicyInitError,
+             oslo_policy.Rules.from_dict,
+-            {'test_policy': 'tenant_id:(wrong_stuff)'})
++            {'test_policy': 'project_id:(wrong_stuff)'})
+ 
+-    def test_tenant_id_check_caches_extracted_fields(self):
++    def test_project_id_check_caches_extracted_fields(self):
+ 
+         plugin = directory.get_plugin()
+         with mock.patch.object(plugin, 'get_network',
+-                               return_value={'tenant_id': 'fake'}) as getter:
++                               return_value={'project_id': 'fake'}) as getter:
+             action = "create_port:mac"
+             for i in range(2):
+                 target = {'network_id': 'whatever'}
+                 policy.enforce(self.context, action, target)
+         self.assertEqual(1, getter.call_count)
+ 
+-    def _test_enforce_tenant_id_raises(self, bad_rule):
++    def _test_enforce_project_id_raises(self, bad_rule):
+         self._set_rules(admin_or_owner=bad_rule)
+         # Trigger a policy with rule admin_or_owner
+         action = "create_network"
+-        target = {'tenant_id': 'fake'}
++        target = {'project_id': 'fake'}
+         self.fakepolicyinit()
+         self.assertRaises(exceptions.PolicyCheckError,
+                           policy.enforce,
+                           self.context, action, target)
+ 
+-    def test_enforce_tenant_id_check_malformed_target_field_raises(self):
+-        self._test_enforce_tenant_id_raises('tenant_id:%(malformed_field)s')
++    def test_enforce_project_id_check_malformed_target_field_raises(self):
++        self._test_enforce_project_id_raises('project_id:%(malformed_field)s')
+ 
+-    def test_enforce_tenant_id_check_invalid_parent_resource_raises(self):
+-        self._test_enforce_tenant_id_raises('tenant_id:%(foobaz_tenant_id)s')
++    def test_enforce_project_id_check_invalid_parent_resource_raises(self):
++        self._test_enforce_project_id_raises(
++            'project_id:%(foobaz_project_id)s')
+ 
+     def test_process_rules(self):
+         action = "create_" + FAKE_RESOURCE_NAME
+@@ -859,7 +861,7 @@
+         action = 'create'
+         attr = 'attr'
+ 
+-        target = {attr: 'valueA', 'tgt-tenant': 'tenantA'}
++        target = {attr: 'valueA', 'tgt-project': 'projectA'}
+         resource = {attr: {'allow_post': True,
+                            'allow_put': True,
+                            'is_visible': True,
+@@ -870,7 +872,7 @@
+             attr, resource, target, action)
+         self.assertTrue(result)
+ 
+-        target = {'tgt-tenant': 'tenantA'}
++        target = {'tgt-project': 'projectA'}
+         result = policy._is_attribute_explicitly_set(
+             attr, resource, target, action)
+         self.assertFalse(result)
+@@ -885,12 +887,13 @@
+             attr, resource, target, action)
+         self.assertFalse(result)
+ 
+-        target = {attr: 'DfltValue', 'tgt-tenant': 'tenantA'}
++        target = {attr: 'DfltValue', 'tgt-project': 'projectA'}
+         result = policy._is_attribute_explicitly_set(
+             attr, resource, target, action)
+         self.assertFalse(result)
+ 
+-        target = {attr: constants.ATTR_NOT_SPECIFIED, 'tgt-tenant': 'tenantA'}
++        target = {attr: constants.ATTR_NOT_SPECIFIED,
++                  'tgt-project': 'projectA'}
+         result = policy._is_attribute_explicitly_set(
+             attr, resource, target, action)
+         self.assertFalse(result)
+@@ -898,18 +901,18 @@
+     @mock.patch("neutron_lib.services.constants.EXT_PARENT_RESOURCE_MAPPING",
+                 {'parentresource': 'registered_plugin_name'})
+     @mock.patch("neutron_lib.plugins.directory.get_plugin")
+-    def test_enforce_tenant_id_check_parent_resource_owner(
++    def test_enforce_project_id_check_parent_resource_owner(
+             self, mock_get_plugin):
+ 
+         def fakegetparent(*args, **kwargs):
+-            return {'tenant_id': 'fake'}
++            return {'project_id': 'fake'}
+         mock_plugin = mock.Mock()
+         mock_plugin.get_parentresource = fakegetparent
+         mock_get_plugin.return_value = mock_plugin
+ 
+         self._set_rules(
+             admin_or_ext_parent_owner="rule:context_is_admin or "
+-                                      "tenant_id:%(ext_parent:tenant_id)s",
++                                      "project_id:%(ext_parent:project_id)s",
+             create_parentresource_subresource="rule:admin_or_ext_parent_owner")
+         self.fakepolicyinit()
+         action = 'create_parentresource_subresource'

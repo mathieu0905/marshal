@@ -113,6 +113,37 @@ class DefaultBranchSnapshotTests(unittest.TestCase):
 
 
 class FormalPoolReleaseTests(unittest.TestCase):
+    def test_catalog_merge_ignores_only_rebuild_timestamp(self) -> None:
+        left = {
+            "catalog_id": "shared",
+            "repositories": ["org/a", "org/b"],
+            "constructed_at": "2026-08-26T04:03:14Z",
+        }
+        right = {
+            "catalog_id": "shared",
+            "repositories": ["org/a", "org/b"],
+            "constructed_at": "2026-08-29T16:30:07Z",
+        }
+
+        merged = release_formal_pool.merge_catalog_definitions(left, right)
+
+        self.assertEqual(left, merged)
+
+    def test_catalog_merge_rejects_membership_difference(self) -> None:
+        with self.assertRaisesRegex(ValueError, "beyond constructed_at"):
+            release_formal_pool.merge_catalog_definitions(
+                {
+                    "catalog_id": "shared",
+                    "repositories": ["org/a"],
+                    "constructed_at": "2026-08-26T04:03:14Z",
+                },
+                {
+                    "catalog_id": "shared",
+                    "repositories": ["org/a", "org/b"],
+                    "constructed_at": "2026-08-29T16:30:07Z",
+                },
+            )
+
     def test_grouped_split_is_exact_and_keeps_all_four_axes_isolated(self) -> None:
         reports = []
         for number in range(50):
@@ -177,6 +208,55 @@ class FormalPoolReleaseTests(unittest.TestCase):
 
 
 class BlindVerificationTests(unittest.TestCase):
+    def test_packaged_manifest_does_not_expose_host_intake_paths(self) -> None:
+        source = {
+            "schema_version": "1.0",
+            "candidate_id": "public-case",
+            "inputs": "old/formal-source--target-123/inputs.jsonl",
+            "snapshots": "old/formal-source--target-123/snapshots.jsonl",
+            "catalogs": "old/formal-source--target-123/catalogs.json",
+            "patch_dir": "old/formal-source--target-123/source-patches",
+            "mirror_root": "benchmarks/shared-candidate-mirrors",
+            "blind": {"top_k": 5, "workers": 8},
+        }
+
+        packaged = build_case.packaged_public_manifest(source)
+
+        self.assertEqual("inputs.jsonl", packaged["inputs"])
+        self.assertEqual("repository-snapshots.jsonl", packaged["snapshots"])
+        self.assertEqual("candidate-repositories.json", packaged["catalogs"])
+        self.assertEqual("source-patches", packaged["patch_dir"])
+        self.assertNotIn("target-123", str(packaged))
+        self.assertEqual(source["mirror_root"], packaged["mirror_root"])
+
+    def test_detects_relation_label_in_blind_visible_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "public").mkdir()
+            build_case.write_json(output / "public" / "manifest.json", {
+                "inputs": "old/formal-source--target-123/inputs.jsonl",
+            })
+
+            leaked = build_case.public_manifest_leaks_relation(output, {
+                "relation_id": "formal-source--target-123",
+            })
+
+        self.assertTrue(leaked)
+
+    def test_accepts_target_neutral_public_manifest_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "public").mkdir()
+            build_case.write_json(output / "public" / "manifest.json", {
+                "inputs": "public-formal-source/inputs.jsonl",
+            })
+
+            leaked = build_case.public_manifest_leaks_relation(output, {
+                "relation_id": "formal-source--target-123",
+            })
+
+        self.assertFalse(leaked)
+
     def test_accepts_a_real_empty_cutoff_snapshot_when_universe_has_text_reads(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)
@@ -231,6 +311,17 @@ class BlindVerificationTests(unittest.TestCase):
 
 
 class ConstraintReplayTests(unittest.TestCase):
+    def test_write_arm_supports_python_310_utc_timestamp(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            constraint_replay.write_arm(
+                root, "A0", ["stestr", "run", "example.test"], 0, "ok", 0.1
+            )
+
+            summary = build_case.read_json(root / "a0" / "summary.json")
+
+        self.assertTrue(summary["finished_at"].endswith("Z"))
+
     def test_requires_exactly_one_changed_pin(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -255,6 +346,102 @@ class ConstraintReplayTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 constraint_replay.changed_pin(old, new)
 
+    def test_selects_routed_pin_while_preserving_full_opening_diff(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            old = root / "old.txt"
+            new = root / "new.txt"
+            old.write_text(
+                "SQLAlchemy===1.4.41\nsqlalchemy-migrate===0.13.0\n",
+                encoding="utf-8",
+            )
+            new.write_text("SQLAlchemy===2.0.9\n", encoding="utf-8")
+
+            self.assertEqual(
+                ("sqlalchemy", "1.4.41", "2.0.9"),
+                constraint_replay.selected_changed_pin(
+                    old, new, "SQLAlchemy"
+                ),
+            )
+            self.assertEqual(
+                [
+                    ("sqlalchemy", "1.4.41", "2.0.9"),
+                    ("sqlalchemy-migrate", "0.13.0", None),
+                ],
+                constraint_replay.changed_pin_rows(old, new),
+            )
+
+    def test_routed_single_pin_is_still_recorded_as_single_pin(self) -> None:
+        self.assertEqual(
+            "global_constraints_single_pin",
+            constraint_replay.constraint_source_application(
+                [("oslo.service", "4.2.2", "4.3.0")]
+            ),
+        )
+
+    def test_routed_multi_pin_records_the_full_opening_diff(self) -> None:
+        self.assertEqual(
+            "global_constraints_full_opening_diff",
+            constraint_replay.constraint_source_application(
+                [
+                    ("sqlalchemy", "1.4.41", "2.0.9"),
+                    ("sqlalchemy-migrate", "0.13.0", None),
+                ]
+            ),
+        )
+
+    def test_verifier_accepts_a_recorded_full_opening_diff(self) -> None:
+        build_case.verify_constraint_source_application({
+            "source_application": "global_constraints_full_opening_diff",
+            "changed_distribution": "sqlalchemy",
+            "source_versions": {"A0": "1.4.41", "A1": "2.0.9", "A2": "2.0.9"},
+            "opening_constraint_changes": [
+                {
+                    "distribution": "sqlalchemy",
+                    "old_version": "1.4.41",
+                    "new_version": "2.0.9",
+                },
+                {
+                    "distribution": "sqlalchemy-migrate",
+                    "old_version": "0.13.0",
+                    "new_version": None,
+                },
+            ],
+        })
+
+    def test_verifier_rejects_full_opening_diff_without_all_changes(self) -> None:
+        with self.assertRaisesRegex(ValueError, "did not record every changed pin"):
+            build_case.verify_constraint_source_application({
+                "source_application": "global_constraints_full_opening_diff",
+                "changed_distribution": "sqlalchemy",
+                "source_versions": {"A0": "1.4.41", "A1": "2.0.9", "A2": "2.0.9"},
+                "opening_constraint_changes": [{
+                    "distribution": "sqlalchemy",
+                    "old_version": "1.4.41",
+                    "new_version": "2.0.9",
+                }],
+            })
+
+    def test_verifier_rejects_full_opening_diff_with_wrong_routed_versions(self) -> None:
+        with self.assertRaisesRegex(ValueError, "routed pin does not match"):
+            build_case.verify_constraint_source_application({
+                "source_application": "global_constraints_full_opening_diff",
+                "changed_distribution": "sqlalchemy",
+                "source_versions": {"A0": "1.4.41", "A1": "2.0.8", "A2": "2.0.8"},
+                "opening_constraint_changes": [
+                    {
+                        "distribution": "sqlalchemy",
+                        "old_version": "1.4.41",
+                        "new_version": "2.0.9",
+                    },
+                    {
+                        "distribution": "sqlalchemy-migrate",
+                        "old_version": "0.13.0",
+                        "new_version": None,
+                    },
+                ],
+            })
+
     def test_failure_signature_comes_from_stestr_failed_section(self) -> None:
         output = """RuntimeError: incidental at 0x1234
 Failed 2 tests - output below:
@@ -274,6 +461,17 @@ RuntimeError: object at 0x7f00 failed for req-4e1552ea-d189-4577-93c8-511f0370d4
 
         self.assertEqual(
             "RuntimeError: object at 0x<address> failed for req-<uuid>",
+            constraint_replay.extract_failure_signature(output),
+        )
+
+    def test_failure_signature_accepts_bare_timeout_in_failed_section(self) -> None:
+        output = """Failed 1 tests - output below:
+test.case
+    fixtures._fixtures.timeout.TimeoutException
+"""
+
+        self.assertEqual(
+            "fixtures._fixtures.timeout.TimeoutException",
             constraint_replay.extract_failure_signature(output),
         )
 

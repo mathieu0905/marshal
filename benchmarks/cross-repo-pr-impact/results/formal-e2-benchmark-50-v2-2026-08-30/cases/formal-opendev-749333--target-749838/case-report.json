@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 214,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5066,
+    "case_id": "formal-opendev-749333",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:24:04.315203Z",
+  "blind_prediction_created_at": "2026-08-30T04:23:47.808585Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-749333",
+  "case_id": "formal-opendev-749333--target-749838",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/nova"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:24:04.333992Z",
+  "mechanism": "oslo.messaging 12.4.0 probes endpoint attribute oslo_rpc_server_ping; Nova isolation sentinel rejects the newly introduced access",
+  "repair_template": "Allow the new oslo_rpc_server_ping capability probe in the existing endpoint-isolation test sentinel",
+  "replay": {
+    "catalog_source_snapshot_commit": "d9089c8eed9d3eeb698e50df3fcc0020c9c72fa4",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "AssertionError: I should never get called. name: oslo_rpc_server_ping",
+    "installed_source_versions": {
+      "A0": "12.3.0",
+      "A1": "12.4.0",
+      "A2": "12.4.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "5b2ee12846e05722a45cd7ca616f8254b7ed1ec1",
+    "source_head_commit": "ae1cbff86800e1e70a2ae5be75c3f2e784750805",
+    "source_versions": {
+      "A0": "12.3.0",
+      "A1": "12.4.0",
+      "A2": "12.4.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "b5d48043466b53fbdfe7b93c2e4efd449904e593",
+    "target_test_path": "nova/tests/unit/test_test.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "nova.tests.unit.test_test.IsolationTestCase.test_rpc_consumer_isolation"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-749333--target-749838",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "nova/tests/unit/test_test.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/nova"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the global constraint changed to oslo.messaging 12.4.0, the existing Nova isolation test fails when its NeverCalled endpoint sentinel receives the new oslo_rpc_server_ping attribute probe; the required exclusive signature is 'AssertionError: I should never get called. name: oslo_rpc_server_ping'.",
+    "approved": true,
+    "reviewer_basis": "The public opening diff changes exactly the oslo.messaging pin from 12.3.0 to 12.4.0; the 12.3.0..12.4.0 package diff adds getattr(ep, 'oslo_rpc_server_ping', None) in RPCDispatcher; the cutoff Nova test permits only target and asserts on every other endpoint access; and the complete maintainer patch adds only oslo_rpc_server_ping to that existing sentinel allowlist without deleting or skipping the test. Fresh replay must still prove 0/nonzero/0, exact installed versions, and signature exclusivity.",
+    "source_effect": "oslo.messaging 12.4.0 adds RPCDispatcher's getattr probe for the reserved endpoint attribute oslo_rpc_server_ping; 12.3.0 lacks that access.",
+    "target_patch": ".work/rebuild_749333_749838/private-inputs/target-patches/749838.patch",
+    "target_repair": "The complete maintainer patch preserves the existing isolation sentinel and allows only oslo_rpc_server_ping in addition to the pre-existing target probe, so every other unexpected endpoint access still asserts."
+  },
+  "source_change_family": "opendev-change-749333-opening",
+  "status": "case_ready_for_formal_pool"
+}

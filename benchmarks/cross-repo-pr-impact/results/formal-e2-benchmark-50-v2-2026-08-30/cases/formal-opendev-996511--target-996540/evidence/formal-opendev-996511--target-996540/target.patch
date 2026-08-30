@@ -1,0 +1,12 @@
+diff --git a/magnum/tests/unit/common/policies/base.py b/magnum/tests/unit/common/policies/base.py
+index 22572c0a46..916fd0d430 100644
+--- a/magnum/tests/unit/common/policies/base.py
++++ b/magnum/tests/unit/common/policies/base.py
+@@ -21,7 +21,6 @@ CONF = cfg.CONF
+ class PolicyFunctionalTest(api_base.FunctionalTest):
+     def setUp(self):
+         super(PolicyFunctionalTest, self).setUp()
+-        CONF.set_override('enforce_scope', True, group='oslo_policy')
+         CONF.set_override('enforce_new_defaults', True, group='oslo_policy')
+         self.reader_headers = {
+             "X-Roles": "reader",

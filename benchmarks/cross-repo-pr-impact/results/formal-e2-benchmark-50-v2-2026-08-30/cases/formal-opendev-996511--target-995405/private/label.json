@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-996511",
+  "expected_check_paths": [
+    "cinder/tests/unit/policies/base.py",
+    "cinder/tests/unit/policies/test_attachments.py"
+  ],
+  "mechanism": "the constrained oslo.policy 6.0 release removes the enforce_scope configuration option while target policy-test setup still overrides and threads that option",
+  "mirror_root": "/home/zhihao/hdd/marshal/.work/rebuild_996511_995405/intake/replay-mirrors",
+  "python": "/home/zhihao/hdd/marshal/.work/rebuild_996511_995405/runner/bin/python",
+  "relation_id": "formal-opendev-996511--target-995405",
+  "repair_template": "remove target policy-test setup for a dependency configuration option deleted in the new major release",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "/home/zhihao/hdd/marshal/.work/rebuild_996511_995405/intake/private/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the cutoff target unchanged and oslo.policy 6.0.0 installed, the existing attachment policy module fails during shared setup with NoSuchOptError because enforce_scope no longer exists; the same module passes with 5.1.0 in A0 and with 6.0.0 plus the maintainer patch in A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin opening diff, cutoff policy-test base and attachment module, the complete 24-file maintainer change, fixed command provenance, installed-version probes, and fresh A0/A1/A2 command logs.",
+    "source_effect": "The source opening changes the sole oslo.policy constraint from 5.1.0 to 6.0.0.",
+    "target_patch": "/home/zhihao/hdd/marshal/.work/rebuild_996511_995405/intake/private/995405.patch",
+    "target_repair": "The complete maintainer patch removes the deleted enforce_scope option from the shared policy-test setup and from the existing policy tests that passed it; for the fixed attachment module, A2 applies that patch without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-996511-opening",
+  "target_repository": "openstack/cinder",
+  "tox": "/home/zhihao/hdd/marshal/.work/rebuild_996511_995405/runner/bin/tox"
+}

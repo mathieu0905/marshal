@@ -1,0 +1,96 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5137,
+    "case_id": "formal-opendev-849986",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:38:58.747841Z",
+  "blind_prediction_created_at": "2026-08-30T04:38:49.405278Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-849986",
+  "case_id": "formal-opendev-849986--target-851909",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/nova"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:38:58.754242Z",
+  "mechanism": "openstacksdk 0.100.0 retries SchedulerReportClient creation after EndpointNotFound outside Nova's temporary authentication-loader mock, so the existing safe-connection test observes a failed retry",
+  "repair_template": "replace the temporary authentication-loader patch with a test-lifetime fixture so every client recreation remains isolated",
+  "replay": {
+    "catalog_source_snapshot_commit": "dd5375f5291e0353c7fa05e48c50116dba9c6e9e",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "AssertionError: False is not true",
+    "installed_source_versions": {
+      "A0": "0.99.0",
+      "A1": "0.100.0",
+      "A2": "0.100.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "dd5375f5291e0353c7fa05e48c50116dba9c6e9e",
+    "source_head_commit": "c016c621d9990d981f486e1f52b96090db3b09f0",
+    "source_versions": {
+      "A0": "0.99.0",
+      "A1": "0.100.0",
+      "A2": "0.100.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "8133092907b6957277c296b80b2a698085afac4c",
+    "target_test_path": "nova/tests/unit/scheduler/client/test_report.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "nova.tests.unit.scheduler.client.test_report"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-849986--target-851909",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "nova/tests/unit/scheduler/client/test_report.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/nova"
+  },
+  "semantic_review": {
+    "a1_failure": "The unchanged Nova cutoff test module runs the same pre-existing scheduler report-client suite in all arms. With openstacksdk 0.100.0, SafeConnectedTestCase.test_missing_endpoint alone reaches self.assertTrue(req.called) with req.called false, yielding the exclusive signature AssertionError: False is not true; the old dependency and the maintainer-patched target pass.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the pure one-pin opening diff, the complete one-file maintainer commit diff, the cutoff Nova tox.ini provenance, the unchanged three-arm command, installed-version probes, and full prior 145-test arm logs; the fresh pipeline independently replays and verifies the same 0/nonzero/0 contract and exclusive signature.",
+    "source_effect": "The opening source diff changes exactly one upper-constraints pin, openstacksdk 0.99.0 to 0.100.0. The new version recreates SchedulerReportClient after EndpointNotFound, exposing that the unchanged Nova test's authentication-loader mock ends after the initial construction.",
+    "target_patch": ".work/rebuild_849986_851909/work/851909.patch",
+    "target_repair": "The complete one-file maintainer patch replaces the setUp-local context-manager mock with a fixtures.MonkeyPatch held for the entire test case, so the authentication loader remains isolated during every SchedulerReportClient recreation. It changes no production code, removes no test, alters no selector, and adds no skip."
+  },
+  "source_change_family": "opendev-change-849986-opening",
+  "status": "case_ready_for_formal_pool"
+}

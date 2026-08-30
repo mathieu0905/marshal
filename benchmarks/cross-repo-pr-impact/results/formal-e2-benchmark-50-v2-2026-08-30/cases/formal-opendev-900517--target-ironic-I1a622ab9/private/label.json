@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-900517",
+  "expected_check_paths": [
+    "ironic/tests/unit/objects/test_objects.py"
+  ],
+  "mechanism": "oslo.utils 6.3.0 performs string prerelease normalization on an accidental MagicMock VERSION in two existing Ironic registry tests",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-900517--target-ironic-I1a622ab9",
+  "repair_template": "remove the accidentally mocked registry entry before registering the real versioned object class",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/fresh_900517_ironic/input/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only oslo.utils changed to 6.3.0, the unchanged cutoff module runs the two registry hook tests through convert_version_to_tuple and is expected to emit the exclusive signature 'TypeError: expected string or bytes-like object'; the fresh replay must prove the same command fails only in A1.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the code-only source opening diff, the complete exact target commit diff, target-parent ancestry, clean application to the cutoff commit, cutoff tox command provenance, and prior replay solely as intake evidence; final acceptance depends on the fresh isolated blind run, fresh A0/A1/A2 replay, semantic package checks, and independent official verification.",
+    "source_effect": "The source opening changes exactly one upper-constraints.txt pin, oslo.utils 6.2.1 to 6.3.0. The new version passes the supplied version through string prerelease normalization before tuple conversion, so the accidental MagicMock VERSION exposed by the patched ironic.objects.base.objects namespace reaches a string-only operation.",
+    "target_patch": ".work/domain-pack-e2-candidate-builds-2026-08-28/formal-opendev-900517--target-ironic-I1a622ab9/target.patch",
+    "target_repair": "The complete maintainer commit adds 'del mock_objects.MyObj' before registry initialization in each failing test, removing the unintentionally auto-created mocked registry entry so the real class and string VERSION are registered. It does not delete, skip, narrow, or relax either test; fresh A2 must retain the same command and test count."
+  },
+  "source_change_family": "opendev-change-900517-opening",
+  "target_repository": "openstack/ironic",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

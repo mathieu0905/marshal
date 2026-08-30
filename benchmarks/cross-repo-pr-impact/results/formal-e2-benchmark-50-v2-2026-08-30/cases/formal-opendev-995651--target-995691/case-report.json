@@ -1,0 +1,102 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5008,
+    "case_id": "formal-opendev-995651",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T11:56:26.006355Z",
+  "blind_prediction_created_at": "2026-08-26T11:56:15.020500Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-995651",
+  "case_id": "formal-opendev-995651--target-995691",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/cinder"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T11:56:26.013413Z",
+  "mechanism": "a newly constrained tooz version passes timeout to a target lock override whose old signature does not accept it",
+  "repair_template": "extend an existing target test-double method signature to match the changed dependency interface",
+  "replay": {
+    "catalog_source_snapshot_commit": "e93565a60e34357734bf5c7e2bff23d49969addd",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "TypeError: MockToozLock.acquire() takes from 1 to 2 positional arguments but 4 were given",
+    "installed_source_versions": {
+      "A0": "8.1.0",
+      "A1": "9.0.0",
+      "A2": "9.0.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "e93565a60e34357734bf5c7e2bff23d49969addd",
+    "source_head_commit": "56f0448e75900c32c77e73845a58879274c0590e",
+    "source_versions": {
+      "A0": "8.1.0",
+      "A1": "9.0.0",
+      "A2": "9.0.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "a2a8f9546fa60bb42e3a62ada2914553ab0e42c0",
+    "target_test_path": "cinder/tests/unit/test_coordination.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "cinder.tests.unit.test_coordination"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-995651--target-995691",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "cinder/tests/unit/test_coordination.py"
+    ],
+    "mean_reciprocal_rank": 0.3333333333333333,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "doc/source/configuration/block-storage/drivers/dell-emc-powermax-driver.rst",
+      "doc/source/configuration/block-storage/drivers/dell-emc-vnx-driver.rst",
+      "doc/source/configuration/block-storage/drivers/dell-storagecenter-driver.rst",
+      "doc/source/configuration/block-storage/drivers/hitachi-vsp-driver.rst",
+      "doc/source/configuration/block-storage/samples/index.rst"
+    ],
+    "rank": 3,
+    "recall_at_1": 0.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "openstack/cinder"
+  },
+  "semantic_review": {
+    "a1_failure": "With the unchanged cutoff target and tooz 9.0.0 installed, test_coordinator_lock fails when tooz.locking.Lock.__enter__ passes blocking, shared, and timeout to the old one-argument MockToozLock.acquire override; the signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff target test, maintainer target diff, installed-version probes, identical three-arm stestr command, and all A0/A1/A2 logs.",
+    "source_effect": "The opening source diff changes the sole tooz pin from 8.1.0 to 9.0.0 in upper-constraints.txt.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/995691.patch",
+    "target_repair": "The maintainer adds shared and timeout parameters to the existing MockToozLock.acquire override. A2 applies only that patch to the cutoff target, retains tooz 9.0.0, and restores all 18 tests without deleting or skipping any test."
+  },
+  "source_change_family": "opendev-change-995651-opening",
+  "status": "case_ready_for_formal_pool"
+}

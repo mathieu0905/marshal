@@ -1,0 +1,281 @@
+{2} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_get_flavor_next_provider_no_binding [0.461645s] ... ok
+{1} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_update_flavor [0.467332s] ... ok
+{0} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_associate_service_profile_with_flavor_exists [0.489139s] ... ok
+{7} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_autodelete_flavor_associations [0.488489s] ... ok
+{5} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_get_flavor_next_provider_no_driver [0.512769s] ... ok
+{23} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_association_error [0.242360s] ... ok
+{31} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_flavor_too_long_description [0.239961s] ... ok
+{22} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_flavor_too_long_name [0.236171s] ... ok
+{21} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_service_profile_too_long_description [0.236553s] ... ok
+{39} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_service_profile [0.238324s] ... ok
+{27} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_flavor_invalid_enabled [0.235323s] ... ok
+{11} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_disassociate_service_profile_with_flavor [0.524086s] ... ok
+{44} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_create_service_profile_invalid_driver [0.219601s] ... ok
+{42} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_flavor_too_long_name [0.235876s] ... ok
+{34} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_show_flavor [0.238758s] ... ok
+{41} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_flavor [0.236264s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/base.py", line 178, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/unit/extensions/test_flavors.py", line 74, in test_create_flavor
+    res = self.api.post(_get_path('flavors', fmt=self.fmt),
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 368, in post
+    return self._gen_request('POST', url, params=params, headers=headers,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 749, in _gen_request
+    return self.do_request(req, status=status,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 646, in do_request
+    self._check_status(status, res)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 675, in _check_status
+    raise AppError(
+
+    webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/flavors.json)
+b'{"NeutronError": {"type": "HTTPBadRequest", "message": "Unrecognized attribute(s) \'project_id, tenant_id\'", "detail": ""}}'
+
+{37} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_create_service_profile_invalid_empty [0.227387s] ... ok
+{33} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_flavor_invalid_service_type [0.251121s] ... ok
+{36} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_disassociate_service_profile_with_flavor [0.262795s] ... ok
+{43} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_show_service_profile [0.251510s] ... ok
+{26} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_get_flavors [0.263101s] ... ok
+{30} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_service_profile_too_long_description [0.269979s] ... ok
+{47} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_flavor_too_long_description [0.274289s] ... ok
+{9} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_delete_service_profile_in_use [0.529880s] ... ok
+{16} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_show_flavor [0.521260s] ... ok
+{8} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_get_flavor_next_provider [0.505640s] ... ok
+{24} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_service_profile [0.247334s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/base.py", line 178, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/unit/extensions/test_flavors.py", line 244, in test_create_service_profile
+    res = self.api.post(_get_path('service_profiles', fmt=self.fmt),
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 368, in post
+    return self._gen_request('POST', url, params=params, headers=headers,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 749, in _gen_request
+    return self.do_request(req, status=status,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 646, in do_request
+    self._check_status(status, res)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 675, in _check_status
+    raise AppError(
+
+    webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/service_profiles.json)
+b'{"NeutronError": {"type": "HTTPBadRequest", "message": "Unrecognized attribute(s) \'tenant_id, project_id\'", "detail": ""}}'
+
+{40} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_service_profile_invalid_enabled [0.243185s] ... ok
+{29} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_flavor [0.302834s] ... ok
+{38} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_service_profile_invalid_enabled [0.296423s] ... ok
+{3} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_delete_flavor [0.511264s] ... ok
+{19} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_create_service_profile [0.511458s] ... ok
+{6} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_get_flavor_next_provider_disabled [0.552493s] ... ok
+{13} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_delete_service_profile [0.501640s] ... ok
+{35} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_delete_service_profile [0.260351s] ... ok
+{18} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_get_flavors [0.464558s] ... ok
+{25} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_get_service_profiles [0.324874s] ... ok
+{45} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_service_profile_too_long_driver [0.249966s] ... ok
+{20} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_create_service_profile_empty_driver [0.497556s] ... ok
+{46} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_delete_flavor [0.305527s] ... ok
+{10} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_get_service_profiles [0.501318s] ... ok
+{28} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_update_flavor_invalid_enabled [0.300943s] ... ok
+{32} neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_associate_service_profile_with_flavor [0.305885s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/base.py", line 178, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/unit/extensions/test_flavors.py", line 389, in test_associate_service_profile_with_flavor
+    res = self.api.post('/flavors/fl_id/service_profiles',
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 368, in post
+    return self._gen_request('POST', url, params=params, headers=headers,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 749, in _gen_request
+    return self.do_request(req, status=status,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 646, in do_request
+    self._check_status(status, res)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 675, in _check_status
+    raise AppError(
+
+    webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/flavors/fl_id/service_profiles)
+b'{"NeutronError": {"type": "HTTPBadRequest", "message": "Unrecognized attribute(s) \'tenant_id, project_id\'", "detail": ""}}'
+
+{4} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_associate_service_profile_with_flavor [0.529782s] ... ok
+{14} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_show_service_profile [0.527680s] ... ok
+{12} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_update_service_profile [0.526479s] ... ok
+{17} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_create_flavor [0.486457s] ... ok
+{15} neutron.tests.unit.extensions.test_flavors.FlavorPluginTestCase.test_delete_flavor_in_use [0.535515s] ... ok
+
+==============================
+Failed 3 tests - output below:
+==============================
+
+neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_flavor
+-------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/base.py", line 178, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/unit/extensions/test_flavors.py", line 74, in test_create_flavor
+    res = self.api.post(_get_path('flavors', fmt=self.fmt),
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 368, in post
+    return self._gen_request('POST', url, params=params, headers=headers,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 749, in _gen_request
+    return self.do_request(req, status=status,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 646, in do_request
+    self._check_status(status, res)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 675, in _check_status
+    raise AppError(
+
+    webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/flavors.json)
+b'{"NeutronError": {"type": "HTTPBadRequest", "message": "Unrecognized attribute(s) \'project_id, tenant_id\'", "detail": ""}}'
+
+
+neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_create_service_profile
+----------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/base.py", line 178, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/unit/extensions/test_flavors.py", line 244, in test_create_service_profile
+    res = self.api.post(_get_path('service_profiles', fmt=self.fmt),
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 368, in post
+    return self._gen_request('POST', url, params=params, headers=headers,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 749, in _gen_request
+    return self.do_request(req, status=status,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 646, in do_request
+    self._check_status(status, res)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 675, in _check_status
+    raise AppError(
+
+    webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/service_profiles.json)
+b'{"NeutronError": {"type": "HTTPBadRequest", "message": "Unrecognized attribute(s) \'tenant_id, project_id\'", "detail": ""}}'
+
+
+neutron.tests.unit.extensions.test_flavors.FlavorExtensionTestCase.test_associate_service_profile_with_flavor
+-------------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/base.py", line 178, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/neutron/tests/unit/extensions/test_flavors.py", line 389, in test_associate_service_profile_with_flavor
+    res = self.api.post('/flavors/fl_id/service_profiles',
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 368, in post
+    return self._gen_request('POST', url, params=params, headers=headers,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 749, in _gen_request
+    return self.do_request(req, status=status,
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 646, in do_request
+    self._check_status(status, res)
+
+      File "/home/zhihao/hdd/marshal/.work/rebuild_921649_921647/case-v5/replay-work/formal-opendev-921649--target-921647/target/.tox/py3/lib/python3.10/site-packages/webtest/app.py", line 675, in _check_status
+    raise AppError(
+
+    webtest.app.AppError: Bad response: 400 Bad Request (not 200 OK or 3xx redirect for http://localhost/flavors/fl_id/service_profiles)
+b'{"NeutronError": {"type": "HTTPBadRequest", "message": "Unrecognized attribute(s) \'tenant_id, project_id\'", "detail": ""}}'
+
+
+
+======
+Totals
+======
+Ran: 48 tests in 1.1080 sec.
+ - Passed: 45
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 3
+Sum of execute time for each test: 17.6431 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.489139
+ - Worker 1 (1 tests) => 0:00:00.467332
+ - Worker 2 (1 tests) => 0:00:00.461645
+ - Worker 3 (1 tests) => 0:00:00.511264
+ - Worker 4 (1 tests) => 0:00:00.529782
+ - Worker 5 (1 tests) => 0:00:00.512769
+ - Worker 6 (1 tests) => 0:00:00.552493
+ - Worker 7 (1 tests) => 0:00:00.488489
+ - Worker 8 (1 tests) => 0:00:00.505640
+ - Worker 9 (1 tests) => 0:00:00.529880
+ - Worker 10 (1 tests) => 0:00:00.501318
+ - Worker 11 (1 tests) => 0:00:00.524086
+ - Worker 12 (1 tests) => 0:00:00.526479
+ - Worker 13 (1 tests) => 0:00:00.501640
+ - Worker 14 (1 tests) => 0:00:00.527680
+ - Worker 15 (1 tests) => 0:00:00.535515
+ - Worker 16 (1 tests) => 0:00:00.521260
+ - Worker 17 (1 tests) => 0:00:00.486457
+ - Worker 18 (1 tests) => 0:00:00.464558
+ - Worker 19 (1 tests) => 0:00:00.511458
+ - Worker 20 (1 tests) => 0:00:00.497556
+ - Worker 21 (1 tests) => 0:00:00.236553
+ - Worker 22 (1 tests) => 0:00:00.236171
+ - Worker 23 (1 tests) => 0:00:00.242360
+ - Worker 24 (1 tests) => 0:00:00.247334
+ - Worker 25 (1 tests) => 0:00:00.324874
+ - Worker 26 (1 tests) => 0:00:00.263101
+ - Worker 27 (1 tests) => 0:00:00.235323
+ - Worker 28 (1 tests) => 0:00:00.300943
+ - Worker 29 (1 tests) => 0:00:00.302834
+ - Worker 30 (1 tests) => 0:00:00.269979
+ - Worker 31 (1 tests) => 0:00:00.239961
+ - Worker 32 (1 tests) => 0:00:00.305885
+ - Worker 33 (1 tests) => 0:00:00.251121
+ - Worker 34 (1 tests) => 0:00:00.238758
+ - Worker 35 (1 tests) => 0:00:00.260351
+ - Worker 36 (1 tests) => 0:00:00.262795
+ - Worker 37 (1 tests) => 0:00:00.227387
+ - Worker 38 (1 tests) => 0:00:00.296423
+ - Worker 39 (1 tests) => 0:00:00.238324
+ - Worker 40 (1 tests) => 0:00:00.243185
+ - Worker 41 (1 tests) => 0:00:00.236264
+ - Worker 42 (1 tests) => 0:00:00.235876
+ - Worker 43 (1 tests) => 0:00:00.251510
+ - Worker 44 (1 tests) => 0:00:00.219601
+ - Worker 45 (1 tests) => 0:00:00.249966
+ - Worker 46 (1 tests) => 0:00:00.305527
+ - Worker 47 (1 tests) => 0:00:00.274289

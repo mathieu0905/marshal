@@ -1,0 +1,251 @@
+{0} neutron.tests.unit.api.v2.test_base.APIv2TestCase.test_emulated_sort_without_sort_field [0.430086s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/neutron/tests/base.py", line 176, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/neutron/tests/unit/api/v2/test_base.py", line 508, in test_emulated_sort_without_sort_field
+    api.get(_get_path('networks'), {'sort_key': ['name', 'status'],
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                    'sort_dir': ['desc', 'asc'],
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                    'fields': ['subnets']})
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webtest/app.py", line 328, in get
+    return self.do_request(req, status=status,
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+                           expect_errors=expect_errors)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webtest/app.py", line 627, in do_request
+    res = req.get_response(app, catch_exc_info=True)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webob/request.py", line 1309, in send
+    status, headers, app_iter, exc_info = self.call_application(
+                                          ~~~~~~~~~~~~~~~~~~~~~^
+        application, catch_exc_info=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webob/request.py", line 1278, in call_application
+    app_iter = application(self.environ, start_response)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webtest/lint.py", line 196, in lint_app
+    iterator = application(environ, start_response_wrapper)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/middleware/recursive.py", line 56, in __call__
+    return self.application(environ, start_response)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 841, in __call__
+    return super(Pecan, self).__call__(environ, start_response)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 734, in __call__
+    self.handle_hooks(
+    ~~~~~~~~~~~~~~~~~^
+        self.determine_hooks(state.controller),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'after',
+        ^^^^^^^^
+        state
+        ^^^^^
+    )
+    ^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 866, in handle_hooks
+    return super(Pecan, self).handle_hooks(hooks, *args, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 331, in handle_hooks
+    result = getattr(hook, hook_type)(*args)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 137, in wrapped
+    with excutils.save_and_reraise_exception():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 267, in __exit__
+    self.force_reraise()
+    ~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 233, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 135, in wrapped
+    return f(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_db/api.py", line 144, in wrapper
+    with excutils.save_and_reraise_exception() as ectxt:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 267, in __exit__
+    self.force_reraise()
+    ~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 233, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_db/api.py", line 142, in wrapper
+    return f(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 183, in wrapped
+    with excutils.save_and_reraise_exception():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 267, in __exit__
+    self.force_reraise()
+    ~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 233, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 181, in wrapped
+    return f(*dup_args, **dup_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/neutron/pecan_wsgi/hooks/quota_enforcement.py", line 88, in after
+    neutron_context, resource, neutron_context.tenant_id)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    AttributeError: 'Context' object has no attribute 'tenant_id'
+
+
+==============================
+Failed 1 tests - output below:
+==============================
+
+neutron.tests.unit.api.v2.test_base.APIv2TestCase.test_emulated_sort_without_sort_field
+---------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/neutron/tests/base.py", line 176, in func
+    return f(self, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/neutron/tests/unit/api/v2/test_base.py", line 508, in test_emulated_sort_without_sort_field
+    api.get(_get_path('networks'), {'sort_key': ['name', 'status'],
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                    'sort_dir': ['desc', 'asc'],
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                    'fields': ['subnets']})
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webtest/app.py", line 328, in get
+    return self.do_request(req, status=status,
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+                           expect_errors=expect_errors)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webtest/app.py", line 627, in do_request
+    res = req.get_response(app, catch_exc_info=True)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webob/request.py", line 1309, in send
+    status, headers, app_iter, exc_info = self.call_application(
+                                          ~~~~~~~~~~~~~~~~~~~~~^
+        application, catch_exc_info=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webob/request.py", line 1278, in call_application
+    app_iter = application(self.environ, start_response)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/webtest/lint.py", line 196, in lint_app
+    iterator = application(environ, start_response_wrapper)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/middleware/recursive.py", line 56, in __call__
+    return self.application(environ, start_response)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 841, in __call__
+    return super(Pecan, self).__call__(environ, start_response)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 734, in __call__
+    self.handle_hooks(
+    ~~~~~~~~~~~~~~~~~^
+        self.determine_hooks(state.controller),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'after',
+        ^^^^^^^^
+        state
+        ^^^^^
+    )
+    ^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 866, in handle_hooks
+    return super(Pecan, self).handle_hooks(hooks, *args, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/pecan/core.py", line 331, in handle_hooks
+    result = getattr(hook, hook_type)(*args)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 137, in wrapped
+    with excutils.save_and_reraise_exception():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 267, in __exit__
+    self.force_reraise()
+    ~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 233, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 135, in wrapped
+    return f(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_db/api.py", line 144, in wrapper
+    with excutils.save_and_reraise_exception() as ectxt:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 267, in __exit__
+    self.force_reraise()
+    ~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 233, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_db/api.py", line 142, in wrapper
+    return f(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 183, in wrapped
+    with excutils.save_and_reraise_exception():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+
+
+No tests were successful during the run
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 267, in __exit__
+    self.force_reraise()
+    ~~~~~~~~~~~~~~~~~~^^
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/.tox/py3/lib/python3.13/site-packages/oslo_utils/excutils.py", line 233, in force_reraise
+    raise self.value
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/source-a1/neutron_lib/db/api.py", line 181, in wrapped
+    return f(*dup_args, **dup_kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-formal-opendev-982599-target-982593-rebuild-v2-2026-08-30/replay-work/formal-opendev-982599--target-982593/target/neutron/pecan_wsgi/hooks/quota_enforcement.py", line 88, in after
+    neutron_context, resource, neutron_context.tenant_id)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    AttributeError: 'Context' object has no attribute 'tenant_id'
+
+
+
+======
+Totals
+======
+Ran: 1 tests in 0.4301 sec.
+ - Passed: 0
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 1
+Sum of execute time for each test: 0.4301 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.430086

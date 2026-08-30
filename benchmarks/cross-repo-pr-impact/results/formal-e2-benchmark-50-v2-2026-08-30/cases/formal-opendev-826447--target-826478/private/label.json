@@ -1,0 +1,30 @@
+{
+  "bootstrap_constraints": [
+    "setuptools===60.5.0"
+  ],
+  "candidate_id": "formal-opendev-826447",
+  "expected_check_paths": [
+    "placement/tests/functional/test_api.py"
+  ],
+  "mechanism": "os-traits 2.7.0 expands the Placement standard-trait registry from 294 to 335 entries, invalidating the existing exact Gabbi response-length expectation",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner/bin/python",
+  "relation_id": "formal-opendev-826447--target-826478",
+  "repair_template": "update the existing exact Placement traits response-length expectation to the new standard-trait count",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/fresh_826447_826478/input/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "The identical 1,219-check functional stestr command exits 1 only in A1: 1,218 checks pass and the existing traits Gabbi check fails with `AssertionError: 294 != 335 : Unable to match $.traits.`len` as 294, got 335`; the normalized signature is absent from A0 and A2.",
+    "approved": true,
+    "reviewer_basis": "Fresh source and complete maintainer parent-to-head diffs; target-cutoff tox.ini and traits Gabbi check; three independent arm environments with installed-version probes; all three command logs and summaries; and A1-exclusive failure-signature verification.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, os-traits 2.6.0 to 2.7.0. Fresh arm probes confirm A0 installed 2.6.0 while A1 and A2 installed 2.7.0; the newer standard-trait registry contains 335 rather than 294 entries.",
+    "target_patch": ".work/fresh_826447_826478/input/target-patches/826478.patch",
+    "target_repair": "The complete maintainer parent-to-head patch changes only the existing GET /traits Gabbi exact-length expectation from 294 to 335. It does not delete or skip a check; with the A1 dependency unchanged, A2 passes all 1,219 checks and removes the same failure."
+  },
+  "source_change_family": "opendev-change-826447-opening",
+  "target_repository": "openstack/placement",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox3-runner/bin/tox",
+  "virtualenv_pip_version": "21.3.1",
+  "virtualenv_setuptools_version": "60.5.0"
+}

@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-irc-meetings-matrix-location",
+  "command_config_path": "tox.ini",
+  "command_config_repository": "source",
+  "expected_check_paths": [
+    "yaml2ical/meeting.py"
+  ],
+  "mechanism": "Changing the meeting schedule from IRC to Matrix makes the unchanged yaml2ical parser reject the newly valid source configuration.",
+  "mirror_root": ".work/rebuild_irc_matrix_yaml2ical/mirrors",
+  "python": ".work/rebuild_irc_matrix_yaml2ical/runner/bin/python",
+  "relation_id": "formal-opendev-irc-meetings-matrix-location--target-yaml2ical",
+  "repair_template": "Extend the parser and calendar location model to accept Matrix while retaining IRC support and the existing source-native generation command.",
+  "replay_adapter": "cross_repo_command",
+  "replay_plan": ".work/rebuild_irc_matrix_yaml2ical/inputs/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the complete source opening diff present, the unchanged cutoff yaml2ical parser reaches the changed schedule, requires sched_yaml['irc'], prints the exclusive missing-irc diagnostic, raises KeyError, and exits nonzero.",
+    "approved": true,
+    "reviewer_basis": "Complete source base-to-opening diff, complete maintainer target parent-to-head diff, cutoff parser and source tox command provenance, and fresh A0/A1/A2 replay evidence produced by this manifest-driven run.",
+    "source_effect": "The complete source opening diff changes meetings/opendev-meeting.yaml from an irc field to a matrix field and changes the existing index template to render either field.",
+    "target_patch": ".work/rebuild_irc_matrix_yaml2ical/inputs/target-patches/1000380.patch",
+    "target_repair": "The complete maintainer parent-to-head diff accepts either irc or matrix, derives one location value for calendar output and conflict comparison, documents Matrix, and adds a Matrix parser test; it does not remove or skip the source-native generation command or existing tests."
+  },
+  "source_change_family": "opendev-change-1000378-opening",
+  "target_repository": "opendev/yaml2ical"
+}

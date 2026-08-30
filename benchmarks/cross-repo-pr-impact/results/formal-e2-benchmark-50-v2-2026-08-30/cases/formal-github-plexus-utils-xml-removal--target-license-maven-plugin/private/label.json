@@ -1,0 +1,30 @@
+{
+  "candidate_id": "formal-github-plexus-utils-xml-removal",
+  "expected_check_paths": [
+    "license-maven-plugin/src/test/java/com/mycila/maven/plugin/license/CompleteMojoTest.java"
+  ],
+  "java_home": ".work/jdks/temurin11",
+  "maven": "/home/zhihao/.local/maven/bin/mvn",
+  "maven_seed_repository": ".work/rebuild_plexus_xml_license/maven-seed-repository",
+  "mechanism": "The complete Plexus Utils opening removes org.codehaus.plexus.util.xml and its pull-parser classes, including XmlPullParserException, from the built plexus-utils artifact. The cutoff target still consumes those classes from plexus-utils, so its existing tests fail only when the opening-head artifact is substituted.",
+  "mirror_root": ".work/rebuild_plexus_xml_license/mirrors",
+  "python": "/usr/bin/python3",
+  "relation_id": "formal-github-plexus-utils-xml-removal--target-license-maven-plugin",
+  "repair_template": "Use Plexus Utils 4 and add the maintainer-selected plexus-xml artifact that now provides the removed XML classes.",
+  "replay_adapter": "maven_source",
+  "replay_plan": ".work/rebuild_plexus_xml_license/private/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "Prior replay evidence shows that the unchanged cutoff target succeeds with the opening-base artifact, while substituting only the opening-head artifact causes the existing Maven test task to fail with the exclusive NoClassDefFoundError for org/codehaus/plexus/util/xml/pull/XmlPullParserException.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the complete source opening diff, cutoff target dependency and existing test, the byte-exact complete maintainer parent-to-head patch, its clean application to the public cutoff commit, and prior 0/nonzero/0 evidence; final approval is contingent on this fresh isolated blind run and fresh three-arm replay independently verifying the same mechanism.",
+    "source_effect": "The full c99355e-to-8bf874b opening diff deletes the Plexus XML writers, Xpp3Dom family, pull-parser interfaces and implementations, XmlPullParserException, and their tests from plexus-utils; the public patch contains the complete 137-path opening change.",
+    "target_patch": ".work/rebuild_plexus_xml_license/private/license-maven-plugin-ac5300c.patch",
+    "target_repair": "The complete parent-to-head maintainer diff a0476a7..ac5300c changes only license-maven-plugin/pom.xml: it raises plexus-utils from 3.5.1 to 4.0.0 and adds plexus-xml 3.0.0, restoring the class ownership expected by the unchanged tests."
+  },
+  "source_change_family": "github-plexus-utils-8bf874b-xml-package-removal",
+  "source_java_home": ".work/jdks/temurin11",
+  "target_java_home": ".work/jdks/temurin11",
+  "target_repository": "mathieucarbou/license-maven-plugin",
+  "tox": "/home/zhihao/.local/bin/tox"
+}

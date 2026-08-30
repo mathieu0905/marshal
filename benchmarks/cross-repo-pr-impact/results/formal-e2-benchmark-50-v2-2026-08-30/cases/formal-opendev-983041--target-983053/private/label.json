@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-983041",
+  "expected_check_paths": [
+    "openstackclient/network/v2/network_agent.py",
+    "openstackclient/tests/unit/network/v2/test_network_agent.py"
+  ],
+  "mechanism": "a newly exposed SDK Agent field enters the target CLI generic show columns before the target defines an explicit stable output mapping",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-983041--target-983053",
+  "repair_template": "replace generic SDK field enumeration with an explicit target-owned output mapping and expectation",
+  "replay_adapter": "source_editable",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-python-module-replay-plan-2026-08-26/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the opening SDK change installed, the unchanged target's generic show mapping exposes ha_chassis_priority and the existing Agent output assertion fails with that sole extra column; all 23 tests pass in A0 and A2, while A1 has 22 passes and one mismatch.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source opening diff, cutoff target tox task and test, maintainer patch, editable-install logs proving base/head/head source revisions, and complete A0/A1/A2 module logs showing 23/23, 22/23, and 23/23 passing.",
+    "source_effect": "The source opening diff adds ha_chassis_priority as a real Network Agent resource field.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-contract-triage-2026-08-26/target-patches/983053.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target replaces generic SDK field enumeration with an explicit target-owned Agent output mapping and records ha_chassis_priority in the existing expectation; the identical module command returns to zero without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-983041-opening",
+  "target_repository": "openstack/python-openstackclient",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

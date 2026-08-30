@@ -1,0 +1,97 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5140,
+    "case_id": "formal-opendev-905246",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T17:00:47.827277Z",
+  "blind_prediction_created_at": "2026-08-26T17:00:36.595450Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-905246",
+  "case_id": "formal-opendev-905246--target-905314",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/nova"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-26T17:00:47.834268Z",
+  "mechanism": "oslo.limit 2.3 requires oslo_limit.endpoint_id during unified-limit enforcement, while the unchanged Nova test fixture leaves it unset",
+  "repair_template": "set a shared default endpoint_id in the existing Nova test configuration fixture",
+  "replay": {
+    "catalog_source_snapshot_commit": "67bd2cb1ca331ee0ee893d8b0d3eedef519fe66a",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "ValueError: endpoint_id is not configured",
+    "installed_source_versions": {
+      "A0": "2.2.0",
+      "A1": "2.3.0",
+      "A2": "2.3.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "67bd2cb1ca331ee0ee893d8b0d3eedef519fe66a",
+    "source_head_commit": "5928c5ddf52feb8de2964b139e4cbece425fa300",
+    "source_versions": {
+      "A0": "2.2.0",
+      "A1": "2.3.0",
+      "A2": "2.3.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "18163761d02fc02d5484f91bf52cd4f25536f95e",
+    "target_test_path": "nova/tests/unit/limit/test_local.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "nova.tests.unit.limit.test_local.TestLocalLimits.test_enforce_api_limit_metadata"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-905246--target-905314",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "nova/tests/fixtures/conf.py",
+      "nova/tests/unit/limit/test_local.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/nova"
+  },
+  "semantic_review": {
+    "a1_failure": "On the unchanged Nova opening-cutoff snapshot, its pre-existing unified-limit tests fail only with oslo.limit 2.3.0 at Enforcer construction with ValueError: endpoint_id is not configured; the same selectors pass with 2.2.0.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the single-pin source diff, exact maintainer target diff, command provenance from the cutoff Nova tox.ini, installed-version probes, and all three real replay logs; all three selected pre-existing tests independently produced 0/1/0, and the target patch neither deletes nor skips tests.",
+    "source_effect": "The opening source change updates the only changed upper-constraints pin from oslo.limit 2.2.0 to 2.3.0, so Nova's otherwise unchanged test environment consumes the new endpoint validation behavior.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-wave4-all-dependent-public-final234-contract-triage-2026-08-26/target-patches/905314.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Nova snapshot and sets a shared oslo_limit.endpoint_id default in nova/tests/fixtures/conf.py before configuration parsing, restoring the unchanged unified-limit tests under oslo.limit 2.3.0."
+  },
+  "source_change_family": "opendev-change-905246-opening",
+  "status": "case_ready_for_formal_pool"
+}

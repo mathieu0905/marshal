@@ -1,0 +1,71 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "bootstrap_constraints": [
+    "setuptools==75.6.0"
+  ],
+  "candidate_id": "formal-opendev-925059",
+  "case_id": "formal-opendev-925059--target-937556",
+  "changed_distribution": "jsonschema",
+  "command_config_path": "tox.ini",
+  "command_provenance": {
+    "commit": "7a7427691e0bd4818bb7a2c5f5371e0244addbbb",
+    "path": "tox.ini",
+    "repository": "openstack/nova"
+  },
+  "failure_signature": "testtools.matchers._impl.MismatchError: 'JSON does not validate: {} does not have enough properties' not in '{\"errors\": [{\"status\": 400, \"title\": \"Bad Request\", \"detail\": \"The server could not comply with the request since it is either malformed or otherwise incorrect.\\\\n\\\\n JSON does not validate: {} should be non-empty  Failed validating \\'minProperties\\' in schema[\\'properties\\'][\\'inventories\\']:     {\\'type\\': \\'object\\',      \\'patternProperties\\': {\\'^[0-9a-fA-F-]{36}$\\': {\\'type\\': \\'object\\',                                                   \\'properties\\': {\\'resource_provider_generation\\': {\\'type\\': \\'integer\\'},                                                                  \\'inventories\\': {\\'type\\': \\'object\\',                                                                                  \\'patternProperties\\': {\\'^[A-Z0-9_]+$\\': {\\'type\\': \\'object\\',                                                                                                                         \\'properties\\': {\\'resource_provider_generation\\': {\\'type\\': \\'integer\\'},                                                                                                                                        \\'total\\': {\\'type\\': \\'integer\\',                                                                                                                                                  \\'maximum\\': 2147483647,                                                                                                                                                  \\'minimum\\': 1},                                                                                                                                        \\'reserved\\': {\\'type\\': \\'integer\\',                                                                                                                                                     \\'maximum\\': 2147483647,                                                                                                                                                     \\'minimum\\': 0},                                                                                                                                        \\'min_unit\\': {\\'type\\': \\'integer\\',                                                                                                                                                     \\'maximum\\': 2147483647,                                                                                                                                                     \\'minimum\\': 1},                                                                                                                                        \\'max_unit\\': {\\'type\\': \\'integer\\',                                                                                                                                                     \\'maximum\\': 2147483647,                                                                                                                                                     \\'minimum\\': 1},                                                                                                                                        \\'step_size\\': {\\'type\\': \\'integer\\',                                                                                                                                                      \\'maximum\\': 2147483647,                                                                                                                                                      \\'minimum\\': 1},                                                                                                                                        \\'allocation_ratio\\': {\\'type\\': \\'number\\',                                                                                                                                                             \\'maximum\\': 3.40282e+38}},                                                                                                                         \\'required\\': [\\'total\\'],                                                                                                                         \\'additionalProperties\\': False}}}},                                                   \\'required\\': [\\'resource_provider_generation\\',                                                                \\'inventories\\'],                                                   \\'additionalProperties\\': False}},      \\'minProperties\\': 1,      \\'additionalProperties\\': False}  On instance[\\'inventories\\']:     {}  \", \"code\": \"placement.undefined_code\", \"request_id\": \"req-<uuid>\"}]}'",
+  "installed_source_versions": {
+    "A0": "4.19.2",
+    "A1": "4.23.0",
+    "A2": "4.23.0"
+  },
+  "machine_arm_verification": "passed",
+  "opening_constraint_changes": [
+    {
+      "distribution": "jsonschema",
+      "new_version": "4.23.0",
+      "old_version": "4.19.2"
+    }
+  ],
+  "primary_result_channel": "pre_existing_target_test",
+  "requirements_a1_commit": "c60449dae96692e8ed8845800810b8b6a686785a",
+  "requirements_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+  "requirements_cutoff": "2024-12-11 17:24:58.000000000",
+  "schema_version": "1.0",
+  "selected_attempt_id": "formal-opendev-925059--target-937556",
+  "setup_environment_keys": [],
+  "source_application": "global_constraints_single_pin",
+  "source_base_commit": "d820df1067d03e5d911edfd6770a49ba36fb1f6b",
+  "source_head_commit": "c60449dae96692e8ed8845800810b8b6a686785a",
+  "source_repository": "openstack/requirements",
+  "source_subject": "Bump jsonschema to version 4.23.0",
+  "source_versions": {
+    "A0": "4.19.2",
+    "A1": "4.23.0",
+    "A2": "4.23.0"
+  },
+  "strict_touched_test_count": 1,
+  "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+  "target_base_commit": "7a7427691e0bd4818bb7a2c5f5371e0244addbbb",
+  "target_change": 937556,
+  "target_head_commit": "168974ef0fcbb1c47b07602c3d91982e19eb8e99",
+  "target_patch_evidence": "target.patch",
+  "target_repository": "openstack/nova",
+  "target_subject": "Adapt tests to new messages from  jsonschema 4.23.0",
+  "target_test_path": "nova/tests/functional/test_report_client.py",
+  "test_command": [
+    "stestr",
+    "--test-path=./nova/tests/functional",
+    "run",
+    "nova.tests.functional.test_report_client"
+  ],
+  "test_environment_keys": [],
+  "test_selector": "nova.tests.functional.test_report_client",
+  "tox_environment": "functional",
+  "triage_score": 0,
+  "virtualenv_pip_version": null,
+  "virtualenv_setuptools_version": null
+}

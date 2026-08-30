@@ -1,0 +1,66 @@
+diff --git a/openstack/network/v2/network_ip_availability.py b/openstack/network/v2/network_ip_availability.py
+index 5392714..31e6421 100644
+--- a/openstack/network/v2/network_ip_availability.py
++++ b/openstack/network/v2/network_ip_availability.py
+@@ -56,3 +56,11 @@
+     #: The used or consumed ip of a network
+     #: *Type: int*
+     used_ips = resource.Body('used_ips', type=int)
++    #: The detailed IP availability of a network, holding the
++    #: ``total_ips_in_subnet``, ``total_ips_in_allocation_pool``,
++    #: ``used_ips_in_subnet`` and ``used_ips_in_allocation_pool`` keys.
++    #: Requires the ``network-ip-availability-details`` extension.
++    #: *Type: dict*
++    ip_availability_details = resource.Body(
++        'ip_availability_details', type=dict
++    )
+diff --git a/openstack/tests/unit/network/v2/test_network_ip_availability.py b/openstack/tests/unit/network/v2/test_network_ip_availability.py
+index 0d033ab..0beeec8 100644
+--- a/openstack/tests/unit/network/v2/test_network_ip_availability.py
++++ b/openstack/tests/unit/network/v2/test_network_ip_availability.py
+@@ -35,11 +35,23 @@
+             "ip_version": 6,
+             "cidr": "fd91:c3ba:e818::/64",
+             "total_ips": 18446744073709551614,
++            "ip_availability_details": {
++                "total_ips_in_subnet": 18446744073709551616,
++                "total_ips_in_allocation_pool": 18446744073709551614,
++                "used_ips_in_subnet": 3,
++                "used_ips_in_allocation_pool": 1,
++            },
+         }
+     ],
+     'project_id': '2',
+     'total_ips': 1844,
+     'used_ips': 6,
++    'ip_availability_details': {
++        "total_ips_in_subnet": 1846,
++        "total_ips_in_allocation_pool": 1844,
++        "used_ips_in_subnet": 6,
++        "used_ips_in_allocation_pool": 4,
++    },
+ }
+ 
+ 
+@@ -82,3 +94,7 @@
+         self.assertEqual(EXAMPLE_WITH_OPTIONAL['project_id'], sot.project_id)
+         self.assertEqual(EXAMPLE_WITH_OPTIONAL['total_ips'], sot.total_ips)
+         self.assertEqual(EXAMPLE_WITH_OPTIONAL['used_ips'], sot.used_ips)
++        self.assertEqual(
++            EXAMPLE_WITH_OPTIONAL['ip_availability_details'],
++            sot.ip_availability_details,
++        )
+diff --git a/releasenotes/notes/add-network-ip-availability-details-abf31f282f4c420f.yaml b/releasenotes/notes/add-network-ip-availability-details-abf31f282f4c420f.yaml
+new file mode 100644
+index 0000000..57ad45e
+--- /dev/null
++++ b/releasenotes/notes/add-network-ip-availability-details-abf31f282f4c420f.yaml
+@@ -0,0 +1,8 @@
++---
++features:
++  - |
++    Added the ``ip_availability_details`` field to the network
++    ``NetworkIPAvailability`` resource. This exposes the attribute added by
++    the Neutron ``network-ip-availability-details`` extension, which reports
++    the total and used IP counts of a network separately for the subnet CIDRs
++    and for the subnet allocation pools.

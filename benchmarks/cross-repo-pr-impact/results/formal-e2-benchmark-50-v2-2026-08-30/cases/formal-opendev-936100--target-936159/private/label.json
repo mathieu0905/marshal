@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-936100",
+  "expected_check_paths": [
+    "heat/tests/constraints/test_common_constraints.py"
+  ],
+  "mechanism": "croniter 5.0.1 changes invalid-expression exception wording, breaking Heat's pre-existing exact and phrase-level CRON validation assertions",
+  "mirror_root": ".work/rebuild_936100_936159/replay-mirrors",
+  "python": ".work/rebuild_936100_936159/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-936100--target-936159",
+  "repair_template": "preserve invalid-expression behavior while asserting only Heat's stable error prefix",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/rebuild_936100_936159/manifests/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With croniter 5.0.1, Heat's existing 43-test constraint module fails because the short-column assertion expects 'Exactly 5 or 6 columns' while croniter reports 'Exactly 5, 6 or 7 columns'.",
+    "approved": true,
+    "reviewer_basis": "Exact source base/head diff, complete maintainer parent/head patch, cutoff target code, prior arm logs, and fresh identical-command A0/A1/A2 replay.",
+    "source_effect": "The opening source diff changes the sole croniter constraint from 2.0.7 to 5.0.1 and no other path or pin.",
+    "target_patch": ".work/rebuild_936100_936159/domain-pack/target-patches/936159.patch",
+    "target_repair": "The full maintainer change updates the two existing invalid-CRON assertions to accept Heat's stable 'Invalid CRON expression: ' prefix; it deletes or skips no test."
+  },
+  "source_change_family": "opendev-change-936100-opening",
+  "target_repository": "openstack/heat",
+  "tox": ".work/rebuild_936100_936159/tox4-runner/bin/tox"
+}

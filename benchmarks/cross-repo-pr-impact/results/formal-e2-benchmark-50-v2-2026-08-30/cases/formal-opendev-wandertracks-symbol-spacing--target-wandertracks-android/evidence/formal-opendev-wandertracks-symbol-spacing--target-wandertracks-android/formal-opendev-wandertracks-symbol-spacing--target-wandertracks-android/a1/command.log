@@ -1,0 +1,38 @@
+assets:    app/src/main/assets/basemaps
+canonical: ../source/wandertracks/mapstyles
+enum:      /home/zhihao/hdd/marshal/.work/rebuild_symbolspacing_android/output/replay-work/formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android/a1/target/app/src/main/java/com/wandertracks/android/domain/model/Basemap.kt
+ok: opentopomap.json
+ok: osm.json
+ok: outdoors.json
+ok: satellite.json
+
+wandertracks.json: vendored asset differs from the API repo original
+  --- wandertracks.json (API repo, canonical)
+  +++ wandertracks.json (vendored asset)
+  @@ -4413,5 +4413,4 @@
+           "symbol-avoid-edges": true,
+           "symbol-placement": "line",
+  -        "symbol-spacing": 500,
+           "text-field": "{_name}",
+           "text-font": [
+  @@ -4434,4 +4433,5 @@
+         "source": "esri",
+         "source-layer": "Road/label",
+  +      "symbol-spacing": 500,
+         "type": "symbol"
+       },
+  @@ -6035,4 +6035,5 @@
+         "source": "esri",
+         "source-layer": "Road/label",
+  +      "symbol-spacing": 500,
+         "type": "symbol"
+       },
+
+1 basemap problem(s): the Basemap enum, the vendored
+assets and wandertracks/wandertracks are not in agreement.
+The assets are copies of the API repo's styles, and the Basemap
+enum is the list of which ones the app can ask for. Refresh the
+assets from the API repo (compact:
+  python3 -c 'import json,sys; json.dump(json.load(sys.stdin), sys.stdout, separators=(",",":"))'
+) in the same change, or Depends-On the API change that moved
+them, and keep Basemap.kt naming exactly the vendored set.

@@ -1,0 +1,99 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 1313,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 27966,
+    "case_id": "formal-github-plexus-utils-xml-removal",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T05:03:02.828704Z",
+  "blind_prediction_created_at": "2026-08-30T04:55:05.196719Z",
+  "blockers": [],
+  "candidate_id": "formal-github-plexus-utils-xml-removal",
+  "case_id": "formal-github-plexus-utils-xml-removal--target-license-maven-plugin",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "codehaus-plexus/plexus-utils",
+    "mathieucarbou/license-maven-plugin"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T05:03:02.859062Z",
+  "mechanism": "The complete Plexus Utils opening removes org.codehaus.plexus.util.xml and its pull-parser classes, including XmlPullParserException, from the built plexus-utils artifact. The cutoff target still consumes those classes from plexus-utils, so its existing tests fail only when the opening-head artifact is substituted.",
+  "repair_template": "Use Plexus Utils 4 and add the maintainer-selected plexus-xml artifact that now provides the removed XML classes.",
+  "replay": {
+    "built_source_commits": {
+      "A0": "c99355e295957b3b2ecb81bc2e80feceea2cdbde",
+      "A1": "8bf874bb9563116bd6ecd4e697c59fd0662d0a2f",
+      "A2": "8bf874bb9563116bd6ecd4e697c59fd0662d0a2f"
+    },
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "NoClassDefFoundError: org/codehaus/plexus/util/xml/pull/XmlPullParserException",
+    "machine_strict_e2": true,
+    "primary_result_channel": "project_build_or_test",
+    "schema_version": "1.0",
+    "source_application": "maven_local_artifact_from_opening_checkout",
+    "source_artifact_versions": {
+      "A0": "3.5.1",
+      "A1": "3.5.1",
+      "A2": "4.0.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "a736ccb2c509da0b44d6e2575f92d4eb325332e4",
+    "target_test_path": "license-maven-plugin/src/test/java/com/mycila/maven/plugin/license/CompleteMojoTest.java",
+    "test_command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "clean",
+      "test"
+    ],
+    "tests_run": {
+      "A0": 342,
+      "A2": 342
+    }
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-github-plexus-utils-xml-removal--target-license-maven-plugin",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "license-maven-plugin/src/test/java/com/mycila/maven/plugin/license/CompleteMojoTest.java"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "mathieucarbou/license-maven-plugin"
+  },
+  "semantic_review": {
+    "a1_failure": "Prior replay evidence shows that the unchanged cutoff target succeeds with the opening-base artifact, while substituting only the opening-head artifact causes the existing Maven test task to fail with the exclusive NoClassDefFoundError for org/codehaus/plexus/util/xml/pull/XmlPullParserException.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the complete source opening diff, cutoff target dependency and existing test, the byte-exact complete maintainer parent-to-head patch, its clean application to the public cutoff commit, and prior 0/nonzero/0 evidence; final approval is contingent on this fresh isolated blind run and fresh three-arm replay independently verifying the same mechanism.",
+    "source_effect": "The full c99355e-to-8bf874b opening diff deletes the Plexus XML writers, Xpp3Dom family, pull-parser interfaces and implementations, XmlPullParserException, and their tests from plexus-utils; the public patch contains the complete 137-path opening change.",
+    "target_patch": ".work/rebuild_plexus_xml_license/private/license-maven-plugin-ac5300c.patch",
+    "target_repair": "The complete parent-to-head maintainer diff a0476a7..ac5300c changes only license-maven-plugin/pom.xml: it raises plexus-utils from 3.5.1 to 4.0.0 and adds plexus-xml 3.0.0, restoring the class ownership expected by the unchanged tests."
+  },
+  "source_change_family": "github-plexus-utils-8bf874b-xml-package-removal",
+  "status": "case_ready_for_formal_pool"
+}

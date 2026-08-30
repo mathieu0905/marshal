@@ -1,0 +1,76 @@
+Picked up JAVA_TOOL_OPTIONS: -XX:UseAVX=2
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.github.susom:database >----------------------
+[INFO] Building com.github.susom:database 3.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ database ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.7.0:compile (default-compile) @ database ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 50 source files to /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/target/classes
+[INFO] /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/src/main/java/com/github/susom/database/DatabaseProvider.java:[-1,-1] /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/src/main/java/com/github/susom/database/DatabaseProvider.java uses or overrides a deprecated API.
+[INFO] /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/src/main/java/com/github/susom/database/DatabaseProvider.java:[-1,-1] Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] >>> findbugs:3.0.5:check (default) > :findbugs @ database >>>
+[INFO] 
+[INFO] --- findbugs:3.0.5:findbugs (findbugs) @ database ---
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/m2-a1/org/codehaus/groovy/groovy/2.4.12/groovy-2.4.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] 
+[INFO] <<< findbugs:3.0.5:check (default) < :findbugs @ database <<<
+[INFO] 
+[INFO] 
+[INFO] --- findbugs:3.0.5:check (default) @ database ---
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ database ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.7.0:testCompile (default-testCompile) @ database ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 12 source files to /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/target/test-classes
+[INFO] /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/src/test/java/com/github/susom/database/test/CommonTest.java:[-1,-1] Some input files use or override a deprecated API.
+[INFO] /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/src/test/java/com/github/susom/database/test/CommonTest.java:[-1,-1] Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:2.20:test (default-test) @ database ---
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.github.susom.database.test.VertxLoggingTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.363 s <<< FAILURE! - in com.github.susom.database.test.VertxLoggingTest
+[ERROR] testMdcTransferToWorkerDatabase(com.github.susom.database.test.VertxLoggingTest)  Time elapsed: 0.177 s  <<< ERROR!
+java.lang.RuntimeException: Failed to load class of driverClassName [org.apache.derby.jdbc.EmbeddedDriver] in either of HikariConfig class loader or Thread context classloader
+	at com.github.susom.database.test.VertxLoggingTest.testMdcTransferToWorkerDatabase(VertxLoggingTest.java:102)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   VertxLoggingTest.testMdcTransferToWorkerDatabase:102 » Runtime Failed to load ...
+[INFO] 
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.663 s
+[INFO] Finished at: 2026-08-30T13:02:54+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.20:test (default-test) on project database: There are test failures.
+[ERROR] 
+[ERROR] Please refer to /home/zhihao/hdd/marshal/.work/rebuild_derby6945_susom/output/replay-work/formal-github-derby-6945--target-susom-database/target-a1/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date]-jvmRun[N].dump, [date].dumpstream and [date]-jvmRun[N].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

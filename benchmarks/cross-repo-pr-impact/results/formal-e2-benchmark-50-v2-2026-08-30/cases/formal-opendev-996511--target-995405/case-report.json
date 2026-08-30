@@ -1,0 +1,97 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5008,
+    "case_id": "formal-opendev-996511",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-29T18:04:16.631174Z",
+  "blind_prediction_created_at": "2026-08-29T18:03:15.710028Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-996511",
+  "case_id": "formal-opendev-996511--target-995405",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/cinder"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-29T18:04:16.633513Z",
+  "mechanism": "the constrained oslo.policy 6.0 release removes the enforce_scope configuration option while target policy-test setup still overrides and threads that option",
+  "repair_template": "remove target policy-test setup for a dependency configuration option deleted in the new major release",
+  "replay": {
+    "catalog_source_snapshot_commit": "7a04938e7e6f130a007e17750e880b6ec3eadd07",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "oslo_config.cfg.NoSuchOptError: no such option enforce_scope in group [oslo_policy]",
+    "installed_source_versions": {
+      "A0": "5.1.0",
+      "A1": "6.0.0",
+      "A2": "6.0.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "7a04938e7e6f130a007e17750e880b6ec3eadd07",
+    "source_head_commit": "21177a92da0ccdb0ec62e37e1b844f5e2bad1ca1",
+    "source_versions": {
+      "A0": "5.1.0",
+      "A1": "6.0.0",
+      "A2": "6.0.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "1bba1f92a7a089569514e7ce016aeea192f5af0b",
+    "target_test_path": "cinder/tests/unit/policies/test_attachments.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "cinder.tests.unit.policies.test_attachments"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-996511--target-995405",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "cinder/tests/unit/policies/base.py",
+      "cinder/tests/unit/policies/test_attachments.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/cinder"
+  },
+  "semantic_review": {
+    "a1_failure": "With the cutoff target unchanged and oslo.policy 6.0.0 installed, the existing attachment policy module fails during shared setup with NoSuchOptError because enforce_scope no longer exists; the same module passes with 5.1.0 in A0 and with 6.0.0 plus the maintainer patch in A2.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin opening diff, cutoff policy-test base and attachment module, the complete 24-file maintainer change, fixed command provenance, installed-version probes, and fresh A0/A1/A2 command logs.",
+    "source_effect": "The source opening changes the sole oslo.policy constraint from 5.1.0 to 6.0.0.",
+    "target_patch": "/home/zhihao/hdd/marshal/.work/rebuild_996511_995405/intake/private/995405.patch",
+    "target_repair": "The complete maintainer patch removes the deleted enforce_scope option from the shared policy-test setup and from the existing policy tests that passed it; for the fixed attachment module, A2 applies that patch without deleting or skipping tests."
+  },
+  "source_change_family": "opendev-change-996511-opening",
+  "status": "case_ready_for_formal_pool"
+}

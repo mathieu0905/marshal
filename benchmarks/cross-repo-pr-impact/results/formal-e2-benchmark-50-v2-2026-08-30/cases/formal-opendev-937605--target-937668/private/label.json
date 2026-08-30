@@ -1,0 +1,25 @@
+{
+  "candidate_id": "formal-opendev-937605",
+  "expected_check_paths": [
+    "neutron/tests/unit/plugins/ml2/test_plugin.py"
+  ],
+  "mechanism": "exception parent change alters the HTTP status mapped by the target API",
+  "mirror_root": ".work/formal-opendev-937605-rebuild-20260830/combined-mirrors",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-937605--target-937668",
+  "repair_template": "update an existing target expectation for the changed exception-to-status mapping",
+  "replay_adapter": "source_editable",
+  "replay_plan": ".work/formal-opendev-937605-rebuild-20260830/intake/replay-plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With the unchanged Neutron cutoff test, only the new neutron-lib checkout returns HTTP 400 while the existing assertion requires 500; stestr runs one test and reports the exclusive failure testtools.matchers._impl.MismatchError: 500 != 400.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the source opening diff, the complete one-file maintainer target diff and its clean application to the public cutoff, the cutoff tox.ini command provenance, and fresh A0/A1/A2 stestr logs showing one executed test per arm with exits 0/1/0 and no skips.",
+    "source_effect": "The opening changes VlanTransparencyDriverError from NeutronException to BadRequest, so the same Neutron API path classifies the failure as HTTP 400 instead of HTTP 500.",
+    "target_patch": ".work/formal-opendev-937605-rebuild-20260830/target-patches/937668.patch",
+    "target_repair": "The complete maintainer patch changes only the pre-existing status assertion from exact 500 to membership in [400, 500], retaining the test body and subsequent error type assertion; it neither deletes nor skips the test, and A2 removes the same A1 mismatch."
+  },
+  "source_change_family": "opendev-change-937605-opening",
+  "target_repository": "openstack/neutron",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

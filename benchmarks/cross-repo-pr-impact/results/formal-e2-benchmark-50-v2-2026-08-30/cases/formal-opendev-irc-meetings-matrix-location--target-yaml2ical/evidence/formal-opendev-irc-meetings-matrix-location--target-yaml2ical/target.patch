@@ -1,0 +1,110 @@
+diff --git a/README.rst b/README.rst
+index bf8e152..4140506 100644
+--- a/README.rst
++++ b/README.rst
+@@ -121,7 +121,8 @@ Each meeting consists of:
+   * ``start_date``: the date the first meeting takes place on or after.
+       Format `YYYYMMDD`, all values must be zero-padded.
+   * ``day``: the day of week the meeting takes place [MANDATORY]
+-  * ``irc``: the irc room in which the meeting is held [MANDATORY]
++  * ``irc``: the IRC room in which the meeting is held [irc or matrix is MANDATORY]
++  * ``matrix``: the Matrix in which the meeting is held [irc or matrix is MANDATORY]
+   * ``frequency``: frequent occurrence of the meeting [MANDATORY]
+   * ``skip_dates``: A set of dates that the meeting **DOES NOT** happen on
+ 
+@@ -202,7 +203,7 @@ will be import into Python as a dictionary.
+     project:  Nova Team Meeting
+ 
+ * The schedule is a list of dictionaries each consisting of `time` in UTC,
+-  `day` of the week, the `irc` meeting room, and the `frequency` of the
++  `day` of the week, the meeting room, and the `frequency` of the
+   meeting.  See above for notes on `frequency`.
+ 
+   `adhoc` can be used to list the possibility of something in the schedule but
+diff --git a/yaml2ical/ical.py b/yaml2ical/ical.py
+index 8386899..877e85a 100644
+--- a/yaml2ical/ical.py
++++ b/yaml2ical/ical.py
+@@ -56,7 +56,7 @@ class Yaml2IcalCalendar(icalendar.Calendar):
+             suffix = exdate.date_str
+             summary = 'CANCELLED: %s (%s)' % (summary, suffix)
+         event.add('summary', summary)
+-        event.add('location', '#' + sch.irc)
++        event.add('location', sch.location)
+ 
+         # add ical description
+         project_descript = "Project:  %s" % (meeting.project)
+diff --git a/yaml2ical/meeting.py b/yaml2ical/meeting.py
+index 5d6e145..e30d798 100644
+--- a/yaml2ical/meeting.py
++++ b/yaml2ical/meeting.py
+@@ -61,9 +61,16 @@ class Schedule(object):
+             self.time = datetime.datetime.strptime(sched_yaml['time'], '%H%M')
+             # Sanitize the Day
+             self.day = sched_yaml['day'].lower().capitalize()
+-            self.irc = sched_yaml['irc']
++            self.irc = sched_yaml.get('irc')
++            self.matrix = sched_yaml.get('matrix')
++            if self.irc:
++                self.location = f'irc: #{self.irc}'
++            elif self.matrix:
++                self.location = f'matrix: {self.matrix}'
+             self.freq = sched_yaml['frequency']
+             self._recurrence = sched_yaml['frequency']
++            if not (self.irc or self.matrix):
++                raise KeyError('irc')
+         except KeyError as e:
+             print("Invalid YAML meeting schedule definition - missing "
+                   "attribute '{0}'".format(e.args[0]))
+@@ -175,7 +182,7 @@ class Schedule(object):
+ 
+         # NOTE(tonyb): .meeting_start also includes the day of the week. So no
+         #              need to check .day explictly
+-        return ((self.irc == other.irc)
++        return ((self.location == other.location)
+                 and ((self.meeting_start < other.meeting_end)
+                      and (other.meeting_start < self.meeting_end))
+                 and _non_weekly_conflict_detection(self, other))
+diff --git a/yaml2ical/tests/sample_data.py b/yaml2ical/tests/sample_data.py
+index e18a671..6d07b36 100644
+--- a/yaml2ical/tests/sample_data.py
++++ b/yaml2ical/tests/sample_data.py
+@@ -40,6 +40,20 @@ agenda: |
+   * Top bugs this week
+ """
+ 
++MATRIX_MEETING = """
++project: OpenDev Meeting
++schedule:
++  - time: '1200'
++    day: Tuesday
++    matrix: '#opendev:opendev.org'
++    frequency: weekly
++chair: Joe Developer
++description: >
++    Weekly meeting for OpenDev project.
++agenda: |
++  * Top bugs this week
++"""
++
+ CONFLICTING_WEEKLY_MEETING = """
+ project: OpenStack Subteam Meeting 2
+ schedule:
+diff --git a/yaml2ical/tests/test_meeting.py b/yaml2ical/tests/test_meeting.py
+index eeb9799..093d94c 100644
+--- a/yaml2ical/tests/test_meeting.py
++++ b/yaml2ical/tests/test_meeting.py
+@@ -33,6 +33,13 @@ class MeetingTestCase(unittest.TestCase):
+                          m.description)
+         self.assertEqual('Joe Developer', m.schedules[0].chair)
+ 
++    def test_matrix_meeting(self):
++        m = meeting.load_meetings(sample_data.MATRIX_MEETING)[0]
++        cal = ical.Yaml2IcalCalendar()
++        cal.add_meeting(m)
++        cal_str = cal.to_ical().decode('utf-8')
++        self.assertIn("#opendev:opendev.org", cal_str)
++
+     def test_chair_overrides(self):
+         m = meeting.load_meetings(sample_data.ALTERNATING_CHAIRS_MEETING)[0]
+         self.assertEqual('OpenStack Subteam Meeting', m.project)

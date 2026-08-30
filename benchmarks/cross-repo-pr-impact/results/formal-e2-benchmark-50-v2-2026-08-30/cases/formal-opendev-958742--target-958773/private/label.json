@@ -1,0 +1,27 @@
+{
+  "candidate_id": "formal-opendev-958742",
+  "expected_check_paths": [
+    "heat/engine/service.py",
+    "heat/tests/common.py",
+    "heat/tests/engine/service/test_service_engine.py"
+  ],
+  "mechanism": "oslo.service 4.3.0 removes the private oslo_service.backend.threading package path used by Heat, so importing Heat's engine service during target test discovery fails",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "python": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/python",
+  "relation_id": "formal-opendev-958742--target-958773",
+  "repair_template": "replace the removed private dependency import with oslo.service's public threadgroup API and initialize the test backend explicitly",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-requirements-plan-958742-heat-2026-08-27/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With oslo.service 4.3.0 installed against the unchanged opening-cutoff Heat snapshot, the pre-existing service-engine command fails during discovery because heat.engine.service imports the removed oslo_service.backend.threading path. With 4.2.2 the command runs 13 tests successfully, and the exact target patch restores all 13 under 4.3.0. The exclusive stable signature is ModuleNotFoundError: No module named 'oslo_service.backend.threading'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, exact maintainer target diff, cutoff tox.ini command provenance, installed-version probes proving oslo.service 4.2.2/4.3.0/4.3.0, patch applicability, and all arm logs. Every arm used the same pre-existing stestr selector; A0 and A2 ran all 13 selected tests, while A1 failed at target-module discovery on the removed dependency path. The patch deletes or skips no tests.",
+    "source_effect": "The source opening changes exactly one upper-constraints pin, oslo.service 4.2.2 to 4.3.0; version 4.3 removes the private backend.threading module path while retaining threadgroup through a public import.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-high-confidence-958742-target-patches-2026-08-27/958773.patch",
+    "target_repair": "The exact maintainer patch applies to the public opening-cutoff Heat snapshot, changes production code to import the public oslo_service.threadgroup API, and explicitly initializes the threading backend in the existing test base. Its tox lint adjustment follows the new import ordering; no target test is deleted, skipped, or replaced."
+  },
+  "source_change_family": "opendev-change-958742-opening",
+  "target_repository": "openstack/heat",
+  "tox": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-replays-2026-08-26/tox4-runner/bin/tox"
+}

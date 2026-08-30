@@ -1,0 +1,71 @@
+{
+  "arms": {
+    "A0": "pass",
+    "A1": "fail",
+    "A2": "pass"
+  },
+  "bootstrap_constraints": [
+    "setuptools===49.6.0",
+    "Cython<3"
+  ],
+  "candidate_id": "formal-opendev-749333",
+  "case_id": "formal-opendev-749333--target-749839",
+  "changed_distribution": "oslo.messaging",
+  "command_provenance": {
+    "commit": "977ff8105cc8ddc3167f34672dc1f0d9639f1b5b",
+    "path": "tox.ini",
+    "repository": "openstack/cinder"
+  },
+  "failure_signature": "RecursionError: maximum recursion depth exceeded in comparison",
+  "installed_source_versions": {
+    "A0": "12.3.0",
+    "A1": "12.4.0",
+    "A2": "12.4.0"
+  },
+  "machine_arm_verification": "passed",
+  "opening_constraint_changes": [
+    {
+      "distribution": "oslo.messaging",
+      "new_version": "12.4.0",
+      "old_version": "12.3.0"
+    }
+  ],
+  "primary_result_channel": "pre_existing_target_test",
+  "relation_id": "formal-opendev-749333--target-749839",
+  "requirements_a1_commit": "ae1cbff86800e1e70a2ae5be75c3f2e784750805",
+  "requirements_commit": "5b2ee12846e05722a45cd7ca616f8254b7ed1ec1",
+  "schema_version": "1.0",
+  "selected_attempt_id": "formal-opendev-749333--target-749839",
+  "setup_environment_keys": [],
+  "source_application": "global_constraints_single_pin",
+  "source_base_commit": "5b2ee12846e05722a45cd7ca616f8254b7ed1ec1",
+  "source_head_commit": "ae1cbff86800e1e70a2ae5be75c3f2e784750805",
+  "source_repository": "openstack/requirements",
+  "source_subject": "update constraint for oslo.messaging to new release 12.4.0",
+  "source_versions": {
+    "A0": "12.3.0",
+    "A1": "12.4.0",
+    "A2": "12.4.0"
+  },
+  "strict_touched_test_count": 1,
+  "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+  "target_base_commit": "977ff8105cc8ddc3167f34672dc1f0d9639f1b5b",
+  "target_change": 749839,
+  "target_head_commit": "a8080d56b7ce4bd626de9675ae4f934e9ed3b758",
+  "target_patch_base_commit": "37749045c057b31963d1d94f93b8879576c9364e",
+  "target_patch_evidence": "target.patch",
+  "target_repository": "openstack/cinder",
+  "target_subject": "Handle oslo.messaging ping endpoint",
+  "target_test_path": "cinder/tests/unit/test_test.py",
+  "test_command": [
+    "stestr",
+    "run",
+    "cinder.tests.unit.test_test.IsolationTestCase.test_rpc_consumer_isolation"
+  ],
+  "test_environment_keys": [],
+  "test_selector": "cinder.tests.unit.test_test.IsolationTestCase.test_rpc_consumer_isolation",
+  "tox_environment": "py3",
+  "triage_score": 100,
+  "virtualenv_pip_version": "21.1.3",
+  "virtualenv_setuptools_version": "49.6.0"
+}

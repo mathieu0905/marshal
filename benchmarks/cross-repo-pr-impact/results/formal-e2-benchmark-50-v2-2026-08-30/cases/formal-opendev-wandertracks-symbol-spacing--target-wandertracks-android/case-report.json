@@ -1,0 +1,100 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 6,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 98,
+    "case_id": "formal-opendev-wandertracks-symbol-spacing",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:54:13.627474Z",
+  "blind_prediction_created_at": "2026-08-30T04:54:13.003206Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-wandertracks-symbol-spacing",
+  "case_id": "formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "wandertracks/wandertracks",
+    "wandertracks/wandertracks-android"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:54:13.630047Z",
+  "mechanism": "Moving symbol-spacing into the canonical style layout makes the unchanged Android vendored JSON fail the existing cross-repository parity check.",
+  "repair_template": "Refresh the Android vendored basemap from the canonical source style without changing or skipping the parity check.",
+  "replay": {
+    "built_source_commits": {
+      "A0": "35f05c9849434486458d014887b1b3072bbf4ab3",
+      "A1": "bfbc3816b3cfda56ab5a2f3d9802891dafe776f1",
+      "A2": "bfbc3816b3cfda56ab5a2f3d9802891dafe776f1"
+    },
+    "checks_run": {
+      "A0": 5,
+      "A1": 5,
+      "A2": 5
+    },
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "wandertracks.json: vendored asset differs from the API repo original",
+    "machine_strict_e2": true,
+    "primary_result_channel": "project_build_or_test",
+    "schema_version": "1.0",
+    "source_application": "side_by_side_opening_checkout",
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "65f8ca604ac0f70f5056d9a499096c88ad28006e",
+    "target_test_path": "app/src/main/assets/basemaps/wandertracks.json",
+    "test_command": [
+      "python3",
+      "scripts/check-basemap-parity.py",
+      "app/src/main/assets/basemaps",
+      "../source/wandertracks/mapstyles"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "app/src/main/assets/basemaps/wandertracks.json"
+    ],
+    "mean_reciprocal_rank": 0.5,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [
+      "app/src/main/java/com/wandertracks/android/data/remote/api/WanderTracksApi.kt",
+      "app/src/main/java/com/wandertracks/android/data/remote/api/dto/TrackSummaryDto.kt",
+      "app/src/main/java/com/wandertracks/android/presentation/theme/Color.kt",
+      "app/src/main/java/com/wandertracks/android/service/LocationService.kt",
+      "app/src/main/java/com/wandertracks/android/service/gps/LocationProcessor.kt"
+    ],
+    "rank": 2,
+    "recall_at_1": 0.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "repository_found": true,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 1.0,
+    "target_repository": "wandertracks/wandertracks-android"
+  },
+  "semantic_review": {
+    "a1_failure": "With only the source checkout changed, the target's pre-existing parity script structurally compares all five basemap JSON files, reports wandertracks.json as different, and exits nonzero after five positive checks.",
+    "approved": true,
+    "reviewer_basis": "Exact source base-to-opening diff, exact target parent-to-head diff and parent identity, target cutoff .zuul.yaml and parity script provenance, and the fresh isolated three-arm replay logs.",
+    "source_effect": "The complete opening source diff moves the stray symbol-spacing setting into the affected layer's layout and removes two invalid layer-level occurrences in the canonical wandertracks style.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android/evidence/formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android/target.patch",
+    "target_repair": "The complete maintainer parent-to-head target patch changes only the vendored wandertracks.json copy to match the canonical structure; it neither modifies nor skips the parity script or its Zuul job."
+  },
+  "source_change_family": "opendev-change-1002510-opening",
+  "status": "case_ready_for_formal_pool"
+}

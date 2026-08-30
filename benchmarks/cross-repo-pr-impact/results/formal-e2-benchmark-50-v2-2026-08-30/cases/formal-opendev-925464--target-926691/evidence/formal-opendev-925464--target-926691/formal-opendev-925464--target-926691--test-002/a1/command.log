@@ -1,0 +1,529 @@
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+{1} barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret_with_no_context [0.073709s] ... ok
+{4} barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret_for_same_project_with_no_acl [0.074280s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/__init__.py", line 97, in generate_safe_exception_message
+    raise excep
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    oslo_policy.policy.PolicyNotAuthorized: secret:get is disallowed by policy
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 542, in test_should_pass_get_secret_for_same_project_with_no_acl
+    self._assert_pass_rbac(['admin', 'observer', 'creator', 'audit'],
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 203, in _assert_pass_rbac
+    exception = self.assertRaises(exc.HTTPServerError,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 701, in _invoke_on_get
+    self.resource.on_get(self.req, self.resp)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 57, in on_get
+    return self.controller.on_get(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 117, in handler
+    pecan.abort(status, message)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 127, in abort
+    raise webob_exception.with_traceback(traceback)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    webob.exc.HTTPForbidden: Secret retrieval attempt not allowed - please review your user/project privileges
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 02:10:59,229 ERROR [barbican.api.controllers] Secret retrieval failure seen - please contact site administrator.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 68, in __getattr__
+    obj = getattr(state, key)
+AttributeError: 'NoneType' object has no attribute 'request'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 93, in enforcer
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 118, in on_get
+    resp = self._on_get_secret_metadata(self.secret, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 135, in _on_get_secret_metadata
+    pecan.override_template('json', 'application/json')
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 102, in override_template
+    request.pecan['override_template'] = template
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 70, in __getattr__
+    raise self.explanation_
+AttributeError: `pecan.state` is not bound to a context-local context.
+Ensure that you're accessing `pecan.request` or `pecan.response` from within the context of a WSGI `__call__` and that `use_context_locals` = True.
+2026-08-27 02:10:59,232 ERROR [barbican.api.controllers] Secret retrieval attempt not allowed - please review your user/project privileges
+
+{2} barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret_for_same_project_but_different_user [0.074504s] ... FAILED
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/__init__.py", line 97, in generate_safe_exception_message
+    raise excep
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    oslo_policy.policy.PolicyNotAuthorized: secret:get is disallowed by policy
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 535, in test_should_pass_get_secret_for_same_project_but_different_user
+    self._assert_pass_rbac(['admin', 'observer', 'creator', 'audit'],
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 203, in _assert_pass_rbac
+    exception = self.assertRaises(exc.HTTPServerError,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 701, in _invoke_on_get
+    self.resource.on_get(self.req, self.resp)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 57, in on_get
+    return self.controller.on_get(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 117, in handler
+    pecan.abort(status, message)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 127, in abort
+    raise webob_exception.with_traceback(traceback)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    webob.exc.HTTPForbidden: Secret retrieval attempt not allowed - please review your user/project privileges
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 02:10:59,229 ERROR [barbican.api.controllers] Secret retrieval failure seen - please contact site administrator.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 68, in __getattr__
+    obj = getattr(state, key)
+AttributeError: 'NoneType' object has no attribute 'request'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 93, in enforcer
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 118, in on_get
+    resp = self._on_get_secret_metadata(self.secret, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 135, in _on_get_secret_metadata
+    pecan.override_template('json', 'application/json')
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 102, in override_template
+    request.pecan['override_template'] = template
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 70, in __getattr__
+    raise self.explanation_
+AttributeError: `pecan.state` is not bound to a context-local context.
+Ensure that you're accessing `pecan.request` or `pecan.response` from within the context of a WSGI `__call__` and that `use_context_locals` = True.
+2026-08-27 02:10:59,232 ERROR [barbican.api.controllers] Secret retrieval attempt not allowed - please review your user/project privileges
+
+{5} barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret_for_private_enabled_with_read_acl [0.081426s] ... ok
+{3} barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret [0.078141s] ... ok
+{0} barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret_different_user_with_valid_read_acl [0.101910s] ... ok
+
+==============================
+Failed 2 tests - output below:
+==============================
+
+barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret_for_same_project_with_no_acl
+---------------------------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/__init__.py", line 97, in generate_safe_exception_message
+    raise excep
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    oslo_policy.policy.PolicyNotAuthorized: secret:get is disallowed by policy
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 542, in test_should_pass_get_secret_for_same_project_with_no_acl
+    self._assert_pass_rbac(['admin', 'observer', 'creator', 'audit'],
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 203, in _assert_pass_rbac
+    exception = self.assertRaises(exc.HTTPServerError,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 701, in _invoke_on_get
+    self.resource.on_get(self.req, self.resp)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 57, in on_get
+    return self.controller.on_get(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 117, in handler
+    pecan.abort(status, message)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 127, in abort
+    raise webob_exception.with_traceback(traceback)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    webob.exc.HTTPForbidden: Secret retrieval attempt not allowed - please review your user/project privileges
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 02:10:59,229 ERROR [barbican.api.controllers] Secret retrieval failure seen - please contact site administrator.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 68, in __getattr__
+    obj = getattr(state, key)
+AttributeError: 'NoneType' object has no attribute 'request'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 93, in enforcer
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 118, in on_get
+    resp = self._on_get_secret_metadata(self.secret, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 135, in _on_get_secret_metadata
+    pecan.override_template('json', 'application/json')
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 102, in override_template
+    request.pecan['override_template'] = template
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 70, in __getattr__
+    raise self.explanation_
+AttributeError: `pecan.state` is not bound to a context-local context.
+Ensure that you're accessing `pecan.request` or `pecan.response` from within the context of a WSGI `__call__` and that `use_context_locals` = True.
+2026-08-27 02:10:59,232 ERROR [barbican.api.controllers] Secret retrieval attempt not allowed - please review your user/project privileges
+
+
+barbican.tests.api.test_resources_policy.WhenTestingSecretResource.test_should_pass_get_secret_for_same_project_but_different_user
+----------------------------------------------------------------------------------------------------------------------------------
+
+Captured traceback:
+~~~~~~~~~~~~~~~~~~~
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/__init__.py", line 97, in generate_safe_exception_message
+    raise excep
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    oslo_policy.policy.PolicyNotAuthorized: secret:get is disallowed by policy
+
+    
+During handling of the above exception, another exception occurred:
+
+
+    Traceback (most recent call last):
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 535, in test_should_pass_get_secret_for_same_project_but_different_user
+    self._assert_pass_rbac(['admin', 'observer', 'creator', 'audit'],
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 203, in _assert_pass_rbac
+    exception = self.assertRaises(exc.HTTPServerError,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 495, in assertRaises
+    self.assertThat(our_callable, matcher)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 507, in assertThat
+    mismatch_error = self._matchHelper(matchee, matcher, message, verbose)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 560, in _matchHelper
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 108, in match
+    mismatch = self.exception_matcher.match(exc_info)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_higherorder.py", line 61, in match
+    mismatch = matcher.match(matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 484, in match
+    reraise(*matchee)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/compat.py", line 27, in reraise
+    raise exc_obj.with_traceback(exc_tb)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/matchers/_exception.py", line 101, in match
+    result = matchee()
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/testtools/testcase.py", line 1110, in __call__
+    return self._callable_object(*self._args, **self._kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 701, in _invoke_on_get
+    self.resource.on_get(self.req, self.resp)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/tests/api/test_resources_policy.py", line 57, in on_get
+    return self.controller.on_get(*args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 117, in handler
+    pecan.abort(status, message)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 127, in abort
+    raise webob_exception.with_traceback(traceback)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 88, in enforcer
+    _do_enforce_rbac(inst, pecan.request, action_name, ctx, **kwargs)
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 70, in _do_enforce_rbac
+    ctx.policy_enforcer.authorize(action_name, target,
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1189, in authorize
+    return self.enforce(
+
+      File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/oslo_policy/policy.py", line 1095, in enforce
+    raise PolicyNotAuthorized(rule, target, creds)
+
+    webob.exc.HTTPForbidden: Secret retrieval attempt not allowed - please review your user/project privileges
+
+
+Captured pythonlogging:
+~~~~~~~~~~~~~~~~~~~~~~~
+    2026-08-27 02:10:59,229 ERROR [barbican.api.controllers] Secret retrieval failure seen - please contact site administrator.
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 68, in __getattr__
+    obj = getattr(state, key)
+AttributeError: 'NoneType' object has no attribute 'request'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 107, in handler
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/__init__.py", line 93, in enforcer
+    return fn(inst, *args, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 118, in on_get
+    resp = self._on_get_secret_metadata(self.secret, **kwargs)
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/barbican/api/controllers/secrets.py", line 135, in _on_get_secret_metadata
+    pecan.override_template('json', 'application/json')
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 102, in override_template
+    request.pecan['override_template'] = template
+  File "/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-925464-926691-v1-2026-08-27/replay-work/formal-opendev-925464--target-926691/target-a1/.tox/py3/lib/python3.10/site-packages/pecan/core.py", line 70, in __getattr__
+    raise self.explanation_
+AttributeError: `pecan.state` is not bound to a context-local context.
+Ensure that you're accessing `pecan.request` or `pecan.response` from within the context of a WSGI `__call__` and that `use_context_locals` = True.
+2026-08-27 02:10:59,232 ERROR [barbican.api.controllers] Secret retrieval attempt not allowed - please review your user/project privileges
+
+
+
+======
+Totals
+======
+Ran: 6 tests in 0.1591 sec.
+ - Passed: 4
+ - Skipped: 0
+ - Expected Fail: 0
+ - Unexpected Success: 0
+ - Failed: 2
+Sum of execute time for each test: 0.4840 sec.
+
+==============
+Worker Balance
+==============
+ - Worker 0 (1 tests) => 0:00:00.101910
+ - Worker 1 (1 tests) => 0:00:00.073709
+ - Worker 2 (1 tests) => 0:00:00.074504
+ - Worker 3 (1 tests) => 0:00:00.078141
+ - Worker 4 (1 tests) => 0:00:00.074280
+ - Worker 5 (1 tests) => 0:00:00.081426

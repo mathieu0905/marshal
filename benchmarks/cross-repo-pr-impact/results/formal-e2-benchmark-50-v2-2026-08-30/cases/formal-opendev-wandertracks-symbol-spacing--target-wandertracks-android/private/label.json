@@ -1,0 +1,26 @@
+{
+  "candidate_id": "formal-opendev-wandertracks-symbol-spacing",
+  "command_config_path": ".zuul.yaml",
+  "command_config_repository": "target",
+  "expected_check_paths": [
+    "app/src/main/assets/basemaps/wandertracks.json"
+  ],
+  "mechanism": "Moving symbol-spacing into the canonical style layout makes the unchanged Android vendored JSON fail the existing cross-repository parity check.",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-wandertracks-parity-mirrors-2026-08-27",
+  "python": "/usr/bin/python3",
+  "relation_id": "formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android",
+  "repair_template": "Refresh the Android vendored basemap from the canonical source style without changing or skipping the parity check.",
+  "replay_adapter": "cross_repo_command",
+  "replay_plan": ".work/rebuild_symbolspacing_android/manifests/plan.jsonl",
+  "schema_version": "1.0",
+  "semantic_review": {
+    "a1_failure": "With only the source checkout changed, the target's pre-existing parity script structurally compares all five basemap JSON files, reports wandertracks.json as different, and exits nonzero after five positive checks.",
+    "approved": true,
+    "reviewer_basis": "Exact source base-to-opening diff, exact target parent-to-head diff and parent identity, target cutoff .zuul.yaml and parity script provenance, and the fresh isolated three-arm replay logs.",
+    "source_effect": "The complete opening source diff moves the stray symbol-spacing setting into the affected layer's layout and removes two invalid layer-level occurrences in the canonical wandertracks style.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android/evidence/formal-opendev-wandertracks-symbol-spacing--target-wandertracks-android/target.patch",
+    "target_repair": "The complete maintainer parent-to-head target patch changes only the vendored wandertracks.json copy to match the canonical structure; it neither modifies nor skips the parity script or its Zuul job."
+  },
+  "source_change_family": "opendev-change-1002510-opening",
+  "target_repository": "wandertracks/wandertracks-android"
+}

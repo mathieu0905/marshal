@@ -1,0 +1,687 @@
+diff --git a/cinder/policies/base.py b/cinder/policies/base.py
+index 13907a7..2e0a449 100644
+--- a/cinder/policies/base.py
++++ b/cinder/policies/base.py
+@@ -237,8 +237,8 @@
+ #    give us the full five Cinder personas.  After operators have made
+ #    appropriate adjustments to user and group role assignments in Keystone,
+ #    they will be able to use the new checkstrings by setting the
+-#    'enforce_new_defaults' and 'enforce_scope' options to appropriate
+-#    values in the [oslo_policy] section of their cinder configuration file.
++#    'enforce_new_defaults' option to appropriate values in the [oslo_policy]
++#    section of their cinder configuration file.
+ #
+ # 3. In Z, we let the Yoga policy configuration bake to allow operators
+ #    to time to make the Keystone adjustments mentioned above before they
+diff --git a/cinder/tests/unit/policies/base.py b/cinder/tests/unit/policies/base.py
+index c10879f..5761f78 100644
+--- a/cinder/tests/unit/policies/base.py
++++ b/cinder/tests/unit/policies/base.py
+@@ -44,12 +44,9 @@
+ 
+ 
+ class BasePolicyTest(test.TestCase):
+-    def setUp(self, enforce_scope, enforce_new_defaults, *args, **kwargs):
++    def setUp(self, enforce_new_defaults, *args, **kwargs):
+         super().setUp(*args, **kwargs)
+-        self.enforce_scope = enforce_scope
+         self.enforce_new_defaults = enforce_new_defaults
+-        self.override_config('enforce_scope',
+-                             enforce_scope, 'oslo_policy')
+         self.override_config('enforce_new_defaults',
+                              enforce_new_defaults, 'oslo_policy')
+         self.policy = self.useFixture(fixtures.PolicyFixture())
+diff --git a/cinder/tests/unit/policies/test_attachments.py b/cinder/tests/unit/policies/test_attachments.py
+index 1d32233..2c29574 100644
+--- a/cinder/tests/unit/policies/test_attachments.py
++++ b/cinder/tests/unit/policies/test_attachments.py
+@@ -47,11 +47,10 @@
+         'other_project_reader',
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+ 
+         self.controller = attachments.AttachmentsController()
+         self.manager = volume_manager.VolumeManager()
+@@ -247,7 +246,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_backups.py b/cinder/tests/unit/policies/test_backups.py
+index 1b285a1..8474b2d 100644
+--- a/cinder/tests/unit/policies/test_backups.py
++++ b/cinder/tests/unit/policies/test_backups.py
+@@ -79,9 +79,9 @@
+         'other_project_reader',
+     ]
+ 
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False, *args,
++    def setUp(self, enforce_new_defaults=False, *args,
+               **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+ 
+         self.override_config('backup_use_same_host', True)
+ 
+@@ -421,7 +421,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_default_volume_types.py b/cinder/tests/unit/policies/test_default_volume_types.py
+index 2862cb1..a39bb49 100644
+--- a/cinder/tests/unit/policies/test_default_volume_types.py
++++ b/cinder/tests/unit/policies/test_default_volume_types.py
+@@ -185,11 +185,10 @@
+         'other_project_reader',
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = default_types.DefaultTypesController()
+         self.api_path = '/v3/default-types/%s' % (self.project_id)
+         self.api_version = mv.DEFAULT_TYPE_OVERRIDES
+@@ -287,7 +286,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_group_actions.py b/cinder/tests/unit/policies/test_group_actions.py
+index c7c5811..d17416b 100644
+--- a/cinder/tests/unit/policies/test_group_actions.py
++++ b/cinder/tests/unit/policies/test_group_actions.py
+@@ -78,12 +78,11 @@
+         'other_project_member',
+         'other_project_reader',
+     ]
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
++    # Basic policy test is with deprecated rules enabled.
+ 
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = groups.GroupsController()
+         self.api_path = '/v3/%s/groups' % (self.project_id)
+         self.api_version = mv.GROUP_REPLICATION
+@@ -358,7 +357,6 @@
+     unauthorized_members = unauthorized_users
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_group_snapshots.py b/cinder/tests/unit/policies/test_group_snapshots.py
+index 88c335d..7892ce9 100644
+--- a/cinder/tests/unit/policies/test_group_snapshots.py
++++ b/cinder/tests/unit/policies/test_group_snapshots.py
+@@ -71,11 +71,10 @@
+         'other_project_reader',
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = group_snapshots.GroupSnapshotsController()
+         self.manager = volume_manager.VolumeManager()
+         self.api_path = '/v3/%s/group_snapshots' % (self.project_id)
+@@ -332,7 +331,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_group_types.py b/cinder/tests/unit/policies/test_group_types.py
+index a2cea3a..56a6211 100644
+--- a/cinder/tests/unit/policies/test_group_types.py
++++ b/cinder/tests/unit/policies/test_group_types.py
+@@ -42,9 +42,9 @@
+         'other_project_reader',
+     ]
+ 
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False, *args,
++    def setUp(self, enforce_new_defaults=False, *args,
+               **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = group_types.GroupTypesController()
+         self.api_path = '/v3/%s/group_types' % (self.project_id)
+         self.api_version = mv.GROUP_TYPE
+diff --git a/cinder/tests/unit/policies/test_groups.py b/cinder/tests/unit/policies/test_groups.py
+index b0b0831..1a7efc1 100644
+--- a/cinder/tests/unit/policies/test_groups.py
++++ b/cinder/tests/unit/policies/test_groups.py
+@@ -77,9 +77,9 @@
+         'system_foo',
+     ]
+ 
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False, *args,
++    def setUp(self, enforce_new_defaults=False, *args,
+               **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = groups.GroupsController()
+         self.api_path = '/v3/%s/groups' % (self.project_id)
+         self.api_version = mv.GROUP_VOLUME
+@@ -255,7 +255,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_limits.py b/cinder/tests/unit/policies/test_limits.py
+index 4b13f04..1a9d4b2 100644
+--- a/cinder/tests/unit/policies/test_limits.py
++++ b/cinder/tests/unit/policies/test_limits.py
+@@ -49,11 +49,10 @@
+ 
+     unauthorized_exceptions = []
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with and deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.limits_controller = limits.LimitsController()
+         self.used_limits_controller = used_limits.UsedLimitsController()
+         self.api_path = '/v3/%s/limits' % (self.project_id)
+@@ -112,7 +111,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_messages.py b/cinder/tests/unit/policies/test_messages.py
+index a87ef43..e33fbbb 100644
+--- a/cinder/tests/unit/policies/test_messages.py
++++ b/cinder/tests/unit/policies/test_messages.py
+@@ -45,10 +45,10 @@
+         'other_project_reader',
+     ]
+ 
+-    # Basic policy tests are without scope and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy tests are with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+ 
+         self.ext_mgr = extensions.ExtensionManager()
+         self.controller = messages.MessagesController(self.ext_mgr)
+@@ -162,7 +162,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_quota_class.py b/cinder/tests/unit/policies/test_quota_class.py
+index b99e885..45c22c3 100644
+--- a/cinder/tests/unit/policies/test_quota_class.py
++++ b/cinder/tests/unit/policies/test_quota_class.py
+@@ -43,11 +43,10 @@
+ 
+     unauthorized_exceptions = []
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = quota_classes.QuotaClassSetsController()
+         self.api_path = '/v3/os-quota-class-sets'
+         self.api_version = mv.BASE_VERSION
+@@ -93,7 +92,6 @@
+     # is scope based.
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_quotas.py b/cinder/tests/unit/policies/test_quotas.py
+index aafdf4b..2318dbd 100644
+--- a/cinder/tests/unit/policies/test_quotas.py
++++ b/cinder/tests/unit/policies/test_quotas.py
+@@ -61,11 +61,10 @@
+ 
+     unauthorized_exceptions = []
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = quotas.QuotaSetsController()
+         self.api_path = '/v3/os-quota-sets'
+         self.api_version = mv.BASE_VERSION
+@@ -141,7 +140,6 @@
+     # is scope based.
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_snapshot_actions.py b/cinder/tests/unit/policies/test_snapshot_actions.py
+index 0f2628b..9367e2d 100644
+--- a/cinder/tests/unit/policies/test_snapshot_actions.py
++++ b/cinder/tests/unit/policies/test_snapshot_actions.py
+@@ -68,11 +68,10 @@
+         exception.SnapshotNotFound,
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = snapshot_actions.SnapshotActionsController()
+         self.admin_controller = admin_actions.SnapshotAdminController()
+         self.api_path = '/v3/%s/snapshots' % (self.project_id)
+@@ -174,7 +173,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_snapshot_metadata.py b/cinder/tests/unit/policies/test_snapshot_metadata.py
+index ca5be30..8b06d7c 100644
+--- a/cinder/tests/unit/policies/test_snapshot_metadata.py
++++ b/cinder/tests/unit/policies/test_snapshot_metadata.py
+@@ -67,11 +67,10 @@
+         exception.SnapshotNotFound,
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = snapshot_metadata.SnapshotMetadataController()
+         self.api_path = '/v3/%s/snapshots' % (self.project_id)
+         self.api_version = mv.BASE_VERSION
+@@ -196,7 +195,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_snapshots.py b/cinder/tests/unit/policies/test_snapshots.py
+index 14b615c..0a0ffdb 100644
+--- a/cinder/tests/unit/policies/test_snapshots.py
++++ b/cinder/tests/unit/policies/test_snapshots.py
+@@ -87,11 +87,10 @@
+         exception.SnapshotNotFound,
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = snapshots.SnapshotsController()
+         self.api_path = '/v3/%s/snapshots' % (self.project_id)
+         self.api_version = mv.BASE_VERSION
+@@ -295,7 +294,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_type_extra_specs.py b/cinder/tests/unit/policies/test_type_extra_specs.py
+index 1871d8b..65001c7 100644
+--- a/cinder/tests/unit/policies/test_type_extra_specs.py
++++ b/cinder/tests/unit/policies/test_type_extra_specs.py
+@@ -68,11 +68,10 @@
+ 
+     unauthorized_exceptions = []
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = types_extra_specs.VolumeTypeExtraSpecsController()
+         self.api_path = '/v3/%s/types' % (self.project_id)
+         self.api_version = mv.BASE_VERSION
+@@ -279,7 +278,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_volume.py b/cinder/tests/unit/policies/test_volume.py
+index fbb668c..a21bbde 100644
+--- a/cinder/tests/unit/policies/test_volume.py
++++ b/cinder/tests/unit/policies/test_volume.py
+@@ -555,11 +555,10 @@
+         'system_foo',
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = volumes.VolumeController(mock.MagicMock())
+         self.api_path = '/v3/%s/volumes' % (self.project_id)
+ 
+@@ -822,7 +821,6 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_volume_access.py b/cinder/tests/unit/policies/test_volume_access.py
+index 9016539..47996ef 100644
+--- a/cinder/tests/unit/policies/test_volume_access.py
++++ b/cinder/tests/unit/policies/test_volume_access.py
+@@ -71,11 +71,10 @@
+     # note: authorize is called with fatal=False, so everyone is a winner!
+     everyone = authorized_users
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = vta.VolumeTypeActionController()
+         self.rule_name = vta_policies.TYPE_ACCESS_POLICY
+         self.api_version = mv.BASE_VERSION
+@@ -174,9 +173,8 @@
+     everyone = authorized_users + unauthorized_users
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+ 
+ 
+@@ -199,11 +197,10 @@
+         'other_project_reader',
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = vta.VolumeTypeAccessController()
+         self.volume_type = objects.VolumeType(
+             self.project_admin_context,
+@@ -240,7 +237,6 @@
+         VolumeTypeAccessListProjectsPolicyTest):
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_volume_actions.py b/cinder/tests/unit/policies/test_volume_actions.py
+index 17dacd5..3b94cbf 100644
+--- a/cinder/tests/unit/policies/test_volume_actions.py
++++ b/cinder/tests/unit/policies/test_volume_actions.py
+@@ -71,11 +71,10 @@
+         'other_project_reader',
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+ 
+         self.ext_mgr = extensions.ExtensionManager()
+         self.controller = volume_actions.VolumeActionsController(self.ext_mgr)
+@@ -711,9 +710,8 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+ 
+ 
+diff --git a/cinder/tests/unit/policies/test_volume_metadata.py b/cinder/tests/unit/policies/test_volume_metadata.py
+index a660c32..def4975 100644
+--- a/cinder/tests/unit/policies/test_volume_metadata.py
++++ b/cinder/tests/unit/policies/test_volume_metadata.py
+@@ -90,11 +90,10 @@
+         exception.VolumeNotFound,
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = volume_metadata.VolumeMetadataController()
+         self.image_controller = image_metadata.VolumeImageMetadataController()
+         self.api_path = '/v3/%s/volumes' % (self.project_id)
+@@ -328,9 +327,8 @@
+     ]
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+ 
+ 
+diff --git a/cinder/tests/unit/policies/test_volume_transfers.py b/cinder/tests/unit/policies/test_volume_transfers.py
+index e482630..8b5bb39 100644
+--- a/cinder/tests/unit/policies/test_volume_transfers.py
++++ b/cinder/tests/unit/policies/test_volume_transfers.py
+@@ -79,11 +79,10 @@
+         'system_foo',
+     ]
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = volume_transfer.VolumeTransferController()
+         self.api_path = '/v3/%s/os-volume-transfer' % (self.project_id)
+         self.volume_transfer_api = cinder.transfer.API()
+@@ -249,7 +248,6 @@
+     accept_unauthorized_users.remove('other_project_member')
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+diff --git a/cinder/tests/unit/policies/test_volume_type.py b/cinder/tests/unit/policies/test_volume_type.py
+index da61123..b763e18 100644
+--- a/cinder/tests/unit/policies/test_volume_type.py
++++ b/cinder/tests/unit/policies/test_volume_type.py
+@@ -52,11 +52,10 @@
+ 
+     unauthorized_exceptions = []
+ 
+-    # Basic policy test is without enforcing scope (which cinder doesn't
+-    # yet support) and deprecated rules enabled.
+-    def setUp(self, enforce_scope=False, enforce_new_defaults=False,
++    # Basic policy test is with deprecated rules enabled.
++    def setUp(self, enforce_new_defaults=False,
+               *args, **kwargs):
+-        super().setUp(enforce_scope, enforce_new_defaults, *args, **kwargs)
++        super().setUp(enforce_new_defaults, *args, **kwargs)
+         self.controller = types.VolumeTypesController()
+         self.api_path = '/v3/%s/types' % (self.project_id)
+         self.api_version = mv.BASE_VERSION
+@@ -156,9 +155,8 @@
+     unauthorized_exceptions = []
+ 
+     def setUp(self, *args, **kwargs):
+-        # Test secure RBAC by disabling deprecated policy rules (scope
+-        # is still not enabled).
+-        super().setUp(enforce_scope=False, enforce_new_defaults=True,
++        # Test secure RBAC by disabling deprecated policy rules.
++        super().setUp(enforce_new_defaults=True,
+                       *args, **kwargs)
+ 
+ 
+diff --git a/cinder/tests/unit/test_policy.py b/cinder/tests/unit/test_policy.py
+index 41b16c6..211256b 100644
+--- a/cinder/tests/unit/test_policy.py
++++ b/cinder/tests/unit/test_policy.py
+@@ -134,7 +134,6 @@
+         policy.authorize(admin_context, uppercase_action, self.target)
+ 
+     def test_enforce_properly_handles_invalid_scope_exception(self):
+-        self.fixture.config(enforce_scope=True, group='oslo_policy')
+         project_context = context.RequestContext(project_id='fake-project-id',
+                                                  roles=['bar'])
+         policy.reset()
+@@ -146,18 +145,6 @@
+         self.assertRaises(exception.PolicyNotAuthorized, policy.enforce,
+                           project_context, 'foo', {})
+ 
+-    def test_enforce_does_not_raise_forbidden(self):
+-        self.fixture.config(enforce_scope=False, group='oslo_policy')
+-        project_context = context.RequestContext(project_id='fake-project-id',
+-                                                 roles=['bar'])
+-        policy.reset()
+-        policy.init()
+-        rule = oslo_policy.RuleDefault('foo', 'role:bar',
+-                                       scope_types=['system'])
+-        policy._ENFORCER.register_defaults([rule])
+-
+-        self.assertTrue(policy.enforce(project_context, 'foo', {}))
+-
+     def test_enforce_passes_context_objects_to_enforcement(self):
+         fake_context = context.RequestContext(roles=['foo'])
+         action = 'foo'

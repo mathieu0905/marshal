@@ -1,0 +1,97 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5100,
+    "case_id": "formal-opendev-951104",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-30T04:27:06.321078Z",
+  "blind_prediction_created_at": "2026-08-30T04:26:51.163929Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-951104",
+  "case_id": "formal-opendev-951104--target-951351",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/glance"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": false,
+  "formal_benchmark_reason": "grouped dataset split and collection release are separate",
+  "label_revealed_at": "2026-08-30T04:27:06.327262Z",
+  "mechanism": "oslo.limit 2.7 changes the limit retrieval call surface used by Glance, while the cutoff KeystoneQuotaFixture mocks the former internal SDK connection and callback shape",
+  "repair_template": "replace the hand-built internal-path test fixture with the public oslo.limit LimitFixture subclass",
+  "replay": {
+    "catalog_source_snapshot_commit": "631b6b9aff1c1a1e0ee4e2043871b3519ec7b3c7",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'",
+    "installed_source_versions": {
+      "A0": "2.6.1",
+      "A1": "2.7.0",
+      "A2": "2.7.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "631b6b9aff1c1a1e0ee4e2043871b3519ec7b3c7",
+    "source_head_commit": "fc5e3017f28aafa72d149633fba2e6ba645ea0e7",
+    "source_versions": {
+      "A0": "2.6.1",
+      "A1": "2.7.0",
+      "A2": "2.7.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "d12086ec6a3cf1a22a2766bd1ba9c5b85ffba8a4",
+    "target_test_path": "glance/tests/unit/test_quota.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "glance.tests.unit.test_quota.TestImageKeystoneQuota.test_enforce_overquota"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-951104--target-951351",
+    "check_position_found": false,
+    "dataset_status": "single_case_construction",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "glance/tests/unit/fixtures.py",
+      "glance/tests/unit/test_quota.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "target_recall": 0.0,
+    "target_repository": "openstack/glance"
+  },
+  "semantic_review": {
+    "a1_failure": "All four pre-existing Glance quota selectors pass with oslo.limit 2.6.1, fail only in A1 with oslo.limit 2.7.0, and expose the exclusive stable signature TypeError: KeystoneQuotaFixture.setUp.<locals>.fake_limits() missing 1 required positional argument: 'resource_name'.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the exact one-pin opening diff, the complete base-to-maintainer-head target diff, cutoff tox.ini command provenance, fresh installed-version probes, all twelve fresh arm logs, exclusive normalized failure signature, and zero-skip A0/A2 test totals.",
+    "source_effect": "The opening changes exactly the oslo.limit upper-constraint from 2.6.1 to 2.7.0. Fresh probes confirm 2.6.1/2.7.0/2.7.0 in A0/A1/A2; in 2.7.0 the SDK limits query no longer passes resource_name, which is incompatible with Glance's cutoff fake_limits callback that requires it.",
+    "target_patch": ".work/rebuild_951104_951351/intake/951351.patch",
+    "target_repair": "The complete maintainer diff applies cleanly to the cutoff Glance commit and only replaces the stale hand-built SDK/enforcer fixture internals with a subclass of oslo_limit.fixture.LimitFixture. The same four selectors pass in A2 with no skips, so recovery follows the changed public fixture behavior rather than deleting or bypassing tests."
+  },
+  "source_change_family": "opendev-change-951104-opening",
+  "status": "case_ready_for_formal_pool"
+}
