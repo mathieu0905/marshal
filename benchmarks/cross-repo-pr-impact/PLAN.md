@@ -1,10 +1,18 @@
 # 跨仓影响评测数据集计划
 
-日期：2026-08-30
+日期：2026-08-31
+
+## 2026-08-31 构念效度修正
+
+2026-08-30 的闭环只适用于 strict-E2 标签真实性和候选选择运行，不能称为 Marshal 因果验证产品已经闭环。当前新增四轨评测：50 条 E2 排序、evaluator-owned 新鲜三臂执行、10 条 E3/3 个完整 bounded pack 的克制面、3 条逃逸棘轮顺序任务。
+
+实测边界是：主仓仅 1/50 条具备可直接新鲜重放的完整材料，独立发布包为 0/50；一条新鲜执行在完整分母上给出严格执行准确率 0.02、`not_assessed` 率 0.98；10/10 E3 通过原始证据解析验证；当前 Marshal 的棘轮登记率为 1.0，但复发调度率和端到端率均为 0。权威说明见 `PRODUCT_CONSTRUCT_VALIDITY.md`。
+
+下一优先级依次为：物化剩余 49 条 execution material、对三个 E3 pack 运行真实系统判断、连接 ratchet registry 与复发调度、增加第二生态的 development 机制。不得再用冻结排序运行或历史标签日志代替这些实测。
 
 ## 2026-08-30 完成状态
 
-candidate-bounded strict-E2 数据集构造、组级 split、正式发布和首次冻结运行已经闭环。当前权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，包含 50 条 verifier-clean strict-E2、15 个隔离组和 30/10/10 split；匹配的 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/` 完成 50 个断网盲容器和统一揭签后的全量计分复核。两个 verifier 均为 `verified=true`、`blockers=[]`。
+candidate-bounded strict-E2 标签构造、组级 split、候选选择发布和首次冻结排序运行已经闭环。当前权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，包含 50 条 verifier-clean strict-E2、15 个隔离组和 30/10/10 split；匹配的 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/` 完成 50 个断网盲容器和统一揭签后的排序计分复核。两个 verifier 均为 `verified=true`、`blockers=[]`。该闭环不包含产品级 A0/A1 执行、克制面或逃逸棘轮。
 
 后续默认工作从“继续扩采”切换为发布维护：专用私有数据仓库 `mathieu0905/cross-repo-breakage-benchmark` 已在 commit `75875e4` 完成本轮同步和抽取布局复验；替换任何 case 时仍须先通过单条 skill，再重新生成整个 release 并整体同步。E3、E4、A3 和开放世界仓库发现仍不是当前 E2 主集的补齐目标。
 

@@ -23,12 +23,14 @@ python3 .agents/skills/marshal-e2-case-builder/scripts/verify_frozen_benchmark.p
 - The frozen verifier recomputes scores with code from the same skill package as the runner. It detects output or storage drift, chronology violations, and aggregate inconsistencies, but it is not an independently implemented scorer.
 - Container isolation is established by the runner's Docker boundary and its recorded evidence, then consistency-checked by the verifier. It is not an external attestation.
 - Candidate source archives and Git mirrors are project-local storage referenced by the public manifests; they are not duplicated into this 41 MB evidence package. A distribution must either carry those exact-commit stores or rewrite only the storage location while preserving the declared repository and commit mapping.
+- This acceptance verifies label truth, isolation, and candidate selection. It does not certify product-level causal execution. `execution-materials-audit.json` currently records 1/50 project-local fresh-replay-ready cases and 0/50 standalone-release-ready cases.
 
 ## Not supported
 
 - Non-target candidates remain `unjudged`; the main set does not support precision, F1, false-positive rate, or specificity.
 - One frozen run of one ranker does not support cross-system superiority claims.
 - The frozen ranker proposed no runnable checks, so runnable-check rate is 0 and execution results are `not_assessed`. This describes the ranker's output, not the quality of the strict-E2 labels.
+- The product-level execution smoke run is separate and keeps the complete 50-target denominator: 1 assessed and 49 `not_assessed`. Ten E3 cases and three ratchet sequences are also scored separately; none changes main-set unjudged candidates into negatives.
 - The checked-in release contains labels and frozen predictions. A third-party blind evaluation must distribute a carved public package and withhold `final-index.jsonl`, `expected-locations.json`, `cases/*/private/`, scores, and prior predictions until prediction submission is frozen.
 
 ## Version and repository location

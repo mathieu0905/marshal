@@ -4,4 +4,4 @@ This release contains 50 verifier-clean strict-E2 directed relations. Every case
 
 The grouped split contains 30 development, 10 evaluation, and 10 holdout cases. Directed relation, source change family, normalized mechanism, and normalized repair template do not cross splits. Non-target candidates are unjudged, so precision, F1, false-positive rate, and specificity are not reported.
 
-The matching frozen system run is `../formal-e2-benchmark-50-system-run-v3-2026-08-30/`. See `ACCEPTANCE.md` for the executable acceptance commands, storage boundary, unsupported claims, and blind-distribution carving requirements.
+The matching frozen system run is `../formal-e2-benchmark-50-system-run-v3-2026-08-30/`, but it is a candidate-selection run, not a causal-execution result. The execution-material audit currently finds 1/50 project-local fresh-replay-ready cases and 0/50 standalone-release-ready cases. See `../../PRODUCT_CONSTRUCT_VALIDITY.md` and `ACCEPTANCE.md` for the separate product tracks and publication boundary.

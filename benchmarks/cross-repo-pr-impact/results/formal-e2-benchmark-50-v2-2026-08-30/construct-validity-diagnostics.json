@@ -1,0 +1,147 @@
+{
+  "case_count": 50,
+  "catalog_use_counts": {
+    "assertj-github-organization-2026-08-25": 1,
+    "domain-pack-openstack-requirements-python-consumers": 1,
+    "formal-openstack-global-requirements-2026-08-26": 40,
+    "maven-jackson-core-complete-dependents-2026-08-27": 1,
+    "maven-org-apache-derby-complete-dependents-2026-08-27": 1,
+    "maven-plexus-utils-complete-dependents-2026-08-27": 1,
+    "opendev-matrix-gerritbot-opendev-room-exact-projects-2026-08-10": 1,
+    "opendev-wandertracks-organization-2026-08-27": 1,
+    "openstack-global-requirements-2026-08-11": 2,
+    "openstack-requirements-python-consumers": 1
+  },
+  "catalogs_observed_once": [
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 18,
+      "catalog_id": "assertj-github-organization-2026-08-25",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": false,
+      "observed_case_count": 1,
+      "selection_rule": "All public, non-fork repositories returned by the GitHub assertj organization repository directory at catalog construction time; archived repositories remain candidates. Repositories created after a case cutoff are retained in membership and resolved as not_created_by_cutoff."
+    },
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 262,
+      "catalog_id": "domain-pack-openstack-requirements-python-consumers",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": false,
+      "observed_case_count": 1,
+      "selection_rule": "Every repository governed by openstack/requirements projects.txt at the recorded source-opening base revision; membership is read before and independently of E2 targets."
+    },
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 4846,
+      "catalog_id": "maven-jackson-core-complete-dependents-2026-08-27",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": null,
+      "observed_case_count": 1,
+      "selection_rule": "All canonical GitHub repositories associated with every dependent-package row returned by exhaustive, name-ascending pagination for the source package; no E2 target label is read during membership construction."
+    },
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 532,
+      "catalog_id": "maven-org-apache-derby-complete-dependents-2026-08-27",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": null,
+      "observed_case_count": 1,
+      "selection_rule": "All canonical GitHub repositories associated with every dependent-package row returned by exhaustive, name-ascending pagination for the source package; no E2 target label is read during membership construction."
+    },
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 1489,
+      "catalog_id": "maven-plexus-utils-complete-dependents-2026-08-27",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": null,
+      "observed_case_count": 1,
+      "selection_rule": "All canonical GitHub repositories associated with every dependent-package row returned by exhaustive, name-ascending pagination for the source package; no E2 target label is read during membership construction."
+    },
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 47,
+      "catalog_id": "opendev-matrix-gerritbot-opendev-room-exact-projects-2026-08-10",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": false,
+      "observed_case_count": 1,
+      "selection_rule": "At the source opening cutoff, find the unique Matrix Gerrit bot room whose projects list contains the source repository as an exact repository identifier, then include every exact repository identifier in that same room; wildcard entries are excluded uniformly because they are not concrete repository identifiers. The room and membership are selected without consulting E2 targets or relation labels."
+    },
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 7,
+      "catalog_id": "opendev-wandertracks-organization-2026-08-27",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": false,
+      "observed_case_count": 1,
+      "selection_rule": "All public non-fork repositories returned by the OpenDev wandertracks organization endpoint, without consulting any E2 relation or target label."
+    },
+    {
+      "admission_basis": "label-independent reusable directory observed once in this sample; not a target-tailored singleton directory",
+      "candidate_count": 262,
+      "catalog_id": "openstack-requirements-python-consumers",
+      "catalog_status": "label_independent_reusable",
+      "membership_reads_labels": false,
+      "observed_case_count": 1,
+      "selection_rule": "All repositories listed in projects.txt at the source-opening base commit; membership is independent of any single E2 relation."
+    }
+  ],
+  "claim_boundary": {
+    "domain_generalization_supported": false,
+    "memory_stratification": "Report recent/middle/legacy buckets separately; the benchmark does not infer model memorization from age alone.",
+    "reason": "The set is dominated by OpenStack requirements/constraint mechanisms; JVM cases are concentrated outside development."
+  },
+  "ecosystem_counts": {
+    "github_jvm": 4,
+    "openstack": 44,
+    "other_opendev": 2
+  },
+  "replay_adapter_counts": {
+    "ant_source_maven_target": 1,
+    "cross_repo_command": 2,
+    "maven_source": 3,
+    "requirements_constraint": 37,
+    "requirements_registration": 1,
+    "source_editable": 6
+  },
+  "schema_version": "1.0",
+  "split_by_ecosystem": {
+    "development": {
+      "openstack": 29,
+      "other_opendev": 1
+    },
+    "evaluation": {
+      "github_jvm": 1,
+      "openstack": 8,
+      "other_opendev": 1
+    },
+    "holdout": {
+      "github_jvm": 3,
+      "openstack": 7
+    }
+  },
+  "split_by_replay_adapter": {
+    "development": {
+      "cross_repo_command": 1,
+      "requirements_constraint": 29
+    },
+    "evaluation": {
+      "cross_repo_command": 1,
+      "maven_source": 1,
+      "requirements_constraint": 4,
+      "requirements_registration": 1,
+      "source_editable": 3
+    },
+    "holdout": {
+      "ant_source_maven_target": 1,
+      "maven_source": 2,
+      "requirements_constraint": 4,
+      "source_editable": 3
+    }
+  },
+  "time_bucket_counts": {
+    "legacy_2020_or_earlier": 5,
+    "middle_2021_2024": 26,
+    "recent_2025_or_later": 19
+  }
+}

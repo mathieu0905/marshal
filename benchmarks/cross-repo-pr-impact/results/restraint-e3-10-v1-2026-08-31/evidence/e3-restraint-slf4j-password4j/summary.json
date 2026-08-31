@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-08-24",
+  "project_package": {
+    "provider_repository": "qos-ch/slf4j",
+    "breaking_change": "org.slf4j:slf4j-api 1.7.36 to 2.0.0",
+    "compatible_change": "org.slf4j:slf4j-api 1.7.29 to 1.7.30",
+    "positive_consumer": "jadler-mocking/jadler",
+    "bounded_negative_consumers": [
+      "Password4j/password4j",
+      "diffplug/spotless",
+      "rabbitmq/rabbitmq-jms-client"
+    ]
+  },
+  "decision": {
+    "execution_status": "three_repetitions_complete",
+    "formal_label_accepted": false,
+    "reason": "All 60 formal repository commands matched the intervention contract, but an independent reviewer has not yet accepted the extracted Jadler repair, the three bounded negative-label ceilings, or the compatible-change boundary."
+  },
+  "protocol": {
+    "repetitions": 3,
+    "arms": {
+      "a0": {
+        "slf4j": "1.7.36",
+        "meaning": "old combination"
+      },
+      "a1": {
+        "slf4j": "2.0.0",
+        "meaning": "source upgrade only"
+      },
+      "a2": {
+        "slf4j": "2.0.0",
+        "meaning": "source upgrade plus the precise Jadler repair; identical to A1 for bounded-negative consumers"
+      },
+      "a3_before": {
+        "slf4j": "1.7.29",
+        "meaning": "compatible-change before arm"
+      },
+      "a3_after": {
+        "slf4j": "1.7.30",
+        "meaning": "compatible-change after arm"
+      }
+    },
+    "commands": {
+      "jadler-mocking/jadler": {
+        "argv": ["mvn", "-B", "clean", "test"],
+        "environment": "Maven 3.8.6, Eclipse Temurin 11 container"
+      },
+      "Password4j/password4j": {
+        "argv": ["mvn", "-B", "clean", "test"],
+        "environment": "Maven 3.9.9, Eclipse Temurin 8 container"
+      },
+      "diffplug/spotless": {
+        "argv": [
+          "gradle",
+          ":testlib:test",
+          "--tests",
+          "com.diffplug.spotless.markdown.FreshMarkStepTest",
+          "--tests",
+          "com.diffplug.spotless.pom.SortPomTest",
+          "--no-daemon",
+          "--rerun-tasks",
+          "--max-workers=1"
+        ],
+        "environment": "Gradle 7.5.1, JDK 11 container, independent writable Docker volume for user.home"
+      },
+      "rabbitmq/rabbitmq-jms-client": {
+        "argv": ["mvn", "-B", "clean", "test"],
+        "environment": "Maven 3.9.8, Eclipse Temurin 11 container"
+      }
+    },
+    "isolation": "Each repetition and arm used a separate source checkout and a separate writable dependency directory or Docker volume. Dependency seeds were copied before execution; source trees and writable caches were not shared between formal units."
+  },
+  "aggregate": {
+    "repository_commands": 60,
+    "expected_direction_matches": 60,
+    "version_inputs_verified": 60,
+    "expected_nonzero_exits": 3,
+    "unexpected_nonzero_exits": 0,
+    "by_arm": {
+      "a0": {"commands": 12, "pass": 12, "expected_fail": 0},
+      "a1": {"commands": 12, "pass": 9, "expected_fail": 3},
+      "a2": {"commands": 12, "pass": 12, "expected_fail": 0},
+      "a3_before": {"commands": 12, "pass": 12, "expected_fail": 0},
+      "a3_after": {"commands": 12, "pass": 12, "expected_fail": 0}
+    }
+  },
+  "consumer_results": {
+    "jadler-mocking/jadler": {
+      "commands": 15,
+      "a1": "failed in all three repetitions after 235 tests started, with 5 errors each",
+      "other_arms": "all 12 commands passed 389 tests",
+      "failure_signature": "SLF4J 2 ignored Logback 1.2.11, selected NOPLoggerFactory, and JadlerMockerTest failed when casting it to LoggerContext",
+      "repair": "A2 changed only Logback 1.2.11 to 1.3.4 while keeping SLF4J at 2.0.0"
+    },
+    "Password4j/password4j": {
+      "commands": 15,
+      "result": "all passed 206 tests",
+      "boundary": "No logging provider is present. The result covers native tests that execute ordinary SLF4J calls, not provider behavior."
+    },
+    "diffplug/spotless": {
+      "commands": 15,
+      "result": "all passed the three targeted FreshMarkStepTest and SortPomTest methods after compiling all required source and test sets",
+      "boundary": "SLF4J is compile-only. The formal result is limited to the two production paths that use LoggerFactory and does not claim full-suite or arbitrary-provider compatibility."
+    },
+    "rabbitmq/rabbitmq-jms-client": {
+      "commands": 15,
+      "result": "all passed 114 tests",
+      "boundary": "SLF4J 2 disables the old Logback binding. The result covers the native unit suite without broker-backed integration tests and does not establish provider compatibility."
+    }
+  },
+  "retained_environment_attempts": {
+    "spotless_full_suite": {
+      "counted_as_formal_result": false,
+      "description": "The 155-test command, with 7 skipped tests, passed in multiple arms and repetitions but was not stable enough for the formal contract. Other attempts failed only in dynamically provisioned formatter dependencies such as Palantir Java Format and Flexmark because Gradle lost descriptor lock files; unrelated tests continued to pass.",
+      "evidence": "All original, retry, stable, and offline-check logs remain beside the targeted logs under rep1/spotless, rep2/spotless, and rep3/spotless."
+    },
+    "initial_spotless_setup": {
+      "counted_as_formal_result": false,
+      "description": "Initial wrapper downloads failed certificate validation, and early user.home/cache layouts were unwritable or misplaced. Those logs are retained and were not interpreted as SLF4J outcomes."
+    },
+    "maven_seed_layout": {
+      "counted_as_formal_result": true,
+      "description": "Second-repetition Jadler caches were initially seeded one directory above Maven's configured repository. Maven downloaded missing artifacts and entered the real test phase; the completed results were retained. Third-repetition caches were prepared from the populated repository directories."
+    }
+  },
+  "label_limits": [
+    "A2 for Password4j, Spotless, and RabbitMQ JMS Client is the same input as A1 and is only an independent stability confirmation, not a second bounded-negative label.",
+    "The package establishes one positive consumer and three command-scoped bounded negatives inside this four-repository closed set; it does not establish that other repositories are unaffected.",
+    "The A3 runs exercise ordinary initialization and logging paths but do not deliberately force every initialization-failure concurrency path changed by SLF4J 1.7.30.",
+    "Independent semantic review remains required before project-level precision, false-positive, or stopping claims are reported."
+  ],
+  "next_required_steps": [
+    "Have an independent reviewer assess the extracted Jadler repair and the three bounded-negative command ceilings.",
+    "Have the reviewer assess whether the full 1.7.29 to 1.7.30 release is an adequate compatible-change control for the stated paths.",
+    "Only after review, add this package to a relation-isolated development, formal, or holdout split."
+  ]
+}
