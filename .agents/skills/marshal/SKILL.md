@@ -76,7 +76,8 @@ description: Use when reviewing a change before merge in Codex — runs the Mars
 1. cli ratchet-open 登记逃逸。
 2. 先判断它是可固化的功能/安全性属性，还是只能成为 review hazard 的否定性属性。
 3. 把根因和永久检查草案交给用户确认。
-4. cli ratchet-close 关闭逃逸；spawned_check 为空时不得绕过。
+4. cli ratchet-close 关闭逃逸；必须同时登记永久检查的非空 argv 和源仓/路径触发
+   范围，spawned_check 为空或检查不可调度时不得绕过。
 5. 在目标 repo 起草永久检查的测试骨架。
 
 ## Codex 编排纪律

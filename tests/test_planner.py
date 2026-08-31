@@ -34,6 +34,39 @@ def test_plan_empty_for_unknown_repo(db_session):
     assert orch.plan(ev).invariants == []
 
 
+def test_plan_schedules_registered_ratchet_only_on_recorded_trigger(db_session):
+    store = Store(db_session)
+    store.open_escape(id="esc-plan", description="missed compatibility break",
+                      root_cause_class="dependency-contract")
+    store.close_escape_with_invariant(
+        "esc-plan", spawned_check="ratchet.compat.replay",
+        invariant={
+            "id": "ratchet.compat.replay", "domain_pack": "cowboy",
+            "domain": "cross-repo", "spec_ref": "escape:esc-plan",
+            "executor_kind": "command", "location_repo": "consumer",
+            "location_path": "tests/test_contract.py", "location_test": "test_contract",
+            "severity": "high", "run_command": ["pytest", "tests/test_contract.py"],
+            "trigger_repo": "source", "trigger_paths": ["api/schema/**"],
+        },
+    )
+    orch = Orchestrator(pack=CowboyPack(), store=store)
+
+    recurrence = orch.plan(NormalizedEvent(
+        kind="pr", repo="source", change_ref="again",
+        diff_paths=["api/schema/v2.json"],
+    ))
+    unrelated = orch.plan(NormalizedEvent(
+        kind="pr", repo="source", change_ref="docs",
+        diff_paths=["README.md"],
+    ))
+
+    assert [row["invariant_id"] for row in recurrence.invariants] == [
+        "ratchet.compat.replay"
+    ]
+    assert recurrence.invariants[0]["location_repo"] == "consumer"
+    assert unrelated.invariants == []
+
+
 def test_plan_endpoint(tmp_path, monkeypatch):
     import importlib
     from fastapi.testclient import TestClient

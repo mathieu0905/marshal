@@ -99,7 +99,7 @@ python -m marshal_core.cli <command> [options]
 | `conformance [--spec-root <repo>]` | Emit the spec-to-invariant coverage matrix; with a spec root, report CIP coverage and gaps |
 | `reconcile-invariants [--apply] [--verify]` | Reconcile the demand-driven DB registry against the full pack catalog: report (and, with `--apply`, seed) the invariants no PR has exercised yet, plus per-repo coverage gaps. `--verify` runs each anchor test first and seeds only the green ones. Dry-run by default |
 | `ratchet-open --escape-id ... --desc ...` | Register a quality escape |
-| `ratchet-close --escape-id ... --spawned-check ... --inv-json ...` | Close an escape and register its permanent check |
+| `ratchet-close --escape-id ... --spawned-check ... --inv-json ...` | Close an escape and register its executable permanent check plus source repo/path recurrence trigger |
 | `gate-record --change-ref ... --verdict pass` | Persist a gate result |
 | `metrics` | Summarize the quality metrics in the knowledge core |
 | `worktree-diff [--repo-root ...] [--base ...]` | Collect one local diff including committed, staged, unstaged, and untracked content; auto-detect the remote default branch or require `--base` rather than silently omit commits |

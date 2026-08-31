@@ -80,14 +80,21 @@ def run(sequences: list[dict[str, Any]], work_dir: Path) -> list[dict[str, Any]]
             )
             recurrence_plan = orchestrator.plan(event(sequence["recurrence"]))
             unrelated_plan = orchestrator.plan(event(sequence["unrelated_control"]))
+            recurrence_ids = [row["invariant_id"] for row in recurrence_plan.invariants]
+            unrelated_ids = [row["invariant_id"] for row in unrelated_plan.invariants]
+            scheduled = check in recurrence_ids
             outputs.append({
                 "sequence_id": sequence["sequence_id"],
                 "registered_check_id": store.get_escape(escape).spawned_check,
-                "recurrence_scheduled_check_ids": [row["invariant_id"] for row in recurrence_plan.invariants],
-                "unrelated_scheduled_check_ids": [row["invariant_id"] for row in unrelated_plan.invariants],
+                "recurrence_scheduled_check_ids": recurrence_ids,
+                "unrelated_scheduled_check_ids": unrelated_ids,
                 "recurrence_execution": {"status": "not_assessed"},
                 "recurrence_decision": "not_assessed",
-                "diagnosis": "The check is stored in InvariantRegistry, but Orchestrator.plan reads only DomainPack.list_invariants; current core does not schedule the newly registered row.",
+                "diagnosis": (
+                    "The registered executable ratchet was selected by its source trigger."
+                    if scheduled else
+                    "The registered ratchet did not enter recurrence planning."
+                ),
             })
         finally:
             session.close()

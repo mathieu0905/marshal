@@ -1,7 +1,7 @@
 # 跨仓评测任务定义
 
-版本：2.0
-日期：2026-08-25
+版本：2.1
+日期：2026-08-31
 
 ## 任务边界
 
@@ -90,9 +90,22 @@ E3 不是 E2 的准入条件。如果同一 bounded universe 的正负候选没�
 
 推理阶段遵循 `INPUT_SPEC.md` 并关闭网络。受测系统不能读取隐藏 case、目标 PR、协调尾注、持续集成历史、执行答案或结果目录。OpenDev 邮件补丁必须转换为纯代码差异，不能泄漏 `Depends-On` 或目标地址。
 
-## 数据划分
+## 数据划分与任务单位
 
-当前 100 条 schema-v1 索引继续全部标为 `test`。50 条最终 E1 子集在独立发布索引中按完整项目组隔离：OpenTelemetry 为 development、Ethereum 为 evaluation、Rust 为 holdout；同一项目不跨 split。其余 50 条尚未进入该发布划分，单例候选目录仅用于 development 或敏感性分析。
+legacy 的 100 条 schema-v1 索引继续全部标为 `test`。50 条最终 E1 子集在独立
+发布索引中按完整项目组隔离：OpenTelemetry 为 development、Ethereum 为
+evaluation、Rust 为 holdout；同一项目不跨 split。
+
+当前 strict-E2 发布包含 50 条“源事件—目标仓”关系，但候选选择的任务单位是源
+事件。相同源仓、base/head、代码 patch、观察截止时间和候选目录的关系必须合并为
+一个输入，并把全部已知目标作为多目标标签；不得让同一模型输入以多个单目标答案
+重复计权。目标修复仍以 50 条关系为任务单位，因为每条关系有独立目标 base、固定
+检查和维护者补丁。
+
+现有 E2 标签已进入公开 Git 历史，因此当前 evaluation/holdout 只能解释为公开评测
+划分或 holdout proposal，不能称为真正盲测。真正 blind holdout 必须来自从未公开的
+新案例，或由不分发标签的私有 evaluator/server 计分；删除、改名或移动已公开文件
+不能恢复盲性。
 
 ## 发布边界
 

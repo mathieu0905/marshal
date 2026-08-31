@@ -142,6 +142,16 @@ def _deep_env(tmp_path, monkeypatch, verdict_json):
     return sha
 
 
+def _evidence_json():
+    return {
+        "steps": {
+            name: {"status": "complete", "evidence_ref": f"artifact:{name}"}
+            for name in ("closure", "scout", "prove", "invariant")
+        },
+        "external_scan": {"status": "complete", "findings": 0},
+    }
+
+
 def test_run_deep_writes_gate_run_and_finishes(db_session, tmp_path, monkeypatch):
     sha = _deep_env(tmp_path, monkeypatch,
                     '{"verdict":"needs_human","summary":"looks risky",'
@@ -171,9 +181,11 @@ def test_run_deep_propagates_on_bad_verdict(db_session, tmp_path, monkeypatch):
 
 
 def test_run_once_deep_success_end_to_end(db_session, tmp_path, monkeypatch):
-    sha = _deep_env(tmp_path, monkeypatch,
-                    '{"verdict":"pass","summary":"ok","findings":[],'
-                    '"invariants_run":2,"invariants_pass":2}')
+    sha = _deep_env(tmp_path, monkeypatch, json.dumps({
+        "verdict": "pass", "summary": "ok", "findings": [],
+        "invariants_run": 2, "invariants_pass": 2,
+        "evidence": _evidence_json(),
+    }))
     s = Store(db_session)
     job = s.enqueue_job(change_ref=sha, repo="node", kind="deep")
     assert run_once(s, CowboyPack()) is True

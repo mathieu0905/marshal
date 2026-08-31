@@ -12,8 +12,9 @@ class InvariantGate:
     def __init__(self, pack: DomainPack):
         self.pack = pack
 
-    def build_dispatch(self, event: NormalizedEvent) -> DispatchJob:
-        invs = self.pack.list_invariants(event_scope(event))
+    def build_dispatch(self, event: NormalizedEvent, invariants=None) -> DispatchJob:
+        invs = (self.pack.list_invariants(event_scope(event))
+                if invariants is None else invariants)
         return DispatchJob(
             job_id=f"inv-{event.change_ref}",
             kind="invariant",

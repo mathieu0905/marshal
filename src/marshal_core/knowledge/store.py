@@ -1,6 +1,7 @@
 """知识核读写薄封装。"""
 import json
 import re
+from fnmatch import fnmatchcase
 from datetime import timedelta
 
 from sqlalchemy import select, func, or_, update
@@ -30,8 +31,15 @@ class Store:
         self.s = session
 
     def register_invariant(self, **kw) -> InvariantRegistry:
-        inv = InvariantRegistry(**kw)
-        self.s.merge(inv)
+        identifier = kw.get("id")
+        inv = self.s.get(InvariantRegistry, identifier) if identifier else None
+        if inv is None:
+            inv = InvariantRegistry(**kw)
+            self.s.add(inv)
+        else:
+            for field, value in kw.items():
+                if field != "id":
+                    setattr(inv, field, value)
         self.s.commit()
         return inv
 
@@ -42,6 +50,32 @@ class Store:
             InvariantRegistry.status == "active",
         )
         return list(self.s.scalars(stmt))
+
+    def list_triggered_ratchet_invariants(
+        self, domain_pack: str, repo: str, diff_paths: list[str],
+    ) -> list[InvariantRegistry]:
+        """Return executable ratchet checks whose recorded trigger matches this change."""
+        stmt = select(InvariantRegistry).where(
+            InvariantRegistry.domain_pack == domain_pack,
+            InvariantRegistry.origin == "ratchet",
+            InvariantRegistry.status == "active",
+            InvariantRegistry.trigger_repo == repo,
+        ).order_by(InvariantRegistry.id)
+        rows = []
+        for row in self.s.scalars(stmt):
+            command = row.run_command or []
+            patterns = row.trigger_paths or []
+            if not command or not patterns:
+                continue
+            if any(
+                fnmatchcase(path, pattern)
+                or (not any(char in pattern for char in "*?[")
+                    and path.startswith(pattern.rstrip("/") + "/"))
+                for path in diff_paths
+                for pattern in patterns
+            ):
+                rows.append(row)
+        return rows
 
     def invariant_breakdown(self) -> dict:
         by_status: dict[str, int] = {}
@@ -554,6 +588,21 @@ class Store:
         """Atomically register the ratchet check and close its escape."""
         if not spawned_check:
             raise ValueError("cannot close escape without a spawned_check (棘轮纪律)")
+        if invariant.get("id") != spawned_check:
+            raise ValueError("spawned_check must match invariant id")
+        command = invariant.get("run_command")
+        if not isinstance(command, list) or not command or any(
+            not isinstance(item, str) or not item for item in command
+        ):
+            raise ValueError("ratchet invariant requires a non-empty argv run_command")
+        trigger_repo = invariant.get("trigger_repo")
+        if not isinstance(trigger_repo, str) or not trigger_repo:
+            raise ValueError("ratchet invariant requires trigger_repo")
+        trigger_paths = invariant.get("trigger_paths")
+        if not isinstance(trigger_paths, list) or not trigger_paths or any(
+            not isinstance(item, str) or not item for item in trigger_paths
+        ):
+            raise ValueError("ratchet invariant requires non-empty trigger_paths")
         esc = self.s.get(EscapeRegistry, escape_id)
         if esc is None:
             raise ValueError(f"escape not found: {escape_id}")

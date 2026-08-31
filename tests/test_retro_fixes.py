@@ -147,6 +147,21 @@ def test_existing_escape_schema_is_migrated(tmp_path):
     session.close()
 
 
+def test_existing_invariant_schema_gains_executable_ratchet_fields(tmp_path):
+    db = tmp_path / "old-invariants.db"
+    engine = create_engine(f"sqlite:///{db}")
+    Base.metadata.create_all(engine)
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE invariant_registry DROP COLUMN run_command"))
+        conn.execute(text("ALTER TABLE invariant_registry DROP COLUMN trigger_repo"))
+        conn.execute(text("ALTER TABLE invariant_registry DROP COLUMN trigger_paths"))
+
+    ensure_schema(engine)
+
+    columns = {column["name"] for column in inspect(engine).get_columns("invariant_registry")}
+    assert {"run_command", "trigger_repo", "trigger_paths"} <= columns
+
+
 def test_results_reload_event_from_database(tmp_path, monkeypatch):
     monkeypatch.setenv("MARSHAL_DB", f"sqlite:///{tmp_path / 'api.db'}")
     import importlib
@@ -196,9 +211,36 @@ def test_ratchet_close_registers_check_atomically():
         invariant={"id": "inv.x", "domain_pack": "cowboy", "domain": "test",
                     "spec_ref": "CIP-1", "executor_kind": "command",
                     "location_repo": "node", "location_path": "x",
-                    "location_test": "test_x", "severity": "mid"})
+                    "location_test": "test_x", "severity": "mid",
+                    "run_command": ["python", "-m", "pytest", "x"],
+                    "trigger_repo": "source", "trigger_paths": ["api/**"]})
     assert store.get_escape("esc").status == "closed"
     assert store.list_invariants("cowboy", "node")[0].id == "inv.x"
+    session.close()
+
+
+def test_ratchet_close_rejects_unschedulable_check_without_closing_escape():
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    session = sessionmaker(bind=engine)()
+    store = Store(session)
+    store.open_escape(id="esc", description="d", root_cause_class="c")
+
+    with pytest.raises(ValueError, match="run_command"):
+        store.close_escape_with_invariant(
+            "esc", spawned_check="inv.x",
+            invariant={
+                "id": "inv.x", "domain_pack": "cowboy", "domain": "test",
+                "spec_ref": "CIP-1", "executor_kind": "command",
+                "location_repo": "node", "location_path": "x",
+                "location_test": "test_x", "severity": "mid",
+                "run_command": [], "trigger_repo": "source",
+                "trigger_paths": ["api/**"],
+            },
+        )
+
+    assert store.get_escape("esc").status == "open"
+    assert store.list_invariants("cowboy", "node") == []
     session.close()
 
 

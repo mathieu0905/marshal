@@ -8,6 +8,7 @@ isolated worktree (see _run_deep) and write the verdict back to a local gate_run
 """
 import json
 import os
+import platform
 import shutil
 import subprocess
 import threading
@@ -20,6 +21,7 @@ from sqlalchemy.orm import sessionmaker
 
 from marshal_core.config import db_url
 from marshal_core.contracts import NormalizedEvent
+from marshal_core.knowledge.evidence import evidence_has_unresolved
 from marshal_core.knowledge.models import ensure_schema
 from marshal_core.knowledge.store import Store
 from marshal_core.modules.orchestrator import Orchestrator
@@ -45,6 +47,17 @@ def _parse_verdict(path: str) -> dict:
         raise DeepReviewError(f"verdict file is not a JSON object: {type(data).__name__}")
     if data.get("verdict") not in ("pass", "needs_human", "block"):
         raise DeepReviewError(f"invalid verdict: {data.get('verdict')!r}")
+    if not isinstance(data.get("summary"), str):
+        raise DeepReviewError("verdict summary must be a string")
+    findings = data.get("findings")
+    if not isinstance(findings, list) or any(not isinstance(item, str) for item in findings):
+        raise DeepReviewError("verdict findings must be an array of strings")
+    for field in ("invariants_run", "invariants_pass"):
+        value = data.get(field)
+        if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+            raise DeepReviewError(f"verdict {field} must be a non-negative integer")
+    if data["invariants_pass"] > data["invariants_run"]:
+        raise DeepReviewError("verdict invariants_pass cannot exceed invariants_run")
     return data
 
 
@@ -104,10 +117,8 @@ def _deep_timeout() -> float:
     return float(os.environ.get("MARSHAL_DEEP_TIMEOUT_S", "1800"))  # 30 min default
 
 
-def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
-    # The ONLY un-CI'd seam: shells out to the real `claude -p`. Subprocess mechanics
-    # (timeout kill, non-zero exit) are still CI-tested via a fake MARSHAL_CLAUDE_BIN;
-    # only the real-Claude semantics are exercised by the manual smoke.
+def _claude_argv(prompt: str) -> list[str]:
+    """Build the exact argv used by the dashboard deep-review subprocess."""
     binary = os.environ.get("MARSHAL_CLAUDE_BIN", "claude")
     args = [binary, "-p", prompt]
     # Operator-chosen permission mode (e.g. so the headless review can run the skill's
@@ -122,10 +133,117 @@ def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
     allowed = os.environ.get("MARSHAL_CLAUDE_ALLOWED_TOOLS")
     if allowed and allowed.split():
         args += ["--allowedTools", *allowed.split()]
+    return args
+
+
+def _invoke_claude(prompt: str, cwd: str, timeout_s: float) -> str:
+    # The ONLY un-CI'd seam: shells out to the real `claude -p`. Subprocess mechanics
+    # (timeout kill, non-zero exit) are still CI-tested via a fake MARSHAL_CLAUDE_BIN;
+    # only the real-Claude semantics are exercised by the manual smoke.
+    args = _claude_argv(prompt)
     proc = subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=timeout_s)
     if proc.returncode != 0:
         raise DeepReviewError(f"claude exited {proc.returncode}: {proc.stderr[:500]}")
     return proc.stdout
+
+
+def _git_review_identity(worktree: str) -> dict[str, str]:
+    """Resolve the immutable Git identity independently of the model verdict."""
+    refs = {
+        "head_sha": "HEAD",
+        "base_sha": "HEAD^",
+        "tree_sha": "HEAD^{tree}",
+    }
+    out = {}
+    for field, ref in refs.items():
+        proc = subprocess.run(
+            ["git", "-C", worktree, "rev-parse", ref],
+            capture_output=True, text=True,
+        )
+        if field == "base_sha" and proc.returncode != 0:
+            # A true root commit has no parent. Use Git's empty-tree identity as
+            # the review base, but do not confuse a shallow clone's missing parent
+            # with a root commit.
+            commit = subprocess.run(
+                ["git", "-C", worktree, "cat-file", "-p", "HEAD"],
+                capture_output=True, text=True,
+            )
+            if commit.returncode == 0 and not any(
+                line.startswith("parent ") for line in commit.stdout.splitlines()
+            ):
+                empty_tree = subprocess.run(
+                    ["git", "-C", worktree, "hash-object", "-t", "tree", "--stdin"],
+                    input="", capture_output=True, text=True,
+                )
+                if empty_tree.returncode == 0:
+                    out[field] = empty_tree.stdout.strip()
+                    continue
+        if proc.returncode != 0:
+            raise DeepReviewError(f"cannot resolve {field}: {proc.stderr[:300]}")
+        out[field] = proc.stdout.strip()
+    return out
+
+
+def _review_steps(raw: object, *, failure_reason: str | None = None) -> dict:
+    names = ("closure", "scout", "prove", "invariant")
+    if failure_reason:
+        return {name: {"status": "failed", "reason": failure_reason} for name in names}
+    if isinstance(raw, dict) and set(raw) == set(names):
+        return raw
+    return {
+        name: {
+            "status": "degraded",
+            "reason": "dashboard deep verdict omitted structured step evidence",
+        }
+        for name in names
+    }
+
+
+def _external_scan(raw: object) -> dict:
+    if isinstance(raw, dict):
+        return {"name": "external-scans", **raw}
+    return {
+        "name": "external-scans",
+        "status": "unavailable",
+        "reason": "dashboard deep verdict omitted external-scan evidence",
+    }
+
+
+def _deep_evidence(
+    *, job: dict, worktree: str, identity: dict[str, str], verdict: dict | None,
+    review_run_id: int, command_argv: list[str], command_status: str,
+    command_output: str = "", command_reason: str | None = None,
+) -> dict:
+    supplied = verdict.get("evidence", {}) if isinstance(verdict, dict) else {}
+    if not isinstance(supplied, dict):
+        supplied = {}
+    command = {
+        "name": "claude-deep-review",
+        "status": command_status,
+        "argv": command_argv,
+        "exit_code": 0 if command_status == "pass" else None,
+        "log_ref": f"review_run:{review_run_id}:evidence.commands[0].stdout_tail",
+        "stdout_tail": command_output[-4000:],
+    }
+    if command_status != "pass":
+        command["reason"] = command_reason or "deep review command failed"
+    return {
+        **identity,
+        "platform": platform.platform(),
+        "worktree": worktree,
+        "toolchain": os.environ.get("MARSHAL_CLAUDE_BIN", "claude"),
+        "context_ref": f"{job['repo']}@{identity['head_sha']}",
+        "verdict_payload": verdict,
+        "steps": _review_steps(
+            supplied.get("steps"), failure_reason=command_reason if command_status != "pass" else None),
+        "lenses": {
+            "expected": ["dashboard-deep"],
+            "returned": ["dashboard-deep"] if verdict is not None else [],
+            "missing": [] if verdict is not None else ["dashboard-deep"],
+        },
+        "commands": [command],
+        "external_scans": [_external_scan(supplied.get("external_scan"))],
+    }
 
 
 def _resolve_pr_number(repo: str, change_ref: str):
@@ -171,24 +289,78 @@ def _deep_prompt(job: dict, pr_number=None) -> str:
         f"Linear, or any external service. When done, write your final verdict to a file named "
         f"{VERDICT_FILE} in the current working directory, as JSON with keys: \"verdict\" (one of "
         f'"pass", "needs_human", "block"; map an escalate to "needs_human"), "summary" (string), '
-        f'"findings" (array of strings), "invariants_run" (int), "invariants_pass" (int).'
+        f'"findings" (array of strings), "invariants_run" (non-negative int), '
+        f'"invariants_pass" (non-negative int), and "evidence". Evidence must contain '
+        f'"steps" with exactly closure/scout/prove/invariant entries, each carrying a valid '
+        f'status and an evidence_ref or a reason, plus "external_scan" with status complete '
+        f'and a non-negative findings count, or status unavailable/degraded with a reason. '
+        f'Never claim a step or scan completed when it was not actually run.'
     )
 
 
 def _run_deep(store: Store, job: dict) -> None:
     pr = _resolve_pr_number(job["repo"], job["change_ref"])   # PR mode (full diff) when it's a PR head
     with _deep_worktree(job["repo"], job["change_ref"]) as wt:
-        _invoke_claude(_deep_prompt(job, pr), cwd=wt, timeout_s=_deep_timeout())
-        verdict = _parse_verdict(os.path.join(wt, VERDICT_FILE))
+        identity = _git_review_identity(wt)
+        prompt = _deep_prompt(job, pr)
+        command_argv = _claude_argv(prompt)
+        review_run = store.open_review_run(
+            change_ref=identity["head_sha"], repo=job["repo"], mode="deep",
+            host="claude", model=os.environ.get("MARSHAL_DEEP_MODEL", ""),
+            skill_rev="dashboard-worker", context_ref=f"{job['repo']}@{identity['head_sha']}",
+            expected_lenses=["dashboard-deep"],
+            expected_commands=["claude-deep-review"],
+            expected_external_scans=["external-scans"],
+        )
+        try:
+            command_output = _invoke_claude(prompt, cwd=wt, timeout_s=_deep_timeout())
+            verdict = _parse_verdict(os.path.join(wt, VERDICT_FILE))
+        except Exception as exc:
+            evidence = _deep_evidence(
+                job=job, worktree=wt, identity=identity, verdict=None,
+                review_run_id=review_run.id, command_argv=command_argv,
+                command_status="fail",
+                command_reason=f"{type(exc).__name__}: {exc}",
+            )
+            store.close_review_run(review_run.id, "degraded", evidence)
+            raise
+        evidence = _deep_evidence(
+            job=job, worktree=wt, identity=identity, verdict=verdict,
+            review_run_id=review_run.id, command_argv=command_argv,
+            command_status="pass", command_output=command_output,
+        )
+        review_status = "degraded" if evidence_has_unresolved(evidence) else "complete"
+        try:
+            closed = store.close_review_run(review_run.id, review_status, evidence)
+        except ValueError as exc:
+            fallback = _deep_evidence(
+                job=job, worktree=wt, identity=identity, verdict=None,
+                review_run_id=review_run.id, command_argv=command_argv,
+                command_status="fail", command_output=command_output,
+                command_reason=f"invalid structured evidence: {exc}",
+            )
+            closed = store.close_review_run(review_run.id, "degraded", fallback)
+            review_status = "degraded"
+        raw_verdict = verdict["verdict"]
+        final_verdict = (
+            "needs_human" if review_status == "degraded" and raw_verdict == "pass"
+            else raw_verdict
+        )
     gr = store.record_gate_run(
         change_ref=job["change_ref"], job_id=f"deep-{job['id']}",
-        verdict=verdict["verdict"],
+        verdict=final_verdict,
         evidence={"source": "dashboard-worker", "job_id": job["id"],
+                  "review_run_id": closed.id, "review_run_status": closed.status,
+                  "raw_verdict": raw_verdict,
                   "summary": verdict.get("summary", ""),
                   "findings": verdict.get("findings", []),
                   "invariants_run": verdict.get("invariants_run"),
                   "invariants_pass": verdict.get("invariants_pass")})
-    store.finish_job(job["id"], result={"verdict": verdict["verdict"], "gate_run_id": gr.id})
+    store.finish_job(job["id"], result={
+        "verdict": final_verdict, "raw_verdict": raw_verdict,
+        "gate_run_id": gr.id, "review_run_id": closed.id,
+        "review_run_status": closed.status,
+    })
     # Opt-in: post the verdict to the PR (the skill itself stays local-only; the worker
     # posts deterministically). Off unless $MARSHAL_DEEP_POST is set. Best-effort.
     if os.environ.get("MARSHAL_DEEP_POST"):

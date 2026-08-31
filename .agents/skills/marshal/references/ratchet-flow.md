@@ -18,10 +18,15 @@
 3. 若是功能/安全性属性(可往返化)→ 起草候选永久检查,必须是可落地的断言,不是文档:
    - 它该是哪个 repo 的哪条 proptest/conformance-vector?
    - location_path / location_test / run_command 各是什么?
-   - InvariantDef 字段:id, domain, spec_ref, executor_kind, location_repo, location_path, location_test, severity。
+   - 哪个源仓和哪些修改路径再次出现时必须调度它? 记录 `trigger_repo` 与
+     `trigger_paths`;它们描述源变化,不是检查所在的目标仓路径。
+   - inv JSON 字段:id, domain, spec_ref, executor_kind, location_repo,
+     location_path, location_test, severity, run_command, trigger_repo,
+     trigger_paths。`run_command` 必须是非空 argv,触发路径必须非空。
 3. 把根因分类 + 候选检查摆给用户,**等确认**。
 4. `"$PY" -m marshal_core.cli ratchet-close --escape-id <id> --spawned-check <inv-id> --inv-json '<上面 InvariantDef 的 JSON>'`
-   - 缺 spawned_check 会被 CLI 拒绝 — 这是纪律,不要绕。
+   - 缺 spawned_check、可执行 argv 或源仓/路径触发范围都会被 CLI 拒绝 — 这是
+     为了让下次复发能真正进入计划,不要绕。
 5. 去 `<location_repo>` 起草这条 proptest 的测试骨架(让用户/后续把它写实)。
 
 ## 根因分类参考(root_cause_class)

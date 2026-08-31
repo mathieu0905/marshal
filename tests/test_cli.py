@@ -126,16 +126,16 @@ def test_ratchet_open_then_close(tmp_path):
         "id": "det.bare_pow_literal", "domain": "determinism", "spec_ref": "M-B",
         "executor_kind": "proptest", "location_repo": "node",
         "location_path": "execution/src/pvm_executor.rs",
-        "location_test": "prop_bare_pow_literal_blocked", "severity": "high"})
+        "location_test": "prop_bare_pow_literal_blocked", "severity": "high",
+        "run_command": ["true"], "trigger_repo": "node",
+        "trigger_paths": ["execution/src/pvm_executor.rs"]})
     cl = _run(["ratchet-close", "--escape-id", "esc-t1",
                "--spawned-check", "det.bare_pow_literal", "--inv-json", inv], env=db)
     assert cl.returncode == 0, cl.stderr
     assert json.loads(cl.stdout)["ok"] is True
 
 
-def test_ratchet_close_tolerates_run_command_in_inv_json(tmp_path):
-    # 文档化的棘轮流程让 skill 起草含 run_command 的 InvariantDef;
-    # InvariantRegistry 表没有 run_command 列,close 必须照样成功(丢弃该字段)。
+def test_ratchet_close_persists_command_and_trigger(tmp_path):
     db = {"MARSHAL_DB": f"sqlite:///{tmp_path/'rc.db'}"}
     _run(["ratchet-open", "--desc", "d", "--root-cause", "determinism-gap",
           "--escape-id", "esc-rc"], env=db)
@@ -145,7 +145,8 @@ def test_ratchet_close_tolerates_run_command_in_inv_json(tmp_path):
         "location_path": "execution/src/pvm_executor.rs",
         "location_test": "prop_bare_pow_literal_blocked", "severity": "high",
         "run_command": ["cargo", "test", "-p", "cowboy-execution",
-                        "prop_bare_pow_literal_blocked", "--", "--exact"]})
+                        "prop_bare_pow_literal_blocked", "--", "--exact"],
+        "trigger_repo": "node", "trigger_paths": ["execution/src/**"]})
     cl = _run(["ratchet-close", "--escape-id", "esc-rc",
                "--spawned-check", "det.bare_pow_literal", "--inv-json", inv], env=db)
     assert cl.returncode == 0, cl.stderr

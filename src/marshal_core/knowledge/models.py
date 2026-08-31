@@ -17,6 +17,9 @@ def ensure_schema(engine) -> None:
     additions_by_table = {
         "escape_registry": {"fix_ref": "VARCHAR", "missed_by_run_id": "INTEGER",
                             "introduced_at_ts": "DATETIME"},
+        "invariant_registry": {
+            "run_command": "JSON", "trigger_repo": "VARCHAR", "trigger_paths": "JSON",
+        },
         # These columns were added after review tracing shipped. Keep this
         # migration additive so existing sweep databases remain readable.
         "review_run": {"status": "VARCHAR", "evidence": "JSON"},
@@ -79,6 +82,9 @@ class InvariantRegistry(Base):
     location_path: Mapped[str] = mapped_column(String)
     location_test: Mapped[str] = mapped_column(String)
     severity: Mapped[str] = mapped_column(String, default="mid")
+    run_command: Mapped[list] = mapped_column(JSON, default=list)
+    trigger_repo: Mapped[str] = mapped_column(String, default="")
+    trigger_paths: Mapped[list] = mapped_column(JSON, default=list)
     status: Mapped[str] = mapped_column(String, default="active")
     origin: Mapped[str] = mapped_column(String, default="hand")
     escape_id: Mapped[str | None] = mapped_column(String, nullable=True)
