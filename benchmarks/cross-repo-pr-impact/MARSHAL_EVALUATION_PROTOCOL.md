@@ -3,7 +3,7 @@
 日期：2026-08-31
 
 > 代码锚点：历史产品事实核对基于 `marshal main@71d91c1`；本协议同时描述
-> `feat/cross-repo-project-review` 上的 dashboard `ReviewRun` 接线与 ratchet recurrence
+> `marshal feat/cross-repo-project-review@1c4a2492` 上的 dashboard `ReviewRun` 接线与 ratchet recurrence
 > 调度修复。数据锚点为 strict-E2 v2 release 及数据仓 `main@5742e47` 的修复前基线；
 > 后续发布提交应以数据仓自身 Git 记录为准。
 >
