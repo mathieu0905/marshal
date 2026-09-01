@@ -128,6 +128,32 @@ def apply_source_selection(
         raise RuntimeError("target source-artifact selection failed")
 
 
+def commit_evaluator_setup(target: Path) -> None:
+    """Make the trusted dependency-selection rewrite the A-arm baseline."""
+    environment = dict(os.environ)
+    environment.update(
+        {
+            "GIT_AUTHOR_NAME": "Marshal evaluator",
+            "GIT_AUTHOR_EMAIL": "evaluator@marshal.invalid",
+            "GIT_COMMITTER_NAME": "Marshal evaluator",
+            "GIT_COMMITTER_EMAIL": "evaluator@marshal.invalid",
+        }
+    )
+    staged = subprocess.run(
+        ["git", "add", "--all"], cwd=target, env=environment,
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False,
+    )
+    if staged.returncode:
+        raise RuntimeError(staged.stdout)
+    committed = subprocess.run(
+        ["git", "commit", "--quiet", "--no-gpg-sign", "-m", "evaluator source selection"],
+        cwd=target, env=environment, text=True, stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT, check=False,
+    )
+    if committed.returncode:
+        raise RuntimeError(committed.stdout)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--plan", type=Path, required=True)
@@ -145,6 +171,7 @@ def main() -> int:
     parser.add_argument("--ant", type=Path, required=True)
     parser.add_argument("--junit", type=Path, required=True)
     parser.add_argument("--seed-repository", type=Path, required=True)
+    parser.add_argument("--target-command-wrapper", type=Path)
     parser.add_argument("--environment", action="append", default=[])
     args = parser.parse_args()
 
@@ -235,6 +262,7 @@ def main() -> int:
             target, repositories[arm], args.maven, target_environment,
             includes, version, evidence / f"target-{arm.lower()}.source-selection.log",
         )
+        commit_evaluator_setup(target)
 
     applied = subprocess.run(
         ["git", "apply", "--check", str(args.target_patch.resolve())],
@@ -267,8 +295,14 @@ def main() -> int:
         raise ValueError("Ant/Maven replay requires a target command beginning with mvn")
     results: dict[str, tuple[int, str]] = {}
     for arm in ("A0", "A1", "A2"):
+        target_command = [
+            str(args.maven), f"-Dmaven.repo.local={repositories[arm]}",
+            *logical_command[1:],
+        ]
+        if args.target_command_wrapper is not None:
+            target_command = [str(args.target_command_wrapper.resolve()), *target_command]
         completed = run(
-            [str(args.maven), f"-Dmaven.repo.local={repositories[arm]}", *logical_command[1:]],
+            target_command,
             cwd=targets[arm], environment=target_environment,
         )
         arm_dir = evidence / args.relation_id / arm.lower()

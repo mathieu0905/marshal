@@ -352,6 +352,7 @@ def main() -> int:
     parser.add_argument("--java-home", type=Path, required=True)
     parser.add_argument("--source-java-home", type=Path)
     parser.add_argument("--target-java-home", type=Path)
+    parser.add_argument("--target-command-wrapper", type=Path)
     parser.add_argument("--seed-repository", type=Path, required=True)
     args = parser.parse_args()
 
@@ -489,10 +490,13 @@ def main() -> int:
     logical_command = plan["test_command"]
     for arm in ("A0", "A1", "A2"):
         target = targets[arm.lower()]
+        target_command = planned_target_command(
+            logical_command, target, args.maven, repositories[arm]
+        )
+        if args.target_command_wrapper is not None:
+            target_command = [str(args.target_command_wrapper.resolve()), *target_command]
         completed = run(
-            planned_target_command(
-                logical_command, target, args.maven, repositories[arm]
-            ),
+            target_command,
             cwd=target,
             environment=target_environment,
         )
