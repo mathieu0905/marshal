@@ -14,7 +14,7 @@
 
 专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支 commit `75875e4`；两个 acceptance verifier 和 50 项 skill 测试均在抽取布局通过后才推送。marshal 主仓保留构造源，私有仓作为分发副本。
 
-2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `0667902`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试，以及私有候选排除记录；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
+2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `de2c738`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试，以及私有候选排除记录；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
 
@@ -31,6 +31,7 @@
 - 正式分数：development 的 MRR/Recall@1/@3/@5 为 0.0722/0/0.1667/0.1667；evaluation 为 0.2333/0.2/0.3/0.3；holdout 为 0.25/0.2/0.3/0.3。系统没有提出可运行检查，因此 runnable check rate 为 0，50 条 execution result 均保持 `not_assessed`；这不改变数据标签本身已经由独立真实三臂 replay 验证的事实。
 - 本轮验收加固：blind 可见 manifest 改用包内相对路径并拒绝关系标签泄漏；多 pin opening diff 必须完整记录且 routed pin 与三臂安装版本一致；同一 catalog 只有 `constructed_at` 不同时才允许确定性合并，成员、provenance 或其他定义差异仍整体拒绝。
 - 新增结果：OpenTelemetry 与 Rust 目录精确匹配独立来源清单，覆盖 39 条案例；OpenTelemetry 新增 Ruby SDK 的 35 个时点快照均成功解析。
+- 私有 intake 复核：修正后的 `formal-opendev-678207 -> openstack/nova@676926` 候选机制合理（openstacksdk 0.34→0.35 的 `strict_proxies` API 行为变化），但历史 Nova 依赖在断网环境中无法物化，未形成 A0/A1/A2 证据，保持 `not_ready`；不得计入 private holdout 或公开集合。
 - 单条正式池进度：50 条已完成 opening-cutoff public input、断网且标签未挂载的 blind prediction、真实 `0/1/0` 三臂、失败签名排他检查、维护者补丁施加到 cutoff target、语义批准与 verifier。最后补齐的三条是 Wandertracks vendored basemap parity、OpenStack requirements→Magnum 的 `oslo.policy` `enforce_scope` 移除，以及同一 source opening 对 Octavia 的独立目标修复；三条均保持目标仓原生命令与原难度。`formal-opendev-902133--target-902048` 虽机器为 `0/1/0`，但 A2 删除选中失败测试并使模块由 12 项降为 11 项，按 skill 的 no-test-deletion 规则不进入正式池。
 - 新一轮批量筛选：34 条剩余 touched-test 关系中仅两条得到机器 `0/1/0`；其中 `982599→982593` 通过语义验收并已计入，`902133→902048` 因删除选中测试拒绝。其余 27 条方向不符、5 条环境建立失败，均未降级准入。旧 `e2-041` 的维护者补丁不能施加到 opening-cutoff target；旧 `e2-018` 也存在同一问题，均拒绝。
 - 批量筛选保持原难度：`921649→922790`、`985636→985682`、`992461→992462`、`933250→934011` 等关系为 0/0/0，`996435→998421` 与 `982599→982593` 为 1/1/1，`997527→999039` 为 0/0/1，均明确拒绝；`981195→981194`、`988466→988463` 的维护者 patch 无法施加到 opening-cutoff target，也明确拒绝。没有把环境失败或 A1 未失败的关系升级为 E2。
