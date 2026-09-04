@@ -147,21 +147,33 @@ def project_artifact_id(pom: Path) -> str:
 
 def set_project_version(pom: Path, version: str) -> None:
     old = project_version(pom)
-    needle = f"<version>{old}</version>"
     text = pom.read_text(encoding="utf-8")
-    boundary = text.find("</parent>")
-    if boundary >= 0:
-        boundary += len("</parent>")
-    else:
-        boundary = text.find("</modelVersion>")
-        if boundary < 0:
-            raise ValueError(f"project version boundary is absent: {pom}")
-        boundary += len("</modelVersion>")
-    position = text.find(needle, boundary)
-    if position < 0:
+    # Maven permits the project-level <version> before or after <parent>.
+    # The old implementation searched only after </parent>, which rejects
+    # valid POMs such as Log4j's root POM where <version> precedes <parent>.
+    # Locate all exact version elements and exclude the parent's version
+    # element; requiring one remaining match prevents accidentally changing a
+    # dependency/property version with the same value.
+    needle = re.compile(r"<version>\s*" + re.escape(old) + r"\s*</version>")
+    parent_start = text.find("<parent")
+    parent_end = text.find("</parent>", parent_start)
+    matches = [match for match in needle.finditer(text)]
+    project_matches = [
+        match
+        for match in matches
+        if not (
+            parent_start >= 0
+            and parent_end >= 0
+            and parent_start <= match.start() <= parent_end + len("</parent>")
+        )
+    ]
+    if len(project_matches) != 1:
         raise ValueError(f"project version is not uniquely replaceable: {pom}")
+    match = project_matches[0]
+    position = match.start()
+    replacement = f"<version>{version}</version>"
     pom.write_text(
-        text[:position] + f"<version>{version}</version>" + text[position + len(needle):],
+        text[:position] + replacement + text[match.end():],
         encoding="utf-8",
     )
 
@@ -182,6 +194,65 @@ def set_parent_version(pom: Path, version: str) -> None:
         text[:absolute_start] + f"<version>{version}</version>" + text[absolute_end:],
         encoding="utf-8",
     )
+
+
+def sync_reactor_parent_versions(
+    source: Path, root_pom_relative: str, version: str, old_version: str | None = None
+) -> list[str]:
+    """Align child POM parent versions with a rewritten reactor root.
+
+    A multi-module Maven checkout may keep the root project version in each
+    child ``<parent>`` block.  Rewriting only the root makes ``-pl ... -am``
+    resolve the children against the old snapshot and fail before compiling.
+    Restrict replacements to POMs whose parent coordinates match the root and
+    whose parent version is the old root version; unrelated dependency and
+    property versions are left untouched.
+    """
+    root_pom = (source / root_pom_relative).resolve()
+    root = ET.parse(root_pom).getroot()
+    namespace = root.tag.partition("}")[0] + "}" if "}" in root.tag else ""
+    group_element = root.find(f"{namespace}groupId")
+    artifact_element = root.find(f"{namespace}artifactId")
+    if (
+        group_element is None
+        or artifact_element is None
+        or not group_element.text
+        or not artifact_element.text
+    ):
+        raise ValueError(f"reactor root must declare groupId and artifactId: {root_pom}")
+    parent_group = group_element.text.strip()
+    parent_artifact = artifact_element.text.strip()
+    old_version = old_version or project_version(root_pom)
+    changed: list[str] = []
+    for pom in sorted(source.rglob("pom.xml")):
+        if pom.resolve() == root_pom:
+            continue
+        text = pom.read_text(encoding="utf-8")
+        parent_match = re.search(
+            r"<parent>(?P<body>.*?)</parent>", text, flags=re.DOTALL
+        )
+        if parent_match is None:
+            continue
+        body = parent_match.group("body")
+        if not re.search(
+            rf"<groupId>\s*{re.escape(parent_group)}\s*</groupId>", body
+        ) or not re.search(
+            rf"<artifactId>\s*{re.escape(parent_artifact)}\s*</artifactId>", body
+        ):
+            continue
+        version_match = re.search(
+            rf"<version>\s*{re.escape(old_version)}\s*</version>", body
+        )
+        if version_match is None:
+            continue
+        start = parent_match.start("body") + version_match.start()
+        end = parent_match.start("body") + version_match.end()
+        pom.write_text(
+            text[:start] + f"<version>{version}</version>" + text[end:],
+            encoding="utf-8",
+        )
+        changed.append(str(pom.relative_to(source)))
+    return changed
 
 
 def dependency_version(
@@ -218,18 +289,24 @@ def install_source(
     maven: Path,
     environment: dict[str, str],
     log_prefix: Path,
+    sync_reactor_parents: bool = False,
+    build_pom_relative: str | None = None,
 ) -> Path:
     pom = (source / pom_relative).resolve()
+    old_version = project_version(pom)
     set_project_version(pom, version)
+    if sync_reactor_parents:
+        sync_reactor_parent_versions(source, pom_relative, version, old_version)
     artifact_pom = (source / artifact_pom_relative).resolve()
     if not artifact_pom.is_file():
         raise ValueError(f"source artifact POM does not exist: {artifact_pom}")
+    build_pom = (source / (build_pom_relative or pom_relative)).resolve()
     project_selector = []
-    if build_projects:
+    if build_projects and build_pom_relative is None:
         project_selector = ["-pl", ",".join(build_projects), "-am"]
     package = run(
         [
-            str(maven), "-f", str(pom),
+            str(maven), "-f", str(build_pom),
             f"-Dmaven.repo.local={repository}", "-Dmaven.test.skip=true",
             "-Dgpg.skip=true", "-Dmaven.javadoc.skip=true", "-Djacoco.skip=true",
             *project_selector,
@@ -274,9 +351,13 @@ def install_existing_jar(
     maven: Path,
     environment: dict[str, str],
     log: Path,
+    sync_reactor_parents: bool = False,
 ) -> None:
     pom = (source / pom_relative).resolve()
+    old_version = project_version(pom)
     set_project_version(pom, version)
+    if sync_reactor_parents:
+        sync_reactor_parent_versions(source, pom_relative, version, old_version)
     artifact_pom = (source / artifact_pom_relative).resolve()
     if not artifact_pom.is_file():
         raise ValueError(f"source artifact POM does not exist: {artifact_pom}")
@@ -521,17 +602,22 @@ def main() -> int:
         source_artifact_jar_relative, source_build_projects, versions["A0"],
         repositories["A0"], args.maven, source_environment,
         evidence / "source-a0",
+        bool(plan.get("source_reactor_parent_version_sync", False)),
+        plan.get("source_build_pom_path"),
     )
     head_jar = install_source(
         source_a1, source_pom_relative, source_artifact_pom_relative,
         source_artifact_jar_relative, source_build_projects, versions["A1"],
         repositories["A1"], args.maven, source_environment,
         evidence / "source-a1",
+        bool(plan.get("source_reactor_parent_version_sync", False)),
+        plan.get("source_build_pom_path"),
     )
     install_existing_jar(
         head_jar, source_a2, source_pom_relative, source_artifact_pom_relative,
         versions["A2"], repositories["A2"], args.maven, source_environment,
         evidence / "source-a2.install.log",
+        bool(plan.get("source_reactor_parent_version_sync", False)),
     )
 
     results = {}
