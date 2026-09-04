@@ -533,6 +533,11 @@ def main() -> int:
     )
     source_artifact_jar_relative = plan.get("source_artifact_jar_path")
     source_build_projects = plan.get("source_build_projects", [])
+    source_build_pom_relative = plan.get("source_build_pom_path")
+    if source_build_pom_relative is not None and (
+        not isinstance(source_build_pom_relative, str) or not source_build_pom_relative
+    ):
+        raise ValueError("source_build_pom_path must be a non-empty string")
     if (
         not isinstance(source_artifact_pom_relative, str)
         or not source_artifact_pom_relative
@@ -603,7 +608,7 @@ def main() -> int:
         repositories["A0"], args.maven, source_environment,
         evidence / "source-a0",
         bool(plan.get("source_reactor_parent_version_sync", False)),
-        plan.get("source_build_pom_path"),
+        source_build_pom_relative,
     )
     head_jar = install_source(
         source_a1, source_pom_relative, source_artifact_pom_relative,
@@ -611,7 +616,7 @@ def main() -> int:
         repositories["A1"], args.maven, source_environment,
         evidence / "source-a1",
         bool(plan.get("source_reactor_parent_version_sync", False)),
-        plan.get("source_build_pom_path"),
+        source_build_pom_relative,
     )
     install_existing_jar(
         head_jar, source_a2, source_pom_relative, source_artifact_pom_relative,
@@ -682,7 +687,7 @@ def main() -> int:
         "source_head_commit": plan["source_head_commit"],
         "source_application": "maven_local_artifact_from_opening_checkout",
         "source_artifact_versions": versions,
-        "source_build_pom_path": source_pom_relative,
+        "source_build_pom_path": source_build_pom_relative or source_pom_relative,
         "source_artifact_pom_path": source_artifact_pom_relative,
         "source_artifact_jar_path": source_artifact_jar_relative,
         "source_build_projects": source_build_projects,
