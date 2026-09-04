@@ -12,9 +12,9 @@
 
 权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，权威冻结后系统运行是 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/`。前者的 `verification.json` 独立重解析全部三臂证据与分组，后者的 `verification.json` 独立重算 50 条分数并检查统一标签揭示边界。2026-08-27 的首个正式集合仍是有效历史证据，但已被本轮全量重建和重跑取代；`results/formal-e2-50-release-2026-08-26/` 仍只保留为 withdrawn diagnostic 历史材料。
 
-专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支；截至 2026-09-05，远端为 `a497bab`。后续增量包含执行器超时进程组回收、固定入口与 evaluator-owned P2P canary 保护、私有候选排除证据及 106 项测试通过记录。marshal 主仓保留构造源，私有仓作为分发副本；这些增量不改变公开 50 条标签或其冻结 split。
+专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支；截至 2026-09-05，远端为 `7b5afc7`。后续增量包含执行器超时进程组回收、固定入口与 evaluator-owned P2P canary 保护、私有候选排除证据、xrepo-e2-0015 独立 bundle replay 及 106 项测试通过记录。marshal 主仓保留构造源，私有仓作为分发副本；这些增量不改变公开 50 条标签或其冻结 split。
 
-2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `a497bab`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、106 项完整测试套件通过记录、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
+2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `7b5afc7`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、xrepo-e2-0015 的独立三臂重放、106 项完整测试套件通过记录、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
 
@@ -52,6 +52,7 @@
 - 旧 50 条历史审计：其中 16 条恢复或确认了开单时点因果 diff，34 条明确排除；这解释了旧集合为何不能升级，不适用于本次重新采集并逐条通过 opening-cutoff 验证的新 50 条。
 - 开发结果：恢复两条目标快照后，旧 50 条开发目录聚合的 Recall@5/宏召回为 0.6400、MRR 0.3527、Recall@1/@3 为 0.2100/0.4000；该聚合不替代新冻结 split 的正式结果。
 - 旧集合正式性审计：37 条使用 outcome-conditioned 目录、34 条不满足开单时点，最终只有 1 条旧 holdout 可运行；这些结论只属于旧集合的排除历史，不能覆盖本次新 50 条的正式发布。
+- 独立复现增量（2026-09-05）：xrepo-e2-0015（requirements→neutron）在项目内 phase-4 bundle 中完成真实断网、只读容器三臂重放，A0/A1/A2=0/1/0、每臂 1 个检查、neutron-lib 版本 2.13.0/2.14.0/2.14.0，A1 独占 `MismatchError`。独立通过数由 6/50 增至 7/50；bundle 与 runtime 仍未发布，不能据此清除 50/50 复现 blocker。
 - 剩余边界：主集负标签不完整，不报告 precision、F1、误报率或 specificity。当前 evaluation/holdout 各有 10 条，分数可按 candidate-bounded 正标签找回口径发布，但一次系统运行不支持稳定的跨系统优劣结论。
 
 ## Do not reopen by default
@@ -63,7 +64,7 @@
 
 ## Next resume step
 
-正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成、PASS_TO_PASS 仅 16/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
+正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成（当前 7/50）、PASS_TO_PASS 仅 16/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
 
 ## First-read files
 
