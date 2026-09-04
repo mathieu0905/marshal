@@ -6,15 +6,15 @@
 
 2026-08-30 的闭环只适用于 strict-E2 标签真实性和候选选择运行，不能称为 Marshal 因果验证产品已经闭环。当前新增四轨评测：50 条 E2 排序、evaluator-owned 新鲜三臂执行、10 条 E3/3 个完整 bounded pack 的克制面、3 条逃逸棘轮顺序任务。
 
-实测边界是：主仓仅 1/50 条具备可直接新鲜重放的完整材料，独立发布包为 0/50；一条新鲜执行在完整分母上给出严格执行准确率 0.02、`not_assessed` 率 0.98；10/10 E3 通过原始证据解析验证；当前 Marshal 的棘轮登记率为 1.0，但复发调度率和端到端率均为 0。权威说明见 `PRODUCT_CONSTRUCT_VALIDITY.md`。
+这段是 2026-08-31 构念审查时的历史快照，已被后续 evaluator-owned runtime 加固取代。当前公开分发仓仍是 strict-E2 pilot/release candidate：gold 三臂证据 50/50，隔离 evaluator 的 P2P 防线已覆盖 16/50，runtime phase-3 资产已在本地完成身份与 smoke 验证，但独立 50/50 重放和 runtime 发布仍未完成。权威机器状态以分发仓 `swebench_like/harness/verify_release_readiness.py` 为准。
 
-下一优先级依次为：物化剩余 49 条 execution material、对三个 E3 pack 运行真实系统判断、连接 ratchet registry 与复发调度、增加第二生态的 development 机制。不得再用冻结排序运行或历史标签日志代替这些实测。
+下一优先级依次为：从精确 private intake 找到通过六维公开边界的全新 source events；完成 dataset-only 50/50 重放和可发布 runtime；补齐剩余 PASS_TO_PASS 与 E3 输入面。许可证与第三方权利必须等待 owner/合格人工决定。不得用冻结排序运行、后验标签日志或被拒候选代替这些实测。
 
 ## 2026-08-30 完成状态
 
 candidate-bounded strict-E2 标签构造、组级 split、候选选择发布和首次冻结排序运行已经闭环。当前权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，包含 50 条 verifier-clean strict-E2、15 个隔离组和 30/10/10 split；匹配的 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/` 完成 50 个断网盲容器和统一揭签后的排序计分复核。两个 verifier 均为 `verified=true`、`blockers=[]`。该闭环不包含产品级 A0/A1 执行、克制面或逃逸棘轮。
 
-后续默认工作从“继续扩采”切换为发布维护：专用私有数据仓库 `mathieu0905/cross-repo-breakage-benchmark` 已在 commit `75875e4` 完成本轮同步和抽取布局复验；替换任何 case 时仍须先通过单条 skill，再重新生成整个 release 并整体同步。E3、E4、A3 和开放世界仓库发现仍不是当前 E2 主集的补齐目标。
+后续默认工作从“继续扩采”切换为发布维护：专用私有数据仓库 `mathieu0905/cross-repo-breakage-benchmark` 当前远端为 `6c9730e`；替换任何 case 时仍须先通过单条 skill，再重新生成整个 release 并整体同步。E3、E4、A3 和开放世界仓库发现仍不是当前 E2 主集的补齐目标，但 E3 输入完整性仍是 readiness blocker，不能宣称 gate 已正式发布。
 
 ## 2026-08-25 原始决定（保留执行审计）
 
@@ -150,4 +150,4 @@ Ethereum 目录按 ethereum.org 的 execution/consensus client 表以及 `ethere
 - 50 条按有向关系、source change family、规范化机制和 repair template 形成 15 个连通组，分配为 30 development、10 evaluation、10 holdout，跨 split 泄漏为 0。
 - 冻结运行读取 14,367 个候选仓、331,351 个文本文件；50 个容器均断网且不挂载标签，所有预测完成后才统一读取标签，逐例和聚合分数重算一致。
 - 非目标候选继续为 `unjudged`，不报告 precision、F1、误报率或 specificity；系统没有提出可运行检查，因此执行结论保持 `not_assessed`。
-- marshal commit `7ebe4624` 已提交数据集和冻结运行；专用数据仓库已在 commit `75875e4` 同步，并在推送前通过两个 acceptance verifier、50 项 skill 测试和 6 项 Python replay 测试。
+- marshal commit `7ebe4624` 已提交数据集和冻结运行；专用数据仓库后续已同步至 `6c9730e`，并通过 106 项测试、dataset validator 和 gold retrieval verifier。专用仓库的 readiness verifier 仍明确报告 8 个 blocker，不能把这些验证写成正式发布通过。
