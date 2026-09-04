@@ -210,6 +210,9 @@ def dependency_version(
 def install_source(
     source: Path,
     pom_relative: str,
+    artifact_pom_relative: str,
+    artifact_jar_relative: str | None,
+    build_projects: list[str],
     version: str,
     repository: Path,
     maven: Path,
@@ -218,11 +221,18 @@ def install_source(
 ) -> Path:
     pom = (source / pom_relative).resolve()
     set_project_version(pom, version)
+    artifact_pom = (source / artifact_pom_relative).resolve()
+    if not artifact_pom.is_file():
+        raise ValueError(f"source artifact POM does not exist: {artifact_pom}")
+    project_selector = []
+    if build_projects:
+        project_selector = ["-pl", ",".join(build_projects), "-am"]
     package = run(
         [
             str(maven), "-f", str(pom),
             f"-Dmaven.repo.local={repository}", "-Dmaven.test.skip=true",
             "-Dgpg.skip=true", "-Dmaven.javadoc.skip=true", "-Djacoco.skip=true",
+            *project_selector,
             "package",
         ],
         cwd=source,
@@ -231,15 +241,19 @@ def install_source(
     log_prefix.with_suffix(".package.log").write_text(package.stdout, encoding="utf-8")
     if package.returncode:
         raise RuntimeError(f"source package failed; see {log_prefix.with_suffix('.package.log')}")
-    artifact_id = project_artifact_id(pom)
-    jar = pom.parent / "target" / f"{artifact_id}-{version}.jar"
+    artifact_id = project_artifact_id(artifact_pom)
+    jar = (
+        source / artifact_jar_relative.format(version=version)
+        if artifact_jar_relative is not None
+        else artifact_pom.parent / "target" / f"{artifact_id}-{version}.jar"
+    )
     if not jar.is_file():
         raise ValueError(f"expected main source artifact does not exist: {jar}")
     installed = run(
         [
             str(maven), f"-Dmaven.repo.local={repository}",
             "org.apache.maven.plugins:maven-install-plugin:3.1.3:install-file",
-            f"-Dfile={jar}", f"-DpomFile={pom}",
+            f"-Dfile={jar}", f"-DpomFile={artifact_pom}",
         ],
         cwd=source,
         environment=environment,
@@ -254,6 +268,7 @@ def install_existing_jar(
     jar: Path,
     source: Path,
     pom_relative: str,
+    artifact_pom_relative: str,
     version: str,
     repository: Path,
     maven: Path,
@@ -262,11 +277,14 @@ def install_existing_jar(
 ) -> None:
     pom = (source / pom_relative).resolve()
     set_project_version(pom, version)
+    artifact_pom = (source / artifact_pom_relative).resolve()
+    if not artifact_pom.is_file():
+        raise ValueError(f"source artifact POM does not exist: {artifact_pom}")
     installed = run(
         [
             str(maven), f"-Dmaven.repo.local={repository}",
             "org.apache.maven.plugins:maven-install-plugin:3.1.3:install-file",
-            f"-Dfile={jar}", f"-DpomFile={pom}",
+            f"-Dfile={jar}", f"-DpomFile={artifact_pom}",
         ],
         cwd=source,
         environment=environment,
@@ -382,10 +400,16 @@ def main() -> int:
     clone_checkout(source_mirror, source_a0, plan["source_base_commit"])
     clone_checkout(source_mirror, source_a1, plan["source_head_commit"])
     clone_checkout(source_mirror, source_a2, plan["source_head_commit"])
+    target_a0_base_commit = plan.get("target_a0_base_commit", args.target_base_commit)
+    if not isinstance(target_a0_base_commit, str) or not target_a0_base_commit:
+        raise ValueError("target_a0_base_commit must be a non-empty string")
     targets = {}
     for arm in ("a0", "a1", "a2"):
         targets[arm] = work / f"target-{arm}"
-        clone_checkout(target_mirror, targets[arm], args.target_base_commit)
+        target_commit = (
+            target_a0_base_commit if arm == "a0" else args.target_base_commit
+        )
+        clone_checkout(target_mirror, targets[arm], target_commit)
     applied = subprocess.run(
         ["git", "apply", "--check", str(args.target_patch.resolve())],
         cwd=targets["a2"],
@@ -423,6 +447,25 @@ def main() -> int:
     target_pom_relative = plan.get("target_dependency_pom_path", "pom.xml")
     target_version_property = plan.get("target_version_property")
     source_pom_relative = plan.get("source_pom_path", "pom.xml")
+    source_artifact_pom_relative = plan.get(
+        "source_artifact_pom_path", source_pom_relative
+    )
+    source_artifact_jar_relative = plan.get("source_artifact_jar_path")
+    source_build_projects = plan.get("source_build_projects", [])
+    if (
+        not isinstance(source_artifact_pom_relative, str)
+        or not source_artifact_pom_relative
+        or (
+            source_artifact_jar_relative is not None
+            and (
+                not isinstance(source_artifact_jar_relative, str)
+                or not source_artifact_jar_relative
+            )
+        )
+        or not isinstance(source_build_projects, list)
+        or any(not isinstance(value, str) or not value for value in source_build_projects)
+    ):
+        raise ValueError("source reactor artifact fields are invalid")
     source_parent_version = plan.get("source_parent_version_override")
     if source_parent_version is not None:
         if not isinstance(source_parent_version, str) or not source_parent_version.strip():
@@ -474,16 +517,21 @@ def main() -> int:
             "pom_path": entry["pom_path"],
         })
     install_source(
-        source_a0, source_pom_relative, versions["A0"], repositories["A0"], args.maven, source_environment,
+        source_a0, source_pom_relative, source_artifact_pom_relative,
+        source_artifact_jar_relative, source_build_projects, versions["A0"],
+        repositories["A0"], args.maven, source_environment,
         evidence / "source-a0",
     )
     head_jar = install_source(
-        source_a1, source_pom_relative, versions["A1"], repositories["A1"], args.maven, source_environment,
+        source_a1, source_pom_relative, source_artifact_pom_relative,
+        source_artifact_jar_relative, source_build_projects, versions["A1"],
+        repositories["A1"], args.maven, source_environment,
         evidence / "source-a1",
     )
     install_existing_jar(
-        head_jar, source_a2, source_pom_relative, versions["A2"], repositories["A2"], args.maven,
-        source_environment, evidence / "source-a2.install.log",
+        head_jar, source_a2, source_pom_relative, source_artifact_pom_relative,
+        versions["A2"], repositories["A2"], args.maven, source_environment,
+        evidence / "source-a2.install.log",
     )
 
     results = {}
@@ -548,6 +596,10 @@ def main() -> int:
         "source_head_commit": plan["source_head_commit"],
         "source_application": "maven_local_artifact_from_opening_checkout",
         "source_artifact_versions": versions,
+        "source_build_pom_path": source_pom_relative,
+        "source_artifact_pom_path": source_artifact_pom_relative,
+        "source_artifact_jar_path": source_artifact_jar_relative,
+        "source_build_projects": source_build_projects,
         "source_parent_version_override": source_parent_version,
         "source_parent_poms": parent_pom_evidence,
         "build_java_homes": {
@@ -560,6 +612,7 @@ def main() -> int:
             "A2": plan["source_head_commit"],
         },
         "target_repository": plan["target_repository"],
+        "target_a0_base_commit": target_a0_base_commit,
         "target_base_commit": args.target_base_commit,
         "target_head_commit": plan["target_head_commit"],
         "target_change": plan["target_change"],

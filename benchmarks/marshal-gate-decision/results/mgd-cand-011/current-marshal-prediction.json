@@ -1,0 +1,39 @@
+{
+  "case_id": "mgd-cand-011",
+  "classification": {
+    "contracts_hit": [
+      "dependency-import:jsonschema"
+    ],
+    "tier": "high"
+  },
+  "decision": {
+    "gate_outcome": "degraded",
+    "verdict": "escalate"
+  },
+  "execution": {
+    "not_run": [
+      {
+        "invariant_id": "dependency-import.openstack__masakari.jsonschema.masakari.tests.unit.test_api_validation",
+        "reason": "lives in repo 'openstack/masakari'; this reporter runs in 'openstack/requirements' and cannot execute it"
+      }
+    ],
+    "results": [],
+    "status": "degraded"
+  },
+  "plan": {
+    "invariants": [
+      {
+        "executor_kind": "command",
+        "invariant_id": "dependency-import.openstack__masakari.jsonschema.masakari.tests.unit.test_api_validation",
+        "location_repo": "openstack/masakari",
+        "run_command": [
+          "stestr",
+          "run",
+          "masakari.tests.unit.test_api_validation"
+        ]
+      }
+    ]
+  },
+  "schema_version": "marshal-gate-prediction-1",
+  "system": "current-marshal-native-reporter"
+}

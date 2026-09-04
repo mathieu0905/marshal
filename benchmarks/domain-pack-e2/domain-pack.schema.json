@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://marshal.local/schemas/domain-pack-e2/domain-pack.schema.json",
+  "title": "Project-level dependency compatibility Domain Pack",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pack_family_id",
+    "pack_revision_id",
+    "project",
+    "materialization",
+    "generator",
+    "construction_policy",
+    "provenance",
+    "coordination_repositories",
+    "candidate_repositories",
+    "dependency_routes",
+    "dependency_aliases",
+    "execution_templates",
+    "checks",
+    "coverage"
+  ],
+  "properties": {
+    "schema_version": {"const": "domain-pack-e2-1"},
+    "pack_family_id": {"type": "string", "minLength": 1},
+    "pack_revision_id": {"type": "string", "minLength": 1},
+    "project": {"const": "openstack"},
+    "materialization": {
+      "type": "object",
+      "required": ["observation_cutoff"],
+      "properties": {"observation_cutoff": {"type": "string", "minLength": 1}}
+    },
+    "generator": {
+      "type": "object",
+      "required": ["id", "version"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1}
+      }
+    },
+    "construction_policy": {
+      "type": "object",
+      "required": [
+        "event_independent",
+        "route_derivation_outcome_independent",
+        "development_only",
+        "authoring_case_ids",
+        "allowed_inputs",
+        "excluded_inputs"
+      ],
+      "properties": {
+        "event_independent": {"type": "boolean"},
+        "route_derivation_outcome_independent": {"const": true},
+        "development_only": {"type": "boolean"},
+        "authoring_case_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "allowed_inputs": {"type": "array", "items": {"type": "string"}},
+        "excluded_inputs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "provenance": {"type": "object"},
+    "coordination_repositories": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "candidate_repositories": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/candidate_repository"}
+    },
+    "dependency_routes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/dependency_route"}
+    },
+    "dependency_aliases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "dependency_key",
+          "import_root",
+          "provider_repositories",
+          "status"
+        ],
+        "properties": {
+          "dependency_key": {"type": "string"},
+          "import_root": {"type": "string"},
+          "provider_repositories": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          },
+          "status": {"enum": ["available", "ambiguous"]}
+        }
+      }
+    },
+    "execution_templates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/execution_template"}
+    },
+    "checks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/check"}
+    },
+    "coverage": {"type": "object"}
+  },
+  "$defs": {
+    "candidate_repository": {
+      "type": "object",
+      "required": ["repository", "membership_source", "snapshot"],
+      "properties": {
+        "repository": {"type": "string"},
+        "membership_source": {"type": "object"},
+        "snapshot": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {"status": {"type": "string"}}
+        }
+      }
+    },
+    "dependency_route": {
+      "type": "object",
+      "required": ["id", "dependency_key", "trigger", "repositories"],
+      "properties": {
+        "id": {"type": "string"},
+        "dependency_key": {"type": "string"},
+        "trigger": {"$ref": "#/$defs/dependency_trigger"},
+        "repositories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "repository",
+              "consumption_evidence",
+              "focused_check_ids",
+              "check_resolution"
+            ],
+            "properties": {
+              "repository": {"type": "string"},
+              "consumption_evidence": {"type": "object"},
+              "focused_check_ids": {
+                "type": "array",
+                "items": {"type": "string"},
+                "uniqueItems": true
+              },
+              "check_resolution": {"type": "object"}
+            }
+          }
+        }
+      }
+    },
+    "dependency_trigger": {
+      "type": "object",
+      "required": [
+        "repository",
+        "kind",
+        "paths",
+        "source_entries",
+        "import_roots"
+      ],
+      "properties": {
+        "repository": {"const": "openstack/requirements"},
+        "kind": {
+          "enum": ["constraint-entry-change", "requirement-entry-change"]
+        },
+        "paths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": ["global-requirements.txt", "upper-constraints.txt"]
+          },
+          "uniqueItems": true
+        },
+        "path_kinds": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/requirements_path_kind"},
+          "uniqueItems": true
+        },
+        "source_entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["distribution", "specifier", "path", "line"],
+            "properties": {
+              "distribution": {"type": "string", "minLength": 1},
+              "specifier": {"type": "string"},
+              "path": {
+                "enum": ["global-requirements.txt", "upper-constraints.txt"]
+              },
+              "source_kind": {
+                "enum": ["global-requirements", "upper-constraints"]
+              },
+              "line": {"type": "integer", "minimum": 1}
+            }
+          }
+        },
+        "import_roots": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "requirements_path_kind": {
+      "type": "object",
+      "required": ["path", "kind"],
+      "properties": {
+        "path": {
+          "enum": ["global-requirements.txt", "upper-constraints.txt"]
+        },
+        "kind": {
+          "enum": ["global-requirements", "upper-constraints"]
+        }
+      }
+    },
+    "execution_template": {
+      "type": "object",
+      "required": [
+        "id",
+        "location_repo",
+        "kind",
+        "definition",
+        "command_template",
+        "provenance"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "location_repo": {"type": "string"},
+        "kind": {"const": "tox-command-template"},
+        "definition": {"type": "object"},
+        "command_template": {"type": "string"},
+        "provenance": {"type": "object"}
+      }
+    },
+    "check": {
+      "type": "object",
+      "required": [
+        "id",
+        "location_repo",
+        "kind",
+        "definition",
+        "selector",
+        "execution_bindings"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "location_repo": {"type": "string"},
+        "kind": {"const": "python-test-module"},
+        "definition": {
+          "type": "object",
+          "required": ["path"],
+          "properties": {"path": {"type": "string"}}
+        },
+        "selector": {"type": "string", "minLength": 1},
+        "execution_bindings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["template_id", "placeholder", "value"],
+            "properties": {
+              "template_id": {"type": "string", "minLength": 1},
+              "placeholder": {"const": "{posargs}"},
+              "value": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -70,6 +70,32 @@ class ProductScorerTests(unittest.TestCase):
         self.assertEqual(report["restraint"]["precision"], 1.0)
         self.assertEqual(report["restraint"]["specificity"], 1.0)
 
+    def test_wrong_assessed_restraint_verdicts_are_fp_and_fn_not_abstentions(self):
+        card3 = {"command": ["test"], "arm_logs": {"A0": "a0", "A1": "a1", "A2": "a2"}}
+        card2 = {"command": ["test"], "arm_logs": {"A0": "a0", "A1": "a1"}}
+        report = score_product(
+            [],
+            [{"pack_id": "pack", "target_repository": "org/negative"}],
+            [{
+                "pack_id": "pack", "bounded_universe_complete": True,
+                "candidate_repositories": ["org/positive", "org/negative"],
+                "breakage_repositories": ["org/positive"],
+                "bounded_negative_repositories": ["org/negative"],
+            }],
+            [{"case_id": "pack", "targets": [
+                {"repository": "org/positive", "verdict": "compatible"},
+                {"repository": "org/negative", "verdict": "breakage"},
+            ]}],
+            [
+                {"case_id": "pack", "repository": "org/positive", "status": "assessed", "arms": {"A0": {"exit_code": 0}, "A1": {"exit_code": 1}, "A2": {"exit_code": 0}}, "evidence": card3},
+                {"case_id": "pack", "repository": "org/negative", "status": "assessed", "arms": {"A0": {"exit_code": 0}, "A1": {"exit_code": 0}}, "evidence": card2},
+            ],
+        )
+        self.assertEqual(
+            report["restraint"]["confusion"],
+            {"tp": 0, "fp": 1, "tn": 0, "fn": 1, "abstained": 0},
+        )
+
 
 class RatchetSequenceTests(unittest.TestCase):
     def test_builder_emits_three_ordered_sequences(self):
@@ -89,19 +115,23 @@ class RatchetSequenceTests(unittest.TestCase):
             "registered_check_id": "check",
             "recurrence_scheduled_check_ids": ["check"],
             "unrelated_scheduled_check_ids": [],
-            "recurrence_execution": {"status": "assessed", "exit_code": 1, "evidence_log": "a1.log"},
             "recurrence_decision": "block",
+        }], [{
+            "sequence_id": "seq", "check_id": "check", "status": "assessed",
+            "exit_code": 1, "evidence_log": "a1.log",
         }])
         missing_execution = score_ratchets([sequence], [{
             "sequence_id": "seq",
             "registered_check_id": "check",
             "recurrence_scheduled_check_ids": ["check"],
             "unrelated_scheduled_check_ids": [],
-            "recurrence_execution": {"status": "not_assessed"},
+            "recurrence_execution": {"status": "assessed", "exit_code": 1, "evidence_log": "participant.log"},
             "recurrence_decision": "not_assessed",
-        }])
+        }], [])
         self.assertEqual(perfect["end_to_end_ratchet_rate"], 1.0)
         self.assertEqual(missing_execution["end_to_end_ratchet_rate"], 0.0)
+        self.assertEqual(missing_execution["recurrence_execution_assessed_rate"], 0.0)
+        self.assertFalse(missing_execution["prediction_self_reported_execution_used"])
 
 
 if __name__ == "__main__":

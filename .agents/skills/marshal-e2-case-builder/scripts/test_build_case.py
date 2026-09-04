@@ -390,6 +390,70 @@ class ConstraintReplayTests(unittest.TestCase):
             ),
         )
 
+    def test_full_constraints_adapter_is_explicit_and_uses_existing_runner(self) -> None:
+        self.assertEqual(
+            "run_formal_e2_constraint_touched_relation.py",
+            build_case.REPLAY_ADAPTERS["requirements_full_constraints"],
+        )
+
+    def test_counts_selected_pytest_check_in_pass_and_failure(self) -> None:
+        self.assertEqual(
+            1,
+            constraint_replay.tests_run_count(
+                "============================== 1 passed in 0.22s ==============================\n"
+            ),
+        )
+
+    def test_extracts_pytest_error_line_for_full_constraints_replay(self) -> None:
+        self.assertEqual(
+            "AttributeError: 'LogCaptureHandler' object has no attribute 'address'",
+            constraint_replay.pytest_failure_signature(
+                "E   AttributeError: 'LogCaptureHandler' object has no attribute 'address'\n"
+            ),
+        )
+        self.assertEqual(
+            1,
+            constraint_replay.tests_run_count(
+                "============================== 1 failed in 0.31s ==============================\n"
+            ),
+        )
+
+    def test_full_constraints_contract_records_versions_and_checks(self) -> None:
+        contract = {
+            "source_application": "global_constraints_full_opening_diff",
+            "changed_distribution": "pytest",
+            "source_versions": {"A0": "9.0.3", "A1": "9.1.1", "A2": "9.1.1"},
+            "opening_constraint_changes": [
+                {"distribution": "pytest", "old_version": "9.0.3", "new_version": "9.1.1"},
+                {"distribution": "coverage", "old_version": "7.14.3", "new_version": "7.15.0"},
+            ],
+        }
+        build_case.verify_constraint_source_application(contract)
+        command = ["pytest", "test/unit/test_proxy_logging.py::test_handler"]
+        installed = {
+            "A0": {"pytest": "9.0.3", "coverage": "7.14.3"},
+            "A1": {"pytest": "9.1.1", "coverage": "7.15.0"},
+            "A2": {"pytest": "9.1.1", "coverage": "7.15.0"},
+        }
+        evidence = constraint_replay.full_constraints_evidence(
+            {"source_base_commit": "requirements-base", "source_head_commit": "requirements-head"},
+            "swift-cutoff",
+            command,
+            installed,
+            {"A0": 1, "A1": 1, "A2": 1},
+        )
+        self.assertEqual(
+            {"A0": "requirements-base", "A1": "requirements-head", "A2": "requirements-head"},
+            evidence["constraint_commits_by_arm"],
+        )
+        self.assertEqual(
+            {"A0": "swift-cutoff", "A1": "swift-cutoff", "A2": "swift-cutoff"},
+            evidence["target_base_commits_by_arm"],
+        )
+        self.assertEqual({"A0": command, "A1": command, "A2": command}, evidence["test_commands_by_arm"])
+        self.assertEqual(installed, evidence["installed_versions_by_distribution"])
+        self.assertEqual({"A0": 1, "A1": 1, "A2": 1}, evidence["checks_run"])
+
     def test_verifier_accepts_a_recorded_full_opening_diff(self) -> None:
         build_case.verify_constraint_source_application({
             "source_application": "global_constraints_full_opening_diff",

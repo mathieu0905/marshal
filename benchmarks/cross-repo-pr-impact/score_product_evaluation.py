@@ -146,13 +146,21 @@ def score_product(
             verdict = target.get("verdict", "not_assessed") if target else "not_assessed"
             result = executed.get((pack_id, repository))
             kind = execution_kind(result)
-            backed = (
+            required_arms = (
+                ("A0", "A1", "A2")
+                if kind == "causal_breakage_recovered"
+                else ("A0", "A1")
+            )
+            execution_assessed = (
+                kind in {"causal_breakage_recovered", "bounded_compatible"}
+                and evidence_card_complete(result, required_arms)
+            )
+            verdict_matches_execution = (
                 verdict == "breakage" and kind == "causal_breakage_recovered"
             ) or (
                 verdict == "compatible" and kind == "bounded_compatible"
-                and evidence_card_complete(result, ("A0", "A1"))
             )
-            effective = verdict if backed else "not_assessed"
+            effective = verdict if execution_assessed else "not_assessed"
             if effective == "not_assessed":
                 bucket = "abstained"
             elif gold == "breakage" and effective == "breakage":
@@ -169,7 +177,8 @@ def score_product(
                 "gold": gold,
                 "reported_verdict": verdict,
                 "execution_kind": kind,
-                "evidence_backed": backed,
+                "execution_assessed": execution_assessed,
+                "verdict_matches_execution": verdict_matches_execution,
                 "scored_verdict": effective,
                 "confusion_bucket": bucket,
             })

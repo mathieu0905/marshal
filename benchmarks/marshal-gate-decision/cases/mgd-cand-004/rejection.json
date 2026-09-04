@@ -1,0 +1,50 @@
+{
+  "schema_version": "marshal-gate-rejection-1",
+  "case_id": "mgd-cand-004",
+  "candidate_relation": "formal-opendev-788339--target-790797",
+  "status": "rejected",
+  "reason": "generator_missed_gold_test",
+  "domain_pack": {
+    "path": "public/domain-pack.json",
+    "construction_method": "constraints-to-direct-test-imports-v1",
+    "contract_id": "dependency-import:sqlalchemy",
+    "generated_invariants": [
+      {
+        "invariant_id": "dependency-import.openstack__cinder.sqlalchemy.cinder.tests.unit.db.test_cluster",
+        "location_path": "cinder/tests/unit/db/test_cluster.py",
+        "location_test": "cinder.tests.unit.db.test_cluster"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.sqlalchemy.cinder.tests.unit.db.test_migrations",
+        "location_path": "cinder/tests/unit/db/test_migrations.py",
+        "location_test": "cinder.tests.unit.db.test_migrations"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.sqlalchemy.cinder.tests.unit.db.test_purge",
+        "location_path": "cinder/tests/unit/db/test_purge.py",
+        "location_test": "cinder.tests.unit.db.test_purge"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.sqlalchemy.cinder.tests.unit.objects.test_base",
+        "location_path": "cinder/tests/unit/objects/test_base.py",
+        "location_test": "cinder.tests.unit.objects.test_base"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.sqlalchemy.cinder.tests.unit.objects.test_volume_attachment",
+        "location_path": "cinder/tests/unit/objects/test_volume_attachment.py",
+        "location_test": "cinder.tests.unit.objects.test_volume_attachment"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.sqlalchemy.cinder.tests.unit.test_db_api",
+        "location_path": "cinder/tests/unit/test_db_api.py",
+        "location_test": "cinder.tests.unit.test_db_api"
+      }
+    ]
+  },
+  "missing_authoritative_test": {
+    "selector": "cinder.tests.unit.api.v3.test_volumes.VolumeApiTest.test_list_volume_with_count_param",
+    "location_path": "cinder/tests/unit/api/v3/test_volumes.py",
+    "evidence_relation": "formal-opendev-788339--target-790797"
+  },
+  "stop_reason": "The label-independent direct-import generator did not route the authoritative A0/A1/A2 test selector through dependency-import:sqlalchemy. The cutoff test module does not directly import sqlalchemy, so adding the selector manually would make the Domain Pack depend on hidden outcome evidence and violate the declared construction rule. The candidate is rejected without supplementing the generated pack."
+}

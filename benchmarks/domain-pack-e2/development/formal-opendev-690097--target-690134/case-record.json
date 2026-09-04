@@ -1,0 +1,215 @@
+{
+  "case_id": "formal-opendev-690097--target-690134",
+  "curator": {
+    "candidate_label_policy": "unjudged_unless_in_judged_e2_bindings",
+    "judged_e2_bindings": [
+      {
+        "arms": {
+          "A0": {
+            "artifact_refs": [
+              "evidence/a0/summary.json",
+              "evidence/a0/command.log"
+            ],
+            "command_log_ref": "evidence/a0/command.log",
+            "exit_code": 0,
+            "status": "pass",
+            "summary_ref": "evidence/a0/summary.json"
+          },
+          "A1": {
+            "artifact_refs": [
+              "evidence/a1/summary.json",
+              "evidence/a1/command.log"
+            ],
+            "command_log_ref": "evidence/a1/command.log",
+            "exit_code": 1,
+            "status": "fail",
+            "summary_ref": "evidence/a1/summary.json"
+          },
+          "A2": {
+            "artifact_refs": [
+              "evidence/a2/summary.json",
+              "evidence/a2/command.log"
+            ],
+            "command_log_ref": "evidence/a2/command.log",
+            "exit_code": 0,
+            "status": "pass",
+            "summary_ref": "evidence/a2/summary.json"
+          }
+        },
+        "binding_id": "e2:formal-opendev-690097--target-690134",
+        "check_id": "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_nova",
+        "command": {
+          "base_template_id": "command.tox.openstack__horizon.testenv.6",
+          "provenance": {
+            "ci_definition": {
+              "command_index": 6,
+              "path": "tox.ini",
+              "section": "testenv"
+            },
+            "commit": "85a1dddf126691921924edcecaee5c054c7df6c2",
+            "repository": "openstack/horizon",
+            "test_path": "openstack_dashboard/test/unit/api/test_nova.py"
+          },
+          "template": "bash tools/unit_tests.sh python . openstack_dashboard.test.unit.api.test_nova.ComputeApiTests.test_server_reboot"
+        },
+        "failure_signature": {
+          "artifact_refs": [
+            "evidence/a0/command.log",
+            "evidence/a1/command.log",
+            "evidence/a2/command.log"
+          ],
+          "exclusive_to": "A1",
+          "value": "ImportError: cannot import name 'list_extensions' from 'novaclient.v2' (/home/zhihao/hdd/marshal/benchmarks/cross-repo-pr-impact/results/single-case-pipeline-690097-690134-v1-2026-08-27/replay-work/formal-opendev-690097--target-690134/target-a1/.tox/py3/lib/python3.8/site-packages/novaclient/v2/__init__.py)"
+        },
+        "location_repo": "openstack/horizon",
+        "mechanism": "python-novaclient 16.0 removes novaclient.v2.list_extensions, causing Horizon API module import failure before an existing Nova API unit test",
+        "relation_id": "formal-opendev-690097--target-690134",
+        "route_id": "requirements-constraint:python_novaclient",
+        "selector": "openstack_dashboard.test.unit.api.test_nova.ComputeApiTests.test_server_reboot",
+        "target_repair": {
+          "change_id": 690134,
+          "patch_ref": "evidence/target.patch",
+          "repository": "openstack/horizon"
+        }
+      }
+    ]
+  },
+  "pack_family_id": "openstack-requirements-python-consumers",
+  "pack_revision_id": "openstack-requirements-python-consumers@2019-10-22T145742Z-dev-alias1",
+  "public": {
+    "candidate_selection": {
+      "candidate_check_ids": [
+        "python-test.openstack__horizon.openstack_dashboard.contrib.developer.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.aggregates.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.defaults.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.flavors.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.floating_ips.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.group_types.specs.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.group_types.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.hypervisors.compute.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.hypervisors.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.images.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.info.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.instances.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.metadata_defs.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.networks.agents.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.networks.ports.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.networks.subnets.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.networks.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.overview.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.rbac_policies.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.routers.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.snapshots.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.vg_snapshots.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.volume_groups.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.volume_types.extras.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.volume_types.qos_specs.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.volume_types.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.admin.volumes.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.application_credentials.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.domains.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.groups.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.identity_providers.protocols.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.identity_providers.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.mappings.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.projects.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.roles.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.identity.users.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.api_access.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.backups.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.floating_ips.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.images.images.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.images.snapshots.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.images.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.instances.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.key_pairs.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.network_topology.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.networks.ports.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.networks.subnets.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.networks.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.overview.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.routers.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.security_groups.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.snapshots.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.vg_snapshots.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.volume_groups.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.project.volumes.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.settings.password.tests",
+        "python-test.openstack__horizon.openstack_dashboard.dashboards.settings.user.tests",
+        "python-test.openstack__horizon.openstack_dashboard.test.test_plugins.test_panel",
+        "python-test.openstack__horizon.openstack_dashboard.test.test_plugins.test_panel_group",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_cinder",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_config",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_glance",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_keystone",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_network",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_neutron",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_nova",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_policy",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_swift",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.rest.test_utils",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_base",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_cinder",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_glance",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_keystone",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_microversions",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_network",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_neutron",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_nova",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.api.test_swift",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.test_error_pages",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.test_policy",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.test_themes",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.test_views",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.usage.test_quotas",
+        "python-test.openstack__horizon.openstack_dashboard.test.unit.utils.test_settings"
+      ],
+      "candidate_repositories": [
+        "openstack/horizon"
+      ],
+      "candidate_route_ids": [
+        "requirements-constraint:python_novaclient"
+      ],
+      "method": "changed-constraint-to-pack-candidates-v1",
+      "unresolved_dependency_keys": [],
+      "unresolved_repositories": []
+    },
+    "change_facts": [
+      {
+        "added_entries": [
+          {
+            "distribution": "python-novaclient",
+            "path": "upper-constraints.txt",
+            "specifier": "===16.0.0"
+          }
+        ],
+        "dependency_key": "python_novaclient",
+        "derivation": "unified-diff-requirement-lines-v1",
+        "kind": "constraint-updated",
+        "removed_entries": [
+          {
+            "distribution": "python-novaclient",
+            "path": "upper-constraints.txt",
+            "specifier": "===15.1.0"
+          }
+        ]
+      }
+    ],
+    "source_event": {
+      "base_commit": "94e035e36eea0a3ad813596f9d0cc21da5493613",
+      "candidate_commit": "4f36953354ab36910ae16a99b3c16c176229f114",
+      "changed_paths": [
+        "upper-constraints.txt"
+      ],
+      "host": "review.opendev.org",
+      "observation_cutoff": "2019-10-22 14:57:42.000000000",
+      "patch_ref": "evidence/source.patch",
+      "patch_url": "https://review.opendev.org/changes/690097/revisions/1/patch",
+      "pull_request_number": 690097,
+      "repository": "openstack/requirements",
+      "source_change_kind": "gerrit_opening_revision",
+      "subject": "update constraint for python-novaclient to new release 16.0.0"
+    }
+  },
+  "schema_version": "domain-pack-e2-case-1"
+}

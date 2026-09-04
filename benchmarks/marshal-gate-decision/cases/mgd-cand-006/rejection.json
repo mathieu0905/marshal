@@ -1,0 +1,50 @@
+{
+  "schema_version": "marshal-gate-rejection-1",
+  "case_id": "mgd-cand-006",
+  "candidate_relation": "formal-opendev-996511--target-995405",
+  "status": "rejected",
+  "reason": "generator_missed_gold_test",
+  "domain_pack": {
+    "path": "public/domain-pack.json",
+    "construction_method": "constraints-to-direct-test-imports-v1",
+    "contract_id": "dependency-import:oslo_policy",
+    "generated_invariants": [
+      {
+        "invariant_id": "dependency-import.openstack__cinder.oslo_policy.cinder.tests.fixtures",
+        "location_path": "cinder/tests/fixtures.py",
+        "location_test": "cinder.tests.fixtures"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.oslo_policy.cinder.tests.unit.api.contrib.test_volume_image_metadata",
+        "location_path": "cinder/tests/unit/api/contrib/test_volume_image_metadata.py",
+        "location_test": "cinder.tests.unit.api.contrib.test_volume_image_metadata"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.oslo_policy.cinder.tests.unit.api.contrib.test_volume_tenant_attribute",
+        "location_path": "cinder/tests/unit/api/contrib/test_volume_tenant_attribute.py",
+        "location_test": "cinder.tests.unit.api.contrib.test_volume_tenant_attribute"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.oslo_policy.cinder.tests.unit.api.v3.test_group_snapshots",
+        "location_path": "cinder/tests/unit/api/v3/test_group_snapshots.py",
+        "location_test": "cinder.tests.unit.api.v3.test_group_snapshots"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.oslo_policy.cinder.tests.unit.test_context",
+        "location_path": "cinder/tests/unit/test_context.py",
+        "location_test": "cinder.tests.unit.test_context"
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.oslo_policy.cinder.tests.unit.test_policy",
+        "location_path": "cinder/tests/unit/test_policy.py",
+        "location_test": "cinder.tests.unit.test_policy"
+      }
+    ]
+  },
+  "missing_authoritative_test": {
+    "selector": "cinder.tests.unit.policies.test_attachments",
+    "location_path": "cinder/tests/unit/policies/test_attachments.py",
+    "evidence_relation": "formal-opendev-996511--target-995405"
+  },
+  "stop_reason": "The label-independent direct-import generator did not route the authoritative A0/A1/A2 test selector. Adding that selector manually would make the Domain Pack depend on the hidden outcome evidence and violate the rule that generated invariants must come only from the declared source and cutoff snapshots. The candidate is rejected without supplementing the generated pack."
+}

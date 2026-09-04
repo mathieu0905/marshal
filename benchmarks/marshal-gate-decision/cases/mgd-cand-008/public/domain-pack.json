@@ -1,0 +1,3773 @@
+{
+  "construction": {
+    "constraints_path": "upper-constraints.txt",
+    "method": "constraints-to-direct-test-imports-v1",
+    "outcome_inputs_read": false,
+    "rule_authoring_case": false,
+    "source_commit": "52d27d85156ae6f0b3b4a4cfa0aec2cf66367f78",
+    "source_repository": "openstack/requirements",
+    "target_commit": "6a0150df63e26b20c75cadd34cabf50637479170",
+    "target_repository": "openstack/heat",
+    "test_root": "heat/tests"
+  },
+  "contracts": [
+    {
+      "id": "dependency-import:alembic",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:alembic"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.alembic.heat.tests.db.test_migrations"
+      ]
+    },
+    {
+      "id": "dependency-import:aodhclient",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:aodhclient"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.aodhclient.heat.tests.clients.test_clients"
+      ]
+    },
+    {
+      "id": "dependency-import:ddt",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:ddt"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.ddt.heat.tests.openstack.neutron.test_neutron_provider_net",
+        "dependency-import.openstack__heat.ddt.heat.tests.test_common_policy"
+      ]
+    },
+    {
+      "id": "dependency-import:eventlet",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:eventlet"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.eventlet.heat.tests.engine.service.test_stack_update",
+        "dependency-import.openstack__heat.eventlet.heat.tests.engine.service.test_threadgroup_mgr",
+        "dependency-import.openstack__heat.eventlet.heat.tests.engine.test_check_resource",
+        "dependency-import.openstack__heat.eventlet.heat.tests.engine.test_scheduler",
+        "dependency-import.openstack__heat.eventlet.heat.tests.test_resource",
+        "dependency-import.openstack__heat.eventlet.heat.tests.test_stack"
+      ]
+    },
+    {
+      "id": "dependency-import:fixtures",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:fixtures"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.fixtures.heat.tests.api.test_wsgi",
+        "dependency-import.openstack__heat.fixtures.heat.tests.common",
+        "dependency-import.openstack__heat.fixtures.heat.tests.db.test_migrations",
+        "dependency-import.openstack__heat.fixtures.heat.tests.test_environment",
+        "dependency-import.openstack__heat.fixtures.heat.tests.test_exception",
+        "dependency-import.openstack__heat.fixtures.heat.tests.test_stack",
+        "dependency-import.openstack__heat.fixtures.heat.tests.test_stack_delete",
+        "dependency-import.openstack__heat.fixtures.heat.tests.test_template",
+        "dependency-import.openstack__heat.fixtures.heat.tests.utils"
+      ]
+    },
+    {
+      "id": "dependency-import:keystoneauth1",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:keystoneauth1"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_cinder_client",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_clients",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_heat_client",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_keystone_client",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.fakes",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.openstack.heat.test_remote_stack",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.openstack.nova.test_server",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_auth_password",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_common_auth_plugin",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_common_context",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_signal",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_stack_delete",
+        "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_stack_user"
+      ]
+    },
+    {
+      "id": "dependency-import:lxml",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:lxml"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.lxml.heat.tests.test_common_serializers"
+      ]
+    },
+    {
+      "id": "dependency-import:osc_lib",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:osc_lib"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_health_monitor",
+        "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_l7policy",
+        "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_l7rule",
+        "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_listener",
+        "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_loadbalancer",
+        "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_pool",
+        "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_pool_member"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_config",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_config"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_config.heat.tests.api.aws.test_api_ec2token",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.api.cfn.test_api_cfn_v1",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.api.openstack_v1.test_stacks",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.api.openstack_v1.tools",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.api.test_wsgi",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_loadbalancer",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_s3",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_user",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_volume",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.clients.test_clients",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.clients.test_heat_client",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.clients.test_nova_client",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.common",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.convergence.test_converge",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.db.test_sqlalchemy_api",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_service_engine",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_software_config",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_adopt",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_create",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_delete",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_events",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_resources",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_snapshot",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_update",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.engine.test_check_resource",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.cinder.test_volume",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.heat.test_remote_stack",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.ironic.test_port",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.magnum.test_cluster",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.neutron.test_neutron_firewall",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.neutron.test_neutron_vpnservice",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.trove.test_instance",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.zun.test_container",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_auth_password",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_common_context",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_common_policy",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_convg_stack",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_crypt",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_engine_service",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_environment",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_event",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_fault_middleware",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_nested_stack",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_resource",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_resource_properties_data",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_stack",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_stack_resource",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.test_urlfetch",
+        "dependency-import.openstack__heat.oslo_config.heat.tests.utils"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_context",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_context"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_context.heat.tests.engine.service.test_threadgroup_mgr"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_db",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_db"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_db.heat.tests.db.test_migrations",
+        "dependency-import.openstack__heat.oslo_db.heat.tests.db.test_sqlalchemy_api",
+        "dependency-import.openstack__heat.oslo_db.heat.tests.engine.test_sync_point",
+        "dependency-import.openstack__heat.oslo_db.heat.tests.utils"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_i18n",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_i18n"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_i18n.heat.tests"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_log",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_log"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_log.heat.tests.api.openstack_v1.tools",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.common",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.fake_resource",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.message_processor",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.scenario",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.testutils",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.generic_resource",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.openstack.neutron.test_neutron_extrarouteset",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.openstack.neutron.test_neutron_trunk",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.test_fault_middleware",
+        "dependency-import.openstack__heat.oslo_log.heat.tests.test_stack_delete"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_messaging",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_messaging"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.api.openstack_v1.test_services",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.api.openstack_v1.tools",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.convergence.framework.message_processor",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_software_config",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_action",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_adopt",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_create",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_delete",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_events",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_resources",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_snapshot",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_update",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_engine_service",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_fault_middleware",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_rpc_client",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_rpc_listener_client",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_stack_resource",
+        "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_validate"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_middleware",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_middleware"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_middleware.heat.tests.test_common_context"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_policy",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_policy"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_policy.heat.tests.test_common_context",
+        "dependency-import.openstack__heat.oslo_policy.heat.tests.test_common_policy"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_serialization",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_serialization"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.clients.test_nova_client",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.engine.service.test_software_config",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.heat.test_deployed_server",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.heat.test_software_deployment",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.heat.test_waitcondition",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.mistral.test_workflow",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.neutron.test_neutron_port",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.nova.test_server",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.zaqar.test_subscription",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_common_serializers",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_engine_service",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_metadata_refresh",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_parameters",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_properties",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_stack_resource",
+        "dependency-import.openstack__heat.oslo_serialization.heat.tests.utils"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_service",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_service"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_service.heat.tests.engine.service.test_stack_create"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_upgradecheck",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_upgradecheck"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_upgradecheck.heat.tests.cmd.test_status"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_utils",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_utils"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.api.aws.test_api_ec2token",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.api.openstack_v1.test_routes",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.autoscaling.test_heat_scaling_group",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.autoscaling.test_scaling_group",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.aws.test_waitcondition",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.db.test_sqlalchemy_api",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.engine.service.test_service_engine",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.engine.service.test_software_config",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.engine.service.test_stack_delete",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.blazar.test_host",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.blazar.test_lease",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_delay",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_deployed_server",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_swiftsignal",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_waitcondition",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.neutron.test_neutron_floating_ip",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.neutron.test_neutron_segment",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.nova.test_server",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.nova.test_server_group",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.test_common_context",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.test_common_service_utils",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.test_engine_api_utils",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.test_notifications",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.test_resource",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.test_rpc_client",
+        "dependency-import.openstack__heat.oslo_utils.heat.tests.test_signal"
+      ]
+    },
+    {
+      "id": "dependency-import:oslotest",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslotest"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.oslotest.heat.tests.db.test_migrations"
+      ]
+    },
+    {
+      "id": "dependency-import:pbr",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:pbr"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.pbr.heat.tests.test_version"
+      ]
+    },
+    {
+      "id": "dependency-import:requests",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:requests"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.requests.heat.tests.api.aws.test_api_ec2token",
+        "dependency-import.openstack__heat.requests.heat.tests.clients.test_nova_client",
+        "dependency-import.openstack__heat.requests.heat.tests.openstack.nova.fakes",
+        "dependency-import.openstack__heat.requests.heat.tests.openstack.nova.test_server",
+        "dependency-import.openstack__heat.requests.heat.tests.test_nested_stack",
+        "dependency-import.openstack__heat.requests.heat.tests.test_urlfetch"
+      ]
+    },
+    {
+      "id": "dependency-import:sqlalchemy",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:sqlalchemy"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.sqlalchemy.heat.tests.db.test_migrations",
+        "dependency-import.openstack__heat.sqlalchemy.heat.tests.db.test_sqlalchemy_api",
+        "dependency-import.openstack__heat.sqlalchemy.heat.tests.db.test_sqlalchemy_types",
+        "dependency-import.openstack__heat.sqlalchemy.heat.tests.utils"
+      ]
+    },
+    {
+      "id": "dependency-import:stevedore",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:stevedore"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.stevedore.heat.tests.test_template"
+      ]
+    },
+    {
+      "id": "dependency-import:testscenarios",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:testscenarios"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.testscenarios.heat.tests.common"
+      ]
+    },
+    {
+      "id": "dependency-import:testtools",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:testtools"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.testtools.heat.tests.clients.test_clients",
+        "dependency-import.openstack__heat.testtools.heat.tests.clients.test_swift_client",
+        "dependency-import.openstack__heat.testtools.heat.tests.common",
+        "dependency-import.openstack__heat.testtools.heat.tests.db.test_migrations",
+        "dependency-import.openstack__heat.testtools.heat.tests.openstack.heat.test_random_string",
+        "dependency-import.openstack__heat.testtools.heat.tests.openstack.heat.test_swiftsignal",
+        "dependency-import.openstack__heat.testtools.heat.tests.test_timeutils"
+      ]
+    },
+    {
+      "id": "dependency-import:webob",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:webob"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__heat.webob.heat.tests.api.middleware.test_version_negotiation_middleware",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_actions",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_events",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_resources",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_services",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_software_configs",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_software_deployments",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_stacks",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_util",
+        "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.tools",
+        "dependency-import.openstack__heat.webob.heat.tests.api.test_wsgi",
+        "dependency-import.openstack__heat.webob.heat.tests.test_auth_password",
+        "dependency-import.openstack__heat.webob.heat.tests.test_auth_url",
+        "dependency-import.openstack__heat.webob.heat.tests.test_common_context",
+        "dependency-import.openstack__heat.webob.heat.tests.test_common_serializers",
+        "dependency-import.openstack__heat.webob.heat.tests.test_fault_middleware",
+        "dependency-import.openstack__heat.webob.heat.tests.test_noauth",
+        "dependency-import.openstack__heat.webob.heat.tests.test_validate"
+      ]
+    }
+  ],
+  "default_tier": "low",
+  "id": "openstack-heat-python-dependency-imports-v1",
+  "invariants": [
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.alembic.heat.tests.db.test_migrations",
+      "location_path": "heat/tests/db/test_migrations.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_migrations",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_migrations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.aodhclient.heat.tests.clients.test_clients",
+      "location_path": "heat/tests/clients/test_clients.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_clients",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_clients"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.ddt.heat.tests.openstack.neutron.test_neutron_provider_net",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_provider_net.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_provider_net",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_provider_net"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.ddt.heat.tests.test_common_policy",
+      "location_path": "heat/tests/test_common_policy.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_policy",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_policy"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.eventlet.heat.tests.engine.service.test_stack_update",
+      "location_path": "heat/tests/engine/service/test_stack_update.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_update",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_update"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.eventlet.heat.tests.engine.service.test_threadgroup_mgr",
+      "location_path": "heat/tests/engine/service/test_threadgroup_mgr.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_threadgroup_mgr",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_threadgroup_mgr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.eventlet.heat.tests.engine.test_check_resource",
+      "location_path": "heat/tests/engine/test_check_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.test_check_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.test_check_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.eventlet.heat.tests.engine.test_scheduler",
+      "location_path": "heat/tests/engine/test_scheduler.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.test_scheduler",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.test_scheduler"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.eventlet.heat.tests.test_resource",
+      "location_path": "heat/tests/test_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.eventlet.heat.tests.test_stack",
+      "location_path": "heat/tests/test_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.api.test_wsgi",
+      "location_path": "heat/tests/api/test_wsgi.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.test_wsgi",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.test_wsgi"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.common",
+      "location_path": "heat/tests/common.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.common",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.common"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.db.test_migrations",
+      "location_path": "heat/tests/db/test_migrations.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_migrations",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_migrations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.test_environment",
+      "location_path": "heat/tests/test_environment.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_environment",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_environment"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.test_exception",
+      "location_path": "heat/tests/test_exception.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_exception",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_exception"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.test_stack",
+      "location_path": "heat/tests/test_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.test_stack_delete",
+      "location_path": "heat/tests/test_stack_delete.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack_delete",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack_delete"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.test_template",
+      "location_path": "heat/tests/test_template.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_template",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_template"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.fixtures.heat.tests.utils",
+      "location_path": "heat/tests/utils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_cinder_client",
+      "location_path": "heat/tests/clients/test_cinder_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_cinder_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_cinder_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_clients",
+      "location_path": "heat/tests/clients/test_clients.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_clients",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_clients"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_heat_client",
+      "location_path": "heat/tests/clients/test_heat_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_heat_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_heat_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.clients.test_keystone_client",
+      "location_path": "heat/tests/clients/test_keystone_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_keystone_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_keystone_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.fakes",
+      "location_path": "heat/tests/fakes.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.fakes",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.fakes"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.openstack.heat.test_remote_stack",
+      "location_path": "heat/tests/openstack/heat/test_remote_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_remote_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_remote_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.openstack.nova.test_server",
+      "location_path": "heat/tests/openstack/nova/test_server.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.nova.test_server",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.nova.test_server"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_auth_password",
+      "location_path": "heat/tests/test_auth_password.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_auth_password",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_auth_password"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_common_auth_plugin",
+      "location_path": "heat/tests/test_common_auth_plugin.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_auth_plugin",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_auth_plugin"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_common_context",
+      "location_path": "heat/tests/test_common_context.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_signal",
+      "location_path": "heat/tests/test_signal.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_signal",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_signal"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_stack_delete",
+      "location_path": "heat/tests/test_stack_delete.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack_delete",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack_delete"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.keystoneauth1.heat.tests.test_stack_user",
+      "location_path": "heat/tests/test_stack_user.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack_user",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack_user"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.lxml.heat.tests.test_common_serializers",
+      "location_path": "heat/tests/test_common_serializers.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_serializers",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_serializers"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_health_monitor",
+      "location_path": "heat/tests/openstack/octavia/test_health_monitor.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.octavia.test_health_monitor",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.octavia.test_health_monitor"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_l7policy",
+      "location_path": "heat/tests/openstack/octavia/test_l7policy.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.octavia.test_l7policy",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.octavia.test_l7policy"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_l7rule",
+      "location_path": "heat/tests/openstack/octavia/test_l7rule.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.octavia.test_l7rule",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.octavia.test_l7rule"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_listener",
+      "location_path": "heat/tests/openstack/octavia/test_listener.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.octavia.test_listener",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.octavia.test_listener"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_loadbalancer",
+      "location_path": "heat/tests/openstack/octavia/test_loadbalancer.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.octavia.test_loadbalancer",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.octavia.test_loadbalancer"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_pool",
+      "location_path": "heat/tests/openstack/octavia/test_pool.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.octavia.test_pool",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.octavia.test_pool"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.osc_lib.heat.tests.openstack.octavia.test_pool_member",
+      "location_path": "heat/tests/openstack/octavia/test_pool_member.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.octavia.test_pool_member",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.octavia.test_pool_member"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.api.aws.test_api_ec2token",
+      "location_path": "heat/tests/api/aws/test_api_ec2token.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.aws.test_api_ec2token",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.aws.test_api_ec2token"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.api.cfn.test_api_cfn_v1",
+      "location_path": "heat/tests/api/cfn/test_api_cfn_v1.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.cfn.test_api_cfn_v1",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.cfn.test_api_cfn_v1"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.api.openstack_v1.test_stacks",
+      "location_path": "heat/tests/api/openstack_v1/test_stacks.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_stacks",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_stacks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.api.openstack_v1.tools",
+      "location_path": "heat/tests/api/openstack_v1/tools.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.tools",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.tools"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.api.test_wsgi",
+      "location_path": "heat/tests/api/test_wsgi.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.test_wsgi",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.test_wsgi"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_loadbalancer",
+      "location_path": "heat/tests/aws/test_loadbalancer.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.aws.test_loadbalancer",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.aws.test_loadbalancer"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_s3",
+      "location_path": "heat/tests/aws/test_s3.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.aws.test_s3",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.aws.test_s3"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_user",
+      "location_path": "heat/tests/aws/test_user.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.aws.test_user",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.aws.test_user"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.aws.test_volume",
+      "location_path": "heat/tests/aws/test_volume.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.aws.test_volume",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.aws.test_volume"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.clients.test_clients",
+      "location_path": "heat/tests/clients/test_clients.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_clients",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_clients"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.clients.test_heat_client",
+      "location_path": "heat/tests/clients/test_heat_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_heat_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_heat_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.clients.test_nova_client",
+      "location_path": "heat/tests/clients/test_nova_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_nova_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_nova_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.common",
+      "location_path": "heat/tests/common.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.common",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.common"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.convergence.test_converge",
+      "location_path": "heat/tests/convergence/test_converge.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.convergence.test_converge",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.convergence.test_converge"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.db.test_sqlalchemy_api",
+      "location_path": "heat/tests/db/test_sqlalchemy_api.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_sqlalchemy_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_sqlalchemy_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_service_engine",
+      "location_path": "heat/tests/engine/service/test_service_engine.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_service_engine",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_service_engine"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_software_config",
+      "location_path": "heat/tests/engine/service/test_software_config.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_software_config",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_software_config"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_adopt",
+      "location_path": "heat/tests/engine/service/test_stack_adopt.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_adopt",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_adopt"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_create",
+      "location_path": "heat/tests/engine/service/test_stack_create.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_create",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_create"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_delete",
+      "location_path": "heat/tests/engine/service/test_stack_delete.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_delete",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_delete"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_events",
+      "location_path": "heat/tests/engine/service/test_stack_events.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_events",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_events"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_resources",
+      "location_path": "heat/tests/engine/service/test_stack_resources.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_resources",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_resources"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_snapshot",
+      "location_path": "heat/tests/engine/service/test_stack_snapshot.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_snapshot",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_snapshot"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.service.test_stack_update",
+      "location_path": "heat/tests/engine/service/test_stack_update.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_update",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_update"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.engine.test_check_resource",
+      "location_path": "heat/tests/engine/test_check_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.test_check_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.test_check_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.cinder.test_volume",
+      "location_path": "heat/tests/openstack/cinder/test_volume.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.cinder.test_volume",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.cinder.test_volume"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.heat.test_remote_stack",
+      "location_path": "heat/tests/openstack/heat/test_remote_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_remote_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_remote_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.ironic.test_port",
+      "location_path": "heat/tests/openstack/ironic/test_port.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.ironic.test_port",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.ironic.test_port"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.magnum.test_cluster",
+      "location_path": "heat/tests/openstack/magnum/test_cluster.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.magnum.test_cluster",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.magnum.test_cluster"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.neutron.test_neutron_firewall",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_firewall.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_firewall",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_firewall"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.neutron.test_neutron_vpnservice",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_vpnservice.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_vpnservice",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_vpnservice"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.trove.test_instance",
+      "location_path": "heat/tests/openstack/trove/test_instance.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.trove.test_instance",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.trove.test_instance"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.openstack.zun.test_container",
+      "location_path": "heat/tests/openstack/zun/test_container.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.zun.test_container",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.zun.test_container"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_auth_password",
+      "location_path": "heat/tests/test_auth_password.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_auth_password",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_auth_password"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_common_context",
+      "location_path": "heat/tests/test_common_context.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_common_policy",
+      "location_path": "heat/tests/test_common_policy.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_policy",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_policy"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_convg_stack",
+      "location_path": "heat/tests/test_convg_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_convg_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_convg_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_crypt",
+      "location_path": "heat/tests/test_crypt.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_crypt",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_crypt"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_engine_service",
+      "location_path": "heat/tests/test_engine_service.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_engine_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_engine_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_environment",
+      "location_path": "heat/tests/test_environment.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_environment",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_environment"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_event",
+      "location_path": "heat/tests/test_event.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_event",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_event"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_fault_middleware",
+      "location_path": "heat/tests/test_fault_middleware.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_fault_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_fault_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_nested_stack",
+      "location_path": "heat/tests/test_nested_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_nested_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_nested_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_resource",
+      "location_path": "heat/tests/test_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_resource_properties_data",
+      "location_path": "heat/tests/test_resource_properties_data.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_resource_properties_data",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_resource_properties_data"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_stack",
+      "location_path": "heat/tests/test_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_stack_resource",
+      "location_path": "heat/tests/test_stack_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.test_urlfetch",
+      "location_path": "heat/tests/test_urlfetch.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_urlfetch",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_urlfetch"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_config.heat.tests.utils",
+      "location_path": "heat/tests/utils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_context.heat.tests.engine.service.test_threadgroup_mgr",
+      "location_path": "heat/tests/engine/service/test_threadgroup_mgr.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_threadgroup_mgr",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_threadgroup_mgr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_db.heat.tests.db.test_migrations",
+      "location_path": "heat/tests/db/test_migrations.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_migrations",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_migrations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_db.heat.tests.db.test_sqlalchemy_api",
+      "location_path": "heat/tests/db/test_sqlalchemy_api.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_sqlalchemy_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_sqlalchemy_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_db.heat.tests.engine.test_sync_point",
+      "location_path": "heat/tests/engine/test_sync_point.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.test_sync_point",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.test_sync_point"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_db.heat.tests.utils",
+      "location_path": "heat/tests/utils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_i18n.heat.tests",
+      "location_path": "heat/tests/__init__.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.api.openstack_v1.tools",
+      "location_path": "heat/tests/api/openstack_v1/tools.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.tools",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.tools"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.common",
+      "location_path": "heat/tests/common.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.common",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.common"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.fake_resource",
+      "location_path": "heat/tests/convergence/framework/fake_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.convergence.framework.fake_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.convergence.framework.fake_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.message_processor",
+      "location_path": "heat/tests/convergence/framework/message_processor.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.convergence.framework.message_processor",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.convergence.framework.message_processor"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.scenario",
+      "location_path": "heat/tests/convergence/framework/scenario.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.convergence.framework.scenario",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.convergence.framework.scenario"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.convergence.framework.testutils",
+      "location_path": "heat/tests/convergence/framework/testutils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.convergence.framework.testutils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.convergence.framework.testutils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.generic_resource",
+      "location_path": "heat/tests/generic_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.generic_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.generic_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.openstack.neutron.test_neutron_extrarouteset",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_extrarouteset.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_extrarouteset",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_extrarouteset"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.openstack.neutron.test_neutron_trunk",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_trunk.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_trunk",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_trunk"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.test_fault_middleware",
+      "location_path": "heat/tests/test_fault_middleware.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_fault_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_fault_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_log.heat.tests.test_stack_delete",
+      "location_path": "heat/tests/test_stack_delete.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack_delete",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack_delete"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.api.openstack_v1.test_services",
+      "location_path": "heat/tests/api/openstack_v1/test_services.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_services",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_services"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.api.openstack_v1.tools",
+      "location_path": "heat/tests/api/openstack_v1/tools.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.tools",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.tools"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.convergence.framework.message_processor",
+      "location_path": "heat/tests/convergence/framework/message_processor.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.convergence.framework.message_processor",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.convergence.framework.message_processor"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_software_config",
+      "location_path": "heat/tests/engine/service/test_software_config.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_software_config",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_software_config"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_action",
+      "location_path": "heat/tests/engine/service/test_stack_action.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_action",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_action"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_adopt",
+      "location_path": "heat/tests/engine/service/test_stack_adopt.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_adopt",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_adopt"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_create",
+      "location_path": "heat/tests/engine/service/test_stack_create.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_create",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_create"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_delete",
+      "location_path": "heat/tests/engine/service/test_stack_delete.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_delete",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_delete"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_events",
+      "location_path": "heat/tests/engine/service/test_stack_events.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_events",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_events"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_resources",
+      "location_path": "heat/tests/engine/service/test_stack_resources.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_resources",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_resources"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_snapshot",
+      "location_path": "heat/tests/engine/service/test_stack_snapshot.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_snapshot",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_snapshot"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.engine.service.test_stack_update",
+      "location_path": "heat/tests/engine/service/test_stack_update.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_update",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_update"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_engine_service",
+      "location_path": "heat/tests/test_engine_service.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_engine_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_engine_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_fault_middleware",
+      "location_path": "heat/tests/test_fault_middleware.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_fault_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_fault_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_rpc_client",
+      "location_path": "heat/tests/test_rpc_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_rpc_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_rpc_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_rpc_listener_client",
+      "location_path": "heat/tests/test_rpc_listener_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_rpc_listener_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_rpc_listener_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_stack_resource",
+      "location_path": "heat/tests/test_stack_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_messaging.heat.tests.test_validate",
+      "location_path": "heat/tests/test_validate.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_validate",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_validate"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_middleware.heat.tests.test_common_context",
+      "location_path": "heat/tests/test_common_context.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_policy.heat.tests.test_common_context",
+      "location_path": "heat/tests/test_common_context.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_policy.heat.tests.test_common_policy",
+      "location_path": "heat/tests/test_common_policy.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_policy",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_policy"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.clients.test_nova_client",
+      "location_path": "heat/tests/clients/test_nova_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_nova_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_nova_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.engine.service.test_software_config",
+      "location_path": "heat/tests/engine/service/test_software_config.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_software_config",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_software_config"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.heat.test_deployed_server",
+      "location_path": "heat/tests/openstack/heat/test_deployed_server.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_deployed_server",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_deployed_server"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.heat.test_software_deployment",
+      "location_path": "heat/tests/openstack/heat/test_software_deployment.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_software_deployment",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_software_deployment"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.heat.test_waitcondition",
+      "location_path": "heat/tests/openstack/heat/test_waitcondition.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_waitcondition",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_waitcondition"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.mistral.test_workflow",
+      "location_path": "heat/tests/openstack/mistral/test_workflow.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.mistral.test_workflow",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.mistral.test_workflow"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.neutron.test_neutron_port",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_port.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_port",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_port"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.nova.test_server",
+      "location_path": "heat/tests/openstack/nova/test_server.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.nova.test_server",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.nova.test_server"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.openstack.zaqar.test_subscription",
+      "location_path": "heat/tests/openstack/zaqar/test_subscription.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.zaqar.test_subscription",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.zaqar.test_subscription"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_common_serializers",
+      "location_path": "heat/tests/test_common_serializers.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_serializers",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_serializers"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_engine_service",
+      "location_path": "heat/tests/test_engine_service.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_engine_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_engine_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_metadata_refresh",
+      "location_path": "heat/tests/test_metadata_refresh.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_metadata_refresh",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_metadata_refresh"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_parameters",
+      "location_path": "heat/tests/test_parameters.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_parameters",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_parameters"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_properties",
+      "location_path": "heat/tests/test_properties.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_properties",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_properties"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.test_stack_resource",
+      "location_path": "heat/tests/test_stack_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_stack_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_stack_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_serialization.heat.tests.utils",
+      "location_path": "heat/tests/utils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_service.heat.tests.engine.service.test_stack_create",
+      "location_path": "heat/tests/engine/service/test_stack_create.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_create",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_create"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_upgradecheck.heat.tests.cmd.test_status",
+      "location_path": "heat/tests/cmd/test_status.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.cmd.test_status",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.cmd.test_status"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.api.aws.test_api_ec2token",
+      "location_path": "heat/tests/api/aws/test_api_ec2token.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.aws.test_api_ec2token",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.aws.test_api_ec2token"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.api.openstack_v1.test_routes",
+      "location_path": "heat/tests/api/openstack_v1/test_routes.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_routes",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_routes"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.autoscaling.test_heat_scaling_group",
+      "location_path": "heat/tests/autoscaling/test_heat_scaling_group.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.autoscaling.test_heat_scaling_group",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.autoscaling.test_heat_scaling_group"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.autoscaling.test_scaling_group",
+      "location_path": "heat/tests/autoscaling/test_scaling_group.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.autoscaling.test_scaling_group",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.autoscaling.test_scaling_group"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.aws.test_waitcondition",
+      "location_path": "heat/tests/aws/test_waitcondition.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.aws.test_waitcondition",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.aws.test_waitcondition"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.db.test_sqlalchemy_api",
+      "location_path": "heat/tests/db/test_sqlalchemy_api.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_sqlalchemy_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_sqlalchemy_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.engine.service.test_service_engine",
+      "location_path": "heat/tests/engine/service/test_service_engine.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_service_engine",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_service_engine"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.engine.service.test_software_config",
+      "location_path": "heat/tests/engine/service/test_software_config.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_software_config",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_software_config"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.engine.service.test_stack_delete",
+      "location_path": "heat/tests/engine/service/test_stack_delete.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.engine.service.test_stack_delete",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.engine.service.test_stack_delete"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.blazar.test_host",
+      "location_path": "heat/tests/openstack/blazar/test_host.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.blazar.test_host",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.blazar.test_host"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.blazar.test_lease",
+      "location_path": "heat/tests/openstack/blazar/test_lease.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.blazar.test_lease",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.blazar.test_lease"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_delay",
+      "location_path": "heat/tests/openstack/heat/test_delay.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_delay",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_delay"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_deployed_server",
+      "location_path": "heat/tests/openstack/heat/test_deployed_server.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_deployed_server",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_deployed_server"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_swiftsignal",
+      "location_path": "heat/tests/openstack/heat/test_swiftsignal.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_swiftsignal",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_swiftsignal"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.heat.test_waitcondition",
+      "location_path": "heat/tests/openstack/heat/test_waitcondition.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_waitcondition",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_waitcondition"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.neutron.test_neutron_floating_ip",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_floating_ip.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_floating_ip",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_floating_ip"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.neutron.test_neutron_segment",
+      "location_path": "heat/tests/openstack/neutron/test_neutron_segment.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.neutron.test_neutron_segment",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.neutron.test_neutron_segment"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.nova.test_server",
+      "location_path": "heat/tests/openstack/nova/test_server.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.nova.test_server",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.nova.test_server"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.openstack.nova.test_server_group",
+      "location_path": "heat/tests/openstack/nova/test_server_group.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.nova.test_server_group",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.nova.test_server_group"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.test_common_context",
+      "location_path": "heat/tests/test_common_context.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.test_common_service_utils",
+      "location_path": "heat/tests/test_common_service_utils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_service_utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_service_utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.test_engine_api_utils",
+      "location_path": "heat/tests/test_engine_api_utils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_engine_api_utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_engine_api_utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.test_notifications",
+      "location_path": "heat/tests/test_notifications.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_notifications",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_notifications"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.test_resource",
+      "location_path": "heat/tests/test_resource.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_resource",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_resource"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.test_rpc_client",
+      "location_path": "heat/tests/test_rpc_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_rpc_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_rpc_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslo_utils.heat.tests.test_signal",
+      "location_path": "heat/tests/test_signal.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_signal",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_signal"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.oslotest.heat.tests.db.test_migrations",
+      "location_path": "heat/tests/db/test_migrations.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_migrations",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_migrations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.pbr.heat.tests.test_version",
+      "location_path": "heat/tests/test_version.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_version",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_version"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.requests.heat.tests.api.aws.test_api_ec2token",
+      "location_path": "heat/tests/api/aws/test_api_ec2token.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.aws.test_api_ec2token",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.aws.test_api_ec2token"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.requests.heat.tests.clients.test_nova_client",
+      "location_path": "heat/tests/clients/test_nova_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_nova_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_nova_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.requests.heat.tests.openstack.nova.fakes",
+      "location_path": "heat/tests/openstack/nova/fakes.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.nova.fakes",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.nova.fakes"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.requests.heat.tests.openstack.nova.test_server",
+      "location_path": "heat/tests/openstack/nova/test_server.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.nova.test_server",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.nova.test_server"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.requests.heat.tests.test_nested_stack",
+      "location_path": "heat/tests/test_nested_stack.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_nested_stack",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_nested_stack"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.requests.heat.tests.test_urlfetch",
+      "location_path": "heat/tests/test_urlfetch.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_urlfetch",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_urlfetch"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.sqlalchemy.heat.tests.db.test_migrations",
+      "location_path": "heat/tests/db/test_migrations.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_migrations",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_migrations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.sqlalchemy.heat.tests.db.test_sqlalchemy_api",
+      "location_path": "heat/tests/db/test_sqlalchemy_api.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_sqlalchemy_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_sqlalchemy_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.sqlalchemy.heat.tests.db.test_sqlalchemy_types",
+      "location_path": "heat/tests/db/test_sqlalchemy_types.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_sqlalchemy_types",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_sqlalchemy_types"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.sqlalchemy.heat.tests.utils",
+      "location_path": "heat/tests/utils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.stevedore.heat.tests.test_template",
+      "location_path": "heat/tests/test_template.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_template",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_template"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testscenarios.heat.tests.common",
+      "location_path": "heat/tests/common.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.common",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.common"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testtools.heat.tests.clients.test_clients",
+      "location_path": "heat/tests/clients/test_clients.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_clients",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_clients"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testtools.heat.tests.clients.test_swift_client",
+      "location_path": "heat/tests/clients/test_swift_client.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.clients.test_swift_client",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.clients.test_swift_client"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testtools.heat.tests.common",
+      "location_path": "heat/tests/common.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.common",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.common"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testtools.heat.tests.db.test_migrations",
+      "location_path": "heat/tests/db/test_migrations.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.db.test_migrations",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.db.test_migrations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testtools.heat.tests.openstack.heat.test_random_string",
+      "location_path": "heat/tests/openstack/heat/test_random_string.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_random_string",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_random_string"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testtools.heat.tests.openstack.heat.test_swiftsignal",
+      "location_path": "heat/tests/openstack/heat/test_swiftsignal.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.openstack.heat.test_swiftsignal",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.openstack.heat.test_swiftsignal"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.testtools.heat.tests.test_timeutils",
+      "location_path": "heat/tests/test_timeutils.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_timeutils",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_timeutils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.middleware.test_version_negotiation_middleware",
+      "location_path": "heat/tests/api/middleware/test_version_negotiation_middleware.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.middleware.test_version_negotiation_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.middleware.test_version_negotiation_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_actions",
+      "location_path": "heat/tests/api/openstack_v1/test_actions.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_actions",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_actions"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_events",
+      "location_path": "heat/tests/api/openstack_v1/test_events.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_events",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_events"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_resources",
+      "location_path": "heat/tests/api/openstack_v1/test_resources.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_resources",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_resources"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_services",
+      "location_path": "heat/tests/api/openstack_v1/test_services.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_services",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_services"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_software_configs",
+      "location_path": "heat/tests/api/openstack_v1/test_software_configs.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_software_configs",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_software_configs"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_software_deployments",
+      "location_path": "heat/tests/api/openstack_v1/test_software_deployments.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_software_deployments",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_software_deployments"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_stacks",
+      "location_path": "heat/tests/api/openstack_v1/test_stacks.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_stacks",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_stacks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.test_util",
+      "location_path": "heat/tests/api/openstack_v1/test_util.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.test_util",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.test_util"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.openstack_v1.tools",
+      "location_path": "heat/tests/api/openstack_v1/tools.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.openstack_v1.tools",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.openstack_v1.tools"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.api.test_wsgi",
+      "location_path": "heat/tests/api/test_wsgi.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.api.test_wsgi",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.api.test_wsgi"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.test_auth_password",
+      "location_path": "heat/tests/test_auth_password.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_auth_password",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_auth_password"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.test_auth_url",
+      "location_path": "heat/tests/test_auth_url.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_auth_url",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_auth_url"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.test_common_context",
+      "location_path": "heat/tests/test_common_context.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.test_common_serializers",
+      "location_path": "heat/tests/test_common_serializers.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_common_serializers",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_common_serializers"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.test_fault_middleware",
+      "location_path": "heat/tests/test_fault_middleware.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_fault_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_fault_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.test_noauth",
+      "location_path": "heat/tests/test_noauth.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_noauth",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_noauth"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__heat.webob.heat.tests.test_validate",
+      "location_path": "heat/tests/test_validate.py",
+      "location_repo": "openstack/heat",
+      "location_test": "heat.tests.test_validate",
+      "run_command": [
+        "stestr",
+        "run",
+        "heat.tests.test_validate"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    }
+  ],
+  "matched_tier": "high",
+  "schema_version": "marshal-domain-pack-1"
+}

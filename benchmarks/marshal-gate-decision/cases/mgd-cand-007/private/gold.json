@@ -1,0 +1,78 @@
+{
+  "schema_version": "marshal-gate-gold-1",
+  "case_id": "mgd-cand-007",
+  "classification": {
+    "tier": "high",
+    "contracts_hit": [
+      "dependency-import:tooz"
+    ]
+  },
+  "planning": {
+    "invariants": [
+      {
+        "invariant_id": "dependency-import.openstack__manila.tooz.manila.tests.test_coordination",
+        "location_repo": "openstack/manila",
+        "executor_kind": "command"
+      }
+    ]
+  },
+  "capable_cross_repo_runner": {
+    "execution": {
+      "status": "ok",
+      "results": [
+        {
+          "invariant_id": "dependency-import.openstack__manila.tooz.manila.tests.test_coordination",
+          "passed": false
+        }
+      ],
+      "not_run": []
+    },
+    "decision": {
+      "gate_outcome": "fail",
+      "verdict": "block"
+    }
+  },
+  "current_reporter_diagnostic": {
+    "execution": {
+      "status": "degraded",
+      "results": [],
+      "not_run": [
+        {
+          "invariant_id": "dependency-import.openstack__manila.tooz.manila.tests.test_coordination",
+          "reason": "lives in repo 'openstack/manila'; this reporter runs in 'openstack/requirements' and cannot execute it"
+        }
+      ]
+    },
+    "decision": {
+      "gate_outcome": "degraded",
+      "verdict": "escalate"
+    }
+  },
+  "causal_evidence": {
+    "command": [
+      "stestr",
+      "run",
+      "manila.tests.test_coordination"
+    ],
+    "failure_signature": "TypeError: MockToozLock.acquire() takes from 1 to 2 positional arguments but 4 were given",
+    "arms": {
+      "A0": {
+        "summary_path": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-995651--target-996489/evidence/formal-opendev-995651--target-996489/formal-opendev-995651--target-996489/a0/summary.json",
+        "log_path": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-995651--target-996489/evidence/formal-opendev-995651--target-996489/formal-opendev-995651--target-996489/a0/command.log"
+      },
+      "A1": {
+        "summary_path": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-995651--target-996489/evidence/formal-opendev-995651--target-996489/formal-opendev-995651--target-996489/a1/summary.json",
+        "log_path": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-995651--target-996489/evidence/formal-opendev-995651--target-996489/formal-opendev-995651--target-996489/a1/command.log"
+      },
+      "A2": {
+        "summary_path": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-995651--target-996489/evidence/formal-opendev-995651--target-996489/formal-opendev-995651--target-996489/a2/summary.json",
+        "log_path": "benchmarks/cross-repo-pr-impact/results/formal-e2-benchmark-50-2026-08-27/cases/formal-opendev-995651--target-996489/evidence/formal-opendev-995651--target-996489/formal-opendev-995651--target-996489/a2/command.log"
+      }
+    },
+    "target_repair_pr": 996489,
+    "target_repair_paths": [
+      "manila/coordination.py",
+      "manila/tests/test_coordination.py"
+    ]
+  }
+}

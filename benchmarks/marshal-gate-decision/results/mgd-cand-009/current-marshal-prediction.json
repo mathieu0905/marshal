@@ -1,0 +1,39 @@
+{
+  "case_id": "mgd-cand-009",
+  "classification": {
+    "contracts_hit": [
+      "dependency-import:infoblox_client"
+    ],
+    "tier": "high"
+  },
+  "decision": {
+    "gate_outcome": "degraded",
+    "verdict": "escalate"
+  },
+  "execution": {
+    "not_run": [
+      {
+        "invariant_id": "dependency-import.openstack__designate.infoblox_client.designate.tests.unit.backend.test_infoblox",
+        "reason": "lives in repo 'openstack/designate'; this reporter runs in 'openstack/requirements' and cannot execute it"
+      }
+    ],
+    "results": [],
+    "status": "degraded"
+  },
+  "plan": {
+    "invariants": [
+      {
+        "executor_kind": "command",
+        "invariant_id": "dependency-import.openstack__designate.infoblox_client.designate.tests.unit.backend.test_infoblox",
+        "location_repo": "openstack/designate",
+        "run_command": [
+          "stestr",
+          "run",
+          "designate.tests.unit.backend.test_infoblox"
+        ]
+      }
+    ]
+  },
+  "schema_version": "marshal-gate-prediction-1",
+  "system": "current-marshal-native-reporter"
+}

@@ -1,0 +1,4461 @@
+{
+  "construction": {
+    "constraints_path": "upper-constraints.txt",
+    "method": "constraints-to-direct-test-imports-v1",
+    "outcome_inputs_read": false,
+    "rule_authoring_case": false,
+    "source_commit": "49139646a3cea3396de45746482db2e5fd2efb5f",
+    "source_repository": "openstack/requirements",
+    "target_commit": "35be2ac4e90a6ab5d661609f6aa758a1c1c3894c",
+    "target_repository": "openstack/designate",
+    "test_root": "designate/tests"
+  },
+  "contracts": [
+    {
+      "id": "dependency-import:alembic",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:alembic"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.alembic.designate.tests.functional.test_migration"
+      ]
+    },
+    {
+      "id": "dependency-import:eventlet",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:eventlet"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.eventlet.designate.tests",
+        "dependency-import.openstack__designate.eventlet.designate.tests.unit.backend.test_nsd4",
+        "dependency-import.openstack__designate.eventlet.designate.tests.unit.test_dnsutils"
+      ]
+    },
+    {
+      "id": "dependency-import:fixtures",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:fixtures"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.fixtures.designate.tests.base_fixtures",
+        "dependency-import.openstack__designate.fixtures.designate.tests.functional.central.test_basic",
+        "dependency-import.openstack__designate.fixtures.designate.tests.unit.api.test_middleware",
+        "dependency-import.openstack__designate.fixtures.designate.tests.unit.producer.test_tasks",
+        "dependency-import.openstack__designate.fixtures.designate.tests.unit.scheduler.test_filters"
+      ]
+    },
+    {
+      "id": "dependency-import:futurist",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:futurist"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.futurist.designate.tests.functional.central.test_service"
+      ]
+    },
+    {
+      "id": "dependency-import:infoblox_client",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:infoblox_client"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.infoblox_client.designate.tests.unit.backend.test_infoblox"
+      ]
+    },
+    {
+      "id": "dependency-import:jinja2",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:jinja2"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.jinja2.designate.tests.unit.test_utils"
+      ]
+    },
+    {
+      "id": "dependency-import:keystoneauth1",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:keystoneauth1"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.keystoneauth1.designate.tests.unit.common.test_keystone"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_concurrency",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_concurrency"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_concurrency.designate.tests.unit.central.test_lock_decorator",
+        "dependency-import.openstack__designate.oslo_concurrency.designate.tests.unit.test_utils"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_config",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_config"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_config.designate.tests.functional",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.functional.central.test_service",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.api.test_root",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.api.test_version",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.api.test_wsgi",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.backend.test_dynect",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.cmd.test_cmd",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.cmd.test_manage",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.common.test_profiler",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.mdns.test_handler",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.network_api.test_base",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.network_api.test_fake",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.network_api.test_neutron",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.notification_handler.test_fake",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.notification_handler.test_neutron",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.notification_handler.test_nova",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.objects.test_adapters_v2_api",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.objects.test_floating_ip",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.objects.test_recordset",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.producer.test_service",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.producer.test_tasks",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.scheduler.test_basic",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.scheduler.test_permutations",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.sink.test_notifications",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.sink.test_service",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_coordination",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_dnsutils",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_heartbeat_emitter",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_service",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_utils",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_base_task",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_notify",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_processing",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_service",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_task_config",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_xfr",
+        "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_zone_tasks"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_db",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_db"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_db.designate.tests.functional.central.test_service",
+        "dependency-import.openstack__designate.oslo_db.designate.tests.functional.test_migration"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_log",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_log"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_log.designate.tests.base_fixtures",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.admin",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_pools",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_quotas",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_recordsets",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_service_status",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_zone_exports",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_zone_recordsets",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.central.test_basic",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.central.test_service",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.manage.test_pool",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.manage.test_update_pool",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.mdns.test_service",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.notification_handler.test_neutron",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.notification_handler.test_nova",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.producer.test_service",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.producer.test_tasks",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.quota.test_quota",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.quota.test_storage",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.test_migration",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.test_storage",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.functional.worker.test_worker_tasks",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.backend.test_designate",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.central.test_lock_decorator",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.common.test_rpc_logging",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_adapters",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_adapters_v2_api",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_adapters_yaml",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_base",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_floating_ip",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_quota",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_recordset",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_a",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_aaaa",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_caa",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_cert",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_cname",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_mx",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_naptr",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_ns",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_ptr",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_soa",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_spf",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_srv",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_sshfp",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_txt",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_zone",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.producer.test_tasks",
+        "dependency-import.openstack__designate.oslo_log.designate.tests.unit.test_notifications"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_messaging",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_messaging"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.test_middleware",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.v2.test_tsigkeys",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.v2.test_zone_recordsets",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.v2.test_zones",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.central.test_basic",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.central.test_service",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.manage.test_pool",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.test_storage",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.unit.test_rpc",
+        "dependency-import.openstack__designate.oslo_messaging.designate.tests.unit.workers.test_service"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_serialization",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_serialization"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_serialization.designate.tests.base_fixtures",
+        "dependency-import.openstack__designate.oslo_serialization.designate.tests.unit.objects.test_base"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_service",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_service"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_service.designate.tests.unit.test_heartbeat_emitter",
+        "dependency-import.openstack__designate.oslo_service.designate.tests.unit.test_service"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_upgradecheck",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_upgradecheck"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_upgradecheck.designate.tests.functional.test_upgrade_checks"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_utils",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_utils"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.base_fixtures",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.functional",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.api.v2.test_zone_recordsets",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.central.test_service",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.producer.test_tasks",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.test_storage",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.worker.test_worker_tasks",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.central.test_lock_decorator",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.objects.test_adapters",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.objects.test_zone",
+        "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.producer.test_tasks"
+      ]
+    },
+    {
+      "id": "dependency-import:oslo_versionedobjects",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslo_versionedobjects"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslo_versionedobjects.designate.tests.functional.central.test_service"
+      ]
+    },
+    {
+      "id": "dependency-import:oslotest",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:oslotest"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.oslotest.designate.tests.functional",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_admin_api",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_middleware",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_root",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_version",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_wsgi",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_abandon",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_api_v2",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_floatingips",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_patches",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_pool_move",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_quotas",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_recordsets",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_rest_controller",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_zones",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_akamai_v2",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_base",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_bind9",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_designate",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_dynect",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_fake",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_infoblox",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_ns1",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_nsd4",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_pdns4",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.central.test_central",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.central.test_lock_decorator",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.cmd.test_cmd",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.cmd.test_manage",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_keystone",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_profiler",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_regex",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_rpc_logging",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_zone_lock",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.manage.test_base",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.manage.test_pool",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.mdns.test_handler",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.mdns.test_service",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.network_api.test_base",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.network_api.test_fake",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.network_api.test_neutron",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.notification_handler.test_fake",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.notification_handler.test_neutron",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.notification_handler.test_nova",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_adapters",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_adapters_v2_api",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_adapters_yaml",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_base",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_fields",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_floating_ip",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_quota",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_recordset",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_a",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_aaaa",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_caa",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_cert",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_cname",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_mx",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_naptr",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_ns",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_ptr",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_soa",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_spf",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_srv",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_sshfp",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_txt",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_zone",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_zone_master",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.producer.test_service",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.producer.test_tasks",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.scheduler.test_basic",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.scheduler.test_filters",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.scheduler.test_permutations",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.sink.test_notifications",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.sink.test_service",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.storage.impl_sqlalchemy.alembic.test_legacy_utils",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.storage.impl_sqlalchemy.test_sqlalchemy",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_conf",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_context",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_coordination",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_dnsmiddleware",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_dnsutils",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_heartbeat_emitter",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_notifications",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_rpc",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_schema",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_service",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_utils",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_base_task",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_notify",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_processing",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_rpcapi",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_service",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_task_config",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_xfr",
+        "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_zone_tasks"
+      ]
+    },
+    {
+      "id": "dependency-import:paste",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:paste"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.paste.designate.tests.functional.api.test_service"
+      ]
+    },
+    {
+      "id": "dependency-import:requests",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:requests"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.requests.designate.tests.unit.backend.test_akamai_v2",
+        "dependency-import.openstack__designate.requests.designate.tests.unit.backend.test_ns1"
+      ]
+    },
+    {
+      "id": "dependency-import:requests_mock",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:requests_mock"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_dynect",
+        "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_infoblox",
+        "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_ns1",
+        "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_pdns4"
+      ]
+    },
+    {
+      "id": "dependency-import:sqlalchemy",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:sqlalchemy"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.sqlalchemy.designate.tests.functional.test_sqlalchemy",
+        "dependency-import.openstack__designate.sqlalchemy.designate.tests.functional.test_storage",
+        "dependency-import.openstack__designate.sqlalchemy.designate.tests.functional.test_upgrade_checks"
+      ]
+    },
+    {
+      "id": "dependency-import:stevedore",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:stevedore"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.stevedore.designate.tests.unit.backend.test_base"
+      ]
+    },
+    {
+      "id": "dependency-import:testscenarios",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:testscenarios"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.testscenarios.designate.tests.functional.quota.test_quota"
+      ]
+    },
+    {
+      "id": "dependency-import:testtools",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:testtools"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.testtools.designate.tests.functional.central.test_service",
+        "dependency-import.openstack__designate.testtools.designate.tests.functional.mdns.test_handler",
+        "dependency-import.openstack__designate.testtools.designate.tests.functional.test_context",
+        "dependency-import.openstack__designate.testtools.designate.tests.unit.api.v2.test_patches",
+        "dependency-import.openstack__designate.testtools.designate.tests.unit.objects.test_base"
+      ]
+    },
+    {
+      "id": "dependency-import:tooz",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:tooz"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.tooz.designate.tests.base_fixtures",
+        "dependency-import.openstack__designate.tooz.designate.tests.unit.test_coordination"
+      ]
+    },
+    {
+      "id": "dependency-import:webob",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:webob"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.webob.designate.tests.unit.api.v2.test_rest_controller"
+      ]
+    },
+    {
+      "id": "dependency-import:webtest",
+      "trigger": {
+        "path_prefixes": [
+          "upper-constraints.txt"
+        ],
+        "repo": "openstack/requirements",
+        "required_labels": [
+          "dependency:webtest"
+        ]
+      },
+      "verify_invariants": [
+        "dependency-import.openstack__designate.webtest.designate.tests.functional.api.admin",
+        "dependency-import.openstack__designate.webtest.designate.tests.functional.api.v2",
+        "dependency-import.openstack__designate.webtest.designate.tests.functional.api.v2.test_import_export",
+        "dependency-import.openstack__designate.webtest.designate.tests.unit.api.test_version"
+      ]
+    }
+  ],
+  "default_tier": "low",
+  "id": "openstack-designate-python-dependency-imports-v1",
+  "invariants": [
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.alembic.designate.tests.functional.test_migration",
+      "location_path": "designate/tests/functional/test_migration.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_migration",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_migration"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.eventlet.designate.tests",
+      "location_path": "designate/tests/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.eventlet.designate.tests.unit.backend.test_nsd4",
+      "location_path": "designate/tests/unit/backend/test_nsd4.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_nsd4",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_nsd4"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.eventlet.designate.tests.unit.test_dnsutils",
+      "location_path": "designate/tests/unit/test_dnsutils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_dnsutils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_dnsutils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.fixtures.designate.tests.base_fixtures",
+      "location_path": "designate/tests/base_fixtures.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.base_fixtures",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.base_fixtures"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.fixtures.designate.tests.functional.central.test_basic",
+      "location_path": "designate/tests/functional/central/test_basic.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_basic",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_basic"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.fixtures.designate.tests.unit.api.test_middleware",
+      "location_path": "designate/tests/unit/api/test_middleware.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.fixtures.designate.tests.unit.producer.test_tasks",
+      "location_path": "designate/tests/unit/producer/test_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.producer.test_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.producer.test_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.fixtures.designate.tests.unit.scheduler.test_filters",
+      "location_path": "designate/tests/unit/scheduler/test_filters.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.scheduler.test_filters",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.scheduler.test_filters"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.futurist.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.infoblox_client.designate.tests.unit.backend.test_infoblox",
+      "location_path": "designate/tests/unit/backend/test_infoblox.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_infoblox",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_infoblox"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.jinja2.designate.tests.unit.test_utils",
+      "location_path": "designate/tests/unit/test_utils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.keystoneauth1.designate.tests.unit.common.test_keystone",
+      "location_path": "designate/tests/unit/common/test_keystone.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_keystone",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_keystone"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_concurrency.designate.tests.unit.central.test_lock_decorator",
+      "location_path": "designate/tests/unit/central/test_lock_decorator.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.central.test_lock_decorator",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.central.test_lock_decorator"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_concurrency.designate.tests.unit.test_utils",
+      "location_path": "designate/tests/unit/test_utils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.functional",
+      "location_path": "designate/tests/functional/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.api.test_root",
+      "location_path": "designate/tests/unit/api/test_root.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_root",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_root"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.api.test_version",
+      "location_path": "designate/tests/unit/api/test_version.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_version",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_version"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.api.test_wsgi",
+      "location_path": "designate/tests/unit/api/test_wsgi.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_wsgi",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_wsgi"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.backend.test_dynect",
+      "location_path": "designate/tests/unit/backend/test_dynect.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_dynect",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_dynect"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.cmd.test_cmd",
+      "location_path": "designate/tests/unit/cmd/test_cmd.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.cmd.test_cmd",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.cmd.test_cmd"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.cmd.test_manage",
+      "location_path": "designate/tests/unit/cmd/test_manage.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.cmd.test_manage",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.cmd.test_manage"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.common.test_profiler",
+      "location_path": "designate/tests/unit/common/test_profiler.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_profiler",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_profiler"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.mdns.test_handler",
+      "location_path": "designate/tests/unit/mdns/test_handler.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.mdns.test_handler",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.mdns.test_handler"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.network_api.test_base",
+      "location_path": "designate/tests/unit/network_api/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.network_api.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.network_api.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.network_api.test_fake",
+      "location_path": "designate/tests/unit/network_api/test_fake.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.network_api.test_fake",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.network_api.test_fake"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.network_api.test_neutron",
+      "location_path": "designate/tests/unit/network_api/test_neutron.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.network_api.test_neutron",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.network_api.test_neutron"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.notification_handler.test_fake",
+      "location_path": "designate/tests/unit/notification_handler/test_fake.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.notification_handler.test_fake",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.notification_handler.test_fake"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.notification_handler.test_neutron",
+      "location_path": "designate/tests/unit/notification_handler/test_neutron.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.notification_handler.test_neutron",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.notification_handler.test_neutron"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.notification_handler.test_nova",
+      "location_path": "designate/tests/unit/notification_handler/test_nova.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.notification_handler.test_nova",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.notification_handler.test_nova"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.objects.test_adapters_v2_api",
+      "location_path": "designate/tests/unit/objects/test_adapters_v2_api.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters_v2_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters_v2_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.objects.test_floating_ip",
+      "location_path": "designate/tests/unit/objects/test_floating_ip.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_floating_ip",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_floating_ip"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.objects.test_recordset",
+      "location_path": "designate/tests/unit/objects/test_recordset.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_recordset",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_recordset"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.producer.test_service",
+      "location_path": "designate/tests/unit/producer/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.producer.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.producer.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.producer.test_tasks",
+      "location_path": "designate/tests/unit/producer/test_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.producer.test_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.producer.test_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.scheduler.test_basic",
+      "location_path": "designate/tests/unit/scheduler/test_basic.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.scheduler.test_basic",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.scheduler.test_basic"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.scheduler.test_permutations",
+      "location_path": "designate/tests/unit/scheduler/test_permutations.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.scheduler.test_permutations",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.scheduler.test_permutations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.sink.test_notifications",
+      "location_path": "designate/tests/unit/sink/test_notifications.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.sink.test_notifications",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.sink.test_notifications"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.sink.test_service",
+      "location_path": "designate/tests/unit/sink/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.sink.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.sink.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_coordination",
+      "location_path": "designate/tests/unit/test_coordination.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_coordination",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_coordination"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_dnsutils",
+      "location_path": "designate/tests/unit/test_dnsutils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_dnsutils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_dnsutils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_heartbeat_emitter",
+      "location_path": "designate/tests/unit/test_heartbeat_emitter.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_heartbeat_emitter",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_heartbeat_emitter"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_service",
+      "location_path": "designate/tests/unit/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.test_utils",
+      "location_path": "designate/tests/unit/test_utils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_base_task",
+      "location_path": "designate/tests/unit/workers/test_base_task.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_base_task",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_base_task"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_notify",
+      "location_path": "designate/tests/unit/workers/test_notify.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_notify",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_notify"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_processing",
+      "location_path": "designate/tests/unit/workers/test_processing.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_processing",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_processing"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_service",
+      "location_path": "designate/tests/unit/workers/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_task_config",
+      "location_path": "designate/tests/unit/workers/test_task_config.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_task_config",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_task_config"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_xfr",
+      "location_path": "designate/tests/unit/workers/test_xfr.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_xfr",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_xfr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_config.designate.tests.unit.workers.test_zone_tasks",
+      "location_path": "designate/tests/unit/workers/test_zone_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_zone_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_zone_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_db.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_db.designate.tests.functional.test_migration",
+      "location_path": "designate/tests/functional/test_migration.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_migration",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_migration"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.base_fixtures",
+      "location_path": "designate/tests/base_fixtures.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.base_fixtures",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.base_fixtures"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional",
+      "location_path": "designate/tests/functional/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.admin",
+      "location_path": "designate/tests/functional/api/admin/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.admin",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.admin"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2",
+      "location_path": "designate/tests/functional/api/v2/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_pools",
+      "location_path": "designate/tests/functional/api/v2/test_pools.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_pools",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_pools"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_quotas",
+      "location_path": "designate/tests/functional/api/v2/test_quotas.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_quotas",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_quotas"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_recordsets",
+      "location_path": "designate/tests/functional/api/v2/test_recordsets.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_recordsets",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_recordsets"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_service_status",
+      "location_path": "designate/tests/functional/api/v2/test_service_status.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_service_status",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_service_status"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_zone_exports",
+      "location_path": "designate/tests/functional/api/v2/test_zone_exports.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_zone_exports",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_zone_exports"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.api.v2.test_zone_recordsets",
+      "location_path": "designate/tests/functional/api/v2/test_zone_recordsets.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_zone_recordsets",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_zone_recordsets"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.central.test_basic",
+      "location_path": "designate/tests/functional/central/test_basic.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_basic",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_basic"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.manage.test_pool",
+      "location_path": "designate/tests/functional/manage/test_pool.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.manage.test_pool",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.manage.test_pool"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.manage.test_update_pool",
+      "location_path": "designate/tests/functional/manage/test_update_pool.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.manage.test_update_pool",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.manage.test_update_pool"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.mdns.test_service",
+      "location_path": "designate/tests/functional/mdns/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.mdns.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.mdns.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.notification_handler.test_neutron",
+      "location_path": "designate/tests/functional/notification_handler/test_neutron.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.notification_handler.test_neutron",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.notification_handler.test_neutron"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.notification_handler.test_nova",
+      "location_path": "designate/tests/functional/notification_handler/test_nova.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.notification_handler.test_nova",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.notification_handler.test_nova"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.producer.test_service",
+      "location_path": "designate/tests/functional/producer/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.producer.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.producer.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.producer.test_tasks",
+      "location_path": "designate/tests/functional/producer/test_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.producer.test_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.producer.test_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.quota.test_quota",
+      "location_path": "designate/tests/functional/quota/test_quota.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.quota.test_quota",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.quota.test_quota"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.quota.test_storage",
+      "location_path": "designate/tests/functional/quota/test_storage.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.quota.test_storage",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.quota.test_storage"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.test_migration",
+      "location_path": "designate/tests/functional/test_migration.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_migration",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_migration"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.test_storage",
+      "location_path": "designate/tests/functional/test_storage.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_storage",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_storage"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.functional.worker.test_worker_tasks",
+      "location_path": "designate/tests/functional/worker/test_worker_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.worker.test_worker_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.worker.test_worker_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.backend.test_designate",
+      "location_path": "designate/tests/unit/backend/test_designate.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_designate",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_designate"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.central.test_lock_decorator",
+      "location_path": "designate/tests/unit/central/test_lock_decorator.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.central.test_lock_decorator",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.central.test_lock_decorator"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.common.test_rpc_logging",
+      "location_path": "designate/tests/unit/common/test_rpc_logging.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_rpc_logging",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_rpc_logging"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_adapters",
+      "location_path": "designate/tests/unit/objects/test_adapters.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_adapters_v2_api",
+      "location_path": "designate/tests/unit/objects/test_adapters_v2_api.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters_v2_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters_v2_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_adapters_yaml",
+      "location_path": "designate/tests/unit/objects/test_adapters_yaml.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters_yaml",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters_yaml"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_base",
+      "location_path": "designate/tests/unit/objects/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_floating_ip",
+      "location_path": "designate/tests/unit/objects/test_floating_ip.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_floating_ip",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_floating_ip"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_quota",
+      "location_path": "designate/tests/unit/objects/test_quota.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_quota",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_quota"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_recordset",
+      "location_path": "designate/tests/unit/objects/test_recordset.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_recordset",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_recordset"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_a",
+      "location_path": "designate/tests/unit/objects/test_rrdata_a.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_a",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_a"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_aaaa",
+      "location_path": "designate/tests/unit/objects/test_rrdata_aaaa.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_aaaa",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_aaaa"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_caa",
+      "location_path": "designate/tests/unit/objects/test_rrdata_caa.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_caa",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_caa"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_cert",
+      "location_path": "designate/tests/unit/objects/test_rrdata_cert.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_cert",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_cert"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_cname",
+      "location_path": "designate/tests/unit/objects/test_rrdata_cname.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_cname",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_cname"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_mx",
+      "location_path": "designate/tests/unit/objects/test_rrdata_mx.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_mx",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_mx"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_naptr",
+      "location_path": "designate/tests/unit/objects/test_rrdata_naptr.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_naptr",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_naptr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_ns",
+      "location_path": "designate/tests/unit/objects/test_rrdata_ns.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_ns",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_ns"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_ptr",
+      "location_path": "designate/tests/unit/objects/test_rrdata_ptr.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_ptr",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_ptr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_soa",
+      "location_path": "designate/tests/unit/objects/test_rrdata_soa.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_soa",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_soa"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_spf",
+      "location_path": "designate/tests/unit/objects/test_rrdata_spf.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_spf",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_spf"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_srv",
+      "location_path": "designate/tests/unit/objects/test_rrdata_srv.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_srv",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_srv"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_sshfp",
+      "location_path": "designate/tests/unit/objects/test_rrdata_sshfp.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_sshfp",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_sshfp"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_rrdata_txt",
+      "location_path": "designate/tests/unit/objects/test_rrdata_txt.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_txt",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_txt"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.objects.test_zone",
+      "location_path": "designate/tests/unit/objects/test_zone.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_zone",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_zone"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.producer.test_tasks",
+      "location_path": "designate/tests/unit/producer/test_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.producer.test_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.producer.test_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_log.designate.tests.unit.test_notifications",
+      "location_path": "designate/tests/unit/test_notifications.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_notifications",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_notifications"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional",
+      "location_path": "designate/tests/functional/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.test_middleware",
+      "location_path": "designate/tests/functional/api/test_middleware.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.test_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.test_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.v2.test_tsigkeys",
+      "location_path": "designate/tests/functional/api/v2/test_tsigkeys.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_tsigkeys",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_tsigkeys"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.v2.test_zone_recordsets",
+      "location_path": "designate/tests/functional/api/v2/test_zone_recordsets.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_zone_recordsets",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_zone_recordsets"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.api.v2.test_zones",
+      "location_path": "designate/tests/functional/api/v2/test_zones.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_zones",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_zones"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.central.test_basic",
+      "location_path": "designate/tests/functional/central/test_basic.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_basic",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_basic"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.manage.test_pool",
+      "location_path": "designate/tests/functional/manage/test_pool.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.manage.test_pool",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.manage.test_pool"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.functional.test_storage",
+      "location_path": "designate/tests/functional/test_storage.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_storage",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_storage"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.unit.test_rpc",
+      "location_path": "designate/tests/unit/test_rpc.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_rpc",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_rpc"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_messaging.designate.tests.unit.workers.test_service",
+      "location_path": "designate/tests/unit/workers/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_serialization.designate.tests.base_fixtures",
+      "location_path": "designate/tests/base_fixtures.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.base_fixtures",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.base_fixtures"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_serialization.designate.tests.unit.objects.test_base",
+      "location_path": "designate/tests/unit/objects/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_service.designate.tests.unit.test_heartbeat_emitter",
+      "location_path": "designate/tests/unit/test_heartbeat_emitter.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_heartbeat_emitter",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_heartbeat_emitter"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_service.designate.tests.unit.test_service",
+      "location_path": "designate/tests/unit/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_upgradecheck.designate.tests.functional.test_upgrade_checks",
+      "location_path": "designate/tests/functional/test_upgrade_checks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_upgrade_checks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_upgrade_checks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.base_fixtures",
+      "location_path": "designate/tests/base_fixtures.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.base_fixtures",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.base_fixtures"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.functional",
+      "location_path": "designate/tests/functional/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.api.v2.test_zone_recordsets",
+      "location_path": "designate/tests/functional/api/v2/test_zone_recordsets.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_zone_recordsets",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_zone_recordsets"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.producer.test_tasks",
+      "location_path": "designate/tests/functional/producer/test_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.producer.test_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.producer.test_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.test_storage",
+      "location_path": "designate/tests/functional/test_storage.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_storage",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_storage"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.functional.worker.test_worker_tasks",
+      "location_path": "designate/tests/functional/worker/test_worker_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.worker.test_worker_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.worker.test_worker_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.central.test_lock_decorator",
+      "location_path": "designate/tests/unit/central/test_lock_decorator.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.central.test_lock_decorator",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.central.test_lock_decorator"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.objects.test_adapters",
+      "location_path": "designate/tests/unit/objects/test_adapters.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.objects.test_zone",
+      "location_path": "designate/tests/unit/objects/test_zone.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_zone",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_zone"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_utils.designate.tests.unit.producer.test_tasks",
+      "location_path": "designate/tests/unit/producer/test_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.producer.test_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.producer.test_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslo_versionedobjects.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.functional",
+      "location_path": "designate/tests/functional/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_admin_api",
+      "location_path": "designate/tests/unit/api/test_admin_api.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_admin_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_admin_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_middleware",
+      "location_path": "designate/tests/unit/api/test_middleware.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_middleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_middleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_root",
+      "location_path": "designate/tests/unit/api/test_root.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_root",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_root"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_version",
+      "location_path": "designate/tests/unit/api/test_version.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_version",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_version"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.test_wsgi",
+      "location_path": "designate/tests/unit/api/test_wsgi.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_wsgi",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_wsgi"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_abandon",
+      "location_path": "designate/tests/unit/api/v2/test_abandon.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_abandon",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_abandon"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_api_v2",
+      "location_path": "designate/tests/unit/api/v2/test_api_v2.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_api_v2",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_api_v2"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_floatingips",
+      "location_path": "designate/tests/unit/api/v2/test_floatingips.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_floatingips",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_floatingips"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_patches",
+      "location_path": "designate/tests/unit/api/v2/test_patches.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_patches",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_patches"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_pool_move",
+      "location_path": "designate/tests/unit/api/v2/test_pool_move.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_pool_move",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_pool_move"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_quotas",
+      "location_path": "designate/tests/unit/api/v2/test_quotas.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_quotas",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_quotas"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_recordsets",
+      "location_path": "designate/tests/unit/api/v2/test_recordsets.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_recordsets",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_recordsets"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_rest_controller",
+      "location_path": "designate/tests/unit/api/v2/test_rest_controller.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_rest_controller",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_rest_controller"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.api.v2.test_zones",
+      "location_path": "designate/tests/unit/api/v2/test_zones.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_zones",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_zones"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_akamai_v2",
+      "location_path": "designate/tests/unit/backend/test_akamai_v2.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_akamai_v2",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_akamai_v2"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_base",
+      "location_path": "designate/tests/unit/backend/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_bind9",
+      "location_path": "designate/tests/unit/backend/test_bind9.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_bind9",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_bind9"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_designate",
+      "location_path": "designate/tests/unit/backend/test_designate.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_designate",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_designate"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_dynect",
+      "location_path": "designate/tests/unit/backend/test_dynect.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_dynect",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_dynect"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_fake",
+      "location_path": "designate/tests/unit/backend/test_fake.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_fake",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_fake"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_infoblox",
+      "location_path": "designate/tests/unit/backend/test_infoblox.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_infoblox",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_infoblox"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_ns1",
+      "location_path": "designate/tests/unit/backend/test_ns1.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_ns1",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_ns1"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_nsd4",
+      "location_path": "designate/tests/unit/backend/test_nsd4.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_nsd4",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_nsd4"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.backend.test_pdns4",
+      "location_path": "designate/tests/unit/backend/test_pdns4.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_pdns4",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_pdns4"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.central.test_central",
+      "location_path": "designate/tests/unit/central/test_central.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.central.test_central",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.central.test_central"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.central.test_lock_decorator",
+      "location_path": "designate/tests/unit/central/test_lock_decorator.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.central.test_lock_decorator",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.central.test_lock_decorator"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.cmd.test_cmd",
+      "location_path": "designate/tests/unit/cmd/test_cmd.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.cmd.test_cmd",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.cmd.test_cmd"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.cmd.test_manage",
+      "location_path": "designate/tests/unit/cmd/test_manage.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.cmd.test_manage",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.cmd.test_manage"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_keystone",
+      "location_path": "designate/tests/unit/common/test_keystone.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_keystone",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_keystone"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_profiler",
+      "location_path": "designate/tests/unit/common/test_profiler.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_profiler",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_profiler"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_regex",
+      "location_path": "designate/tests/unit/common/test_regex.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_regex",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_regex"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_rpc_logging",
+      "location_path": "designate/tests/unit/common/test_rpc_logging.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_rpc_logging",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_rpc_logging"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.common.test_zone_lock",
+      "location_path": "designate/tests/unit/common/test_zone_lock.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.common.test_zone_lock",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.common.test_zone_lock"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.manage.test_base",
+      "location_path": "designate/tests/unit/manage/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.manage.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.manage.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.manage.test_pool",
+      "location_path": "designate/tests/unit/manage/test_pool.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.manage.test_pool",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.manage.test_pool"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.mdns.test_handler",
+      "location_path": "designate/tests/unit/mdns/test_handler.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.mdns.test_handler",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.mdns.test_handler"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.mdns.test_service",
+      "location_path": "designate/tests/unit/mdns/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.mdns.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.mdns.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.network_api.test_base",
+      "location_path": "designate/tests/unit/network_api/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.network_api.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.network_api.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.network_api.test_fake",
+      "location_path": "designate/tests/unit/network_api/test_fake.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.network_api.test_fake",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.network_api.test_fake"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.network_api.test_neutron",
+      "location_path": "designate/tests/unit/network_api/test_neutron.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.network_api.test_neutron",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.network_api.test_neutron"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.notification_handler.test_fake",
+      "location_path": "designate/tests/unit/notification_handler/test_fake.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.notification_handler.test_fake",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.notification_handler.test_fake"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.notification_handler.test_neutron",
+      "location_path": "designate/tests/unit/notification_handler/test_neutron.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.notification_handler.test_neutron",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.notification_handler.test_neutron"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.notification_handler.test_nova",
+      "location_path": "designate/tests/unit/notification_handler/test_nova.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.notification_handler.test_nova",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.notification_handler.test_nova"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_adapters",
+      "location_path": "designate/tests/unit/objects/test_adapters.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_adapters_v2_api",
+      "location_path": "designate/tests/unit/objects/test_adapters_v2_api.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters_v2_api",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters_v2_api"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_adapters_yaml",
+      "location_path": "designate/tests/unit/objects/test_adapters_yaml.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_adapters_yaml",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_adapters_yaml"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_base",
+      "location_path": "designate/tests/unit/objects/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_fields",
+      "location_path": "designate/tests/unit/objects/test_fields.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_fields",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_fields"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_floating_ip",
+      "location_path": "designate/tests/unit/objects/test_floating_ip.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_floating_ip",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_floating_ip"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_quota",
+      "location_path": "designate/tests/unit/objects/test_quota.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_quota",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_quota"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_recordset",
+      "location_path": "designate/tests/unit/objects/test_recordset.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_recordset",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_recordset"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_a",
+      "location_path": "designate/tests/unit/objects/test_rrdata_a.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_a",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_a"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_aaaa",
+      "location_path": "designate/tests/unit/objects/test_rrdata_aaaa.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_aaaa",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_aaaa"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_caa",
+      "location_path": "designate/tests/unit/objects/test_rrdata_caa.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_caa",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_caa"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_cert",
+      "location_path": "designate/tests/unit/objects/test_rrdata_cert.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_cert",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_cert"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_cname",
+      "location_path": "designate/tests/unit/objects/test_rrdata_cname.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_cname",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_cname"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_mx",
+      "location_path": "designate/tests/unit/objects/test_rrdata_mx.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_mx",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_mx"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_naptr",
+      "location_path": "designate/tests/unit/objects/test_rrdata_naptr.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_naptr",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_naptr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_ns",
+      "location_path": "designate/tests/unit/objects/test_rrdata_ns.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_ns",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_ns"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_ptr",
+      "location_path": "designate/tests/unit/objects/test_rrdata_ptr.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_ptr",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_ptr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_soa",
+      "location_path": "designate/tests/unit/objects/test_rrdata_soa.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_soa",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_soa"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_spf",
+      "location_path": "designate/tests/unit/objects/test_rrdata_spf.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_spf",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_spf"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_srv",
+      "location_path": "designate/tests/unit/objects/test_rrdata_srv.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_srv",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_srv"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_sshfp",
+      "location_path": "designate/tests/unit/objects/test_rrdata_sshfp.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_sshfp",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_sshfp"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_rrdata_txt",
+      "location_path": "designate/tests/unit/objects/test_rrdata_txt.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_rrdata_txt",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_rrdata_txt"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_zone",
+      "location_path": "designate/tests/unit/objects/test_zone.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_zone",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_zone"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.objects.test_zone_master",
+      "location_path": "designate/tests/unit/objects/test_zone_master.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_zone_master",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_zone_master"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.producer.test_service",
+      "location_path": "designate/tests/unit/producer/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.producer.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.producer.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.producer.test_tasks",
+      "location_path": "designate/tests/unit/producer/test_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.producer.test_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.producer.test_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.scheduler.test_basic",
+      "location_path": "designate/tests/unit/scheduler/test_basic.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.scheduler.test_basic",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.scheduler.test_basic"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.scheduler.test_filters",
+      "location_path": "designate/tests/unit/scheduler/test_filters.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.scheduler.test_filters",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.scheduler.test_filters"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.scheduler.test_permutations",
+      "location_path": "designate/tests/unit/scheduler/test_permutations.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.scheduler.test_permutations",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.scheduler.test_permutations"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.sink.test_notifications",
+      "location_path": "designate/tests/unit/sink/test_notifications.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.sink.test_notifications",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.sink.test_notifications"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.sink.test_service",
+      "location_path": "designate/tests/unit/sink/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.sink.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.sink.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.storage.impl_sqlalchemy.alembic.test_legacy_utils",
+      "location_path": "designate/tests/unit/storage/impl_sqlalchemy/alembic/test_legacy_utils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.storage.impl_sqlalchemy.alembic.test_legacy_utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.storage.impl_sqlalchemy.alembic.test_legacy_utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.storage.impl_sqlalchemy.test_sqlalchemy",
+      "location_path": "designate/tests/unit/storage/impl_sqlalchemy/test_sqlalchemy.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.storage.impl_sqlalchemy.test_sqlalchemy",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.storage.impl_sqlalchemy.test_sqlalchemy"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_conf",
+      "location_path": "designate/tests/unit/test_conf.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_conf",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_conf"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_context",
+      "location_path": "designate/tests/unit/test_context.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_coordination",
+      "location_path": "designate/tests/unit/test_coordination.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_coordination",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_coordination"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_dnsmiddleware",
+      "location_path": "designate/tests/unit/test_dnsmiddleware.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_dnsmiddleware",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_dnsmiddleware"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_dnsutils",
+      "location_path": "designate/tests/unit/test_dnsutils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_dnsutils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_dnsutils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_heartbeat_emitter",
+      "location_path": "designate/tests/unit/test_heartbeat_emitter.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_heartbeat_emitter",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_heartbeat_emitter"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_notifications",
+      "location_path": "designate/tests/unit/test_notifications.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_notifications",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_notifications"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_rpc",
+      "location_path": "designate/tests/unit/test_rpc.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_rpc",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_rpc"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_schema",
+      "location_path": "designate/tests/unit/test_schema.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_schema",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_schema"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_service",
+      "location_path": "designate/tests/unit/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.test_utils",
+      "location_path": "designate/tests/unit/test_utils.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_utils",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_utils"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_base_task",
+      "location_path": "designate/tests/unit/workers/test_base_task.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_base_task",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_base_task"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_notify",
+      "location_path": "designate/tests/unit/workers/test_notify.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_notify",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_notify"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_processing",
+      "location_path": "designate/tests/unit/workers/test_processing.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_processing",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_processing"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_rpcapi",
+      "location_path": "designate/tests/unit/workers/test_rpcapi.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_rpcapi",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_rpcapi"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_service",
+      "location_path": "designate/tests/unit/workers/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_task_config",
+      "location_path": "designate/tests/unit/workers/test_task_config.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_task_config",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_task_config"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_xfr",
+      "location_path": "designate/tests/unit/workers/test_xfr.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_xfr",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_xfr"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.oslotest.designate.tests.unit.workers.test_zone_tasks",
+      "location_path": "designate/tests/unit/workers/test_zone_tasks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.workers.test_zone_tasks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.workers.test_zone_tasks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.paste.designate.tests.functional.api.test_service",
+      "location_path": "designate/tests/functional/api/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.requests.designate.tests.unit.backend.test_akamai_v2",
+      "location_path": "designate/tests/unit/backend/test_akamai_v2.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_akamai_v2",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_akamai_v2"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.requests.designate.tests.unit.backend.test_ns1",
+      "location_path": "designate/tests/unit/backend/test_ns1.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_ns1",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_ns1"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_dynect",
+      "location_path": "designate/tests/unit/backend/test_dynect.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_dynect",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_dynect"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_infoblox",
+      "location_path": "designate/tests/unit/backend/test_infoblox.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_infoblox",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_infoblox"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_ns1",
+      "location_path": "designate/tests/unit/backend/test_ns1.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_ns1",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_ns1"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.requests_mock.designate.tests.unit.backend.test_pdns4",
+      "location_path": "designate/tests/unit/backend/test_pdns4.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_pdns4",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_pdns4"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.sqlalchemy.designate.tests.functional.test_sqlalchemy",
+      "location_path": "designate/tests/functional/test_sqlalchemy.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_sqlalchemy",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_sqlalchemy"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.sqlalchemy.designate.tests.functional.test_storage",
+      "location_path": "designate/tests/functional/test_storage.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_storage",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_storage"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.sqlalchemy.designate.tests.functional.test_upgrade_checks",
+      "location_path": "designate/tests/functional/test_upgrade_checks.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_upgrade_checks",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_upgrade_checks"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.stevedore.designate.tests.unit.backend.test_base",
+      "location_path": "designate/tests/unit/backend/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.backend.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.backend.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.testscenarios.designate.tests.functional.quota.test_quota",
+      "location_path": "designate/tests/functional/quota/test_quota.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.quota.test_quota",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.quota.test_quota"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.testtools.designate.tests.functional.central.test_service",
+      "location_path": "designate/tests/functional/central/test_service.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.central.test_service",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.central.test_service"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.testtools.designate.tests.functional.mdns.test_handler",
+      "location_path": "designate/tests/functional/mdns/test_handler.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.mdns.test_handler",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.mdns.test_handler"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.testtools.designate.tests.functional.test_context",
+      "location_path": "designate/tests/functional/test_context.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.test_context",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.test_context"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.testtools.designate.tests.unit.api.v2.test_patches",
+      "location_path": "designate/tests/unit/api/v2/test_patches.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_patches",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_patches"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.testtools.designate.tests.unit.objects.test_base",
+      "location_path": "designate/tests/unit/objects/test_base.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.objects.test_base",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.objects.test_base"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.tooz.designate.tests.base_fixtures",
+      "location_path": "designate/tests/base_fixtures.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.base_fixtures",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.base_fixtures"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.tooz.designate.tests.unit.test_coordination",
+      "location_path": "designate/tests/unit/test_coordination.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.test_coordination",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.test_coordination"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.webob.designate.tests.unit.api.v2.test_rest_controller",
+      "location_path": "designate/tests/unit/api/v2/test_rest_controller.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.v2.test_rest_controller",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.v2.test_rest_controller"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.webtest.designate.tests.functional.api.admin",
+      "location_path": "designate/tests/functional/api/admin/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.admin",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.admin"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.webtest.designate.tests.functional.api.v2",
+      "location_path": "designate/tests/functional/api/v2/__init__.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.webtest.designate.tests.functional.api.v2.test_import_export",
+      "location_path": "designate/tests/functional/api/v2/test_import_export.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.functional.api.v2.test_import_export",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.functional.api.v2.test_import_export"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    },
+    {
+      "domain": "dependency-compatibility",
+      "executor_kind": "command",
+      "id": "dependency-import.openstack__designate.webtest.designate.tests.unit.api.test_version",
+      "location_path": "designate/tests/unit/api/test_version.py",
+      "location_repo": "openstack/designate",
+      "location_test": "designate.tests.unit.api.test_version",
+      "run_command": [
+        "stestr",
+        "run",
+        "designate.tests.unit.api.test_version"
+      ],
+      "severity": "high",
+      "spec_ref": "derived:direct-test-import"
+    }
+  ],
+  "matched_tier": "high",
+  "schema_version": "marshal-domain-pack-1"
+}

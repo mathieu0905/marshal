@@ -1,0 +1,132 @@
+{
+  "case_id": "formal-opendev-938500--target-977684",
+  "curator": {
+    "candidate_label_policy": "unjudged_unless_in_judged_e2_bindings",
+    "judged_e2_bindings": [
+      {
+        "arms": {
+          "A0": {
+            "artifact_refs": [
+              "evidence/a0/summary.json",
+              "evidence/a0/command.log"
+            ],
+            "command_log_ref": "evidence/a0/command.log",
+            "exit_code": 0,
+            "status": "pass",
+            "summary_ref": "evidence/a0/summary.json"
+          },
+          "A1": {
+            "artifact_refs": [
+              "evidence/a1/summary.json",
+              "evidence/a1/command.log"
+            ],
+            "command_log_ref": "evidence/a1/command.log",
+            "exit_code": 1,
+            "status": "fail",
+            "summary_ref": "evidence/a1/summary.json"
+          },
+          "A2": {
+            "artifact_refs": [
+              "evidence/a2/summary.json",
+              "evidence/a2/command.log"
+            ],
+            "command_log_ref": "evidence/a2/command.log",
+            "exit_code": 0,
+            "status": "pass",
+            "summary_ref": "evidence/a2/summary.json"
+          }
+        },
+        "binding_id": "e2:formal-opendev-938500--target-977684",
+        "check_id": "python-test.openstack__designate.designate.tests.unit.backend.test_infoblox",
+        "command": {
+          "base_template_id": "command.tox.openstack__designate.testenv.4",
+          "provenance": {
+            "ci_definition": {
+              "command_index": 4,
+              "path": "tox.ini",
+              "section": "testenv"
+            },
+            "commit": "35be2ac4e90a6ab5d661609f6aa758a1c1c3894c",
+            "repository": "openstack/designate",
+            "test_path": "designate/tests/unit/backend/test_infoblox.py"
+          },
+          "template": "stestr run designate.tests.unit.backend.test_infoblox"
+        },
+        "failure_signature": {
+          "artifact_refs": [
+            "evidence/a0/command.log",
+            "evidence/a1/command.log",
+            "evidence/a2/command.log"
+          ],
+          "exclusive_to": "A1",
+          "value": "KeyError: 'reason'"
+        },
+        "location_repo": "openstack/designate",
+        "mechanism": "infoblox-client 0.6.2 changes InfobloxTimeoutError construction from a positional message to required response and reason parameters, breaking existing Designate backend tests",
+        "relation_id": "formal-opendev-938500--target-977684",
+        "route_id": "requirements-constraint:infoblox_client",
+        "selector": "designate.tests.unit.backend.test_infoblox",
+        "target_repair": {
+          "change_id": 977684,
+          "patch_ref": "evidence/target.patch",
+          "repository": "openstack/designate"
+        }
+      }
+    ]
+  },
+  "pack_family_id": "openstack-requirements-python-consumers",
+  "pack_revision_id": "openstack-requirements-python-consumers@2025-01-06T162701Z-dev-full1",
+  "public": {
+    "candidate_selection": {
+      "candidate_check_ids": [
+        "python-test.openstack__designate.designate.tests.unit.backend.test_infoblox"
+      ],
+      "candidate_repositories": [
+        "openstack/designate"
+      ],
+      "candidate_route_ids": [
+        "requirements-constraint:infoblox_client"
+      ],
+      "method": "changed-constraint-to-pack-candidates-v1",
+      "unresolved_dependency_keys": [],
+      "unresolved_repositories": []
+    },
+    "change_facts": [
+      {
+        "added_entries": [
+          {
+            "distribution": "infoblox-client",
+            "path": "upper-constraints.txt",
+            "specifier": "===0.6.2"
+          }
+        ],
+        "dependency_key": "infoblox_client",
+        "derivation": "unified-diff-requirement-lines-v1",
+        "kind": "constraint-updated",
+        "removed_entries": [
+          {
+            "distribution": "infoblox-client",
+            "path": "upper-constraints.txt",
+            "specifier": "===0.6.1"
+          }
+        ]
+      }
+    ],
+    "source_event": {
+      "base_commit": "49139646a3cea3396de45746482db2e5fd2efb5f",
+      "candidate_commit": "40d22df6c90df0ab2e619b3379df8bde650923d6",
+      "changed_paths": [
+        "upper-constraints.txt"
+      ],
+      "host": "review.opendev.org",
+      "observation_cutoff": "2025-01-06 16:27:01.000000000",
+      "patch_ref": "evidence/source.patch",
+      "patch_url": "https://review.opendev.org/changes/938500/revisions/1/patch",
+      "pull_request_number": 938500,
+      "repository": "openstack/requirements",
+      "source_change_kind": "gerrit_opening_revision",
+      "subject": "Bump infoblox-client to latest version"
+    }
+  },
+  "schema_version": "domain-pack-e2-case-1"
+}

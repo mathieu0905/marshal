@@ -30,10 +30,15 @@ ALLOWED_CHANNELS = {
 REPLAY_ADAPTERS = {
     "source_editable": "run_formal_e2_python_touched_relation.py",
     "requirements_constraint": "run_formal_e2_constraint_touched_relation.py",
+    "requirements_full_constraints": "run_formal_e2_constraint_touched_relation.py",
     "requirements_registration": "run_formal_e2_requirements_registration_relation.py",
     "maven_source": "run_formal_e2_maven_source_relation.py",
     "ant_source_maven_target": "run_formal_e2_ant_source_maven_target_relation.py",
     "cross_repo_command": "run_formal_e2_cross_repo_command_relation.py",
+}
+REQUIREMENTS_CONSTRAINT_ADAPTERS = {
+    "requirements_constraint",
+    "requirements_full_constraints",
 }
 MAVEN_REPLAY_ADAPTERS = {"maven_source", "ant_source_maven_target"}
 NO_REQUIREMENTS_REPLAY_ADAPTERS = MAVEN_REPLAY_ADAPTERS | {"cross_repo_command"}
@@ -244,6 +249,26 @@ def validate_git_object(mirror: Path, commit: str) -> bool:
         check=False,
     )
     return result.returncode == 0
+
+
+def opening_diff_bytes(
+    mirror: Path, base_commit: str, head_commit: str, changed_paths: list[str]
+) -> bytes:
+    result = subprocess.run(
+        [
+            "git", "--git-dir", str(mirror), "diff", "--no-ext-diff",
+            base_commit, head_commit, "--", *changed_paths,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode:
+        raise ValueError(
+            "cannot materialize opening diff from public commits: "
+            + result.stderr.decode("utf-8", errors="replace").strip()
+        )
+    return result.stdout
 
 
 def resolve_default_branch_snapshot(
@@ -462,6 +487,24 @@ def prepare_public(root: Path, manifest: dict[str, Any], output: Path) -> dict[s
     patch = patch_dir / f"{candidate_id}.patch"
     if not patch.is_file() or not patch.read_bytes().startswith(b"diff --git "):
         raise ValueError("source patch is missing or is not a code-only diff")
+    opening_patch_verified = False
+    if manifest.get("verify_opening_patch_against_mirror") is True:
+        if archive_mode:
+            raise ValueError("opening patch mirror verification requires Git mirror mode")
+        source_mirror = mirror_path(candidate_root, source_repository)
+        source = input_row["source"]
+        changed_paths = source.get("changed_paths")
+        if not isinstance(changed_paths, list) or not changed_paths:
+            raise ValueError("opening patch verification requires changed_paths")
+        expected_patch = opening_diff_bytes(
+            source_mirror,
+            source["base_commit"],
+            source["candidate_commit"],
+            changed_paths,
+        )
+        if patch.read_bytes() != expected_patch:
+            raise ValueError("source patch is not the complete opening commit diff")
+        opening_patch_verified = True
 
     public = output / "public"
     (public / "source-patches").mkdir(parents=True)
@@ -486,6 +529,7 @@ def prepare_public(root: Path, manifest: dict[str, Any], output: Path) -> dict[s
         "catalog_reused_across_source_events": True,
         "catalog_reference_count": catalog_reference_count,
         "available_repository_count": len(available),
+        "opening_patch_matches_commit_diff": opening_patch_verified,
     })
     return {
         "candidate_id": candidate_id,
@@ -715,8 +759,8 @@ def validate_private(root: Path, private: dict[str, Any], candidate_id: str) -> 
     replay_adapter = private.get("replay_adapter", "source_editable")
     if replay_adapter not in REPLAY_ADAPTERS:
         raise ValueError(f"unsupported replay adapter: {replay_adapter}")
-    if replay_adapter == "requirements_constraint" and plan.get("source_repository") != "openstack/requirements":
-        raise ValueError("requirements_constraint adapter requires openstack/requirements source")
+    if replay_adapter in REQUIREMENTS_CONSTRAINT_ADAPTERS and plan.get("source_repository") != "openstack/requirements":
+        raise ValueError("requirements constraint adapters require openstack/requirements source")
     if replay_adapter == "requirements_registration" and plan.get("target_repository") != "openstack/requirements":
         raise ValueError("requirements_registration adapter requires openstack/requirements target")
     execution_keys = ("python",) if replay_adapter == "cross_repo_command" else ("tox", "python")
@@ -777,7 +821,7 @@ def run_replay(root: Path, private: dict[str, Any], resolved: dict[str, Any], ou
         command.extend(["--requirements-commit", requirements_snapshot["commit"]])
         if private.get("setuptools_version"):
             command.extend(["--setuptools-version", private["setuptools_version"]])
-    if replay_adapter == "requirements_constraint":
+    if replay_adapter in REQUIREMENTS_CONSTRAINT_ADAPTERS:
         replay_environment = private.get("replay_environment", {})
         if not isinstance(replay_environment, dict) or any(
             not isinstance(key, str) or not isinstance(value, str)
@@ -822,6 +866,8 @@ def run_replay(root: Path, private: dict[str, Any], resolved: dict[str, Any], ou
             command.extend([
                 "--virtualenv-setuptools-version", virtualenv_setuptools_version
             ])
+        if replay_adapter == "requirements_full_constraints":
+            command.append("--require-full-constraints")
     if replay_adapter == "maven_source":
         for key in ("maven", "java_home", "maven_seed_repository"):
             if not isinstance(private.get(key), str) or not resolve(root, private[key]).exists():
@@ -967,7 +1013,7 @@ def verify_replay(output: Path, private: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("A1/A2 source commit is not the public opening candidate")
     if contract.get("target_a2_kind") != "maintainer_patch_applied_to_cutoff_snapshot":
         raise ValueError("A2 is not the maintainer patch applied to the cutoff target snapshot")
-    if replay_adapter == "requirements_constraint":
+    if replay_adapter in REQUIREMENTS_CONSTRAINT_ADAPTERS:
         if contract.get("requirements_commit") != public_input["source"]["base_commit"]:
             raise ValueError("A0 constraints are not the public opening base")
         verify_constraint_source_application(contract)
@@ -979,6 +1025,48 @@ def verify_replay(output: Path, private: dict[str, Any]) -> dict[str, Any]:
             raise ValueError("constraint replay did not prove the installed source versions")
         if source_versions.get("A0") == source_versions.get("A1") or source_versions.get("A1") != source_versions.get("A2"):
             raise ValueError("constraint replay source versions do not encode old/new/new")
+        if replay_adapter == "requirements_full_constraints":
+            probes = contract.get("version_probe_distributions")
+            installed = contract.get("installed_versions_by_distribution")
+            checks = contract.get("checks_run")
+            if (
+                not isinstance(probes, list)
+                or len(probes) < 2
+                or not all(isinstance(value, str) and value for value in probes)
+            ):
+                raise ValueError("full-constraints replay did not declare multiple version probes")
+            if not isinstance(installed, dict) or set(installed) != {"A0", "A1", "A2"}:
+                raise ValueError("full-constraints replay version probes are incomplete")
+            normalized_probes = {value.casefold() for value in probes}
+            for arm in ("A0", "A1", "A2"):
+                arm_versions = installed.get(arm)
+                if not isinstance(arm_versions, dict) or set(arm_versions) != normalized_probes:
+                    raise ValueError("full-constraints replay did not record every requested version")
+                if any(not isinstance(value, str) or not value for value in arm_versions.values()):
+                    raise ValueError("full-constraints replay recorded an invalid installed version")
+            if (
+                not isinstance(checks, dict)
+                or set(checks) != {"A0", "A1", "A2"}
+                or any(not isinstance(value, int) or value <= 0 for value in checks.values())
+            ):
+                raise ValueError("full-constraints replay did not record positive check counts")
+            expected_constraint_commits = {
+                "A0": public_input["source"]["base_commit"],
+                "A1": public_input["source"]["candidate_commit"],
+                "A2": public_input["source"]["candidate_commit"],
+            }
+            if contract.get("constraint_commits_by_arm") != expected_constraint_commits:
+                raise ValueError("full-constraints replay did not use base/head/head constraints")
+            expected_target_commits = {
+                arm: target_snapshot["commit"] for arm in ("A0", "A1", "A2")
+            }
+            if contract.get("target_base_commits_by_arm") != expected_target_commits:
+                raise ValueError("full-constraints replay changed the target base across arms")
+            expected_commands = {
+                arm: contract.get("test_command") for arm in ("A0", "A1", "A2")
+            }
+            if contract.get("test_commands_by_arm") != expected_commands:
+                raise ValueError("full-constraints replay changed the target command across arms")
     elif replay_adapter in MAVEN_REPLAY_ADAPTERS:
         expected_application = {
             "maven_source": "maven_local_artifact_from_opening_checkout",
@@ -1101,7 +1189,7 @@ def verify_replay(output: Path, private: dict[str, Any]) -> dict[str, Any]:
         "target_cutoff_commit": target_snapshot["commit"],
         "target_a2_kind": contract["target_a2_kind"],
     }
-    if replay_adapter == "requirements_constraint":
+    if replay_adapter in REQUIREMENTS_CONSTRAINT_ADAPTERS:
         result.update({
             "source_application": contract["source_application"],
             "source_base_commit": contract["source_base_commit"],
@@ -1110,6 +1198,11 @@ def verify_replay(output: Path, private: dict[str, Any]) -> dict[str, Any]:
             "installed_source_versions": contract["installed_source_versions"],
             "catalog_source_snapshot_commit": requirements_snapshot["commit"],
         })
+        if replay_adapter == "requirements_full_constraints":
+            result.update({
+                "installed_versions_by_distribution": contract["installed_versions_by_distribution"],
+                "checks_run": contract["checks_run"],
+            })
     elif replay_adapter in MAVEN_REPLAY_ADAPTERS:
         result.update({
             "source_application": contract["source_application"],

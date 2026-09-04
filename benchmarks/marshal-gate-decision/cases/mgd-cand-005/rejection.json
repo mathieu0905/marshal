@@ -1,0 +1,52 @@
+{
+  "schema_version": "marshal-gate-rejection-1",
+  "case_id": "mgd-cand-005",
+  "status": "rejected",
+  "reason_code": "generator_missed_gold_test",
+  "generator": {
+    "method": "constraints-to-direct-test-imports-v1",
+    "source_repository": "openstack/requirements",
+    "source_commit": "dfcad1d7fe24ad7a6f664eef2fe787a8c990fc83",
+    "target_repository": "openstack/cinder",
+    "target_commit": "9555cc8b6fcddf73b9eef705b4797c3374982d4d",
+    "rule_authoring_case": false
+  },
+  "generated_contract": {
+    "id": "dependency-import:oslo_concurrency",
+    "verify_invariants": [
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.api.contrib.test_admin_actions",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.backup.drivers.test_backup_ceph",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.brick.test_brick_lvm",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.targets.test_lio_driver",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.targets.test_tgt_driver",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.test",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.test_cmd",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.test_image_utils",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.test_service",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.test_volume_utils",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.dell_emc.powerstore.test_nfs",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.ibm.test_ibm_flashsystem",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.ibm.test_storwize_svc",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.inspur.instorage.fakes",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.inspur.instorage.test_common",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.netapp.dataontap.test_nfs_base",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.netapp.test_utils",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.test_gpfs",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.test_lvm_driver",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.test_quobyte",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.drivers.toyou.test_acs5000",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.test_volume",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.test_volume_migration",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.volume.test_volume_reimage",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.zonemanager.test_brcd_fc_zone_client_cli",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.zonemanager.test_cisco_fc_zone_client_cli",
+      "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.zonemanager.test_cisco_fc_zone_driver"
+    ]
+  },
+  "missing_gold_check": {
+    "location_path": "cinder/tests/unit/test_utils.py",
+    "selector": "cinder.tests.unit.test_utils",
+    "expected_invariant_id": "dependency-import.openstack__cinder.oslo_concurrency.cinder.tests.unit.test_utils"
+  },
+  "stop_reason": "The cutoff test module imports cinder.utils rather than oslo_concurrency directly, so constraints-to-direct-test-imports-v1 does not derive the gold selector. Adding it manually would violate label-independent Domain Pack construction. No private gold or runnable case manifest was retained."
+}

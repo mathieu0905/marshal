@@ -1,0 +1,55 @@
+{
+  "schema_version": "marshal-gate-rejection-1",
+  "case_id": "mgd-cand-002",
+  "candidate_relation": "formal-opendev-1001023--target-1000516",
+  "status": "rejected",
+  "reason": "incomplete_selected_invariant_execution",
+  "domain_pack": {
+    "path": "public/domain-pack.json",
+    "construction_method": "constraints-to-direct-test-imports-v1",
+    "contract_id": "dependency-import:alembic",
+    "selected_invariants": [
+      {
+        "invariant_id": "dependency-import.openstack__cinder.alembic.cinder.tests.unit.db.test_migration",
+        "location_repo": "openstack/cinder",
+        "location_path": "cinder/tests/unit/db/test_migration.py",
+        "location_test": "cinder.tests.unit.db.test_migration",
+        "run_command": [
+          "stestr",
+          "run",
+          "cinder.tests.unit.db.test_migration"
+        ]
+      },
+      {
+        "invariant_id": "dependency-import.openstack__cinder.alembic.cinder.tests.unit.db.test_migrations",
+        "location_repo": "openstack/cinder",
+        "location_path": "cinder/tests/unit/db/test_migrations.py",
+        "location_test": "cinder.tests.unit.db.test_migrations",
+        "run_command": [
+          "stestr",
+          "run",
+          "cinder.tests.unit.db.test_migrations"
+        ]
+      }
+    ]
+  },
+  "selected_invariant_execution": [
+    {
+      "invariant_id": "dependency-import.openstack__cinder.alembic.cinder.tests.unit.db.test_migration",
+      "execution_status": "not_run",
+      "evidence": "No A1 execution result exists for this selected module invariant."
+    },
+    {
+      "invariant_id": "dependency-import.openstack__cinder.alembic.cinder.tests.unit.db.test_migrations",
+      "execution_status": "strict_e2_evidenced",
+      "evidence_relation": "formal-opendev-1001023--target-1000516",
+      "evidenced_selector": "cinder.tests.unit.db.test_migrations.TestModelsSyncMySQL.test_models_sync",
+      "arms": {
+        "A0": "pass",
+        "A1": "fail",
+        "A2": "pass"
+      }
+    }
+  ],
+  "stop_reason": "The label-independent direct-import generator selects both Alembic-importing Cinder test modules. The authoritative strict-E2 replay covers only TestModelsSyncMySQL.test_models_sync in test_migrations; test_migration has no A1 execution result. A bounded gate gold must include the full selected invariant set and cannot label the unexecuted member as pass, fail, or unjudged. The candidate is rejected without deleting the generated contract member or manually narrowing the Domain Pack."
+}

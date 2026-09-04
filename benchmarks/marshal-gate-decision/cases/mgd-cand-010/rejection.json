@@ -1,0 +1,85 @@
+{
+  "schema_version": "marshal-gate-rejection-1",
+  "case_id": "mgd-cand-010",
+  "candidate_relation": "formal-opendev-972691--target-973723",
+  "split": "unassigned",
+  "status": "rejected",
+  "reason": "incomplete_selected_invariant_execution",
+  "domain_pack": {
+    "path": "public/domain-pack.json",
+    "id": "openstack-magnum-python-dependency-imports-v1",
+    "construction_method": "constraints-to-direct-test-imports-v1",
+    "source_base_commit": "dfcad1d7fe24ad7a6f664eef2fe787a8c990fc83",
+    "target_cutoff_commit": "03b5b4275e45e78d8e8b6169417e3a14b2ad02ac",
+    "rule_authoring_case": false,
+    "configuration_derivation": {
+      "test_root": "magnum/tests/unit",
+      "test_root_config_path": ".stestr.conf",
+      "runner_prefix": [
+        "stestr",
+        "run"
+      ],
+      "runner_config_path": "tox.ini"
+    },
+    "contract_id": "dependency-import:oslo_concurrency",
+    "selected_invariants": [
+      {
+        "invariant_id": "dependency-import.openstack__magnum.oslo_concurrency.magnum.tests.unit.cmd.test_api",
+        "location_repo": "openstack/magnum",
+        "location_path": "magnum/tests/unit/cmd/test_api.py",
+        "location_test": "magnum.tests.unit.cmd.test_api",
+        "run_command": [
+          "stestr",
+          "run",
+          "magnum.tests.unit.cmd.test_api"
+        ]
+      },
+      {
+        "invariant_id": "dependency-import.openstack__magnum.oslo_concurrency.magnum.tests.unit.cmd.test_conductor",
+        "location_repo": "openstack/magnum",
+        "location_path": "magnum/tests/unit/cmd/test_conductor.py",
+        "location_test": "magnum.tests.unit.cmd.test_conductor",
+        "run_command": [
+          "stestr",
+          "run",
+          "magnum.tests.unit.cmd.test_conductor"
+        ]
+      },
+      {
+        "invariant_id": "dependency-import.openstack__magnum.oslo_concurrency.magnum.tests.unit.common.test_utils",
+        "location_repo": "openstack/magnum",
+        "location_path": "magnum/tests/unit/common/test_utils.py",
+        "location_test": "magnum.tests.unit.common.test_utils",
+        "run_command": [
+          "stestr",
+          "run",
+          "magnum.tests.unit.common.test_utils"
+        ]
+      }
+    ]
+  },
+  "selected_invariant_execution": [
+    {
+      "invariant_id": "dependency-import.openstack__magnum.oslo_concurrency.magnum.tests.unit.cmd.test_api",
+      "execution_status": "not_run",
+      "evidence": "No A1 execution result exists for this selected module invariant."
+    },
+    {
+      "invariant_id": "dependency-import.openstack__magnum.oslo_concurrency.magnum.tests.unit.cmd.test_conductor",
+      "execution_status": "not_run",
+      "evidence": "No A1 execution result exists for this selected module invariant."
+    },
+    {
+      "invariant_id": "dependency-import.openstack__magnum.oslo_concurrency.magnum.tests.unit.common.test_utils",
+      "execution_status": "strict_e2_evidenced",
+      "evidence_relation": "formal-opendev-972691--target-973723",
+      "evidenced_selector": "magnum.tests.unit.common.test_utils.ExecuteTestCase.test_unknown_kwargs_raises_error",
+      "arms": {
+        "A0": "pass",
+        "A1": "fail",
+        "A2": "pass"
+      }
+    }
+  ],
+  "stop_reason": "The label-independent direct-import generator selects three oslo.concurrency-importing Magnum test modules. The authoritative strict-E2 replay covers only ExecuteTestCase.test_unknown_kwargs_raises_error in common/test_utils; cmd/test_api and cmd/test_conductor have no A1 execution result. A bounded gate gold must include and execute the full selected invariant set and cannot label the unexecuted members as pass, fail, or unjudged. The candidate is rejected without deleting generated contract members, manually narrowing the Domain Pack, or retaining a private gold or runnable public case manifest."
+}

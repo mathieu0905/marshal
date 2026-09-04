@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay a one-pin global-constraints change across real target tests.
+"""Replay a global-constraints change across real target tests.
 
 A0 uses the source opening base constraints and the target cutoff snapshot.
 A1 changes only to the source opening head constraints.  A2 keeps those new
@@ -115,10 +115,37 @@ PYTEST_RAN = re.compile(
     r"(?m)^=+ .*?\b([1-9][0-9]*) passed(?:,| in ).*?=+\s*$"
 )
 UNITTEST_RAN = re.compile(r"(?m)^Ran ([1-9][0-9]*) tests? in \S+")
+PYTEST_SUMMARY = re.compile(r"(?m)^=+\s+(.+?)\s+in\s+[0-9.]+s\s+=+\s*$")
+PYTEST_OUTCOME = re.compile(
+    r"\b([0-9]+)\s+(passed|failed|errors?|skipped|xfailed|xpassed)\b"
+)
+PYTEST_FAILURE = re.compile(
+    r"(?m)^\s*E\s+((?:[A-Za-z_]\w*\.)*[A-Za-z_]\w*"
+    r"(?:Error|Exception|Forbidden|NotAuthorized):[^\n]+)"
+)
 
 
 def tests_ran(output: str) -> bool:
     return any(pattern.search(output) is not None for pattern in (RAN, PYTEST_RAN, UNITTEST_RAN))
+
+
+def tests_run_count(output: str) -> int:
+    """Return the selected pytest/unittest check count from terminal output."""
+    pytest_summaries = PYTEST_SUMMARY.findall(output)
+    if pytest_summaries:
+        return sum(int(match.group(1)) for match in PYTEST_OUTCOME.finditer(pytest_summaries[-1]))
+    unittest_matches = UNITTEST_RAN.findall(output)
+    if unittest_matches:
+        return int(unittest_matches[-1])
+    ran_matches = RAN.findall(output)
+    if ran_matches:
+        return int(ran_matches[-1])
+    return 0
+
+
+def pytest_failure_signature(output: str) -> str | None:
+    match = PYTEST_FAILURE.search(output)
+    return normalize_failure_text(match.group(1).strip()) if match else None
 
 
 def planned_test_command(
@@ -188,6 +215,48 @@ def parse_environment_overrides(values: list[str], option: str) -> dict[str, str
     return overrides
 
 
+def full_constraints_evidence(
+    plan: dict[str, Any],
+    target_base_commit: str,
+    test_command: list[str],
+    installed: dict[str, dict[str, str]],
+    checks_run: dict[str, int],
+) -> dict[str, Any]:
+    """Describe the base/head/head replay without weakening the one-pin adapter."""
+    arms = ("A0", "A1", "A2")
+    return {
+        "constraint_commits_by_arm": {
+            "A0": plan["source_base_commit"],
+            "A1": plan["source_head_commit"],
+            "A2": plan["source_head_commit"],
+        },
+        "target_base_commits_by_arm": {arm: target_base_commit for arm in arms},
+        "test_commands_by_arm": {arm: test_command for arm in arms},
+        "installed_versions_by_distribution": installed,
+        "checks_run": checks_run,
+    }
+
+
+def exact_maintainer_diff(
+    mirror: Path, base_commit: str, head_commit: str
+) -> bytes:
+    completed = subprocess.run(
+        [
+            "git", "--git-dir", str(mirror), "diff", "--no-ext-diff",
+            base_commit, head_commit, "--",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if completed.returncode:
+        raise ValueError(
+            "cannot materialize maintainer diff: "
+            + completed.stderr.decode("utf-8", errors="replace").strip()
+        )
+    return completed.stdout
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--plan", type=Path, required=True)
@@ -204,6 +273,7 @@ def main() -> int:
     parser.add_argument("--bootstrap-constraint", action="append", default=[])
     parser.add_argument("--virtualenv-pip-version")
     parser.add_argument("--virtualenv-setuptools-version")
+    parser.add_argument("--require-full-constraints", action="store_true")
     args = parser.parse_args()
 
     if args.virtualenv_pip_version and not re.fullmatch(
@@ -241,6 +311,25 @@ def main() -> int:
     work.mkdir(parents=True)
     evidence.mkdir(parents=True)
 
+    if args.require_full_constraints:
+        maintainer_base = plan.get("target_base_commit")
+        maintainer_head = plan.get("target_head_commit")
+        if not isinstance(maintainer_base, str) or not isinstance(maintainer_head, str):
+            raise SystemExit("full-constraints replay requires maintainer target base/head commits")
+        expected_target_patch = exact_maintainer_diff(
+            repository_path(args.mirror_root, plan["target_repository"]),
+            maintainer_base,
+            maintainer_head,
+        )
+        if args.target_patch.read_bytes() != expected_target_patch:
+            write_json(evidence / "rejection.json", {
+                "relation_id": args.relation_id,
+                "reason": "target_patch_is_not_exact_maintainer_diff",
+                "target_base_commit": maintainer_base,
+                "target_head_commit": maintainer_head,
+            })
+            return 2
+
     requirements_a0 = work / "requirements-a0"
     requirements_a1 = work / "requirements-a1"
     clone_checkout(
@@ -267,6 +356,14 @@ def main() -> int:
             old_constraints, new_constraints
         )
         source_application = "global_constraints_single_pin"
+    if args.require_full_constraints and (
+        len(constraint_changes) < 2
+        or not selected_distribution
+        or source_application != "global_constraints_full_opening_diff"
+    ):
+        raise SystemExit(
+            "full-constraints replay requires a multi-pin opening and an explicit changed_distribution"
+        )
     a0_pins = read_pins(requirements_a0 / "upper-constraints.txt")
     a1_pins = read_pins(requirements_a1 / "upper-constraints.txt")
     historical_setuptools = a0_pins.get("setuptools")
@@ -293,8 +390,24 @@ def main() -> int:
     arm_results: dict[str, dict[str, tuple[int, str]]] = {
         row["case_id"]: {} for row in attempts
     }
+    arm_check_counts: dict[str, dict[str, int]] = {
+        row["case_id"]: {} for row in attempts
+    }
     setup_records = []
     installed_versions: dict[str, str] = {}
+    requested_probes = plan.get("version_probe_distributions", [distribution])
+    if (
+        not isinstance(requested_probes, list)
+        or not requested_probes
+        or any(not isinstance(value, str) or not value for value in requested_probes)
+    ):
+        raise SystemExit("version_probe_distributions must be a non-empty string list")
+    probe_distributions = list(dict.fromkeys(value.lower() for value in requested_probes))
+    if args.require_full_constraints and len(probe_distributions) < 2:
+        raise SystemExit("full-constraints replay requires at least two installed-version probes")
+    if distribution not in probe_distributions:
+        raise SystemExit("version probes must include changed_distribution")
+    installed_versions_by_distribution: dict[str, dict[str, str]] = {}
     for arm, constraints, expected_version in (
         ("A0", requirements_a0, old_version),
         ("A1", requirements_a1, new_version),
@@ -331,6 +444,10 @@ def main() -> int:
             "PIP_CONSTRAINT": str(pin.resolve()),
             "PIP_BUILD_CONSTRAINT": str(pin.resolve()),
         })
+        if args.require_full_constraints:
+            # Keep the repository-mandated tox work directory inside this
+            # fresh arm while retaining the adapter's target/.tox lookup.
+            environment["TOX_WORK_DIR"] = str((target / ".tox").resolve())
         environment.update(setup_environment_overrides)
         if args.virtualenv_pip_version:
             environment["VIRTUALENV_PIP"] = args.virtualenv_pip_version
@@ -358,22 +475,28 @@ def main() -> int:
             })
             write_json(evidence / "environment-setups.json", setup_records)
             return 2
-        version_code, observed_version = installed_version(
-            arm_python, distribution, target, environment
-        )
-        installed_versions[arm] = observed_version
-        if version_code or observed_version != expected_version:
-            write_json(evidence / "rejection.json", {
-                "relation_id": args.relation_id,
-                "reason": "source_constraint_not_consumed",
-                "arm": arm,
-                "distribution": distribution,
-                "expected_version": expected_version,
-                "observed_version": observed_version,
-                "version_probe_exit_code": version_code,
-            })
-            write_json(evidence / "environment-setups.json", setup_records)
-            return 2
+        arm_versions = {}
+        arm_pins = a0_pins if arm == "A0" else a1_pins
+        for probe_distribution in probe_distributions:
+            expected_probe_version = arm_pins.get(probe_distribution)
+            version_code, observed_version = installed_version(
+                arm_python, probe_distribution, target, environment
+            )
+            arm_versions[probe_distribution] = observed_version
+            if version_code or observed_version != expected_probe_version:
+                write_json(evidence / "rejection.json", {
+                    "relation_id": args.relation_id,
+                    "reason": "source_constraint_not_consumed",
+                    "arm": arm,
+                    "distribution": probe_distribution,
+                    "expected_version": expected_probe_version,
+                    "observed_version": observed_version,
+                    "version_probe_exit_code": version_code,
+                })
+                write_json(evidence / "environment-setups.json", setup_records)
+                return 2
+        installed_versions_by_distribution[arm] = arm_versions
+        installed_versions[arm] = arm_versions[distribution]
         for row in attempts:
             command, recorded_command = planned_test_command(row, test_environment)
             command_environment = without_proxy_environment(environment)
@@ -388,6 +511,13 @@ def main() -> int:
                 recorded_command,
                 code, output, test_elapsed,
             )
+            checks_run = tests_run_count(output)
+            arm_check_counts[row["case_id"]][arm] = checks_run
+            if args.require_full_constraints:
+                summary_path = evidence / row["case_id"] / arm.lower() / "summary.json"
+                summary = json.loads(summary_path.read_text(encoding="utf-8"))
+                summary["checks_run"] = checks_run
+                write_json(summary_path, summary)
             arm_results[row["case_id"]][arm] = (code, output)
     write_json(evidence / "environment-setups.json", setup_records)
 
@@ -397,6 +527,8 @@ def main() -> int:
         results = arm_results[row["case_id"]]
         a0, a1, a2 = (results[key] for key in ("A0", "A1", "A2"))
         signature = extract_failure_signature(a1[1])
+        if signature is None and args.require_full_constraints:
+            signature = pytest_failure_signature(a1[1])
         strict = (
             a0[0] == 0 and a1[0] != 0 and a2[0] == 0
             and tests_ran(a0[1]) and tests_ran(a2[1])
@@ -404,6 +536,11 @@ def main() -> int:
             and signature not in normalize_failure_text(a0[1])
             and signature not in normalize_failure_text(a2[1])
         )
+        if args.require_full_constraints:
+            strict = strict and all(
+                arm_check_counts[row["case_id"]][arm] > 0
+                for arm in ("A0", "A1", "A2")
+            )
         adjudication = {
             "attempt_id": row["case_id"],
             "test_selector": row["test_selector"],
@@ -473,6 +610,18 @@ def main() -> int:
         "bootstrap_constraints": bootstrap_constraints,
         "virtualenv_pip_version": args.virtualenv_pip_version,
         "virtualenv_setuptools_version": selected_setuptools,
+        **({
+            "version_probe_distributions": probe_distributions,
+            "target_patch_source_base_commit": plan["target_base_commit"],
+            "target_patch_source_head_commit": plan["target_head_commit"],
+            **full_constraints_evidence(
+                plan,
+                args.target_base_commit,
+                selected["test_command"],
+                installed_versions_by_distribution,
+                arm_check_counts[selected["case_id"]],
+            ),
+        } if args.require_full_constraints else {}),
     })
     print(json.dumps({
         "relation_id": args.relation_id,

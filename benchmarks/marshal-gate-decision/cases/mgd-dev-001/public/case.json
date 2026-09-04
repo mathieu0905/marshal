@@ -1,0 +1,46 @@
+{
+  "schema_version": "marshal-gate-case-1",
+  "case_id": "mgd-dev-001",
+  "split": "development",
+  "task": "domain-pack-cross-repo-gate",
+  "event": {
+    "kind": "pr",
+    "repo": "openstack/requirements",
+    "change_ref": "56f0448e75900c32c77e73845a58879274c0590e",
+    "diff_paths": [
+      "upper-constraints.txt"
+    ],
+    "labels": [
+      "dependency:tooz"
+    ]
+  },
+  "source": {
+    "repository": "openstack/requirements",
+    "base_commit": "e93565a60e34357734bf5c7e2bff23d49969addd",
+    "candidate_commit": "56f0448e75900c32c77e73845a58879274c0590e",
+    "patch_path": "source.patch",
+    "dependency_change": {
+      "distribution": "tooz",
+      "from": "8.1.0",
+      "to": "9.0.0"
+    }
+  },
+  "domain_pack_path": "domain-pack.json",
+  "domain_pack_provenance": {
+    "method": "constraints-to-direct-test-imports-v1",
+    "source_snapshot": "e93565a60e34357734bf5c7e2bff23d49969addd",
+    "target_snapshot": "a2a8f9546fa60bb42e3a62ada2914553ab0e42c0",
+    "outcome_inputs_read": false,
+    "rule_authoring_case": true
+  },
+  "repository_snapshots": [
+    {
+      "repository": "openstack/requirements",
+      "commit": "e93565a60e34357734bf5c7e2bff23d49969addd"
+    },
+    {
+      "repository": "openstack/cinder",
+      "commit": "a2a8f9546fa60bb42e3a62ada2914553ab0e42c0"
+    }
+  ]
+}

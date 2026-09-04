@@ -1,0 +1,42 @@
+{
+  "schema_version": "marshal-gate-rejection-1",
+  "case_id": "mgd-cand-008",
+  "candidate_relation": "formal-opendev-936100--target-936159",
+  "status": "rejected",
+  "reason": "generator_missed_gold_test",
+  "domain_pack": {
+    "path": "public/domain-pack.json",
+    "construction_method": "constraints-to-direct-test-imports-v1",
+    "source_repository": "openstack/requirements",
+    "source_commit": "52d27d85156ae6f0b3b4a4cfa0aec2cf66367f78",
+    "target_repository": "openstack/heat",
+    "target_commit": "6a0150df63e26b20c75cadd34cabf50637479170",
+    "test_root": "heat/tests",
+    "command_prefix": [
+      "stestr",
+      "run"
+    ],
+    "rule_authoring_case": false,
+    "generated_contract": null
+  },
+  "missing_authoritative_test": {
+    "dependency": "croniter",
+    "expected_contract_id": "dependency-import:croniter",
+    "expected_invariant_id": "dependency-import.openstack__heat.croniter.heat.tests.constraints.test_common_constraints",
+    "selector": "heat.tests.constraints.test_common_constraints",
+    "location_path": "heat/tests/constraints/test_common_constraints.py",
+    "evidence_relation": "formal-opendev-936100--target-936159",
+    "authoritative_command": [
+      "stestr",
+      "run",
+      "heat.tests.constraints.test_common_constraints"
+    ],
+    "arms": {
+      "A0": "pass",
+      "A1": "fail",
+      "A2": "pass"
+    }
+  },
+  "generator_observation": "The cutoff test module imports heat.engine.constraint.common_constraints rather than croniter directly. croniter is imported by the production constraint module, so the direct-test-import generator emits no dependency-import:croniter contract or invariant.",
+  "stop_reason": "The label-independent direct-import generator did not route the authoritative A0/A1/A2 Heat test module through dependency-import:croniter. Adding the missing contract or invariant manually would make the Domain Pack depend on hidden outcome evidence and violate the declared construction rule. No public case manifest or private gold was created."
+}

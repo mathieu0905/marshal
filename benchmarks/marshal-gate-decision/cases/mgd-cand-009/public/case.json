@@ -1,0 +1,53 @@
+{
+  "schema_version": "marshal-gate-case-1",
+  "case_id": "mgd-cand-009",
+  "split": "unassigned",
+  "task": "domain-pack-cross-repo-gate",
+  "event": {
+    "kind": "pr",
+    "repo": "openstack/requirements",
+    "change_ref": "40d22df6c90df0ab2e619b3379df8bde650923d6",
+    "diff_paths": [
+      "upper-constraints.txt"
+    ],
+    "labels": [
+      "dependency:infoblox_client"
+    ]
+  },
+  "source": {
+    "repository": "openstack/requirements",
+    "base_commit": "49139646a3cea3396de45746482db2e5fd2efb5f",
+    "candidate_commit": "40d22df6c90df0ab2e619b3379df8bde650923d6",
+    "patch_path": "source.patch",
+    "dependency_change": {
+      "distribution": "infoblox-client",
+      "from": "0.6.1",
+      "to": "0.6.2"
+    }
+  },
+  "domain_pack_path": "domain-pack.json",
+  "domain_pack_provenance": {
+    "method": "constraints-to-direct-test-imports-v1",
+    "source_snapshot": "49139646a3cea3396de45746482db2e5fd2efb5f",
+    "target_snapshot": "35be2ac4e90a6ab5d661609f6aa758a1c1c3894c",
+    "test_root_config": ".stestr.conf",
+    "test_root": "designate/tests",
+    "runner_config": "tox.ini",
+    "command_prefix": [
+      "stestr",
+      "run"
+    ],
+    "outcome_inputs_read": false,
+    "rule_authoring_case": false
+  },
+  "repository_snapshots": [
+    {
+      "repository": "openstack/requirements",
+      "commit": "49139646a3cea3396de45746482db2e5fd2efb5f"
+    },
+    {
+      "repository": "openstack/designate",
+      "commit": "35be2ac4e90a6ab5d661609f6aa758a1c1c3894c"
+    }
+  ]
+}

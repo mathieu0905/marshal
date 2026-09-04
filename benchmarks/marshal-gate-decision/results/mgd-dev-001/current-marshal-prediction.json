@@ -1,0 +1,39 @@
+{
+  "case_id": "mgd-dev-001",
+  "classification": {
+    "contracts_hit": [
+      "dependency-import:tooz"
+    ],
+    "tier": "high"
+  },
+  "decision": {
+    "gate_outcome": "degraded",
+    "verdict": "escalate"
+  },
+  "execution": {
+    "not_run": [
+      {
+        "invariant_id": "dependency-import.openstack__cinder.tooz.cinder.tests.unit.test_coordination",
+        "reason": "lives in repo 'openstack/cinder'; this reporter runs in 'openstack/requirements' and cannot execute it"
+      }
+    ],
+    "results": [],
+    "status": "degraded"
+  },
+  "plan": {
+    "invariants": [
+      {
+        "executor_kind": "command",
+        "invariant_id": "dependency-import.openstack__cinder.tooz.cinder.tests.unit.test_coordination",
+        "location_repo": "openstack/cinder",
+        "run_command": [
+          "stestr",
+          "run",
+          "cinder.tests.unit.test_coordination"
+        ]
+      }
+    ]
+  },
+  "schema_version": "marshal-gate-prediction-1",
+  "system": "current-marshal-native-reporter"
+}

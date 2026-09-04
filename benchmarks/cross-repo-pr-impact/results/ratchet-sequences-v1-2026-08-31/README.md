@@ -11,3 +11,7 @@ The released package still does not contain a runnable recurrence workspace for 
 three historical checks. `recurrence_execution` and `recurrence_decision` consequently
 remain `not_assessed`; failure-evidence, blocking, and end-to-end ratchet rates remain
 zero. Scheduling success must not be reported as end-to-end ratchet success.
+
+Execution evidence is evaluator-owned and stored separately in
+`evaluator-execution-results.jsonl`. Fields named `recurrence_execution` in system
+output are ignored by the scorer; they cannot create failure evidence.

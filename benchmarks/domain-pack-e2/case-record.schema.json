@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://marshal.local/schemas/domain-pack-e2/case-record.schema.json",
+  "title": "Domain Pack E2 public candidates and curator-judged bindings",
+  "$comment": "Pack-derived candidates are unjudged by default. A relation-level strict-E2 binding does not require all public candidate checks to have three-arm labels.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "case_id",
+    "pack_family_id",
+    "pack_revision_id",
+    "public",
+    "curator"
+  ],
+  "properties": {
+    "schema_version": {"const": "domain-pack-e2-case-1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "pack_family_id": {"type": "string", "minLength": 1},
+    "pack_revision_id": {"type": "string", "minLength": 1},
+    "public": {
+      "type": "object",
+      "required": ["source_event", "change_facts", "candidate_selection"],
+      "properties": {
+        "source_event": {"type": "object"},
+        "change_facts": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/change_fact"}
+        },
+        "candidate_selection": {
+          "type": "object",
+          "required": [
+            "method",
+            "candidate_route_ids",
+            "candidate_repositories",
+            "candidate_check_ids",
+            "unresolved_dependency_keys",
+            "unresolved_repositories"
+          ],
+          "properties": {
+            "method": {
+              "enum": [
+                "changed-constraint-to-pack-candidates-v1",
+                "changed-requirement-to-pack-candidates-v1"
+              ]
+            },
+            "candidate_route_ids": {"$ref": "#/$defs/unique_ids"},
+            "candidate_repositories": {"$ref": "#/$defs/unique_ids"},
+            "candidate_check_ids": {"$ref": "#/$defs/unique_ids"},
+            "unresolved_dependency_keys": {"$ref": "#/$defs/unique_ids"},
+            "unresolved_repositories": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["route_id", "repository", "reason"],
+                "properties": {
+                  "route_id": {"type": "string"},
+                  "repository": {"type": "string"},
+                  "reason": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "curator": {
+      "type": "object",
+      "required": ["candidate_label_policy", "judged_e2_bindings"],
+      "properties": {
+        "candidate_label_policy": {
+          "const": "unjudged_unless_in_judged_e2_bindings"
+        },
+        "judged_e2_bindings": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/judged_e2_binding"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "unique_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "change_fact": {
+      "type": "object",
+      "required": [
+        "kind",
+        "dependency_key",
+        "removed_entries",
+        "added_entries",
+        "derivation"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "constraint-added",
+            "constraint-updated",
+            "constraint-removed",
+            "requirement-added",
+            "requirement-updated",
+            "requirement-removed"
+          ]
+        },
+        "dependency_key": {"type": "string"},
+        "removed_entries": {"type": "array", "items": {"type": "object"}},
+        "added_entries": {"type": "array", "items": {"type": "object"}},
+        "derivation": {"const": "unified-diff-requirement-lines-v1"}
+      }
+    },
+    "judged_e2_binding": {
+      "type": "object",
+      "required": [
+        "binding_id",
+        "relation_id",
+        "route_id",
+        "check_id",
+        "location_repo",
+        "selector",
+        "command",
+        "arms",
+        "failure_signature",
+        "target_repair",
+        "mechanism"
+      ],
+      "properties": {
+        "binding_id": {"type": "string"},
+        "relation_id": {"type": "string"},
+        "route_id": {"type": "string"},
+        "check_id": {"type": "string"},
+        "location_repo": {"type": "string"},
+        "selector": {"type": "string", "minLength": 1},
+        "command": {"type": "object"},
+        "failure_signature": {
+          "type": "object",
+          "required": ["value", "exclusive_to", "artifact_refs"],
+          "properties": {
+            "value": {"type": "string", "minLength": 1},
+            "exclusive_to": {"const": "A1"},
+            "artifact_refs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"type": "string"}
+            }
+          }
+        },
+        "target_repair": {
+          "type": "object",
+          "required": ["repository", "change_id", "patch_ref"],
+          "properties": {
+            "repository": {"type": "string"},
+            "change_id": {"type": ["string", "integer"]},
+            "patch_ref": {"type": "string", "minLength": 1}
+          }
+        },
+        "mechanism": {"type": "string", "minLength": 1},
+        "arms": {
+          "type": "object",
+          "required": ["A0", "A1", "A2"],
+          "properties": {
+            "A0": {"$ref": "#/$defs/arm_result"},
+            "A1": {"$ref": "#/$defs/arm_result"},
+            "A2": {"$ref": "#/$defs/arm_result"}
+          }
+        }
+      }
+    },
+    "arm_result": {
+      "type": "object",
+      "required": [
+        "status",
+        "exit_code",
+        "artifact_refs",
+        "summary_ref",
+        "command_log_ref"
+      ],
+      "properties": {
+        "status": {"enum": ["pass", "fail"]},
+        "exit_code": {"type": "integer"},
+        "artifact_refs": {"type": "array", "items": {"type": "string"}},
+        "summary_ref": {"type": "string", "minLength": 1},
+        "command_log_ref": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
