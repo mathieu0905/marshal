@@ -5,7 +5,7 @@
 ## Current route
 
 - 路线：candidate-bounded 跨仓排序。
-- 当前阶段：新采集的 50 条均已由单条构造流水线验证为 `case_ready_for_formal_pool`，并完成集合级独立复验、30/10/10 分组 split 和冻结后正式系统运行；当前可以称为 formal candidate-bounded strict-E2 benchmark。
+- 当前阶段：新采集的 50 条均已由单条构造流水线验证为 `case_ready_for_formal_pool`，并完成集合级独立复验、30/10/10 分组 split 和冻结后系统运行；它是 strict-E2 pilot/release candidate，不是已经通过发布门槛的 formal benchmark。
 - 判断：`results/formal-e2-50-release-2026-08-26/` 的正式声明已撤回。其 0/1/0 来自后验构造的引用表面检查，不是预先存在的目标仓构建或测试任务，不能满足 TASK_DEFINITION 的 strict-E2 准入。
 
 ## Current active node
@@ -14,7 +14,7 @@
 
 专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支 commit `75875e4`；两个 acceptance verifier 和 50 项 skill 测试均在抽取布局通过后才推送。marshal 主仓保留构造源，私有仓作为分发副本。
 
-2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `bbedb95`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录和 104 项完整测试套件通过记录；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
+2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `df260ae`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、104 项完整测试套件通过记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
 
@@ -77,4 +77,4 @@
 
 ## Reopen condition
 
-若继续研究 ranker，先在 development 上独立规定规则，再一次性评估 evaluation/holdout。50 条 E2 的构造、正式发布与首次冻结后系统运行均已闭环；E2 扩采、开放世界发现和四臂扩采不默认重开。
+若继续研究 ranker，先在 development 上独立规定规则，再一次性评估 evaluation/holdout。50 条 E2 的构造、诊断性集合复验与首次冻结后系统运行已闭环；正式发布仍受 readiness verifier 的 blind、runtime、复现、许可和权利阻断，E2 扩采、开放世界发现和四臂扩采不默认重开。
