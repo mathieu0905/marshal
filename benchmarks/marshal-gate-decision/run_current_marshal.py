@@ -78,6 +78,15 @@ class MemoryStore:
     def register_invariant(self, **row):
         self.invariants.append(row)
 
+    def list_triggered_ratchet_invariants(self, domain_pack, repo, diff_paths):
+        """The fixture has no persisted ratchet rows for a public case.
+
+        Orchestrator uses the same store capability as the production SQL store;
+        returning an empty list keeps this deterministic fixture honest instead
+        of silently omitting the lookup or faking a ratchet result.
+        """
+        return []
+
     def record_gate_run(self, **row):
         self.gate_runs.append(row)
 
