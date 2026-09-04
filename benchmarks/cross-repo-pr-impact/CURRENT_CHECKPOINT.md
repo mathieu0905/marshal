@@ -14,7 +14,7 @@
 
 专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支 commit `75875e4`；两个 acceptance verifier 和 50 项 skill 测试均在抽取布局通过后才推送。marshal 主仓保留构造源，私有仓作为分发副本。
 
-2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `df260ae`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、104 项完整测试套件通过记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
+2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `d2cbff6`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、104 项完整测试套件通过记录、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
 
