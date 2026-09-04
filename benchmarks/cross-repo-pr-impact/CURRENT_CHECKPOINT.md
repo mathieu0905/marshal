@@ -12,9 +12,9 @@
 
 权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，权威冻结后系统运行是 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/`。前者的 `verification.json` 独立重解析全部三臂证据与分组，后者的 `verification.json` 独立重算 50 条分数并检查统一标签揭示边界。2026-08-27 的首个正式集合仍是有效历史证据，但已被本轮全量重建和重跑取代；`results/formal-e2-50-release-2026-08-26/` 仍只保留为 withdrawn diagnostic 历史材料。
 
-专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支 commit `75875e4`；两个 acceptance verifier 和 50 项 skill 测试均在抽取布局通过后才推送。marshal 主仓保留构造源，私有仓作为分发副本。
+专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支；截至 2026-09-05，远端为 `6c9730e`。后续增量包含执行器超时进程组回收、固定入口与 evaluator-owned P2P canary 保护、私有候选排除证据及 106 项测试通过记录。marshal 主仓保留构造源，私有仓作为分发副本；这些增量不改变公开 50 条标签或其冻结 split。
 
-2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `d2cbff6`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、104 项完整测试套件通过记录、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
+2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `6c9730e`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、106 项完整测试套件通过记录、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
 
@@ -61,7 +61,7 @@
 
 ## Next resume step
 
-数据集构造和专用仓库发布目标均已完成。后续若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。若研究 ranker，只在 development 上选择规则，再以预先声明的方式运行 evaluation/holdout，并继续保持冻结后统一揭示标签的执行边界。
+正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成、PASS_TO_PASS 仅 16/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
 
 ## First-read files
 
