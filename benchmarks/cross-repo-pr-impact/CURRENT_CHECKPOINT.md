@@ -22,7 +22,7 @@
 
 最新提交（2026-09-05）：xrepo-e2-0049（opendev/irc-meetings→opendev/yaml2ical）完成独立断网、只读容器三臂重放，A0/A1/A2=0/1/0，每臂 1 项固定生成检查，A1 独占 `Invalid YAML meeting schedule definition - missing attribute 'irc'`；A2 仅应用完整维护者 parser/model 补丁。数据集仓库已提交并推送至 `c614c0bce65690d5bcc005335c854cb0ba7ffb49`，独立复现计数更新为 30/50（attempted 31，rejected 1）。readiness 的 8 个正式发布 blocker 未改变。
 
-同日文档复核：数据集仓库随后提交 `9871265901350448e120aa5fcc8f8a55b09ad6fb`，记录使用项目内临时环境完成的 109 项单测，以及 `validate_dataset.py`、`verify_gold_retrieval.py` 的 `verified=true` 结果；这只更新验证记录，不改变 strict-E2 计数或 readiness blocker。
+同日文档复核：数据集仓库随后提交 `9871265901350448e120aa5fcc8f8a55b09ad6fb`，记录使用项目内临时环境完成的 109 项单测，以及 `validate_dataset.py`、`verify_gold_retrieval.py` 的 `verified=true` 结果；随后根 README 在 `ac7ce86e4cc9ed74075bf651e4ba2550b8b3b54c` 同步了 30/50 和最新提交锚点。这只更新验证记录，不改变 strict-E2 计数或 readiness blocker。
 
 2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `3dcda89`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、xrepo-e2-0015 与 xrepo-e2-0020 的独立三臂重放、拒绝重放与通过重放分离计数修复、139 项完整测试套件通过记录、当前 pilot/readiness 状态说明、历史计数澄清、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
