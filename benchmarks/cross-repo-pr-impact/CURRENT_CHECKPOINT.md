@@ -67,7 +67,7 @@
 
 ## Next resume step
 
-正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成（当前 7/50）、PASS_TO_PASS 仅 16/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
+正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成（当前 22/50）、PASS_TO_PASS 仅 20/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
 
 ## First-read files
 
