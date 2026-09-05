@@ -1,6 +1,6 @@
 # Candidate-bounded implementation checkpoint
 
-日期：2026-08-30
+日期：2026-09-05
 
 ## Current route
 
