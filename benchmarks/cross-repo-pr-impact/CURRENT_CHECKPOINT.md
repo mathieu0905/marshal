@@ -16,6 +16,8 @@
 
 最新权威同步（2026-09-05）：数据集仓库已推进到 `30f1c83`，独立 dataset-only strict-E2 复现为 28/50（attempted 29，rejected 1）。本条记录覆盖前述较早的 27/50 过程性数字；readiness 仍明确阻断正式发布。
 
+最新提交（2026-09-05）：数据集仓库 README 已随 xrepo-e2-0008 记录更新至 `09d697f`；独立复现计数仍为 28/50，公开标签与正式发布 blocker 均未改变。
+
 2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `3dcda89`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、xrepo-e2-0015 与 xrepo-e2-0020 的独立三臂重放、拒绝重放与通过重放分离计数修复、139 项完整测试套件通过记录、当前 pilot/readiness 状态说明、历史计数澄清、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
