@@ -58,6 +58,8 @@
 - 分发仓独立 strict-E2 通过数增至 25/50；bundle 与 runtime 仍未发布，不能据此清除 50/50 复现 blocker。
 - 独立复现新增 xrepo-e2-0022（neutron-lib→Neutron，20 项 metering 检查，A0/A1/A2=0/1/0）与 xrepo-e2-0048（oslo.policy→Octavia，1 项 policy 检查，A0/A1/A2=0/1/0）；两条均在断网、只读容器中完成并通过语义审查。
 - 剩余边界：主集负标签不完整，不报告 precision、F1、误报率或 specificity。当前 evaluation/holdout 各有 10 条，分数可按 candidate-bounded 正标签找回口径发布，但一次系统运行不支持稳定的跨系统优劣结论。dataset-only 独立复现当前为 25/50，仍非正式 50/50 结果。
+- 独立复现新增拒绝记录：xrepo-e2-0044（requirements→Cinder/tooz）A0/A1 曾为 18/16 checks、0/1，但 A2 在精确预构建环境与固定命令下超时且 checks=0；按 strict-E2 边界拒绝，不计入 25/50。分发仓记录为 `2d1294a`，未修改公开标签。
+- 2026-09-05 验证：分发仓 `swebench_like/tests` 在项目内临时环境以 `138 passed` 完成；`validate_dataset.py` 与 `verify_gold_retrieval.py` 均 `verified=true` 且无 blockers。该测试结果不改变 readiness verifier 的 8 个正式发布 blocker。
 
 ## Do not reopen by default
 
