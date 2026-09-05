@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "formal-opendev-849986",
+  "relation_id": "formal-opendev-849986--target-851909",
+  "target_repository": "openstack/nova",
+  "expected_check_paths": ["nova/tests/unit/scheduler/client/test_report.py"],
+  "source_change_family": "opendev-change-849986-opening",
+  "mechanism": "openstacksdk 0.100.0 retries SchedulerReportClient creation after EndpointNotFound outside Nova's temporary authentication-loader mock, so the existing safe-connection test observes a failed retry",
+  "repair_template": "replace the temporary authentication-loader patch with a test-lifetime fixture so every client recreation remains isolated",
+  "replay_adapter": "requirements_constraint",
+  "replay_plan": ".work/rebuild_849986_851909/work/plan.jsonl",
+  "mirror_root": "benchmarks/cross-repo-pr-impact/.work/formal-e2-strict-wave2-candidate-mirrors-2026-08-26",
+  "tox": ".work/rebuild_849986_851909/runner/bin/tox",
+  "python": ".work/rebuild_849986_851909/runner/bin/python",
+  "setup_environment": {"PBR_VERSION": "0.0.0"},
+  "semantic_review": {
+    "approved": true,
+    "source_effect": "The opening source diff changes exactly one upper-constraints pin, openstacksdk 0.99.0 to 0.100.0. The new version recreates SchedulerReportClient after EndpointNotFound, exposing that the unchanged Nova test's authentication-loader mock ends after the initial construction.",
+    "a1_failure": "The unchanged Nova cutoff test module runs the same pre-existing scheduler report-client suite in all arms. With openstacksdk 0.100.0, SafeConnectedTestCase.test_missing_endpoint alone reaches self.assertTrue(req.called) with req.called false, yielding the exclusive signature AssertionError: False is not true; the old dependency and the maintainer-patched target pass.",
+    "target_repair": "The complete one-file maintainer patch replaces the setUp-local context-manager mock with a fixtures.MonkeyPatch held for the entire test case, so the authentication loader remains isolated during every SchedulerReportClient recreation. It changes no production code, removes no test, alters no selector, and adds no skip.",
+    "target_patch": ".work/rebuild_849986_851909/work/851909.patch",
+    "reviewer_basis": "Reviewed the pure one-pin opening diff, the complete one-file maintainer commit diff, the cutoff Nova tox.ini provenance, the unchanged three-arm command, installed-version probes, and full prior 145-test arm logs; this independent pipeline run replays the same 0/nonzero/0 contract and exclusive signature."
+  }
+}
