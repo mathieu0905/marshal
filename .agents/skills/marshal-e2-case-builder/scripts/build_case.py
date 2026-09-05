@@ -790,6 +790,21 @@ def validate_private(root: Path, private: dict[str, Any], candidate_id: str) -> 
     return {"plan_path": plan_path, "plan": plan, "tox": tox, "python": python, "mirror_root": mirror_root}
 
 
+def replay_process_environment(output: Path) -> dict[str, str]:
+    """Return a process environment whose mutable roots stay in this case."""
+    process_root = (output / "process-runtime").resolve()
+    process_environment = os.environ.copy()
+    for variable, suffix in (
+        ("TMPDIR", "tmp"),
+        ("HOME", "home"),
+        ("XDG_CACHE_HOME", "cache"),
+    ):
+        directory = process_root / suffix
+        directory.mkdir(parents=True, exist_ok=True)
+        process_environment[variable] = str(directory)
+    return process_environment
+
+
 def run_replay(root: Path, private: dict[str, Any], resolved: dict[str, Any], output: Path) -> int:
     replay_adapter = private.get("replay_adapter", "source_editable")
     replay = root / "benchmarks" / "cross-repo-pr-impact" / REPLAY_ADAPTERS[replay_adapter]
@@ -913,7 +928,20 @@ def run_replay(root: Path, private: dict[str, Any], resolved: dict[str, Any], ou
             raise ValueError("replay_environment must be a string map")
         for key, value in sorted(replay_environment.items()):
             command.extend(["--environment", f"{key}={value}"])
-    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
+    # Replay adapters change cwd into a freshly cloned target checkout.  A
+    # relative TMPDIR/HOME inherited from the builder would therefore resolve
+    # outside the project (or fall back to /tmp), which violates the workspace
+    # locality contract and makes pip/tox behavior depend on the host.  Give
+    # every adapter absolute, case-local process roots instead.
+    process_environment = replay_process_environment(output)
+    result = subprocess.run(
+        command,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+        env=process_environment,
+    )
     (output / "replay.log").write_text(result.stdout, encoding="utf-8")
     return result.returncode
 

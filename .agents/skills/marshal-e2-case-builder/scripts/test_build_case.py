@@ -62,6 +62,15 @@ CATALOG_SPEC.loader.exec_module(component_catalog)
 
 
 class DefaultBranchSnapshotTests(unittest.TestCase):
+    def test_replay_environment_roots_are_absolute_and_case_local(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "case-output"
+            environment = build_case.replay_process_environment(output)
+            for variable in ("TMPDIR", "HOME", "XDG_CACHE_HOME"):
+                value = Path(environment[variable])
+                self.assertTrue(value.is_absolute())
+                self.assertTrue(value.is_relative_to((output / "process-runtime").resolve()))
+
     def test_resolve_executable_preserves_virtualenv_symlink(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
