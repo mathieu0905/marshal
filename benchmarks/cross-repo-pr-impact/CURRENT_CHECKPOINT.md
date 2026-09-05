@@ -28,6 +28,8 @@
 
 随后 `xrepo-e2-0042`（neutron-lib→Neutron）完成独立断网、只读容器三臂重放：A0/A1/A2=0/1/0，每臂 1 项 APIv2 检查，A1 独占 `AttributeError: 'Context' object has no attribute 'tenant_id'`，A2 仅应用维护者 patch 将 exercised access 改为 `project_id`。数据集仓库已提交并推送至 `930d682f543c686c877e0b7da75bddf9c87e2ce0`，独立复现计数更新为 31/50（attempted 32，rejected 1）；readiness 的 8 个正式发布 blocker 未改变。
 
+随后 `xrepo-e2-0006`（openstacksdk→python-openstackclient）完成独立断网、只读容器三臂重放：A0/A1/A2=0/1/0，固定模块命令分别运行 6/6/7 项检查，A1 独占 `testtools.matchers._impl.MismatchError: !=:`，A2 仅应用完整维护者 formatter/output patch，未删除或跳过既有测试。数据集仓库已提交并推送至 `90101e5f9445072ed721f7d519c530c40de08579`，独立复现计数更新为 32/50（attempted 33，rejected 1）；readiness 的 8 个正式发布 blocker 未改变。
+
 2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `3dcda89`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、xrepo-e2-0015 与 xrepo-e2-0020 的独立三臂重放、拒绝重放与通过重放分离计数修复、139 项完整测试套件通过记录、当前 pilot/readiness 状态说明、历史计数澄清、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
