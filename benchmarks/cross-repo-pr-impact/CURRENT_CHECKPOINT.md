@@ -87,6 +87,8 @@
 - 独立复现新增拒绝：xrepo-e2-0021（requirements→Neutron）盲测边界通过，但三臂固定 MySQL 检查均在 setUp 报 backend unavailable（A0/A1/A2 全部退出 1），未形成 0/1/0；分发仓记录为 `634e883`，尝试计数 27、通过 26，未修改公开标签。
 - 独立复现新增通过：xrepo-e2-0020（requirements→Heat，python-barbicanclient 5.4.0→5.5.0）在断网、只读容器中完成固定 9 项检查，A0/A1/A2=0/1/0；A1 为服务版本发现失败，A2 仅应用维护者 mock 修复。分发仓记录为 `389b597`、`e4fc654`，独立通过数由 26/50 增至 27/50，公开标签未改。
 
+- 最新独立复现（2026-09-05）：xrepo-e2-0025（openstack/neutron-lib→openstack/neutron）在项目内 `.work/independent-x0025-run-20260905-v2/` 完成新鲜 blind 与三臂 replay。blind 使用 `network=none`、只读 rootfs、标签未挂载/读取；A0/A1/A2 均运行同一既有 48 项 `neutron.tests.unit.extensions.test_flavors` 检查，退出码 `0/1/0`。A1 独占稳定签名为 `webtest.app.AppError: Bad response: 400 Bad Request ... /flavors.json`，A2 仅应用维护者目标补丁后恢复；语义审查与单例 verifier 均通过。分发仓已提交并推送 `d2b0693`，独立 dataset-only strict-E2 汇总更新为 36/50（attempted 37，rejected 1），公开 labels 未修改。该增量仍不能清除 runtime、PASS_TO_PASS、E3、许可证和第三方权利等 8 个 readiness blocker。
+
 ## Do not reopen by default
 
 - 不恢复“先凑 30 至 50 个完整四臂项目包”的路线。
@@ -96,7 +98,7 @@
 
 ## Next resume step
 
-正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成（当前 27/50，attempted 28、rejected 1）、PASS_TO_PASS 仅 20/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
+正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成（当前 36/50，attempted 37、rejected 1）、PASS_TO_PASS 仅 20/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
 
 ## First-read files
 
