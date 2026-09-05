@@ -91,6 +91,7 @@
 - 紧接着独立复现（2026-09-05）：xrepo-e2-0041（openstack/requirements→openstack/nova）在项目内 `.work/independent-x0041-run-20260905-v3/` 完成新鲜 blind 与三臂 replay。blind 使用 `network=none`、只读 rootfs、标签未挂载/读取；A0/A1/A2 均运行同一既有 21 项 Nova CORS functional 检查，退出码 `0/1/0`，安装 `oslo.middleware` 7.0.0/8.0.0/8.0.0。A1 独占缺失 CORS header 失败签名，A2 仅应用维护者 fixture 补丁恢复；语义审查与单例 verifier 均通过。分发仓已提交并推送 `b3f11f5`，独立 dataset-only strict-E2 汇总更新为 37/50（attempted 38，rejected 1），公开 labels 未修改。该增量仍不能清除 runtime、PASS_TO_PASS、E3、许可证和第三方权利等 8 个 readiness blocker。
 - 分发文档锚点随后更新至 `84daaca`，README 当前状态与机器汇总保持一致；该提交仅修正文档中的远端提交号，不改变数据、标签或计数。
 - 又一条独立复现（2026-09-05）：xrepo-e2-0043（openstack/openstacksdk→openstack/python-openstackclient）在项目内 `.work/independent-x0043-run-20260905-v4/` 完成新鲜 blind 与三臂 replay。blind 使用 `network=none`、只读 rootfs、标签未挂载/读取；A0/A1/A2 均运行同一既有 23 项 Network Agent 输出检查，退出码 `0/1/0`，A1 独占 `MismatchError: !=:`，A2 仅应用维护者显式输出映射补丁恢复。分发仓提交 `6997695` 已推送到远端，独立 dataset-only strict-E2 汇总已更新为 38/50（attempted 39，rejected 1），公开 labels 未修改。
+- 随后独立复现（2026-09-05）：xrepo-e2-0016（openstack/requirements→openstack/nova）在项目内 `.work/independent-x0016-run-20260905/` 完成新鲜 blind 与三臂 replay。blind 使用 `network=none`、只读 rootfs、标签未挂载/读取；A0/A1/A2 均运行同一既有 3 项 interface-attach 检查，退出码 `0/1/0`，安装 `oslo.concurrency` 4.4.1/4.5.0/4.5.0；A1 独占 `AssertionError: expected call not found.`，A2 仅应用维护者 mock/断言补丁恢复。分发仓提交 `1d09525` 已推送到远端，独立 dataset-only strict-E2 汇总更新为 39/50（attempted 40，rejected 1），公开 labels 未修改。
 
 ## Do not reopen by default
 
