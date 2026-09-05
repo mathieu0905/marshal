@@ -14,6 +14,8 @@
 
 专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支；截至 2026-09-05，远端为 `3dcda89`。后续增量包含执行器超时进程组回收、固定入口与 evaluator-owned P2P canary 保护、私有候选排除证据、xrepo-e2-0015 独立 bundle replay、xrepo-e2-0020 独立 bundle replay、拒绝重放与通过重放分离计数修复、139 项测试通过记录、当前 pilot/readiness 状态说明以及历史计数澄清。marshal 主仓保留构造源，私有仓作为分发副本；这些增量不改变公开 50 条标签或其冻结 split。
 
+最新权威同步（2026-09-05）：数据集仓库已推进到 `30f1c83`，独立 dataset-only strict-E2 复现为 28/50（attempted 29，rejected 1）。本条记录覆盖前述较早的 27/50 过程性数字；readiness 仍明确阻断正式发布。
+
 2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `3dcda89`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、xrepo-e2-0015 与 xrepo-e2-0020 的独立三臂重放、拒绝重放与通过重放分离计数修复、139 项完整测试套件通过记录、当前 pilot/readiness 状态说明、历史计数澄清、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
 ## Node history
