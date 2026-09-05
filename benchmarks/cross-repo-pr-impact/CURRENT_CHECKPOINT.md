@@ -55,12 +55,13 @@
 - 独立复现增量（2026-09-05）：xrepo-e2-0015（requirements→neutron）在项目内 phase-4 bundle 中完成真实断网、只读容器三臂重放，A0/A1/A2=0/1/0、每臂 1 个检查、neutron-lib 版本 2.13.0/2.14.0/2.14.0，A1 独占 `MismatchError`。独立通过数由 6/50 增至 7/50；bundle 与 runtime 仍未发布，不能据此清除 50/50 复现 blocker。
 - 独立复现增量（2026-09-05）：xrepo-e2-0047（requirements→magnum）在 dataset-only bundle 中完成真实断网、只读容器三臂重放，A0/A1/A2=0/1/0、每臂 3 个 stats-policy 检查、oslo.policy 版本 5.1.0/6.0.0/6.0.0，A1 独占 `oslo_config.cfg.NoSuchOptError: no such option enforce_scope in group [oslo_policy]`；A2 仅应用移除过时 `enforce_scope` 的维护者补丁，未删测或跳过。
 - 独立复现增量（2026-09-05）：xrepo-e2-0033（requirements/croniter→Heat）在断网、只读容器中每臂运行 43 项 CRON 约束检查，A0/A1/A2=0/1/0，A1 独占 invalid-expression wording mismatch，A2 应用 canonical maintainer patch 恢复；xrepo-e2-0035（requirements/infoblox-client→Designate）每臂运行 27 项检查，A0/A1/A2=0/1/0，A1 独占 `KeyError: 'reason'`，A2 应用维护者 fixture 修复；xrepo-e2-0036（requirements/oslo.limit→Glance）每臂运行 4 项 quota 检查，A0/A1/A2=0/1/0，A1 独占 `fake_limits() missing ... resource_name`，A2 应用维护者 fixture 补丁。三条均通过独立 blind/replay/semantic verifier，未修改公开 labels。
-- 分发仓独立 strict-E2 通过数增至 25/50；bundle 与 runtime 仍未发布，不能据此清除 50/50 复现 blocker。
+- 分发仓独立 strict-E2 通过数增至 26/50；bundle 与 runtime 仍未发布，不能据此清除 50/50 复现 blocker。
 - 独立复现新增 xrepo-e2-0022（neutron-lib→Neutron，20 项 metering 检查，A0/A1/A2=0/1/0）与 xrepo-e2-0048（oslo.policy→Octavia，1 项 policy 检查，A0/A1/A2=0/1/0）；两条均在断网、只读容器中完成并通过语义审查。
-- 剩余边界：主集负标签不完整，不报告 precision、F1、误报率或 specificity。当前 evaluation/holdout 各有 10 条，分数可按 candidate-bounded 正标签找回口径发布，但一次系统运行不支持稳定的跨系统优劣结论。dataset-only 独立复现当前为 25/50，仍非正式 50/50 结果。
-- 独立复现新增拒绝记录：xrepo-e2-0044（requirements→Cinder/tooz）A0/A1 曾为 18/16 checks、0/1，但 A2 在精确预构建环境与固定命令下超时且 checks=0；按 strict-E2 边界拒绝，不计入 25/50。分发仓记录为 `2d1294a`，未修改公开标签。
-- 独立复现新增拒绝记录：xrepo-e2-0041（requirements→oslo.middleware）在 blind 隔离通过后，A0 的 tox editable build 长时间未完成且 checks=0，A1/A2 未运行；按 strict-E2 边界拒绝，不计入 25/50。分发仓记录为 `58b98fb`，未修改公开标签。
+- 剩余边界：主集负标签不完整，不报告 precision、F1、误报率或 specificity。当前 evaluation/holdout 各有 10 条，分数可按 candidate-bounded 正标签找回口径发布，但一次系统运行不支持稳定的跨系统优劣结论。dataset-only 独立复现当前为 26/50，仍非正式 50/50 结果。
+- 独立复现新增拒绝记录：xrepo-e2-0044（requirements→Cinder/tooz）A0/A1 曾为 18/16 checks、0/1，但 A2 在精确预构建环境与固定命令下超时且 checks=0；按 strict-E2 边界拒绝，不计入 26/50。分发仓记录为 `2d1294a`，未修改公开标签。
+- 独立复现新增拒绝记录：xrepo-e2-0041（requirements→oslo.middleware）在 blind 隔离通过后，A0 的 tox editable build 长时间未完成且 checks=0，A1/A2 未运行；按 strict-E2 边界拒绝，不计入 26/50。分发仓记录为 `58b98fb`，未修改公开标签。
 - 2026-09-05 验证：分发仓 `swebench_like/tests` 在项目内临时环境以 `138 passed` 完成；`validate_dataset.py` 与 `verify_gold_retrieval.py` 均 `verified=true` 且无 blockers。该测试结果不改变 readiness verifier 的 8 个正式发布 blocker。
+- 独立复现新增通过：xrepo-e2-0040（requirements→Magnum，oslo.concurrency 7.2.0→7.3.0）在断网、只读容器中完成 A0/A1/A2=0/1/0，固定测试命令运行并通过语义审查；分发仓记录为 `28c5a09`，独立通过数由 25/50 增至 26/50，公开标签未改。
 
 ## Do not reopen by default
 
@@ -71,7 +72,7 @@
 
 ## Next resume step
 
-正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成（当前 25/50）、PASS_TO_PASS 仅 20/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
+正式 benchmark 仍未完成。当前 readiness verifier 仍报告 8 个 blocker：公开标签无法 retroactively 变成 private、runtime bundle 尚未发布、独立 50/50 重放未完成（当前 26/50）、PASS_TO_PASS 仅 20/50、E3 输入面不完整、许可证未选定以及第三方权利尚无人清权。下一步只能从精确 private intake 继续寻找通过六维公开边界的全新 source event；候选不足时保持 blocker，不得把 rejected 或重叠案例包装成 holdout。若维护或替换案例，继续用 `.agents/skills/marshal-e2-case-builder/` 跑完整单条流程，再重新生成全量 release 和 split，并在抽取布局复验后整体同步；不得局部手改权威索引。
 
 ## First-read files
 
