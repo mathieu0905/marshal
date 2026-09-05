@@ -53,7 +53,8 @@
 - 开发结果：恢复两条目标快照后，旧 50 条开发目录聚合的 Recall@5/宏召回为 0.6400、MRR 0.3527、Recall@1/@3 为 0.2100/0.4000；该聚合不替代新冻结 split 的正式结果。
 - 旧集合正式性审计：37 条使用 outcome-conditioned 目录、34 条不满足开单时点，最终只有 1 条旧 holdout 可运行；这些结论只属于旧集合的排除历史，不能覆盖本次新 50 条的正式发布。
 - 独立复现增量（2026-09-05）：xrepo-e2-0015（requirements→neutron）在项目内 phase-4 bundle 中完成真实断网、只读容器三臂重放，A0/A1/A2=0/1/0、每臂 1 个检查、neutron-lib 版本 2.13.0/2.14.0/2.14.0，A1 独占 `MismatchError`。独立通过数由 6/50 增至 7/50；bundle 与 runtime 仍未发布，不能据此清除 50/50 复现 blocker。
-- 剩余边界：主集负标签不完整，不报告 precision、F1、误报率或 specificity。当前 evaluation/holdout 各有 10 条，分数可按 candidate-bounded 正标签找回口径发布，但一次系统运行不支持稳定的跨系统优劣结论。
+- 独立复现增量（2026-09-05）：xrepo-e2-0047（requirements→magnum）在 dataset-only bundle 中完成真实断网、只读容器三臂重放，A0/A1/A2=0/1/0、每臂 3 个 stats-policy 检查、oslo.policy 版本 5.1.0/6.0.0/6.0.0，A1 独占 `oslo_config.cfg.NoSuchOptError: no such option enforce_scope in group [oslo_policy]`；A2 仅应用移除过时 `enforce_scope` 的维护者补丁，未删测或跳过。分发仓独立通过数增至 19/50；bundle 与 runtime 仍未发布，不能据此清除 50/50 复现 blocker。
+- 剩余边界：主集负标签不完整，不报告 precision、F1、误报率或 specificity。当前 evaluation/holdout 各有 10 条，分数可按 candidate-bounded 正标签找回口径发布，但一次系统运行不支持稳定的跨系统优劣结论。dataset-only 独立复现当前为 19/50，仍非正式 50/50 结果。
 
 ## Do not reopen by default
 
