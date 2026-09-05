@@ -12,7 +12,7 @@
 
 权威集合是 `results/formal-e2-benchmark-50-v2-2026-08-30/`，权威冻结后系统运行是 `results/formal-e2-benchmark-50-system-run-v3-2026-08-30/`。前者的 `verification.json` 独立重解析全部三臂证据与分组，后者的 `verification.json` 独立重算 50 条分数并检查统一标签揭示边界。2026-08-27 的首个正式集合仍是有效历史证据，但已被本轮全量重建和重跑取代；`results/formal-e2-50-release-2026-08-26/` 仍只保留为 withdrawn diagnostic 历史材料。
 
-专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支；截至 2026-09-05，远端为 `a9a733e`。后续增量包含执行器超时进程组回收、固定入口与 evaluator-owned P2P canary 保护、私有候选排除证据、xrepo-e2-0015 独立 bundle replay、xrepo-e2-0020 独立 bundle replay、拒绝重放与通过重放分离计数修复、139 项测试通过记录、当前 pilot/readiness 状态说明、历史计数澄清，以及 xrepo-e2-0034 的独立 replay 记录。marshal 主仓保留构造源，私有仓作为分发副本；这些增量不改变公开 50 条标签或其冻结 split。
+专用私有数据仓库是 GitHub 上的 `mathieu0905/cross-repo-breakage-benchmark`。2026-08-30 的 release、冻结运行、skill 和治理文档已同步到其 `main` 分支；截至 2026-09-05，远端为 `dda3ccd`。后续增量包含执行器超时进程组回收、固定入口与 evaluator-owned P2P canary 保护、私有候选排除证据、xrepo-e2-0015 独立 bundle replay、xrepo-e2-0020 独立 bundle replay、拒绝重放与通过重放分离计数修复、139 项测试通过记录、当前 pilot/readiness 状态说明、历史计数澄清，以及 xrepo-e2-0034 与 xrepo-e2-0050 的独立 replay 记录。marshal 主仓保留构造源，私有仓作为分发副本；这些增量不改变公开 50 条标签或其冻结 split。
 
 最新权威同步（2026-09-05）：数据集仓库已推进到 `30f1c83`，独立 dataset-only strict-E2 复现为 28/50（attempted 29，rejected 1）。本条记录覆盖前述较早的 27/50 过程性数字；readiness 仍明确阻断正式发布。
 
@@ -31,6 +31,8 @@
 随后 `xrepo-e2-0006`（openstacksdk→python-openstackclient）完成独立断网、只读容器三臂重放：A0/A1/A2=0/1/0，固定模块命令分别运行 6/6/7 项检查，A1 独占 `testtools.matchers._impl.MismatchError: !=:`，A2 仅应用完整维护者 formatter/output patch，未删除或跳过既有测试。数据集仓库已提交并推送至 `90101e5f9445072ed721f7d519c530c40de08579`，独立复现计数更新为 32/50（attempted 33，rejected 1）；readiness 的 8 个正式发布 blocker 未改变。
 
 随后 `xrepo-e2-0034`（neutron-lib→Neutron）完成独立断网、只读容器三臂重放：A0/A1/A2=0/1/0，每臂 1 项既有 VLAN transparency 检查，A1 独占 `testtools.matchers._impl.MismatchError: 500 != 400`，A2 仅应用维护者状态断言补丁。数据集仓库已提交并推送至 `a9a733e`，独立复现计数更新为 33/50（attempted 34，rejected 1）；readiness 的 8 个正式发布 blocker 未改变。
+
+随后 `xrepo-e2-0050`（wandertracks→wandertracks-android）完成独立断网、只读容器三臂重放：A0/A1/A2=0/1/0，每臂 5 项既有 basemap parity 检查，A1 独占 `wandertracks.json: vendored asset differs from the API repo original`，A2 仅应用维护者 vendored-asset 补丁。数据集仓库已提交并推送至 `dda3ccd`，独立复现计数更新为 34/50（attempted 35，rejected 1）；readiness 的 8 个正式发布 blocker 未改变。
 
 2026-09-05 同步说明：分发仓在初始抽取后继续接收评测器边界与审计记录，当前远端 `main` 为 `3dcda89`。最新增量包括固定 `python -m` 入口的执行面保护、对应的未跟踪模块回归测试、私有候选排除记录、执行器超时进程组回收、Cinder/Nova evaluator-owned P2P canary 保护、xrepo-e2-0015 与 xrepo-e2-0020 的独立三臂重放、拒绝重放与通过重放分离计数修复、139 项完整测试套件通过记录、当前 pilot/readiness 状态说明、历史计数澄清、数据集与 gold 检查重跑记录，以及对 pilot/formal 状态的澄清；这些提交不改变公开 50 条标签或其已冻结 split。公开 holdout、runtime 发布、独立 50/50 重放、PASS_TO_PASS 覆盖、E3 输入完整性、许可证和第三方权利审查仍由分发仓的 readiness verifier 明确阻断，不能把最新 commit 误读为正式发布完成。
 
