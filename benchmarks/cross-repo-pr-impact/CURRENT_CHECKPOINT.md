@@ -62,6 +62,7 @@
 - 独立复现新增拒绝记录：xrepo-e2-0041（requirements→oslo.middleware）在 blind 隔离通过后，A0 的 tox editable build 长时间未完成且 checks=0，A1/A2 未运行；按 strict-E2 边界拒绝，不计入 26/50。分发仓记录为 `58b98fb`，未修改公开标签。
 - 2026-09-05 验证：分发仓 `swebench_like/tests` 在项目内临时环境以 `138 passed` 完成；`validate_dataset.py` 与 `verify_gold_retrieval.py` 均 `verified=true` 且无 blockers。该测试结果不改变 readiness verifier 的 8 个正式发布 blocker。
 - 独立复现新增通过：xrepo-e2-0040（requirements→Magnum，oslo.concurrency 7.2.0→7.3.0）在断网、只读容器中完成 A0/A1/A2=0/1/0，固定测试命令运行并通过语义审查；分发仓记录为 `28c5a09`，独立通过数由 25/50 增至 26/50，公开标签未改。
+- 独立复现新增拒绝：xrepo-e2-0021（requirements→Neutron）盲测边界通过，但三臂固定 MySQL 检查均在 setUp 报 backend unavailable（A0/A1/A2 全部退出 1），未形成 0/1/0；分发仓记录为 `634e883`，尝试计数 27、通过 26，未修改公开标签。
 
 ## Do not reopen by default
 
