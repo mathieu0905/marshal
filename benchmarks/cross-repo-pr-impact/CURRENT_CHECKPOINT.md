@@ -93,6 +93,15 @@
 - 又一条独立复现（2026-09-05）：xrepo-e2-0043（openstack/openstacksdk→openstack/python-openstackclient）在项目内 `.work/independent-x0043-run-20260905-v4/` 完成新鲜 blind 与三臂 replay。blind 使用 `network=none`、只读 rootfs、标签未挂载/读取；A0/A1/A2 均运行同一既有 23 项 Network Agent 输出检查，退出码 `0/1/0`，A1 独占 `MismatchError: !=:`，A2 仅应用维护者显式输出映射补丁恢复。分发仓提交 `6997695` 已推送到远端，独立 dataset-only strict-E2 汇总已更新为 38/50（attempted 39，rejected 1），公开 labels 未修改。
 - 随后独立复现（2026-09-05）：xrepo-e2-0016（openstack/requirements→openstack/nova）在项目内 `.work/independent-x0016-run-20260905/` 完成新鲜 blind 与三臂 replay。blind 使用 `network=none`、只读 rootfs、标签未挂载/读取；A0/A1/A2 均运行同一既有 3 项 interface-attach 检查，退出码 `0/1/0`，安装 `oslo.concurrency` 4.4.1/4.5.0/4.5.0；A1 独占 `AssertionError: expected call not found.`，A2 仅应用维护者 mock/断言补丁恢复。分发仓提交 `1d09525` 已推送到远端，独立 dataset-only strict-E2 汇总更新为 39/50（attempted 40，rejected 1），公开 labels 未修改。
 
+2026-09-05 latest independent replay: `xrepo-e2-0017` (openstack/requirements
+→ openstack/placement, os-traits 2.6.0→2.7.0) passed the evaluator-owned
+dataset-only boundary. Blind isolation used network-none and a read-only rootfs;
+the unchanged 1,219-check functional API selector produced A0/A1/A2 exit codes
+0/1/0, with the A1-exclusive `AssertionError: 294 != 335` signature. A2 applied
+only the complete maintainer expectation update. The dataset evaluator records
+this as the 40th unique independent strict-E2 replay (41 attempts, one rejected)
+in `swebench_like/evaluator/independent-reproduction-bundle-xrepo-e2-0017.json`.
+
 ## Do not reopen by default
 
 - 不恢复“先凑 30 至 50 个完整四臂项目包”的路线。
