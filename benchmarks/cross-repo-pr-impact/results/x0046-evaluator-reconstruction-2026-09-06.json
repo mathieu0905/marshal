@@ -1,0 +1,19 @@
+{
+  "case_id": "formal-opendev-996511--target-996546",
+  "status": "reconstruction_rejected_missing_runtime_assets",
+  "strict_e2_evidence": "results/formal-e2-benchmark-50-v2-2026-08-30/cases/formal-opendev-996511--target-996546/case-report.json",
+  "evidence_dir": "results/formal-e2-benchmark-50-v2-2026-08-30/cases/formal-opendev-996511--target-996546/evidence/formal-opendev-996511--target-996546",
+  "runtime_manifest": null,
+  "reconstruction": {
+    "source_repository": "openstack/requirements",
+    "target_repository": "openstack/octavia",
+    "source_base_commit": "7a04938e7e6f130a007e17750e880b6ec3eadd07",
+    "source_head_commit": "21177a92da0ccdb0ec62e37e1b844f5e2bad1ca1",
+    "target_cutoff_commit": "9686d904a02adf167213b9a8969f36fd68559892",
+    "maintainer_patch_commit": "46db971a1e568628e910e5ed83de08b2d906f91b",
+    "expected_arms": {"A0": 0, "A1": 1, "A2": 0},
+    "failure_signature": "oslo_config.cfg.NoSuchOptError: no such option enforce_scope in group [oslo_policy]"
+  },
+  "decision": "retain_existing_strict_e2_record; do_not_claim_fresh_offline_runtime_replay",
+  "missing_assets": ["fresh cloned source/target snapshots", "self-contained offline Python environment manifest"]
+}
