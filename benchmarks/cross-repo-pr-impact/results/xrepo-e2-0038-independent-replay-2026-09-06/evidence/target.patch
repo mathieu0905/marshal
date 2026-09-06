@@ -1,0 +1,13 @@
+diff --git a/heat/tests/clients/test_barbican_client.py b/heat/tests/clients/test_barbican_client.py
+index 6159ab7..4f07dc6 100644
+--- a/heat/tests/clients/test_barbican_client.py
++++ b/heat/tests/clients/test_barbican_client.py
+@@ -32,6 +32,8 @@
+         self.barbican_plugin = c.client_plugin('barbican')
+         self.barbican_plugin.client = lambda: self.barbican_client
+ 
++    @mock.patch('keystoneauth1.discover.get_version_data',
++                mock.MagicMock(return_value=[{'status': "STABLE"}]))
+     def test_create(self):
+         context = utils.dummy_context()
+         plugin = context.clients.client_plugin('barbican')

@@ -1,0 +1,99 @@
+{
+  "blind": {
+    "blind_run_valid": true,
+    "candidate_repository_reads": 215,
+    "candidate_snapshots_without_tracked_files": 0,
+    "candidate_text_file_reads": 5140,
+    "case_id": "formal-opendev-873906",
+    "label_store_mounted": false,
+    "labels_read": false,
+    "network_mode": "none",
+    "schema_version": "1.0"
+  },
+  "blind_completed_at": "2026-08-26T13:09:34.987935Z",
+  "blind_prediction_created_at": "2026-08-26T13:09:24.339743Z",
+  "blockers": [],
+  "candidate_id": "formal-opendev-873906",
+  "case_id": "formal-opendev-873906--target-873970",
+  "case_ready_for_formal_pool": true,
+  "directed_relation": [
+    "openstack/requirements",
+    "openstack/octavia"
+  ],
+  "evidence_layer": "E2",
+  "formal_benchmark": true,
+  "formal_benchmark_reason": "release-time verifier-clean grouped strict-E2 collection",
+  "group_id": "strict-e2-group-007",
+  "label_revealed_at": "2026-08-26T13:09:34.994570Z",
+  "mechanism": "python-barbicanclient 5.5.0 changes the ACL client surface and client-construction behavior consumed by target certificate authorization tests",
+  "repair_template": "adapt target ACL mocks and client-construction assertions to the dependency's new public client surface",
+  "replay": {
+    "catalog_source_snapshot_commit": "841a8e09008a5228979bf7cdf506eb6e14ed58f6",
+    "exit_codes": {
+      "A0": 0,
+      "A1": 1,
+      "A2": 0
+    },
+    "failure_signature": "TypeError: '>' not supported between instances of 'MagicMock' and 'int'",
+    "installed_source_versions": {
+      "A0": "5.4.0",
+      "A1": "5.5.0",
+      "A2": "5.5.0"
+    },
+    "machine_strict_e2": true,
+    "primary_result_channel": "pre_existing_target_test",
+    "schema_version": "1.0",
+    "source_application": "global_constraints_single_pin",
+    "source_base_commit": "28248c2d01151b10c7dca8e373ca621228c57a86",
+    "source_head_commit": "3e47ed18c3b341a5003c86987ad9f4f223ac8621",
+    "source_versions": {
+      "A0": "5.4.0",
+      "A1": "5.5.0",
+      "A2": "5.5.0"
+    },
+    "target_a2_kind": "maintainer_patch_applied_to_cutoff_snapshot",
+    "target_cutoff_commit": "55b2d70c4d75566bd5eedcb7bb53b78c361a50a0",
+    "target_test_path": "octavia/tests/unit/certificates/common/auth/test_barbican_acl.py",
+    "test_command": [
+      "stestr",
+      "run",
+      "octavia.tests.unit.certificates.common.auth.test_barbican_acl"
+    ]
+  },
+  "schema_version": "1.0",
+  "score": {
+    "case_id": "formal-opendev-873906--target-873970",
+    "check_position_found": false,
+    "dataset_status": "formal_benchmark",
+    "evidence_layer": "E2",
+    "execution_result": "not_assessed",
+    "expected_check_paths": [
+      "octavia/tests/unit/certificates/common/auth/test_barbican_acl.py"
+    ],
+    "mean_reciprocal_rank": 0.0,
+    "non_target_predictions": "unjudged",
+    "precision_f1_specificity_reported": false,
+    "predicted_check_paths": [],
+    "rank": null,
+    "recall_at_1": 0.0,
+    "recall_at_3": 0.0,
+    "recall_at_5": 0.0,
+    "repository_found": false,
+    "runnable_check_proposed": false,
+    "schema_version": "1.0",
+    "split": "development",
+    "target_recall": 0.0,
+    "target_repository": "openstack/octavia"
+  },
+  "semantic_review": {
+    "a1_failure": "With python-barbicanclient 5.5.0 installed against the unchanged target, four of five ACL authorization tests fail deterministically because old mocks no longer model the client and ACL surfaces used by 5.5.0, producing stable MagicMock TypeErrors; A0 and A2 pass all five tests.",
+    "approved": true,
+    "reviewer_basis": "Reviewed the one-pin source opening diff, cutoff target ACL tests, maintainer patch, three isolated tox environments, installed-version probes proving 5.4.0/5.5.0/5.5.0, identical stestr command, and complete A0/A1/A2 logs showing 5 pass / 1 pass plus 4 failures / 5 pass.",
+    "source_effect": "The opening source diff changes the sole python-barbicanclient pin from 5.4.0 to 5.5.0.",
+    "target_patch": "benchmarks/cross-repo-pr-impact/results/formal-e2-strict-reverse-wave1b-public-final126-contract-triage-2026-08-26/target-patches/873970.patch",
+    "target_repair": "The maintainer patch applied to the cutoff target rewrites ACL and client-construction mocks around the 5.5.0 public client API while retaining service-user addition/removal and client reuse assertions; the same five-test module returns to zero without deletion or skipping."
+  },
+  "source_change_family": "opendev-change-873906-opening",
+  "split": "development",
+  "status": "case_ready_for_formal_pool"
+}
