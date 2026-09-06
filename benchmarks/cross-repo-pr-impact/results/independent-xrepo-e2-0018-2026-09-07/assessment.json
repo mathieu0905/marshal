@@ -1,0 +1,28 @@
+{
+  "schema_version": "independent-reproduction-attempt/1.0",
+  "instance_id": "xrepo-e2-0018",
+  "relation_id": "formal-opendev-849986--target-851909",
+  "status": "completed",
+  "strict_e2": true,
+  "counted_as_independent_reproduction": true,
+  "network_mode": "none",
+  "read_only_root": true,
+  "project_local_work": true,
+  "runner": {
+    "python": "3.10.19",
+    "command": ["stestr", "run", "nova.tests.unit.scheduler.client.test_report"],
+    "source_versions": {"A0": "openstacksdk 0.99.0", "A1": "openstacksdk 0.100.0", "A2": "openstacksdk 0.100.0"}
+  },
+  "arms": {
+    "A0": {"exit_code": 0, "checks_run": 145, "result": "pass", "evidence": "evidence/a0-stestr-command.log"},
+    "A1": {"exit_code": 1, "checks_run": 145, "result": "fail", "failure_signature": "AssertionError: False is not true", "evidence": "evidence/a1-stestr-command.log"},
+    "A2": {"exit_code": 0, "checks_run": 145, "result": "pass", "evidence": "evidence/a2-stestr-command.log"}
+  },
+  "target_patch": {
+    "path": "evidence/target.patch",
+    "sha256": "c3ee53746164db9557a61b90d31933b0e7717f2f0822f482011658f9482b0597",
+    "application": "maintainer patch applied to target cutoff before A2"
+  },
+  "mechanism": "openstacksdk 0.100.0 recreates SchedulerReportClient after EndpointNotFound outside Nova's temporary authentication-loader mock; the unchanged test observes no request.",
+  "replay_scope": "fresh target checkouts and isolated Python environments under project-local work; no labels or private runtime mounted"
+}
