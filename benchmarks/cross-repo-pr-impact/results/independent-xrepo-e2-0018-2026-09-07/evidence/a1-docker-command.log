@@ -1,0 +1,25 @@
+/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/runpy.py:126: RuntimeWarning: 'testtools.run' found in sys.modules after import of package 'testtools', but prior to execution of 'testtools.run'; this may result in unpredictable behaviour
+  warn(RuntimeWarning(msg))
+Modules with known eventlet monkey patching issues were imported prior to eventlet monkey patching: oslo_context.context, urllib3. This warning can usually be ignored if the caller is only importing and not executing nova code.
+Tests running...
+======================================================================
+FAIL: nova.tests.unit.scheduler.client.test_report.SafeConnectedTestCase.test_missing_endpoint
+----------------------------------------------------------------------
+pythonlogging:'': {{{
+2026-09-06 18:25:30,873 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-09-06 18:25:30,873 WARNING [oslo_policy.policy] JSON formatted policy_file support is deprecated since Victoria release. You need to use YAML format which will be default in future. You can use ``oslopolicy-convert-json-to-yaml`` tool to convert existing JSON-formatted policy file to YAML-formatted in backward compatible way: https://docs.openstack.org/oslo.policy/latest/cli/oslopolicy-convert-json-to-yaml.html.
+2026-09-06 18:25:30,874 WARNING [oslo_policy.policy] Policy Rules ['os_compute_api:extensions', 'os_compute_api:os-floating-ip-pools', 'os_compute_api:os-quota-sets:defaults', 'os_compute_api:os-availability-zone:list', 'os_compute_api:limits', 'project_admin_api', 'project_member_api', 'project_reader_api', 'project_reader_or_admin', 'os_compute_api:limits:other_project', 'os_compute_api:os-lock-server:unlock:unlock_override', 'os_compute_api:servers:create:zero_disk_flavor', 'compute:servers:resize:cross_cell'] specified in policy files are the same as the defaults provided by the service. You can remove these rules from policy files which will make maintenance easier. You can detect these redundant rules by ``oslopolicy-list-redundant`` tool also.
+2026-09-06 18:25:30,885 WARNING [nova.scheduler.client.report] The placement API endpoint was not found.
+}}}
+
+Traceback (most recent call last):
+  File "/venv/lib/python3.10/site-packages/mock/mock.py", line 1346, in patched
+    return func(*newargs, **newkeywargs)
+  File "/work/nova/tests/unit/scheduler/client/test_report.py", line 60, in test_missing_endpoint
+    self.assertTrue(req.called)
+  File "/home/zhihao/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/unittest/case.py", line 687, in assertTrue
+    raise self.failureException(msg)
+AssertionError: False is not true
+
+Ran 145 tests in 2.936s
+FAILED (failures=1)
