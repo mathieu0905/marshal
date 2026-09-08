@@ -73,20 +73,20 @@ def clone_checkout(mirror: Path, destination: Path, commit: str) -> None:
     # when they were collected from review refs. Explicitly fetch the exact
     # object into the fresh clone before checkout; relying on advertised heads
     # silently loses such commits and produces a false environment failure.
+    advertised = subprocess.run(
+        ["git", "-C", str(destination), "for-each-ref", "--format=%(refname) %(objectname)", "refs/remotes/origin"],
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
+    )
+    matching_ref = next((name for line in advertised.stdout.splitlines()
+                         for name, value in [line.split(" ", 1)] if value == commit), None)
+    if matching_ref:
+        subprocess.run(["git", "-C", str(destination), "checkout", "-q", "--detach", matching_ref], check=True)
+        return
     present = subprocess.run(
         ["git", "-C", str(destination), "cat-file", "-e", f"{commit}^{{commit}}"],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
     )
     if present.returncode:
-        advertised = subprocess.run(
-            ["git", "-C", str(destination), "for-each-ref", "--format=%(refname) %(objectname)", "refs/remotes/origin"],
-            text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
-        )
-        matching_ref = next((name for line in advertised.stdout.splitlines()
-                             for name, value in [line.split(" ", 1)] if value == commit), None)
-        if matching_ref:
-            subprocess.run(["git", "-C", str(destination), "checkout", "-q", "--detach", matching_ref], check=True)
-            return
         fetched = subprocess.run(
             ["git", "-C", str(destination), "fetch", "-q", "--no-tags", "origin", commit],
             text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False,
