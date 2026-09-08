@@ -69,6 +69,16 @@ def run(command: list[str], cwd: Path, environment: dict[str, str]) -> tuple[int
 
 def clone_checkout(mirror: Path, destination: Path, commit: str) -> None:
     subprocess.run(["git", "clone", "-q", "--no-checkout", str(mirror), str(destination)], check=True)
+    # A complete bare mirror may retain opening commits as dangling objects
+    # when they were collected from review refs. Explicitly fetch the exact
+    # object into the fresh clone before checkout; relying on advertised heads
+    # silently loses such commits and produces a false environment failure.
+    fetched = subprocess.run(
+        ["git", "-C", str(destination), "fetch", "-q", "--no-tags", "origin", commit],
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False,
+    )
+    if fetched.returncode:
+        raise RuntimeError(f"exact replay commit is unavailable from mirror: {commit}: {fetched.stdout[-2000:]}")
     subprocess.run(["git", "-C", str(destination), "checkout", "-q", "--detach", commit], check=True)
 
 
