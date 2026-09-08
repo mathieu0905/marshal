@@ -295,7 +295,7 @@ def resolve_default_branch_snapshot(
     result = subprocess.run(
         [
             "git", "--git-dir", str(mirror), "rev-list", "--first-parent", "-1",
-            f"--before={cutoff}", branch,
+            f"--before={timestamp(cutoff).isoformat()}", branch,
         ],
         text=True,
         stdout=subprocess.PIPE,

@@ -62,6 +62,30 @@ CATALOG_SPEC.loader.exec_module(component_catalog)
 
 
 class DefaultBranchSnapshotTests(unittest.TestCase):
+    def test_naive_gerrit_cutoff_is_utc_on_non_utc_hosts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'source'
+            mirrors = root / 'mirrors'
+            subprocess.run(['git', 'init', '-q', '-b', 'master', str(source)], check=True)
+            def commit(hour, value):
+                (source / 'value').write_text(value)
+                subprocess.run(['git', '-C', str(source), 'add', 'value'], check=True)
+                env = {**os.environ, 'GIT_AUTHOR_DATE': f'2024-01-01T{hour}:00:00Z',
+                       'GIT_COMMITTER_DATE': f'2024-01-01T{hour}:00:00Z'}
+                subprocess.run(['git', '-C', str(source), '-c', 'user.name=Test', '-c', 'user.email=test@example.test',
+                                'commit', '-qm', value], env=env, check=True)
+                return subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip()
+            commit('01', 'early')
+            wanted = commit('10', 'before UTC cutoff')
+            commit('14', 'after UTC cutoff')
+            mirrors.mkdir()
+            subprocess.run(['git', 'clone', '-q', '--bare', str(source), str(mirrors / 'org__repo.git')], check=True)
+            for timezone in ('UTC', 'Asia/Shanghai', 'America/Los_Angeles'):
+                with self.subTest(timezone=timezone), mock.patch.dict(os.environ, {'TZ': timezone}):
+                    row = build_case.resolve_default_branch_snapshot(mirrors, 'org/repo', '2024-01-01 11:11:26.000000000')
+                    self.assertEqual(row['commit'], wanted)
+
     def test_replay_environment_roots_are_absolute_and_case_local(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "case-output"

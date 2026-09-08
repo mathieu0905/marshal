@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+from datetime import datetime, timezone
 from collections import Counter
 from pathlib import Path
 from typing import Any, Callable
@@ -25,8 +26,11 @@ def local_git_resolver(mirror_root: Path) -> Callable[[str, str, str], dict[str,
                 "status": "fetch_failed",
                 "error": f"complete local mirror is missing: {mirror}",
             }
+        cutoff_time = datetime.fromisoformat(cutoff.replace('Z', '+00:00'))
+        if cutoff_time.tzinfo is None:
+            cutoff_time = cutoff_time.replace(tzinfo=timezone.utc)
         commit = subprocess.run(
-            ["git", "--git-dir", str(mirror), "rev-list", "--first-parent", "-1", f"--before={cutoff}", "refs/heads/master"],
+            ["git", "--git-dir", str(mirror), "rev-list", "--first-parent", "-1", f"--before={cutoff_time.astimezone(timezone.utc).isoformat()}", "refs/heads/master"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False,
         )
         if commit.returncode:
