@@ -77,6 +77,8 @@ def clone_checkout(mirror: Path, destination: Path, commit: str) -> None:
         ["git", "-C", str(destination), "for-each-ref", "--format=%(refname) %(objectname)", "refs/remotes/origin"],
         text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
     )
+    debug_path = destination.parent / f"{destination.name}.clone-debug.json"
+    debug_path.write_text(json.dumps({"mirror": str(mirror), "commit": commit, "advertised": advertised.stdout}, indent=2) + "\n")
     matching_ref = next((name for line in advertised.stdout.splitlines()
                          for name, value in [line.split(" ", 1)] if value.strip() == commit.strip()), None)
     if matching_ref is None:
