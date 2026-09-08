@@ -69,35 +69,9 @@ def run(command: list[str], cwd: Path, environment: dict[str, str]) -> tuple[int
 
 def clone_checkout(mirror: Path, destination: Path, commit: str) -> None:
     subprocess.run(["git", "clone", "-q", "--no-checkout", str(mirror), str(destination)], check=True)
-    # A complete bare mirror may retain opening commits as dangling objects
-    # when they were collected from review refs. Explicitly fetch the exact
-    # object into the fresh clone before checkout; relying on advertised heads
-    # silently loses such commits and produces a false environment failure.
-    advertised = subprocess.run(
-        ["git", "-C", str(destination), "for-each-ref", "--format=%(refname) %(objectname)", "refs/remotes/origin"],
-        text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
-    )
-    debug_path = destination.parent / f"{destination.name}.clone-debug.json"
-    debug_path.write_text(json.dumps({"mirror": str(mirror), "commit": commit, "advertised": advertised.stdout}, indent=2) + "\n")
-    matching_ref = next((name for line in advertised.stdout.splitlines()
-                         for name, value in [line.split(" ", 1)] if value.strip() == commit.strip()), None)
-    if matching_ref is None:
-        for candidate in ("refs/remotes/origin/replay-source-base", "refs/remotes/origin/replay-source-head", "refs/remotes/origin/replay-target-base", "refs/remotes/origin/replay-target-head"):
-            resolved = subprocess.run(["git", "-C", str(destination), "rev-parse", candidate], text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
-            if resolved.returncode == 0 and resolved.stdout.strip() == commit:
-                matching_ref = candidate
-                break
-    if matching_ref is None and commit in advertised.stdout:
-        matching_ref = next((line.split(" ", 1)[0] for line in advertised.stdout.splitlines() if commit in line), None)
-    if matching_ref is None:
-        for candidate in ("refs/remotes/origin/replay-source-base", "refs/remotes/origin/replay-source-head", "refs/remotes/origin/replay-target-base", "refs/remotes/origin/replay-target-head"):
-            resolved = subprocess.run(["git", "-C", str(destination), "rev-parse", candidate], text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
-            if resolved.returncode == 0 and resolved.stdout.strip() == commit:
-                matching_ref = candidate
-                break
-    if matching_ref:
-        subprocess.run(["git", "-C", str(destination), "checkout", "-q", "--detach", matching_ref], check=True)
-        return
+    # Fetch only if needed, and never substitute a similarly named ref for
+    # the requested commit. The Heat failure was a mistyped SHA, not a Git
+    # ref/object inconsistency; diagnostic ref fallbacks did not fix it.
     present = subprocess.run(
         ["git", "-C", str(destination), "cat-file", "-e", f"{commit}^{{commit}}"],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
