@@ -13,6 +13,7 @@ from typing import Any, Callable
 from collect_e2_candidate_snapshots import collect, read_json, read_jsonl, write_json, write_jsonl
 from collect_formal_e2_candidate_mirrors import repository_path
 
+FIRST_PARENT_RULE = "latest first-parent default-branch commit at or before observation_cutoff"
 
 def local_git_resolver(mirror_root: Path) -> Callable[[str, str, str], dict[str, Any]]:
     def resolve(_project: str, repository: str, cutoff: str) -> dict[str, Any]:
@@ -25,7 +26,7 @@ def local_git_resolver(mirror_root: Path) -> Callable[[str, str, str], dict[str,
                 "error": f"complete local mirror is missing: {mirror}",
             }
         commit = subprocess.run(
-            ["git", "--git-dir", str(mirror), "rev-list", "-1", f"--before={cutoff}", "refs/heads/master"],
+            ["git", "--git-dir", str(mirror), "rev-list", "--first-parent", "-1", f"--before={cutoff}", "refs/heads/master"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False,
         )
         if commit.returncode:
@@ -82,10 +83,16 @@ def collect_checkpointed(
     collector: Callable[..., list[dict[str, Any]]] = collect,
     case_batch_size: int = 1,
     network_used: bool = True,
+    resolution_rule: str = "latest default-branch commit at or before observation_cutoff",
 ) -> dict[str, Any]:
     output_dir.mkdir(parents=True, exist_ok=True)
     snapshot_path = output_dir / "repository-snapshots.jsonl"
     prior_rows = read_jsonl(snapshot_path) if snapshot_path.exists() else []
+    prior_manifest_path = output_dir / "run-manifest.json"
+    prior_manifest = read_json(prior_manifest_path) if prior_manifest_path.exists() else {}
+    if prior_rows and resolution_rule == FIRST_PARENT_RULE and prior_manifest.get("resolution_rule") != resolution_rule:
+        # Cached timestamp-only results can contain branches merged after cutoff.
+        prior_rows = []
     by_case = {row["case_id"]: row for row in prior_rows}
     expected_ids = {assignment["case_id"] for assignment in assignments}
     unknown = sorted(set(by_case) - expected_ids)
@@ -133,7 +140,7 @@ def collect_checkpointed(
         "labels_read": False,
         "network_used": network_used,
         "checkpoint_unit": "case",
-        "resolution_rule": "latest default-branch commit at or before observation_cutoff",
+        "resolution_rule": resolution_rule,
     })
     return metrics
 
@@ -173,6 +180,8 @@ def main() -> int:
         collector=collector,
         case_batch_size=args.case_batch_size,
         network_used=args.mirror_root is None,
+        resolution_rule=(FIRST_PARENT_RULE if args.mirror_root is not None else
+                         "latest default-branch commit at or before observation_cutoff"),
     )
     print(json.dumps(metrics, indent=2, ensure_ascii=False, sort_keys=True))
     return 0 if metrics["all_cases_completed"] and metrics["all_resolutions_terminal"] else 1
