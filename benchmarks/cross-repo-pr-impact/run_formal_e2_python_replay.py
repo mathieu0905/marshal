@@ -78,7 +78,7 @@ def clone_checkout(mirror: Path, destination: Path, commit: str) -> None:
         text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
     )
     matching_ref = next((name for line in advertised.stdout.splitlines()
-                         for name, value in [line.split(" ", 1)] if value == commit), None)
+                         for name, value in [line.split(" ", 1)] if value.strip() == commit.strip()), None)
     if matching_ref is None:
         for candidate in ("refs/remotes/origin/replay-source-base", "refs/remotes/origin/replay-source-head", "refs/remotes/origin/replay-target-base", "refs/remotes/origin/replay-target-head"):
             resolved = subprocess.run(["git", "-C", str(destination), "rev-parse", candidate], text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
